@@ -1,0 +1,116 @@
+# The source register: every raw file in data/raw, where it came from and how the build uses it.
+# `original` is the file name as uploaded, before the clean-up of 2026-10-21. Licences are as the publisher states
+# them where we are sure; otherwise "see the publisher's terms" (check before republishing outside this repo).
+
+sources:
+  - id: gii
+    title: Global Innovation Index 2026, data file
+    publisher: WIPO
+    file: data/raw/wipo-gii/gii-2026-data.xlsx
+    original: wipo-pub-2000-2026-tech1.xlsx
+    url: https://www.wipo.int/global_innovation_index/en/
+    licence: CC BY 4.0
+    used: Economies compared (139 economies; every index, pillar, sub-pillar and indicator) and the GII breakdown page
+    notes: >-
+      Scores are 0-100 (normalised); values are each indicator's screened value in its own unit. As in the printed
+      economy profiles, an indicator whose profile shows a score gets a score only (Econ's econ.ingest.gii reads the
+      file the same way). Each economy's value comes from its own most recent data year (2016 to 2026).
+
+  - id: gii_appendix
+    title: Global Innovation Index 2026, Appendix III (sources and definitions)
+    publisher: WIPO
+    file: data/raw/wipo-gii/gii-2026-appendix-3-sources-and-definitions.md
+    original: GII-AppendiX_3.md
+    url: https://www.wipo.int/global_innovation_index/en/
+    licence: CC BY 4.0
+    used: Its markers only (which indicators are 'bads', where higher is worse, and which have half weight); the data file carries the same definitions, which the pages show
+
+  - id: wdi
+    title: World Development Indicators, Australia
+    publisher: World Bank
+    file: data/raw/world-bank/wdi-australia.xls
+    original: API_AUS_DS2_en_excel_v2_16758.xls
+    url: https://data.worldbank.org/country/australia
+    licence: CC BY 4.0
+    used: Australia over time (1960 to 2025; indicators with at least 5 years of data)
+    notes: >-
+      Australia's national accounts are on a fiscal-year basis (year ending 30 June), labelled by the year they end.
+
+  - id: hdr_annex
+    title: Human Development Report 2025, statistical annex tables 1 to 7
+    publisher: UNDP
+    file: data/raw/undp-hdr/hdr-2025-statistical-annex-tables-1-7.xlsx
+    original: HDR25_Statistical_Annex_Tables_1-7.xlsx
+    url: https://hdr.undp.org/data-center
+    licence: see the publisher's terms (UNDP HDRO data are usually CC BY 3.0 IGO)
+    used: Economies compared (each country's 2023 values; regional and group aggregates left out)
+
+  - id: hdr_series
+    title: Human Development Report, Australia's series
+    publisher: UNDP
+    file: data/raw/undp-hdr/hdr-australia-series.xlsx
+    original: hdr-data.xlsx
+    url: https://hdr.undp.org/data-center/specific-country-data#/countries/AUS
+    licence: see the publisher's terms (UNDP HDRO data are usually CC BY 3.0 IGO)
+    used: Australia over time (1990 to 2023)
+
+  - id: hdr_country_file
+    title: Human Development Report, Australia's country file
+    publisher: UNDP
+    file: data/raw/undp-hdr/hdr-australia-country-file.csv
+    original: Australia.csv
+    url: https://hdr.undp.org/data-center/specific-country-data#/countries/AUS
+    licence: see the publisher's terms (UNDP HDRO data are usually CC BY 3.0 IGO)
+    used: Reference only (its series duplicate hdr-australia-series.xlsx; its gender social norms are one period)
+
+  - id: oecd_wise
+    title: How's Life? Current well-being, Australia
+    publisher: OECD (WISE Centre)
+    file: data/raw/oecd/oecd-hows-life-current-wellbeing-australia.xlsx
+    original: OECD.WISE.WDP,DSD_HSL@DF_HSL_CWB,1.1,filtered,2026-10-22 01-18-54.xlsx
+    url: https://data-explorer.oecd.org/
+    licence: CC BY 4.0
+    used: Australia over time (2010 to 2025)
+
+  - id: whr
+    title: World Happiness Report 2026, data for figure 2.1
+    publisher: Wellbeing Research Centre, University of Oxford (World Happiness Report)
+    file: data/raw/whr/whr-2026-figure-2-1.xlsx
+    original: WHR26_Data_Figure_2.1.xlsx
+    url: https://worldhappiness.report/data/
+    licence: see the publisher's terms
+    used: Australia over time (2011 to 2025) and Economies compared (the latest year, 2025)
+    notes: >-
+      Life evaluation is a three-year average ending in the year shown. The "explained by" columns split each
+      country's score into the parts a model attributes to six factors: they are built from the score, so they
+      correlate with it mechanically.
+
+  - id: ctg
+    title: Closing the Gap Annual Data Compilation Report 2026, datasets for targets 1 to 17
+    publisher: Productivity Commission
+    file: data/raw/closing-the-gap/
+    original: adcr-2026-ctg01-healthy-lives-dataset_0.csv … adcr-2026-ctg17-digital-inclusion-dataset.csv
+    url: https://www.pc.gov.au/closing-the-gap-data/annual-data-report
+    licence: see the publisher's terms (the Productivity Commission usually publishes under CC BY 4.0)
+    used: Australia over time (national totals of actual values; trajectories, estimates and confidence intervals left out)
+    notes: >-
+      A financial year (2018-19) is placed at the year it ends; a period of three to five years (2016-2020) at its
+      middle year, rounded down. Changes over a period ("2016 to 2021") and periods over five years are left out.
+
+  - id: sdr
+    title: Sustainable Development Report 2026, Australia's profile
+    publisher: UN Sustainable Development Solutions Network
+    file: data/raw/reports/sdr-2026-australia.pdf
+    original: SDR-2026-australia.pdf
+    url: https://dashboards.sdgindex.org/profiles/australia
+    licence: see the publisher's terms
+    used: Context only (a one-year profile; no series to compare)
+
+  - id: gggr
+    title: Global Gender Gap Report 2026, Australia's economy profile
+    publisher: World Economic Forum
+    file: data/raw/reports/gggr-2026-australia.pdf
+    original: gggr_index_2026_006_AUS.pdf
+    url: https://www.weforum.org/publications/
+    licence: see the publisher's terms
+    used: Context only (a one-year profile; no series to compare)
