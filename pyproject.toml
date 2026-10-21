@@ -1,0 +1,35 @@
+[project]
+name = "aus-gii-breakdown"
+version = "0.1.0"
+description = "Australia in the Global Innovation Index, and a correlation explorer over the datasets behind IP Australia's research goal."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "pandas>=2.2",
+  "python-calamine>=0.3",
+  "pycountry>=24.6",
+  "pyyaml>=6.0",
+]
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6", "scipy>=1.13"]
+
+[project.scripts]
+breakdown = "breakdown.build:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/breakdown"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

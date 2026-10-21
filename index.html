@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Everything this page loads comes from this site: no third-party scripts, fonts or trackers. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Australia in the GII 2026</title>
+<meta name="description" content="Australia's Global Innovation Index 2026, broken down from the headline score to each of the 79 indicators, with a correlation explorer over the datasets behind IP Australia's research goal.">
+<link rel="icon" href="assets/img/icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the content</a>
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="./"><img class="brand-mark" src="assets/img/icon.svg" alt=""><span>Australia in the GII<small>IP Australia · exploratory analysis</small></span></a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="./" aria-current="page">GII breakdown</a>
+      <a href="explorer/">Correlation explorer</a>
+      <a href="explorer/#/sources">Sources</a>
+      <a href="explorer/#/glossary">Glossary</a>
+    </nav>
+    <button class="theme-btn" id="theme" type="button" aria-label="Switch between light and dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+  </div>
+</header>
+<main id="main" class="wrap" tabindex="-1"></main>
+<footer class="foot">
+  <div class="wrap">
+    <p>Data: WIPO, Global Innovation Index 2026 (CC BY 4.0), from WIPO's data file; strengths, weaknesses and flags as WIPO marks them. Scores are normalised 0-100 and relative to the 139 economies covered.
+    Built for IP Australia's research programme; an exploratory view, not an official publication. Charts by Apache ECharts (Apache-2.0).
+    <a href="https://github.com/Thomas-Amann-IPAustralia/Aus-GII-Breakdown">The code and data on GitHub</a></p>
+  </div>
+</footer>
+<div class="popover" id="popover" role="tooltip" hidden></div>
+<script src="assets/vendor/echarts.min.js"></script>
+<script type="module" src="assets/js/gii.js"></script>
+</body>
+</html>

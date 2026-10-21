@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install
+        run: uv sync --group dev
+      - name: Lint and format
+        run: |
+          uv run ruff check src tests
+          uv run ruff format --check src tests
+      - name: Python tests (including the published data against a rebuild from data/raw)
+        run: uv run pytest -q
+      - name: The explorer's statistics against scipy and numpy
+        run: node --test tests/js/*.test.mjs

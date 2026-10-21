@@ -1,0 +1,87 @@
+# The research goal's conceptual framework (docs/research-goal.md, section 4) as a lens on every variable.
+# A suggestion to help find things, not a finding: which concept a measure belongs to is itself a judgement, and the
+# research goal treats the links between the concepts as empirical questions. Edit freely; the build re-reads it.
+#
+# Rules match by prefix (a WDI code or a GII number); the longest matching prefix wins.
+
+lenses:
+  potential: {name: Innovation potential, short: Potential, about: "Capabilities, ideas, research, skills and opportunities from which innovation may emerge."}
+  activity: {name: Innovation activity, short: Activity, about: "Developing, adopting, diffusing and applying new or significantly improved products, processes and other solutions."}
+  ip: {name: IP protection and use, short: IP, about: "Acquiring, managing, licensing, enforcing and strategically using registered rights and other protection."}
+  outcomes: {name: Private and organisational outcomes, short: Outcomes, about: "Commercialisation, productivity, revenue, employment, investment and resilience for innovators and organisations."}
+  public_value: {name: Public value, short: Public value, about: "Net effects on prosperity, social progress, opportunity, sustainability, competition and public welfare."}
+  context: {name: Conditions and context, short: Context, about: "The settings the framework's questions turn on: institutions, finance, markets, infrastructure, population."}
+  composite: {name: Composite index, short: Composite, about: "A headline index that blends several of the concepts above."}
+
+gii:
+  "": composite
+  IN: composite
+  OUT: composite
+  IN.1: context
+  IN.2: potential
+  IN.3: context
+  IN.4: context
+  IN.5: activity
+  IN.5.1: potential
+  IN.5.2.5: ip
+  IN.5.3.1: ip
+  OUT.6: activity
+  OUT.6.1.1: ip
+  OUT.6.1.2: ip
+  OUT.6.1.3: ip
+  OUT.6.2: outcomes
+  OUT.6.3.1: ip
+  OUT.7: activity
+  OUT.7.1.1: outcomes
+  OUT.7.1.2: ip
+  OUT.7.1.3: outcomes
+  OUT.7.1.4: ip
+
+wdi:
+  "": context
+  IP.PAT: ip
+  IP.TMK: ip
+  IP.IDS: ip
+  BX.GSR.ROYL: ip
+  BM.GSR.ROYL: ip
+  IP.JRN: activity
+  TX.VAL.TECH: activity
+  GB.XPD.RSDV: potential
+  SP.POP.SCIE: potential
+  SP.POP.TECH: potential
+  SE: potential
+  HD.HCI: potential
+  NY: outcomes
+  NV: outcomes
+  NE: outcomes
+  SL: outcomes
+  IC: outcomes
+  SH: public_value
+  SP.DYN: public_value
+  SI: public_value
+  SN: public_value
+  SG: public_value
+  EN: public_value
+  ER: public_value
+  VC: public_value
+  per: public_value
+  GOV_WGI: context
+  HD_HCIP: potential
+  SH_UHC: public_value
+  GD_WBL: public_value
+
+# UNDP's codes (hdr-australia-series.xlsx; the annex tables use the same codes in the build).
+hdr:
+  "": public_value
+  eys: potential
+  mys: potential
+  se_: potential
+  gnipc: outcomes
+  gni_pc: outcomes
+  lfpr: outcomes
+
+# Sources not listed take one lens for all their variables.
+default:
+  oecd_wise: public_value
+  whr: public_value
+  ctg: public_value
