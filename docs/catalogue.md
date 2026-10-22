@@ -731,7 +731,12 @@ Processed (both in R2, because case names include individuals' names):
   legislation and sub-area) and the IP Acts cited in the text with counts.
 - `judgment_text`: the full text of each decision, by `version_id`, for text analysis (outcomes, damages, costs).
 
-*Not ingested yet: see the status in `docs/data-plan.md`.*
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `judgment_text` | 2,666 | R2 (47.1 MB) | `version_id`, `text` |
+| `judgments` | 2,666 | R2 (0.8 MB) | `version_id`, `citation`, `court`, `date`, `url`, `file_number`, `judges`, `date_of_judgment`, `date_of_hearing`, `date_of_last_submissions`, `catchwords`, `legislation`, `cases_cited`, `registry` … |
+
+- Note: 2,666 IP decisions; corpus collected to 2025-03-10
 
 ## Google Patents Public Data, the worldwide patent families touching Australia (`google_patents`)
 
@@ -742,20 +747,24 @@ Google Patents Public Data (BigQuery): the worldwide patent families that touch 
 Q1 and Q3: patent families as value measures (how many offices an invention is filed in, forward citations), where
 Australian applicants and inventors file abroad, and which foreign families come to Australia. The families are those
 with a publication in Australia or an Australian applicant or inventor (by Google's harmonised country codes, which
-some offices leave blank, so foreign filings by Australians are undercounted), 1.75 million families and 17 million
+some offices leave blank, so foreign filings by Australians are undercounted): 1.75 million families and 17 million
 publications in the October 2026 release. Queried in BigQuery (`patents-public-data.patents.publications`, CC BY 4.0;
-about 60 GB of query per run, billed to `GCP_PROJECT_ID`); no raw files.
+about 140 GB of query per run, within BigQuery's free terabyte a month, billed to `GCP_PROJECT_ID`); the families are
+summarised in BigQuery and only the summaries and the Australian publications are downloaded. No raw files.
 
 Processed (R2 unless small):
-- `members`: one row per publication in those families: numbers, office, kind, dates, applicant and inventor
-  countries and counts, first IPC and CPC codes and IPC subclasses, patent and non-patent citations made, the names
-  of Australian applicants (organisations and individuals, as published), and `au_application` (the 10-digit
-  Australian application number, to join to `iprapid`).
-- `families`: one row per family: first priority and filing dates, offices filed in (`offices`, `n_offices`), whether
-  granted in Australia and the United States, Australian applicant or inventor, the first IPC code, English title,
-  and forward citations (distinct citing families, in all and within five years of the family's first priority).
+- `families`: one row per family: first priority, filing and grant dates, offices filed in (`offices`; `n_offices`
+  counts national and regional offices other than WO and EP), PCT and EP filings, whether filed and granted in
+  Australia and granted in the United States, Australian applicant or inventor, publications, the earliest
+  publication's first IPC code, an English title, and forward citations (distinct citing families, in all and within
+  five years of the family's first priority).
+- `members`: one row per publication that is Australian or in a family with an Australian applicant or inventor:
+  numbers, office, kind, dates, applicant and inventor countries and counts, first IPC and CPC codes and IPC
+  subclasses, patent and non-patent citations made, the names of Australian applicants (organisations and
+  individuals, as published), and `au_application` (the 10-digit Australian application number, to join to
+  `iprapid`).
 - `citations`: family-level citation pairs (citing family, cited family, citing family's first priority date) where
-  the cited family is in the set.
+  the cited family has an Australian applicant or inventor.
 
 *Not ingested yet: see the status in `docs/data-plan.md`.*
 

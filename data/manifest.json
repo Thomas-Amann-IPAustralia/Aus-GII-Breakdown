@@ -8267,6 +8267,77 @@
    ],
    "run": "2026-10-22"
   },
+  "fedcourt": {
+   "files": {
+    "processed/judgment_text": {
+     "bytes": 47117412,
+     "columns": [
+      "version_id",
+      "text"
+     ],
+     "describe": "Full text of each IP judgment",
+     "key": "processed/fedcourt/judgment_text.parquet",
+     "location": "r2",
+     "rows": 2666,
+     "sha256": "05a4b63810cc415eb7e4e2d2c3b2e2c1ec85d590e615f6b6fa409bb4bddb3544"
+    },
+    "processed/judgments": {
+     "bytes": 804095,
+     "columns": [
+      "version_id",
+      "citation",
+      "court",
+      "date",
+      "url",
+      "file_number",
+      "judges",
+      "date_of_judgment",
+      "date_of_hearing",
+      "date_of_last_submissions",
+      "catchwords",
+      "legislation",
+      "cases_cited",
+      "registry",
+      "division",
+      "practice_area",
+      "sub_area",
+      "category",
+      "number_of_paragraphs",
+      "appeal_from",
+      "solicitors",
+      "rights",
+      "cites_patents",
+      "cites_trade_marks",
+      "cites_designs",
+      "cites_copyright",
+      "cites_plant_breeders_rights",
+      "cites_circuit_layouts",
+      "cases_cited_count",
+      "characters",
+      "when_scraped",
+      "date_of_judgment_last",
+      "date_of_hearing_last",
+      "date_of_last_submissions_last"
+     ],
+     "describe": "IP judgments, cover-page fields, rights and IP Acts cited",
+     "key": "processed/fedcourt/judgments.parquet",
+     "location": "r2",
+     "rows": 2666,
+     "sha256": "ff928a13742fdd48ca5087628b28e2433443b19648db2a6e48c5cf42a2428dcb"
+    },
+    "raw/ip_decisions.jsonl.gz": {
+     "bytes": 57619952,
+     "key": "raw/fedcourt/ip_decisions.jsonl.gz",
+     "location": "r2",
+     "sha256": "13ef47f187dd91b71648a3713154a40897466f3615f8ce6a0033df6077675353",
+     "url": "https://huggingface.co/datasets/isaacus/open-australian-legal-corpus/resolve/main/corpus.jsonl"
+    }
+   },
+   "notes": [
+    "2,666 IP decisions; corpus collected to 2025-03-10"
+   ],
+   "run": "2026-10-22"
+  },
   "gii": {
    "files": {
     "processed/data": {

@@ -52,7 +52,7 @@ RIGHTS = {
     "confidential_information": r"CONFIDENTIAL INFORMATION|confidential information",
 }
 IP_HEAD = re.compile(r"^\s*(INTELLECTUAL PROPERTY|PATENTS?|TRADE ?MARKS?|COPYRIGHT|DESIGNS?|PLANT BREEDER)", re.M)
-FIELD = re.compile(r"^([A-Z][A-Za-z()/' ]{2,60}):\s+(.*)$")
+FIELD = re.compile(r"^([A-Z][A-Za-z()/' -]{2,60}):\s+(.*)$")
 STOP = re.compile(r"^\s*(ORDERS|REASONS FOR JUDGMENT|JUDGMENT|THE COURT ORDERS)\s*$")
 KEEP_FIELDS = {
     "file number": "file_number",
@@ -106,13 +106,15 @@ def cover(text: str) -> dict:
 
 def last_date(s) -> str | None:
     """'15-16 June 2010', '26 and 27 November 2013' -> the last day mentioned, as text pandas can parse."""
-    found = re.findall(r"(\d{1,2})\s+([A-Za-z]+),?\s+(\d{4})", s or "")
+    found = re.findall(r"(\d{1,2})\s+([A-Za-z]+),?\s+(\d{4})", s if isinstance(s, str) else "")
     return " ".join(found[-1]) if found else None
 
 
 def court(citation: str) -> str | None:
     m = re.search(r"\[\d{4}\]\s+([A-Za-z]+)\s+\d+", citation or "")
-    return m.group(1) if m else None
+    if not m:
+        return None
+    return "ACopyT" if m.group(1).upper() in ("ACOPYT", "ACOPY") else m.group(1)
 
 
 def is_ip(d: dict) -> bool:

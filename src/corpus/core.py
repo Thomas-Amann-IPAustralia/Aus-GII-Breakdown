@@ -273,14 +273,27 @@ def load(source: str, name: str, **kw) -> pd.DataFrame:
         f = m["sources"][source]["files"][f"processed/{name}"]
     except KeyError as e:
         raise CorpusError(f"no table {source}/{name} in data/manifest.json (see docs/catalogue.md)") from e
-    path = ROOT / f["path"] if f["location"] == "repo" else r2_get(f["key"], CACHE / f["key"])
-    return pd.read_parquet(path, **kw)
+    return pd.read_parquet(_local(f), **kw)
 
 
 def path(source: str, name: str) -> Path:
     """The local path of a processed table (downloading it from R2 if needed), for DuckDB or Polars."""
-    f = read_manifest()["sources"][source]["files"][f"processed/{name}"]
-    return ROOT / f["path"] if f["location"] == "repo" else r2_get(f["key"], CACHE / f["key"])
+    return _local(read_manifest()["sources"][source]["files"][f"processed/{name}"])
+
+
+def _local(f: dict) -> Path:
+    """A manifest entry's file: in the repo, or the cached copy of the R2 object, fetched again when the manifest
+    names a newer version (a sidecar file holds the cached copy's SHA-256)."""
+    if f["location"] == "repo":
+        return ROOT / f["path"]
+    dest = CACHE / f["key"]
+    stamp = dest.with_name(dest.name + ".sha256")
+    if dest.exists() and (not stamp.exists() or stamp.read_text().strip() != f["sha256"]):
+        if sha256(dest) != f["sha256"]:
+            dest.unlink()
+    r2_get(f["key"], dest)
+    stamp.write_text(f["sha256"])
+    return dest
 
 
 def individual_abns() -> set[str]:
