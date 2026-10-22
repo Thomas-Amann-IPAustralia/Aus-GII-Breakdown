@@ -23,6 +23,7 @@ from __future__ import annotations
 import gzip
 import json
 import re
+import time
 
 import pandas as pd
 import requests
@@ -131,6 +132,33 @@ def is_ip(d: dict) -> bool:
     return sum(len(re.findall(a, head)) for a in ACTS.values()) >= 2
 
 
+def _lines(ctx: Ctx, tries: int = 20):
+    """The corpus's lines, resuming with a range request from the last whole line when the connection drops."""
+    offset, failures = 0, 0
+    while True:
+        headers = {"Range": f"bytes={offset}-"} if offset else {}
+        try:
+            with requests.get(URL, stream=True, timeout=300, headers=headers) as r:
+                if r.status_code not in (200, 206):
+                    raise CorpusError(f"fedcourt: GET {URL} answered {r.status_code}")
+                buf = b""
+                for chunk in r.iter_content(1 << 20):
+                    *lines, buf = (buf + chunk).split(b"\n")
+                    for line in lines:
+                        offset += len(line) + 1
+                        if line.strip():
+                            yield line
+                if buf.strip():
+                    yield buf
+                return
+        except (requests.ConnectionError, requests.exceptions.ChunkedEncodingError, requests.Timeout) as e:
+            failures += 1
+            if failures > tries:
+                raise CorpusError(f"fedcourt: the corpus download kept failing: {e}") from e
+            ctx.log(f"connection dropped at {offset:,} bytes; resuming")
+            time.sleep(min(2**failures, 60))
+
+
 def _stream(ctx: Ctx):
     """Yield the IP decisions, from the cached extract or by streaming the corpus once."""
     p = ctx.cache / "ip_decisions.jsonl.gz"
@@ -138,10 +166,8 @@ def _stream(ctx: Ctx):
         tmp = p.with_suffix(".part")
         p.parent.mkdir(parents=True, exist_ok=True)
         n = kept = 0
-        with requests.get(URL, stream=True, timeout=300) as r, gzip.open(tmp, "wt") as out:
-            if r.status_code != 200:
-                raise CorpusError(f"fedcourt: GET {URL} answered {r.status_code}")
-            for line in r.iter_lines():
+        with gzip.open(tmp, "wt") as out:
+            for line in _lines(ctx):
                 n += 1
                 d = json.loads(line)
                 if d.get("type") == "decision" and d.get("source") in COURTS and is_ip(d):
