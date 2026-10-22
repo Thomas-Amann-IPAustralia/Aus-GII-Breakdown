@@ -1,0 +1,96 @@
+# Dated changes to Australia's IP system, for natural experiments on IP Australia's levers (Q4, Q5). Compiled here.
+# `verify: true` marks a date or detail to confirm against the Federal Register of Legislation
+# (https://www.legislation.gov.au/) before an analysis relies on it. Add events freely.
+
+events:
+  - id: pct-accession
+    date: 1980-03-31
+    rights: [patent]
+    lever: international filing route
+    event: Australia joins the Patent Cooperation Treaty
+    source: https://www.wipo.int/pct/en/pct_contracting_states.html
+    verify: false
+  - id: patents-act-1990
+    date: 1991-05-01
+    rights: [patent]
+    lever: legislation
+    event: Patents Act 1990 commences (20-year standard patents; petty patents)
+    source: https://www.legislation.gov.au/
+    verify: false
+  - id: pbr-act-1994
+    date: 1994-11-10
+    rights: [pbr]
+    lever: legislation
+    event: Plant Breeder's Rights Act 1994 commences
+    source: https://www.legislation.gov.au/
+    verify: true
+  - id: trade-marks-act-1995
+    date: 1996-01-01
+    rights: [trade_mark]
+    lever: legislation
+    event: Trade Marks Act 1995 commences
+    source: https://www.legislation.gov.au/
+    verify: false
+  - id: pharma-extension-of-term
+    date: 1999-01-27
+    rights: [patent]
+    lever: term
+    event: Extensions of term for pharmaceutical substance patents (up to five years) take their current form
+    source: https://www.legislation.gov.au/
+    verify: true
+  - id: innovation-patent-introduced
+    date: 2001-05-24
+    rights: [patent]
+    lever: second-tier right
+    event: Innovation patent (eight-year second-tier patent) replaces the petty patent
+    source: https://www.legislation.gov.au/
+    verify: false
+  - id: madrid-protocol
+    date: 2001-07-11
+    rights: [trade_mark]
+    lever: international filing route
+    event: Australia joins the Madrid Protocol for international trade mark registration
+    source: https://www.wipo.int/madrid/en/members/
+    verify: false
+  - id: designs-act-2003
+    date: 2004-06-17
+    rights: [design]
+    lever: legislation
+    event: Designs Act 2003 commences (registration and certification by examination)
+    source: https://www.legislation.gov.au/
+    verify: false
+  - id: tobacco-plain-packaging
+    date: 2012-12-01
+    rights: [trade_mark]
+    lever: use of marks (outside IP Australia)
+    event: Tobacco plain packaging applies at retail, restricting the use of trade marks on tobacco packaging
+    source: https://www.legislation.gov.au/
+    verify: false
+  - id: raising-the-bar
+    date: 2013-04-15
+    rights: [patent, trade_mark, design, pbr]
+    lever: examination standards
+    event: Raising the Bar Act's main provisions commence (higher thresholds for patent inventive step, utility and support; other changes)
+    source: https://www.legislation.gov.au/
+    verify: false
+  - id: pc-response-part-1
+    date: 2019-02-24
+    rights: [trade_mark, patent, pbr]
+    lever: legislation
+    event: Productivity Commission response Part 1 commences (including changes to trade mark non-use and parallel importation)
+    source: https://www.legislation.gov.au/
+    verify: true
+  - id: innovation-patent-closed
+    date: 2021-08-26
+    rights: [patent]
+    lever: second-tier right
+    event: No new innovation patent applications accepted (filings before this date continue to their eight-year term, the last ending in 2029)
+    source: https://www.ipaustralia.gov.au/patents/understanding-patents/types-of-patents/innovation-patent
+    verify: false
+  - id: designs-grace-period
+    date: 2022-03-10
+    rights: [design]
+    lever: legislation
+    event: Twelve-month grace period for filing designs after publication, and an exclusive licensee infringement right
+    source: https://www.ipaustralia.gov.au/design-rights/timeframes-and-fees/grace-period
+    verify: true

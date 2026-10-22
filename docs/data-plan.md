@@ -1,7 +1,8 @@
 # Data plan: from a correlation explorer to a research corpus
 
-Status: proposal for review (2026-10-22; revised the same day to cover non-financial public value and every
-sub-question). Nothing has been deleted or ingested yet.
+Status: approved 2026-10-22 (Tiers 1 and 2), and ingested the same day; see section 8 for what is in the corpus,
+what could not be fetched, and what needs your help. Decisions: no ABS integrated data assets (BLADE and the like);
+keep the GII page (to be rebuilt) and `docs/Data-Analysis-DEMO.html`; large files in the R2 bucket `ipholmes`.
 
 This note assesses the data now in the repository against the five core questions in `docs/research-goal.md`, flags
 what adds little or nothing, and proposes the datasets to ingest instead. Availability was checked from this
@@ -25,9 +26,11 @@ environment on 2026-10-22: "programmatic" means a script here reached the source
   so the plan traces each non-financial benefit through the pathway by which IP could plausibly affect it, and keeps
   a small, curated set of wellbeing measures (led by the Australian Government's Measuring What Matters framework) as
   the outcome layer and for valuation, rather than as variables to correlate.
-- **Question 5, and any causal claim, needs data that cannot sit in a repo.** ABS BLADE (via DataLab), and
-  IP Australia's internal examination records, are the only routes to credible estimates of additionality. They need
-  an institutional request, not a download; the plan below sets up the public spine so that a request is specific.
+- **Question 5, and any causal claim, needs designs the public data only partly support.** With ABS integrated data
+  (BLADE) ruled out, the routes to credible additionality are IP Australia's internal examination records (examiner
+  leniency designs), natural experiments in IP Australia's own levers (`policy_events`), and priors from the
+  evidence register. Firm outcomes come from the public registers only: survival (ABR, ASIC), a size marker (GST),
+  R&D (the R&D Tax Incentive), procurement (AusTender) and large firms' income (corporate tax transparency).
 
 ## 1. What the current data can and cannot do
 
@@ -88,7 +91,10 @@ so its public value can only be approached through the creative industries' figu
 ## 3. Coverage of every sub-question
 
 Each bullet in `docs/research-goal.md` §3, with how the proposed corpus covers it. "Full" means the data can answer it
-descriptively or observationally; causal answers still need Tier 3 B or C.
+descriptively or observationally; causal answers still need Tier 3 C. Since BLADE (B) is ruled out, where a row
+names B the public registers are the best proxy (survival from the ABR and ASIC, GST as a size marker, R&D
+expenditure, procurement, large firms' income), and turnover, employment and productivity for small firms are not
+observable.
 
 | Sub-question | Coverage | Data (numbers refer to section 4) |
 |---|---|---|
@@ -108,7 +114,7 @@ descriptively or observationally; causal answers still need Tier 3 B or C.
 | **Q3.4** When trade secrets, open licensing, collaborative research or public funding do better | Partial | Informal protection (6); public funding and collaborative research (5, 12). Open licensing: no good data; evidence register (22) |
 | **Q3.5** What distinguishes successful registration from little benefit | Partial | Renewal against lapse, survival (1 to 4); outcomes (B) |
 | **Q4.1** Barriers that stop valuable innovation reaching the market | Partial | BCS barriers (6); customer research (D) |
-| **Q4.2** Which barriers IP Australia could influence | Partial | Natural experiments in IP Australia's own levers (32): the innovation patent's phase-out (2021 to 2036), Raising the Bar (2013), fee changes |
+| **Q4.2** Which barriers IP Australia could influence | Partial | Natural experiments in IP Australia's own levers (32): the innovation patent's closure to new filings (August 2021; the last expire in 2029), Raising the Bar (2013), fee changes |
 | **Q4.3** Where funding, services, regulation, partnerships or expertise could add value | Partial | Q2.3 and Q4.2 analyses; evidence register of other offices' programmes (22) |
 | **Q4.4** Market failures and institutional gaps others do not address | Partial | Evidence register (22); the GII's national gaps as hypotheses |
 | **Q4.5** Where to act directly, collaborate or advocate | Not data | A remit and lever map: a qualitative exercise built on the findings above |
@@ -172,7 +178,7 @@ Listed in order of value. Items marked "you" are the limited fetches you offered
 | # | Dataset | Why it matters | How |
 |---|---|---|---|
 | A | **A current IPGOD and IPLORD extract (2021 to 2025)** | The public releases stop at 2021 (IPGOD 2022) and 2020 (IPLORD). Four to five missing years cover COVID, the end of the innovation patent and the current period | You, internally (IP Australia's data team). The single most valuable fetch |
-| B | **ABS BLADE with IP Australia's linked IP data** (DataLab) | The only source of firm outcomes (turnover, employment, wages, productivity, exports, survival) for IP users and matched non-users. Needed for any Q1, Q3 or Q5 claim beyond description | Institutional project application; analysis happens inside DataLab, so nothing is stored here except cleared outputs |
+| B | ~~ABS BLADE with IP Australia's linked IP data~~ | **Ruled out (2026-10-22): no ABS integrated data assets.** It was the only source of small firms' turnover, employment and productivity | Not pursued |
 | C | **Examination records with examiner assignment** (internal) | Enables the strongest causal design in the literature (examiner leniency as an instrument for grant, as in Farre-Mensa, Hegde and Ljungqvist 2020): what a granted patent adds for a startup, compared with a rejected one | Internal request; analysis likely inside IP Australia or DataLab |
 | D | **IP Australia customer and SME research** (surveys of users and non-users, awareness, barriers) | Q2 and Q4 barriers from the users' side | You, internally, if the reports and microdata can be shared |
 | E | **Global patent data**: Google Patents Public Data (BigQuery) or PatentsView | Forward citations and patent families as value measures; Australian inventors abroad | BigQuery needs a GCP project (the `bq` CLI here has no credentials); PatentsView is blocked by this environment's network policy and needs an allowlist change |
@@ -202,31 +208,20 @@ as the research goal requires.
 - **Q4 Opportunities.** "Missing filers" (R&D performers, grant recipients and procurement suppliers that never use
   the system); regions with high innovation potential and low use; abandonment and opposition outcomes for
   self-filers; barriers by firm size from BCS (descriptive, hypothesis-generating).
-- **Q5 Interventions.** Needs Tier 3 B or C for credible additionality. Until then: evidence register priors and
-  scenario ranges built from the Q2 to Q4 populations (projection, clearly labelled).
+- **Q5 Interventions.** Needs Tier 3 C, or the natural experiments in `policy_events`, for credible additionality.
+  Until then: evidence register priors and scenario ranges built from the Q2 to Q4 populations (projection, clearly
+  labelled).
 
-## 6. Storage
+## 6. Storage (as built)
 
-GitHub refuses files over 100 MB and slows badly beyond a few GB, so:
+GitHub refuses files over 100 MB and slows beyond a few GB, so:
 
-- **R2 holds the large raw files** (IPGOD, IPLORD, ABR, ASIC, TM-Link: roughly 8 to 15 GB uncompressed), each
-  recorded in the source register with its URL, retrieval date, SHA-256 and R2 key, with a script to re-fetch from
-  the publisher or from R2.
-- **The repo holds small raw files** (ABS, ATO, concordances, fees) and **analysis-ready Parquet extracts** of the large
-  ones (for example Australian applicants only, with the columns the questions need), each under 50 MB.
-- R2 credentials are present in this environment (`R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`); the
-  bucket name is still needed.
+- **R2 (bucket `ipholmes`) holds the large files**: raw files under `raw/<source>/` (IPGOD, IPLORD, the ABR, ASIC,
+  TM-Link, AusTender, PBS, the ASGS allocation files) and large Parquet tables under `processed/<source>/`.
+- **The repo holds small raw files and every table under 50 MB**, including analysis-ready summaries of the large
+  sources (`ipgod/*_rights`, `ipgod/applicant_year`, `iplord/iplord_abn`, `linkage/abn_spine`).
+- `data/manifest.json` records every file's SHA-256, size, rows, columns and location; `corpus verify --r2` checks it.
 
-## 7. Proposed repository shape
+## 7. Repository
 
-```
-docs/            research-goal.md, data-plan.md, a question map (question to dataset to analysis), the evidence register
-config/          sources.yaml (the source register, extended with R2 keys and retrieval dates)
-data/raw/        small raw files, by publisher
-data/processed/  Parquet extracts and the join tables (ABN, postcode to SA2, class to industry)
-data/manifest    SHA-256 of every raw and processed file, local or in R2
-src/corpus/      one ingest module per source, plus the shared linkage (ABN, geography, classification)
-tests/           schema and row-count checks per source; a rebuild check
-```
-
-The current pages, explorer and their build would be removed from `main` (they stay in the git history).
+As planned, with the details in `README.md`; `docs/catalogue.md` lists every table.

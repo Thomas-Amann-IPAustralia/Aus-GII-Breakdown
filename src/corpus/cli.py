@@ -83,6 +83,57 @@ def listing() -> int:
     return 0
 
 
+CATALOGUE_HEAD = """# Data catalogue
+
+Every source in the corpus and every table it holds. Written by `uv run corpus catalogue` from `config/sources.yaml`
+and `data/manifest.json`; edit those (or a source's module docstring), not this file. What each source is for, and
+what is still missing, is in `docs/data-plan.md`; how to use the corpus is in `README.md`.
+
+**Where a table lives.** *repo* tables are in `data/processed/<source>/<table>.parquet`. *R2* tables are in the
+`ipholmes` bucket at `processed/<source>/<table>.parquet`; `corpus.load` and `corpus.path` fetch them once into
+`~/.cache/ipholmes` (R2 credentials in `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID` and `R2_SECRET_ACCESS_KEY`).
+
+**Join keys.** `abn` (11 digits, as text) joins IPGOD, IPLORD, the ABR, ASIC (through `acn`), the R&D Tax Incentive,
+AusTender and the corporate tax reports; `linkage/abn_spine` already does it. Postcodes join to ABS geography through
+`abs_regions/poa` and `poa_sa2` (a postcode is a postal area code, as text). IPC subclasses join to industries and
+technology fields through `concordances`. ISO3 codes join the cross-country sources (`gii`, `oecd`, `wdi`).
+"""
+
+
+def catalogue() -> int:
+    m = read_manifest()["sources"]
+    out = [CATALOGUE_HEAD]
+    for s in register():
+        sid = s["id"]
+        mod = importlib.util.find_spec(f"corpus.sources.{sid}")
+        doc = importlib.import_module(f"corpus.sources.{sid}").__doc__ if mod else None
+        files = m.get(sid, {}).get("files", {})
+        out.append(f"## {s['title']} (`{sid}`)\n")
+        out.append(
+            f"{s['publisher']}. Tier {s.get('tier', '-')}; questions {', '.join(map(str, s.get('questions', [])))}."
+            f" Licence: {s['licence']}. Source: {s['url']}\n"
+        )
+        if doc:
+            out.append(doc.strip() + "\n")
+        tables = {k.split("/", 1)[1]: f for k, f in files.items() if k.startswith("processed/")}
+        if tables:
+            out.append("| Table | Rows | Where | Columns |\n|---|---:|---|---|")
+            for name, f in sorted(tables.items()):
+                cols = ", ".join(f"`{c}`" for c in f["columns"][:14]) + (" …" if len(f["columns"]) > 14 else "")
+                where = "repo" if f["location"] == "repo" else "R2"
+                out.append(f"| `{name}` | {f['rows']:,} | {where} ({f['bytes'] / 1e6:.1f} MB) | {cols} |")
+            out.append("")
+        else:
+            out.append("*Not ingested yet: see the status in `docs/data-plan.md`.*\n")
+        for n in m.get(sid, {}).get("notes", []):
+            out.append(f"- Note: {n}")
+        if m.get(sid, {}).get("notes"):
+            out.append("")
+    (ROOT / "docs/catalogue.md").write_text("\n".join(out), encoding="utf-8")
+    print(f"wrote docs/catalogue.md ({len(register())} sources)")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="corpus", description=__doc__.split("\n\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -91,11 +142,14 @@ def main(argv: list[str] | None = None) -> int:
     v = sub.add_parser("verify")
     v.add_argument("--r2", action="store_true")
     sub.add_parser("list")
+    sub.add_parser("catalogue")
     a = ap.parse_args(argv)
     if a.cmd == "run":
         return run(a.ids)
     if a.cmd == "verify":
         return verify(a.r2)
+    if a.cmd == "catalogue":
+        return catalogue()
     return listing()
 
 

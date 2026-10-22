@@ -60,3 +60,31 @@ def tidy(raw: pd.DataFrame, flow: str) -> pd.DataFrame:
     df.insert(0, "flow", flow)
     df["value"] = pd.to_numeric(raw["OBS_VALUE"], errors="coerce")
     return df
+
+
+def tidy_file(csv_path, out_parquet, flow: str) -> tuple[int, list[str]]:
+    """`tidy` for a flow too big for memory: DuckDB streams the (gzipped) CSV into Parquet. Returns (rows, columns)."""
+    import duckdb
+
+    con = duckdb.connect()
+    con.execute("SET memory_limit='6GB'; SET preserve_insertion_order=false")
+    src = f"read_csv('{csv_path}', all_varchar=true, header=true)"
+    cols = [r[0] for r in con.execute(f"DESCRIBE SELECT * FROM {src}").fetchall()]
+    if "OBS_VALUE" not in cols:
+        raise CorpusError(f"sdmx: {flow} has no OBS_VALUE column; has the API changed?")
+    sel, names = [f"'{flow}' AS flow"], ["flow"]
+    for col in cols:
+        if col in ("DATAFLOW", "OBS_VALUE"):
+            continue
+        code, _, label = col.partition(": ")
+        name = snake(label or code)
+        q = '"' + col.replace('"', '""') + '"'
+        sel.append(f"nullif(split_part({q}, ': ', 1), '') AS {name}")
+        sel.append(
+            f"nullif(CASE WHEN strpos({q}, ': ') > 0 THEN substr({q}, strpos({q}, ': ') + 2) END, '') AS {name}_label"
+        )
+        names += [name, f"{name}_label"]
+    sel.append("try_cast(OBS_VALUE AS DOUBLE) AS value")
+    names.append("value")
+    con.execute(f"COPY (SELECT {', '.join(sel)} FROM {src}) TO '{out_parquet}' (FORMAT parquet, COMPRESSION zstd)")
+    return con.execute(f"SELECT count(*) FROM '{out_parquet}'").fetchone()[0], names

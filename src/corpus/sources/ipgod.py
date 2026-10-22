@@ -9,7 +9,13 @@ with its applicants and attorneys reduced to a few columns (repo where it fits):
 - `<right>_rights`: one row per application: status and key dates; the number of current applicants; the first current
   applicant's party id, name, type, country, state, postcode and ABN; whether any applicant is in Australia; whether an
   attorney or agent acts; the main classification (patents: the first current IPC mark's four-character class;
-  trade marks: the Nice classes, as a count and a list; designs: the Locarno class; PBR: the genus).
+  trade marks: the Nice classes, as a count and a list; designs: the Locarno class; PBR: the genus). Individuals'
+  names are left out of these (repo) tables; the `_party` tables (R2) have them as IP Australia publishes them.
+- `applicant_year`: applicant (ABN where IPGOD has one, else party id) by right by financial year: applications filed
+  and rights that became enforceable, counted and weighted as IPLORD does. Unlike IPLORD 2020, it covers patents, and
+  runs to early 2022.
+
+IPGOD's public party data has no inventors, only applicants, owners, agents and other parties.
 """
 
 from __future__ import annotations

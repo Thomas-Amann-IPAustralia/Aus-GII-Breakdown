@@ -280,3 +280,11 @@ def path(source: str, name: str) -> Path:
     """The local path of a processed table (downloading it from R2 if needed), for DuckDB or Polars."""
     f = read_manifest()["sources"][source]["files"][f"processed/{name}"]
     return ROOT / f["path"] if f["location"] == "repo" else r2_get(f["key"], CACHE / f["key"])
+
+
+def individual_abns() -> set[str]:
+    """ABNs the ABR records as individuals (sole traders), for leaving their names out of repo tables."""
+    import duckdb
+
+    abns = path("abr", "abns")
+    return {r[0] for r in duckdb.connect().execute(f"SELECT abn FROM '{abns}' WHERE entity_type = 'IND'").fetchall()}

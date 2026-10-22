@@ -694,6 +694,240 @@
    },
    "run": "2026-10-22"
   },
+  "abs_rd_vc": {
+   "files": {
+    "processed/cubes": {
+     "bytes": 39408,
+     "columns": [
+      "sheet",
+      "title",
+      "section",
+      "row",
+      "column",
+      "value",
+      "release",
+      "cube",
+      "period"
+     ],
+     "describe": "ABS R&D and venture capital cubes, long",
+     "location": "repo",
+     "path": "data/processed/abs_rd_vc/cubes.parquet",
+     "rows": 6564,
+     "sha256": "550c118a109a2f225398082f2ee195da7b71ec80abd595277d2e3df2ad37650b"
+    },
+    "raw/berd-81040DO001_202324.xlsx": {
+     "bytes": 27697,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/berd-81040DO001_202324.xlsx",
+     "sha256": "3bb49fff2df7f3537fd55e78c4f19f6f012e39aadc099ed9845ebec0eb170163",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-businesses-australia/2023-24/81040DO001_202324.xlsx"
+    },
+    "raw/berd-81040DO002_202324.xlsx": {
+     "bytes": 55801,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/berd-81040DO002_202324.xlsx",
+     "sha256": "904ab5f45675555f9aa12cd5790e05725191c8614d22e08843387e3673c40082",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-businesses-australia/2023-24/81040DO002_202324.xlsx"
+    },
+    "raw/berd-81040DO003_202324.xlsx": {
+     "bytes": 61948,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/berd-81040DO003_202324.xlsx",
+     "sha256": "30d6fae15d27f156f36be9e8c1044d59634aabd45c85e9e9d1a525d984dc330e",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-businesses-australia/2023-24/81040DO003_202324.xlsx"
+    },
+    "raw/berd-81040DO004_202324.xlsx": {
+     "bytes": 70599,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/berd-81040DO004_202324.xlsx",
+     "sha256": "34c20fdd1b6cfa2a80771877a7b4e2b0c3f1e9107889f09f32d846a51d549215",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-businesses-australia/2023-24/81040DO004_202324.xlsx"
+    },
+    "raw/berd-81040DO005_202324.xlsx": {
+     "bytes": 84637,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/berd-81040DO005_202324.xlsx",
+     "sha256": "e43c1723468329ed42fb658e610bf9003758b574d9f2492e5686ce66b84f4e3b",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-businesses-australia/2023-24/81040DO005_202324.xlsx"
+    },
+    "raw/berd-81040DO006_202324.xlsx": {
+     "bytes": 52852,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/berd-81040DO006_202324.xlsx",
+     "sha256": "e2f837d87d62ec25176966b89f88fd55629d5e833ee6cda5d54aa438a9faf43f",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-businesses-australia/2023-24/81040DO006_202324.xlsx"
+    },
+    "raw/berd-81040DO007_202324.xlsx": {
+     "bytes": 41276,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/berd-81040DO007_202324.xlsx",
+     "sha256": "4f47c600616130b744b1990b6c9250fa9baf5758791cb9c3309cefb2d364d6f9",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-businesses-australia/2023-24/81040DO007_202324.xlsx"
+    },
+    "raw/berd-81040DO008_202324.xlsx": {
+     "bytes": 38609,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/berd-81040DO008_202324.xlsx",
+     "sha256": "fd6d18ee682cb1a49fe5e3adaf60b8b32011cd160d6bc3fef7ed2796f36051ab",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-businesses-australia/2023-24/81040DO008_202324.xlsx"
+    },
+    "raw/berd-81040DO009_202324.xlsx": {
+     "bytes": 25382,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/berd-81040DO009_202324.xlsx",
+     "sha256": "151e6cb0fa7f105a49f3ca0ea7b42d778fa22468d137cecfa198b10788e6784b",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-businesses-australia/2023-24/81040DO009_202324.xlsx"
+    },
+    "raw/berd-81040DO010_202324.xlsx": {
+     "bytes": 63895,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/berd-81040DO010_202324.xlsx",
+     "sha256": "cc5385b63a4546d0742fc3eb194e03a41513d5555613651056eec811084825cc",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-businesses-australia/2023-24/81040DO010_202324.xlsx"
+    },
+    "raw/berd-81040DO011_202324.xlsx": {
+     "bytes": 111607,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/berd-81040DO011_202324.xlsx",
+     "sha256": "2a5858870757deaebcd6d15e288a66b4ed60a06b856708515d295efb3c92e7de",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-businesses-australia/2023-24/81040DO011_202324.xlsx"
+    },
+    "raw/berd-81040DO012_202324.xlsx": {
+     "bytes": 85502,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/berd-81040DO012_202324.xlsx",
+     "sha256": "5daaf7b8ef54a48677ad1b031de0fefe725659c2c9912185ed3a66cf7068ec98",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-businesses-australia/2023-24/81040DO012_202324.xlsx"
+    },
+    "raw/goverd_pnp-GPNPDC01_202425.xlsx": {
+     "bytes": 31485,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/goverd_pnp-GPNPDC01_202425.xlsx",
+     "sha256": "164fb56e7f5c389240676c1427e233ae59c992bcf6701a83314e2e9dc412794a",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-government-and-private-non-profit-organisations-australia/2024-25/GPNPDC01_202425.xlsx"
+    },
+    "raw/goverd_pnp-GPNPDC02_202425.xlsx": {
+     "bytes": 31454,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/goverd_pnp-GPNPDC02_202425.xlsx",
+     "sha256": "b0c8916e1070729ce64db3d609d30d51b74456edec8f4bc9d549ac1dff28d755",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-government-and-private-non-profit-organisations-australia/2024-25/GPNPDC02_202425.xlsx"
+    },
+    "raw/goverd_pnp-GPNPDC03_202425.xlsx": {
+     "bytes": 31174,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/goverd_pnp-GPNPDC03_202425.xlsx",
+     "sha256": "b1b4e5e625f51f533ce1fe59cb046a98be22bd15b411c43cc442c50b87367943",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-government-and-private-non-profit-organisations-australia/2024-25/GPNPDC03_202425.xlsx"
+    },
+    "raw/goverd_pnp-GPNPDC04_202425.xlsx": {
+     "bytes": 30075,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/goverd_pnp-GPNPDC04_202425.xlsx",
+     "sha256": "cc11632181d728295ff817f17eb6185168b596057112aa4108444a988ac2fe7d",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-government-and-private-non-profit-organisations-australia/2024-25/GPNPDC04_202425.xlsx"
+    },
+    "raw/goverd_pnp-GPNPDC05_202425.xlsx": {
+     "bytes": 30905,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/goverd_pnp-GPNPDC05_202425.xlsx",
+     "sha256": "cbb63ed39adbda3d647452083b1ed071144f8ac4ede08494c3570f94972a3cc8",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-government-and-private-non-profit-organisations-australia/2024-25/GPNPDC05_202425.xlsx"
+    },
+    "raw/goverd_pnp-GPNPDC06_202425.xlsx": {
+     "bytes": 30952,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/goverd_pnp-GPNPDC06_202425.xlsx",
+     "sha256": "7a49beba4a2d5dfaea4690ad38965f22ec3333dc36593ebd72ceb11e9336aac5",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-government-and-private-non-profit-organisations-australia/2024-25/GPNPDC06_202425.xlsx"
+    },
+    "raw/goverd_pnp-GPNPDC07_202425.xlsx": {
+     "bytes": 30875,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/goverd_pnp-GPNPDC07_202425.xlsx",
+     "sha256": "41516d69af5dbea29e67def3c3ae68eb280bc8ad6eab51a15120595ffabe6bd1",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-government-and-private-non-profit-organisations-australia/2024-25/GPNPDC07_202425.xlsx"
+    },
+    "raw/goverd_pnp-GPNPDC08_202425.xlsx": {
+     "bytes": 30010,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/goverd_pnp-GPNPDC08_202425.xlsx",
+     "sha256": "95678fada5042db75cacb47c351bd07cfb3e243a642182e13230822efbf824c4",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-government-and-private-non-profit-organisations-australia/2024-25/GPNPDC08_202425.xlsx"
+    },
+    "raw/goverd_pnp-GPNPDC09_202425.xlsx": {
+     "bytes": 29878,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/goverd_pnp-GPNPDC09_202425.xlsx",
+     "sha256": "84c0f9dee3434a2da4a647b33b39e676944af29854d349a89455ed323e0940d7",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-government-and-private-non-profit-organisations-australia/2024-25/GPNPDC09_202425.xlsx"
+    },
+    "raw/goverd_pnp-GPNPDC10_202425.xlsx": {
+     "bytes": 30080,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/goverd_pnp-GPNPDC10_202425.xlsx",
+     "sha256": "bdb3621d1954d0e9126fd8cd96b16beb446a4df52eb87a9ea252f9843b948412",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-government-and-private-non-profit-organisations-australia/2024-25/GPNPDC10_202425.xlsx"
+    },
+    "raw/herd-HERDDC01.xlsx": {
+     "bytes": 31822,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/herd-HERDDC01.xlsx",
+     "sha256": "41be1376c79030600505c8308ae568e627e2794ba34fd12edc478c018877809b",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-higher-education-organisations-australia/2024/HERDDC01.xlsx"
+    },
+    "raw/herd-HERDDC02.xlsx": {
+     "bytes": 31483,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/herd-HERDDC02.xlsx",
+     "sha256": "b1f9e7dd6bdde64413068d611d95ae70189f666da4e550d2f71676ad193eed06",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-higher-education-organisations-australia/2024/HERDDC02.xlsx"
+    },
+    "raw/herd-HERDDC03.xlsx": {
+     "bytes": 31593,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/herd-HERDDC03.xlsx",
+     "sha256": "8456d70b69926182d9d99b83c60d556911989851d0fb314cad915f00819214bc",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-higher-education-organisations-australia/2024/HERDDC03.xlsx"
+    },
+    "raw/herd-HERDDC04.xlsx": {
+     "bytes": 30174,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/herd-HERDDC04.xlsx",
+     "sha256": "8c80171350e9c4500be09a30ba0e838cceef4187c03b17835ee46861bb2023e3",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-higher-education-organisations-australia/2024/HERDDC04.xlsx"
+    },
+    "raw/herd-HERDDC05.xlsx": {
+     "bytes": 32242,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/herd-HERDDC05.xlsx",
+     "sha256": "d2f77b81276c198311f3fc13d1fd1246f471985d0cc530b2f10d66923e5c7215",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-higher-education-organisations-australia/2024/HERDDC05.xlsx"
+    },
+    "raw/herd-HERDDC06.xlsx": {
+     "bytes": 31948,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/herd-HERDDC06.xlsx",
+     "sha256": "d448194d35507e36355e345d98d148c0fd25f278d72271aac6ac087d3df65116",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-higher-education-organisations-australia/2024/HERDDC06.xlsx"
+    },
+    "raw/herd-HERDDC07.xlsx": {
+     "bytes": 30101,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/herd-HERDDC07.xlsx",
+     "sha256": "b9c83adddd88d3047da3d2e72765cb0c73a08a47dcfbc02dcbfcf1a02590d1f3",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/research-and-experimental-development-higher-education-organisations-australia/2024/HERDDC07.xlsx"
+    },
+    "raw/venture_capital-5678do001_201819.xls": {
+     "bytes": 287232,
+     "location": "repo",
+     "path": "data/raw/abs_rd_vc/venture_capital-5678do001_201819.xls",
+     "sha256": "04337888e41e36318df00f3bb5818160c801f0aac1f4535229dd2718ccca0e8a",
+     "url": "https://www.abs.gov.au/statistics/economy/finance/venture-capital-and-later-stage-private-equity-australia/2018-19/5678do001_201819.xls"
+    }
+   },
+   "run": "2026-10-22"
+  },
   "abs_regions": {
    "files": {
     "processed/mesh_blocks": {
@@ -957,6 +1191,49 @@
    },
    "run": "2026-10-22"
   },
+  "arc_grants": {
+   "files": {
+    "processed/grants": {
+     "bytes": 11401890,
+     "columns": [
+      "id",
+      "code",
+      "scheme_name",
+      "funding_commencement_year",
+      "scheme_information_schemeCode",
+      "scheme_information_program",
+      "scheme_information_submissionYear",
+      "scheme_information_roundNumber",
+      "scheme_information_schemeRound",
+      "current_admin_organisation",
+      "announcement_admin_organisation",
+      "grant_summary",
+      "lead_investigator",
+      "current_funding_amount",
+      "announced_funding_amount",
+      "grant_status",
+      "primary_field_of_research",
+      "anticipated_end_date",
+      "investigators",
+      "lief_register",
+      "national_interest_test_statement"
+     ],
+     "describe": "ARC grants, every attribute",
+     "location": "repo",
+     "path": "data/processed/arc_grants/grants.parquet",
+     "rows": 34977,
+     "sha256": "89fad1bcf8c4041f9cfb0c0f7d4e8bda00d940c0318f0eaf604174e757956de3"
+    },
+    "raw/grants.json.gz": {
+     "bytes": 15247576,
+     "location": "repo",
+     "path": "data/raw/arc_grants/grants.json.gz",
+     "sha256": "8bcc00ac69d6551a2461495e33732acd5ccb59a398630d7c2a754e1864d9b3fc",
+     "url": "https://dataportal.arc.gov.au/NCGP/API/grants"
+    }
+   },
+   "run": "2026-10-22"
+  },
   "asic": {
    "files": {
     "processed/companies": {
@@ -1125,6 +1402,208 @@
      "path": "data/raw/ato_ctt/2024-25.xlsx",
      "sha256": "7cccd963cd4aad31c305b21d33272d3d99ff9c36258641622a28cd0028d65c45",
      "url": "https://data.gov.au/data/dataset/c2524c87-cea4-4636-acac-599a82048a26/resource/15bf4eaa-7a14-48e9-8a3f-092df32a644e/download/2024-25-corporate-report-of-entity-tax-information.xlsx"
+    }
+   },
+   "run": "2026-10-22"
+  },
+  "cer": {
+   "files": {
+    "processed/installations": {
+     "bytes": 7738329,
+     "columns": [
+      "dataset",
+      "postcode",
+      "value",
+      "period",
+      "measure"
+     ],
+     "describe": "Small-scale installations by postcode",
+     "location": "repo",
+     "path": "data/processed/cer/installations.parquet",
+     "rows": 7051130,
+     "sha256": "5eca7d21b9840b7f3230ceb4788b8971efb09cfbeaba41e2d1d58309dd0a4718"
+    },
+    "raw/historical-voluntary-state-data-battery-installation-small-scale-systems-0.xlsx": {
+     "bytes": 12907,
+     "location": "repo",
+     "path": "data/raw/cer/historical-voluntary-state-data-battery-installation-small-scale-systems-0.xlsx",
+     "sha256": "420bf1d346c49fa3d6aa70f090d7990d1614f9a184a05b8ccfafcf0b57ed95d0",
+     "url": "https://cer.gov.au/document/historical-voluntary-state-data-battery-installation-small-scale-systems-0"
+    },
+    "raw/historical-voluntary-state-data-battery-installation-small-scale-systems.csv": {
+     "bytes": 726,
+     "location": "repo",
+     "path": "data/raw/cer/historical-voluntary-state-data-battery-installation-small-scale-systems.csv",
+     "sha256": "c8b7567e13d181e1e84e2e1b473b6bb3f451141164406459b7a5742a47faae7b",
+     "url": "https://cer.gov.au/document/historical-voluntary-state-data-battery-installation-small-scale-systems"
+    },
+    "raw/sgu-battery-capacity-2011-to-present-and-totals.csv": {
+     "bytes": 329948,
+     "location": "repo",
+     "path": "data/raw/cer/sgu-battery-capacity-2011-to-present-and-totals.csv",
+     "sha256": "6c862a8d9366bf46269e53ed7663088329d466365ec33e6495b32e4922ab25dd",
+     "url": "https://cer.gov.au/document/sgu-battery-capacity-2011-to-present-and-totals"
+    },
+    "raw/sgu-battery-installations-2011-to-present-and-totals.csv": {
+     "bytes": 112984,
+     "location": "repo",
+     "path": "data/raw/cer/sgu-battery-installations-2011-to-present-and-totals.csv",
+     "sha256": "df682ba619d31d5094072742507bd585183a3134c11e37809570ef255ed287a0",
+     "url": "https://cer.gov.au/document/sgu-battery-installations-2011-to-present-and-totals"
+    },
+    "raw/sgu-hydro-capacity-2001-to-2010.csv": {
+     "bytes": 1850,
+     "location": "repo",
+     "path": "data/raw/cer/sgu-hydro-capacity-2001-to-2010.csv",
+     "sha256": "683afb25beea09960fe7c1c1eb3797c0af275a2850a4bb292b7e3bb186741f47",
+     "url": "https://cer.gov.au/document/sgu-hydro-capacity-2001-to-2010"
+    },
+    "raw/sgu-hydro-capacity-2011-to-present-and-totals.csv": {
+     "bytes": 2115,
+     "location": "repo",
+     "path": "data/raw/cer/sgu-hydro-capacity-2011-to-present-and-totals.csv",
+     "sha256": "af7a4b8011fbc4beb999a7f12052823dcb58100324481408dd4f7cff88b201b7",
+     "url": "https://cer.gov.au/document/sgu-hydro-capacity-2011-to-present-and-totals"
+    },
+    "raw/sgu-hydro-installations-2001-to-2010.csv": {
+     "bytes": 970,
+     "location": "repo",
+     "path": "data/raw/cer/sgu-hydro-installations-2001-to-2010.csv",
+     "sha256": "e3d76378ede6cd040b4b29410f8c03d58719e8bc35171b8fbd0cb887c015a2cf",
+     "url": "https://cer.gov.au/document/sgu-hydro-installations-2001-to-2010"
+    },
+    "raw/sgu-hydro-installations-2011-to-present-and-totals.csv": {
+     "bytes": 1071,
+     "location": "repo",
+     "path": "data/raw/cer/sgu-hydro-installations-2011-to-present-and-totals.csv",
+     "sha256": "26975985db81cd8ea69a4f446abdfe9552ab7cebf61cbe03f524d691809f967d",
+     "url": "https://cer.gov.au/document/sgu-hydro-installations-2011-to-present-and-totals"
+    },
+    "raw/sgu-solar-capacity-2001-to-2010.csv": {
+     "bytes": 2005407,
+     "location": "repo",
+     "path": "data/raw/cer/sgu-solar-capacity-2001-to-2010.csv",
+     "sha256": "8aee6a245e79f87437f79aaefdd390b7db431cecede7a36d6055d12d68d7ff75",
+     "url": "https://cer.gov.au/document/sgu-solar-capacity-2001-to-2010"
+    },
+    "raw/sgu-solar-capacity-2011-to-present-and-totals.csv": {
+     "bytes": 3644059,
+     "location": "repo",
+     "path": "data/raw/cer/sgu-solar-capacity-2011-to-present-and-totals.csv",
+     "sha256": "494326b82b414f9c75a1b2ad4a60ec0b9aff635e01832faa2e896b702c826c0d",
+     "url": "https://cer.gov.au/document/sgu-solar-capacity-2011-to-present-and-totals"
+    },
+    "raw/sgu-solar-installations-2001-to-2010.csv": {
+     "bytes": 685667,
+     "location": "repo",
+     "path": "data/raw/cer/sgu-solar-installations-2001-to-2010.csv",
+     "sha256": "85046bebc4a8c19238f0e406a2fc20862e1a0922fc36814c189b5670b5e51dd2",
+     "url": "https://cer.gov.au/document/sgu-solar-installations-2001-to-2010"
+    },
+    "raw/sgu-solar-installations-2011-to-present-and-totals.csv": {
+     "bytes": 1236641,
+     "location": "repo",
+     "path": "data/raw/cer/sgu-solar-installations-2011-to-present-and-totals.csv",
+     "sha256": "18474fe10be68f5185a009ff7e7523553662c49d5dfcc65621fe15101aadf3f4",
+     "url": "https://cer.gov.au/document/sgu-solar-installations-2011-to-present-and-totals"
+    },
+    "raw/sgu-wind-capacity-2001-to-2010.csv": {
+     "bytes": 47791,
+     "location": "repo",
+     "path": "data/raw/cer/sgu-wind-capacity-2001-to-2010.csv",
+     "sha256": "232c0b20ae3b2a9b1be8b71b133ef8fbf060719f31e7ffbd874b152e30c48466",
+     "url": "https://cer.gov.au/document/sgu-wind-capacity-2001-to-2010"
+    },
+    "raw/sgu-wind-capacity-2011-to-present-and-totals.csv": {
+     "bytes": 77822,
+     "location": "repo",
+     "path": "data/raw/cer/sgu-wind-capacity-2011-to-present-and-totals.csv",
+     "sha256": "0f20a9c3a4883253f704f8ce45d36598630f4ed65637430389654a0d0fc6bff7",
+     "url": "https://cer.gov.au/document/sgu-wind-capacity-2011-to-present-and-totals"
+    },
+    "raw/sgu-wind-installations-2001-to-2010.csv": {
+     "bytes": 47452,
+     "location": "repo",
+     "path": "data/raw/cer/sgu-wind-installations-2001-to-2010.csv",
+     "sha256": "415301d496481197914ff4b3b6b1dfda50e93db938bd4bfb3a33f4653d6df725",
+     "url": "https://cer.gov.au/document/sgu-wind-installations-2001-to-2010"
+    },
+    "raw/sgu-wind-installations-2011-to-present-and-totals.csv": {
+     "bytes": 27980,
+     "location": "repo",
+     "path": "data/raw/cer/sgu-wind-installations-2011-to-present-and-totals.csv",
+     "sha256": "ffddbdc3ac1ae085f268aac47027bff772694b1256360a0e5a9758c5a40273cd",
+     "url": "https://cer.gov.au/document/sgu-wind-installations-2011-to-present-and-totals"
+    },
+    "raw/sres-postcode-data-capacity-2001-to-2010.xlsx": {
+     "bytes": 1310106,
+     "location": "repo",
+     "path": "data/raw/cer/sres-postcode-data-capacity-2001-to-2010.xlsx",
+     "sha256": "a9c7f998b50f7d8cc43dce241b2f5eb2bac04b34c30989668ebbd9588ed9797b",
+     "url": "https://cer.gov.au/document/sres-postcode-data-capacity-2001-to-2010"
+    },
+    "raw/sres-postcode-data-capacity-2011-to-present-and-totals.xlsx": {
+     "bytes": 3874015,
+     "location": "repo",
+     "path": "data/raw/cer/sres-postcode-data-capacity-2011-to-present-and-totals.xlsx",
+     "sha256": "c95c6c50e7e123284a8d07e712e9bcfca98bc01e0f9155644e215849c1e2b53f",
+     "url": "https://cer.gov.au/document/sres-postcode-data-capacity-2011-to-present-and-totals"
+    },
+    "raw/sres-postcode-data-installations-2001-to-2010.xlsx": {
+     "bytes": 3114421,
+     "location": "repo",
+     "path": "data/raw/cer/sres-postcode-data-installations-2001-to-2010.xlsx",
+     "sha256": "f8a956a01895364f45778635dd6b2cfb40532c27e687c1fdfbc8f28554550f23",
+     "url": "https://cer.gov.au/document/sres-postcode-data-installations-2001-to-2010"
+    },
+    "raw/sres-postcode-data-installations-2011-to-present-and-totals.xlsx": {
+     "bytes": 6458542,
+     "location": "repo",
+     "path": "data/raw/cer/sres-postcode-data-installations-2011-to-present-and-totals.xlsx",
+     "sha256": "d2217b9f4a4322c15da9435c9d6b1f9936396ac0fe98f7e956298092f9efb870",
+     "url": "https://cer.gov.au/document/sres-postcode-data-installations-2011-to-present-and-totals"
+    },
+    "raw/sres-postcode-data-small-scale-technology-certificates-2025-to-present-and-totals-0.xlsx": {
+     "bytes": 304741,
+     "location": "repo",
+     "path": "data/raw/cer/sres-postcode-data-small-scale-technology-certificates-2025-to-present-and-totals-0.xlsx",
+     "sha256": "87165e1aed53e4482b511277d1efaf9e50652c1e110812482cada2662bfb68cf",
+     "url": "https://cer.gov.au/document/sres-postcode-data-small-scale-technology-certificates-2025-to-present-and-totals-0"
+    },
+    "raw/sres-postcode-data-small-scale-technology-certificates-2025-to-present-and-totals.csv": {
+     "bytes": 241439,
+     "location": "repo",
+     "path": "data/raw/cer/sres-postcode-data-small-scale-technology-certificates-2025-to-present-and-totals.csv",
+     "sha256": "495766170b2d02a47bb4e428c32ef82d9c6a92a832678fee3c7b73924c88d05a",
+     "url": "https://cer.gov.au/document/sres-postcode-data-small-scale-technology-certificates-2025-to-present-and-totals"
+    },
+    "raw/swh-air-source-heat-pump-installations-2011-to-present-and-totals.csv": {
+     "bytes": 1053348,
+     "location": "repo",
+     "path": "data/raw/cer/swh-air-source-heat-pump-installations-2011-to-present-and-totals.csv",
+     "sha256": "0b0750029e995f323fb13b05c513039614c2e2ab6654ded465ab4247eb24b144",
+     "url": "https://cer.gov.au/document/swh-air-source-heat-pump-installations-2011-to-present-and-totals"
+    },
+    "raw/swh-air-source-installations-2001-to-2010.csv": {
+     "bytes": 392921,
+     "location": "repo",
+     "path": "data/raw/cer/swh-air-source-installations-2001-to-2010.csv",
+     "sha256": "c9138b9c29d36cc90527e804273f0da1a70cb0a0b9531ed5186b1b81474daacb",
+     "url": "https://cer.gov.au/document/swh-air-source-installations-2001-to-2010"
+    },
+    "raw/swh-solar-installations-2001-to-2010.csv": {
+     "bytes": 732839,
+     "location": "repo",
+     "path": "data/raw/cer/swh-solar-installations-2001-to-2010.csv",
+     "sha256": "aadc9d1bad715fc08ae884a159d80d6a539b0739c0ad59016787e64338b375b3",
+     "url": "https://cer.gov.au/document/swh-solar-installations-2001-to-2010"
+    },
+    "raw/swh-solar-installations-2011-to-present-and-totals.csv": {
+     "bytes": 1178636,
+     "location": "repo",
+     "path": "data/raw/cer/swh-solar-installations-2011-to-present-and-totals.csv",
+     "sha256": "7003be5bd3359def951e8fa59376550c214191a36de7e0b96a302707126d5f89",
+     "url": "https://cer.gov.au/document/swh-solar-installations-2011-to-present-and-totals"
     }
    },
    "run": "2026-10-22"
@@ -1340,6 +1819,45 @@
    },
    "run": "2026-10-22"
   },
+  "evidence": {
+   "files": {
+    "processed/register": {
+     "bytes": 13976,
+     "columns": [
+      "id",
+      "kind",
+      "authors",
+      "year",
+      "title",
+      "venue",
+      "url",
+      "why",
+      "questions",
+      "doi",
+      "crossref_title",
+      "crossref_year",
+      "crossref_venue",
+      "similarity",
+      "match"
+     ],
+     "describe": "Evidence register with Crossref checks",
+     "location": "repo",
+     "path": "data/processed/evidence/register.parquet",
+     "rows": 20,
+     "sha256": "a62a070aca1592ada0982244d6d2d367bc22e203e9584e9a23b31dac404d803f"
+    },
+    "raw/register.yaml": {
+     "bytes": 7929,
+     "location": "repo",
+     "path": "data/raw/evidence/register.yaml",
+     "sha256": "2c52fbf27f8667dba16dd49c9a47893c047f3e2ee126f11bcad6ecac86f331db"
+    }
+   },
+   "notes": [
+    "evidence: ouellette-2012 did not match Crossref well (0.67)"
+   ],
+   "run": "2026-10-22"
+  },
   "gii": {
    "files": {
     "processed/data": {
@@ -1414,6 +1932,80 @@
      "sha256": "8e8f9e9c1e21a4e84da706a5f48814530f6986ae6903bfdc6b7581ddd6137fc7"
     }
    },
+   "run": "2026-10-22"
+  },
+  "ipa_fees": {
+   "files": {
+    "processed/fees": {
+     "bytes": 9147,
+     "columns": [
+      "right",
+      "page",
+      "table",
+      "heading",
+      "row",
+      "column",
+      "value",
+      "amount_aud"
+     ],
+     "describe": "IP Australia fee tables, long",
+     "location": "repo",
+     "path": "data/processed/ipa_fees/fees.parquet",
+     "rows": 173,
+     "sha256": "cf619d89cbeb0efefa7fbd6fff15573ce03e153c67eac482ded1be983c3663fd"
+    },
+    "raw/design.html": {
+     "bytes": 573577,
+     "location": "repo",
+     "path": "data/raw/ipa_fees/design.html",
+     "sha256": "851c5383b439cfd8a54ff655f904e925811d941ab4feb56cbc4433fb8970778d"
+    },
+    "raw/fee_review_2023_24.html": {
+     "bytes": 578241,
+     "location": "repo",
+     "path": "data/raw/ipa_fees/fee_review_2023_24.html",
+     "sha256": "c92bc1051371fbc895bedb20d3cb7934c926baf6f69369d1e80bd9f7903e9e58"
+    },
+    "raw/oppositions.html": {
+     "bytes": 579709,
+     "location": "repo",
+     "path": "data/raw/ipa_fees/oppositions.html",
+     "sha256": "c988c6f6334e20a210fa15a024275722feddfa9b4a50c6fd1c5b6d2d10c65b34"
+    },
+    "raw/patent.html": {
+     "bytes": 581286,
+     "location": "repo",
+     "path": "data/raw/ipa_fees/patent.html",
+     "sha256": "2b392be7e40b8ed97dce953fb8661c4536b5e65b3b7cfc887b6fbca916dd1e98"
+    },
+    "raw/pbr_1.html": {
+     "bytes": 564695,
+     "location": "repo",
+     "path": "data/raw/ipa_fees/pbr_1.html",
+     "sha256": "e78c27d1b21aca764a5b08db572bd52f63eb70055efd916a1d2227168eeb9c33"
+    },
+    "raw/pbr_2.html": {
+     "bytes": 573087,
+     "location": "repo",
+     "path": "data/raw/ipa_fees/pbr_2.html",
+     "sha256": "ecd670413ba2d667b09d9a5e1ef4e7452ed0c05fb14dd501d260bcac4a9a76f0"
+    },
+    "raw/renewals.html": {
+     "bytes": 578349,
+     "location": "repo",
+     "path": "data/raw/ipa_fees/renewals.html",
+     "sha256": "97846c7419370c186798650233afbfa8af856ed6bda599377cab24b044812857"
+    },
+    "raw/trade_mark.html": {
+     "bytes": 578243,
+     "location": "repo",
+     "path": "data/raw/ipa_fees/trade_mark.html",
+     "sha256": "be4eb66d27a1161ddc9b35c13167fa0bd077d269cc4005cf0a9a9b3c40d9bcae"
+    }
+   },
+   "notes": [
+    "ipa_fees: no tables on https://www.ipaustralia.gov.au/about-us/accountability-and-reporting/fee-review-2023-24"
+   ],
    "run": "2026-10-22"
   },
   "ipgod": {
@@ -2214,6 +2806,519 @@
    },
    "run": "2026-10-22"
   },
+  "mwm": {
+   "files": {
+    "processed/data": {
+     "bytes": 34626,
+     "columns": [
+      "theme",
+      "indicator",
+      "table",
+      "caption",
+      "row",
+      "column",
+      "value_text",
+      "value"
+     ],
+     "describe": "Every table on the indicator pages, long",
+     "location": "repo",
+     "path": "data/processed/mwm/data.parquet",
+     "rows": 5343,
+     "sha256": "44197412e17db256b94cdc056a0aa9043b77827425900bc1f24b4805e3791fa3"
+    },
+    "processed/indicators": {
+     "bytes": 5733,
+     "columns": [
+      "theme",
+      "indicator",
+      "url",
+      "title"
+     ],
+     "describe": "Measuring What Matters indicator pages",
+     "location": "repo",
+     "path": "data/processed/mwm/indicators.parquet",
+     "rows": 50,
+     "sha256": "4d28fad78b7398358041b0a43e5e18955660113fffb8ee5898b2aae5be5f4221"
+    },
+    "raw/cohesive--aboriginal-and-torres-strait-islander-languages-spoken.html.gz": {
+     "bytes": 34997,
+     "location": "repo",
+     "path": "data/raw/mwm/cohesive--aboriginal-and-torres-strait-islander-languages-spoken.html.gz",
+     "sha256": "d94cbefbbe63fc6a31c82be4914d2e3baf7237183fe4eafcfd571d247680bb06"
+    },
+    "raw/cohesive--acceptance-diversity.html.gz": {
+     "bytes": 34724,
+     "location": "repo",
+     "path": "data/raw/mwm/cohesive--acceptance-diversity.html.gz",
+     "sha256": "903ec438f770dd5b27c81dab91115b0cc0d5c897fa0cd4ccfe9634b561face30"
+    },
+    "raw/cohesive--creative-and-cultural-engagement.html.gz": {
+     "bytes": 34470,
+     "location": "repo",
+     "path": "data/raw/mwm/cohesive--creative-and-cultural-engagement.html.gz",
+     "sha256": "e1e5884e341e99e35fc8320b35333fbd271d4b2099ef9f6443d5090a88aa0c58"
+    },
+    "raw/cohesive--experience-discrimination.html.gz": {
+     "bytes": 35504,
+     "location": "repo",
+     "path": "data/raw/mwm/cohesive--experience-discrimination.html.gz",
+     "sha256": "fd029b212027944831cf30a36400b1402555d297b65d2b5b08121a3a74fac281"
+    },
+    "raw/cohesive--representation-parliament.html.gz": {
+     "bytes": 34000,
+     "location": "repo",
+     "path": "data/raw/mwm/cohesive--representation-parliament.html.gz",
+     "sha256": "c1c2e52a546c75483c98488abc17f06fe23ce61d862cd81405e88b57bea5d971"
+    },
+    "raw/cohesive--sense-belonging.html.gz": {
+     "bytes": 35227,
+     "location": "repo",
+     "path": "data/raw/mwm/cohesive--sense-belonging.html.gz",
+     "sha256": "2b0a79828958337faadf20e8ec86f7057e9ae4a0cd3ebc59a4f42179d87f227f"
+    },
+    "raw/cohesive--social-connections.html.gz": {
+     "bytes": 35656,
+     "location": "repo",
+     "path": "data/raw/mwm/cohesive--social-connections.html.gz",
+     "sha256": "f371462cfabd9f8a77b2636b0dec302f6c78b27ef329a819e5f0716ad015d016"
+    },
+    "raw/cohesive--time-recreation-and-social-interaction.html.gz": {
+     "bytes": 34162,
+     "location": "repo",
+     "path": "data/raw/mwm/cohesive--time-recreation-and-social-interaction.html.gz",
+     "sha256": "22ea0c69a82afc1302d980bbf1a6ca6e555402d3c099f4cf1129db7f236ae46f"
+    },
+    "raw/cohesive--trust-australian-public-services.html.gz": {
+     "bytes": 33905,
+     "location": "repo",
+     "path": "data/raw/mwm/cohesive--trust-australian-public-services.html.gz",
+     "sha256": "0d98a971c6cf1dc903b1616d00f04d13f6d12b10de6bda612b4bf32563938402"
+    },
+    "raw/cohesive--trust-key-institutions.html.gz": {
+     "bytes": 34269,
+     "location": "repo",
+     "path": "data/raw/mwm/cohesive--trust-key-institutions.html.gz",
+     "sha256": "d9bce313ba5d19429542ff6583ab89fd4e21f1620f25a18de67c6fa94407eb0d"
+    },
+    "raw/cohesive--trust-national-government.html.gz": {
+     "bytes": 34308,
+     "location": "repo",
+     "path": "data/raw/mwm/cohesive--trust-national-government.html.gz",
+     "sha256": "ed367b468379a2ed83eb7ebcf0f7985b6f3074f78d0a28fe1bfdd34d2e0e2eb3"
+    },
+    "raw/cohesive--trust-others.html.gz": {
+     "bytes": 34331,
+     "location": "repo",
+     "path": "data/raw/mwm/cohesive--trust-others.html.gz",
+     "sha256": "f3b1686c909f72b98d7c6f9ba887180055ac6580272f16210f9d89897b846ff0"
+    },
+    "raw/healthy--access-care-and-support-services.html.gz": {
+     "bytes": 34377,
+     "location": "repo",
+     "path": "data/raw/mwm/healthy--access-care-and-support-services.html.gz",
+     "sha256": "74af42f0ef805464dcc8ff7d3591a5e505b21c4e5dcbd28a90f30772e1a09b34"
+    },
+    "raw/healthy--access-health-services.html.gz": {
+     "bytes": 34868,
+     "location": "repo",
+     "path": "data/raw/mwm/healthy--access-health-services.html.gz",
+     "sha256": "ff39a7f410e59f6719897dd87d951e5c22f4762afbf23710e1a453b4cf370ece"
+    },
+    "raw/healthy--life-expectancy.html.gz": {
+     "bytes": 37651,
+     "location": "repo",
+     "path": "data/raw/mwm/healthy--life-expectancy.html.gz",
+     "sha256": "d242e831892a2037029fabc2b2dafc074c897a788f83d869a7b127f417bef844"
+    },
+    "raw/healthy--mental-health.html.gz": {
+     "bytes": 35566,
+     "location": "repo",
+     "path": "data/raw/mwm/healthy--mental-health.html.gz",
+     "sha256": "bd11f580bc4316909f25152641d19afd09f444a2538fb6a4514be72beb4ed8cc"
+    },
+    "raw/healthy--prevalence-chronic-conditions.html.gz": {
+     "bytes": 34324,
+     "location": "repo",
+     "path": "data/raw/mwm/healthy--prevalence-chronic-conditions.html.gz",
+     "sha256": "87551cdf2100d5aa34c7faa095e54c48f620d37d44a8ae731c13c807f5607a43"
+    },
+    "raw/overall--overall-life-satisfaction.html.gz": {
+     "bytes": 34190,
+     "location": "repo",
+     "path": "data/raw/mwm/overall--overall-life-satisfaction.html.gz",
+     "sha256": "7c5c215fa69d1f56ffcd1207d8fdb4bb1299d756e51e42c69f730e9e0d08f541"
+    },
+    "raw/prosperous--broadening-access-work.html.gz": {
+     "bytes": 53393,
+     "location": "repo",
+     "path": "data/raw/mwm/prosperous--broadening-access-work.html.gz",
+     "sha256": "44d0cb272f29b5f3e3debbf6dcaa27f029f6b91eb1f26b2bacc4317625c69e78"
+    },
+    "raw/prosperous--childhood-development.html.gz": {
+     "bytes": 34372,
+     "location": "repo",
+     "path": "data/raw/mwm/prosperous--childhood-development.html.gz",
+     "sha256": "f997d32ca5081e306c06561a496f6cb3cae3dbea67a2b21def1dfa7fcf285661"
+    },
+    "raw/prosperous--digital-preparedness.html.gz": {
+     "bytes": 34802,
+     "location": "repo",
+     "path": "data/raw/mwm/prosperous--digital-preparedness.html.gz",
+     "sha256": "1cf1c46a60bce9f6c7584850417fc2d9a73e2c5e50588028708434de7a0864b0"
+    },
+    "raw/prosperous--education-attainment.html.gz": {
+     "bytes": 34735,
+     "location": "repo",
+     "path": "data/raw/mwm/prosperous--education-attainment.html.gz",
+     "sha256": "97e063305ea35a0d17639f4fa26fbd03f9b43367de520c7fd9152eba005624d6"
+    },
+    "raw/prosperous--household-income-and-wealth.html.gz": {
+     "bytes": 35638,
+     "location": "repo",
+     "path": "data/raw/mwm/prosperous--household-income-and-wealth.html.gz",
+     "sha256": "0d3d4c8f41c5e52e00ab40335fa5cf7ef0df0a0de09ebb306e744c95cb48a427"
+    },
+    "raw/prosperous--income-and-wealth-inequality.html.gz": {
+     "bytes": 35184,
+     "location": "repo",
+     "path": "data/raw/mwm/prosperous--income-and-wealth-inequality.html.gz",
+     "sha256": "59458d64917b3212d67c8216aa30afd919579193791c7b580c99770a5df4e3db"
+    },
+    "raw/prosperous--innovation.html.gz": {
+     "bytes": 35616,
+     "location": "repo",
+     "path": "data/raw/mwm/prosperous--innovation.html.gz",
+     "sha256": "fe3ea11f93dffa0ef1a52476b1b98ec6d014fff4fa26468778a13ce10c109244"
+    },
+    "raw/prosperous--job-opportunities.html.gz": {
+     "bytes": 52101,
+     "location": "repo",
+     "path": "data/raw/mwm/prosperous--job-opportunities.html.gz",
+     "sha256": "fc5b27cd0c3c56688e018a0308c5ed3966d63f19707bed60ed30be481b43b9ad"
+    },
+    "raw/prosperous--job-satisfaction.html.gz": {
+     "bytes": 34354,
+     "location": "repo",
+     "path": "data/raw/mwm/prosperous--job-satisfaction.html.gz",
+     "sha256": "7025c6aedd93eb598c13fdff346d0c05757ad4f9da64b7d3dd23f91765e41240"
+    },
+    "raw/prosperous--literacy-and-numeracy-skills-school.html.gz": {
+     "bytes": 35584,
+     "location": "repo",
+     "path": "data/raw/mwm/prosperous--literacy-and-numeracy-skills-school.html.gz",
+     "sha256": "4be53ca05098cc1227bb75c67cec8330af594330c4101798f1de23633a2d8a43"
+    },
+    "raw/prosperous--national-income-capita.html.gz": {
+     "bytes": 34449,
+     "location": "repo",
+     "path": "data/raw/mwm/prosperous--national-income-capita.html.gz",
+     "sha256": "46462dd2fccf10ea30425ab558e4923c086be6c3de4dddd143275c75aab5ad59"
+    },
+    "raw/prosperous--productivity.html.gz": {
+     "bytes": 34781,
+     "location": "repo",
+     "path": "data/raw/mwm/prosperous--productivity.html.gz",
+     "sha256": "ac7e8daac6e8018d01fc68b29c6cb7338bc3afee109316524cf6874ba69f5e73"
+    },
+    "raw/prosperous--secure-jobs.html.gz": {
+     "bytes": 39199,
+     "location": "repo",
+     "path": "data/raw/mwm/prosperous--secure-jobs.html.gz",
+     "sha256": "40e8d74a55a967250ef990bf911999d8b5b4b500fdb5415b06cc9a7aeced49f8"
+    },
+    "raw/prosperous--skills-development.html.gz": {
+     "bytes": 34835,
+     "location": "repo",
+     "path": "data/raw/mwm/prosperous--skills-development.html.gz",
+     "sha256": "ac2de8d0e0af2cc2a43f6025203ae4c6e98730c8c28df84b96bf99fc513e4186"
+    },
+    "raw/prosperous--wages.html.gz": {
+     "bytes": 35660,
+     "location": "repo",
+     "path": "data/raw/mwm/prosperous--wages.html.gz",
+     "sha256": "5d688894dcb7ed0765beb04ef06eb6410153c04fd8d4a640b580269ccae12d57"
+    },
+    "raw/secure--access-justice.html.gz": {
+     "bytes": 33760,
+     "location": "repo",
+     "path": "data/raw/mwm/secure--access-justice.html.gz",
+     "sha256": "0206c51c9c00f307cc875715e871e839f09131f517eae0d4cd1e1241a4682d6a"
+    },
+    "raw/secure--childhood-experience-abuse.html.gz": {
+     "bytes": 34350,
+     "location": "repo",
+     "path": "data/raw/mwm/secure--childhood-experience-abuse.html.gz",
+     "sha256": "fcd0a397a229296ceaab549ad0df6d7d08c95886a23fbf101aab34f408923901"
+    },
+    "raw/secure--experience-violence.html.gz": {
+     "bytes": 35626,
+     "location": "repo",
+     "path": "data/raw/mwm/secure--experience-violence.html.gz",
+     "sha256": "1263148ce557b9a0abfc3e9e471c4e2ef3700f1ff70c93507f2b712df17496c8"
+    },
+    "raw/secure--feeling-safety.html.gz": {
+     "bytes": 35110,
+     "location": "repo",
+     "path": "data/raw/mwm/secure--feeling-safety.html.gz",
+     "sha256": "9acef5c465add492c530d546fdd0a62017f8b9586262b4eba1fac91a4b92955a"
+    },
+    "raw/secure--homelessness.html.gz": {
+     "bytes": 34641,
+     "location": "repo",
+     "path": "data/raw/mwm/secure--homelessness.html.gz",
+     "sha256": "6f5ad1007dbb01ec5548a0d4488768995a5305f066d8954f62ebcc963b7ba179"
+    },
+    "raw/secure--housing-serviceability.html.gz": {
+     "bytes": 35103,
+     "location": "repo",
+     "path": "data/raw/mwm/secure--housing-serviceability.html.gz",
+     "sha256": "c07b887bda3442b78991b6d027b2eac7a6c4f01226fd45e7c8cb4c4f26ae60b6"
+    },
+    "raw/secure--making-ends-meet.html.gz": {
+     "bytes": 35333,
+     "location": "repo",
+     "path": "data/raw/mwm/secure--making-ends-meet.html.gz",
+     "sha256": "c740ea3516e38c3efc9daacd4353885a5c06760b4cc1d982e9696ee8eb97edc9"
+    },
+    "raw/secure--national-safety.html.gz": {
+     "bytes": 34185,
+     "location": "repo",
+     "path": "data/raw/mwm/secure--national-safety.html.gz",
+     "sha256": "deaab82ecbfa351d8bb7a2d3c59f951ea9bd745f406347d55a36c26d573d9306"
+    },
+    "raw/secure--online-safety.html.gz": {
+     "bytes": 34576,
+     "location": "repo",
+     "path": "data/raw/mwm/secure--online-safety.html.gz",
+     "sha256": "3d2a7e767fa080fb2375efd22141c569db56bb45de407637ee01b1242555c641"
+    },
+    "raw/sustainable--air-quality.html.gz": {
+     "bytes": 28139,
+     "location": "repo",
+     "path": "data/raw/mwm/sustainable--air-quality.html.gz",
+     "sha256": "49ace9e0d4c7402a6b5c91d5842d533e8665017b29b2c1a56992215793f1fa84"
+    },
+    "raw/sustainable--biological-diversity.html.gz": {
+     "bytes": 35371,
+     "location": "repo",
+     "path": "data/raw/mwm/sustainable--biological-diversity.html.gz",
+     "sha256": "836e13460236abc6812c180aa5169e49dcff1373994a55419e07fb2dc9bb0860"
+    },
+    "raw/sustainable--circular-economy.html.gz": {
+     "bytes": 36135,
+     "location": "repo",
+     "path": "data/raw/mwm/sustainable--circular-economy.html.gz",
+     "sha256": "8c824bef5daa2ae55614db0b81d003e5d9d8d635853ef1903d9832403678a330"
+    },
+    "raw/sustainable--climate-resilience.html.gz": {
+     "bytes": 34554,
+     "location": "repo",
+     "path": "data/raw/mwm/sustainable--climate-resilience.html.gz",
+     "sha256": "5f50cde6d34ceb48c5daa70b28584166e8c2157624824c58abf597f2bc84f438"
+    },
+    "raw/sustainable--economic-resilience.html.gz": {
+     "bytes": 33785,
+     "location": "repo",
+     "path": "data/raw/mwm/sustainable--economic-resilience.html.gz",
+     "sha256": "3355daaa9802059e98f0a58ddc507d387958053f7a9e73df562316a3a80f1bb7"
+    },
+    "raw/sustainable--emissions-reduction.html.gz": {
+     "bytes": 35386,
+     "location": "repo",
+     "path": "data/raw/mwm/sustainable--emissions-reduction.html.gz",
+     "sha256": "d4966c485238809351b789401e924204e9639f9f9b6b461fddcf588b864d3f17"
+    },
+    "raw/sustainable--fiscal-sustainability.html.gz": {
+     "bytes": 33647,
+     "location": "repo",
+     "path": "data/raw/mwm/sustainable--fiscal-sustainability.html.gz",
+     "sha256": "6d58b7bca8b3928c5dc2cceac9df22df0b83607429d5cf57f798b09895e02053"
+    },
+    "raw/sustainable--protected-areas.html.gz": {
+     "bytes": 34044,
+     "location": "repo",
+     "path": "data/raw/mwm/sustainable--protected-areas.html.gz",
+     "sha256": "e16be2c683978182db8bb8544343de46856154f36ce9ed9d558f9103ad2e3923"
+    }
+   },
+   "notes": [
+    "mwm: no tables on air-quality"
+   ],
+   "run": "2026-10-22"
+  },
+  "pbs": {
+   "files": {
+    "processed/item_drug_map": {
+     "bytes": 155155,
+     "columns": [
+      "item_code",
+      "drug_name",
+      "form_strength",
+      "atc5_code"
+     ],
+     "describe": "PBS item code to drug, form and strength, ATC",
+     "location": "repo",
+     "path": "data/processed/pbs/item_drug_map.parquet",
+     "rows": 12187,
+     "sha256": "b0552009d42b3356dc5cbd3a05e7e4f4a11ecfabc8af90d61659f5588e5b86cd"
+    },
+    "processed/item_month": {
+     "bytes": 5262149,
+     "columns": [
+      "month",
+      "item_code",
+      "prescriptions",
+      "patient_contribution",
+      "government_contribution",
+      "total_cost"
+     ],
+     "describe": "Prescriptions and costs by PBS item and month",
+     "location": "repo",
+     "path": "data/processed/pbs/item_month.parquet",
+     "rows": 279371,
+     "sha256": "43e06605dac8f3e4e0b3db2438c865a7e332b71782238e7ca127d6a5e8ea8020"
+    },
+    "processed/supply": {
+     "bytes": 38803639,
+     "columns": [
+      "MONTH_OF_SUPPLY",
+      "ITEM_CODE",
+      "DRUG_TYPE",
+      "PATIENT_CAT",
+      "PHRMCY_TYPE",
+      "SCRIPT_TYPE",
+      "PRESCRIPTIONS",
+      "PATIENT_CONTRIB",
+      "GOVT_CONTRIB",
+      "TOTAL_COST",
+      "RETAIL_MARKUP",
+      "PATIENT_NET_CONTRIB"
+     ],
+     "describe": "Every date-of-supply row, July 2020 on",
+     "key": "processed/pbs/supply.parquet",
+     "location": "r2",
+     "rows": 2146679,
+     "sha256": "3d5216cbac12fc2b4e6fcf9888067730b7c1766979a4b8f35997e2ebc5f3ee0f"
+    },
+    "raw/dop-ytd-jan-2018.zip": {
+     "bytes": 2153179,
+     "key": "raw/pbs/dop-ytd-jan-2018.zip",
+     "location": "r2",
+     "sha256": "92dc747c07750dcad435ab32e16e9eedc032e6955b5b7d1d2a4300364ff22d2a",
+     "url": "https://www.pbs.gov.au/statistics/dos-and-dop/files/dop-ytd-jan-2018.zip"
+    },
+    "raw/dos-jul-2020-to-jun-2021-phrmcy-type.csv": {
+     "bytes": 29359211,
+     "key": "raw/pbs/dos-jul-2020-to-jun-2021-phrmcy-type.csv",
+     "location": "r2",
+     "sha256": "69ca7b07d3c029b25b5d5d725a9a7f3feec0b2d192f2bfba0917fc669a0ede77",
+     "url": "https://www.pbs.gov.au/statistics/dos-and-dop/files/dos-jul-2020-to-jun-2021-phrmcy-type.csv"
+    },
+    "raw/dos-jul-2021-to-jun-2022-phrmcy-type.csv": {
+     "bytes": 30271123,
+     "key": "raw/pbs/dos-jul-2021-to-jun-2022-phrmcy-type.csv",
+     "location": "r2",
+     "sha256": "a897fb6fa11aff517d1f7ea60df5f17aa13de974428457eaa9079c95055ceded",
+     "url": "https://www.pbs.gov.au/statistics/dos-and-dop/files/dos-jul-2021-to-jun-2022-phrmcy-type.csv"
+    },
+    "raw/dos-jul-2022-to-jul-2026.xlsx": {
+     "bytes": 98706319,
+     "key": "raw/pbs/dos-jul-2022-to-jul-2026.xlsx",
+     "location": "r2",
+     "sha256": "506606110c700055da151d7e4dc6ec80d00bc062e09393e2fadd64d19aabf891",
+     "url": "https://www.pbs.gov.au/statistics/dos-and-dop/files/dos-jul-2022-to-jul-2026.xlsx"
+    },
+    "raw/dos-jul-2022-to-jun-2023-phrmcy-type.csv": {
+     "bytes": 31112576,
+     "key": "raw/pbs/dos-jul-2022-to-jun-2023-phrmcy-type.csv",
+     "location": "r2",
+     "sha256": "9959565d10073ba54c0006798ae877f40b825511637535f92377369bd04675ff",
+     "url": "https://www.pbs.gov.au/statistics/dos-and-dop/files/dos-jul-2022-to-jun-2023-phrmcy-type.csv"
+    },
+    "raw/dos-jul-2023-to-jun-2024-phrmcy-type.csv": {
+     "bytes": 32713376,
+     "key": "raw/pbs/dos-jul-2023-to-jun-2024-phrmcy-type.csv",
+     "location": "r2",
+     "sha256": "debea6c4c2d37053dd575e73157713a85565172e6290802fc5529d428e99bbf1",
+     "url": "https://www.pbs.gov.au/statistics/dos-and-dop/files/dos-jul-2023-to-jun-2024-phrmcy-type.csv"
+    },
+    "raw/dos-jul-2024-to-jun-2025-phrmcy-type.csv": {
+     "bytes": 35384567,
+     "key": "raw/pbs/dos-jul-2024-to-jun-2025-phrmcy-type.csv",
+     "location": "r2",
+     "sha256": "4a961d1d128e3aa9449a1d3a38c27f1b742d1c13dc07d12553134e04e701a6a4",
+     "url": "https://www.pbs.gov.au/statistics/dos-and-dop/files/dos-jul-2024-to-jun-2025-phrmcy-type.csv"
+    },
+    "raw/dos-jul-2025-to-jun-2026-phrmcy-type.csv": {
+     "bytes": 36398673,
+     "key": "raw/pbs/dos-jul-2025-to-jun-2026-phrmcy-type.csv",
+     "location": "r2",
+     "sha256": "4e2b88f506dd121816365c6513456e295fd4329754d67909f6a67681f4b9f282",
+     "url": "https://www.pbs.gov.au/statistics/dos-and-dop/files/dos-jul-2025-to-jun-2026-phrmcy-type.csv"
+    },
+    "raw/pbs-item-drug-map.csv": {
+     "bytes": 1065856,
+     "location": "repo",
+     "path": "data/raw/pbs/pbs-item-drug-map.csv",
+     "sha256": "c75a7f1e4db3547fcef0763f0332d0c3669a14efe6a5adb1b24a631728a321ea",
+     "url": "https://www.pbs.gov.au/statistics/dos-and-dop/files/pbs-item-drug-map.csv"
+    }
+   },
+   "run": "2026-10-22"
+  },
+  "policy_events": {
+   "files": {
+    "processed/events": {
+     "bytes": 6071,
+     "columns": [
+      "id",
+      "date",
+      "rights",
+      "lever",
+      "event",
+      "source",
+      "verify"
+     ],
+     "describe": "Dated changes to the IP system, compiled",
+     "location": "repo",
+     "path": "data/processed/policy_events/events.parquet",
+     "rows": 13,
+     "sha256": "08d1b30cb5b766b806b130d025334639f3b3ea932dfdb6b13dd23b225ca254a0"
+    },
+    "processed/policy_register": {
+     "bytes": 72513,
+     "columns": [
+      "policy_id",
+      "title",
+      "status",
+      "priority",
+      "tags",
+      "issue_summary",
+      "comments",
+      "url"
+     ],
+     "describe": "IP Australia's IP policy register",
+     "location": "repo",
+     "path": "data/processed/policy_events/policy_register.parquet",
+     "rows": 155,
+     "sha256": "ad9dea061f39511b27e5db6d5345dac8fe6fcbdfbcd95a9424a907bad1e3060e"
+    },
+    "raw/events.yaml": {
+     "bytes": 3824,
+     "location": "repo",
+     "path": "data/raw/policy_events/events.yaml",
+     "sha256": "4937bd53a763cbde517b3a80ca1afd69a2c4fd36a068684bc31a235ec1202e15"
+    },
+    "raw/policy-register-pages.html.gz": {
+     "bytes": 13789546,
+     "location": "repo",
+     "path": "data/raw/policy_events/policy-register-pages.html.gz",
+     "sha256": "7f9c20a35a537bdd828b6b65487edfd0c6b61f793daa5a3e84cd962759cbdd7e",
+     "url": "https://www.ipaustralia.gov.au/sitemap.xml"
+    }
+   },
+   "run": "2026-10-22"
+  },
   "rdti": {
    "files": {
     "processed/entities": {
@@ -2258,6 +3363,382 @@
    },
    "run": "2026-10-22"
   },
+  "tmlink": {
+   "files": {
+    "processed/application": {
+     "bytes": 56503980,
+     "columns": [
+      "ip_office",
+      "application_number",
+      "trade_mark_type",
+      "status",
+      "application_date",
+      "priority_date",
+      "registration_date"
+     ],
+     "describe": "TM-Link application, as published",
+     "key": "processed/tmlink/application.parquet",
+     "location": "r2",
+     "rows": 17366599,
+     "sha256": "f07bdbd510ba2ceaa89bfacc2fc46f48305708975e918297f00bc9f10d8998ea"
+    },
+    "processed/classification": {
+     "bytes": 39000639,
+     "columns": [
+      "ip_office",
+      "application_number",
+      "nice_class_1",
+      "nice_class_2",
+      "nice_class_3",
+      "nice_class_4",
+      "nice_class_5",
+      "nice_class_6",
+      "nice_class_7",
+      "nice_class_8",
+      "nice_class_9",
+      "nice_class_10",
+      "nice_class_11",
+      "nice_class_12",
+      "nice_class_13",
+      "nice_class_14",
+      "nice_class_15",
+      "nice_class_16",
+      "nice_class_17",
+      "nice_class_18",
+      "nice_class_19",
+      "nice_class_20",
+      "nice_class_21",
+      "nice_class_22",
+      "nice_class_23",
+      "nice_class_24",
+      "nice_class_25",
+      "nice_class_26",
+      "nice_class_27",
+      "nice_class_28",
+      "nice_class_29",
+      "nice_class_30",
+      "nice_class_31",
+      "nice_class_32",
+      "nice_class_33",
+      "nice_class_34",
+      "nice_class_35",
+      "nice_class_36",
+      "nice_class_37",
+      "nice_class_38",
+      "nice_class_39",
+      "nice_class_40",
+      "nice_class_41",
+      "nice_class_42",
+      "nice_class_43",
+      "nice_class_44",
+      "nice_class_45"
+     ],
+     "describe": "TM-Link classification, as published",
+     "key": "processed/tmlink/classification.parquet",
+     "location": "r2",
+     "rows": 14829000,
+     "sha256": "dacd6a78cafdb3a2d73275417b7cff1966b61acb5c88237e72bf89679a3e8302"
+    },
+    "processed/madrid": {
+     "bytes": 2701331,
+     "columns": [
+      "ip_office",
+      "application_number",
+      "link_type",
+      "ir_number"
+     ],
+     "describe": "TM-Link madrid, as published",
+     "key": "processed/tmlink/madrid.parquet",
+     "location": "r2",
+     "rows": 690919,
+     "sha256": "e8135f49b6474266459377c36b1cefc90f06db8921114e3eb0d31e23aeada60c"
+    },
+    "processed/owner": {
+     "bytes": 170178248,
+     "columns": [
+      "ip_office",
+      "application_number",
+      "owner_type",
+      "ip_office_owner_identifier",
+      "owner_country_code",
+      "owner_name"
+     ],
+     "describe": "TM-Link owner, as published",
+     "key": "processed/tmlink/owner.parquet",
+     "location": "r2",
+     "rows": 18698857,
+     "sha256": "2421728a4dcc8038f3c3ab56474586f9ccfe2cc4a7e85374a7a06b6615b01c56"
+    },
+    "processed/property": {
+     "bytes": 31229939,
+     "columns": [
+      "ip_office",
+      "application_number",
+      "property_type"
+     ],
+     "describe": "TM-Link property, as published",
+     "key": "processed/tmlink/property.parquet",
+     "location": "r2",
+     "rows": 16767243,
+     "sha256": "bb187a99f9c1ecd3b47781e059820d3f9082626a0e94e8419edb65c84d648178"
+    },
+    "processed/tm_link": {
+     "bytes": 72798247,
+     "columns": [
+      "ip_office",
+      "application_number",
+      "uid_trademark",
+      "uid_trademark_similar_owners"
+     ],
+     "describe": "TM-Link tm-link, as published",
+     "key": "processed/tmlink/tm_link.parquet",
+     "location": "r2",
+     "rows": 10651467,
+     "sha256": "8e7154e7c37822f3d0e05a5d67a2b7dea61da97f1490574c21377899a1d78a02"
+    },
+    "raw/application.csv": {
+     "bytes": 1235408729,
+     "key": "raw/tmlink/application.csv",
+     "location": "r2",
+     "sha256": "60f39b5c354426f95c0bc08a9fa3b5874d48bceb30a0edbd05c22127dc6a0892",
+     "url": "https://data.gov.au/data/dataset/0bf3a4fc-6a07-4133-ac39-a2cacab86c7a/resource/ffd48d42-9d9a-4cf1-8bf7-76af13909a8d/download/application.csv"
+    },
+    "raw/classification.csv": {
+     "bytes": 1534407171,
+     "key": "raw/tmlink/classification.csv",
+     "location": "r2",
+     "sha256": "25247e56ac9f22045a56af4b35a77bf7e6555ba9b328f57a7ca8c1cbcb1fb674",
+     "url": "https://data.gov.au/data/dataset/0bf3a4fc-6a07-4133-ac39-a2cacab86c7a/resource/06ef1b02-2acd-43e4-b51c-6f26463dd048/download/classification.csv"
+    },
+    "raw/madrid.csv": {
+     "bytes": 24978728,
+     "key": "raw/tmlink/madrid.csv",
+     "location": "r2",
+     "sha256": "d1b38413f0dc756aa84878df6cd58c007c5d26374dd973212c65d811782424f2",
+     "url": "https://data.gov.au/data/dataset/0bf3a4fc-6a07-4133-ac39-a2cacab86c7a/resource/8acdd28c-646c-4f5c-af10-1a09a6e4117e/download/madrid.csv"
+    },
+    "raw/owner.csv": {
+     "bytes": 801899603,
+     "key": "raw/tmlink/owner.csv",
+     "location": "r2",
+     "sha256": "3cc25114b5a5011c8a547708c4b6ba0ded6e833ceaed97bebb7b41232e5971eb",
+     "url": "https://data.gov.au/data/dataset/0bf3a4fc-6a07-4133-ac39-a2cacab86c7a/resource/95b5ad07-4049-490d-8a71-0a1177e24c13/download/owner.csv"
+    },
+    "raw/property.csv": {
+     "bytes": 394684372,
+     "key": "raw/tmlink/property.csv",
+     "location": "r2",
+     "sha256": "70910d5fe30b44bf6d97f9f945ccb316d83fbe360b27ebd15f16f199ff5c0a1f",
+     "url": "https://data.gov.au/data/dataset/0bf3a4fc-6a07-4133-ac39-a2cacab86c7a/resource/3cca231b-bd0e-4553-94eb-5c94bd83b9af/download/property.csv"
+    },
+    "raw/tm-link.csv": {
+     "bytes": 301798419,
+     "key": "raw/tmlink/tm-link.csv",
+     "location": "r2",
+     "sha256": "76d1e84667e3b40a00c70a6c9b0fb40d111bc3e005bdf0a16730e46ecf2f98b4",
+     "url": "https://data.gov.au/data/dataset/0bf3a4fc-6a07-4133-ac39-a2cacab86c7a/resource/0461e2c1-4631-420b-985d-84b84320a375/download/tm-link.csv"
+    }
+   },
+   "notes": [
+    "tmlink: description and image-text tables left out (free text, not needed)"
+   ],
+   "run": "2026-10-22"
+  },
+  "wdi": {
+   "files": {
+    "processed/countries": {
+     "bytes": 7218,
+     "columns": [
+      "iso3",
+      "name",
+      "region",
+      "income",
+      "aggregate"
+     ],
+     "describe": "WDI countries and aggregates",
+     "location": "repo",
+     "path": "data/processed/wdi/countries.parquet",
+     "rows": 296,
+     "sha256": "81d344a9f4e893c051dbcef4ffdad8eba147caf9ff1c342586979e3b11f5d20e"
+    },
+    "processed/panel": {
+     "bytes": 1058370,
+     "columns": [
+      "iso3",
+      "country",
+      "indicator",
+      "indicator_name",
+      "year",
+      "value"
+     ],
+     "describe": "WDI indicators bearing on IP, every country and year",
+     "location": "repo",
+     "path": "data/processed/wdi/panel.parquet",
+     "rows": 136371,
+     "sha256": "6ede81739fb72f24e0b05fe1608ffa4db7a3ed526729b088417c0011acbfad6b"
+    },
+    "raw/BM.GSR.ROYL.CD.json.gz": {
+     "bytes": 141565,
+     "location": "repo",
+     "path": "data/raw/wdi/BM.GSR.ROYL.CD.json.gz",
+     "sha256": "b9a4bbdf8fc3cfd9a0007b5130a97e9a9b07f7f4bcce157b4db50c41f8e48b32",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/BM.GSR.ROYL.CD"
+    },
+    "raw/BX.GSR.ROYL.CD.json.gz": {
+     "bytes": 130600,
+     "location": "repo",
+     "path": "data/raw/wdi/BX.GSR.ROYL.CD.json.gz",
+     "sha256": "6d57231fe0d674744ac27e1a4bdabfcb3c914ba77db9cb368250afb95d018c85",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/BX.GSR.ROYL.CD"
+    },
+    "raw/BX.KLT.DINV.WD.GD.ZS.json.gz": {
+     "bytes": 190202,
+     "location": "repo",
+     "path": "data/raw/wdi/BX.KLT.DINV.WD.GD.ZS.json.gz",
+     "sha256": "81b79ace409e9eb169cbccc04e37e1cc056beaeb4b3fe06640888951dc98f406",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/BX.KLT.DINV.WD.GD.ZS"
+    },
+    "raw/GB.XPD.RSDV.GD.ZS.json.gz": {
+     "bytes": 80335,
+     "location": "repo",
+     "path": "data/raw/wdi/GB.XPD.RSDV.GD.ZS.json.gz",
+     "sha256": "80caf869c3ab4b3fdd8efd7fcf311eb923a3b9834545c29e76435298c3bd3195",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/GB.XPD.RSDV.GD.ZS"
+    },
+    "raw/IC.BUS.NDNS.ZS.json.gz": {
+     "bytes": 108602,
+     "location": "repo",
+     "path": "data/raw/wdi/IC.BUS.NDNS.ZS.json.gz",
+     "sha256": "2f0f787f3b4039688b84a026ce01b65837091d3d566ec6dd4066696eeb3ecbff",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/IC.BUS.NDNS.ZS"
+    },
+    "raw/IC.BUS.NREG.json.gz": {
+     "bytes": 69714,
+     "location": "repo",
+     "path": "data/raw/wdi/IC.BUS.NREG.json.gz",
+     "sha256": "1d5ccc167aedab485d131b34cfa1553afda8ebe7f92b008ac109b85a141322aa",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/IC.BUS.NREG"
+    },
+    "raw/IP.IDS.NRCT.json.gz": {
+     "bytes": 72041,
+     "location": "repo",
+     "path": "data/raw/wdi/IP.IDS.NRCT.json.gz",
+     "sha256": "c1cb1ec476fdba4aa2a0799941c5dad8c2aa8fc0275827ee687059e154a1fc13",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/IP.IDS.NRCT"
+    },
+    "raw/IP.IDS.RSCT.json.gz": {
+     "bytes": 71544,
+     "location": "repo",
+     "path": "data/raw/wdi/IP.IDS.RSCT.json.gz",
+     "sha256": "ee07010430f3b2b29ee782d4808ad3278279a46151b1a5ba6856efbc70cac8a7",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/IP.IDS.RSCT"
+    },
+    "raw/IP.JRN.ARTC.SC.json.gz": {
+     "bytes": 99386,
+     "location": "repo",
+     "path": "data/raw/wdi/IP.JRN.ARTC.SC.json.gz",
+     "sha256": "b696ee32a95310135a4c870d014d39ae59bfdad752a370708bf45f73bf76ed34",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/IP.JRN.ARTC.SC"
+    },
+    "raw/IP.PAT.NRES.json.gz": {
+     "bytes": 75974,
+     "location": "repo",
+     "path": "data/raw/wdi/IP.PAT.NRES.json.gz",
+     "sha256": "a83e93a4b7196a7e24d012de760330f49759a0cf4a0b1db4489aed9fe91ead9c",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/IP.PAT.NRES"
+    },
+    "raw/IP.PAT.RESD.json.gz": {
+     "bytes": 74859,
+     "location": "repo",
+     "path": "data/raw/wdi/IP.PAT.RESD.json.gz",
+     "sha256": "faa7cf988fa88fbf2e77f7abb678de4a4819ebff8e969ac5e59c4e6c1db86c50",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/IP.PAT.RESD"
+    },
+    "raw/NE.EXP.GNFS.ZS.json.gz": {
+     "bytes": 180183,
+     "location": "repo",
+     "path": "data/raw/wdi/NE.EXP.GNFS.ZS.json.gz",
+     "sha256": "8a8edb475609170213870a8e9a25ea4d203fb80d7edf8def71de539f780a3d36",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/NE.EXP.GNFS.ZS"
+    },
+    "raw/NV.IND.MANF.ZS.json.gz": {
+     "bytes": 164195,
+     "location": "repo",
+     "path": "data/raw/wdi/NV.IND.MANF.ZS.json.gz",
+     "sha256": "a424c7ebe96fb0c9a978d7f29ce84177239705138dc93f90376e8ddb639fdde8",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/NV.IND.MANF.ZS"
+    },
+    "raw/NY.GDP.MKTP.PP.KD.json.gz": {
+     "bytes": 156243,
+     "location": "repo",
+     "path": "data/raw/wdi/NY.GDP.MKTP.PP.KD.json.gz",
+     "sha256": "1b52f443c884608303fa833316b2724cf18f17250cd2c32024b2d7f66d98f69c",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.MKTP.PP.KD"
+    },
+    "raw/NY.GDP.PCAP.PP.KD.json.gz": {
+     "bytes": 156947,
+     "location": "repo",
+     "path": "data/raw/wdi/NY.GDP.PCAP.PP.KD.json.gz",
+     "sha256": "c1746ffe85ac306ccadf4456da344581bb36ae0f984d884a52e7a3064772e604",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.PP.KD"
+    },
+    "raw/SE.TER.ENRR.json.gz": {
+     "bytes": 139726,
+     "location": "repo",
+     "path": "data/raw/wdi/SE.TER.ENRR.json.gz",
+     "sha256": "d8248afd06719296c07fd70b8ada5423e4c64c7ca31c828e5a5a8f948c31314d",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/SE.TER.ENRR"
+    },
+    "raw/SL.TLF.ADVN.ZS.json.gz": {
+     "bytes": 86692,
+     "location": "repo",
+     "path": "data/raw/wdi/SL.TLF.ADVN.ZS.json.gz",
+     "sha256": "b5f8d3b1882ed9c6262a94a6ad4e26dc2731593c85170073d43159d4905f3c44",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/SL.TLF.ADVN.ZS"
+    },
+    "raw/SP.POP.SCIE.RD.P6.json.gz": {
+     "bytes": 78690,
+     "location": "repo",
+     "path": "data/raw/wdi/SP.POP.SCIE.RD.P6.json.gz",
+     "sha256": "1ee82ddf9399218aa6febc0cf550f57d30f124fbb891d01a6d9b3534b9b3f4c6",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/SP.POP.SCIE.RD.P6"
+    },
+    "raw/SP.POP.TECH.RD.P6.json.gz": {
+     "bytes": 67485,
+     "location": "repo",
+     "path": "data/raw/wdi/SP.POP.TECH.RD.P6.json.gz",
+     "sha256": "33dea711caa0b26f312be47bbd1ace5a2028d0b964d822a7ab67c2145055c4c0",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/SP.POP.TECH.RD.P6"
+    },
+    "raw/SP.POP.TOTL.json.gz": {
+     "bytes": 152284,
+     "location": "repo",
+     "path": "data/raw/wdi/SP.POP.TOTL.json.gz",
+     "sha256": "9b8f2c10c595419528dd7edf7f5ed4a32c3e612bae4d23ab7d900caa27dfabe4",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL"
+    },
+    "raw/TX.VAL.TECH.CD.json.gz": {
+     "bytes": 81344,
+     "location": "repo",
+     "path": "data/raw/wdi/TX.VAL.TECH.CD.json.gz",
+     "sha256": "481ffd2b96c879e3c4609d2c249ac2c9cd41ba8b997397618a7114f18c88da92",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/TX.VAL.TECH.CD"
+    },
+    "raw/TX.VAL.TECH.MF.ZS.json.gz": {
+     "bytes": 99294,
+     "location": "repo",
+     "path": "data/raw/wdi/TX.VAL.TECH.MF.ZS.json.gz",
+     "sha256": "7b8ca94d72917a392ea0e6fd78d328f7f1256ea85644d522cd33bfb6fac3143a",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/TX.VAL.TECH.MF.ZS"
+    }
+   },
+   "notes": [
+    "wdi: IP.TMK.RESD is no longer in the API (The indicator was not found. It may have been deleted or archived.)",
+    "wdi: IP.TMK.NRES is no longer in the API (The indicator was not found. It may have been deleted or archived.)",
+    "wdi: IP.TMK.TOTL is no longer in the API (The indicator was not found. It may have been deleted or archived.)"
+   ],
+   "run": "2026-10-22"
+  },
   "wgnd": {
    "files": {
     "processed/name_gender": {
@@ -2299,6 +3780,132 @@
      "location": "r2",
      "sha256": "a1ba9c64880ff25797af851c5f36f1d5b709f521b62fc5f54b116e0aad64c14a",
      "url": "https://dataverse.harvard.edu/api/access/datafile/4750351?format=original"
+    }
+   },
+   "run": "2026-10-22"
+  },
+  "wine_gi": {
+   "files": {
+    "processed/australian_gis": {
+     "bytes": 4406,
+     "columns": [
+      "state_zone",
+      "region",
+      "subregion"
+     ],
+     "describe": "Australian wine GIs: state or zone, region, subregion",
+     "location": "repo",
+     "path": "data/processed/wine_gi/australian_gis.parquet",
+     "rows": 89,
+     "sha256": "184be208c66d8209e918cf95fbaeb16858bfda2261d10feaf36c9380b887c5db"
+    },
+    "raw/AGWA-Quality-Wine-Terms-Quality-Wine-Terms.pdf": {
+     "bytes": 42001,
+     "location": "repo",
+     "path": "data/raw/wine_gi/AGWA-Quality-Wine-Terms-Quality-Wine-Terms.pdf",
+     "sha256": "7d9290d4f936fbc6764617e20f891d6022bd3229d952eb82cbe25608dd3c94cb",
+     "url": "https://www.wineaustralia.com/getmedia/6fa35690-95eb-4519-a6f8-aae0359aa822/AGWA-Quality-Wine-Terms-Quality-Wine-Terms.pdf"
+    },
+    "raw/Australian-Wine-Regions.pdf": {
+     "bytes": 1373979,
+     "location": "repo",
+     "path": "data/raw/wine_gi/Australian-Wine-Regions.pdf",
+     "sha256": "45bad01b6c30308fb0b745e6e47618f320853823f3039ed2b0a030d8a0d62ab3",
+     "url": "https://www.wineaustralia.com/getmedia/9da8ba52-21da-46e8-b27e-3521d362b1c3/Australian-Wine-Regions.pdf"
+    },
+    "raw/Australian-Wine-Zones.pdf": {
+     "bytes": 448917,
+     "location": "repo",
+     "path": "data/raw/wine_gi/Australian-Wine-Zones.pdf",
+     "sha256": "92923d31ca6bd89aca3e103d1bd4277da6dff52bc022073bf8b717ed9e1ef913",
+     "url": "https://www.wineaustralia.com/getmedia/e2f60e4c-ad52-454e-a22e-eff6b5c729f9/Australian-Wine-Zones.pdf"
+    },
+    "raw/Register-Traditional-Expressions.pdf": {
+     "bytes": 409687,
+     "location": "repo",
+     "path": "data/raw/wine_gi/Register-Traditional-Expressions.pdf",
+     "sha256": "19f153c609b09ba98326b883a5c7be976c32c12ed41d540aba426b0db380092c",
+     "url": "https://www.wineaustralia.com/getmedia/8cd3a188-f0c5-400f-a52a-6a81d56ae13a/Register-Traditional-Expressions.pdf"
+    },
+    "raw/Wine-Australia-Register-of-EU-Geographical-Indications-Updated-18-Jan-2019.pdf": {
+     "bytes": 766375,
+     "location": "repo",
+     "path": "data/raw/wine_gi/Wine-Australia-Register-of-EU-Geographical-Indications-Updated-18-Jan-2019.pdf",
+     "sha256": "7884d4972b3f0da4f637db6ec72835e074ebd719387e2fd76b7f035fdaead48e",
+     "url": "https://www.wineaustralia.com/getmedia/8a31bbf3-bd17-46e5-b5bb-809e1b0a0a79/Wine-Australia-Register-of-EU-Geographical-Indications-Updated-18-Jan-2019.pdf"
+    },
+    "raw/Wine-region-of-Tasmania.pdf": {
+     "bytes": 373024,
+     "location": "repo",
+     "path": "data/raw/wine_gi/Wine-region-of-Tasmania.pdf",
+     "sha256": "8604db9cb2d8f7fc8c4e6850b5d703c88f8051fd814dd15033e22a9fbd404be5",
+     "url": "https://www.wineaustralia.com/getmedia/f3ee06b7-fc16-4811-b7f6-3bc97ad23630/Wine-region-of-Tasmania.pdf"
+    },
+    "raw/Wine-regions-of-New-South-Wales.pdf": {
+     "bytes": 299936,
+     "location": "repo",
+     "path": "data/raw/wine_gi/Wine-regions-of-New-South-Wales.pdf",
+     "sha256": "e6597ae37a6e4459e7396c3cd96dd407265d100b5f138b67a69abe5709d28e03",
+     "url": "https://www.wineaustralia.com/getmedia/fe9afdeb-72f2-4e71-aaf6-46ad0d501caa/Wine-regions-of-New-South-Wales.pdf"
+    },
+    "raw/Wine-regions-of-Queensland.pdf": {
+     "bytes": 258198,
+     "location": "repo",
+     "path": "data/raw/wine_gi/Wine-regions-of-Queensland.pdf",
+     "sha256": "9764fc61b83641f53a33b15b48c7be198c7030502a36b6b0d5b0e75ffd2b8303",
+     "url": "https://www.wineaustralia.com/getmedia/da72e482-8088-4f71-a119-75fbdd7b7bb2/Wine-regions-of-Queensland.pdf"
+    },
+    "raw/Wine-regions-of-South-Australia.pdf": {
+     "bytes": 226178,
+     "location": "repo",
+     "path": "data/raw/wine_gi/Wine-regions-of-South-Australia.pdf",
+     "sha256": "ca3ebca333966601615fd3f470be02c74611048bbdfe749bd54e0de096eabe46",
+     "url": "https://www.wineaustralia.com/getmedia/bf06a1a9-55e7-4d24-b55c-9d07ddff45b6/Wine-regions-of-South-Australia.pdf"
+    },
+    "raw/Wine-regions-of-Victoria.pdf": {
+     "bytes": 416699,
+     "location": "repo",
+     "path": "data/raw/wine_gi/Wine-regions-of-Victoria.pdf",
+     "sha256": "972fdc1c29f4d49f2763c15f4b35643594d0cd6f6dd6d6782670ca83e7399a2b",
+     "url": "https://www.wineaustralia.com/getmedia/da5276df-efee-4e06-920d-762176298969/Wine-regions-of-Victoria.pdf"
+    },
+    "raw/Wine-regions-of-Western-Australia.pdf": {
+     "bytes": 277740,
+     "location": "repo",
+     "path": "data/raw/wine_gi/Wine-regions-of-Western-Australia.pdf",
+     "sha256": "16ad5696d6fda1efdc6e7c2c415a9aaadf33c9382cb859e3c9c343e9be9ec500",
+     "url": "https://www.wineaustralia.com/getmedia/4e48faa2-5a1c-4b75-987e-9ff9942a239b/Wine-regions-of-Western-Australia.pdf"
+    },
+    "raw/additional-terms.html": {
+     "bytes": 304564,
+     "location": "repo",
+     "path": "data/raw/wine_gi/additional-terms.html",
+     "sha256": "fcc07d959d4c47b146481038baebbe28f6a2f5ac93b6ac6c5b65bfa82da84a44"
+    },
+    "raw/agwa-additional-terms.pdf": {
+     "bytes": 50848,
+     "location": "repo",
+     "path": "data/raw/wine_gi/agwa-additional-terms.pdf",
+     "sha256": "b2fe0edbe8d26c1d83823fc4630531ffb18fdb1167648063f98df462924be0c4",
+     "url": "https://www.wineaustralia.com/getmedia/8588a685-cb00-48d7-a2de-5059a6d85348/agwa-additional-terms.pdf"
+    },
+    "raw/geographical-indications.html": {
+     "bytes": 321810,
+     "location": "repo",
+     "path": "data/raw/wine_gi/geographical-indications.html",
+     "sha256": "d6bb5182462d261b54627b4955aad6a6280b1f14efba898c1ef3fe4c68950e01"
+    },
+    "raw/quality-wine-terms.html": {
+     "bytes": 304662,
+     "location": "repo",
+     "path": "data/raw/wine_gi/quality-wine-terms.html",
+     "sha256": "e470f8e318bdb586beb47e6bb5cdcd0a066c08443238e1d7f261db1f7498e185"
+    },
+    "raw/traditional-expressions.html": {
+     "bytes": 305338,
+     "location": "repo",
+     "path": "data/raw/wine_gi/traditional-expressions.html",
+     "sha256": "6f2e167ef0469695953ceea30535db62f442d97521502c6bcbd42c40ecb526f9"
     }
    },
    "run": "2026-10-22"

@@ -232,8 +232,8 @@ sources:
     publisher: NATSEM, University of Canberra
     tier: 2
     questions: [1, 2]
-    url: https://data.gov.au/
-    licence: see each dataset's terms
+    url: https://data.gov.au/ (AURIN)
+    licence: CC BY-NC 4.0
 
   - id: cer
     title: Small-scale renewable installations by postcode
@@ -274,3 +274,12 @@ sources:
     questions: [4, 5]
     url: https://www.legislation.gov.au/
     licence: CC BY 4.0 (compiled here)
+
+  # Derived ------------------------------------------------------------------------------------------------------------
+  - id: linkage
+    title: The ABN spine (every ABN in the corpus, with ABR and ASIC attributes and source flags)
+    publisher: built here from abr, asic, ipgod, iplord, rdti, austender and ato_ctt
+    tier: 1
+    questions: [2, 3, 4]
+    url: src/corpus/sources/linkage.py
+    licence: as its sources (CC BY 3.0 AU and CC BY 4.0)

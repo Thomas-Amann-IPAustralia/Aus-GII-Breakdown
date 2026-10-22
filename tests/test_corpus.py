@@ -81,3 +81,12 @@ def test_ato_headers_become_snake_case_without_units():
     assert (
         snake("Total R&D expenditure (notional deductions less feedstock adjustments) $") == "total_randd_expenditure"
     )
+
+
+def test_dropped_tables_take_the_first_row_with_three_values_as_the_header():
+    from corpus.sources._manual import _framed
+
+    raw = pd.DataFrame([["A title", None, None], [None, None, None], ["Origin", "Year", "Count"], ["AU", "2020", "5"]])
+    t = _framed(raw)
+    assert list(t.columns) == ["origin", "year", "count"]
+    assert t.iloc[0].tolist() == ["AU", "2020", "5"]

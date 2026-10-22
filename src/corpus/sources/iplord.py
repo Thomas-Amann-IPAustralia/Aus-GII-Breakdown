@@ -6,14 +6,15 @@ and for years after 2020, use `ipgod/applicant_year`, built the same way from IP
 
 Raw: the release's zip (R2) and dictionary (repo). Processed: `iplord` (the full data set, typed: ids as text, years
 and counts as integers, weighted counts as doubles), in R2; `iplord_abn`, the rows identified by an ABN (repo if it
-fits).
+fits), with `party_name` blank where the ABR records the ABN as an individual (a sole trader).
 """
 
 from __future__ import annotations
 
 import duckdb
+import pandas as pd
 
-from ..core import CorpusError, Ctx, unzip_member, unzip_names
+from ..core import CorpusError, Ctx, individual_abns, unzip_member, unzip_names
 
 ZIP = "https://data.gov.au/data/dataset/d61374dd-1a62-4132-913d-35d90cfdac81/resource/af2ba6bd-a751-41cc-889b-1d83611d572d/download/iplord_2020.zip"
 DICTIONARY = "https://data.gov.au/data/dataset/d61374dd-1a62-4132-913d-35d90cfdac81/resource/808dafcd-7cb3-4a39-94d0-81211f138a6f/download/iplord-data-dictionary-2021.pdf"
@@ -58,8 +59,10 @@ def run(ctx: Ctx) -> None:
     rows = con.execute(f"SELECT count(*) FROM '{out}'").fetchone()[0]
     ctx.keep_table(out, "iplord", rows, cols, keep="r2", describe="The full IPLORD 2020 panel")
     sub = ctx.cache / "processed/iplord_abn.parquet"
+    con.register("ind", pd.DataFrame({"abn": sorted(individual_abns())}))  # sole traders: names stay out
     con.execute(
-        f"COPY (SELECT * FROM '{out}' WHERE lord_party_id_type = 'abn' ORDER BY lord_party_id, financial_year) "
+        f"COPY (SELECT * REPLACE (CASE WHEN lord_party_id IN (SELECT abn FROM ind) THEN NULL ELSE party_name END "
+        f"AS party_name) FROM '{out}' WHERE lord_party_id_type = 'abn' ORDER BY lord_party_id, financial_year) "
         f"TO '{sub}' (FORMAT parquet, COMPRESSION zstd, COMPRESSION_LEVEL 9)"
     )
     rows = con.execute(f"SELECT count(*) FROM '{sub}'").fetchone()[0]
