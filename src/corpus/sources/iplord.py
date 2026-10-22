@@ -2,7 +2,7 @@
 
 The public 2020 release covers designs (`d_`), plant breeder's rights (`pbr_`) and trade marks (`tm_`, with
 `tm_services_` for service classes); it has no patent columns, although its dictionary describes them. For patents,
-and for years after 2020, use `ipgod/applicant_year`, built the same way from IPGOD 2022.
+and for years after 2020, use `iprapid/applicant_year`, built the same way from IP RAPID.
 
 Raw: the release's zip (R2) and dictionary (repo). Processed: `iplord` (the full data set, typed: ids as text, years
 and counts as integers, weighted counts as doubles), in R2; `iplord_abn`, the rows identified by an ABN (repo if it

@@ -1,7 +1,7 @@
 """World Gender-Name Dictionary 2.0 (WIPO, 2021): first names with the gender they are given to, by country.
 
-For estimating the gender of individual applicants in IPGOD from first names, the method WIPO and IP Australia have
-used. IPGOD's public party data has no inventors, so this covers individual applicants (and owners) only.
+For estimating the gender of individual applicants in IP RAPID from first names, the method WIPO and IP Australia have
+used. IP RAPID's public party data has no inventors, so this covers individual applicants (and owners) only.
 Raw: the two Dataverse tables (R2). Processed: `name_gender_code` (name, ISO country code, gender F/M/?, and
 `wgt`, the share of the name's bearers of that gender where known) and `name_gender` (the same without country).
 Names are as WGND gives them (lower case, accents kept).

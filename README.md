@@ -20,12 +20,12 @@ uv sync                       # Python 3.11+; installs pandas, pyarrow, duckdb a
 ```python
 import corpus
 
-rights = corpus.load("ipgod", "patent_rights")             # a pandas DataFrame
+rights = corpus.load("iprapid", "patent_rights")           # a pandas DataFrame
 spine = corpus.load("linkage", "abn_spine", columns=["abn", "entity_type", "in_rdti", "patent_first_fy"])
 
 import duckdb                                              # for the big tables, query the Parquet file directly
-events = corpus.path("ipgod", "patent_events")             # downloads from R2 once, into ~/.cache/ipholmes
-duckdb.sql(f"SELECT event_type, count(*) FROM '{events}' GROUP BY 1 ORDER BY 2 DESC").df()
+events = corpus.path("iprapid", "events")                  # downloads from R2 once, into ~/.cache/ipholmes
+duckdb.sql(f"SELECT event_type, count(*) FROM '{events}' WHERE ip_right_type = 'patent' GROUP BY 1 ORDER BY 2 DESC").df()
 ```
 
 Small and analysis-ready tables are in the repo (`data/processed/<source>/<table>.parquet`). Large ones are in the
@@ -47,7 +47,7 @@ causal or projected. Almost everything here supports descriptive and observation
 uv sync --group dev
 uv run corpus list                  # the sources and what the manifest holds for each
 uv run corpus run rdti abs_bcs      # fetch and process sources (writes data/, uploads to R2, updates the manifest)
-uv run corpus run all               # everything (hours: IPGOD, the ABR and AusTender are large)
+uv run corpus run all               # everything (hours: IP RAPID, the ABR and AusTender are large)
 uv run corpus verify --r2           # repo files against the manifest, and R2 holding the rest
 uv run corpus catalogue             # regenerate docs/catalogue.md
 uv run pytest -q                    # the rules, and the committed data against the manifest
@@ -71,10 +71,23 @@ raw files pass through a cache outside the repo (`$IPHOLMES_CACHE`, default `~/.
 | `tests/` | The rules, and the committed data against the manifest |
 | `index.html`, `assets/` | The GII breakdown page (Australia in the Global Innovation Index 2026), kept from the earlier site; it reads a frozen summary in `assets/data/`, and will be rebuilt on the corpus |
 
+## Credentials
+
+Keys and tokens go in the cloud environment's settings (the environment menu in the session's title bar, then
+Edit, then Network secrets or Environment variables), never in the repo. A new session picks them up.
+
+| Variable | For | Value |
+|---|---|---|
+| `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` | The `ipholmes` R2 bucket | From Cloudflare |
+| `OPENALEX_API_KEY` | `openalex` | A free OpenAlex key |
+| `GCP_SERVICE_ACCOUNT_JSON` | Google Patents Public Data in BigQuery | The whole contents of the service account's JSON key file (or the same, base64-encoded); `corpus.core.gcp_credentials()` writes it to a private file outside the repo at run time |
+| `GCP_PROJECT_ID` | BigQuery billing project | The project the service account belongs to (queries are billed to it; the public patent tables are free to read, the queries are not beyond the free monthly allowance) |
+| `LENS_API_TOKEN` | The Lens (scholarly works and patents) | A Lens API token |
+
 ## Privacy
 
 The corpus holds published data only. Individuals' names (sole traders, individual applicants) are left out of the
-tables in the repo: the ABN Bulk Extract is read without them, and the IPGOD summaries blank them. IPGOD's party
+tables in the repo: the ABN Bulk Extract is read without them, and the IP RAPID summaries blank them. IP RAPID's party
 tables in R2 keep names as IP Australia publishes them, for analyses (such as gender estimation from first names)
 that need them; summaries built from them should not republish names.
 

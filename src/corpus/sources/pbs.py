@@ -1,6 +1,6 @@
 """PBS date-of-supply data: prescriptions and costs for every PBS item by month (Department of Health, Disability
 and Ageing), for the health pathway of public value (section 2 of docs/data-plan.md): what the public pays for
-medicines, which can be followed through patent expiry and IPGOD's pharmaceutical extensions of term.
+medicines, which can be followed through patent expiry and IP RAPID's pharmaceutical extensions of term.
 
 Raw: every file on the date-of-supply page (R2). Processed: `supply` (every row of the yearly CSVs, July 2020 on:
 month, item, drug type, patient category, pharmacy type, script type, prescriptions and the patient, government and

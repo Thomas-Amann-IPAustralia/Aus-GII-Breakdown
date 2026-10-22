@@ -1,6 +1,6 @@
 """`corpus`: ingest sources into the corpus, and check what is there.
 
-corpus run ipgod iplord     fetch and process these sources (writes data/, uploads to R2, updates the manifest)
+corpus run iprapid rdti     fetch and process these sources (writes data/, uploads to R2, updates the manifest)
 corpus run all              every source in config/sources.yaml with a module
 corpus list                 the sources, their tier and what the manifest holds for each
 corpus verify [--r2]        repo files against the manifest's SHA-256 (and, with --r2, that R2 holds the rest)
@@ -93,7 +93,7 @@ what is still missing, is in `docs/data-plan.md`; how to use the corpus is in `R
 `ipholmes` bucket at `processed/<source>/<table>.parquet`; `corpus.load` and `corpus.path` fetch them once into
 `~/.cache/ipholmes` (R2 credentials in `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID` and `R2_SECRET_ACCESS_KEY`).
 
-**Join keys.** `abn` (11 digits, as text) joins IPGOD, IPLORD, the ABR, ASIC (through `acn`), the R&D Tax Incentive,
+**Join keys.** `abn` (11 digits, as text) joins IP RAPID, IPLORD, the ABR, ASIC (through `acn`), the R&D Tax Incentive,
 AusTender and the corporate tax reports; `linkage/abn_spine` already does it. Postcodes join to ABS geography through
 `abs_regions/poa` and `poa_sa2` (a postcode is a postal area code, as text). IPC subclasses join to industries and
 technology fields through `concordances`. ISO3 codes join the cross-country sources (`gii`, `oecd`, `wdi`).

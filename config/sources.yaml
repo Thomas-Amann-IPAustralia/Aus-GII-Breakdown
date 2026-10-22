@@ -5,14 +5,14 @@
 
 sources:
   # Tier 1: the spine --------------------------------------------------------------------------------------------------
-  - id: ipgod
-    title: Intellectual Property Government Open Data (IPGOD) 2022
+  - id: iprapid
+    title: IP RAPID (IP Australia's open IP data, updated weekly; the successor to IPGOD)
     publisher: IP Australia
     tier: 1
     questions: [1, 2, 3, 4]
-    url: https://data.gov.au/data/dataset/ipgod2022
-    licence: CC BY 2.5 AU
-    coverage: Applications from 1904 to early 2022 (patents, trade marks, designs, plant breeder's rights)
+    url: https://data.gov.au/data/dataset/iprapid
+    licence: CC BY 4.0
+    coverage: Every application from 1904 to the current weekly release (patents, trade marks, designs, plant breeder's rights)
 
   - id: iplord
     title: Intellectual Property Longitudinal Research Data (IPLORD) 2020
@@ -278,7 +278,7 @@ sources:
   # Derived ------------------------------------------------------------------------------------------------------------
   - id: linkage
     title: The ABN spine (every ABN in the corpus, with ABR and ASIC attributes and source flags)
-    publisher: built here from abr, asic, ipgod, iplord, rdti, austender and ato_ctt
+    publisher: built here from abr, asic, iprapid, iplord, rdti, austender and ato_ctt
     tier: 1
     questions: [2, 3, 4]
     url: src/corpus/sources/linkage.py

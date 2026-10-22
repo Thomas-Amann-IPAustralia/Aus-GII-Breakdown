@@ -1,6 +1,6 @@
 """The ABN spine: one row per ABN that appears anywhere in the corpus, with what the business registers say about it.
 
-Built from the other sources (run it after them). Processed: `abn_spine` (repo), one row per ABN seen in IPGOD's
+Built from the other sources (run it after them). Processed: `abn_spine` (repo), one row per ABN seen in IP RAPID's
 parties, IPLORD, the R&D Tax Incentive reports, AusTender suppliers or the corporate tax transparency reports, with:
 
 - from the ABR: entity type, ABN status and the date it took effect, GST status and date, state, postcode, ACN, and
@@ -8,10 +8,10 @@ parties, IPLORD, the R&D Tax Incentive reports, AusTender suppliers or the corpo
 - from ASIC (through the ACN): company registration and deregistration dates, type, class and status;
 - `first_seen`, the earliest of the ABN status date (for an active ABN), GST registration and ASIC registration: a
   lower bound on the business's start, since the public ABR gives only the date of the current status;
-- flags for each source it appears in (`in_ipgod_patent` and so on, `in_rdti`, `in_austender`, `in_ato_ctt`), and its
-  first and last filing financial years by right type from `ipgod/applicant_year`.
+- flags for each source it appears in (`in_iprapid_patent` and so on, `in_rdti`, `in_austender`, `in_ato_ctt`), and its
+  first and last filing financial years by right type from `iprapid/applicant_year`.
 
-`abn_spine` is how the analysis joins IP use to R&D, procurement, size and survival. ABNs in IPGOD cover Australian
+`abn_spine` is how the analysis joins IP use to R&D, procurement, size and survival. ABNs in IP RAPID cover Australian
 applicants that IP Australia matched to the ABR; foreign applicants and many individuals have none.
 """
 
@@ -30,7 +30,7 @@ def run(ctx: Ctx) -> None:
         for k in [
             "abr/abns",
             "asic/companies",
-            "ipgod/applicant_year",
+            "iprapid/applicant_year",
             "iplord/iplord_abn",
             "rdti/entities",
             "austender/contracts",
@@ -43,10 +43,10 @@ def run(ctx: Ctx) -> None:
     COPY (
       WITH ip AS (
         SELECT applicant_id AS abn,
-               bool_or(ip_right_type = 'patent') AS in_ipgod_patent,
-               bool_or(ip_right_type = 'trade_mark') AS in_ipgod_trade_mark,
-               bool_or(ip_right_type = 'design') AS in_ipgod_design,
-               bool_or(ip_right_type = 'pbr') AS in_ipgod_pbr,
+               bool_or(ip_right_type = 'patent') AS in_iprapid_patent,
+               bool_or(ip_right_type = 'trade_mark') AS in_iprapid_trade_mark,
+               bool_or(ip_right_type = 'design') AS in_iprapid_design,
+               bool_or(ip_right_type = 'pbr') AS in_iprapid_pbr,
                min(financial_year) FILTER (WHERE ip_right_type = 'patent' AND filed > 0) AS patent_first_fy,
                max(financial_year) FILTER (WHERE ip_right_type = 'patent' AND filed > 0) AS patent_last_fy,
                min(financial_year) FILTER (WHERE ip_right_type = 'trade_mark' AND filed > 0) AS trade_mark_first_fy,
@@ -54,7 +54,7 @@ def run(ctx: Ctx) -> None:
                min(financial_year) FILTER (WHERE ip_right_type = 'design' AND filed > 0) AS design_first_fy,
                max(financial_year) FILTER (WHERE ip_right_type = 'design' AND filed > 0) AS design_last_fy,
                sum(filed) AS ip_filed_total
-        FROM '{p["ipgod/applicant_year"]}' WHERE applicant_id_type = 'abn' GROUP BY 1),
+        FROM '{p["iprapid/applicant_year"]}' WHERE applicant_id_type = 'abn' GROUP BY 1),
       lord AS (SELECT DISTINCT lord_party_id AS abn FROM '{p["iplord/iplord_abn"]}'),
       rd AS (SELECT DISTINCT abn FROM '{p["rdti/entities"]}' WHERE abn IS NOT NULL),
       tender AS (SELECT supplier_abn AS abn, count(*) AS austender_contracts, sum(value) AS austender_value
@@ -72,10 +72,10 @@ def run(ctx: Ctx) -> None:
              least(CASE WHEN abr.abn_status = 'ACT' THEN abr.abn_status_from END, abr.gst_status_from,
                    co.registered) AS first_seen,
              abr.abn IS NOT NULL AS in_abr,
-             coalesce(ip.in_ipgod_patent, false) AS in_ipgod_patent,
-             coalesce(ip.in_ipgod_trade_mark, false) AS in_ipgod_trade_mark,
-             coalesce(ip.in_ipgod_design, false) AS in_ipgod_design,
-             coalesce(ip.in_ipgod_pbr, false) AS in_ipgod_pbr,
+             coalesce(ip.in_iprapid_patent, false) AS in_iprapid_patent,
+             coalesce(ip.in_iprapid_trade_mark, false) AS in_iprapid_trade_mark,
+             coalesce(ip.in_iprapid_design, false) AS in_iprapid_design,
+             coalesce(ip.in_iprapid_pbr, false) AS in_iprapid_pbr,
              lord.abn IS NOT NULL AS in_iplord, rd.abn IS NOT NULL AS in_rdti,
              tender.abn IS NOT NULL AS in_austender, ctt.abn IS NOT NULL AS in_ato_ctt,
              ip.patent_first_fy, ip.patent_last_fy, ip.trade_mark_first_fy, ip.trade_mark_last_fy,

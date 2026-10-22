@@ -2053,611 +2053,6 @@
    ],
    "run": "2026-10-22"
   },
-  "ipgod": {
-   "files": {
-    "processed/applicant_year": {
-     "bytes": 12641906,
-     "columns": [
-      "applicant_id",
-      "applicant_id_type",
-      "party_type",
-      "country_code",
-      "state_code",
-      "post_code",
-      "ip_right_type",
-      "financial_year",
-      "filed",
-      "filed_weighted",
-      "became_enforceable",
-      "became_enforceable_weighted"
-     ],
-     "describe": "Applicant (ABN or party id) by right by financial year: filed and became enforceable",
-     "location": "repo",
-     "path": "data/processed/ipgod/applicant_year.parquet",
-     "rows": 2678084,
-     "sha256": "8da0e2c57fa3a82ab56b0a598aee3d740e44019dcc198ba923e342545acaae36"
-    },
-    "processed/design_application": {
-     "bytes": 2938905,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "ip_right_sub_type",
-      "status",
-      "earliest_filed_date",
-      "priority_date",
-      "gained_registration_status_date",
-      "gained_enforceable_status_date",
-      "enforceable_from_date",
-      "deemed_retired_date"
-     ],
-     "key": "processed/ipgod/design_application.parquet",
-     "location": "r2",
-     "rows": 224211,
-     "sha256": "a0789dd5a8f98c3d50ebd2fde675269d09fe3b448bd8e3e04191fb11309240d1"
-    },
-    "processed/design_classification": {
-     "bytes": 1629765,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "classification_system",
-      "classification",
-      "classification_importance",
-      "classification_inventiveness",
-      "classification_source",
-      "classifying_country_code",
-      "classification_date",
-      "classification_removal_date",
-      "classification_system_version",
-      "is_current"
-     ],
-     "key": "processed/ipgod/design_classification.parquet",
-     "location": "r2",
-     "rows": 233855,
-     "sha256": "62d83f6bc2db7bbf64c72fc4efcf5d7d602d8a6764f8c6dc431cc18a05f5bd8e"
-    },
-    "processed/design_description": {
-     "bytes": 2467807,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "description_type",
-      "description_value"
-     ],
-     "key": "processed/ipgod/design_description.parquet",
-     "location": "r2",
-     "rows": 210420,
-     "sha256": "ea12ce49f909b7ae6bf39c8d77ff8f7bcffcfee32d586ca5e2717ec354d68e12"
-    },
-    "processed/design_events": {
-     "bytes": 8494423,
-     "columns": [
-      "application_number",
-      "ip_right_type",
-      "event_type",
-      "event_category",
-      "event_effective_date",
-      "event_declared_date",
-      "is_standing"
-     ],
-     "key": "processed/ipgod/design_events.parquet",
-     "location": "r2",
-     "rows": 1769404,
-     "sha256": "558f53e4ac56a5a0fa015df3a0e6407d8181d64ff7559fb425db83b8bd742c9e"
-    },
-    "processed/design_links": {
-     "bytes": 1171505,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "link_type",
-      "linked_application_number",
-      "link_date",
-      "linked_application_country"
-     ],
-     "key": "processed/ipgod/design_links.parquet",
-     "location": "r2",
-     "rows": 97748,
-     "sha256": "9ae9d4165918ea129f2171c189e774806f7812b8cdbd2367d73df1f71b839915"
-    },
-    "processed/design_party": {
-     "bytes": 7862930,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "party_id",
-      "party_role_category",
-      "party_role",
-      "party_type",
-      "party_name",
-      "state_code",
-      "post_code",
-      "country_code",
-      "effective_from_date",
-      "effective_to_date",
-      "is_current",
-      "abn",
-      "is_founding"
-     ],
-     "key": "processed/ipgod/design_party.parquet",
-     "location": "r2",
-     "rows": 509951,
-     "sha256": "fc2113087516addb05f4a13b0aa169312f9c99410ba5c7eac34fa0cb65365b20"
-    },
-    "processed/design_rights": {
-     "bytes": 3483158,
-     "columns": [
-      "application_number",
-      "ip_right_sub_type",
-      "status",
-      "earliest_filed_date",
-      "priority_date",
-      "gained_registration_status_date",
-      "gained_enforceable_status_date",
-      "enforceable_from_date",
-      "deemed_retired_date",
-      "applicant_count",
-      "applicant_party_id",
-      "applicant_name",
-      "applicant_type",
-      "applicant_country",
-      "applicant_state",
-      "applicant_postcode",
-      "applicant_abn",
-      "any_applicant_abn",
-      "any_applicant_in_australia",
-      "has_agent",
-      "main_class",
-      "class_count",
-      "classes"
-     ],
-     "describe": "One row per application: status, dates, first current applicant, attorney use, classes",
-     "location": "repo",
-     "path": "data/processed/ipgod/design_rights.parquet",
-     "rows": 224211,
-     "sha256": "4de830ec584fc210d37371e3a13e54bb6e2f916dbe2a5e58e117f5ff32aca76e"
-    },
-    "processed/patent_application": {
-     "bytes": 20326627,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "ip_right_sub_type",
-      "status",
-      "earliest_filed_date",
-      "priority_date",
-      "gained_registration_status_date",
-      "gained_enforceable_status_date",
-      "enforceable_from_date",
-      "deemed_retired_date"
-     ],
-     "key": "processed/ipgod/patent_application.parquet",
-     "location": "r2",
-     "rows": 1576221,
-     "sha256": "7708d3515564ea49458e66171828835b0f8dac21f6ea6792de4c9cd4cbd83c43"
-    },
-    "processed/patent_classification": {
-     "bytes": 51718629,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "classification_system",
-      "classification",
-      "classification_importance",
-      "classification_inventiveness",
-      "classification_source",
-      "classifying_country_code",
-      "classification_date",
-      "classification_removal_date",
-      "classification_system_version",
-      "is_current"
-     ],
-     "key": "processed/ipgod/patent_classification.parquet",
-     "location": "r2",
-     "rows": 8281276,
-     "sha256": "258f6d80b0071be562a0617ebb72c44f0bd5656bb6785bbdc42dc305dd34d45d"
-    },
-    "processed/patent_description": {
-     "bytes": 36102726,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "description_type",
-      "description_value"
-     ],
-     "key": "processed/ipgod/patent_description.parquet",
-     "location": "r2",
-     "rows": 1576221,
-     "sha256": "ace9ebb76da9aab1a80fe7d95273511be33eba4eed4cf08ed1815b8746660ee6"
-    },
-    "processed/patent_events": {
-     "bytes": 52710235,
-     "columns": [
-      "application_number",
-      "ip_right_type",
-      "event_type",
-      "event_category",
-      "event_effective_date",
-      "event_declared_date",
-      "is_standing"
-     ],
-     "key": "processed/ipgod/patent_events.parquet",
-     "location": "r2",
-     "rows": 11703884,
-     "sha256": "96481fbb737f86ec1029856a9b3164f800d988c7af4ace9ff5aad1cf11885dc3"
-    },
-    "processed/patent_links": {
-     "bytes": 25065374,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "link_type",
-      "linked_application_number",
-      "link_date",
-      "linked_application_country"
-     ],
-     "key": "processed/ipgod/patent_links.parquet",
-     "location": "r2",
-     "rows": 1887935,
-     "sha256": "052098596efe37da2ce531fc952b2fdb35fc3fafe91fa92387f910401f97ebea"
-    },
-    "processed/patent_party": {
-     "bytes": 56250778,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "party_id",
-      "party_role_category",
-      "party_role",
-      "party_type",
-      "party_name",
-      "state_code",
-      "post_code",
-      "country_code",
-      "effective_from_date",
-      "effective_to_date",
-      "is_current",
-      "abn",
-      "is_founding"
-     ],
-     "key": "processed/ipgod/patent_party.parquet",
-     "location": "r2",
-     "rows": 3458445,
-     "sha256": "40bb10b226c0aabdbe8e408663046e836c876210dc3eeea80a535a62ae2d828b"
-    },
-    "processed/patent_rights": {
-     "bytes": 30349118,
-     "columns": [
-      "application_number",
-      "ip_right_sub_type",
-      "status",
-      "earliest_filed_date",
-      "priority_date",
-      "gained_registration_status_date",
-      "gained_enforceable_status_date",
-      "enforceable_from_date",
-      "deemed_retired_date",
-      "applicant_count",
-      "applicant_party_id",
-      "applicant_name",
-      "applicant_type",
-      "applicant_country",
-      "applicant_state",
-      "applicant_postcode",
-      "applicant_abn",
-      "any_applicant_abn",
-      "any_applicant_in_australia",
-      "has_agent",
-      "main_class",
-      "class_count",
-      "classes"
-     ],
-     "describe": "One row per application: status, dates, first current applicant, attorney use, classes",
-     "location": "repo",
-     "path": "data/processed/ipgod/patent_rights.parquet",
-     "rows": 1576221,
-     "sha256": "fa9cb1b474b6768f3fc9154aabd4359b10c1d897e2652165669be3c23ac6c5a3"
-    },
-    "processed/pbr_application": {
-     "bytes": 90617,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "ip_right_sub_type",
-      "status",
-      "earliest_filed_date",
-      "priority_date",
-      "gained_registration_status_date",
-      "gained_enforceable_status_date",
-      "enforceable_from_date",
-      "deemed_retired_date"
-     ],
-     "key": "processed/ipgod/pbr_application.parquet",
-     "location": "r2",
-     "rows": 10368,
-     "sha256": "a8ec14c787cb9a2764bf44e94945f8d0c9e4b8319d04337d14d2dacb0db9243b"
-    },
-    "processed/pbr_classification": {
-     "bytes": 65874,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "classification_system",
-      "classification",
-      "classification_importance",
-      "classification_inventiveness",
-      "classification_source",
-      "classifying_country_code",
-      "classification_date",
-      "classification_removal_date",
-      "classification_system_version",
-      "is_current"
-     ],
-     "key": "processed/ipgod/pbr_classification.parquet",
-     "location": "r2",
-     "rows": 30825,
-     "sha256": "4d5e4487dc7efd780516e0931ac6dfe07dfbc2bbf48441af3ceef6c1d1d458de"
-    },
-    "processed/pbr_description": {
-     "bytes": 77556,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "description_type",
-      "description_value"
-     ],
-     "key": "processed/ipgod/pbr_description.parquet",
-     "location": "r2",
-     "rows": 10368,
-     "sha256": "d0ed5e74ebe2d7520b2ef816fd45a2fafb8c161286ca336092f5eff3959dafce"
-    },
-    "processed/pbr_events": {
-     "bytes": 212409,
-     "columns": [
-      "application_number",
-      "ip_right_type",
-      "event_type",
-      "event_category",
-      "event_effective_date",
-      "event_declared_date",
-      "is_standing"
-     ],
-     "key": "processed/ipgod/pbr_events.parquet",
-     "location": "r2",
-     "rows": 55099,
-     "sha256": "d0457cc783d0f63ea535ef9e969444bf73543654dccc10b62b25a3fb0e21c0b4"
-    },
-    "processed/pbr_links": {
-     "bytes": 257,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "link_type",
-      "linked_application_number",
-      "link_date",
-      "linked_application_country"
-     ],
-     "key": "processed/ipgod/pbr_links.parquet",
-     "location": "r2",
-     "rows": 0,
-     "sha256": "32db739db51506248e5862d30c45752ba78948cc0968bb5926552015b41cdf26"
-    },
-    "processed/pbr_party": {
-     "bytes": 103972,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "party_id",
-      "party_role_category",
-      "party_role",
-      "party_type",
-      "party_name",
-      "state_code",
-      "post_code",
-      "country_code",
-      "effective_from_date",
-      "effective_to_date",
-      "is_current",
-      "abn",
-      "is_founding"
-     ],
-     "key": "processed/ipgod/pbr_party.parquet",
-     "location": "r2",
-     "rows": 11890,
-     "sha256": "32c9927bac66a07272df6f3827a5203092e3eb67717f3c292541d430c6353b65"
-    },
-    "processed/pbr_rights": {
-     "bytes": 174482,
-     "columns": [
-      "application_number",
-      "ip_right_sub_type",
-      "status",
-      "earliest_filed_date",
-      "priority_date",
-      "gained_registration_status_date",
-      "gained_enforceable_status_date",
-      "enforceable_from_date",
-      "deemed_retired_date",
-      "applicant_count",
-      "applicant_party_id",
-      "applicant_name",
-      "applicant_type",
-      "applicant_country",
-      "applicant_state",
-      "applicant_postcode",
-      "applicant_abn",
-      "any_applicant_abn",
-      "any_applicant_in_australia",
-      "has_agent",
-      "main_class",
-      "class_count",
-      "classes"
-     ],
-     "describe": "One row per application: status, dates, first current applicant, attorney use, classes",
-     "location": "repo",
-     "path": "data/processed/ipgod/pbr_rights.parquet",
-     "rows": 10368,
-     "sha256": "1080f9d4c539ee854427cba2a936fc2a88526cd4c24d10cd8321849325d187d3"
-    },
-    "processed/trade_mark_application": {
-     "bytes": 30639686,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "ip_right_sub_type",
-      "status",
-      "earliest_filed_date",
-      "priority_date",
-      "gained_registration_status_date",
-      "gained_enforceable_status_date",
-      "enforceable_from_date",
-      "deemed_retired_date"
-     ],
-     "key": "processed/ipgod/trade_mark_application.parquet",
-     "location": "r2",
-     "rows": 1910924,
-     "sha256": "cf7233604febf7bbd208d3f1bd8849e9e88e6bf7431694cd8c20cbacaaaa5891"
-    },
-    "processed/trade_mark_classification": {
-     "bytes": 17796771,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "classification_system",
-      "classification",
-      "classification_importance",
-      "classification_inventiveness",
-      "classification_source",
-      "classifying_country_code",
-      "classification_date",
-      "classification_removal_date",
-      "classification_system_version",
-      "is_current"
-     ],
-     "key": "processed/ipgod/trade_mark_classification.parquet",
-     "location": "r2",
-     "rows": 3028595,
-     "sha256": "5649c1991228e5215054dde3af05b8681d7a1287a05d7a39b7a9970d8fd10f9c"
-    },
-    "processed/trade_mark_description": {
-     "bytes": 42467087,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "description_type",
-      "description_value"
-     ],
-     "key": "processed/ipgod/trade_mark_description.parquet",
-     "location": "r2",
-     "rows": 4432633,
-     "sha256": "022d0f5871f8233d5f349cedd42fd3f71190d7ea51db977437315be5e8da01c5"
-    },
-    "processed/trade_mark_events": {
-     "bytes": 130353470,
-     "columns": [
-      "application_number",
-      "ip_right_type",
-      "event_type",
-      "event_category",
-      "event_effective_date",
-      "event_declared_date",
-      "is_standing"
-     ],
-     "key": "processed/ipgod/trade_mark_events.parquet",
-     "location": "r2",
-     "rows": 26968088,
-     "sha256": "f3e117aa3e64cfb94c271c045b7108a609cdaaf69c31a36f589d5e5349eb118c"
-    },
-    "processed/trade_mark_links": {
-     "bytes": 13159183,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "link_type",
-      "linked_application_number",
-      "link_date",
-      "linked_application_country"
-     ],
-     "key": "processed/ipgod/trade_mark_links.parquet",
-     "location": "r2",
-     "rows": 1263346,
-     "sha256": "1b3e2733f244e5155dc058ddb8327bdae9cf03472f8843b528dcb82594b57dce"
-    },
-    "processed/trade_mark_party": {
-     "bytes": 103042303,
-     "columns": [
-      "ip_right_type",
-      "application_number",
-      "party_id",
-      "party_role_category",
-      "party_role",
-      "party_type",
-      "party_name",
-      "state_code",
-      "post_code",
-      "country_code",
-      "effective_from_date",
-      "effective_to_date",
-      "is_current",
-      "abn",
-      "is_founding"
-     ],
-     "key": "processed/ipgod/trade_mark_party.parquet",
-     "location": "r2",
-     "rows": 5764299,
-     "sha256": "be675af879740cbf4819bb6d3c8ad39a1ff514156b862e0faacde5883907613d"
-    },
-    "processed/trade_mark_rights": {
-     "bytes": 41621662,
-     "columns": [
-      "application_number",
-      "ip_right_sub_type",
-      "status",
-      "earliest_filed_date",
-      "priority_date",
-      "gained_registration_status_date",
-      "gained_enforceable_status_date",
-      "enforceable_from_date",
-      "deemed_retired_date",
-      "applicant_count",
-      "applicant_party_id",
-      "applicant_name",
-      "applicant_type",
-      "applicant_country",
-      "applicant_state",
-      "applicant_postcode",
-      "applicant_abn",
-      "any_applicant_abn",
-      "any_applicant_in_australia",
-      "has_agent",
-      "main_class",
-      "class_count",
-      "classes"
-     ],
-     "describe": "One row per application: status, dates, first current applicant, attorney use, classes",
-     "location": "repo",
-     "path": "data/processed/ipgod/trade_mark_rights.parquet",
-     "rows": 1910924,
-     "sha256": "c30dcfc93ac2a5b8f1cfaacfd613803291ac304edec85054db0fd3321cea7cba"
-    },
-    "raw/ipgod2022-data-dictionary-v1-public.pdf": {
-     "bytes": 826376,
-     "location": "repo",
-     "path": "data/raw/ipgod/ipgod2022-data-dictionary-v1-public.pdf",
-     "sha256": "73dc064505060a9bf92b6ebae58817d606f9de7c02e1c0b1565f66bc991d83e3",
-     "url": "https://data.gov.au/data/dataset/49017fd0-e7be-4fc0-88c8-046fc366d980/resource/2a4ad939-d2ba-4082-b2a3-750a400884d1/download/ipgod2022-data-dictionary-v1-public.pdf"
-    },
-    "raw/ipgod2022.zip": {
-     "bytes": 843038114,
-     "key": "raw/ipgod/ipgod2022.zip",
-     "location": "r2",
-     "sha256": "56ee749525841d2ec499199784506cb174a0dbf74e2c33f65ad74de457096ce0",
-     "url": "https://data.gov.au/data/dataset/49017fd0-e7be-4fc0-88c8-046fc366d980/resource/fc07e1cc-c205-4806-aff9-826470937a0a/download/ipgod2022.zip"
-    }
-   },
-   "run": "2026-10-22"
-  },
   "iplord": {
    "files": {
     "processed/iplord": {
@@ -4026,6 +3421,71 @@
      "path": "data/raw/oecd/wellbeing_inequality.csv.gz",
      "sha256": "723ec380744ac296a163a25327dec6c60006b1b4cc42bc1b50a7123b722ddcca",
      "url": "https://sdmx.oecd.org/public/rest/data/OECD.WISE.WDP,DSD_HSL@DF_HSL_CWB_INEQ/all"
+    }
+   },
+   "run": "2026-10-22"
+  },
+  "openalex": {
+   "files": {
+    "processed/field_year": {
+     "bytes": 6380,
+     "columns": [
+      "year",
+      "field_id",
+      "field",
+      "works"
+     ],
+     "describe": "Works with an Australian institution by field and year",
+     "location": "repo",
+     "path": "data/processed/openalex/field_year.parquet",
+     "rows": 702,
+     "sha256": "bf6acd3f1296d121330285dafb079ae0155f4eda62c8a8f51d4138a3cebbecb2"
+    },
+    "processed/institution_year": {
+     "bytes": 81752,
+     "columns": [
+      "id",
+      "year",
+      "works_count",
+      "cited_by_count"
+     ],
+     "describe": "Works and citations by institution and year",
+     "location": "repo",
+     "path": "data/processed/openalex/institution_year.parquet",
+     "rows": 18532,
+     "sha256": "f997282b96deb278a155cae257f00dcf7b1d0dee589781193be048e451ca309b"
+    },
+    "processed/institutions": {
+     "bytes": 65801,
+     "columns": [
+      "id",
+      "ror",
+      "name",
+      "type",
+      "city",
+      "region",
+      "works_count",
+      "cited_by_count"
+     ],
+     "describe": "Australian institutions in OpenAlex",
+     "location": "repo",
+     "path": "data/processed/openalex/institutions.parquet",
+     "rows": 1910,
+     "sha256": "e75672ff250246a8737085a44f52e590630f7d5fcfff37808c619fb377f68d53"
+    },
+    "raw/field_year.json.gz": {
+     "bytes": 4702,
+     "location": "repo",
+     "path": "data/raw/openalex/field_year.json.gz",
+     "sha256": "88577fd69b899a7dae0ba511cb2b95f88eb68d1305c88a2044e25294939df9ac",
+     "url": "https://api.openalex.org"
+    },
+    "raw/institutions.json.gz": {
+     "bytes": 2779785,
+     "location": "repo",
+     "path": "data/raw/openalex/institutions.json.gz",
+     "sha256": "0e55579dd9f7e0206541a48ebcd4877d1a0f7bed4a7f25989b1d2d8340bda319",
+     "url": "https://api.openalex.org"
     }
    },
    "run": "2026-10-22"

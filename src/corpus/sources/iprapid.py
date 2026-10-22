@@ -1,41 +1,46 @@
-"""IPGOD 2022: every Australian patent, trade mark, design and plant breeder's right application to early 2022.
+"""IP RAPID: every Australian patent, trade mark, design and plant breeder's right application, updated weekly.
 
-Raw: the release's zip (R2) and its data dictionary (repo). Processed, one Parquet table per IPGOD table (R2), typed:
-dates as dates, ABNs as 11-digit strings, flags as booleans. Then one summary per right type, a row per application
-with its applicants and attorneys reduced to a few columns (repo where it fits):
+IP Australia's open data product, the successor to IPGOD (same tables and columns, all four rights in each table, plus
+an application date and, for classifications, IP Australia's own technology area). The run takes the current weekly
+release, so a rerun brings the corpus up to date.
 
-- `<right>_application`, `_classification`, `_description`, `_events`, `_links`, `_party`: the IPGOD tables as published
-  (right is patent, trade_mark, design or pbr).
-- `<right>_rights`: one row per application: status and key dates; the number of current applicants; the first current
-  applicant's party id, name, type, country, state, postcode and ABN; whether any applicant is in Australia; whether an
-  attorney or agent acts; the main classification (patents: the first current IPC mark's four-character class;
-  trade marks: the Nice classes, as a count and a list; designs: the Locarno class; PBR: the genus). Individuals'
-  names are left out of these (repo) tables; the `_party` tables (R2) have them as IP Australia publishes them.
-- `applicant_year`: applicant (ABN where IPGOD has one, else party id) by right by financial year: applications filed
-  and rights that became enforceable, counted and weighted as IPLORD does. Unlike IPLORD 2020, it covers patents, and
-  runs to early 2022.
+Raw: the release's zip (R2) and its data dictionary (repo). Processed, typed (dates as dates, ABNs as 11-digit
+strings, flags as booleans):
 
-IPGOD's public party data has no inventors, only applicants, owners, agents and other parties.
+- `application`, `classification`, `description`, `events`, `links`, `party`: the IP RAPID tables as published, every
+  right in each, with `ip_right_type` (patent, trade_mark, design, pbr) (R2).
+- `<right>_rights`: one row per application of that right: status and key dates; the number of current applicants;
+  the first current applicant's party id, name, type, country, state, postcode and ABN; whether any applicant is in
+  Australia; whether an attorney or agent acts; the main classification (patents: the first current IPC mark's
+  subclass, and IP Australia's technology area; trade marks: the Nice classes, as a count and a list; designs: the
+  Locarno class; PBR: the genus). Individuals' names are left out of these (repo) tables; `party` (R2) has them as IP
+  Australia publishes them.
+- `applicant_year`: applicant (ABN where IP RAPID has one, else party id) by right by financial year: applications
+  filed and rights that became enforceable, counted and weighted as IPLORD does (repo).
+
+Useful event types (in `events`): extensions of term for pharmaceutical patents, lapses (renewals not paid),
+assignments, registered licences, oppositions and their outcomes, examination requests. The public party data has
+no inventors, only applicants, owners, agents and other parties.
 """
 
 from __future__ import annotations
 
 import duckdb
 
-from ..core import CorpusError, Ctx, unzip_member, unzip_names
+from ..core import CorpusError, Ctx, http_get, unzip_member, unzip_names
 
-ZIP = "https://data.gov.au/data/dataset/49017fd0-e7be-4fc0-88c8-046fc366d980/resource/fc07e1cc-c205-4806-aff9-826470937a0a/download/ipgod2022.zip"
-DICTIONARY = "https://data.gov.au/data/dataset/49017fd0-e7be-4fc0-88c8-046fc366d980/resource/2a4ad939-d2ba-4082-b2a3-750a400884d1/download/ipgod2022-data-dictionary-v1-public.pdf"
+PACKAGE = "https://data.gov.au/data/api/3/action/package_show?id=iprapid"
 RIGHTS = ("patent", "trade_mark", "design", "pbr")
-TABLES = {  # file suffix -> table name
-    "application": "application",
-    "application-classification": "classification",
-    "application-description": "description",
-    "application-events": "events",
-    "application-links": "links",
-    "party-activity": "party",
+TABLES = {  # member -> table name
+    "application.csv": "application",
+    "application_classification.csv": "classification",
+    "application_description.csv": "description",
+    "application_events.csv": "events",
+    "application_links.csv": "links",
+    "party_activity.csv": "party",
 }
 DATES = {
+    "application_date",
     "earliest_filed_date",
     "priority_date",
     "gained_registration_status_date",
@@ -72,36 +77,37 @@ def _select(columns: list[str]) -> str:
 
 
 def run(ctx: Ctx) -> None:
-    ctx.fetch(DICTIONARY, "ipgod2022-data-dictionary-v1-public.pdf", keep="repo")
-    z = ctx.fetch(ZIP, "ipgod2022.zip", keep="r2")
+    res = http_get(PACKAGE).json()["result"]["resources"]
+    zips = [r for r in res if r.get("format", "").upper() == "ZIP"]
+    pdfs = [r for r in res if r["url"].lower().endswith(".pdf")]
+    if not zips:
+        raise CorpusError("iprapid: no ZIP resource on data.gov.au; has the dataset changed?")
+    for r in pdfs:
+        ctx.fetch(r["url"], r["url"].rsplit("/", 1)[1], keep="repo")
+    z = ctx.fetch(zips[0]["url"], "iprapid.zip", keep="r2", force=True)  # weekly: always the current release
+    ctx.note(f"iprapid: release of {zips[0].get('last_modified') or zips[0].get('created')}")
     work = ctx.cache / "work"
     work.mkdir(parents=True, exist_ok=True)
     con = duckdb.connect()
     con.execute("SET memory_limit='8GB'; SET preserve_insertion_order=false")
-    parquet: dict[str, str] = {}
     members = set(unzip_names(z))
+    p: dict[str, str] = {}
+    for member, name in TABLES.items():
+        if member not in members:
+            raise CorpusError(f"iprapid: {member} is missing from the zip; has the release's layout changed?")
+        out = ctx.cache / "processed" / f"{name}.parquet"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        csv = unzip_member(z, member, work)
+        src = f"read_csv('{csv}', all_varchar=true, header=true, quote='\"', escape='\"', strict_mode=false)"
+        cols = [r[0] for r in con.execute(f"DESCRIBE SELECT * FROM {src}").fetchall()]
+        con.execute(f"COPY (SELECT {_select(cols)} FROM {src}) TO '{out}' (FORMAT parquet, COMPRESSION zstd)")
+        csv.unlink()
+        rows = con.execute(f"SELECT count(*) FROM '{out}'").fetchone()[0]
+        ctx.keep_table(out, name, rows, cols, keep="r2", describe=f"IP RAPID {member}, every right")
+        p[name] = str(out)
     for right in RIGHTS:
-        stem = right.replace("_", "-")
-        for suffix, table in TABLES.items():
-            member = f"{stem}-{suffix}.csv"
-            if member not in members:
-                raise CorpusError(f"ipgod: {member} is missing from the zip; has the release's layout changed?")
-            name = f"{right}_{table}"
-            out = ctx.cache / "processed" / f"{name}.parquet"
-            out.parent.mkdir(parents=True, exist_ok=True)
-            if not out.exists():  # the conversion is slow; a cached one is reused (delete the cache to redo)
-                csv = unzip_member(z, member, work)
-                src = f"read_csv('{csv}', all_varchar=true, header=true, quote='\"', escape='\"', strict_mode=false)"
-                cols = [r[0] for r in con.execute(f"DESCRIBE SELECT * FROM {src}").fetchall()]
-                con.execute(f"COPY (SELECT {_select(cols)} FROM {src}) TO '{out}' (FORMAT parquet, COMPRESSION zstd)")
-                csv.unlink()
-            cols = [r[0] for r in con.execute(f"DESCRIBE SELECT * FROM '{out}'").fetchall()]
-            rows = con.execute(f"SELECT count(*) FROM '{out}'").fetchone()[0]
-            ctx.keep_table(out, name, rows, cols, keep="r2")
-            parquet[name] = str(out)
-    for right in RIGHTS:
-        _rights(ctx, con, right, parquet)
-    _applicant_year(ctx, con, parquet)
+        _rights(ctx, con, right, p)
+    _applicant_year(ctx, con, p)
 
 
 def _rights(ctx: Ctx, con, right: str, p: dict[str, str]) -> None:
@@ -120,8 +126,8 @@ def _rights(ctx: Ctx, con, right: str, p: dict[str, str]) -> None:
     out = ctx.cache / "processed" / f"{right}_rights.parquet"
     con.execute(f"""
     COPY (
-      WITH app AS (SELECT * FROM '{p[f"{right}_application"]}'),
-      party AS (SELECT * FROM '{p[f"{right}_party"]}' WHERE is_current IS NOT false),
+      WITH app AS (SELECT * FROM '{p["application"]}' WHERE ip_right_type = '{right}'),
+      party AS (SELECT * FROM '{p["party"]}' WHERE ip_right_type = '{right}' AND is_current IS NOT false),
       applicants AS (
         SELECT application_number, party_id, party_name, party_type, country_code, state_code, post_code, abn,
                row_number() OVER (PARTITION BY application_number
@@ -139,10 +145,12 @@ def _rights(ctx: Ctx, con, right: str, p: dict[str, str]) -> None:
       c AS (
         SELECT application_number,
                any_value({main_class} ORDER BY classification_importance NULLS LAST, classification) AS main_class,
+               any_value(classification_area ORDER BY classification_importance NULLS LAST, classification)
+                 AS main_area,
                count(DISTINCT {main_class}) AS class_count,
                string_agg(DISTINCT {main_class}, ' ' ORDER BY {main_class}) AS classes
-        FROM '{p[f"{right}_classification"]}' WHERE {cls} GROUP BY 1)
-      SELECT app.application_number, app.ip_right_sub_type, app.status,
+        FROM '{p["classification"]}' WHERE ip_right_type = '{right}' AND {cls} GROUP BY 1)
+      SELECT app.application_number, app.ip_right_sub_type, app.status, app.application_date,
              app.earliest_filed_date, app.priority_date, app.gained_registration_status_date,
              app.gained_enforceable_status_date, app.enforceable_from_date, app.deemed_retired_date,
              coalesce(a.applicant_count, 0) AS applicant_count,
@@ -153,7 +161,7 @@ def _rights(ctx: Ctx, con, right: str, p: dict[str, str]) -> None:
              first.abn AS applicant_abn, a.any_applicant_abn,
              coalesce(a.any_applicant_in_australia, false) AS any_applicant_in_australia,
              coalesce(agents.agent_count, 0) > 0 AS has_agent,
-             c.main_class, c.class_count, c.classes
+             c.main_class, c.main_area, c.class_count, c.classes
       FROM app
       LEFT JOIN a USING (application_number)
       LEFT JOIN first USING (application_number)
@@ -175,25 +183,22 @@ def _rights(ctx: Ctx, con, right: str, p: dict[str, str]) -> None:
 def _applicant_year(ctx: Ctx, con, p: dict[str, str]) -> None:
     """Applicant by financial year by right: applications filed and rights that became enforceable, as in IPLORD.
 
-    An applicant is its ABN where IPGOD has one, else its IPGOD party id. Each application counts once for each of its
+    An applicant is its ABN where IP RAPID has one, else its party id. Each application counts once for each of its
     founding applicants (`filed`), and 1/n for each of n (`filed_weighted`), as IPLORD does. Financial years end on
     30 June and are labelled by the year they end.
     """
-    parts = []
-    for right in RIGHTS:
-        parts.append(f"""
-        SELECT '{right}' AS ip_right_type, a.application_number, coalesce(pa.abn, pa.party_id) AS applicant_id,
-               CASE WHEN pa.abn IS NULL THEN 'party_id' ELSE 'abn' END AS applicant_id_type,
-               pa.party_type, pa.country_code, pa.state_code, pa.post_code,
-               a.earliest_filed_date, a.gained_enforceable_status_date
-        FROM '{p[f"{right}_application"]}' a
-        JOIN '{p[f"{right}_party"]}' pa USING (application_number)
-        WHERE pa.party_role_category = 'applicant' AND pa.is_founding""")
     out = ctx.cache / "processed/applicant_year.parquet"
     fy = "CAST(year({d}) + CASE WHEN month({d}) > 6 THEN 1 ELSE 0 END AS INTEGER)"
     con.execute(f"""
     COPY (
-      WITH x AS ({" UNION ALL ".join(parts)}),
+      WITH x AS (
+        SELECT a.ip_right_type, a.application_number, coalesce(pa.abn, pa.party_id) AS applicant_id,
+               CASE WHEN pa.abn IS NULL THEN 'party_id' ELSE 'abn' END AS applicant_id_type,
+               pa.party_type, pa.country_code, pa.state_code, pa.post_code,
+               a.earliest_filed_date, a.gained_enforceable_status_date
+        FROM '{p["application"]}' a
+        JOIN '{p["party"]}' pa USING (ip_right_type, application_number)
+        WHERE pa.party_role_category = 'applicant' AND pa.is_founding),
       n AS (SELECT ip_right_type, application_number, count(DISTINCT applicant_id) AS k FROM x GROUP BY 1, 2),
       y AS (
         SELECT x.*, n.k, {fy.format(d="earliest_filed_date")} AS filed_fy,

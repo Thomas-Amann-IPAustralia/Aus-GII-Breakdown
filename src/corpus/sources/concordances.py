@@ -9,7 +9,7 @@ its web app. Processed:
 
 - `ipc_technology`: the 35 fields' IPC rules (prefix; groups it is limited to; groups or subclass it excludes; and
   `unless_also`, a subclass whose presence on the same patent moves it out of the field, as in WIPO's method).
-- `patent_fields`: each IPGOD patent application's technology fields, from its current IPC marks, with `weight`
+- `patent_fields`: each IP RAPID patent application's technology fields, from its current IPC marks, with `weight`
   (1/n over its n distinct fields, so each application sums to 1).
 - `alp_ipc4_isic4`, `alp_nice_isic4`: the probability-weighted links from IPC subclass, and from Nice class, to ISIC
   Rev. 4 four-digit classes.
@@ -128,11 +128,11 @@ def run(ctx: Ctx) -> None:
             )
         )
     con = duckdb.connect()
-    cls = path("ipgod", "patent_classification")
+    cls = path("iprapid", "classification")
     marks = con.execute(f"""
         SELECT DISTINCT application_number, upper(replace(left(classification, 4), ' ', '')) AS subclass,
                try_cast(regexp_extract(classification, '^\\S+\\s*(\\d+)/', 1) AS INTEGER) AS grp
-        FROM '{cls}' WHERE classification_system = 'ipc_mark' AND is_current""").df()
+        FROM '{cls}' WHERE ip_right_type = 'patent' AND classification_system = 'ipc_mark' AND is_current""").df()
     subs = marks.groupby("application_number")["subclass"].agg(set)
     hits = []
     for field, prefix, inc, exc, exc_prefix, unless in rules:
@@ -151,7 +151,7 @@ def run(ctx: Ctx) -> None:
     pf["weight"] = 1 / pf.groupby("application_number")["field_no"].transform("count")
     names = tech.drop_duplicates("field_no").assign(field_no=lambda d: d.field_no.astype(int))
     pf = pf.merge(names[["field_no", "field", "sector"]], on="field_no").sort_values(["application_number", "field_no"])
-    ctx.table(pf, "patent_fields", describe="IPGOD patents to WIPO technology fields, weighted")
+    ctx.table(pf, "patent_fields", describe="IP RAPID patents to WIPO technology fields, weighted")
 
     # ALP crosswalks
     zi = ctx.fetch(ALP_IPC, "alp-ipc-excl-service-v2209.zip", keep="repo")

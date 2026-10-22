@@ -1,8 +1,8 @@
 # Data plan: from a correlation explorer to a research corpus
 
 Status: approved 2026-10-22 (Tiers 1 and 2), and ingested the same day; see section 8 for what is in the corpus,
-what could not be fetched, and what needs your help. Decisions: no ABS integrated data assets (BLADE and the like);
-keep the GII page (to be rebuilt) and `docs/Data-Analysis-DEMO.html`; large files in the R2 bucket `ipholmes`.
+what could not be fetched, and what needs your help. Decisions: public data only (no ABS integrated data assets such as
+BLADE, no internal IP Australia data); keep the GII page (to be rebuilt) and `docs/Data-Analysis-DEMO.html`; large files in the R2 bucket `ipholmes`.
 
 This note assesses the data now in the repository against the five core questions in `docs/research-goal.md`, flags
 what adds little or nothing, and proposes the datasets to ingest instead. Availability was checked from this
@@ -26,10 +26,10 @@ environment on 2026-10-22: "programmatic" means a script here reached the source
   so the plan traces each non-financial benefit through the pathway by which IP could plausibly affect it, and keeps
   a small, curated set of wellbeing measures (led by the Australian Government's Measuring What Matters framework) as
   the outcome layer and for valuation, rather than as variables to correlate.
-- **Question 5, and any causal claim, needs designs the public data only partly support.** With ABS integrated data
-  (BLADE) ruled out, the routes to credible additionality are IP Australia's internal examination records (examiner
-  leniency designs), natural experiments in IP Australia's own levers (`policy_events`), and priors from the
-  evidence register. Firm outcomes come from the public registers only: survival (ABR, ASIC), a size marker (GST),
+- **Question 5, and any causal claim, needs designs the public data only partly support.** The corpus uses public data
+  only, so the routes to credible additionality are natural experiments in IP Australia's own levers
+  (`policy_events`, with IP RAPID's full application histories), comparisons across the thresholds those changes
+  created, and priors from the evidence register. Firm outcomes come from the public registers only: survival (ABR, ASIC), a size marker (GST),
   R&D (the R&D Tax Incentive), procurement (AusTender) and large firms' income (corporate tax transparency).
 
 ## 1. What the current data can and cannot do
@@ -177,17 +177,17 @@ Listed in order of value. Items marked "you" are the limited fetches you offered
 
 | # | Dataset | Why it matters | How |
 |---|---|---|---|
-| A | **A current IPGOD and IPLORD extract (2021 to 2025)** | The public releases stop at 2021 (IPGOD 2022) and 2020 (IPLORD). Four to five missing years cover COVID, the end of the innovation patent and the current period | You, internally (IP Australia's data team). The single most valuable fetch |
+| A | ~~A current IPGOD and IPLORD extract~~ | **Done with public data:** IP RAPID, IP Australia's weekly open data release, covers every application to the current week (`iprapid`) | Ingested |
 | B | ~~ABS BLADE with IP Australia's linked IP data~~ | **Ruled out (2026-10-22): no ABS integrated data assets.** It was the only source of small firms' turnover, employment and productivity | Not pursued |
-| C | **Examination records with examiner assignment** (internal) | Enables the strongest causal design in the literature (examiner leniency as an instrument for grant, as in Farre-Mensa, Hegde and Ljungqvist 2020): what a granted patent adds for a startup, compared with a rejected one | Internal request; analysis likely inside IP Australia or DataLab |
-| D | **IP Australia customer and SME research** (surveys of users and non-users, awareness, barriers) | Q2 and Q4 barriers from the users' side | You, internally, if the reports and microdata can be shared |
+| C | ~~Examination records with examiner assignment~~ | **Ruled out (2026-10-22): public data only.** It would have allowed the examiner leniency design | Not pursued |
+| D | ~~IP Australia customer and SME research microdata~~ | **Ruled out: public data only.** Published reports can go in the evidence register | Not pursued |
 | E | **Global patent data**: Google Patents Public Data (BigQuery) or PatentsView | Forward citations and patent families as value measures; Australian inventors abroad | BigQuery needs a GCP project (the `bq` CLI here has no credentials); PatentsView is blocked by this environment's network policy and needs an allowlist change |
 | F | **The Lens API token** (free for research) | Patent to scholarly-literature links: knowledge diffusion from research | You, a free registration |
 | G | **ABS TableBuilder: Census 2021 owner-managers** by sex, Indigenous status, industry and region | Who runs businesses, the denominator for gender and First Nations participation | You, a free registration and a few tables |
 | H | **First Nations business data** (Indigenous Business Sector Snapshot; Indigenous Procurement Policy outcomes) | Q2 for First Nations businesses, replacing Closing the Gap | Mixed: some public reports, some by request |
-| I | **Venture capital deal data** (Dealroom, Cut Through Venture, Crunchbase) | Does registration change access to investment (Q3)? | Paid; only if IP Australia already subscribes |
+| I | ~~Venture capital deal data~~ | **Ruled out: paid, not public** | Not pursued |
 | J | **TGA's Australian Register of Therapeutic Goods** | Time to market and generic entry for the health case (section 2) | You: the TGA site did not respond to this environment |
-| K | **HILDA** (individual wellbeing, work and health, panel since 2001) | Individual-level wellbeing for workers in innovative industries, and Australian wellbeing valuation | Free application through the Department of Social Services; low priority |
+| K | ~~HILDA~~ | **Ruled out: access needs an application** | Not pursued |
 
 ## 5. What the corpus would let later sessions answer
 
@@ -216,7 +216,7 @@ as the research goal requires.
 
 GitHub refuses files over 100 MB and slows beyond a few GB, so:
 
-- **R2 (bucket `ipholmes`) holds the large files**: raw files under `raw/<source>/` (IPGOD, IPLORD, the ABR, ASIC,
+- **R2 (bucket `ipholmes`) holds the large files**: raw files under `raw/<source>/` (IP RAPID, IPLORD, the ABR, ASIC,
   TM-Link, AusTender, PBS, the ASGS allocation files) and large Parquet tables under `processed/<source>/`.
 - **The repo holds small raw files and every table under 50 MB**, including analysis-ready summaries of the large
   sources (`ipgod/*_rights`, `ipgod/applicant_year`, `iplord/iplord_abn`, `linkage/abn_spine`).
@@ -233,7 +233,7 @@ columns. In short:
 
 | # | Source (`id`) | Status | What is there |
 |---|---|---|---|
-| 1 | IPGOD 2022 (`ipgod`) | Ingested | All 24 tables (R2); a summary per right type and an applicant by financial year panel (repo). Its events include extensions of term (about 1,150 granted), lapses, assignments (about 108,000 patent assignments), registered licences (1,575) and oppositions |
+| 1 | IP RAPID (`iprapid`), replacing IPGOD 2022 | Ingested | All six tables, every right, to the current week (R2); a summary per right type and an applicant by financial year panel (repo). Its events include extensions of term (about 1,150 granted), lapses, assignments (about 108,000 patent assignments), registered licences (1,575) and oppositions |
 | 2 | IPLORD 2020 (`iplord`) | Ingested | The full panel (R2) and its ABN rows (repo). The public release has no patent columns; `ipgod/applicant_year` covers patents to 2022 |
 | 3 | ABN Bulk Extract (`abr`) | Ingested | 20.6 million ABNs, current and cancelled (R2), without individuals' names |
 | 4 | ASIC companies (`asic`) | Ingested | 4.0 million companies (R2) |
@@ -241,7 +241,7 @@ columns. In short:
 | 6 | ABS business characteristics (`abs_bcs`) | Ingested | 13 flows, including licensing of IP and "inability to protect IP" as a limit on commercialisation |
 | 7 | Counts of businesses (`abs_cabee`) | Ingested | National tables to June 2026; state, industry, survival, SA2 and LGA cubes to June 2025 |
 | 8 | Places (`abs_regions`) | Ingested | ASGS 2021 mesh blocks, postal area to SA2 and remoteness, SEIFA 2021, Data by Region |
-| 9 | Concordances (`concordances`) | Ingested | WIPO's 35 technology fields (and each IPGOD patent's fields), ALP IPC and Nice to ISIC and ANZSIC, the IPC Green Inventory |
+| 9 | Concordances (`concordances`) | Ingested | WIPO's 35 technology fields (and each IP RAPID patent's fields), ALP IPC and Nice to ISIC and ANZSIC, the IPC Green Inventory |
 | 10 | Gender-name dictionary (`wgnd`) | Ingested | WGND 2.0 (CC0, not CC BY as first listed) |
 | — | Linkage (`linkage`) | Built | `abn_spine`: 345,727 ABNs (all found in the ABR) with ABR and ASIC attributes, source flags and first and last filing years |
 | — | GII 2026 (`gii`), Closing the Gap (`ctg`) | Ingested | Kept from the earlier corpus as context |
@@ -256,7 +256,7 @@ columns. In short:
 | 18 | IP Australia fees (`ipa_fees`) | Ingested (current only) | Application, examination, renewal, opposition fees; historical schedules need the Wayback Machine, which this environment cannot reach |
 | 19 | PBS (`pbs`) | Ingested | Date-of-supply data from July 2020 by item and month, and the item to drug map |
 | 20 | ABS R&D and venture capital (`abs_rd_vc`) | Ingested | BERD 2023-24, GOVERD 2024-25, HERD 2024, venture capital to 2018-19 (discontinued) |
-| 21 | OpenAlex (`openalex`) | **Needs a key** | OpenAlex now needs a free API key (`OPENALEX_API_KEY`); the module is ready |
+| 21 | OpenAlex (`openalex`) | Ingested | 1,910 Australian institutions (243 companies), works by field and year from 2000 |
 | 22 | Evidence register (`evidence`) | Ingested | 20 items, journal items checked against Crossref (one flagged: its only Crossref record is a later SSRN version) |
 | 23 | Cultural and creative activity (`bcarr_creative`) | **Needs you** | The site refuses this environment |
 | 24 | Measuring What Matters (`mwm`) | Ingested | 50 indicator pages and their data |
@@ -270,25 +270,26 @@ columns. In short:
 
 ### What needs you
 
-1. **A current IPGOD and IPLORD extract (2021 to 2025)** from IP Australia's data team: the most valuable addition.
-2. **BigQuery and Lens access**, as you planned (Tier 3 E and F).
-3. **An OpenAlex API key** (free): set `OPENALEX_API_KEY` and run `corpus run openalex`.
-4. **Downloads** for the sources this environment cannot reach: put the files in `data/raw/<source>/` and run
-   `corpus run <source>`; each module's docstring says exactly what to fetch. In order of value: `wipo_ipstats`,
-   `nhmrc_grants`, `natsem`, `bcarr_creative`, `abf`, `fedcourt`. Alternatively, allow these hosts in the
-   environment's network settings and they can be fetched here: www.nhmrc.gov.au, www.infrastructure.gov.au,
+1. **BigQuery and Lens access** (Tier 3 E and F), both public data: the key and token go in the environment's
+   settings, not the repo (see the README).
+2. **Downloads** for the public sources this environment cannot reach: put the files in `data/raw/<source>/` and run
+   `corpus run <source>`; each module's docstring says what to fetch. In order of value: `wipo_ipstats`,
+   `nhmrc_grants`, `natsem`, `bcarr_creative`, `abf`; `fedcourt` is optional. Alternatively, allow these hosts in
+   the environment's network settings and they can be fetched here: www.nhmrc.gov.au, www.infrastructure.gov.au,
    adp-access.aurin.org.au and adp-gatekeeper.prod.aurin-prod.cloud.edu.au, web.archive.org (historical fees),
    search.patentsview.org, www.judgments.fedcourt.gov.au.
-5. **Internal examination records** (Tier 3 C), for the causal designs Q5 needs now that BLADE is out.
+
+IP RAPID replaced IPGOD 2022 (the weekly public release covers 2022 to now), and OpenAlex is ingested.
 
 ### A first look, to show the corpus works
 
-Not a finding (the IP data stop in early 2022, and the R&D data start in 2021-22): of the 18,487 companies in the
-R&D Tax Incentive reports, 36% appear in IPGOD as an applicant for any right, and 14% for a patent. Whether the rest
+Not a finding (counted with IPGOD 2022, before IP RAPID replaced it; rerun on `linkage/abn_spine` for current
+figures): of the 18,487 companies in the R&D Tax Incentive reports, 36% appeared as an applicant for any right, and
+14% for a patent. Whether the rest
 are "missing filers" with protectable inventions, or firms for which registration has little value, is exactly the
 kind of question Q3 and Q4 ask.
 
 ### Repository size
 
-The repo holds about 640 MB of data (the largest parts: OECD panels, IPGOD summaries, ABS regional data), every file
+The repo holds about 640 MB of data (the largest parts: OECD panels, IP RAPID summaries, ABS regional data), every file
 under 50 MB. If it grows past about 1 GB, move the OECD raw files to R2 (`keep="r2"` in `oecd.py`).

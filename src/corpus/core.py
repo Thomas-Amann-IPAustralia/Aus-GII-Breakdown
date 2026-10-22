@@ -288,3 +288,23 @@ def individual_abns() -> set[str]:
 
     abns = path("abr", "abns")
     return {r[0] for r in duckdb.connect().execute(f"SELECT abn FROM '{abns}' WHERE entity_type = 'IND'").fetchall()}
+
+
+def gcp_credentials() -> Path:
+    """The Google Cloud service account key, from `GCP_SERVICE_ACCOUNT_JSON` (the key file's whole contents, as set in
+    the environment's settings), written to a private file outside the repo and named in
+    GOOGLE_APPLICATION_CREDENTIALS for the BigQuery client. The key never goes in the repo."""
+    raw = os.environ.get("GCP_SERVICE_ACCOUNT_JSON")
+    if not raw:
+        raise CorpusError("BigQuery needs GCP_SERVICE_ACCOUNT_JSON (the key file's contents) in the environment")
+    if not raw.lstrip().startswith("{"):  # also accept it base64-encoded
+        import base64
+
+        raw = base64.b64decode(raw).decode("utf-8")
+    key = json.loads(raw)
+    dest = Path.home() / ".config/ipholmes/gcp-service-account.json"
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.touch(mode=0o600, exist_ok=True)
+    dest.write_text(json.dumps(key), encoding="utf-8")
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(dest)
+    return dest

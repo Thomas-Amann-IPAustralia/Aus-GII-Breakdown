@@ -1,7 +1,7 @@
 """Australian wine geographical indications (Wine Australia's register of protected GIs and other terms).
 
 For the cultural and regional identity pathway (section 2 of docs/data-plan.md); certification and collective trade
-marks in IPGOD are the other side of it. Raw: the register page's HTML and its PDFs (the EU GI register, traditional
+marks in IP RAPID are the other side of it. Raw: the register page's HTML and its PDFs (the EU GI register, traditional
 expressions, additional terms and quality wine terms; repo). Processed: `australian_gis`, one row per register line
 with the state or zone, region and subregion as published (footnote markers kept).
 """
