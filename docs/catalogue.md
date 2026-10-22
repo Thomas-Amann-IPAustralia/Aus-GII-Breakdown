@@ -315,7 +315,9 @@ amendment) with: `cn_id`, `published`, `signed`, `start`, `end`, `value` (AUD), 
 `source` (bulk or api). Where both parts hold a notice, the API's row is kept. `supplier_name` is blank where
 the ABR records the supplier's ABN as an individual (a sole trader).
 
-*Not ingested yet: see the status in `docs/data-plan.md`.*
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `contracts` | 1,548,989 | repo (42.5 MB) | `cn_id`, `published`, `signed`, `start`, `end`, `value`, `description`, `unspsc`, `agency`, `supplier_name`, `supplier_abn`, `supplier_postcode`, `supplier_state`, `supplier_country` … |
 
 ## ARC National Competitive Grants Program, grants (`arc_grants`)
 
@@ -371,7 +373,25 @@ Raw: each flow's CSV with labels (gzipped; repo when small, R2 when large). Proc
 below), with a code and a `_label` column for every dimension, then `value`. The flows are the OECD's own; check each
 table's `_label` columns for units and breakdowns before comparing.
 
-*Not ingested yet: see the status in `docs/data-plan.md`.*
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `business_births_deaths` | 5,571,658 | repo (30.2 MB) | `flow`, `frequency_of_observation`, `frequency_of_observation_label`, `reference_area`, `reference_area_label`, `measure`, `measure_label`, `economic_activity`, `economic_activity_label`, `size_class`, `size_class_label`, `enterprise_age`, `enterprise_age_label`, `enterprise_type` … |
+| `business_high_growth` | 1,070,680 | repo (4.6 MB) | `flow`, `frequency_of_observation`, `frequency_of_observation_label`, `reference_area`, `reference_area_label`, `measure`, `measure_label`, `economic_activity`, `economic_activity_label`, `size_class`, `size_class_label`, `enterprise_age`, `enterprise_age_label`, `enterprise_type` … |
+| `business_survival` | 7,546,335 | repo (42.9 MB) | `flow`, `frequency_of_observation`, `frequency_of_observation_label`, `reference_area`, `reference_area_label`, `measure`, `measure_label`, `economic_activity`, `economic_activity_label`, `size_class`, `size_class_label`, `enterprise_age`, `enterprise_age_label`, `enterprise_type` … |
+| `innovation_ip_methods` | 1,564 | repo (0.0 MB) | `flow`, `reference_area`, `reference_area_label`, `measure`, `measure_label`, `unit_of_measure`, `unit_of_measure_label`, `economic_activity`, `economic_activity_label`, `enterprise_size_class`, `enterprise_size_class_label`, `r_d_active_status`, `r_d_active_status_label`, `type_of_innovation` … |
+| `ip_tax_regimes` | 2,639 | repo (0.0 MB) | `flow`, `reference_area`, `reference_area_label`, `frequency_of_observation`, `frequency_of_observation_label`, `measure`, `measure_label`, `regime`, `regime_label`, `time_period`, `time_period_label`, `value` |
+| `msti` | 210,477 | repo (1.6 MB) | `flow`, `reference_area`, `reference_area_label`, `frequency_of_observation`, `frequency_of_observation_label`, `measure`, `measure_label`, `unit_of_measure`, `unit_of_measure_label`, `price_base`, `price_base_label`, `transformation`, `transformation_label`, `time_period` … |
+| `patents_coinventors` | 6,824,320 | repo (20.0 MB) | `flow`, `patent_authorities`, `patent_authorities_label`, `frequency_of_observation`, `frequency_of_observation_label`, `measure`, `measure_label`, `unit_of_measure`, `unit_of_measure_label`, `reference_date_type`, `reference_date_type_label`, `reference_area`, `reference_area_label`, `counterpart_area` … |
+| `patents_domestic_ownership_abroad` | 6,824,320 | repo (22.3 MB) | `flow`, `patent_authorities`, `patent_authorities_label`, `frequency_of_observation`, `frequency_of_observation_label`, `measure`, `measure_label`, `unit_of_measure`, `unit_of_measure_label`, `reference_date_type`, `reference_date_type_label`, `reference_area`, `reference_area_label`, `counterpart_area` … |
+| `patents_environment` | 1,751,776 | repo (5.3 MB) | `flow`, `patent_authorities`, `patent_authorities_label`, `frequency_of_observation`, `frequency_of_observation_label`, `measure`, `measure_label`, `unit_of_measure`, `unit_of_measure_label`, `reference_date_type`, `reference_date_type_label`, `reference_area`, `reference_area_label`, `counterpart_area` … |
+| `patents_foreign_ownership` | 6,824,320 | repo (20.6 MB) | `flow`, `patent_authorities`, `patent_authorities_label`, `frequency_of_observation`, `frequency_of_observation_label`, `measure`, `measure_label`, `unit_of_measure`, `unit_of_measure_label`, `reference_date_type`, `reference_date_type_label`, `reference_area`, `reference_area_label`, `counterpart_area` … |
+| `patents_regions` | 796,814 | repo (4.8 MB) | `flow`, `frequency_of_observation`, `frequency_of_observation_label`, `territorial_level`, `territorial_level_label`, `reference_area`, `reference_area_label`, `territorial_typology`, `territorial_typology_label`, `patent_authorities`, `patent_authorities_label`, `reference_date_type`, `reference_date_type_label`, `measure` … |
+| `patents_wipo_fields` | 4,504,032 | repo (21.9 MB) | `flow`, `patent_authorities`, `patent_authorities_label`, `frequency_of_observation`, `frequency_of_observation_label`, `measure`, `measure_label`, `unit_of_measure`, `unit_of_measure_label`, `reference_date_type`, `reference_date_type_label`, `reference_area`, `reference_area_label`, `counterpart_area` … |
+| `venture_capital` | 5,032 | repo (0.0 MB) | `flow`, `reference_area`, `reference_area_label`, `measure`, `measure_label`, `business_development_stage`, `business_development_stage_label`, `unit_of_measure`, `unit_of_measure_label`, `frequency_of_observation`, `frequency_of_observation_label`, `time_period`, `time_period_label`, `observation_status` … |
+| `wellbeing_by_sex` | 30,262 | repo (0.1 MB) | `flow`, `reference_area`, `reference_area_label`, `measure`, `measure_label`, `unit_of_measure`, `unit_of_measure_label`, `age`, `age_label`, `sex`, `sex_label`, `education_level`, `education_level_label`, `domain` … |
+| `wellbeing_current` | 111,266 | repo (0.5 MB) | `flow`, `reference_area`, `reference_area_label`, `measure`, `measure_label`, `unit_of_measure`, `unit_of_measure_label`, `age`, `age_label`, `sex`, `sex_label`, `education_level`, `education_level_label`, `domain` … |
+| `wellbeing_future` | 37,858 | repo (0.2 MB) | `flow`, `reference_area`, `reference_area_label`, `measure`, `measure_label`, `unit_of_measure`, `unit_of_measure_label`, `age`, `age_label`, `sex`, `sex_label`, `education_level`, `education_level_label`, `domain` … |
+| `wellbeing_inequality` | 2,055 | repo (0.0 MB) | `flow`, `reference_area`, `reference_area_label`, `measure`, `measure_label`, `unit_of_measure`, `unit_of_measure_label`, `age`, `age_label`, `sex`, `sex_label`, `education_level`, `education_level_label`, `domain` … |
 
 ## World Development Indicators, comparator panel (`wdi`)
 
@@ -668,4 +688,6 @@ parties, IPLORD, the R&D Tax Incentive reports, AusTender suppliers or the corpo
 `abn_spine` is how the analysis joins IP use to R&D, procurement, size and survival. ABNs in IPGOD cover Australian
 applicants that IP Australia matched to the ABR; foreign applicants and many individuals have none.
 
-*Not ingested yet: see the status in `docs/data-plan.md`.*
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `abn_spine` | 345,727 | repo (11.3 MB) | `abn`, `entity_type`, `entity_type_text`, `abn_status`, `abn_status_from`, `gst_status`, `gst_status_from`, `state`, `postcode`, `acn`, `dgr`, `name`, `asic_registered`, `asic_deregistered` … |

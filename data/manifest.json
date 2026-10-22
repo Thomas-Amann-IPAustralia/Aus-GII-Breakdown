@@ -1406,6 +1406,51 @@
    },
    "run": "2026-10-22"
   },
+  "austender": {
+   "files": {
+    "processed/contracts": {
+     "bytes": 42524813,
+     "columns": [
+      "cn_id",
+      "published",
+      "signed",
+      "start",
+      "end",
+      "value",
+      "description",
+      "unspsc",
+      "agency",
+      "supplier_name",
+      "supplier_abn",
+      "supplier_postcode",
+      "supplier_state",
+      "supplier_country",
+      "procurement_method",
+      "source"
+     ],
+     "describe": "Contract notices 2007 onward, one row per notice, with supplier ABN",
+     "location": "repo",
+     "path": "data/processed/austender/contracts.parquet",
+     "rows": 1548989,
+     "sha256": "c227d2772a7b03262e6d7d871930f4102351b8c243bcbbc59fa560cb2245cef9"
+    },
+    "raw/austender-api-releases.jsonl.gz": {
+     "bytes": 119404727,
+     "key": "raw/austender/austender-api-releases.jsonl.gz",
+     "location": "r2",
+     "sha256": "6ab71142c3efd8b0d169c383caa99ffcaa2fe5d0b0b3206414a7c0c2af9ea1c4",
+     "url": "https://api.tenders.gov.au/ocds/findByDates/contractPublished"
+    },
+    "raw/cn-parent-and-amendments-30092019.xlsx": {
+     "bytes": 271711723,
+     "key": "raw/austender/cn-parent-and-amendments-30092019.xlsx",
+     "location": "r2",
+     "sha256": "cc78545234450e087a70e32d6d4c8f54355cce700004dd64e2895cecc9414303",
+     "url": "https://data.gov.au/data/dataset/5c7fa69b-b0e9-4553-b8df-2a022dd2e982/resource/ec0ac429-a813-4325-bc8c-a8e37401ffc0/download/cn-parent-and-amendments-30092019-ltr.xlsx"
+    }
+   },
+   "run": "2026-10-22"
+  },
   "cer": {
    "files": {
     "processed/installations": {
@@ -2802,6 +2847,57 @@
      "location": "r2",
      "sha256": "0cd7982b375f3b872fc53644ab17ff80bd71f98dabed1614baab2a0f5d90c2b4",
      "url": "https://data.gov.au/data/dataset/d61374dd-1a62-4132-913d-35d90cfdac81/resource/af2ba6bd-a751-41cc-889b-1d83611d572d/download/iplord_2020.zip"
+    }
+   },
+   "run": "2026-10-22"
+  },
+  "linkage": {
+   "files": {
+    "processed/abn_spine": {
+     "bytes": 11272053,
+     "columns": [
+      "abn",
+      "entity_type",
+      "entity_type_text",
+      "abn_status",
+      "abn_status_from",
+      "gst_status",
+      "gst_status_from",
+      "state",
+      "postcode",
+      "acn",
+      "dgr",
+      "name",
+      "asic_registered",
+      "asic_deregistered",
+      "asic_type",
+      "asic_class",
+      "asic_status",
+      "first_seen",
+      "in_abr",
+      "in_ipgod_patent",
+      "in_ipgod_trade_mark",
+      "in_ipgod_design",
+      "in_ipgod_pbr",
+      "in_iplord",
+      "in_rdti",
+      "in_austender",
+      "in_ato_ctt",
+      "patent_first_fy",
+      "patent_last_fy",
+      "trade_mark_first_fy",
+      "trade_mark_last_fy",
+      "design_first_fy",
+      "design_last_fy",
+      "ip_filed_total",
+      "austender_contracts",
+      "austender_value"
+     ],
+     "describe": "One row per ABN in the corpus, with ABR and ASIC attributes",
+     "location": "repo",
+     "path": "data/processed/linkage/abn_spine.parquet",
+     "rows": 345727,
+     "sha256": "c9875dde6df357d2d9f7d1d07267ce2e5e038c0a13345d5e8a7f0f60ffa1e566"
     }
    },
    "run": "2026-10-22"

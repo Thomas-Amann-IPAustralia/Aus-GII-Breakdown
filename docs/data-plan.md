@@ -225,3 +225,70 @@ GitHub refuses files over 100 MB and slows beyond a few GB, so:
 ## 7. Repository
 
 As planned, with the details in `README.md`; `docs/catalogue.md` lists every table.
+
+## 8. What was ingested (2026-10-22)
+
+Every approved source has a module in `src/corpus/sources/`; `docs/catalogue.md` lists every table with its rows and
+columns. In short:
+
+| # | Source (`id`) | Status | What is there |
+|---|---|---|---|
+| 1 | IPGOD 2022 (`ipgod`) | Ingested | All 24 tables (R2); a summary per right type and an applicant by financial year panel (repo). Its events include extensions of term (about 1,150 granted), lapses, assignments (about 108,000 patent assignments), registered licences (1,575) and oppositions |
+| 2 | IPLORD 2020 (`iplord`) | Ingested | The full panel (R2) and its ABN rows (repo). The public release has no patent columns; `ipgod/applicant_year` covers patents to 2022 |
+| 3 | ABN Bulk Extract (`abr`) | Ingested | 20.6 million ABNs, current and cancelled (R2), without individuals' names |
+| 4 | ASIC companies (`asic`) | Ingested | 4.0 million companies (R2) |
+| 5 | R&D Tax Incentive (`rdti`) | Ingested | 38,512 claims, 2021-22 to 2023-24 |
+| 6 | ABS business characteristics (`abs_bcs`) | Ingested | 13 flows, including licensing of IP and "inability to protect IP" as a limit on commercialisation |
+| 7 | Counts of businesses (`abs_cabee`) | Ingested | National tables to June 2026; state, industry, survival, SA2 and LGA cubes to June 2025 |
+| 8 | Places (`abs_regions`) | Ingested | ASGS 2021 mesh blocks, postal area to SA2 and remoteness, SEIFA 2021, Data by Region |
+| 9 | Concordances (`concordances`) | Ingested | WIPO's 35 technology fields (and each IPGOD patent's fields), ALP IPC and Nice to ISIC and ANZSIC, the IPC Green Inventory |
+| 10 | Gender-name dictionary (`wgnd`) | Ingested | WGND 2.0 (CC0, not CC BY as first listed) |
+| — | Linkage (`linkage`) | Built | `abn_spine`: 345,727 ABNs (all found in the ABR) with ABR and ASIC attributes, source flags and first and last filing years |
+| — | GII 2026 (`gii`), Closing the Gap (`ctg`) | Ingested | Kept from the earlier corpus as context |
+| 11 | AusTender (`austender`) | Ingested | 1.55 million contract notices, July 2007 to October 2026, 94.5% with a supplier ABN |
+| 12 | ARC grants (`arc_grants`) | Ingested | 34,977 grants |
+| 12 | NHMRC grants (`nhmrc_grants`) | **Needs you** | The NHMRC site refuses this environment |
+| 13 | Corporate tax transparency (`ato_ctt`) | Ingested | 2013-14 to 2024-25 |
+| 14, 26 | OECD panel (`oecd`) | Ingested | 17 flows: MSTI, methods used to protect IP, patents (WIPO fields, environment, ownership, co-invention, regions), business demography, venture capital, IP tax regimes, How's Life? |
+| 15 | WDI panel (`wdi`) | Ingested | 22 indicators, every country; the World Bank has archived its trade mark series |
+| 16 | WIPO IP statistics (`wipo_ipstats`) | **Needs you** | WIPO's API is undocumented: a few CSV exports, listed in the module |
+| 17 | TM-Link (`tmlink`) | Ingested | Links, applications, owners, classes, Madrid and property tables (R2); free-text tables left out |
+| 18 | IP Australia fees (`ipa_fees`) | Ingested (current only) | Application, examination, renewal, opposition fees; historical schedules need the Wayback Machine, which this environment cannot reach |
+| 19 | PBS (`pbs`) | Ingested | Date-of-supply data from July 2020 by item and month, and the item to drug map |
+| 20 | ABS R&D and venture capital (`abs_rd_vc`) | Ingested | BERD 2023-24, GOVERD 2024-25, HERD 2024, venture capital to 2018-19 (discontinued) |
+| 21 | OpenAlex (`openalex`) | **Needs a key** | OpenAlex now needs a free API key (`OPENALEX_API_KEY`); the module is ready |
+| 22 | Evidence register (`evidence`) | Ingested | 20 items, journal items checked against Crossref (one flagged: its only Crossref record is a later SSRN version) |
+| 23 | Cultural and creative activity (`bcarr_creative`) | **Needs you** | The site refuses this environment |
+| 24 | Measuring What Matters (`mwm`) | Ingested | 50 indicator pages and their data |
+| 25 | NATSEM wellbeing and trust (`natsem`) | **Needs you** | AURIN's servers refuse this environment; CC BY-NC 4.0 |
+| 27 | Small-scale renewables (`cer`) | Ingested | Every postcode file, 2001 to 2026 |
+| 28 | Wine GIs (`wine_gi`) | Ingested | The Australian GI register and the other registers' PDFs |
+| 29 | Border enforcement (`abf`) | **Needs you** | Published only inside Home Affairs annual reports |
+| 30 | Closing the Gap 8, 15, 16 (`ctg`) | Ingested | |
+| 31 | Federal Court IP judgments (`fedcourt`) | **Needs you** | The Federal Court site and AustLII refuse this environment, and AustLII's terms do not allow bulk downloads |
+| 32 | Policy events (`policy_events`) | Ingested | 13 dated changes (four marked to verify) and IP Australia's policy register (155 proposals and their status) |
+
+### What needs you
+
+1. **A current IPGOD and IPLORD extract (2021 to 2025)** from IP Australia's data team: the most valuable addition.
+2. **BigQuery and Lens access**, as you planned (Tier 3 E and F).
+3. **An OpenAlex API key** (free): set `OPENALEX_API_KEY` and run `corpus run openalex`.
+4. **Downloads** for the sources this environment cannot reach: put the files in `data/raw/<source>/` and run
+   `corpus run <source>`; each module's docstring says exactly what to fetch. In order of value: `wipo_ipstats`,
+   `nhmrc_grants`, `natsem`, `bcarr_creative`, `abf`, `fedcourt`. Alternatively, allow these hosts in the
+   environment's network settings and they can be fetched here: www.nhmrc.gov.au, www.infrastructure.gov.au,
+   adp-access.aurin.org.au and adp-gatekeeper.prod.aurin-prod.cloud.edu.au, web.archive.org (historical fees),
+   search.patentsview.org, www.judgments.fedcourt.gov.au.
+5. **Internal examination records** (Tier 3 C), for the causal designs Q5 needs now that BLADE is out.
+
+### A first look, to show the corpus works
+
+Not a finding (the IP data stop in early 2022, and the R&D data start in 2021-22): of the 18,487 companies in the
+R&D Tax Incentive reports, 36% appear in IPGOD as an applicant for any right, and 14% for a patent. Whether the rest
+are "missing filers" with protectable inventions, or firms for which registration has little value, is exactly the
+kind of question Q3 and Q4 ask.
+
+### Repository size
+
+The repo holds about 550 MB of data (the largest parts: OECD panels, IPGOD summaries, ABS regional data), every file
+under 50 MB. If it grows past about 1 GB, move the OECD raw files to R2 (`keep="r2"` in `oecd.py`).

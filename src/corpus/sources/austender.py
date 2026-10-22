@@ -97,7 +97,7 @@ def _bulk(path) -> pd.DataFrame:
 
     out = pd.DataFrame(
         {
-            "cn_id": pick("cn_id", "contract_notice_id", "cnid"),
+            "cn_id": pick("contract_id", "cn_id", "contract_notice_id"),
             "published": pick("publish_date", "published_date"),
             "signed": pick("contract_signed_date", "agreement_date", "date_signed"),
             "start": pick("start_date", "contract_start_date"),
@@ -115,7 +115,7 @@ def _bulk(path) -> pd.DataFrame:
         }
     )
     for c in ("published", "signed", "start", "end"):
-        out[c] = pd.to_datetime(out[c], errors="coerce", dayfirst=True).dt.strftime("%Y-%m-%d")
+        out[c] = pd.to_datetime(out[c].str[:10], errors="coerce", format="%Y-%m-%d").dt.strftime("%Y-%m-%d")
     out["supplier_abn"] = out["supplier_abn"].str.replace(r"\D", "", regex=True).replace("", None)
     return out
 
