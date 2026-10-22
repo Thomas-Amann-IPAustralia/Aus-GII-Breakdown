@@ -659,22 +659,30 @@ status; G50 field of study; G54 industry of employment; G60 occupation.
 | `sa2_g54` | 2,472 | repo (1.6 MB) | `SA2_CODE_2021`, `M_Ag_For_Fshg_15_19`, `M_Ag_For_Fshg_20_24`, `M_Ag_For_Fshg_25_34`, `M_Ag_For_Fshg_35_44`, `M_Ag_For_Fshg_45_54`, `M_Ag_For_Fshg_55_64`, `M_Ag_For_Fshg_65_74`, `M_Ag_For_Fshg_75_84`, `M_Ag_For_Fshg_85ov`, `M_Ag_For_Fshg_Tot`, `M_Mining_15_19`, `M_Mining_20_24`, `M_Mining_25_34` … |
 | `sa2_g60` | 2,472 | repo (0.9 MB) | `SA2_CODE_2021`, `M15_19_Managers`, `M15_19_Professionals`, `M15_19_TechnicTrades_Wrs`, `M15_19_CommunPersnlSvc_W`, `M15_19_ClericalAdminis_W`, `M15_19_Sales_W`, `M15_19_Mach_oper_drivers`, `M15_19_Labourers`, `M15_19_Occu_ID_NS`, `M15_19_Tot`, `M20_24_Managers`, `M20_24_Professionals`, `M20_24_TechnicTrades_W` … |
 
-## Social Health Atlas of Australia, Population Health Areas (optional manual download) (`phidu`)
+## Social Health Atlas of Australia, by Population Health Area and socioeconomic quintile (`phidu`)
 
 PHIDU, Torrens University Australia. Tier 2; questions 1, 2. Licence: CC BY-NC-SA 3.0 AU. Source: https://phidu.torrens.edu.au/social-health-atlases/data
 
-PHIDU Social Health Atlas of Australia, by Population Health Area (optional; replaces the NATSEM estimates).
+PHIDU Social Health Atlas of Australia: health, wellbeing and social indicators by Population Health Area.
 
-Modelled small-area estimates of health and wellbeing (such as psychological distress and self-assessed health) and
-social indicators, beside regional IP use (context, not effect; section 2 of docs/data-plan.md). CC BY-NC-SA 3.0 AU
-(non-commercial use only). The site's pages answer this environment but its files do not, so the workbook is put in
-data/raw/phidu/ by hand and read with `corpus run phidu`: from https://phidu.torrens.edu.au/social-health-atlases/data,
-'Social Health Atlas of Australia: Population Health Areas', the Australia workbook (phidu_data_pha_aust.xlsx).
-Population Health Areas are SA2s or groups of SA2s; PHIDU publishes the concordance.
+Modelled small-area estimates of mental health (psychological distress), self-assessed health and risk factors, with
+Census health conditions, mortality, use of health services and social indicators (volunteering, education,
+income support and more), beside regional IP use (context, not effect; section 2 of docs/data-plan.md). Replaces the
+NATSEM wellbeing and trust estimates, which cannot be reached. CC BY-NC-SA 3.0 AU (non-commercial use only). The
+site's files do not answer this environment, so the September 2026 workbooks were downloaded by hand from
+https://phidu.torrens.edu.au/social-health-atlases/data and put in R2 under `raw/phidu/` (too big for GitHub's web
+upload): Population Health Areas (demographic and social; health status; use and provision of health services) and
+the socioeconomic quintiles. To update, replace them there and run `corpus run phidu`.
 
-Processed: one table per file and sheet, all columns as text; see `_manual.read_dropped`.
+Population Health Areas are SA2s or groups of SA2s (2021 ASGS); each workbook's `PHAs` sheet lists them.
 
-*Not ingested yet: see the status in `docs/data-plan.md`.*
+Processed: `indicators`, one row per workbook, sheet, area, indicator, period and measure (long). `area_code` is the
+PHA code (empty for state and national totals, whose names are in `area_name`); for the quintiles workbook,
+`area_name` is the area type (capital cities, rest of state) and `quintile` the socioeconomic quintile.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `indicators` | 4,951,275 | repo (34.0 MB) | `workbook`, `sheet`, `area_code`, `area_name`, `quintile`, `indicator`, `period`, `measure`, `value` |
 
 ## Small-scale renewable installations by postcode (`cer`)
 
@@ -788,7 +796,8 @@ Management Journal 41(9), and 2022, Journal of Economics and Management Strategy
 
 Processed:
 - `citations_au`: the citations made by US publications in patent families with an Australian applicant or inventor
-  (from `google_patents/members`), with the family, so the science behind Australian inventions can be traced. `oaid` is the OpenAlex work id without its 'W'.
+  (from `google_patents/members`), with the family, so the science behind Australian inventions can be traced.
+  `oaid` is the OpenAlex work id without its 'W'.
 - `ppp`: patent-paper pairs, as published.
 
 Which citing patents rely on Australian research needs the OpenAlex works with an Australian institution (about 2.4
@@ -798,6 +807,34 @@ million cited works); the full citations file is kept in R2 for that join.
 |---|---:|---|---|
 | `citations_au` | 620,364 | repo (2.3 MB) | `patent`, `family_id`, `oaid`, `reftype`, `confscore`, `wherefound` |
 | `ppp` | 59,202 | repo (0.7 MB) | `magid`, `patent_id`, `confidence_level` |
+
+## OpenAlex works with an Australian institution, and US patents' citations to them (`openalex_works`)
+
+OurResearch (OpenAlex), with Reliance on Science. Tier 3; questions 2, 4. Licence: CC0 (OpenAlex); CC BY-NC 4.0 (the citations). Source: https://openalex.org/
+
+OpenAlex: every cited work with an Australian institution, and the patents that cite Australian research.
+
+Q2 and Q4: which Australian research, and which institutions' research, US patents build on (knowledge diffusion
+from public research, and the commercialisation gap). Joins Reliance on Science (`reliance_on_science`, every USPTO
+patent's citations to OpenAlex works) to the OpenAlex works with at least one Australian institution. Needs
+`OPENALEX_API_KEY`. OpenAlex charges about US$0.0001 a call and gives each key US$1 (10,000 calls) a day free; the
+full harvest takes about 13,000 calls, so a run stops before the day's allowance is spent and the next run (after
+OpenAlex's daily reset) carries on where it stopped.
+
+Two steps:
+1. Every work with an Australian institution that has been cited at least once (about 2.4 million), by publication
+   year: id, year, type and primary topic's field and subfield (light pages, 200 works a call). Raw: one gzipped CSV
+   per year (repo), kept as each year completes.
+2. For the works among those that USPTO patents cite, their Australian institutions (100 works a call; authors' names
+   are not kept). Raw: the results (repo, gzipped JSON lines).
+
+Processed:
+- `au_works`: every cited work with an Australian institution (step 1).
+- `cited_au_works`: the works patents cite, with the OpenAlex ids, names and types of their Australian institutions.
+- `patent_citations`: every USPTO patent citation to Australian research (patent, work, reference type, confidence,
+  where found), with whether the citing patent's family has an Australian applicant or inventor (`google_patents`).
+
+*Not ingested yet: see the status in `docs/data-plan.md`.*
 
 ## IP policy changes (dates and terms) for natural experiments (`policy_events`)
 

@@ -82,7 +82,7 @@ wellbeing using established evidence:
 | Culture, identity and social cohesion (cohesive) | Protection of Indigenous Knowledge and cultural expression; regional identity (geographical indications, certification marks); creative industries; against that, misappropriation | IPGOD trade marks (certification marks, Indigenous words, objections); Wine Australia's GI register; cultural and creative activity estimates (Bureau of Communications, Arts and Regional Research); Closing the Gap targets 15 and 16 as context |
 | Consumer trust and safety (secure) | Trade marks lower search costs and signal quality; enforcement against counterfeits, some of which are unsafe | Trade mark oppositions and non-use removals (IP RAPID); IP judgments, including counterfeiting and passing off (`fedcourt`). Border seizures of counterfeits are not published separately (the Home Affairs annual reports fold them into "other goods") |
 | Knowledge and opportunity (prosperous, cohesive) | Disclosure of inventions; rights lapsing into the public domain; who can take part in the system | Forward citations and families (Google Patents); patents' citations to science (Reliance on Science); early lapse rates (IP RAPID); the distribution analyses under Q2 |
-| Wellbeing in places (cohesive, healthy) | Whether regions with more innovation and IP activity also do better on life satisfaction and trust, as context for distribution (not as proof of effect) | 2021 Census by SA2 and postcode: volunteering, unpaid care, long-term and mental health conditions, residential stability (`abs_census`); optionally PHIDU's modelled health and wellbeing estimates. No public source gives small-area life satisfaction or trust now that NATSEM's AURIN files cannot be reached |
+| Wellbeing in places (cohesive, healthy) | Whether regions with more innovation and IP activity also do better on life satisfaction and trust, as context for distribution (not as proof of effect) | 2021 Census by SA2 and postcode: volunteering, unpaid care, long-term and mental health conditions, residential stability (`abs_census`); PHIDU's modelled health and wellbeing estimates by Population Health Area (`phidu`). No public source gives small-area life satisfaction or trust now that NATSEM's AURIN files cannot be reached |
 | Wellbeing overall | The final layer: converting health, environmental and social outcomes into comparable terms for Q5 | Measuring What Matters (ABS, about 50 indicators); OECD How's Life? for comparators; wellbeing valuation evidence (WELLBY values, Office of Impact Analysis guidance on valuing non-market outcomes); HILDA if individual-level wellbeing is needed (Tier 3) |
 
 Gaps that remain: disability and age are not observable for IP users in any open data; copyright is not registered,
@@ -260,7 +260,7 @@ columns. In short:
 | 22 | Evidence register (`evidence`) | Ingested | 20 items, journal items checked against Crossref (one flagged: its only Crossref record is a later SSRN version) |
 | 23 | Cultural and creative activity (`bcarr_creative`) | Ingested (your download) | Both releases (2008-09 to 2022-23, 2015-16 to 2024-25) as one long table |
 | 24 | Measuring What Matters (`mwm`) | Ingested | 50 indicator pages and their data |
-| 25 | 2021 Census (`abs_census`), in place of NATSEM | Ingested | 14 General Community Profile tables by SA2 and postal area: volunteering, unpaid care, health conditions, mobility, labour force, qualifications, industry, occupation. PHIDU's Social Health Atlas (`phidu`) is an optional download |
+| 25 | 2021 Census (`abs_census`), in place of NATSEM | Ingested | 14 General Community Profile tables by SA2 and postal area: volunteering, unpaid care, health conditions, mobility, labour force, qualifications, industry, occupation; and PHIDU's Social Health Atlas (`phidu`, your download, in R2): 4.95 million values by Population Health Area and socioeconomic quintile, including modelled estimates of psychological distress, self-assessed health and risk factors (non-commercial licence) |
 | 27 | Small-scale renewables (`cer`) | Ingested | Every postcode file, 2001 to 2026 |
 | 28 | Wine GIs (`wine_gi`) | Ingested | The Australian GI register and the other registers' PDFs |
 | 29 | Border enforcement | Dropped | The Home Affairs annual reports (2016-17 to 2024-25) do not report IP seizures separately |
@@ -275,11 +275,9 @@ columns. In short:
 
 Nothing is blocking. Optional:
 
-1. **PHIDU's Social Health Atlas** (`phidu`): the Population Health Area workbook for Australia, put in
-   `data/raw/phidu/` (the site's files do not answer this environment). Non-commercial licence.
-2. **Which citing patents rely on Australian research**: tagging the papers patents cite with OpenAlex's
-   institutions takes about 12,000 OpenAlex calls (OpenAlex now charges about US$0.0001 a call, so a dollar or two).
-3. **BigQuery**: `GCP_PROJECT_ID` should be a project id or left unset (the key's own project is used); giving the
+1. **Which citing patents rely on Australian research** (`openalex_works`): approved; it takes about 13,000 OpenAlex
+   calls, more than one day's free allowance (10,000), so it runs over two days, resuming where it stopped.
+2. **BigQuery**: `GCP_PROJECT_ID` should be a project id or left unset (the key's own project is used); giving the
    service account the BigQuery Read Session User role makes `google_patents` download much faster.
 
 Lens was not pursued (its API is paid beyond a trial); Google Patents and Reliance on Science cover its uses.

@@ -10553,6 +10553,54 @@
    },
    "run": "2026-10-22"
   },
+  "phidu": {
+   "files": {
+    "processed/indicators": {
+     "bytes": 34040786,
+     "columns": [
+      "workbook",
+      "sheet",
+      "area_code",
+      "area_name",
+      "quintile",
+      "indicator",
+      "period",
+      "measure",
+      "value"
+     ],
+     "describe": "PHIDU Social Health Atlas indicators by PHA and quintile, long",
+     "location": "repo",
+     "path": "data/processed/phidu/indicators.parquet",
+     "rows": 4951275,
+     "sha256": "9ab53ce2f203150fe87b815d03feb0914f6ee8caa5787cbaf175cf26bef042bf"
+    },
+    "raw/phidu_data_pha_demographic_social_aust.xlsx": {
+     "bytes": 14816377,
+     "key": "raw/phidu/phidu_data_pha_demographic_social_aust.xlsx",
+     "location": "r2",
+     "sha256": "9dc9146a429865d45a93a18aa1c17d551882db7e3cf2cae7a3bf9caadc7a9710"
+    },
+    "raw/phidu_data_pha_health_status_aust.xlsx": {
+     "bytes": 31736985,
+     "key": "raw/phidu/phidu_data_pha_health_status_aust.xlsx",
+     "location": "r2",
+     "sha256": "d2b8730fd35c12ce3879fa881aa7a4473e1b3bb4f2cba820d4680c93aa33dcc8"
+    },
+    "raw/phidu_data_pha_use_provision_health_aust.xlsx": {
+     "bytes": 23744218,
+     "key": "raw/phidu/phidu_data_pha_use_provision_health_aust.xlsx",
+     "location": "r2",
+     "sha256": "808737168eb38689ecdf75e4d7c077cdddb194b44bc349a715b750f69edc7703"
+    },
+    "raw/phidu_data_quintiles_aust.xlsx": {
+     "bytes": 6629691,
+     "key": "raw/phidu/phidu_data_quintiles_aust.xlsx",
+     "location": "r2",
+     "sha256": "7ccdffa5df0fc5779bed8e16b0e6e663618aa700577a8c058a0359a78aa662a3"
+    }
+   },
+   "run": "2026-10-22"
+  },
   "policy_events": {
    "files": {
     "processed/events": {

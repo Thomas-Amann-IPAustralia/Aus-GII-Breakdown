@@ -244,7 +244,7 @@ sources:
     licence: CC BY 4.0
 
   - id: phidu
-    title: Social Health Atlas of Australia, Population Health Areas (optional manual download)
+    title: Social Health Atlas of Australia, by Population Health Area and socioeconomic quintile
     publisher: PHIDU, Torrens University Australia
     tier: 2
     questions: [1, 2]
