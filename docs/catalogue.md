@@ -424,7 +424,11 @@ Processed:
 - `office`: indicators reported by office only (rights in force, examiners, pendency, oppositions).
 - `pmh`: PCT applications by origin, Madrid applications by country of holder and Hague applications by origin.
 
-*Not ingested yet: see the status in `docs/data-plan.md`.*
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `office` | 8,401 | repo (0.0 MB) | `right`, `indicator_id`, `indicator`, `office_code`, `office`, `breakdown`, `year`, `value`, `last_updated` |
+| `office_origin` | 4,939,588 | repo (7.2 MB) | `right`, `indicator_id`, `indicator`, `office_code`, `office`, `origin`, `origin_code`, `breakdown`, `year`, `value`, `last_updated` |
+| `pmh` | 8,440 | repo (0.0 MB) | `system`, `indicator_id`, `indicator`, `origin_code`, `origin`, `year`, `value`, `last_updated` |
 
 ## TM-Link, trade marks linked across offices (`tmlink`)
 

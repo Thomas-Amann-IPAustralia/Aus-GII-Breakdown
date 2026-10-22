@@ -11085,6 +11085,237 @@
     }
    },
    "run": "2026-10-22"
+  },
+  "wipo_ipstats": {
+   "files": {
+    "processed/office": {
+     "bytes": 35988,
+     "columns": [
+      "right",
+      "indicator_id",
+      "indicator",
+      "office_code",
+      "office",
+      "breakdown",
+      "year",
+      "value",
+      "last_updated"
+     ],
+     "describe": "WIPO indicators by office only, long",
+     "location": "repo",
+     "path": "data/processed/wipo_ipstats/office.parquet",
+     "rows": 8401,
+     "sha256": "3cad2d26046329213ca63dc0936b053c91a8582b769c4b6d8f88f658a6d2f4ae"
+    },
+    "processed/office_origin": {
+     "bytes": 7184008,
+     "columns": [
+      "right",
+      "indicator_id",
+      "indicator",
+      "office_code",
+      "office",
+      "origin",
+      "origin_code",
+      "breakdown",
+      "year",
+      "value",
+      "last_updated"
+     ],
+     "describe": "WIPO indicators by filing office and applicant's origin, long",
+     "location": "repo",
+     "path": "data/processed/wipo_ipstats/office_origin.parquet",
+     "rows": 4939588,
+     "sha256": "52e445dd17d23a43cd39f509c0a5fe72422016721bcb3109a9d1d7d708f3449b"
+    },
+    "processed/pmh": {
+     "bytes": 25436,
+     "columns": [
+      "system",
+      "indicator_id",
+      "indicator",
+      "origin_code",
+      "origin",
+      "year",
+      "value",
+      "last_updated"
+     ],
+     "describe": "PCT, Madrid and Hague applications by origin or holder, long",
+     "location": "repo",
+     "path": "data/processed/wipo_ipstats/pmh.parquet",
+     "rows": 8440,
+     "sha256": "84d3332780bfd2bde0a2241fc1df436b6ae7738a5ea274e043a46f36ac4c86c3"
+    },
+    "raw/hague_3001.csv.gz": {
+     "bytes": 4241,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/hague_3001.csv.gz",
+     "sha256": "3d04f287922c8a591ef7513b0d144e5ef034c38835b6dc26957b6e14b4e40f46",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/pmh-search/downloadCsv (hague 3001)"
+    },
+    "raw/industrial_63_11.csv.gz": {
+     "bytes": 8151,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/industrial_63_11.csv.gz",
+     "sha256": "edc709a4ba82aa5fa8bc815c9a020991c51a90b9cf265b4bd4c7ce95357f51d3",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (industrial 63 11)"
+    },
+    "raw/industrial_68_15.csv.gz": {
+     "bytes": 150345,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/industrial_68_15.csv.gz",
+     "sha256": "a43ee8df5cdeb64c56e32f12810f77593b86c22c33211e17383fdb83a54e1817",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (industrial 68 15)"
+    },
+    "raw/industrial_69_15.csv.gz": {
+     "bytes": 139663,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/industrial_69_15.csv.gz",
+     "sha256": "fa1b1954dd67f7bf82eaf9214023842a6f86e1646d5f07746bcc77bbcd99b715",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (industrial 69 15)"
+    },
+    "raw/industrial_92_15.csv.gz": {
+     "bytes": 666475,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/industrial_92_15.csv.gz",
+     "sha256": "208bc4ecd937bafed7285b893decac38f42a84e3774b2cd5ec360ee9979bbe54",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (industrial 92 15)"
+    },
+    "raw/madrid_2002.csv.gz": {
+     "bytes": 8009,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/madrid_2002.csv.gz",
+     "sha256": "e58a0c8972e64f6f442c1c69aa021029c6bff6a2ed1e19a162f942cc7a47c676",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/pmh-search/downloadCsv (madrid 2002)"
+    },
+    "raw/patent_10_15.csv.gz": {
+     "bytes": 200385,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_10_15.csv.gz",
+     "sha256": "32e245b95b6e32ba0acd372f2d34017c3442d2f824785b594214d7c4f6ae482a",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 10 15)"
+    },
+    "raw/patent_111_11.csv.gz": {
+     "bytes": 3881,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_111_11.csv.gz",
+     "sha256": "fbca8f7c2f707301fdd44d9d6962d5fd23266e666ac5298e2ab6c7fb4f12a9f0",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 111 11)"
+    },
+    "raw/patent_112_11.csv.gz": {
+     "bytes": 3109,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_112_11.csv.gz",
+     "sha256": "d382fac46f5cd56022787b06b0024e363b499698166657a8bd44cf0e2f85fb9a",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 112 11)"
+    },
+    "raw/patent_120_11.csv.gz": {
+     "bytes": 1770,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_120_11.csv.gz",
+     "sha256": "df3019a05a40bf3571d00000f219bad02f308a1be811361570ab7021c825fc05",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 120 11)"
+    },
+    "raw/patent_15_15.csv.gz": {
+     "bytes": 175627,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_15_15.csv.gz",
+     "sha256": "e1df87cbcce506ee4184938d9d7a82cf1f48d3b75b7b70e26a8f469fe4af3460",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 15 15)"
+    },
+    "raw/patent_17_15.csv.gz": {
+     "bytes": 1806061,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_17_15.csv.gz",
+     "sha256": "d13969fcb6581f6dee5f4b6080d5e6b30f1f1da179bdb82fef5a4e4125bd9da9",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 17 15)"
+    },
+    "raw/patent_21_15.csv.gz": {
+     "bytes": 228048,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_21_15.csv.gz",
+     "sha256": "4a71e427e9d16a4487e1df1d096e876ba7c37d50b230a0b08ac9ec4064f3dbc9",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 21 15)"
+    },
+    "raw/patent_23_15.csv.gz": {
+     "bytes": 158295,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_23_15.csv.gz",
+     "sha256": "ee820eba71f1fcbda13434fd2b93b1915876343c880138e5c418b7f87f276087",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 23 15)"
+    },
+    "raw/patent_25_15.csv.gz": {
+     "bytes": 95620,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_25_15.csv.gz",
+     "sha256": "caa123a05e84382e78d05cf288d6d596e5e423c89b8a41da61967886a669aef6",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 25 15)"
+    },
+    "raw/patent_26_15.csv.gz": {
+     "bytes": 29469,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_26_15.csv.gz",
+     "sha256": "f4d0703ab6b1276e106093f820bd743b0bc87b077fed1f50d9ce96b93305f237",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 26 15)"
+    },
+    "raw/pct_1001.csv.gz": {
+     "bytes": 9253,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/pct_1001.csv.gz",
+     "sha256": "e338bdc856d2a112e6578e40ef20b83970e80b227dc73d1967d7505d8e7ee863",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/pmh-search/downloadCsv (pct 1001)"
+    },
+    "raw/trademark_114_11.csv.gz": {
+     "bytes": 5308,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/trademark_114_11.csv.gz",
+     "sha256": "7e0135bd90d14c2aa16776d427b0d8612b263ffa7830458fa82dc708e1d37432",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (trademark 114 11)"
+    },
+    "raw/trademark_117_11.csv.gz": {
+     "bytes": 3398,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/trademark_117_11.csv.gz",
+     "sha256": "ce64a1d2606bf4db0f14971960028017e28e5baecef916665a75f6bff365c099",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (trademark 117 11)"
+    },
+    "raw/trademark_43_11.csv.gz": {
+     "bytes": 9627,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/trademark_43_11.csv.gz",
+     "sha256": "d718a10c9bbfa201bcc9cd049c5b033cdf77863270910b632515b46f80d400c0",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (trademark 43 11)"
+    },
+    "raw/trademark_48_15.csv.gz": {
+     "bytes": 413373,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/trademark_48_15.csv.gz",
+     "sha256": "9931446e64c537b444b6005d408aebdabeb9cf472d58a69dd1623ef441fd97da",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (trademark 48 15)"
+    },
+    "raw/trademark_49_15.csv.gz": {
+     "bytes": 402840,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/trademark_49_15.csv.gz",
+     "sha256": "0764bca5c59f86fc6eb2879243bd5cafe52c85e3c193424a443469f6b2b21b96",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (trademark 49 15)"
+    },
+    "raw/trademark_90_15.csv.gz": {
+     "bytes": 4890339,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/trademark_90_15.csv.gz",
+     "sha256": "fe81d66bf32314485e6f572f6cf41213d1cf67c598ce6711197cd2a040c2549c",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (trademark 90 15)"
+    },
+    "raw/utility_70_15.csv.gz": {
+     "bytes": 42259,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/utility_70_15.csv.gz",
+     "sha256": "260a5f39e31d78962353539dbeb45b2d904155852d0c8377e3a38ae97c00178a",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (utility 70 15)"
+    }
+   },
+   "run": "2026-10-22"
   }
  }
 }
