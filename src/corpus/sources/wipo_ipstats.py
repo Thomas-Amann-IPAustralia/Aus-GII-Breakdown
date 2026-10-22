@@ -100,6 +100,21 @@ def _keep(ctx: Ctx, name: str, text: str, url: str) -> None:
         ctx.keep_raw(ctx.raw / p.name, url=url)
 
 
+def _download(params: dict, offices: list[str], breakdown: bool) -> str:
+    """One export, or for indicators with a breakdown (classes, fields), one per 20 offices, joined."""
+    if not breakdown:
+        return _get("ips-search/downloadCsv", **params).content.decode("utf-8-sig")
+    parts = []
+    for i in range(0, len(offices), 20):
+        text = _get("ips-search/downloadCsv", **{**params, "ipsOffSelValues": ",".join(offices[i : i + 20])})
+        lines = text.content.decode("utf-8-sig").splitlines()
+        start = next((j for j, line in enumerate(lines) if re.search(r",\s*\"?(19|20)\d\d\"?,", line)), None)
+        if start is None:
+            continue
+        parts.append(lines if not parts else lines[start + 1 :])
+    return "\n".join(line for part in parts for line in part)
+
+
 def _ips(ctx: Ctx) -> tuple[pd.DataFrame, pd.DataFrame]:
     labels: dict[str, dict[int, str]] = {}
     both, office_only = [], []
@@ -114,9 +129,13 @@ def _ips(ctx: Ctx) -> tuple[pd.DataFrame, pd.DataFrame]:
             params["ipsOriSelValues"] = ",".join(origins)
         if lists.get("ipsTechList"):
             params["ipsTechSelValues"] = ",".join(lists["ipsTechList"])
-        r = _get("ips-search/downloadCsv", **params)
-        text = r.content.decode("utf-8-sig")
-        _keep(ctx, f"{tab}_{ind}_{rp}", text, f"{API}/ips-search/downloadCsv ({tab} {ind} {rp})")
+        name = f"{tab}_{ind}_{rp}"
+        cached = ctx.raw / f"{name}.csv.gz"
+        if cached.exists():  # delete data/raw/wipo_ipstats/ to fetch afresh
+            text = gzip.decompress(cached.read_bytes()).decode()
+        else:
+            text = _download(params, list(offices), bool(lists.get("ipsTechList")))
+        _keep(ctx, name, text, f"{API}/ips-search/downloadCsv ({tab} {ind} {rp})")
         updated, df = _read(text)
         ctx.log(f"{tab} {ind}: {len(df):,} values")
         dims = [c for c in df.columns if c not in ("year", "value")]
