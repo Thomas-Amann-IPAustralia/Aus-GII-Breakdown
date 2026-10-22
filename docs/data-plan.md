@@ -268,7 +268,7 @@ columns. In short:
 | 31 | IP judgments (`fedcourt`) | Ingested | 2,666 decisions (Federal Court 2,097, Full Court 326, High Court 146, Copyright Tribunal 80) to 10 March 2025, from the Open Australian Legal Corpus: cover-page fields (practice area and sub-area, catchwords, legislation, hearing and judgment dates, solicitors), rights and Acts cited, full texts (R2) |
 | J | TGA register (`tga`) | Ingested (your download) | 98,147 ARTG entries (35,113 medicines, 62,647 devices) and their active ingredients; no dates |
 | E | Google Patents (`google_patents`) | Ingested | 1.75 million families with an Australian publication, applicant or inventor (offices, grants, forward citations, titles); 3.2 million publications, with Australian application numbers that join to IP RAPID; 1.85 million citation pairs |
-| F | Reliance on Science (`reliance_on_science`) | Ingested | US patents' citations to scientific papers (OpenAlex ids), for families touching Australia; patent-paper pairs |
+| F | Reliance on Science (`reliance_on_science`) | Ingested | 620,364 citations to 175,607 papers (OpenAlex ids) by US patents in 18,254 families with Australian applicants or inventors; 59,202 patent-paper pairs |
 | 32 | Policy events (`policy_events`) | Ingested | 13 dated changes (four marked to verify) and IP Australia's policy register (155 proposals and their status) |
 
 ### What needs you

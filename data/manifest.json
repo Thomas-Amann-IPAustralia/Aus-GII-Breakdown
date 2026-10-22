@@ -10650,6 +10650,54 @@
    },
    "run": "2026-10-22"
   },
+  "reliance_on_science": {
+   "files": {
+    "processed/citations_au": {
+     "bytes": 2333083,
+     "columns": [
+      "patent",
+      "family_id",
+      "oaid",
+      "reftype",
+      "confscore",
+      "wherefound"
+     ],
+     "describe": "US patents' citations to papers, families with Australian applicants or inventors",
+     "location": "repo",
+     "path": "data/processed/reliance_on_science/citations_au.parquet",
+     "rows": 620364,
+     "sha256": "a382419ca2906cf9902e02aff172dce4e4a32d4c3bfcad6720c669af545873f6"
+    },
+    "processed/ppp": {
+     "bytes": 721243,
+     "columns": [
+      "magid",
+      "patent_id",
+      "confidence_level"
+     ],
+     "describe": "Patent-paper pairs (USPTO, through 2021), as published",
+     "location": "repo",
+     "path": "data/processed/reliance_on_science/ppp.parquet",
+     "rows": 59202,
+     "sha256": "b0bb76d9d137b842ab0a5f9f31e5ef2ba50d5808f74f5d7751cf68bb50836ea7"
+    },
+    "raw/finalpppsadjusted.csv": {
+     "bytes": 1390019,
+     "location": "repo",
+     "path": "data/raw/reliance_on_science/finalpppsadjusted.csv",
+     "sha256": "683de58819a1f1857849ff1dca3d28d2bf84ec2aad18e459409621a440ca3f44",
+     "url": "https://zenodo.org/records/22967630/files/finalpppsadjusted.csv?download=1"
+    },
+    "raw/pcs_oa_uspto.csv": {
+     "bytes": 1437584291,
+     "key": "raw/reliance_on_science/pcs_oa_uspto.csv",
+     "location": "r2",
+     "sha256": "b08253525407405e62fc20bb4d0989e6a721ed670cfb9657f2c657d40f74068f",
+     "url": "https://zenodo.org/records/22967630/files/pcs_oa_uspto.csv?download=1"
+    }
+   },
+   "run": "2026-10-22"
+  },
   "tga": {
    "files": {
     "processed/artg": {

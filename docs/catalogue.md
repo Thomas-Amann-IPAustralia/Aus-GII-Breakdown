@@ -787,15 +787,17 @@ Management Journal 41(9), and 2022, Journal of Economics and Management Strategy
 1.4 GB) and the pairs file (repo).
 
 Processed:
-- `citations_au`: the citations made by US publications in patent families that touch Australia (from
-  `google_patents/members`), with the family, so the science behind Australian inventions (and foreign inventions
-  filed in Australia) can be traced. `oaid` is the OpenAlex work id without its 'W'.
+- `citations_au`: the citations made by US publications in patent families with an Australian applicant or inventor
+  (from `google_patents/members`), with the family, so the science behind Australian inventions can be traced. `oaid` is the OpenAlex work id without its 'W'.
 - `ppp`: patent-paper pairs, as published.
 
 Which citing patents rely on Australian research needs the OpenAlex works with an Australian institution (about 2.4
 million cited works); the full citations file is kept in R2 for that join.
 
-*Not ingested yet: see the status in `docs/data-plan.md`.*
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `citations_au` | 620,364 | repo (2.3 MB) | `patent`, `family_id`, `oaid`, `reftype`, `confscore`, `wherefound` |
+| `ppp` | 59,202 | repo (0.7 MB) | `magid`, `patent_id`, `confidence_level` |
 
 ## IP policy changes (dates and terms) for natural experiments (`policy_events`)
 
