@@ -1285,6 +1285,137 @@
    ],
    "run": "2026-10-22"
   },
+  "ctg": {
+   "files": {
+    "processed/data": {
+     "bytes": 87369,
+     "columns": [
+      "target",
+      "table_number",
+      "year",
+      "measure",
+      "age",
+      "sex",
+      "indigenous_status",
+      "remoteness",
+      "seifa_irsd",
+      "description1",
+      "description2",
+      "description3",
+      "description4",
+      "description6",
+      "description7",
+      "data_source",
+      "unit",
+      "jurisdiction",
+      "value_text",
+      "value",
+      "uncertainty",
+      "aus gov"
+     ],
+     "describe": "Targets 8, 15 and 16, long",
+     "location": "repo",
+     "path": "data/processed/ctg/data.parquet",
+     "rows": 11264,
+     "sha256": "8f9be1776cfe68fdf26ed4bf1be949e9578607b549100ecc8880798a58c927a8"
+    },
+    "raw/ctg08-economic-participation.csv": {
+     "bytes": 335245,
+     "location": "repo",
+     "path": "data/raw/ctg/ctg08-economic-participation.csv",
+     "sha256": "34790086f44285d1aa0ac6cd07244bbe11512a4c41e3d3805dfdbf8bb9d15fe0"
+    },
+    "raw/ctg15-land-waters.csv": {
+     "bytes": 137039,
+     "location": "repo",
+     "path": "data/raw/ctg/ctg15-land-waters.csv",
+     "sha256": "9b8971d60536658ed8696331777c98af2c817b9a15b0aa4fee0617a48e990bc9"
+    },
+    "raw/ctg16-culture-language.csv": {
+     "bytes": 190986,
+     "location": "repo",
+     "path": "data/raw/ctg/ctg16-culture-language.csv",
+     "sha256": "c47b91eefc180bdd4e1fc52a1ec898c2cbaf1ffcace06724fd7a1bb6f2adebbd"
+    }
+   },
+   "run": "2026-10-22"
+  },
+  "gii": {
+   "files": {
+    "processed/data": {
+     "bytes": 244582,
+     "columns": [
+      "iso3",
+      "economy_name",
+      "num",
+      "name",
+      "datayr",
+      "value_screen",
+      "score",
+      "rank",
+      "sw_overall",
+      "sw_incgrp",
+      "outdated",
+      "dmc"
+     ],
+     "describe": "Every economy's value, score and rank on every GII node",
+     "location": "repo",
+     "path": "data/processed/gii/data.parquet",
+     "rows": 15290,
+     "sha256": "b4dc5543e2c6eb70949787639ca4cbb3ec36723a4b5128d6722c5231a020f85b"
+    },
+    "processed/economies": {
+     "bytes": 10440,
+     "columns": [
+      "iso3",
+      "economy_name",
+      "income_grp",
+      "income_grp_code",
+      "subreg_un",
+      "subreg_un_code",
+      "pop",
+      "pppgdp",
+      "ppppc"
+     ],
+     "describe": "GII 2026 economies",
+     "location": "repo",
+     "path": "data/processed/gii/economies.parquet",
+     "rows": 139,
+     "sha256": "54835ec0c3d9bcb2052c499ce1f641a9432046c6a528f9e1192ee2074fc34b04"
+    },
+    "processed/structure": {
+     "bytes": 27630,
+     "columns": [
+      "num",
+      "name",
+      "level_type",
+      "type",
+      "profile",
+      "description",
+      "source",
+      "website"
+     ],
+     "describe": "The GII 2026 tree",
+     "location": "repo",
+     "path": "data/processed/gii/structure.parquet",
+     "rows": 110,
+     "sha256": "8ee603135cd0c56aa4d88ef344c341aeeada516a15b7abe3ea91db737d729a66"
+    },
+    "raw/gii-2026-appendix-3-sources-and-definitions.md": {
+     "bytes": 85654,
+     "location": "repo",
+     "path": "data/raw/gii/gii-2026-appendix-3-sources-and-definitions.md",
+     "sha256": "cc9c7eddf0fd4997ee42f53b6e3e237d4de72aff6026b90d76c3074ad4206021"
+    },
+    "raw/gii-2026-data.xlsx": {
+     "bytes": 929719,
+     "location": "repo",
+     "path": "data/raw/gii/gii-2026-data.xlsx",
+     "sha256": "8e8f9e9c1e21a4e84da706a5f48814530f6986ae6903bfdc6b7581ddd6137fc7"
+    }
+   },
+   "run": "2026-10-22"
+  },
   "ipgod": {
    "files": {
     "processed/applicant_year": {

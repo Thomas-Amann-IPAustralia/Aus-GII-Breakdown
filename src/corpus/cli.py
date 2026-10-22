@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import importlib
+import importlib.util
 import sys
 import traceback
 
