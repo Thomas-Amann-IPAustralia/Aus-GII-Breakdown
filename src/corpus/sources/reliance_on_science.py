@@ -9,7 +9,8 @@ Management Journal 41(9), and 2022, Journal of Economics and Management Strategy
 
 Processed:
 - `citations_au`: the citations made by US publications in patent families with an Australian applicant or inventor
-  (from `google_patents/members`), with the family, so the science behind Australian inventions can be traced. `oaid` is the OpenAlex work id without its 'W'.
+  (from `google_patents/members`), with the family, so the science behind Australian inventions can be traced.
+  `oaid` is the OpenAlex work id without its 'W'.
 - `ppp`: patent-paper pairs, as published.
 
 Which citing patents rely on Australian research needs the OpenAlex works with an Australian institution (about 2.4
@@ -40,6 +41,6 @@ def run(ctx: Ctx) -> None:
         order by us.family_id, c.patent, c.oaid
         """
     ).to_arrow_table()
-    ctx.table(au, "citations_au", describe="US patents' citations to papers, families with Australian applicants or inventors")
+    ctx.table(au, "citations_au", describe="US patents' citations to papers, Australian applicants' families")
     ppp = con.sql(f"select * from read_csv('{pairs}', header = true, all_varchar = true)").to_arrow_table()
     ctx.table(ppp, "ppp", describe="Patent-paper pairs (USPTO, through 2021), as published")
