@@ -1,116 +1,276 @@
-# The source register: every raw file in data/raw, where it came from and how the build uses it.
-# `original` is the file name as uploaded, before the clean-up of 2026-10-21. Licences are as the publisher states
-# them where we are sure; otherwise "see the publisher's terms" (check before republishing outside this repo).
+# The source register: every source in the corpus, where it comes from, its licence, and what it is for.
+# `id` is the module in src/corpus/sources/ and the folder in data/raw/ and data/processed/. `questions` are the
+# research goal's core questions (docs/research-goal.md §3) the source serves; `tier` is from docs/data-plan.md.
+# What each run fetched and wrote (SHA-256, size, rows, repo or R2) is in data/manifest.json.
 
 sources:
+  # Tier 1: the spine --------------------------------------------------------------------------------------------------
+  - id: ipgod
+    title: Intellectual Property Government Open Data (IPGOD) 2022
+    publisher: IP Australia
+    tier: 1
+    questions: [1, 2, 3, 4]
+    url: https://data.gov.au/data/dataset/ipgod2022
+    licence: CC BY 2.5 AU
+    coverage: Applications from 1904 to early 2022 (patents, trade marks, designs, plant breeder's rights)
+
+  - id: iplord
+    title: Intellectual Property Longitudinal Research Data (IPLORD) 2020
+    publisher: IP Australia
+    tier: 1
+    questions: [2, 3]
+    url: https://data.gov.au/data/dataset/intellectual-property-longitudinal-research-data-2020
+    licence: CC BY 4.0
+    coverage: Applicants by financial year, 1904 to 2020, with ABN where known
+
+  - id: abr
+    title: ABN Bulk Extract
+    publisher: Australian Business Register
+    tier: 1
+    questions: [2, 3]
+    url: https://data.gov.au/data/dataset/abn-bulk-extract
+    licence: CC BY 3.0 AU
+    coverage: Every ABN (current and cancelled) as at the extract date
+
+  - id: asic
+    title: ASIC Company Dataset
+    publisher: Australian Securities and Investments Commission
+    tier: 1
+    questions: [2, 3]
+    url: https://data.gov.au/data/dataset/asic-companies
+    licence: CC BY 3.0 AU
+    coverage: Every registered and deregistered company, as at the extract date
+
+  - id: rdti
+    title: Research and Development Tax Incentive, report of entity data
+    publisher: Australian Taxation Office
+    tier: 1
+    questions: [3, 4]
+    url: https://data.gov.au/data/dataset/research-and-development-tax-incentive
+    licence: CC BY 3.0 AU
+
+  - id: abs_bcs
+    title: Business Characteristics Survey and characteristics of Australian business (innovation, barriers, finance)
+    publisher: Australian Bureau of Statistics
+    tier: 1
+    questions: [1, 3, 4]
+    url: https://data.api.abs.gov.au/
+    licence: CC BY 4.0
+
+  - id: abs_cabee
+    title: Counts of Australian Businesses, including Entries and Exits
+    publisher: Australian Bureau of Statistics
+    tier: 1
+    questions: [2, 4]
+    url: https://www.abs.gov.au/statistics/economy/business-indicators/counts-australian-businesses-including-entries-and-exits
+    licence: CC BY 4.0
+
+  - id: abs_regions
+    title: SEIFA 2021, Data by Region and ASGS correspondences
+    publisher: Australian Bureau of Statistics
+    tier: 1
+    questions: [2, 4]
+    url: https://data.api.abs.gov.au/
+    licence: CC BY 4.0
+
+  - id: concordances
+    title: Classification concordances (IPC to technology fields and industries; Nice classes; IPC Green Inventory)
+    publisher: WIPO and others
+    tier: 1
+    questions: [1, 2]
+    url: https://www.wipo.int/
+    licence: see each file's entry in data/raw/concordances/README.md
+
+  - id: wgnd
+    title: World Gender-Name Dictionary 2.0
+    publisher: WIPO (Harvard Dataverse)
+    tier: 1
+    questions: [2]
+    url: https://doi.org/10.7910/DVN/MSEGSJ
+    licence: CC0 1.0
+
+  # Context --------------------------------------------------------------------------------------------------------------
   - id: gii
-    title: Global Innovation Index 2026, data file
+    title: Global Innovation Index 2026, data file and Appendix III
     publisher: WIPO
-    file: data/raw/wipo-gii/gii-2026-data.xlsx
-    original: wipo-pub-2000-2026-tech1.xlsx
+    tier: context
+    questions: [4]
     url: https://www.wipo.int/global_innovation_index/en/
     licence: CC BY 4.0
-    used: Economies compared (139 economies; every index, pillar, sub-pillar and indicator) and the GII breakdown page
-    notes: >-
-      Scores are 0-100 (normalised); values are each indicator's screened value in its own unit. As in the printed
-      economy profiles, an indicator whose profile shows a score gets a score only (Econ's econ.ingest.gii reads the
-      file the same way). Each economy's value comes from its own most recent data year (2016 to 2026).
-
-  - id: gii_appendix
-    title: Global Innovation Index 2026, Appendix III (sources and definitions)
-    publisher: WIPO
-    file: data/raw/wipo-gii/gii-2026-appendix-3-sources-and-definitions.md
-    original: GII-AppendiX_3.md
-    url: https://www.wipo.int/global_innovation_index/en/
-    licence: CC BY 4.0
-    used: Its markers only (which indicators are 'bads', where higher is worse, and which have half weight); the data file carries the same definitions, which the pages show
-
-  - id: wdi
-    title: World Development Indicators, Australia
-    publisher: World Bank
-    file: data/raw/world-bank/wdi-australia.xls
-    original: API_AUS_DS2_en_excel_v2_16758.xls
-    url: https://data.worldbank.org/country/australia
-    licence: CC BY 4.0
-    used: Australia over time (1960 to 2025; indicators with at least 5 years of data)
-    notes: >-
-      Australia's national accounts are on a fiscal-year basis (year ending 30 June), labelled by the year they end.
-
-  - id: hdr_annex
-    title: Human Development Report 2025, statistical annex tables 1 to 7
-    publisher: UNDP
-    file: data/raw/undp-hdr/hdr-2025-statistical-annex-tables-1-7.xlsx
-    original: HDR25_Statistical_Annex_Tables_1-7.xlsx
-    url: https://hdr.undp.org/data-center
-    licence: see the publisher's terms (UNDP HDRO data are usually CC BY 3.0 IGO)
-    used: Economies compared (each country's 2023 values; regional and group aggregates left out)
-
-  - id: hdr_series
-    title: Human Development Report, Australia's series
-    publisher: UNDP
-    file: data/raw/undp-hdr/hdr-australia-series.xlsx
-    original: hdr-data.xlsx
-    url: https://hdr.undp.org/data-center/specific-country-data#/countries/AUS
-    licence: see the publisher's terms (UNDP HDRO data are usually CC BY 3.0 IGO)
-    used: Australia over time (1990 to 2023)
-
-  - id: hdr_country_file
-    title: Human Development Report, Australia's country file
-    publisher: UNDP
-    file: data/raw/undp-hdr/hdr-australia-country-file.csv
-    original: Australia.csv
-    url: https://hdr.undp.org/data-center/specific-country-data#/countries/AUS
-    licence: see the publisher's terms (UNDP HDRO data are usually CC BY 3.0 IGO)
-    used: Reference only (its series duplicate hdr-australia-series.xlsx; its gender social norms are one period)
-
-  - id: oecd_wise
-    title: How's Life? Current well-being, Australia
-    publisher: OECD (WISE Centre)
-    file: data/raw/oecd/oecd-hows-life-current-wellbeing-australia.xlsx
-    original: OECD.WISE.WDP,DSD_HSL@DF_HSL_CWB,1.1,filtered,2026-10-22 01-18-54.xlsx
-    url: https://data-explorer.oecd.org/
-    licence: CC BY 4.0
-    used: Australia over time (2010 to 2025)
-
-  - id: whr
-    title: World Happiness Report 2026, data for figure 2.1
-    publisher: Wellbeing Research Centre, University of Oxford (World Happiness Report)
-    file: data/raw/whr/whr-2026-figure-2-1.xlsx
-    original: WHR26_Data_Figure_2.1.xlsx
-    url: https://worldhappiness.report/data/
-    licence: see the publisher's terms
-    used: Australia over time (2011 to 2025) and Economies compared (the latest year, 2025)
-    notes: >-
-      Life evaluation is a three-year average ending in the year shown. The "explained by" columns split each
-      country's score into the parts a model attributes to six factors: they are built from the score, so they
-      correlate with it mechanically.
 
   - id: ctg
-    title: Closing the Gap Annual Data Compilation Report 2026, datasets for targets 1 to 17
+    title: Closing the Gap Annual Data Compilation Report 2026, targets 8, 15 and 16
     publisher: Productivity Commission
-    file: data/raw/closing-the-gap/
-    original: adcr-2026-ctg01-healthy-lives-dataset_0.csv … adcr-2026-ctg17-digital-inclusion-dataset.csv
+    tier: 2
+    questions: [1, 2]
     url: https://www.pc.gov.au/closing-the-gap-data/annual-data-report
     licence: see the publisher's terms (the Productivity Commission usually publishes under CC BY 4.0)
-    used: Australia over time (national totals of actual values; trajectories, estimates and confidence intervals left out)
-    notes: >-
-      A financial year (2018-19) is placed at the year it ends; a period of three to five years (2016-2020) at its
-      middle year, rounded down. Changes over a period ("2016 to 2021") and periods over five years are left out.
 
-  - id: sdr
-    title: Sustainable Development Report 2026, Australia's profile
-    publisher: UN Sustainable Development Solutions Network
-    file: data/raw/reports/sdr-2026-australia.pdf
-    original: SDR-2026-australia.pdf
-    url: https://dashboards.sdgindex.org/profiles/australia
-    licence: see the publisher's terms
-    used: Context only (a one-year profile; no series to compare)
+  # Tier 2: complements, outcomes and comparators --------------------------------------------------------------------------
+  - id: austender
+    title: AusTender contract notices
+    publisher: Department of Finance
+    tier: 2
+    questions: [3]
+    url: https://api.tenders.gov.au/
+    licence: CC BY 3.0 AU
 
-  - id: gggr
-    title: Global Gender Gap Report 2026, Australia's economy profile
-    publisher: World Economic Forum
-    file: data/raw/reports/gggr-2026-australia.pdf
-    original: gggr_index_2026_006_AUS.pdf
-    url: https://www.weforum.org/publications/
+  - id: arc_grants
+    title: ARC National Competitive Grants Program, grants
+    publisher: Australian Research Council
+    tier: 2
+    questions: [2, 3]
+    url: https://dataportal.arc.gov.au/NCGP/Web/Grant/Grants
+    licence: CC BY 4.0
+
+  - id: nhmrc_grants
+    title: NHMRC grant outcomes
+    publisher: National Health and Medical Research Council
+    tier: 2
+    questions: [2, 3]
+    url: https://www.nhmrc.gov.au/funding/data-research/outcomes
+    licence: CC BY 4.0
+
+  - id: ato_ctt
+    title: Corporate Tax Transparency, report of entity tax information
+    publisher: Australian Taxation Office
+    tier: 2
+    questions: [1, 2]
+    url: https://data.gov.au/data/dataset/corporate-transparency
+    licence: CC BY 3.0 AU
+
+  - id: oecd
+    title: OECD comparator panel (R&D, patents, business demography, IP trade, How's Life?)
+    publisher: OECD
+    tier: 2
+    questions: [1, 4]
+    url: https://sdmx.oecd.org/public/rest/
+    licence: CC BY 4.0
+
+  - id: wdi
+    title: World Development Indicators, comparator panel
+    publisher: World Bank
+    tier: 2
+    questions: [1]
+    url: https://api.worldbank.org/v2/
+    licence: CC BY 4.0
+
+  - id: wipo_ipstats
+    title: WIPO IP statistics, filings by origin and office
+    publisher: WIPO
+    tier: 2
+    questions: [3]
+    url: https://www3.wipo.int/ipstats/
+    licence: CC BY 4.0
+
+  - id: tmlink
+    title: TM-Link, trade marks linked across offices
+    publisher: IP Australia
+    tier: 2
+    questions: [3]
+    url: https://data.gov.au/data/dataset/tm-link
+    licence: CC BY 4.0
+
+  - id: ipa_fees
+    title: IP Australia fees, current and historical
+    publisher: IP Australia
+    tier: 2
+    questions: [1, 5]
+    url: https://www.ipaustralia.gov.au/about-us/fees
+    licence: CC BY 4.0
+
+  - id: pbs
+    title: PBS expenditure and prescriptions
+    publisher: Department of Health, Disability and Ageing
+    tier: 2
+    questions: [1]
+    url: https://www.pbs.gov.au/info/statistics
+    licence: CC BY 4.0
+
+  - id: abs_rd_vc
+    title: ABS research and experimental development, and venture capital
+    publisher: Australian Bureau of Statistics
+    tier: 2
+    questions: [3, 4]
+    url: https://www.abs.gov.au/
+    licence: CC BY 4.0
+
+  - id: openalex
+    title: OpenAlex, research output of Australian institutions
+    publisher: OurResearch
+    tier: 2
+    questions: [2, 4]
+    url: https://openalex.org/
+    licence: CC0
+
+  - id: evidence
+    title: Evidence register (key literature and evaluations)
+    publisher: various
+    tier: 2
+    questions: [1, 3, 4, 5]
+    url: docs/evidence-register.md
+    licence: each item's own
+
+  - id: bcarr_creative
+    title: Cultural and creative activity in Australia
+    publisher: Bureau of Communications, Arts and Regional Research
+    tier: 2
+    questions: [1]
+    url: https://www.infrastructure.gov.au/
+    licence: CC BY 4.0
+
+  - id: mwm
+    title: Measuring What Matters
+    publisher: Treasury and Australian Bureau of Statistics
+    tier: 2
+    questions: [1, 5]
+    url: https://www.abs.gov.au/statistics/measuring-what-matters
+    licence: CC BY 4.0
+
+  - id: natsem
+    title: Small-area synthetic estimates of life satisfaction and generalised trust (SA2)
+    publisher: NATSEM, University of Canberra
+    tier: 2
+    questions: [1, 2]
+    url: https://data.gov.au/
+    licence: see each dataset's terms
+
+  - id: cer
+    title: Small-scale renewable installations by postcode
+    publisher: Clean Energy Regulator
+    tier: 2
+    questions: [1]
+    url: https://cer.gov.au/markets/reports-and-data/small-scale-installation-postcode-data
+    licence: CC BY 4.0
+
+  - id: wine_gi
+    title: Register of protected geographical indications and other terms
+    publisher: Wine Australia
+    tier: 2
+    questions: [1]
+    url: https://www.wineaustralia.com/labelling/register-of-protected-gis-and-other-terms
     licence: see the publisher's terms
-    used: Context only (a one-year profile; no series to compare)
+
+  - id: abf
+    title: Border enforcement of IP (notices of objection and seizures)
+    publisher: Australian Border Force
+    tier: 2
+    questions: [1]
+    url: https://www.abf.gov.au/
+    licence: see the publisher's terms
+
+  - id: fedcourt
+    title: Federal Court IP judgments
+    publisher: Federal Court of Australia
+    tier: 2
+    questions: [1]
+    url: https://www.judgments.fedcourt.gov.au/
+    licence: see the publisher's terms
+
+  - id: policy_events
+    title: IP policy changes (dates and terms) for natural experiments
+    publisher: compiled here from the Federal Register of Legislation and IP Australia
+    tier: 2
+    questions: [4, 5]
+    url: https://www.legislation.gov.au/
+    licence: CC BY 4.0 (compiled here)

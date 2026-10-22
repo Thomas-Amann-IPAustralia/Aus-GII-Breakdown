@@ -1,0 +1,2176 @@
+{
+ "bucket": "ipholmes",
+ "sources": {
+  "abr": {
+   "files": {
+    "processed/abns": {
+     "bytes": 374694154,
+     "columns": [
+      "abn",
+      "abn_status",
+      "abn_status_from",
+      "record_last_updated",
+      "replaced",
+      "entity_type",
+      "entity_type_text",
+      "name",
+      "state",
+      "postcode",
+      "acn",
+      "gst_status",
+      "gst_status_from",
+      "dgr",
+      "other_name_count"
+     ],
+     "describe": "One row per ABN; no individuals' names",
+     "key": "processed/abr/abns.parquet",
+     "location": "r2",
+     "rows": 20612369,
+     "sha256": "c365e00dbd45760df90f6871d3d2b3a837da3fc492c75d03d0d51d57385575d3"
+    },
+    "raw/abnlookupbulkextractreadme.pdf": {
+     "bytes": 153761,
+     "location": "repo",
+     "path": "data/raw/abr/abnlookupbulkextractreadme.pdf",
+     "sha256": "472e01cce4f169dee2214fb69bb4e4e5b72f553814bf978113524776324ccd02",
+     "url": "https://data.gov.au/data/dataset/5bd7fcab-e315-42cb-8daf-50b7efc2027e/resource/3b975e4f-af2f-4de7-a20e-6dcb3f67805c/download/abnlookupbulkextractreadme.pdf"
+    },
+    "raw/bulkextract.xsd": {
+     "bytes": 12866,
+     "location": "repo",
+     "path": "data/raw/abr/bulkextract.xsd",
+     "sha256": "e19f5f991fdc3498e71faaf9f88574cab5d1d7d3cc23015c324e2f75ca45c670",
+     "url": "https://data.gov.au/data/dataset/5bd7fcab-e315-42cb-8daf-50b7efc2027e/resource/f3f8f8a1-590c-4d87-8285-806b093c2c69/download/bulkextract.xsd"
+    },
+    "raw/public_split_11_20.zip": {
+     "bytes": 499746102,
+     "key": "raw/abr/public_split_11_20.zip",
+     "location": "r2",
+     "sha256": "bde95a42bbe059ce36526653a32136371f4cf386136d07281544b2f0c119b430",
+     "url": "https://data.gov.au/data/dataset/5bd7fcab-e315-42cb-8daf-50b7efc2027e/resource/635fcb95-7864-4509-9fa7-a62a6e32b62d/download/public_split_11_20.zip"
+    },
+    "raw/public_split_1_10.zip": {
+     "bytes": 500010699,
+     "key": "raw/abr/public_split_1_10.zip",
+     "location": "r2",
+     "sha256": "69331d7dab550e12b9a9d7e5fa3d01b3ad747bb67fa2dadf43dbd30fb5d61df3",
+     "url": "https://data.gov.au/data/dataset/5bd7fcab-e315-42cb-8daf-50b7efc2027e/resource/0ae4d427-6fa8-4d40-8e76-c6909b5a071b/download/public_split_1_10.zip"
+    }
+   },
+   "run": "2026-10-22"
+  },
+  "abs_bcs": {
+   "files": {
+    "processed/abs_it_barrier": {
+     "bytes": 80873,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "employment_size",
+      "employment_size_label",
+      "industry",
+      "industry_label",
+      "innovation_status",
+      "innovation_status_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "Barriers to general business activities or performance and barriers to innovation",
+     "location": "repo",
+     "path": "data/processed/abs_bcs/abs_it_barrier.parquet",
+     "rows": 17550,
+     "sha256": "ea89099b4d4aef0b42684608d0ad81efef2e5f9d137568e5fa1ba75ef984113f"
+    },
+    "processed/abs_it_bus_struc": {
+     "bytes": 46455,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "employment_size",
+      "employment_size_label",
+      "industry",
+      "industry_label",
+      "innovation_status",
+      "innovation_status_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "Business structure and operations",
+     "location": "repo",
+     "path": "data/processed/abs_bcs/abs_it_bus_struc.parquet",
+     "rows": 8460,
+     "sha256": "9e4b63f54384e1c670f89039685903194b60cc2ce5cda0d219e15431db259443"
+    },
+    "processed/abs_it_finance": {
+     "bytes": 37599,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "employment_size",
+      "employment_size_label",
+      "industry",
+      "industry_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "Business finance",
+     "location": "repo",
+     "path": "data/processed/abs_bcs/abs_it_finance.parquet",
+     "rows": 5576,
+     "sha256": "a412a8e84a681b67afd46eb05942e391ea65aca24d70ad76becc27a88c36405a"
+    },
+    "processed/abs_it_innovation": {
+     "bytes": 29598,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "employment_size",
+      "employment_size_label",
+      "industry",
+      "industry_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "unit_of_multiplier",
+      "unit_of_multiplier_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "Business innovation",
+     "location": "repo",
+     "path": "data/processed/abs_bcs/abs_it_innovation.parquet",
+     "rows": 3420,
+     "sha256": "a86319e0f0d5033691ea1db517dfc26932b56ab385a3276bc3281389f1b09e93"
+    },
+    "processed/abs_it_mktcomp": {
+     "bytes": 67836,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "employment_size",
+      "employment_size_label",
+      "industry",
+      "industry_label",
+      "innovation_status",
+      "innovation_status_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "Business markets and competition",
+     "location": "repo",
+     "path": "data/processed/abs_bcs/abs_it_mktcomp.parquet",
+     "rows": 15300,
+     "sha256": "28a9b8ff0418dbb359ccd7c71332b4df2a95b0fe80bec19dff7bc4178daf253d"
+    },
+    "processed/abs_it_perf": {
+     "bytes": 117400,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "employment_size",
+      "employment_size_label",
+      "industry",
+      "industry_label",
+      "innovation_status",
+      "innovation_status_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "Business performance",
+     "location": "repo",
+     "path": "data/processed/abs_bcs/abs_it_perf.parquet",
+     "rows": 18900,
+     "sha256": "8a8d6a8a982808350e0d7a8cb8d482b5aef106036869cfabae6723b7be780a19"
+    },
+    "processed/abs_it_support": {
+     "bytes": 15544,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "employment_size",
+      "employment_size_label",
+      "industry",
+      "industry_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "Characteristics of IT in Australian Businesses",
+     "location": "repo",
+     "path": "data/processed/abs_bcs/abs_it_support.parquet",
+     "rows": 630,
+     "sha256": "5f14bcacefcaa405ed69feedd475cc0518f08fce069edb36132afea74a502f46"
+    },
+    "processed/bcs_busgvtsk": {
+     "bytes": 23461,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "employment_size",
+      "employment_size_label",
+      "industry",
+      "industry_label",
+      "region_class",
+      "region_class_label",
+      "innovation_status",
+      "innovation_status_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "decimals",
+      "decimals_label",
+      "value"
+     ],
+     "describe": "Business interaction with government and Skills, year ended 30 June 2022",
+     "location": "repo",
+     "path": "data/processed/abs_bcs/bcs_busgvtsk.parquet",
+     "rows": 2202,
+     "sha256": "b7eee9e15640412a1658435773f4a27d5f5fe71943dcb1c67cd4092f89debb5e"
+    },
+    "processed/bcs_businf": {
+     "bytes": 94837,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "employment_size",
+      "employment_size_label",
+      "industry",
+      "industry_label",
+      "region_class",
+      "region_class_label",
+      "innovation_status",
+      "innovation_status_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "decimals",
+      "decimals_label",
+      "value"
+     ],
+     "describe": "Business information and performance",
+     "location": "repo",
+     "path": "data/processed/abs_bcs/bcs_businf.parquet",
+     "rows": 15132,
+     "sha256": "2c8d166c0b6450c0c9cf91d0938c0a2c6a94bd811f341109ba62f349de69e9d1"
+    },
+    "processed/bcs_businf2": {
+     "bytes": 27493,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "employment_size",
+      "employment_size_label",
+      "industry",
+      "industry_label",
+      "region_class",
+      "region_class_label",
+      "innovation_status",
+      "innovation_status_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "decimals",
+      "decimals_label",
+      "value"
+     ],
+     "describe": "Business profile, Performance and arrangements, year ended 30 June 2022",
+     "location": "repo",
+     "path": "data/processed/abs_bcs/bcs_businf2.parquet",
+     "rows": 4077,
+     "sha256": "25c2779f9d84b36c299ec3ed43d6615b404af119659ab62fe7240fe5bb60a996"
+    },
+    "processed/bcs_inn": {
+     "bytes": 79075,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "employment_size",
+      "employment_size_label",
+      "industry",
+      "industry_label",
+      "region_class",
+      "region_class_label",
+      "innovation_status",
+      "innovation_status_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "decimals",
+      "decimals_label",
+      "value"
+     ],
+     "describe": "Business innovation including collaboration, fee-for-service arrangements, financing and assessment",
+     "location": "repo",
+     "path": "data/processed/abs_bcs/bcs_inn.parquet",
+     "rows": 10796,
+     "sha256": "2c3ff1729973af7c8965fbf2f78f92fe0f69b6d314241a7577c20fbe17577f36"
+    },
+    "processed/bcs_innact": {
+     "bytes": 75670,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "employment_size",
+      "employment_size_label",
+      "industry",
+      "industry_label",
+      "region_class",
+      "region_class_label",
+      "innovation_status",
+      "innovation_status_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "decimals",
+      "decimals_label",
+      "value"
+     ],
+     "describe": "Business innovation activity including innovation implemented, still in development or abandoned",
+     "location": "repo",
+     "path": "data/processed/abs_bcs/bcs_innact.parquet",
+     "rows": 11287,
+     "sha256": "97d8ff06b24fc04fa87f1a7ddc9e54734ff069d9a23ffab31e98d9ae1952629f"
+    },
+    "processed/bcs_innsig": {
+     "bytes": 23072,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "employment_size",
+      "employment_size_label",
+      "industry",
+      "industry_label",
+      "region_class",
+      "region_class_label",
+      "innovation_status",
+      "innovation_status_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "decimals",
+      "decimals_label",
+      "value"
+     ],
+     "describe": "Most significant innovation, including target markets and commercialisation activities",
+     "location": "repo",
+     "path": "data/processed/abs_bcs/bcs_innsig.parquet",
+     "rows": 2351,
+     "sha256": "7000e5ee04e4b4b3736d409cbd0df0d62ab3be592d465a32fca025d1b49c89cd"
+    },
+    "raw/ABS_IT_BARRIER.csv.gz": {
+     "bytes": 147519,
+     "location": "repo",
+     "path": "data/raw/abs_bcs/ABS_IT_BARRIER.csv.gz",
+     "sha256": "9b8f1309e905ad0e66db0c0f8350649bbcc8670b99eca4bd954bd61d0d01a493",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,ABS_IT_BARRIER/all"
+    },
+    "raw/ABS_IT_BUS_STRUC.csv.gz": {
+     "bytes": 77497,
+     "location": "repo",
+     "path": "data/raw/abs_bcs/ABS_IT_BUS_STRUC.csv.gz",
+     "sha256": "dd337a0c56880b2f2d38bd3b82c4779bbd5cc22b4c4973d8fcde697f7494e8a3",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,ABS_IT_BUS_STRUC/all"
+    },
+    "raw/ABS_IT_FINANCE.csv.gz": {
+     "bytes": 49274,
+     "location": "repo",
+     "path": "data/raw/abs_bcs/ABS_IT_FINANCE.csv.gz",
+     "sha256": "e458fcdb4b9d11d446bdc3103037d6f91b3fddc382c92c63cd04593f5c9789bf",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,ABS_IT_FINANCE/all"
+    },
+    "raw/ABS_IT_INNOVATION.csv.gz": {
+     "bytes": 35608,
+     "location": "repo",
+     "path": "data/raw/abs_bcs/ABS_IT_INNOVATION.csv.gz",
+     "sha256": "251333fe3937e7f65c9f6448559284c95bf41cea6699c063732c5c3165c10435",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,ABS_IT_INNOVATION/all"
+    },
+    "raw/ABS_IT_MKTCOMP.csv.gz": {
+     "bytes": 120661,
+     "location": "repo",
+     "path": "data/raw/abs_bcs/ABS_IT_MKTCOMP.csv.gz",
+     "sha256": "d17313a6a8fd5904727ef5a9c49034e332cecb42338708ce3ab75514de77bf95",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,ABS_IT_MKTCOMP/all"
+    },
+    "raw/ABS_IT_PERF.csv.gz": {
+     "bytes": 177351,
+     "location": "repo",
+     "path": "data/raw/abs_bcs/ABS_IT_PERF.csv.gz",
+     "sha256": "c1e54878e323f72ef87ba9ef2649faae18ccc893ec0c6f215f88c7dcb1a3e871",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,ABS_IT_PERF/all"
+    },
+    "raw/ABS_IT_SUPPORT.csv.gz": {
+     "bytes": 5369,
+     "location": "repo",
+     "path": "data/raw/abs_bcs/ABS_IT_SUPPORT.csv.gz",
+     "sha256": "e95a9a98f290373042484a484fecc047289d0a65a448af58f0b5f43222439e2d",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,ABS_IT_SUPPORT/all"
+    },
+    "raw/BCS_BUSGVTSK.csv.gz": {
+     "bytes": 18643,
+     "location": "repo",
+     "path": "data/raw/abs_bcs/BCS_BUSGVTSK.csv.gz",
+     "sha256": "40b138144684e38b45a5568591ec42d5397547c3f8974fd18467a91396be3720",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,BCS_BUSGVTSK/all"
+    },
+    "raw/BCS_BUSINF.csv.gz": {
+     "bytes": 199185,
+     "location": "repo",
+     "path": "data/raw/abs_bcs/BCS_BUSINF.csv.gz",
+     "sha256": "fb7283244036cb532fa0894169ed63388fa476dfb58f533d7ef567b1137a31c2",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,BCS_BUSINF/all"
+    },
+    "raw/BCS_BUSINF2.csv.gz": {
+     "bytes": 32563,
+     "location": "repo",
+     "path": "data/raw/abs_bcs/BCS_BUSINF2.csv.gz",
+     "sha256": "775e719a1ad67fd24068591f346485c41a830f5c690b1cfd9db47edd52cdcfa1",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,BCS_BUSINF2/all"
+    },
+    "raw/BCS_INN.csv.gz": {
+     "bytes": 189765,
+     "location": "repo",
+     "path": "data/raw/abs_bcs/BCS_INN.csv.gz",
+     "sha256": "a1ba369c2cb70f9dd950f55f8d235c3cc08e47ac2c8eb379a6cb592605518fc8",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,BCS_INN/all"
+    },
+    "raw/BCS_INNACT.csv.gz": {
+     "bytes": 170853,
+     "location": "repo",
+     "path": "data/raw/abs_bcs/BCS_INNACT.csv.gz",
+     "sha256": "2a0670ba4348e504f4bff87a47677e7159e4d4bc9845b9f8233c99406a2690b1",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,BCS_INNACT/all"
+    },
+    "raw/BCS_INNSIG.csv.gz": {
+     "bytes": 18488,
+     "location": "repo",
+     "path": "data/raw/abs_bcs/BCS_INNSIG.csv.gz",
+     "sha256": "e46e3e4f46b7e9c9f3579810c4f58ddc8f110fe5328c0c2d6e06cd4bc39d122f",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,BCS_INNSIG/all"
+    }
+   },
+   "run": "2026-10-22"
+  },
+  "abs_cabee": {
+   "files": {
+    "processed/cubes": {
+     "bytes": 4233545,
+     "columns": [
+      "cube",
+      "table",
+      "table_title",
+      "state_name",
+      "anzsic_industry_code",
+      "anzsic_industry_label",
+      "measure",
+      "size",
+      "unit",
+      "value",
+      "release",
+      "state_label",
+      "anzsic_subdivision_code",
+      "anzsic_subdivision_label",
+      "industry_code",
+      "industry_label",
+      "sa2_code",
+      "sa2_label",
+      "lga_code",
+      "lga_label"
+     ],
+     "describe": "Cubes 2 to 11, long",
+     "location": "repo",
+     "path": "data/processed/abs_cabee/cubes.parquet",
+     "rows": 3169744,
+     "sha256": "9fbe97baa5b2e964c4a3d8ec7ee23907e038920faf7eb1913b1951ae00598951"
+    },
+    "processed/national": {
+     "bytes": 18881,
+     "columns": [
+      "table",
+      "table_title",
+      "period",
+      "row",
+      "column",
+      "value",
+      "release"
+     ],
+     "describe": "Cube 1: national tables, long",
+     "location": "repo",
+     "path": "data/processed/abs_cabee/national.parquet",
+     "rows": 3339,
+     "sha256": "64fbdc9095b56813a0e3c1468a9be0fc9478229ab7472fb7dbbdcd90527efa79"
+    },
+    "raw/jul2021-jun2025-8165DC02.xlsx": {
+     "bytes": 2149586,
+     "location": "repo",
+     "path": "data/raw/abs_cabee/jul2021-jun2025-8165DC02.xlsx",
+     "sha256": "b39b17a401b9428959b7e7fe0d2a97e0582da46d821de1ed0e219485978efb04",
+     "url": "https://www.abs.gov.au/statistics/economy/business-indicators/counts-australian-businesses-including-entries-and-exits/jul2021-jun2025/8165DC02.xlsx"
+    },
+    "raw/jul2021-jun2025-8165DC03.xlsx": {
+     "bytes": 2553229,
+     "location": "repo",
+     "path": "data/raw/abs_cabee/jul2021-jun2025-8165DC03.xlsx",
+     "sha256": "43434ed75fbb743cd128803bc9aa0e2f4af61592ff63bea5255a5acb0124b768",
+     "url": "https://www.abs.gov.au/statistics/economy/business-indicators/counts-australian-businesses-including-entries-and-exits/jul2021-jun2025/8165DC03.xlsx"
+    },
+    "raw/jul2021-jun2025-8165DC04.xlsx": {
+     "bytes": 389079,
+     "location": "repo",
+     "path": "data/raw/abs_cabee/jul2021-jun2025-8165DC04.xlsx",
+     "sha256": "f68901ea85e87619d68fd9dbc23e1f896b3986e73a8f7e8b24c775d7c0ec71a0",
+     "url": "https://www.abs.gov.au/statistics/economy/business-indicators/counts-australian-businesses-including-entries-and-exits/jul2021-jun2025/8165DC04.xlsx"
+    },
+    "raw/jul2021-jun2025-8165DC05.xlsx": {
+     "bytes": 305087,
+     "location": "repo",
+     "path": "data/raw/abs_cabee/jul2021-jun2025-8165DC05.xlsx",
+     "sha256": "554a74698c57614109f874292d367daa2aa6387f4b5c629ddd6edc070adc53ee",
+     "url": "https://www.abs.gov.au/statistics/economy/business-indicators/counts-australian-businesses-including-entries-and-exits/jul2021-jun2025/8165DC05.xlsx"
+    },
+    "raw/jul2021-jun2025-8165DC06.xlsx": {
+     "bytes": 444507,
+     "location": "repo",
+     "path": "data/raw/abs_cabee/jul2021-jun2025-8165DC06.xlsx",
+     "sha256": "0c0e88fe7c77c05b063dd01f3df0596e0a1cbd794b31ed41a4834f9d9cb392db",
+     "url": "https://www.abs.gov.au/statistics/economy/business-indicators/counts-australian-businesses-including-entries-and-exits/jul2021-jun2025/8165DC06.xlsx"
+    },
+    "raw/jul2021-jun2025-8165DC07.xlsx": {
+     "bytes": 332129,
+     "location": "repo",
+     "path": "data/raw/abs_cabee/jul2021-jun2025-8165DC07.xlsx",
+     "sha256": "c390cf707aa6e6a800eadaa1ddf414d071178109b675413b8834ed5355c1914e",
+     "url": "https://www.abs.gov.au/statistics/economy/business-indicators/counts-australian-businesses-including-entries-and-exits/jul2021-jun2025/8165DC07.xlsx"
+    },
+    "raw/jul2021-jun2025-8165DC08.xlsx": {
+     "bytes": 8064548,
+     "location": "repo",
+     "path": "data/raw/abs_cabee/jul2021-jun2025-8165DC08.xlsx",
+     "sha256": "ae86cf6ba594d3f10e96b7dc4cd578de12fcf9426126cb0060ad11fcd7e2d4ce",
+     "url": "https://www.abs.gov.au/statistics/economy/business-indicators/counts-australian-businesses-including-entries-and-exits/jul2021-jun2025/8165DC08.xlsx"
+    },
+    "raw/jul2021-jun2025-8165DC09.xlsx": {
+     "bytes": 8338302,
+     "location": "repo",
+     "path": "data/raw/abs_cabee/jul2021-jun2025-8165DC09.xlsx",
+     "sha256": "a881c57c858f34e23f51119c2d53baaef7c153b0741d979c9d9326e6524d04c3",
+     "url": "https://www.abs.gov.au/statistics/economy/business-indicators/counts-australian-businesses-including-entries-and-exits/jul2021-jun2025/8165DC09.xlsx"
+    },
+    "raw/jul2021-jun2025-8165DC10.xlsx": {
+     "bytes": 2372554,
+     "location": "repo",
+     "path": "data/raw/abs_cabee/jul2021-jun2025-8165DC10.xlsx",
+     "sha256": "69b73851ab31a3553092254b80509958692b613756436a1efb8629e74adb1d75",
+     "url": "https://www.abs.gov.au/statistics/economy/business-indicators/counts-australian-businesses-including-entries-and-exits/jul2021-jun2025/8165DC10.xlsx"
+    },
+    "raw/jul2021-jun2025-8165DC11.xlsx": {
+     "bytes": 2446724,
+     "location": "repo",
+     "path": "data/raw/abs_cabee/jul2021-jun2025-8165DC11.xlsx",
+     "sha256": "e3a1995c7d1989bd9ec041506b01e6e44668531f0598f6319753cd7f442456c6",
+     "url": "https://www.abs.gov.au/statistics/economy/business-indicators/counts-australian-businesses-including-entries-and-exits/jul2021-jun2025/8165DC11.xlsx"
+    },
+    "raw/jul2022-jun2026-8165DC01.xlsx": {
+     "bytes": 133694,
+     "location": "repo",
+     "path": "data/raw/abs_cabee/jul2022-jun2026-8165DC01.xlsx",
+     "sha256": "477690c133eaf70e5671643be4e255ac22bca46b7db6d236f91744b3a40d2d79",
+     "url": "https://www.abs.gov.au/statistics/economy/business-indicators/counts-australian-businesses-including-entries-and-exits/jul2022-jun2026/8165DC01.xlsx"
+    }
+   },
+   "run": "2026-10-22"
+  },
+  "abs_regions": {
+   "files": {
+    "processed/mesh_blocks": {
+     "bytes": 3804642,
+     "columns": [
+      "mb_code",
+      "mb_category",
+      "sa1_code",
+      "sa2_code",
+      "sa2_name",
+      "sa3_code",
+      "sa3_name",
+      "sa4_code",
+      "sa4_name",
+      "gccsa_code",
+      "gccsa_name",
+      "state_code",
+      "state_name",
+      "area_albers_sqkm",
+      "poa_code",
+      "ra_code",
+      "ra_name",
+      "persons",
+      "dwellings"
+     ],
+     "describe": "2021 mesh blocks with every ASGS structure, POA, remoteness and counts",
+     "location": "repo",
+     "path": "data/processed/abs_regions/mesh_blocks.parquet",
+     "rows": 368286,
+     "sha256": "c2eecc41857973ec666a7181ac6cabc361acbdbbc73f52e045fcfeb5c3d11bea"
+    },
+    "processed/poa": {
+     "bytes": 61907,
+     "columns": [
+      "poa_code",
+      "persons",
+      "sa2_code",
+      "sa2_name",
+      "sa3_code",
+      "sa3_name",
+      "sa4_code",
+      "sa4_name",
+      "state_code",
+      "state_name",
+      "ra_code",
+      "ra_name",
+      "share_major_cities"
+     ],
+     "describe": "One row per postal area: persons, main SA2 to state, remoteness",
+     "location": "repo",
+     "path": "data/processed/abs_regions/poa.parquet",
+     "rows": 2644,
+     "sha256": "0cdbef7c3fa9ae363240457225044985de2c2f5b3023df0d3c8d51cdf6aee3ab"
+    },
+    "processed/poa_sa2": {
+     "bytes": 111611,
+     "columns": [
+      "poa_code",
+      "sa2_code",
+      "sa2_name",
+      "persons",
+      "share"
+     ],
+     "describe": "Postal area to SA2, with shares of persons",
+     "location": "repo",
+     "path": "data/processed/abs_regions/poa_sa2.parquet",
+     "rows": 5904,
+     "sha256": "bb0a697d6ac2b4d5a75fb507dc33f50a5367f9b3dfa0c356c8794508adeb7252"
+    },
+    "processed/region_asgs": {
+     "bytes": 42359186,
+     "columns": [
+      "flow",
+      "data_item",
+      "data_item_label",
+      "region_type",
+      "region_type_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "unit_of_multiplier",
+      "unit_of_multiplier_label",
+      "observation_status",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "ABS_REGIONAL_ASGS2021",
+     "location": "repo",
+     "path": "data/processed/abs_regions/region_asgs.parquet",
+     "rows": 6484615,
+     "sha256": "89273915e04badb4885ec5ef7e8a7c1d2bcbd030c6680162b88dbb16e08aa02a"
+    },
+    "processed/region_lga": {
+     "bytes": 7008971,
+     "columns": [
+      "flow",
+      "data_item",
+      "data_item_label",
+      "region_type",
+      "region_type_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "unit_of_multiplier",
+      "unit_of_multiplier_label",
+      "observation_status",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "ABS_REGIONAL_LGA2021",
+     "location": "repo",
+     "path": "data/processed/abs_regions/region_lga.parquet",
+     "rows": 1180960,
+     "sha256": "c5e45f6e6e620e45919a1f537eed69a147f37b10714eca563751d18c3053be4f"
+    },
+    "processed/region_remoteness": {
+     "bytes": 137550,
+     "columns": [
+      "flow",
+      "data_item",
+      "data_item_label",
+      "region_type",
+      "region_type_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "unit_of_multiplier",
+      "observation_status",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "ABS_REGIONAL_REMOTENESS_ASGS2021",
+     "location": "repo",
+     "path": "data/processed/abs_regions/region_remoteness.parquet",
+     "rows": 30477,
+     "sha256": "5e485e676985dc87817650b5f6cc7b6c50b2d57052c6498707c1e04ab59c308e"
+    },
+    "processed/seifa_poa": {
+     "bytes": 795833,
+     "columns": [
+      "flow",
+      "postal_area_code",
+      "postal_area_code_label",
+      "index_type",
+      "index_type_label",
+      "measure",
+      "measure_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "ABS_SEIFA2021_POA",
+     "location": "repo",
+     "path": "data/processed/abs_regions/seifa_poa.parquet",
+     "rows": 116292,
+     "sha256": "6c9bba5ddf3bb1758296cf0929bc7fc7aacceef9991fb76f5de6fdd4f236a175"
+    },
+    "processed/seifa_sa2": {
+     "bytes": 768432,
+     "columns": [
+      "flow",
+      "statistical_area_level_2_sa2",
+      "statistical_area_level_2_sa2_label",
+      "index_type",
+      "index_type_label",
+      "measure",
+      "measure_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "ABS_SEIFA2021_SA2",
+     "location": "repo",
+     "path": "data/processed/abs_regions/seifa_sa2.parquet",
+     "rows": 108768,
+     "sha256": "82346a399e76314efefbaaa01001fc5976235873223950b40ab9e629ff8d377f"
+    },
+    "raw/ABS_REGIONAL_ASGS2021.csv.gz": {
+     "bytes": 119626146,
+     "key": "raw/abs_regions/ABS_REGIONAL_ASGS2021.csv.gz",
+     "location": "r2",
+     "sha256": "d944174c810a2c8e91fb8df205f48d5485f159e73b04da23c2c83a3f7453776f",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,ABS_REGIONAL_ASGS2021/all"
+    },
+    "raw/ABS_REGIONAL_LGA2021.csv.gz": {
+     "bytes": 19268035,
+     "key": "raw/abs_regions/ABS_REGIONAL_LGA2021.csv.gz",
+     "location": "r2",
+     "sha256": "2fe84a262ff3dbab6216ebbdec872aba8e79ff3636a8fc576365c1cd09fa0795",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,ABS_REGIONAL_LGA2021/all"
+    },
+    "raw/ABS_REGIONAL_REMOTENESS_ASGS2021.csv.gz": {
+     "bytes": 287534,
+     "location": "repo",
+     "path": "data/raw/abs_regions/ABS_REGIONAL_REMOTENESS_ASGS2021.csv.gz",
+     "sha256": "52ef4247700d1062feb37bfd40ec9b7e906ca8e382a500e6703fcc9858f65177",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,ABS_REGIONAL_REMOTENESS_ASGS2021/all"
+    },
+    "raw/ABS_SEIFA2021_POA.csv.gz": {
+     "bytes": 1211498,
+     "location": "repo",
+     "path": "data/raw/abs_regions/ABS_SEIFA2021_POA.csv.gz",
+     "sha256": "0256cd01349f3ede5479c2a363321640296e40ce63de89a4dff30247a16d677d",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,ABS_SEIFA2021_POA/all"
+    },
+    "raw/ABS_SEIFA2021_SA2.csv.gz": {
+     "bytes": 2038865,
+     "location": "repo",
+     "path": "data/raw/abs_regions/ABS_SEIFA2021_SA2.csv.gz",
+     "sha256": "34db37061b044e05057809d1eede16bb99e9d4dbb4b267f4b2296fb0f90a78fd",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,ABS_SEIFA2021_SA2/all"
+    },
+    "raw/MB_2021_AUST.xlsx": {
+     "bytes": 35322985,
+     "key": "raw/abs_regions/MB_2021_AUST.xlsx",
+     "location": "r2",
+     "sha256": "cbfe8b98ed17c3be994f5635bd5fd4cc721b6f798d14f583c41a32c6b6973884",
+     "url": "https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs/edition-3-july-2021-june-2026/access-and-downloads/allocation-files/MB_2021_AUST.xlsx"
+    },
+    "raw/POA_2021_AUST.xlsx": {
+     "bytes": 18584662,
+     "key": "raw/abs_regions/POA_2021_AUST.xlsx",
+     "location": "r2",
+     "sha256": "e1b82115e4cb46691924f6aa996f928d3771596e1d015acc17efdd807bb12c2e",
+     "url": "https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs/edition-3-july-2021-june-2026/access-and-downloads/allocation-files/POA_2021_AUST.xlsx"
+    },
+    "raw/RA_2021_AUST.xlsx": {
+     "bytes": 3243428,
+     "key": "raw/abs_regions/RA_2021_AUST.xlsx",
+     "location": "r2",
+     "sha256": "1e75ddd3c30abf1458627a54036f4c6e3a0704d4dd2bd4d270119fed89eb375c",
+     "url": "https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs/edition-3-july-2021-june-2026/access-and-downloads/allocation-files/RA_2021_AUST.xlsx"
+    },
+    "raw/mesh-block-counts-2021.xlsx": {
+     "bytes": 15147466,
+     "key": "raw/abs_regions/mesh-block-counts-2021.xlsx",
+     "location": "r2",
+     "sha256": "1ab520c2ff0e07ca88729258c30ee9f7a7133df113a81bac94812582f3b540a3",
+     "url": "https://www.abs.gov.au/census/guide-census-data/mesh-block-counts/2021/Mesh%20Block%20Counts%2C%202021.xlsx"
+    }
+   },
+   "run": "2026-10-22"
+  },
+  "asic": {
+   "files": {
+    "processed/companies": {
+     "bytes": 59000552,
+     "columns": [
+      "acn",
+      "abn",
+      "name",
+      "type",
+      "class",
+      "sub_class",
+      "status",
+      "registered",
+      "deregistered",
+      "name_rows"
+     ],
+     "describe": "One row per ACN",
+     "key": "processed/asic/companies.parquet",
+     "location": "r2",
+     "rows": 4018291,
+     "sha256": "e3a84a97ab3cb94b98032daa56baff5b67d21f9e50aa5d1ba608dfa5f7788f5a"
+    },
+    "processed/company_names": {
+     "bytes": 80808566,
+     "columns": [
+      "company_name",
+      "acn",
+      "type",
+      "class",
+      "sub_class",
+      "status",
+      "registered",
+      "deregistered",
+      "previous_state",
+      "state_registration_number",
+      "modified_since_last_report",
+      "current_name_indicator",
+      "abn",
+      "current_name",
+      "current_name_start"
+     ],
+     "describe": "Every company name row as published",
+     "key": "processed/asic/company_names.parquet",
+     "location": "r2",
+     "rows": 4452194,
+     "sha256": "2ae445e0057dea4225210a5a7be1fd51a58fb4be8b0a44a65073ee448053a7b0"
+    },
+    "raw/company-dataset-help-file.pdf": {
+     "bytes": 466372,
+     "location": "repo",
+     "path": "data/raw/asic/company-dataset-help-file.pdf",
+     "sha256": "bce899f546b11dbf9e81cf7efa2fc105624f83e3608bfa778f3dc0a4c071896d",
+     "url": "https://data.gov.au/data/dataset/7b8656f9-606d-4337-af29-66b89b2eeefb/resource/9430b6b2-b28c-4b1a-a58a-a88b54912853/download/company-dataset-help-file.pdf"
+    },
+    "raw/company_202610.zip": {
+     "bytes": 79219713,
+     "key": "raw/asic/company_202610.zip",
+     "location": "r2",
+     "sha256": "f7fee80ac82b0ff2aabf2a75a02f4320b5e7ba04939838b60b87568fd71103e2",
+     "url": "https://data.gov.au/data/dataset/7b8656f9-606d-4337-af29-66b89b2eeefb/resource/d6d03876-71a4-4e82-8c77-2e4df5da4236/download/company_202610.zip"
+    }
+   },
+   "run": "2026-10-22"
+  },
+  "ato_ctt": {
+   "files": {
+    "processed/entities": {
+     "bytes": 720680,
+     "columns": [
+      "name",
+      "abn",
+      "total_income",
+      "taxable_income",
+      "tax_payable",
+      "income_year",
+      "report",
+      "sheet",
+      "acn"
+     ],
+     "describe": "Large corporate entities' income and tax by income year, with ABN",
+     "location": "repo",
+     "path": "data/processed/ato_ctt/entities.parquet",
+     "rows": 33098,
+     "sha256": "47d008264f48b82de4899d933604628e2ce799974799c62bb7ddde041dd0b2ee"
+    },
+    "raw/2013-14.xlsx": {
+     "bytes": 236752,
+     "location": "repo",
+     "path": "data/raw/ato_ctt/2013-14.xlsx",
+     "sha256": "77cd1739b1509d209ac4cb667aec697bfad938462bee60eb58009a6e03f9c81a",
+     "url": "https://data.gov.au/data/dataset/c2524c87-cea4-4636-acac-599a82048a26/resource/237d7ede-3a63-4b9b-9434-2f79b9d70ce8/download/2013-14corporate-report-of-entity-tax-information.xlsx"
+    },
+    "raw/2014-15.xlsx": {
+     "bytes": 133026,
+     "location": "repo",
+     "path": "data/raw/ato_ctt/2014-15.xlsx",
+     "sha256": "932f502aa4d2ded17110e2c4821446748c793b26e76bec36938530eec2b0aeaa",
+     "url": "https://data.gov.au/data/dataset/c2524c87-cea4-4636-acac-599a82048a26/resource/1e8c8ae0-81d1-4780-a669-9e4a2a6ba1a4/download/2014-15-corporate-report-of-entity-tax-information.xlsx"
+    },
+    "raw/2015-16.xlsx": {
+     "bytes": 145896,
+     "location": "repo",
+     "path": "data/raw/ato_ctt/2015-16.xlsx",
+     "sha256": "cf7f956124ecb35f763148f44fbee517ba256ee3077f11d4817558e40dc37c4d",
+     "url": "https://data.gov.au/data/dataset/c2524c87-cea4-4636-acac-599a82048a26/resource/b84c2b8d-c595-4219-987d-fc1add7f00f0/download/2015-16-corporate-report-of-entity-tax-information.xlsx"
+    },
+    "raw/2016-17.xlsx": {
+     "bytes": 157038,
+     "location": "repo",
+     "path": "data/raw/ato_ctt/2016-17.xlsx",
+     "sha256": "b7413901ccf60a16fd3aad141e809576272f56830800f737bb691f5942eba462",
+     "url": "https://data.gov.au/data/dataset/c2524c87-cea4-4636-acac-599a82048a26/resource/5eb443b4-d0bb-4a88-a189-4523dbcd7f15/download/2016-17-corporate-report-of-entity-tax-information.xlsx"
+    },
+    "raw/2017-18.xlsx": {
+     "bytes": 155895,
+     "location": "repo",
+     "path": "data/raw/ato_ctt/2017-18.xlsx",
+     "sha256": "cfa85f32a9f36d4a813fc4bcf197edb178fc1575d31ad157e814dbcd109791cd",
+     "url": "https://data.gov.au/data/dataset/c2524c87-cea4-4636-acac-599a82048a26/resource/69b1061c-3769-48bd-b5a1-05e725543f6c/download/2017-18-corporate-report-of-entity-tax-information.xlsx"
+    },
+    "raw/2018-19.xlsx": {
+     "bytes": 153276,
+     "location": "repo",
+     "path": "data/raw/ato_ctt/2018-19.xlsx",
+     "sha256": "edc4b00aa72a3b733c3184e2b728b5dcf0b253354dc355884e2cc6aeabf81b80",
+     "url": "https://data.gov.au/data/dataset/c2524c87-cea4-4636-acac-599a82048a26/resource/827f68ea-83c0-440e-bb6d-4118644b7efd/download/2018-19-corporate-report-of-entity-tax-information.xlsx"
+    },
+    "raw/2019-20.xlsx": {
+     "bytes": 158250,
+     "location": "repo",
+     "path": "data/raw/ato_ctt/2019-20.xlsx",
+     "sha256": "9f15876e080d960aff6d09f03736c3a7dc418e0affa15ae6238594e98d9cc83b",
+     "url": "https://data.gov.au/data/dataset/c2524c87-cea4-4636-acac-599a82048a26/resource/db83e667-819f-41f3-a8b7-fcb13366105b/download/2019-20-corporate-report-of-entity-tax-information.xlsx"
+    },
+    "raw/2020-21.xlsx": {
+     "bytes": 165699,
+     "location": "repo",
+     "path": "data/raw/ato_ctt/2020-21.xlsx",
+     "sha256": "bf13e50fae95a092015664e556e204b7d28dea1211f816a4665e1e61236d0c1a",
+     "url": "https://data.gov.au/data/dataset/c2524c87-cea4-4636-acac-599a82048a26/resource/80a01133-4281-43ce-b5ef-5535d61e1c1f/download/2020-21-corporate-report-of-entity-tax-information.xlsx"
+    },
+    "raw/2021-22.xlsx": {
+     "bytes": 196060,
+     "location": "repo",
+     "path": "data/raw/ato_ctt/2021-22.xlsx",
+     "sha256": "72a111239b7680d8895741043448b4ff89264d552ea09fe4f3514e7d0f5a147f",
+     "url": "https://data.gov.au/data/dataset/c2524c87-cea4-4636-acac-599a82048a26/resource/6eaf8203-a79b-43f0-9671-feeb1a44cbff/download/2021-22-corporate-report-of-entity-tax-information.xlsx"
+    },
+    "raw/2022-23.xlsx": {
+     "bytes": 273519,
+     "location": "repo",
+     "path": "data/raw/ato_ctt/2022-23.xlsx",
+     "sha256": "10875380a2e8c6f1ded5900095e727195f8d68ede21d040fd33d16f531918b47",
+     "url": "https://data.gov.au/data/dataset/c2524c87-cea4-4636-acac-599a82048a26/resource/3281f733-6f53-431b-84f5-d824c6bd9e60/download/2022-23-corporate-report-of-entity-tax-information.xlsx"
+    },
+    "raw/2023-24.xlsx": {
+     "bytes": 276536,
+     "location": "repo",
+     "path": "data/raw/ato_ctt/2023-24.xlsx",
+     "sha256": "6b47837efab92e1eb2b0cacc46945376a5b185c1b16814146c3282a1921b0c75",
+     "url": "https://data.gov.au/data/dataset/c2524c87-cea4-4636-acac-599a82048a26/resource/491b366b-aa6f-4b1c-b39d-cebaeeb6f874/download/2023-24-corporate-report-of-entity-tax-information.xlsx"
+    },
+    "raw/2024-25.xlsx": {
+     "bytes": 290744,
+     "location": "repo",
+     "path": "data/raw/ato_ctt/2024-25.xlsx",
+     "sha256": "7cccd963cd4aad31c305b21d33272d3d99ff9c36258641622a28cd0028d65c45",
+     "url": "https://data.gov.au/data/dataset/c2524c87-cea4-4636-acac-599a82048a26/resource/15bf4eaa-7a14-48e9-8a3f-092df32a644e/download/2024-25-corporate-report-of-entity-tax-information.xlsx"
+    }
+   },
+   "run": "2026-10-22"
+  },
+  "concordances": {
+   "files": {
+    "processed/alp_ipc4_isic4": {
+     "bytes": 35780,
+     "columns": [
+      "ipc4",
+      "isic4",
+      "weight"
+     ],
+     "describe": "ALP: IPC subclass to ISIC Rev. 4 class, probability weights",
+     "location": "repo",
+     "path": "data/processed/concordances/alp_ipc4_isic4.parquet",
+     "rows": 3098,
+     "sha256": "7040a3ee275d8bb877f07c4ddac567ac0e94722ea44b5db1801801ba5d30aab5"
+    },
+    "processed/alp_nice_isic4": {
+     "bytes": 7594,
+     "columns": [
+      "nice",
+      "isic4",
+      "weight"
+     ],
+     "describe": "ALP: Nice class to ISIC Rev. 4 class, probability weights",
+     "location": "repo",
+     "path": "data/processed/concordances/alp_nice_isic4.parquet",
+     "rows": 453,
+     "sha256": "947469052d205a3e5901511c88d0f3eacd54d6b173dca86a0b8db17ad6528b96"
+    },
+    "processed/ipc4_anzsic": {
+     "bytes": 55134,
+     "columns": [
+      "ipc4",
+      "anzsic",
+      "anzsic_title",
+      "weight"
+     ],
+     "describe": "ipc4 to ANZSIC 2006 class, ALP weights carried through ISIC Rev. 4",
+     "location": "repo",
+     "path": "data/processed/concordances/ipc4_anzsic.parquet",
+     "rows": 8384,
+     "sha256": "760e190f7f13aae3a3a67fb3fd89055881003b74d2b002d95d75af5951239c02"
+    },
+    "processed/ipc_green_inventory": {
+     "bytes": 14391,
+     "columns": [
+      "level",
+      "topic",
+      "title",
+      "ipc_raw",
+      "ipc"
+     ],
+     "describe": "WIPO IPC Green Inventory topics and IPC references",
+     "location": "repo",
+     "path": "data/processed/concordances/ipc_green_inventory.parquet",
+     "rows": 346,
+     "sha256": "62a93d5bf6ce225251342ea15644bbba765f8e7b30df1f185d0f34a920c34d88"
+    },
+    "processed/ipc_technology": {
+     "bytes": 7152,
+     "columns": [
+      "field_no",
+      "field",
+      "sector",
+      "ipc_prefix",
+      "groups",
+      "except_groups",
+      "except_prefix",
+      "unless_also"
+     ],
+     "describe": "WIPO's 35 technology fields, IPC rules",
+     "location": "repo",
+     "path": "data/processed/concordances/ipc_technology.parquet",
+     "rows": 369,
+     "sha256": "e4d98d39481bcc7b6280935fff70b84d358abbb423da1a29915eb820bd6d1eeb"
+    },
+    "processed/isic4_anzsic": {
+     "bytes": 13944,
+     "columns": [
+      "isic4",
+      "anzsic",
+      "anzsic_title",
+      "partial"
+     ],
+     "describe": "ISIC Rev. 4 class to ANZSIC 2006 class (ABS)",
+     "location": "repo",
+     "path": "data/processed/concordances/isic4_anzsic.parquet",
+     "rows": 1138,
+     "sha256": "5fc8256bb7a5249a7e7a46e602cd0e8234bda4510504dc6d3c7ec3f9f36f38b9"
+    },
+    "processed/nice_anzsic": {
+     "bytes": 16248,
+     "columns": [
+      "nice",
+      "anzsic",
+      "anzsic_title",
+      "weight"
+     ],
+     "describe": "nice to ANZSIC 2006 class, ALP weights carried through ISIC Rev. 4",
+     "location": "repo",
+     "path": "data/processed/concordances/nice_anzsic.parquet",
+     "rows": 826,
+     "sha256": "ea0daa4ea19a6a8e1b864677f5c13d78b729f5049435e9a999325582b3f9ab0a"
+    },
+    "processed/patent_fields": {
+     "bytes": 5168955,
+     "columns": [
+      "application_number",
+      "field_no",
+      "weight",
+      "field",
+      "sector"
+     ],
+     "describe": "IPGOD patents to WIPO technology fields, weighted",
+     "location": "repo",
+     "path": "data/processed/concordances/patent_fields.parquet",
+     "rows": 1699357,
+     "sha256": "2dd316622660bb0cac6ba3f0a4b8807b997a95100ecf1bf9ce4e420780d575c4"
+    },
+    "raw/alp-ipc-excl-service-v2209.zip": {
+     "bytes": 4926289,
+     "location": "repo",
+     "path": "data/raw/concordances/alp-ipc-excl-service-v2209.zip",
+     "sha256": "0cb8189f39197a3cbe910a4b3f4c1915eee9080ea2660cc5a460d35609d0922c",
+     "url": "https://drive.google.com/uc?export=download&id=1wsIflv45zCyLNvB1mcSWGS6vhfNC_qxv"
+    },
+    "raw/alp-trademark-v2305.zip": {
+     "bytes": 399251,
+     "location": "repo",
+     "path": "data/raw/concordances/alp-trademark-v2305.zip",
+     "sha256": "1a1f02851937fd1d39ac5e4a54bb218b2dbadc21e9553e51d6a26c079403b1c7",
+     "url": "https://drive.google.com/uc?export=download&id=1P1NQ4tfggVOu_CtLxTXCKTr9yzoyeniP"
+    },
+    "raw/ipc-green-inventory.json": {
+     "bytes": 55578,
+     "location": "repo",
+     "path": "data/raw/concordances/ipc-green-inventory.json",
+     "sha256": "75d8a87d5f375d8db971364bc57e2cab42ffe7db2617f93d58d971f0185384fe"
+    },
+    "raw/ipc-technology-35.csv": {
+     "bytes": 18525,
+     "location": "repo",
+     "path": "data/raw/concordances/ipc-technology-35.csv",
+     "sha256": "6a476b2ff07c8d255b205ebbafd97a8dd1ac2ea2acc93fb86554ff07dde579d5"
+    },
+    "raw/isic-rev-4-anzsic-2006.html": {
+     "bytes": 299641,
+     "location": "repo",
+     "path": "data/raw/concordances/isic-rev-4-anzsic-2006.html",
+     "sha256": "e1a634cca4575a0e8e34f6d22e3df46a93063889f1fac8358e68ea4ce443bca3"
+    }
+   },
+   "notes": [
+    "concordances: nice_anzsic: 0.0% of ALP weight is on ISIC classes the ABS table lacks"
+   ],
+   "run": "2026-10-22"
+  },
+  "ipgod": {
+   "files": {
+    "processed/applicant_year": {
+     "bytes": 12641906,
+     "columns": [
+      "applicant_id",
+      "applicant_id_type",
+      "party_type",
+      "country_code",
+      "state_code",
+      "post_code",
+      "ip_right_type",
+      "financial_year",
+      "filed",
+      "filed_weighted",
+      "became_enforceable",
+      "became_enforceable_weighted"
+     ],
+     "describe": "Applicant (ABN or party id) by right by financial year: filed and became enforceable",
+     "location": "repo",
+     "path": "data/processed/ipgod/applicant_year.parquet",
+     "rows": 2678084,
+     "sha256": "8da0e2c57fa3a82ab56b0a598aee3d740e44019dcc198ba923e342545acaae36"
+    },
+    "processed/design_application": {
+     "bytes": 2938905,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "ip_right_sub_type",
+      "status",
+      "earliest_filed_date",
+      "priority_date",
+      "gained_registration_status_date",
+      "gained_enforceable_status_date",
+      "enforceable_from_date",
+      "deemed_retired_date"
+     ],
+     "key": "processed/ipgod/design_application.parquet",
+     "location": "r2",
+     "rows": 224211,
+     "sha256": "a0789dd5a8f98c3d50ebd2fde675269d09fe3b448bd8e3e04191fb11309240d1"
+    },
+    "processed/design_classification": {
+     "bytes": 1629765,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "classification_system",
+      "classification",
+      "classification_importance",
+      "classification_inventiveness",
+      "classification_source",
+      "classifying_country_code",
+      "classification_date",
+      "classification_removal_date",
+      "classification_system_version",
+      "is_current"
+     ],
+     "key": "processed/ipgod/design_classification.parquet",
+     "location": "r2",
+     "rows": 233855,
+     "sha256": "62d83f6bc2db7bbf64c72fc4efcf5d7d602d8a6764f8c6dc431cc18a05f5bd8e"
+    },
+    "processed/design_description": {
+     "bytes": 2467807,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "description_type",
+      "description_value"
+     ],
+     "key": "processed/ipgod/design_description.parquet",
+     "location": "r2",
+     "rows": 210420,
+     "sha256": "ea12ce49f909b7ae6bf39c8d77ff8f7bcffcfee32d586ca5e2717ec354d68e12"
+    },
+    "processed/design_events": {
+     "bytes": 8494423,
+     "columns": [
+      "application_number",
+      "ip_right_type",
+      "event_type",
+      "event_category",
+      "event_effective_date",
+      "event_declared_date",
+      "is_standing"
+     ],
+     "key": "processed/ipgod/design_events.parquet",
+     "location": "r2",
+     "rows": 1769404,
+     "sha256": "558f53e4ac56a5a0fa015df3a0e6407d8181d64ff7559fb425db83b8bd742c9e"
+    },
+    "processed/design_links": {
+     "bytes": 1171505,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "link_type",
+      "linked_application_number",
+      "link_date",
+      "linked_application_country"
+     ],
+     "key": "processed/ipgod/design_links.parquet",
+     "location": "r2",
+     "rows": 97748,
+     "sha256": "9ae9d4165918ea129f2171c189e774806f7812b8cdbd2367d73df1f71b839915"
+    },
+    "processed/design_party": {
+     "bytes": 7862930,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "party_id",
+      "party_role_category",
+      "party_role",
+      "party_type",
+      "party_name",
+      "state_code",
+      "post_code",
+      "country_code",
+      "effective_from_date",
+      "effective_to_date",
+      "is_current",
+      "abn",
+      "is_founding"
+     ],
+     "key": "processed/ipgod/design_party.parquet",
+     "location": "r2",
+     "rows": 509951,
+     "sha256": "fc2113087516addb05f4a13b0aa169312f9c99410ba5c7eac34fa0cb65365b20"
+    },
+    "processed/design_rights": {
+     "bytes": 3483158,
+     "columns": [
+      "application_number",
+      "ip_right_sub_type",
+      "status",
+      "earliest_filed_date",
+      "priority_date",
+      "gained_registration_status_date",
+      "gained_enforceable_status_date",
+      "enforceable_from_date",
+      "deemed_retired_date",
+      "applicant_count",
+      "applicant_party_id",
+      "applicant_name",
+      "applicant_type",
+      "applicant_country",
+      "applicant_state",
+      "applicant_postcode",
+      "applicant_abn",
+      "any_applicant_abn",
+      "any_applicant_in_australia",
+      "has_agent",
+      "main_class",
+      "class_count",
+      "classes"
+     ],
+     "describe": "One row per application: status, dates, first current applicant, attorney use, classes",
+     "location": "repo",
+     "path": "data/processed/ipgod/design_rights.parquet",
+     "rows": 224211,
+     "sha256": "4de830ec584fc210d37371e3a13e54bb6e2f916dbe2a5e58e117f5ff32aca76e"
+    },
+    "processed/patent_application": {
+     "bytes": 20326627,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "ip_right_sub_type",
+      "status",
+      "earliest_filed_date",
+      "priority_date",
+      "gained_registration_status_date",
+      "gained_enforceable_status_date",
+      "enforceable_from_date",
+      "deemed_retired_date"
+     ],
+     "key": "processed/ipgod/patent_application.parquet",
+     "location": "r2",
+     "rows": 1576221,
+     "sha256": "7708d3515564ea49458e66171828835b0f8dac21f6ea6792de4c9cd4cbd83c43"
+    },
+    "processed/patent_classification": {
+     "bytes": 51718629,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "classification_system",
+      "classification",
+      "classification_importance",
+      "classification_inventiveness",
+      "classification_source",
+      "classifying_country_code",
+      "classification_date",
+      "classification_removal_date",
+      "classification_system_version",
+      "is_current"
+     ],
+     "key": "processed/ipgod/patent_classification.parquet",
+     "location": "r2",
+     "rows": 8281276,
+     "sha256": "258f6d80b0071be562a0617ebb72c44f0bd5656bb6785bbdc42dc305dd34d45d"
+    },
+    "processed/patent_description": {
+     "bytes": 36102726,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "description_type",
+      "description_value"
+     ],
+     "key": "processed/ipgod/patent_description.parquet",
+     "location": "r2",
+     "rows": 1576221,
+     "sha256": "ace9ebb76da9aab1a80fe7d95273511be33eba4eed4cf08ed1815b8746660ee6"
+    },
+    "processed/patent_events": {
+     "bytes": 52710235,
+     "columns": [
+      "application_number",
+      "ip_right_type",
+      "event_type",
+      "event_category",
+      "event_effective_date",
+      "event_declared_date",
+      "is_standing"
+     ],
+     "key": "processed/ipgod/patent_events.parquet",
+     "location": "r2",
+     "rows": 11703884,
+     "sha256": "96481fbb737f86ec1029856a9b3164f800d988c7af4ace9ff5aad1cf11885dc3"
+    },
+    "processed/patent_links": {
+     "bytes": 25065374,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "link_type",
+      "linked_application_number",
+      "link_date",
+      "linked_application_country"
+     ],
+     "key": "processed/ipgod/patent_links.parquet",
+     "location": "r2",
+     "rows": 1887935,
+     "sha256": "052098596efe37da2ce531fc952b2fdb35fc3fafe91fa92387f910401f97ebea"
+    },
+    "processed/patent_party": {
+     "bytes": 56250778,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "party_id",
+      "party_role_category",
+      "party_role",
+      "party_type",
+      "party_name",
+      "state_code",
+      "post_code",
+      "country_code",
+      "effective_from_date",
+      "effective_to_date",
+      "is_current",
+      "abn",
+      "is_founding"
+     ],
+     "key": "processed/ipgod/patent_party.parquet",
+     "location": "r2",
+     "rows": 3458445,
+     "sha256": "40bb10b226c0aabdbe8e408663046e836c876210dc3eeea80a535a62ae2d828b"
+    },
+    "processed/patent_rights": {
+     "bytes": 30349118,
+     "columns": [
+      "application_number",
+      "ip_right_sub_type",
+      "status",
+      "earliest_filed_date",
+      "priority_date",
+      "gained_registration_status_date",
+      "gained_enforceable_status_date",
+      "enforceable_from_date",
+      "deemed_retired_date",
+      "applicant_count",
+      "applicant_party_id",
+      "applicant_name",
+      "applicant_type",
+      "applicant_country",
+      "applicant_state",
+      "applicant_postcode",
+      "applicant_abn",
+      "any_applicant_abn",
+      "any_applicant_in_australia",
+      "has_agent",
+      "main_class",
+      "class_count",
+      "classes"
+     ],
+     "describe": "One row per application: status, dates, first current applicant, attorney use, classes",
+     "location": "repo",
+     "path": "data/processed/ipgod/patent_rights.parquet",
+     "rows": 1576221,
+     "sha256": "fa9cb1b474b6768f3fc9154aabd4359b10c1d897e2652165669be3c23ac6c5a3"
+    },
+    "processed/pbr_application": {
+     "bytes": 90617,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "ip_right_sub_type",
+      "status",
+      "earliest_filed_date",
+      "priority_date",
+      "gained_registration_status_date",
+      "gained_enforceable_status_date",
+      "enforceable_from_date",
+      "deemed_retired_date"
+     ],
+     "key": "processed/ipgod/pbr_application.parquet",
+     "location": "r2",
+     "rows": 10368,
+     "sha256": "a8ec14c787cb9a2764bf44e94945f8d0c9e4b8319d04337d14d2dacb0db9243b"
+    },
+    "processed/pbr_classification": {
+     "bytes": 65874,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "classification_system",
+      "classification",
+      "classification_importance",
+      "classification_inventiveness",
+      "classification_source",
+      "classifying_country_code",
+      "classification_date",
+      "classification_removal_date",
+      "classification_system_version",
+      "is_current"
+     ],
+     "key": "processed/ipgod/pbr_classification.parquet",
+     "location": "r2",
+     "rows": 30825,
+     "sha256": "4d5e4487dc7efd780516e0931ac6dfe07dfbc2bbf48441af3ceef6c1d1d458de"
+    },
+    "processed/pbr_description": {
+     "bytes": 77556,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "description_type",
+      "description_value"
+     ],
+     "key": "processed/ipgod/pbr_description.parquet",
+     "location": "r2",
+     "rows": 10368,
+     "sha256": "d0ed5e74ebe2d7520b2ef816fd45a2fafb8c161286ca336092f5eff3959dafce"
+    },
+    "processed/pbr_events": {
+     "bytes": 212409,
+     "columns": [
+      "application_number",
+      "ip_right_type",
+      "event_type",
+      "event_category",
+      "event_effective_date",
+      "event_declared_date",
+      "is_standing"
+     ],
+     "key": "processed/ipgod/pbr_events.parquet",
+     "location": "r2",
+     "rows": 55099,
+     "sha256": "d0457cc783d0f63ea535ef9e969444bf73543654dccc10b62b25a3fb0e21c0b4"
+    },
+    "processed/pbr_links": {
+     "bytes": 257,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "link_type",
+      "linked_application_number",
+      "link_date",
+      "linked_application_country"
+     ],
+     "key": "processed/ipgod/pbr_links.parquet",
+     "location": "r2",
+     "rows": 0,
+     "sha256": "32db739db51506248e5862d30c45752ba78948cc0968bb5926552015b41cdf26"
+    },
+    "processed/pbr_party": {
+     "bytes": 103972,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "party_id",
+      "party_role_category",
+      "party_role",
+      "party_type",
+      "party_name",
+      "state_code",
+      "post_code",
+      "country_code",
+      "effective_from_date",
+      "effective_to_date",
+      "is_current",
+      "abn",
+      "is_founding"
+     ],
+     "key": "processed/ipgod/pbr_party.parquet",
+     "location": "r2",
+     "rows": 11890,
+     "sha256": "32c9927bac66a07272df6f3827a5203092e3eb67717f3c292541d430c6353b65"
+    },
+    "processed/pbr_rights": {
+     "bytes": 174482,
+     "columns": [
+      "application_number",
+      "ip_right_sub_type",
+      "status",
+      "earliest_filed_date",
+      "priority_date",
+      "gained_registration_status_date",
+      "gained_enforceable_status_date",
+      "enforceable_from_date",
+      "deemed_retired_date",
+      "applicant_count",
+      "applicant_party_id",
+      "applicant_name",
+      "applicant_type",
+      "applicant_country",
+      "applicant_state",
+      "applicant_postcode",
+      "applicant_abn",
+      "any_applicant_abn",
+      "any_applicant_in_australia",
+      "has_agent",
+      "main_class",
+      "class_count",
+      "classes"
+     ],
+     "describe": "One row per application: status, dates, first current applicant, attorney use, classes",
+     "location": "repo",
+     "path": "data/processed/ipgod/pbr_rights.parquet",
+     "rows": 10368,
+     "sha256": "1080f9d4c539ee854427cba2a936fc2a88526cd4c24d10cd8321849325d187d3"
+    },
+    "processed/trade_mark_application": {
+     "bytes": 30639686,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "ip_right_sub_type",
+      "status",
+      "earliest_filed_date",
+      "priority_date",
+      "gained_registration_status_date",
+      "gained_enforceable_status_date",
+      "enforceable_from_date",
+      "deemed_retired_date"
+     ],
+     "key": "processed/ipgod/trade_mark_application.parquet",
+     "location": "r2",
+     "rows": 1910924,
+     "sha256": "cf7233604febf7bbd208d3f1bd8849e9e88e6bf7431694cd8c20cbacaaaa5891"
+    },
+    "processed/trade_mark_classification": {
+     "bytes": 17796771,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "classification_system",
+      "classification",
+      "classification_importance",
+      "classification_inventiveness",
+      "classification_source",
+      "classifying_country_code",
+      "classification_date",
+      "classification_removal_date",
+      "classification_system_version",
+      "is_current"
+     ],
+     "key": "processed/ipgod/trade_mark_classification.parquet",
+     "location": "r2",
+     "rows": 3028595,
+     "sha256": "5649c1991228e5215054dde3af05b8681d7a1287a05d7a39b7a9970d8fd10f9c"
+    },
+    "processed/trade_mark_description": {
+     "bytes": 42467087,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "description_type",
+      "description_value"
+     ],
+     "key": "processed/ipgod/trade_mark_description.parquet",
+     "location": "r2",
+     "rows": 4432633,
+     "sha256": "022d0f5871f8233d5f349cedd42fd3f71190d7ea51db977437315be5e8da01c5"
+    },
+    "processed/trade_mark_events": {
+     "bytes": 130353470,
+     "columns": [
+      "application_number",
+      "ip_right_type",
+      "event_type",
+      "event_category",
+      "event_effective_date",
+      "event_declared_date",
+      "is_standing"
+     ],
+     "key": "processed/ipgod/trade_mark_events.parquet",
+     "location": "r2",
+     "rows": 26968088,
+     "sha256": "f3e117aa3e64cfb94c271c045b7108a609cdaaf69c31a36f589d5e5349eb118c"
+    },
+    "processed/trade_mark_links": {
+     "bytes": 13159183,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "link_type",
+      "linked_application_number",
+      "link_date",
+      "linked_application_country"
+     ],
+     "key": "processed/ipgod/trade_mark_links.parquet",
+     "location": "r2",
+     "rows": 1263346,
+     "sha256": "1b3e2733f244e5155dc058ddb8327bdae9cf03472f8843b528dcb82594b57dce"
+    },
+    "processed/trade_mark_party": {
+     "bytes": 103042303,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "party_id",
+      "party_role_category",
+      "party_role",
+      "party_type",
+      "party_name",
+      "state_code",
+      "post_code",
+      "country_code",
+      "effective_from_date",
+      "effective_to_date",
+      "is_current",
+      "abn",
+      "is_founding"
+     ],
+     "key": "processed/ipgod/trade_mark_party.parquet",
+     "location": "r2",
+     "rows": 5764299,
+     "sha256": "be675af879740cbf4819bb6d3c8ad39a1ff514156b862e0faacde5883907613d"
+    },
+    "processed/trade_mark_rights": {
+     "bytes": 41621662,
+     "columns": [
+      "application_number",
+      "ip_right_sub_type",
+      "status",
+      "earliest_filed_date",
+      "priority_date",
+      "gained_registration_status_date",
+      "gained_enforceable_status_date",
+      "enforceable_from_date",
+      "deemed_retired_date",
+      "applicant_count",
+      "applicant_party_id",
+      "applicant_name",
+      "applicant_type",
+      "applicant_country",
+      "applicant_state",
+      "applicant_postcode",
+      "applicant_abn",
+      "any_applicant_abn",
+      "any_applicant_in_australia",
+      "has_agent",
+      "main_class",
+      "class_count",
+      "classes"
+     ],
+     "describe": "One row per application: status, dates, first current applicant, attorney use, classes",
+     "location": "repo",
+     "path": "data/processed/ipgod/trade_mark_rights.parquet",
+     "rows": 1910924,
+     "sha256": "c30dcfc93ac2a5b8f1cfaacfd613803291ac304edec85054db0fd3321cea7cba"
+    },
+    "raw/ipgod2022-data-dictionary-v1-public.pdf": {
+     "bytes": 826376,
+     "location": "repo",
+     "path": "data/raw/ipgod/ipgod2022-data-dictionary-v1-public.pdf",
+     "sha256": "73dc064505060a9bf92b6ebae58817d606f9de7c02e1c0b1565f66bc991d83e3",
+     "url": "https://data.gov.au/data/dataset/49017fd0-e7be-4fc0-88c8-046fc366d980/resource/2a4ad939-d2ba-4082-b2a3-750a400884d1/download/ipgod2022-data-dictionary-v1-public.pdf"
+    },
+    "raw/ipgod2022.zip": {
+     "bytes": 843038114,
+     "key": "raw/ipgod/ipgod2022.zip",
+     "location": "r2",
+     "sha256": "56ee749525841d2ec499199784506cb174a0dbf74e2c33f65ad74de457096ce0",
+     "url": "https://data.gov.au/data/dataset/49017fd0-e7be-4fc0-88c8-046fc366d980/resource/fc07e1cc-c205-4806-aff9-826470937a0a/download/ipgod2022.zip"
+    }
+   },
+   "run": "2026-10-22"
+  },
+  "iplord": {
+   "files": {
+    "processed/iplord": {
+     "bytes": 58913277,
+     "columns": [
+      "lord_party_id",
+      "lord_party_id_type",
+      "party_name",
+      "country_code",
+      "state_code",
+      "post_code",
+      "d_first_earliest_filed_financial_year",
+      "pbr_first_earliest_filed_financial_year",
+      "tm_first_earliest_filed_financial_year",
+      "d_first_gained_enforceable_status_financial_year",
+      "pbr_first_gained_enforceable_status_financial_year",
+      "tm_first_gained_enforceable_status_financial_year",
+      "financial_year",
+      "d_filed_count",
+      "pbr_filed_count",
+      "tm_filed_count",
+      "d_granted_count",
+      "pbr_granted_count",
+      "tm_granted_count",
+      "d_retired_count",
+      "pbr_retired_count",
+      "tm_retired_count",
+      "d_enforceable_count",
+      "pbr_enforceable_count",
+      "tm_enforceable_count",
+      "tm_services_filed_count",
+      "tm_services_granted_count",
+      "tm_services_retired_count",
+      "tm_services_enforceable_count",
+      "d_filed_weighted_count",
+      "pbr_filed_weighted_count",
+      "tm_filed_weighted_count",
+      "d_granted_weighted_count",
+      "pbr_granted_weighted_count",
+      "tm_granted_weighted_count",
+      "d_retired_weighted_count",
+      "pbr_retired_weighted_count",
+      "tm_retired_weighted_count",
+      "d_enforceable_weighted_count",
+      "pbr_enforceable_weighted_count",
+      "tm_enforceable_weighted_count",
+      "tm_services_filed_weighted_count",
+      "tm_services_granted_weighted_count",
+      "tm_services_retired_weighted_count",
+      "tm_services_enforceable_weighted_count",
+      "d_filed_modal_class",
+      "pbr_filed_modal_class",
+      "tm_filed_modal_class",
+      "d_granted_modal_class",
+      "pbr_granted_modal_class",
+      "tm_granted_modal_class",
+      "d_retired_modal_class",
+      "pbr_retired_modal_class",
+      "tm_retired_modal_class",
+      "d_enforceable_modal_class",
+      "pbr_enforceable_modal_class",
+      "tm_enforceable_modal_class",
+      "tm_services_filed_modal_class",
+      "tm_services_granted_modal_class",
+      "tm_services_retired_modal_class",
+      "tm_services_enforceable_modal_class",
+      "d_filed_class_scope",
+      "pbr_filed_class_scope",
+      "tm_filed_class_scope",
+      "d_granted_class_scope",
+      "pbr_granted_class_scope",
+      "tm_granted_class_scope",
+      "d_retired_class_scope",
+      "pbr_retired_class_scope",
+      "tm_retired_class_scope",
+      "d_enforceable_class_scope",
+      "pbr_enforceable_class_scope",
+      "tm_enforceable_class_scope",
+      "tm_services_filed_class_scope",
+      "tm_services_granted_class_scope",
+      "tm_services_retired_class_scope",
+      "tm_services_enforceable_class_scope"
+     ],
+     "describe": "The full IPLORD 2020 panel",
+     "key": "processed/iplord/iplord.parquet",
+     "location": "r2",
+     "rows": 7303207,
+     "sha256": "79513026fcb54b9ceac10b73dcd9fde3ebc44700009ef2e1e2d0b68cbf15564f"
+    },
+    "processed/iplord_abn": {
+     "bytes": 15014029,
+     "columns": [
+      "lord_party_id",
+      "lord_party_id_type",
+      "party_name",
+      "country_code",
+      "state_code",
+      "post_code",
+      "d_first_earliest_filed_financial_year",
+      "pbr_first_earliest_filed_financial_year",
+      "tm_first_earliest_filed_financial_year",
+      "d_first_gained_enforceable_status_financial_year",
+      "pbr_first_gained_enforceable_status_financial_year",
+      "tm_first_gained_enforceable_status_financial_year",
+      "financial_year",
+      "d_filed_count",
+      "pbr_filed_count",
+      "tm_filed_count",
+      "d_granted_count",
+      "pbr_granted_count",
+      "tm_granted_count",
+      "d_retired_count",
+      "pbr_retired_count",
+      "tm_retired_count",
+      "d_enforceable_count",
+      "pbr_enforceable_count",
+      "tm_enforceable_count",
+      "tm_services_filed_count",
+      "tm_services_granted_count",
+      "tm_services_retired_count",
+      "tm_services_enforceable_count",
+      "d_filed_weighted_count",
+      "pbr_filed_weighted_count",
+      "tm_filed_weighted_count",
+      "d_granted_weighted_count",
+      "pbr_granted_weighted_count",
+      "tm_granted_weighted_count",
+      "d_retired_weighted_count",
+      "pbr_retired_weighted_count",
+      "tm_retired_weighted_count",
+      "d_enforceable_weighted_count",
+      "pbr_enforceable_weighted_count",
+      "tm_enforceable_weighted_count",
+      "tm_services_filed_weighted_count",
+      "tm_services_granted_weighted_count",
+      "tm_services_retired_weighted_count",
+      "tm_services_enforceable_weighted_count",
+      "d_filed_modal_class",
+      "pbr_filed_modal_class",
+      "tm_filed_modal_class",
+      "d_granted_modal_class",
+      "pbr_granted_modal_class",
+      "tm_granted_modal_class",
+      "d_retired_modal_class",
+      "pbr_retired_modal_class",
+      "tm_retired_modal_class",
+      "d_enforceable_modal_class",
+      "pbr_enforceable_modal_class",
+      "tm_enforceable_modal_class",
+      "tm_services_filed_modal_class",
+      "tm_services_granted_modal_class",
+      "tm_services_retired_modal_class",
+      "tm_services_enforceable_modal_class",
+      "d_filed_class_scope",
+      "pbr_filed_class_scope",
+      "tm_filed_class_scope",
+      "d_granted_class_scope",
+      "pbr_granted_class_scope",
+      "tm_granted_class_scope",
+      "d_retired_class_scope",
+      "pbr_retired_class_scope",
+      "tm_retired_class_scope",
+      "d_enforceable_class_scope",
+      "pbr_enforceable_class_scope",
+      "tm_enforceable_class_scope",
+      "tm_services_filed_class_scope",
+      "tm_services_granted_class_scope",
+      "tm_services_retired_class_scope",
+      "tm_services_enforceable_class_scope"
+     ],
+     "describe": "IPLORD rows identified by an ABN",
+     "location": "repo",
+     "path": "data/processed/iplord/iplord_abn.parquet",
+     "rows": 2089555,
+     "sha256": "20fef22f61befa9faa144167e50bef2923b65f2ca6425a4db9cbcf2d2e03811f"
+    },
+    "raw/iplord-data-dictionary-2021.pdf": {
+     "bytes": 454232,
+     "location": "repo",
+     "path": "data/raw/iplord/iplord-data-dictionary-2021.pdf",
+     "sha256": "ac6d15060a545578e2ee704ed2ee5f59d07d63c73d6c464c6a4277673042095b",
+     "url": "https://data.gov.au/data/dataset/d61374dd-1a62-4132-913d-35d90cfdac81/resource/808dafcd-7cb3-4a39-94d0-81211f138a6f/download/iplord-data-dictionary-2021.pdf"
+    },
+    "raw/iplord_2020.zip": {
+     "bytes": 181817437,
+     "key": "raw/iplord/iplord_2020.zip",
+     "location": "r2",
+     "sha256": "0cd7982b375f3b872fc53644ab17ff80bd71f98dabed1614baab2a0f5d90c2b4",
+     "url": "https://data.gov.au/data/dataset/d61374dd-1a62-4132-913d-35d90cfdac81/resource/af2ba6bd-a751-41cc-889b-1d83611d572d/download/iplord_2020.zip"
+    }
+   },
+   "run": "2026-10-22"
+  },
+  "rdti": {
+   "files": {
+    "processed/entities": {
+     "bytes": 605034,
+     "columns": [
+      "rd_expenditure",
+      "rd_expenditure_amended",
+      "income_year",
+      "report",
+      "sheet",
+      "name",
+      "abn",
+      "acn"
+     ],
+     "describe": "R&D Tax Incentive claimants by income year, with ABN or ACN",
+     "location": "repo",
+     "path": "data/processed/rdti/entities.parquet",
+     "rows": 38512,
+     "sha256": "6acf989a161aef4b9c8c65d2e56ca611671b4fdf9b82817ad4c7840a2749753f"
+    },
+    "raw/2021-22.xlsx": {
+     "bytes": 588023,
+     "location": "repo",
+     "path": "data/raw/rdti/2021-22.xlsx",
+     "sha256": "479a49f425395b3608225d6035fba7c9df10cd164bdf7700ba8f4c278e5427b5",
+     "url": "https://data.gov.au/data/dataset/7c356598-b048-4c1e-862f-c936041e3d81/resource/72efe86d-3ae9-4f84-8446-1a98fed4a8be/download/report-of-information-about-research-and-development-tax-incentive-entities.xlsx"
+    },
+    "raw/2022-23.xlsx": {
+     "bytes": 656173,
+     "location": "repo",
+     "path": "data/raw/rdti/2022-23.xlsx",
+     "sha256": "a2a05ddfacba084003daa098dcbfeb8c2c825f1d1eae10026676dbd6744d38cc",
+     "url": "https://data.gov.au/data/dataset/7c356598-b048-4c1e-862f-c936041e3d81/resource/e9c059c8-a801-4068-844e-9d4ee84a1d81/download/report-of-information-about-research-and-development-tax-incentive-entities.xlsx"
+    },
+    "raw/2023-24.xlsx": {
+     "bytes": 691115,
+     "location": "repo",
+     "path": "data/raw/rdti/2023-24.xlsx",
+     "sha256": "780fa813ee58d456001499b43331333cb913d940f44565a165188b3b18ce9fd0",
+     "url": "https://data.gov.au/data/dataset/7c356598-b048-4c1e-862f-c936041e3d81/resource/5f7d5cac-cfa8-4500-8468-1c396f3a08d1/download/report-of-information-about-research-and-development-tax-incentive-entities-2023-24.xlsx"
+    }
+   },
+   "run": "2026-10-22"
+  },
+  "wgnd": {
+   "files": {
+    "processed/name_gender": {
+     "bytes": 13174881,
+     "columns": [
+      "name",
+      "gender"
+     ],
+     "describe": "WGND 2.0 wgnd_2_0_name-gender_nocode.tab",
+     "location": "repo",
+     "path": "data/processed/wgnd/name_gender.parquet",
+     "rows": 3491141,
+     "sha256": "5100f64d2544fbf80d052d2acdf231cc60465140e006a790f4ac7e097836ed6a"
+    },
+    "processed/name_gender_code": {
+     "bytes": 17728503,
+     "columns": [
+      "name",
+      "code",
+      "gender",
+      "wgt"
+     ],
+     "describe": "WGND 2.0 wgnd_2_0_name-gender-code.tab",
+     "location": "repo",
+     "path": "data/processed/wgnd/name_gender_code.parquet",
+     "rows": 4970296,
+     "sha256": "a8ad70268dd07a547f39d789e150bda3282655e2d9c70b15fc70ff9433b9e508"
+    },
+    "raw/wgnd_2_0_name-gender-code.tab": {
+     "bytes": 91229769,
+     "key": "raw/wgnd/wgnd_2_0_name-gender-code.tab",
+     "location": "r2",
+     "sha256": "5348c1787f4b006a98a3a2d878f77b5d2ed6c52b667d01b9f5dfdf4748e32d90",
+     "url": "https://dataverse.harvard.edu/api/access/datafile/4750348?format=original"
+    },
+    "raw/wgnd_2_0_name-gender_nocode.tab": {
+     "bytes": 46488874,
+     "key": "raw/wgnd/wgnd_2_0_name-gender_nocode.tab",
+     "location": "r2",
+     "sha256": "a1ba9c64880ff25797af851c5f36f1d5b709f521b62fc5f54b116e0aad64c14a",
+     "url": "https://dataverse.harvard.edu/api/access/datafile/4750351?format=original"
+    }
+   },
+   "run": "2026-10-22"
+  }
+ }
+}
