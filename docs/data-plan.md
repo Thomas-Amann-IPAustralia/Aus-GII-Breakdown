@@ -191,7 +191,9 @@ as the research goal requires.
 - **Q1 Value.** Revealed private value of patents and designs from renewal and lapse decisions, by applicant type,
   technology and origin (observational, an established method). Share of Australian rights, renewals and royalty
   flows held by foreign versus domestic owners (descriptive). Direct costs against revealed value (descriptive).
-  Pharmaceutical extension-of-term spending (descriptive case study). Green patenting share (descriptive).
+  Pharmaceutical extension-of-term spending (descriptive case study). Non-financial pathways from section 2: green
+  patenting and its diffusion, Indigenous Knowledge and geographical indications, counterfeit enforcement, disclosure
+  and the public domain (descriptive), framed against Measuring What Matters.
 - **Q2 Distribution.** IP use per business by industry, firm age, entity type, size proxy, remoteness and SEIFA
   decile; gender of inventors and individual applicants; self-filers against attorney filers (descriptive).
 - **Q3 Conditions.** Survival and growth proxies (ABR, ASIC, GST status) for first-time filers against matched
