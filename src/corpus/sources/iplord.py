@@ -59,6 +59,7 @@ def run(ctx: Ctx) -> None:
     rows = con.execute(f"SELECT count(*) FROM '{out}'").fetchone()[0]
     ctx.keep_table(out, "iplord", rows, cols, keep="r2", describe="The full IPLORD 2020 panel")
     sub = ctx.cache / "processed/iplord_abn.parquet"
+    con = duckdb.connect()  # a fresh connection: DuckDB will not reuse one with an unfinished result
     con.register("ind", pd.DataFrame({"abn": sorted(individual_abns())}))  # sole traders: names stay out
     con.execute(
         f"COPY (SELECT * REPLACE (CASE WHEN lord_party_id IN (SELECT abn FROM ind) THEN NULL ELSE party_name END "

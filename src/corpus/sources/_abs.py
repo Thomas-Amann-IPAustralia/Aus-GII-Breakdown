@@ -68,7 +68,7 @@ def tidy_file(csv_path, out_parquet, flow: str) -> tuple[int, list[str]]:
 
     con = duckdb.connect()
     con.execute("SET memory_limit='6GB'; SET preserve_insertion_order=false")
-    src = f"read_csv('{csv_path}', all_varchar=true, header=true)"
+    src = f"read_csv('{csv_path}', all_varchar=true, header=true, quote='\"', escape='\"', strict_mode=false)"
     cols = [r[0] for r in con.execute(f"DESCRIBE SELECT * FROM {src}").fetchall()]
     if "OBS_VALUE" not in cols:
         raise CorpusError(f"sdmx: {flow} has no OBS_VALUE column; has the API changed?")

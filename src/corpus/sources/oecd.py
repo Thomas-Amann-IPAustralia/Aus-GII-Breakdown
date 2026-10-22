@@ -39,27 +39,32 @@ def run(ctx: Ctx) -> None:
     failed = []
     for name, flow in FLOWS.items():
         url = f"{API}/{flow}/all"
-        try:
-            r = http_get(
-                url,
-                params={"dimensionAtObservation": "AllDimensions"},
-                headers={"Accept": "application/vnd.sdmx.data+csv;labels=both"},
-                timeout=900,
-            )
-        except CorpusError as e:
-            failed.append(name)
-            ctx.note(f"oecd: {name} ({flow}) could not be fetched: {e}")
-            continue
-        gz = ctx.cache / f"{name}.csv.gz"
-        gz.parent.mkdir(parents=True, exist_ok=True)
-        with open(gz, "wb") as raw, gzip.GzipFile(fileobj=raw, mode="wb", mtime=0, filename="") as f:
-            f.write(r.content)
-        if gz.stat().st_size <= REPO_LIMIT:
-            ctx.raw.mkdir(parents=True, exist_ok=True)
-            gz = gz.replace(ctx.raw / gz.name)
-            ctx.keep_raw(gz, url=url)
+        cached = [p for p in (ctx.raw / f"{name}.csv.gz", ctx.cache / f"{name}.csv.gz") if p.exists()]
+        if cached:  # a flow already fetched today is reused (delete it to refetch)
+            gz = cached[0]
+            ctx.keep_raw(gz, keep="repo" if gz.parent == ctx.raw else "r2", url=url)
         else:
-            ctx.keep_raw(gz, keep="r2", url=url)
+            try:
+                r = http_get(
+                    url,
+                    params={"dimensionAtObservation": "AllDimensions"},
+                    headers={"Accept": "application/vnd.sdmx.data+csv;labels=both"},
+                    timeout=900,
+                )
+            except CorpusError as e:
+                failed.append(name)
+                ctx.note(f"oecd: {name} ({flow}) could not be fetched: {e}")
+                continue
+            gz = ctx.cache / f"{name}.csv.gz"
+            gz.parent.mkdir(parents=True, exist_ok=True)
+            with open(gz, "wb") as raw, gzip.GzipFile(fileobj=raw, mode="wb", mtime=0, filename="") as f:
+                f.write(r.content)
+            if gz.stat().st_size <= REPO_LIMIT:
+                ctx.raw.mkdir(parents=True, exist_ok=True)
+                gz = gz.replace(ctx.raw / gz.name)
+                ctx.keep_raw(gz, url=url)
+            else:
+                ctx.keep_raw(gz, keep="r2", url=url)
         out = ctx.cache / "processed" / f"{name}.parquet"
         out.parent.mkdir(parents=True, exist_ok=True)
         rows, cols = tidy_file(gz, out, flow)

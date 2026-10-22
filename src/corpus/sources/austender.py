@@ -25,10 +25,8 @@ import requests
 from ..core import CorpusError, Ctx, http_get, individual_abns
 
 API = "https://api.tenders.gov.au/ocds/findByDates/contractPublished"
-BULK = (
-    "https://data.gov.au/data/dataset/5c7fa69b-b0e9-4553-b8df-2a022dd2e982/resource/"
-    "2e2a2b9d-a813-4325-bc8c-a8e37401ffc0/download/cn-parent-and-amendments-30092019-ltr.xlsx"
-)
+PACKAGE = "https://data.gov.au/data/api/3/action/package_show?id=historical-australian-government-contract-data"
+BULK_NAME = "AusTender CNs published up to 30 August 2019"
 API_FROM = dt.date(2019, 7, 1)
 
 
@@ -144,7 +142,11 @@ def run(ctx: Ctx) -> None:
             with open(f, "rb") as fh:
                 out.write(gzip.decompress(fh.read()))
     ctx.keep_raw(raw, keep="r2", url=API)
-    bulk = _bulk(ctx.fetch(BULK, "cn-parent-and-amendments-30092019.xlsx", keep="r2")).assign(source="bulk")
+    res = http_get(PACKAGE).json()["result"]["resources"]
+    bulk_url = next((r["url"] for r in res if r.get("name", "").strip() == BULK_NAME), None)
+    if not bulk_url:
+        raise CorpusError(f"austender: no resource named '{BULK_NAME}' on data.gov.au")
+    bulk = _bulk(ctx.fetch(bulk_url, "cn-parent-and-amendments-30092019.xlsx", keep="r2")).assign(source="bulk")
     both = pd.concat([api, bulk[~bulk.cn_id.isin(api.cn_id)]], ignore_index=True)
     both["value"] = pd.to_numeric(both["value"].astype(str).str.replace(r"[,$]", "", regex=True), errors="coerce")
     both = duckdb.connect().execute("SELECT * FROM both ORDER BY published, cn_id").df()
