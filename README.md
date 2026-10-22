@@ -81,7 +81,7 @@ Edit, then Network secrets or Environment variables), never in the repo. A new s
 | `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` | The `ipholmes` R2 bucket | From Cloudflare |
 | `OPENALEX_API_KEY` | `openalex` | A free OpenAlex key |
 | `GCP_SERVICE_ACCOUNT_JSON` | Google Patents Public Data in BigQuery (`google_patents`) | The whole contents of the service account's JSON key file (or the same, base64-encoded); `corpus.core.gcp_credentials()` writes it to a private file outside the repo at run time. The account needs the BigQuery Job User role; with BigQuery Read Session User as well, results download much faster |
-| `GCP_PROJECT_ID` | BigQuery billing project (optional) | The project queries are billed to; when unset, or not a project id, the key's own project is used. A full `google_patents` run queries about 60 GB, within BigQuery's free terabyte a month |
+| `GCP_PROJECT_ID` | BigQuery billing project (optional) | The project queries are billed to; when unset, or not a project id, the key's own project is used. A full `google_patents` run queries about 140 GB, within BigQuery's free terabyte a month |
 
 ## Privacy
 
