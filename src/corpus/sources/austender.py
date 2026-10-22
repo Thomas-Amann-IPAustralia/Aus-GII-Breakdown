@@ -18,7 +18,6 @@ import json
 import re
 from concurrent.futures import ThreadPoolExecutor
 
-import duckdb
 import pandas as pd
 import requests
 
@@ -149,6 +148,6 @@ def run(ctx: Ctx) -> None:
     bulk = _bulk(ctx.fetch(bulk_url, "cn-parent-and-amendments-30092019.xlsx", keep="r2")).assign(source="bulk")
     both = pd.concat([api, bulk[~bulk.cn_id.isin(api.cn_id)]], ignore_index=True)
     both["value"] = pd.to_numeric(both["value"].astype(str).str.replace(r"[,$]", "", regex=True), errors="coerce")
-    both = duckdb.connect().execute("SELECT * FROM both ORDER BY published, cn_id").df()
+    both = both.sort_values(["published", "cn_id"], na_position="last").reset_index(drop=True)
     both.loc[both.supplier_abn.isin(individual_abns()), "supplier_name"] = None  # sole traders' names stay out
     ctx.table(both, "contracts", describe="Contract notices 2007 onward, one row per notice, with supplier ABN")
