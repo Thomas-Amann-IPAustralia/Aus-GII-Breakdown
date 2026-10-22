@@ -18,7 +18,8 @@ Processed (R2 unless small):
   numbers, office, kind, dates, applicant and inventor countries and counts, first IPC and CPC codes and IPC
   subclasses, patent and non-patent citations made, the names of Australian applicants (organisations and
   individuals, as published), and `au_application` (the 10-digit Australian application number, to join to
-  `iprapid`).
+  `iprapid`; every standard patent and innovation patent application from the 1960s on maps, but not provisional
+  applications in the letter series of the 1990s, such as PO4687/97, nor designs, which Google also holds).
 - `citations`: family-level citation pairs (citing family, cited family, citing family's first priority date) where
   the cited family has an Australian applicant or inventor.
 """

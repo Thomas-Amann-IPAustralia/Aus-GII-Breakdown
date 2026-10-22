@@ -762,11 +762,16 @@ Processed (R2 unless small):
   numbers, office, kind, dates, applicant and inventor countries and counts, first IPC and CPC codes and IPC
   subclasses, patent and non-patent citations made, the names of Australian applicants (organisations and
   individuals, as published), and `au_application` (the 10-digit Australian application number, to join to
-  `iprapid`).
+  `iprapid`; every standard patent and innovation patent application from the 1960s on maps, but not provisional
+  applications in the letter series of the 1990s, such as PO4687/97, nor designs, which Google also holds).
 - `citations`: family-level citation pairs (citing family, cited family, citing family's first priority date) where
   the cited family has an Australian applicant or inventor.
 
-*Not ingested yet: see the status in `docs/data-plan.md`.*
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `citations` | 1,854,268 | repo (18.5 MB) | `citing_family`, `cited_family`, `citing_priority_date` |
+| `families` | 1,753,104 | R2 (53.7 MB) | `family_id`, `first_priority_date`, `first_filing_date`, `first_grant_date`, `publications`, `offices`, `n_offices`, `pct`, `ep`, `filed_au`, `granted_au`, `granted_us`, `au_applicant`, `au_inventor` … |
+| `members` | 3,223,057 | R2 (117.7 MB) | `publication_number`, `application_number`, `pct_number`, `country_code`, `kind_code`, `application_kind`, `family_id`, `publication_date`, `filing_date`, `grant_date`, `priority_date`, `entity_status`, `assignee_countries`, `inventor_countries` … |
 
 ## Reliance on Science, US patents' citations to scientific papers (OpenAlex) (`reliance_on_science`)
 

@@ -8414,6 +8414,85 @@
    },
    "run": "2026-10-22"
   },
+  "google_patents": {
+   "files": {
+    "processed/citations": {
+     "bytes": 18515021,
+     "columns": [
+      "citing_family",
+      "cited_family",
+      "citing_priority_date"
+     ],
+     "describe": "Family-level citations to families with Australian applicants",
+     "location": "repo",
+     "path": "data/processed/google_patents/citations.parquet",
+     "rows": 1854268,
+     "sha256": "e4bea6b3fabe7efaf39a8d958bc2c34609bc8285b28d20dad09299c932ae5768"
+    },
+    "processed/families": {
+     "bytes": 53723458,
+     "columns": [
+      "family_id",
+      "first_priority_date",
+      "first_filing_date",
+      "first_grant_date",
+      "publications",
+      "offices",
+      "n_offices",
+      "pct",
+      "ep",
+      "filed_au",
+      "granted_au",
+      "granted_us",
+      "au_applicant",
+      "au_inventor",
+      "ipc_first",
+      "title",
+      "citing_families",
+      "citing_families_5y"
+     ],
+     "describe": "Families touching Australia: offices, citations",
+     "key": "processed/google_patents/families.parquet",
+     "location": "r2",
+     "rows": 1753104,
+     "sha256": "caa0a04d7690e14d5a524b80bf9c522e2de62e246a8111a8c385ba005a9b5a20"
+    },
+    "processed/members": {
+     "bytes": 117673249,
+     "columns": [
+      "publication_number",
+      "application_number",
+      "pct_number",
+      "country_code",
+      "kind_code",
+      "application_kind",
+      "family_id",
+      "publication_date",
+      "filing_date",
+      "grant_date",
+      "priority_date",
+      "entity_status",
+      "assignee_countries",
+      "inventor_countries",
+      "assignees",
+      "inventors",
+      "au_assignee_names",
+      "ipc_first",
+      "ipc_subclasses",
+      "cpc_first",
+      "patent_citations",
+      "npl_citations",
+      "au_application"
+     ],
+     "describe": "Australian publications and families with Australian applicants",
+     "key": "processed/google_patents/members.parquet",
+     "location": "r2",
+     "rows": 3223057,
+     "sha256": "876267d7834f123c6bb6c00bfdc7e1064a1dbaf2fa6d67597a91ae930e77ce34"
+    }
+   },
+   "run": "2026-10-22"
+  },
   "ipa_fees": {
    "files": {
     "processed/fees": {
