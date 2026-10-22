@@ -228,7 +228,7 @@ As planned, with the details in `README.md`; `docs/catalogue.md` lists every tab
 
 ## 8. What was ingested (2026-10-22)
 
-Every approved source has a module in `src/corpus/sources/`; `docs/catalogue.md` lists every table with its rows and
+Every approved source has a module in `src/corpus/sources/` (updated after your downloads and the BigQuery key, the same day); `docs/catalogue.md` lists every table with its rows and
 columns. In short:
 
 | # | Source (`id`) | Status | What is there |
@@ -247,39 +247,42 @@ columns. In short:
 | — | GII 2026 (`gii`), Closing the Gap (`ctg`) | Ingested | Kept from the earlier corpus as context |
 | 11 | AusTender (`austender`) | Ingested | 1.55 million contract notices, July 2007 to October 2026, 94.5% with a supplier ABN |
 | 12 | ARC grants (`arc_grants`) | Ingested | 34,977 grants |
-| 12 | NHMRC grants (`nhmrc_grants`) | **Needs you** | The NHMRC site refuses this environment |
+| 12 | NHMRC grants (`nhmrc_grants`) | Ingested (your download) | 12,224 grants, application rounds 2013 to 2026, harmonised into one table; investigators' names left out |
 | 13 | Corporate tax transparency (`ato_ctt`) | Ingested | 2013-14 to 2024-25 |
 | 14, 26 | OECD panel (`oecd`) | Ingested | 17 flows: MSTI, methods used to protect IP, patents (WIPO fields, environment, ownership, co-invention, regions), business demography, venture capital, IP tax regimes, How's Life? |
 | 15 | WDI panel (`wdi`) | Ingested | 22 indicators, every country; the World Bank has archived its trade mark series |
-| 16 | WIPO IP statistics (`wipo_ipstats`) | **Needs you** | WIPO's API is undocumented: a few CSV exports, listed in the module |
+| 16 | WIPO IP statistics (`wipo_ipstats`) | Ingested | From the public API behind WIPO's data centre: every office by every origin, 1980 to 2024 (4.9 million values: patents, utility models, trade marks, designs; applications, grants, in force, by field or class), office workloads, and PCT, Madrid and Hague by origin |
 | 17 | TM-Link (`tmlink`) | Ingested | Links, applications, owners, classes, Madrid and property tables (R2); free-text tables left out |
 | 18 | IP Australia fees (`ipa_fees`) | Ingested (current only) | Application, examination, renewal, opposition fees; historical schedules need the Wayback Machine, which this environment cannot reach |
 | 19 | PBS (`pbs`) | Ingested | Date-of-supply data from July 2020 by item and month, and the item to drug map |
 | 20 | ABS R&D and venture capital (`abs_rd_vc`) | Ingested | BERD 2023-24, GOVERD 2024-25, HERD 2024, venture capital to 2018-19 (discontinued) |
 | 21 | OpenAlex (`openalex`) | Ingested | 1,910 Australian institutions (243 companies), works by field and year from 2000 |
 | 22 | Evidence register (`evidence`) | Ingested | 20 items, journal items checked against Crossref (one flagged: its only Crossref record is a later SSRN version) |
-| 23 | Cultural and creative activity (`bcarr_creative`) | **Needs you** | The site refuses this environment |
+| 23 | Cultural and creative activity (`bcarr_creative`) | Ingested (your download) | Both releases (2008-09 to 2022-23, 2015-16 to 2024-25) as one long table |
 | 24 | Measuring What Matters (`mwm`) | Ingested | 50 indicator pages and their data |
-| 25 | NATSEM wellbeing and trust (`natsem`) | **Needs you** | AURIN's servers refuse this environment; CC BY-NC 4.0 |
+| 25 | 2021 Census (`abs_census`), in place of NATSEM | Ingested | 14 General Community Profile tables by SA2 and postal area: volunteering, unpaid care, health conditions, mobility, labour force, qualifications, industry, occupation. PHIDU's Social Health Atlas (`phidu`) is an optional download |
 | 27 | Small-scale renewables (`cer`) | Ingested | Every postcode file, 2001 to 2026 |
 | 28 | Wine GIs (`wine_gi`) | Ingested | The Australian GI register and the other registers' PDFs |
-| 29 | Border enforcement (`abf`) | **Needs you** | Published only inside Home Affairs annual reports |
+| 29 | Border enforcement | Dropped | The Home Affairs annual reports (2016-17 to 2024-25) do not report IP seizures separately |
 | 30 | Closing the Gap 8, 15, 16 (`ctg`) | Ingested | |
-| 31 | Federal Court IP judgments (`fedcourt`) | **Needs you** | The Federal Court site and AustLII refuse this environment, and AustLII's terms do not allow bulk downloads |
+| 31 | IP judgments (`fedcourt`) | Ingested | 2,666 decisions (Federal Court 2,097, Full Court 326, High Court 146, Copyright Tribunal 80) to 10 March 2025, from the Open Australian Legal Corpus: cover-page fields (practice area and sub-area, catchwords, legislation, hearing and judgment dates, solicitors), rights and Acts cited, full texts (R2) |
+| J | TGA register (`tga`) | Ingested (your download) | 98,147 ARTG entries (35,113 medicines, 62,647 devices) and their active ingredients; no dates |
+| E | Google Patents (`google_patents`) | Ingested | 1.75 million families with an Australian publication, applicant or inventor (offices, grants, forward citations, titles); 3.2 million publications, with Australian application numbers that join to IP RAPID; 1.85 million citation pairs |
+| F | Reliance on Science (`reliance_on_science`) | Ingested | US patents' citations to scientific papers (OpenAlex ids), for families touching Australia; patent-paper pairs |
 | 32 | Policy events (`policy_events`) | Ingested | 13 dated changes (four marked to verify) and IP Australia's policy register (155 proposals and their status) |
 
 ### What needs you
 
-1. **BigQuery and Lens access** (Tier 3 E and F), both public data: the key and token go in the environment's
-   settings, not the repo (see the README).
-2. **Downloads** for the public sources this environment cannot reach: put the files in `data/raw/<source>/` and run
-   `corpus run <source>`; each module's docstring says what to fetch. In order of value: `wipo_ipstats`,
-   `nhmrc_grants`, `natsem`, `bcarr_creative`, `abf`; `fedcourt` is optional. Alternatively, allow these hosts in
-   the environment's network settings and they can be fetched here: www.nhmrc.gov.au, www.infrastructure.gov.au,
-   adp-access.aurin.org.au and adp-gatekeeper.prod.aurin-prod.cloud.edu.au, web.archive.org (historical fees),
-   search.patentsview.org, www.judgments.fedcourt.gov.au.
+Nothing is blocking. Optional:
 
-IP RAPID replaced IPGOD 2022 (the weekly public release covers 2022 to now), and OpenAlex is ingested.
+1. **PHIDU's Social Health Atlas** (`phidu`): the Population Health Area workbook for Australia, put in
+   `data/raw/phidu/` (the site's files do not answer this environment). Non-commercial licence.
+2. **Which citing patents rely on Australian research**: tagging the papers patents cite with OpenAlex's
+   institutions takes about 12,000 OpenAlex calls (OpenAlex now charges about US$0.0001 a call, so a dollar or two).
+3. **BigQuery**: `GCP_PROJECT_ID` should be a project id or left unset (the key's own project is used); giving the
+   service account the BigQuery Read Session User role makes `google_patents` download much faster.
+
+Lens was not pursued (its API is paid beyond a trial); Google Patents and Reliance on Science cover its uses.
 
 ### A first look, to show the corpus works
 
@@ -290,5 +293,5 @@ little value, is exactly the kind of question Q3 and Q4 ask.
 
 ### Repository size
 
-The repo holds about 640 MB of data (the largest parts: OECD panels, IP RAPID summaries, ABS regional data), every file
+The repo holds about 690 MB of data (the largest parts: OECD panels, IP RAPID summaries, ABS regional data), every file
 under 50 MB. If it grows past about 1 GB, move the OECD raw files to R2 (`keep="r2"` in `oecd.py`).
