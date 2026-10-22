@@ -291,6 +291,14 @@ sources:
     url: https://zenodo.org/records/22967630
     licence: CC BY-NC 4.0
 
+  - id: openalex_works
+    title: OpenAlex works with an Australian institution, and US patents' citations to them
+    publisher: OurResearch (OpenAlex), with Reliance on Science
+    tier: 3
+    questions: [2, 4]
+    url: https://openalex.org/
+    licence: CC0 (OpenAlex); CC BY-NC 4.0 (the citations)
+
   - id: policy_events
     title: IP policy changes (dates and terms) for natural experiments
     publisher: compiled here from the Federal Register of Legislation and IP Australia

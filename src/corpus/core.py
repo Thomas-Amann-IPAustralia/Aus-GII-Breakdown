@@ -281,6 +281,11 @@ def path(source: str, name: str) -> Path:
     return _local(read_manifest()["sources"][source]["files"][f"processed/{name}"])
 
 
+def raw_path(source: str, name: str) -> Path:
+    """The local path of a raw file (downloading it from R2 if needed)."""
+    return _local(read_manifest()["sources"][source]["files"][f"raw/{name}"])
+
+
 def _local(f: dict) -> Path:
     """A manifest entry's file: in the repo, or the cached copy of the R2 object, fetched again when the manifest
     names a newer version (a sidecar file holds the cached copy's SHA-256)."""
