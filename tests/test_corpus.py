@@ -90,3 +90,52 @@ def test_dropped_tables_take_the_first_row_with_three_values_as_the_header():
     t = _framed(raw)
     assert list(t.columns) == ["origin", "year", "count"]
     assert t.iloc[0].tolist() == ["AU", "2020", "5"]
+
+
+def test_artg_ingredients_drop_quantities_and_equivalents():
+    from corpus.sources.tga import ingredients
+
+    s = "natural fish oil, Quantity: 1000 mg (Equivalent: eicosapentaenoic acid, Qty 180 mg); Biotin, Quantity: 1 mg"
+    assert ingredients(s) == ["natural fish oil", "biotin"]
+
+
+def test_federal_court_cover_page_fields():
+    from corpus.sources.fedcourt import court, cover, last_date
+
+    text = (
+        "FEDERAL COURT OF AUSTRALIA\n\nA Pty Ltd v B Inc [2017] FCA 1075\n"
+        "File number:          VID 885 of 2017\n\nJudge:                KENNY J\n\n"
+        "Catchwords:           PATENTS – infringement\n                      PATENTS – validity\n\n"
+        "Legislation:          Patents Act 1990 (Cth)\n\n"
+        "National Practice Area:   Intellectual Property\n\n"
+        "Counsel for the Applicant:  Mr X SC\n\nSolicitor for the Applicant:  Allens\n\nORDERS\n\nJudge:  ignored\n"
+    )
+    c = cover(text)
+    assert c["file_number"] == "VID 885 of 2017" and c["judges"] == "KENNY J"
+    assert c["catchwords"] == "PATENTS – infringement\nPATENTS – validity"
+    assert c["practice_area"] == "Intellectual Property" and c["solicitors"] == "Allens"
+    assert "Mr X SC" not in c.values()
+    assert court("A Pty Ltd v B Inc [2017] FCAFC 75") == "FCAFC"
+    assert last_date("26 and 27 November 2013") == "27 November 2013"
+
+
+def test_wipo_exports_read_long_with_thousands_separators():
+    from corpus.sources.wipo_ipstats import _read
+
+    text = (
+        "Intellectual property right :Madrid\n\nIndicator :2a - Applications\n\n"
+        "Source: WIPO statistics database. Last updated: October 2026\n\n"
+        '"Country of holder","Country of holder(Code)",2024,2025,\n"Australia","AU","1,959","1,995",\n'
+    )
+    updated, df = _read(text)
+    assert updated == "October 2026"
+    assert df[["year", "value"]].values.tolist() == [[2024, 1959.0], [2025, 1995.0]]
+
+
+def test_google_patents_au_application_numbers_match_ip_rapid():
+    import pyarrow as pa
+
+    from corpus.sources.google_patents import _au_application
+
+    got = _au_application(pa.array(["AU-2017352992-A", "AU-6508386-A", "US-123-A", None]))
+    assert got == ["2017352992", "1986065083", None, None]

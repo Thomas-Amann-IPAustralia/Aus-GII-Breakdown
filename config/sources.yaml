@@ -187,6 +187,14 @@ sources:
     url: https://www.pbs.gov.au/info/statistics
     licence: CC BY 4.0
 
+  - id: tga
+    title: Australian Register of Therapeutic Goods (ARTG)
+    publisher: Therapeutic Goods Administration
+    tier: 2
+    questions: [1]
+    url: https://www.tga.gov.au/resources/artg
+    licence: CC BY 4.0 (TGA copyright notice; check before republishing)
+
   - id: abs_rd_vc
     title: ABS research and experimental development, and venture capital
     publisher: Australian Bureau of Statistics
@@ -227,13 +235,21 @@ sources:
     url: https://www.abs.gov.au/statistics/measuring-what-matters
     licence: CC BY 4.0
 
-  - id: natsem
-    title: Small-area synthetic estimates of life satisfaction and generalised trust (SA2)
-    publisher: NATSEM, University of Canberra
+  - id: abs_census
+    title: 2021 Census General Community Profile (SA2 and postal areas)
+    publisher: Australian Bureau of Statistics
     tier: 2
     questions: [1, 2]
-    url: https://data.gov.au/ (AURIN)
-    licence: CC BY-NC 4.0
+    url: https://www.abs.gov.au/census/find-census-data/datapacks
+    licence: CC BY 4.0
+
+  - id: phidu
+    title: Social Health Atlas of Australia, Population Health Areas (optional manual download)
+    publisher: PHIDU, Torrens University Australia
+    tier: 2
+    questions: [1, 2]
+    url: https://phidu.torrens.edu.au/social-health-atlases/data
+    licence: CC BY-NC-SA 3.0 AU
 
   - id: cer
     title: Small-scale renewable installations by postcode
@@ -251,21 +267,29 @@ sources:
     url: https://www.wineaustralia.com/labelling/register-of-protected-gis-and-other-terms
     licence: see the publisher's terms
 
-  - id: abf
-    title: Border enforcement of IP (notices of objection and seizures)
-    publisher: Australian Border Force
-    tier: 2
-    questions: [1]
-    url: https://www.abf.gov.au/
-    licence: see the publisher's terms
-
   - id: fedcourt
-    title: Federal Court IP judgments
-    publisher: Federal Court of Australia
+    title: IP judgments (Federal Court, Full Federal Court, High Court, Copyright Tribunal)
+    publisher: The courts, via the Open Australian Legal Corpus (Isaacus)
     tier: 2
     questions: [1]
-    url: https://www.judgments.fedcourt.gov.au/
-    licence: see the publisher's terms
+    url: https://huggingface.co/datasets/isaacus/open-australian-legal-corpus
+    licence: CC BY 4.0 (the collection); judgments reproducible unaltered with acknowledgement of the court and source
+
+  - id: google_patents
+    title: Google Patents Public Data, the worldwide patent families touching Australia
+    publisher: Google (BigQuery public dataset patents-public-data)
+    tier: 3
+    questions: [1, 3]
+    url: https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data
+    licence: CC BY 4.0
+
+  - id: reliance_on_science
+    title: Reliance on Science, US patents' citations to scientific papers (OpenAlex)
+    publisher: Matt Marx and Aaron Fuegi
+    tier: 3
+    questions: [1, 2]
+    url: https://zenodo.org/records/22967630
+    licence: CC BY-NC 4.0
 
   - id: policy_events
     title: IP policy changes (dates and terms) for natural experiments

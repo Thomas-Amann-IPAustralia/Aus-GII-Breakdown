@@ -77,12 +77,12 @@ wellbeing using established evidence:
 
 | Domain (Measuring What Matters theme) | How the IP system could add or subtract value | Measurable with |
 |---|---|---|
-| Health (healthy) | Incentives to develop and bring medicines and devices to Australia; against that, higher prices and delayed generic entry during patent terms and extensions | IPGOD pharmaceutical extensions of term; PBS spending; TGA's register of therapeutic goods (time to market, generic entry) |
+| Health (healthy) | Incentives to develop and bring medicines and devices to Australia; against that, higher prices and delayed generic entry during patent terms and extensions | IP RAPID pharmaceutical extensions of term; PBS spending; TGA's register of therapeutic goods (sponsors per active ingredient, a snapshot without dates) |
 | Environment (sustainable) | Green technology invention, disclosure and diffusion; whether patents speed or slow uptake | Green patents (IPC Green Inventory, IPGOD); Clean Energy Regulator postcode data on small-scale solar and batteries (diffusion) |
 | Culture, identity and social cohesion (cohesive) | Protection of Indigenous Knowledge and cultural expression; regional identity (geographical indications, certification marks); creative industries; against that, misappropriation | IPGOD trade marks (certification marks, Indigenous words, objections); Wine Australia's GI register; cultural and creative activity estimates (Bureau of Communications, Arts and Regional Research); Closing the Gap targets 15 and 16 as context |
-| Consumer trust and safety (secure) | Trade marks lower search costs and signal quality; enforcement against counterfeits, some of which are unsafe | Trade mark oppositions and non-use removals (IPGOD); Australian Border Force notices of objection and seizures (annual reports) |
-| Knowledge and opportunity (prosperous, cohesive) | Disclosure of inventions; rights lapsing into the public domain; who can take part in the system | Patent citations (IPGOD, Lens); early lapse rates (IPGOD); the distribution analyses under Q2 |
-| Wellbeing in places (cohesive, healthy) | Whether regions with more innovation and IP activity also do better on life satisfaction and trust, as context for distribution (not as proof of effect) | NATSEM small-area synthetic estimates of life satisfaction and generalised trust by SA2 (2011, 2016) |
+| Consumer trust and safety (secure) | Trade marks lower search costs and signal quality; enforcement against counterfeits, some of which are unsafe | Trade mark oppositions and non-use removals (IP RAPID); IP judgments, including counterfeiting and passing off (`fedcourt`). Border seizures of counterfeits are not published separately (the Home Affairs annual reports fold them into "other goods") |
+| Knowledge and opportunity (prosperous, cohesive) | Disclosure of inventions; rights lapsing into the public domain; who can take part in the system | Forward citations and families (Google Patents); patents' citations to science (Reliance on Science); early lapse rates (IP RAPID); the distribution analyses under Q2 |
+| Wellbeing in places (cohesive, healthy) | Whether regions with more innovation and IP activity also do better on life satisfaction and trust, as context for distribution (not as proof of effect) | 2021 Census by SA2 and postcode: volunteering, unpaid care, long-term and mental health conditions, residential stability (`abs_census`); optionally PHIDU's modelled health and wellbeing estimates. No public source gives small-area life satisfaction or trust now that NATSEM's AURIN files cannot be reached |
 | Wellbeing overall | The final layer: converting health, environmental and social outcomes into comparable terms for Q5 | Measuring What Matters (ABS, about 50 indicators); OECD How's Life? for comparators; wellbeing valuation evidence (WELLBY values, Office of Impact Analysis guidance on valuing non-market outcomes); HILDA if individual-level wellbeing is needed (Tier 3) |
 
 Gaps that remain: disability and age are not observable for IP users in any open data; copyright is not registered,
@@ -100,7 +100,7 @@ observable.
 |---|---|---|
 | **Q1.1** Economic, social, technological and environmental outcomes of each form of IP | Partial | Economic: renewals, firm survival (1 to 4), BLADE (B). Technological: citations (1, F). Environmental: green patents and diffusion (9, 27). Social: through the pathways in section 2 (24 to 30). Trade marks and designs, not only patents, have renewal data |
 | **Q1.2** When patents, trade marks and designs support innovation, commercialisation, investment, competition, diffusion | Partial | BCS (6); co-applicants and assignments (1); VC (I). Competition needs BLADE (B) |
-| **Q1.3** Costs of obtaining, maintaining, licensing and enforcing | Partial | Fees (18) and attorney use (1). Licensing: only national royalty flows (15) and assignments recorded in IPGOD (1). Enforcement: Federal Court IP judgments (31, blocked here) |
+| **Q1.3** Costs of obtaining, maintaining, licensing and enforcing | Partial | Fees (18) and attorney use (1). Licensing: only national royalty flows (15) and assignments recorded in IPGOD (1). Enforcement: IP judgments of the Federal Court, High Court and Copyright Tribunal (31), with hearing and judgment dates and the firms acting |
 | **Q1.4** Costs to consumers, competitors, follow-on innovators and the public | Partial | Consumers: PBS case (19). Competitors: oppositions and re-examinations (1). Follow-on innovators: citations and patent thickets (1, E). Public: section 2 |
 | **Q1.5** What existing evidence says about net contribution | Full | Evidence register (22) |
 | **Q2.1** Who benefits most (businesses, industries, regions, groups) | Partial | Use is measurable (1 to 8); benefit needs outcomes (B). Analyses will say "uses" and "benefits" carefully |
@@ -153,7 +153,7 @@ Tier 2 adds complements, outcomes and comparators. Tier 3 needs your help or an 
 | 13 | **ATO Corporate Tax Transparency** (2017-18 to 2024-25) | ATO | Total income and tax for entities with $100 million+ income, by ABN: outcomes for large IP holders | Q1, Q2 |
 | 14 | **OECD**: MSTI (R&D), patents by technology and co-invention, business demography, IP royalty trade (SDMX API) | OECD | A focused comparator panel replacing the WDI dump | Q1, Q4 |
 | 15 | **WDI comparator panel** (about 25 indicators, OECD members, API) | World Bank | As above | Q1 |
-| 16 | **WIPO IP Statistics**: filings abroad by origin (PCT, Madrid, Hague) | WIPO | Do Australian firms take rights to international markets, and how does that compare with peers? | Q3 |
+| 16 | **WIPO IP Statistics**: filings, grants and rights in force by office and origin, every country; PCT, Madrid and Hague by origin | WIPO | Do Australian firms take rights to international markets, and how does that compare with peers? | Q3 |
 | 17 | **TM-Link** | IP Australia | Trade marks linked across offices: which Australian owners file abroad and where | Q3 |
 | 18 | **IP Australia fee schedules**, current and historical | IP Australia | Direct costs of obtaining and maintaining rights, to set against revealed value from renewals | Q1, Q5 |
 | 19 | **PBS expenditure and prescriptions** with IPGOD extensions of term | Department of Health, Disability and Ageing | A concrete consumer-cost case: spending on medicines under extended patent terms | Q1 |
@@ -162,13 +162,13 @@ Tier 2 adds complements, outcomes and comparators. Tier 3 needs your help or an 
 | 22 | **An evidence register** of key literature and evaluations (PC Intellectual Property Arrangements 2016; IP Australia economic research papers; OECD; UK IPO, EUIPO SME Fund and other IP-support evaluations) | various | Q1's "what can existing evidence establish", and priors for Q5 where Australian data cannot give magnitudes | Q1, Q5 |
 | 23 | **Bureau of Communications, Arts and Regional Research: cultural and creative activity** | Department of Infrastructure | The size of creative industries, where copyright and design protection operate | Q1 |
 | 24 | **Measuring What Matters** (about 50 indicators, five themes) | Treasury and ABS | The Australian Government's own definition of wellbeing: the outcome layer and vocabulary for public value | Q1, Q5 |
-| 25 | **NATSEM small-area synthetic estimates of life satisfaction and generalised trust** (SA2, 2011 and 2016) | University of Canberra, data.gov.au | Wellbeing and social cohesion by place, beside regional IP use (context, not effect) | Q1, Q2 |
+| 25 | ~~NATSEM small-area estimates of life satisfaction and trust~~, replaced by the **2021 Census** (volunteering, unpaid care, health conditions, residential stability, workforce; SA2 and postcode) and optionally **PHIDU's Social Health Atlas** | ABS; PHIDU | Wellbeing and social cohesion by place, beside regional IP use (context, not effect) | Q1, Q2 |
 | 26 | **OECD How's Life?** for comparator countries | OECD | Replaces the Australia-only file | Q1 |
 | 27 | **Clean Energy Regulator small-scale installations by postcode** | CER, data.gov.au | Diffusion of green technologies by place | Q1 |
 | 28 | **Wine Australia register of geographical indications** | Wine Australia | Regional identity protection (small scrape) | Q1 |
-| 29 | **Australian Border Force notices of objection and seizures** | ABF annual reports | Enforcement against counterfeits, and consumer safety | Q1 |
+| 29 | ~~Australian Border Force notices of objection and seizures~~ | ABF annual reports | **Dropped:** the annual reports do not report IP seizures separately | Q1 |
 | 30 | **Closing the Gap targets 8, 15 and 16** (already held) | Productivity Commission | Context for a First Nations workstream | Q1, Q2 |
-| 31 | **Federal Court IP judgments** | Federal Court | Enforcement costs and outcomes. The judgments site refused this environment (403); needs an alternative route or your help | Q1 |
+| 31 | **IP judgments** (Federal Court, Full Federal Court, High Court, Copyright Tribunal) | The courts, via the Open Australian Legal Corpus | Enforcement costs and outcomes | Q1 |
 | 32 | **Policy-change dates and terms** (innovation patent phase-out, Raising the Bar, fee schedules) | Federal Register of Legislation, IP Australia | Turns IPGOD into natural experiments on IP Australia's own levers | Q4, Q5 |
 
 ### Tier 3: needs your help or an institutional request
@@ -181,12 +181,12 @@ Listed in order of value. Items marked "you" are the limited fetches you offered
 | B | ~~ABS BLADE with IP Australia's linked IP data~~ | **Ruled out (2026-10-22): no ABS integrated data assets.** It was the only source of small firms' turnover, employment and productivity | Not pursued |
 | C | ~~Examination records with examiner assignment~~ | **Ruled out (2026-10-22): public data only.** It would have allowed the examiner leniency design | Not pursued |
 | D | ~~IP Australia customer and SME research microdata~~ | **Ruled out: public data only.** Published reports can go in the evidence register | Not pursued |
-| E | **Global patent data**: Google Patents Public Data (BigQuery) or PatentsView | Forward citations and patent families as value measures; Australian inventors abroad | BigQuery needs a GCP project (the `bq` CLI here has no credentials); PatentsView is blocked by this environment's network policy and needs an allowlist change |
-| F | **The Lens API token** (free for research) | Patent to scholarly-literature links: knowledge diffusion from research | You, a free registration |
+| E | **Global patent data**: Google Patents Public Data (BigQuery) | Forward citations and patent families as value measures; Australian inventors abroad | **Ingested** (`google_patents`) |
+| F | ~~The Lens API~~, replaced by **Reliance on Science** (Marx and Fuegi; CC BY-NC 4.0) | Patent to scholarly-literature links: knowledge diffusion from research | **Ingested** (`reliance_on_science`); the Lens API is paid beyond a trial |
 | G | **ABS TableBuilder: Census 2021 owner-managers** by sex, Indigenous status, industry and region | Who runs businesses, the denominator for gender and First Nations participation | You, a free registration and a few tables |
 | H | **First Nations business data** (Indigenous Business Sector Snapshot; Indigenous Procurement Policy outcomes) | Q2 for First Nations businesses, replacing Closing the Gap | Mixed: some public reports, some by request |
 | I | ~~Venture capital deal data~~ | **Ruled out: paid, not public** | Not pursued |
-| J | **TGA's Australian Register of Therapeutic Goods** | Time to market and generic entry for the health case (section 2) | You: the TGA site did not respond to this environment |
+| J | **TGA's Australian Register of Therapeutic Goods** | Generic competition for the health case (section 2) | **Ingested** (`tga`) from your export; it has no dates, so time to market needs another route |
 | K | ~~HILDA~~ | **Ruled out: access needs an application** | Not pursued |
 
 ## 5. What the corpus would let later sessions answer

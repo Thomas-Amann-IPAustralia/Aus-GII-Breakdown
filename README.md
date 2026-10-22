@@ -47,7 +47,7 @@ causal or projected. Almost everything here supports descriptive and observation
 uv sync --group dev
 uv run corpus list                  # the sources and what the manifest holds for each
 uv run corpus run rdti abs_bcs      # fetch and process sources (writes data/, uploads to R2, updates the manifest)
-uv run corpus run all               # everything (hours: IP RAPID, the ABR and AusTender are large)
+uv run corpus run all               # everything (hours: IP RAPID, the ABR, AusTender and the legal corpus are large)
 uv run corpus verify --r2           # repo files against the manifest, and R2 holding the rest
 uv run corpus catalogue             # regenerate docs/catalogue.md
 uv run pytest -q                    # the rules, and the committed data against the manifest
@@ -80,19 +80,21 @@ Edit, then Network secrets or Environment variables), never in the repo. A new s
 |---|---|---|
 | `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` | The `ipholmes` R2 bucket | From Cloudflare |
 | `OPENALEX_API_KEY` | `openalex` | A free OpenAlex key |
-| `GCP_SERVICE_ACCOUNT_JSON` | Google Patents Public Data in BigQuery | The whole contents of the service account's JSON key file (or the same, base64-encoded); `corpus.core.gcp_credentials()` writes it to a private file outside the repo at run time |
-| `GCP_PROJECT_ID` | BigQuery billing project | The project the service account belongs to (queries are billed to it; the public patent tables are free to read, the queries are not beyond the free monthly allowance) |
-| `LENS_API_TOKEN` | The Lens (scholarly works and patents) | A Lens API token |
+| `GCP_SERVICE_ACCOUNT_JSON` | Google Patents Public Data in BigQuery (`google_patents`) | The whole contents of the service account's JSON key file (or the same, base64-encoded); `corpus.core.gcp_credentials()` writes it to a private file outside the repo at run time. The account needs the BigQuery Job User role; with BigQuery Read Session User as well, results download much faster |
+| `GCP_PROJECT_ID` | BigQuery billing project (optional) | The project queries are billed to; when unset, or not a project id, the key's own project is used. A full `google_patents` run queries about 60 GB, within BigQuery's free terabyte a month |
 
 ## Privacy
 
 The corpus holds published data only. Individuals' names (sole traders, individual applicants) are left out of the
-tables in the repo: the ABN Bulk Extract is read without them, and the IP RAPID summaries blank them. IP RAPID's party
-tables in R2 keep names as IP Australia publishes them, for analyses (such as gender estimation from first names)
-that need them; summaries built from them should not republish names.
+tables in the repo: the ABN Bulk Extract is read without them, the IP RAPID summaries blank them, and the NHMRC grants
+leave out chief investigators. Tables that keep names as published (IP RAPID's party tables, Google Patents'
+Australian applicants, the IP judgments, whose case names name people) are in R2, for analyses (such as gender
+estimation from first names) that need them; summaries built from them should not republish names.
 
 ## Sources and licences
 
 Each source's licence is in `config/sources.yaml` and `docs/catalogue.md`. Most are CC BY (IP Australia, the ABS, the
-ATO, ASIC, the ABR, the OECD, the World Bank, WIPO); the NATSEM small-area estimates (not yet ingested) are CC BY-NC.
+ATO, ASIC, the ABR, the OECD, the World Bank, WIPO, Google Patents). Non-commercial only: Reliance on Science (CC BY-NC
+4.0) and PHIDU's Social Health Atlas (CC BY-NC-SA 3.0 AU). The judgments may be reproduced unaltered, acknowledging the
+court and the source.
 Where a licence was unclear, the register says so: check before republishing outside this repository.

@@ -327,16 +327,19 @@ Processed: `grants`, one row per grant with every attribute the API gives (neste
 
 National Health and Medical Research Council. Tier 2; questions 2, 3. Licence: CC BY 4.0. Source: https://www.nhmrc.gov.au/funding/data-research/outcomes
 
-NHMRC grant outcomes.
+NHMRC grant outcomes: every grant in the NHMRC's summary of results workbooks, application rounds 2013 to 2026.
 
-Health and medical research funding by institution, scheme and field (Q2 research institutions; Q3 public funding).
-This environment cannot fetch it: put the files in data/raw/nhmrc_grants/ and run `corpus run nhmrc_grants`. To get
-them: From https://www.nhmrc.gov.au/funding/data-research/outcomes, the summary of results and grant outcomes
-workbooks (xlsx). The NHMRC site refuses this environment.
+Health and medical research funding by institution, scheme, sector and field (Q2 research institutions; Q3 public
+funding). The NHMRC site refuses this environment, so the workbooks were downloaded by hand from
+https://www.nhmrc.gov.au/funding/data-research/outcomes into data/raw/nhmrc_grants/ (repo); to add a round, put its
+workbook there and run `corpus run nhmrc_grants`.
 
-Processed: one table per file (and per sheet of a workbook), all columns as text; see `_manual.read_dropped`.
+Processed: `grants`, one row per grant from each workbook's grants sheet, with the columns harmonised across the
+rounds' layouts (amounts in dollars; keywords '; '-joined). Chief investigators' names and ORCIDs are left out.
 
-*Not ingested yet: see the status in `docs/data-plan.md`.*
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `grants` | 12,224 | repo (2.1 MB) | `application_id`, `round`, `date_announced`, `scheme`, `sub_type`, `grant_opportunity`, `title`, `admin_institution`, `admin_institution_ror`, `state`, `sector`, `participating_institutions`, `international_collaboration`, `collaborating_countries` … |
 
 ## Corporate Tax Transparency, report of entity tax information (`ato_ctt`)
 
@@ -406,16 +409,20 @@ country).
 
 WIPO. Tier 2; questions 3. Licence: CC BY 4.0. Source: https://www3.wipo.int/ipstats/
 
-WIPO IP statistics, filings by origin and office.
+WIPO IP statistics: filings, grants and rights in force by office and applicant's origin, every country, 1980 on.
 
-Q3: which countries' applicants file where, including trade marks, which the World Bank no longer publishes. This
-environment cannot fetch it: put the files in data/raw/wipo_ipstats/ and run `corpus run wipo_ipstats`. To get them:
-From the WIPO IP Statistics Data Center (https://www3.wipo.int/ipstats/), export as CSV, for all origins and all
-available years: trade mark applications (class count) by origin; patent applications by origin; industrial design
-applications (design count) by origin; PCT applications by origin; Madrid applications by origin. Its API is
-undocumented, so this source reads the exports.
+Q3: which countries' applicants file where (Australians abroad, foreigners in Australia), including trade marks and
+designs, which the World Bank no longer publishes; office workloads (examiners, pendency) for comparison. Read from
+the public API behind the WIPO IP Statistics Data Center (https://www3.wipo.int/ipstats/), which serves the same CSV
+exports as the site. Each export asks for every office and origin the indicator has. Raw: each export (gzipped CSV;
+repo, or R2 when large). Source: WIPO statistics database; cite WIPO.
 
-Processed: one table per file (and per sheet of a workbook), all columns as text; see `_manual.read_dropped`.
+Processed:
+- `office_origin`: one row per indicator, filing office, applicant's origin, breakdown (field of technology or class,
+  where the indicator has one) and year. Resident filings are those where office and origin are the same; an
+  origin's total is the sum over offices.
+- `office`: indicators reported by office only (rights in force, examiners, pendency, oppositions).
+- `pmh`: PCT applications by origin, Madrid applications by country of holder and Hague applications by origin.
 
 *Not ingested yet: see the status in `docs/data-plan.md`.*
 
@@ -481,6 +488,26 @@ and the older date-of-processing zip (to January 2018) are kept raw only.
 | `item_month` | 279,371 | repo (5.3 MB) | `month`, `item_code`, `prescriptions`, `patient_contribution`, `government_contribution`, `total_cost` |
 | `supply` | 2,146,679 | R2 (38.8 MB) | `MONTH_OF_SUPPLY`, `ITEM_CODE`, `DRUG_TYPE`, `PATIENT_CAT`, `PHRMCY_TYPE`, `SCRIPT_TYPE`, `PRESCRIPTIONS`, `PATIENT_CONTRIB`, `GOVT_CONTRIB`, `TOTAL_COST`, `RETAIL_MARKUP`, `PATIENT_NET_CONTRIB` |
 
+## Australian Register of Therapeutic Goods (ARTG) (`tga`)
+
+Therapeutic Goods Administration. Tier 2; questions 1. Licence: CC BY 4.0 (TGA copyright notice; check before republishing). Source: https://www.tga.gov.au/resources/artg
+
+TGA's Australian Register of Therapeutic Goods (ARTG): every medicine and medical device on the register.
+
+The health pathway (section 2 of docs/data-plan.md): how many sponsors supply each active ingredient (generic
+competition), and which medicines and devices reach Australia. The TGA site does not respond to this environment, so
+the ARTG search export was downloaded by hand (https://www.tga.gov.au/resources/artg, all entries, exported to xlsx)
+into data/raw/tga/ (repo). The export is a snapshot of the current register: it has no start or cancellation dates.
+
+Processed: `artg`, one row per ARTG entry (`kind` is medicine where there are active ingredients, device where there
+is a device manufacturer); `artg_ingredients`, one row per entry and active ingredient (name in lower case, without
+quantities), to join to PBS drugs and to patents' extension of term records by ingredient name.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `artg` | 98,147 | repo (2.4 MB) | `artg_id`, `product_name`, `sponsor_name`, `device_manufacturer`, `active_ingredients`, `kind` |
+| `artg_ingredients` | 99,864 | repo (0.3 MB) | `artg_id`, `ingredient` |
+
 ## ABS research and experimental development, and venture capital (`abs_rd_vc`)
 
 Australian Bureau of Statistics. Tier 2; questions 3, 4. Licence: CC BY 4.0. Source: https://www.abs.gov.au/
@@ -536,16 +563,23 @@ Processed: `register` (one row per item). Also writes docs/evidence-register.md,
 
 Bureau of Communications, Arts and Regional Research. Tier 2; questions 1. Licence: CC BY 4.0. Source: https://www.infrastructure.gov.au/
 
-Cultural and creative activity in Australia.
+Cultural and creative activity in Australia (BCARR satellite accounts).
 
-The size of the creative industries, where copyright and design protection operate (section 2 of docs/data-plan.md).
-This environment cannot fetch it: put the files in data/raw/bcarr_creative/ and run `corpus run bcarr_creative`. To
-get them: From the Bureau of Communications, Arts and Regional Research (infrastructure.gov.au), the cultural and
-creative activity data tables (xlsx). The site refuses this environment.
+The size of the creative industries, where copyright and design protection operate (section 2 of docs/data-plan.md):
+output, gross value added and GDP for each cultural and creative domain, by industry division, and as a share of the
+economy, by financial year. The site refuses this environment, so the workbooks were downloaded by hand from the
+Bureau of Communications, Arts and Regional Research (infrastructure.gov.au) into data/raw/bcarr_creative/ (repo):
+the 2015-16 to 2024-25 release and the 2008-09 to 2022-23 release (both on the refreshed methodology). To add a
+release, put its workbook there and run `corpus run bcarr_creative`.
 
-Processed: one table per file (and per sheet of a workbook), all columns as text; see `_manual.read_dropped`.
+Processed: `activity`, one row per release, table, series and financial year (long; `table_title` names the domain
+or breakdown, without its years; `unit` is $m or %). The two
+summary tables comparing the first and last years are left out (their figures are in the yearly tables). Use the
+newer release where they overlap; the older one runs back to 2008-09.
 
-*Not ingested yet: see the status in `docs/data-plan.md`.*
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `activity` | 3,209 | repo (0.0 MB) | `release`, `table`, `table_title`, `series`, `unit`, `fy_end`, `financial_year`, `value` |
 
 ## Measuring What Matters (`mwm`)
 
@@ -567,19 +601,74 @@ the period or group), `column` (the series) and `value` (numeric where the cell 
 
 - Note: mwm: no tables on air-quality
 
-## Small-area synthetic estimates of life satisfaction and generalised trust (SA2) (`natsem`)
+## 2021 Census General Community Profile (SA2 and postal areas) (`abs_census`)
 
-NATSEM, University of Canberra. Tier 2; questions 1, 2. Licence: CC BY-NC 4.0. Source: https://data.gov.au/ (AURIN)
+Australian Bureau of Statistics. Tier 2; questions 1, 2. Licence: CC BY 4.0. Source: https://www.abs.gov.au/census/find-census-data/datapacks
 
-NATSEM small-area synthetic estimates of life satisfaction and generalised trust (SA2).
+2021 Census General Community Profile (GCP) for SA2s and postal areas: social capital, health and the workforce.
 
-Wellbeing and social cohesion by place, beside regional IP use (context, not effect). CC BY-NC 4.0. This environment
-cannot fetch it: put the files in data/raw/natsem/ and run `corpus run natsem`. To get them: From data.gov.au, the
-AURIN download manager links on 'NATSEM - Life Satisfaction Indicators - Synthetic Estimates SA2 2016', 'NATSEM -
-Trust Indicators - Synthetic Estimates SA2 2016' and 'SA2 OECD Indicators: Estimates of Generalised Trust (Synthetic
-Data) 2011', as CSV. AURIN's servers refuse this environment.
+Stands in for the NATSEM small-area wellbeing and trust estimates, which cannot be fetched: the Census has no life
+satisfaction or trust questions, but its small-area measures of social capital (volunteering, unpaid care for others,
+residential stability), health (long-term conditions, including mental health conditions, and need for assistance)
+and the local workforce (industry, occupation, fields of qualification) let wellbeing and cohesion sit beside regional
+IP use (context, not effect; section 2 of docs/data-plan.md). Raw: the ABS DataPacks (short headers; R2). CC BY 4.0.
 
-Processed: one table per file (and per sheet of a workbook), all columns as text; see `_manual.read_dropped`.
+Processed, for `sa2` and `poa` (postal areas, which join to IP Australia's postcodes):
+- `<geo>_g01` and so on: the selected GCP tables as published (one row per area, one column per cell; codes in the
+  first column), joined across a table's parts (G19A, G19B and so on).
+- `cells`: every cell's short name, long name and table, from the DataPack metadata, to read the columns.
+
+Tables: G01 selected person characteristics; G02 medians and averages; G18 need for assistance; G19 and G20
+long-term health conditions; G23 volunteering; G25 unpaid assistance to a person with a disability, health condition
+or old age; G43 labour force, education and migration; G44 and G45 address one and five years ago; G46 labour force
+status; G50 field of study; G54 industry of employment; G60 occupation.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `cells` | 16,984 | repo (0.2 MB) | `sequential`, `short`, `long`, `datapackfile`, `profiletable`, `columnheadingdescriptioninprofile` |
+| `poa_g01` | 2,643 | repo (0.7 MB) | `POA_CODE_2021`, `Tot_P_M`, `Tot_P_F`, `Tot_P_P`, `Age_0_4_yr_M`, `Age_0_4_yr_F`, `Age_0_4_yr_P`, `Age_5_14_yr_M`, `Age_5_14_yr_F`, `Age_5_14_yr_P`, `Age_15_19_yr_M`, `Age_15_19_yr_F`, `Age_15_19_yr_P`, `Age_20_24_yr_M` … |
+| `poa_g02` | 2,643 | repo (0.0 MB) | `POA_CODE_2021`, `Median_age_persons`, `Median_mortgage_repay_monthly`, `Median_tot_prsnl_inc_weekly`, `Median_rent_weekly`, `Median_tot_fam_inc_weekly`, `Average_num_psns_per_bedroom`, `Median_tot_hhd_inc_weekly`, `Average_household_size` |
+| `poa_g18` | 2,643 | repo (0.7 MB) | `POA_CODE_2021`, `M_0_4_yrs_Need_for_assistance`, `M_0_4_No_need_for_assistance`, `M_0_4_Need_for_assistance_ns`, `M_0_4_yrs_Tot`, `M_5_14_Need_for_assistance`, `M_5_14_No_need_for_assistance`, `M_5_14_Need_for_assistance_ns`, `M_5_14_yrs_Tot`, `M_15_19_Need_for_assistance`, `M_15_19_No_need_for_assistnce`, `M_15_19_Need_for_assistnce_ns`, `M_15_19_yrs_Tot`, `M_20_24_Need_for_assistance` … |
+| `poa_g19` | 2,643 | repo (1.5 MB) | `POA_CODE_2021`, `M_Arthritis_0_14`, `M_Arthritis_15_24`, `M_Arthritis_25_34`, `M_Arthritis_35_44`, `M_Arthritis_45_54`, `M_Arthritis_55_64`, `M_Arthritis_65_74`, `M_Arthritis_75_84`, `M_Arthritis_85_over`, `M_Arthritis_Tot`, `M_Asthma_0_14`, `M_Asthma_15_24`, `M_Asthma_25_34` … |
+| `poa_g20` | 2,643 | repo (1.0 MB) | `POA_CODE_2021`, `M_0_cond_0_14`, `M_0_cond_15_24`, `M_0_cond_25_34`, `M_0_cond_35_44`, `M_0_cond_45_54`, `M_0_cond_55_64`, `M_0_cond_65_74`, `M_0_cond_75_84`, `M_0_cond_85_over`, `M_0_cond_Tot`, `M_1_cond_0_14`, `M_1_cond_15_24`, `M_1_cond_25_34` … |
+| `poa_g23` | 2,643 | repo (0.6 MB) | `POA_CODE_2021`, `M_15_19_yr_Volunteer`, `M_15_19_yr_N_a_volunteer`, `M_15_19_yr_Voluntary_work_ns`, `M_15_19_yr_Tot`, `M_20_24_yr_Volunteer`, `M_20_24_yr_N_a_volunteer`, `M_20_24_yr_Voluntary_work_ns`, `M_20_24_yr_Tot`, `M_25_34_yr_Volunteer`, `M_25_34_yr_N_a_volunteer`, `M_25_34_yr_Voluntary_work_ns`, `M_25_34_yr_Tot`, `M_35_44_yr_Volunteer` … |
+| `poa_g25` | 2,643 | repo (0.6 MB) | `POA_CODE_2021`, `M_15_19_Prvided_unpaid_assist`, `M_15_19_No_unpad_asst_prvided`, `M_15_19_Unpaid_assist_ns`, `M_15_19_Tot`, `M_20_24_Prvided_unpaid_assist`, `M_20_24_No_unpad_asst_prvided`, `M_20_24_Unpaid_assist_ns`, `M_20_24_Tot`, `M_25_34_Prvided_unpaid_assist`, `M_25_34_No_unpad_asst_prvided`, `M_25_34_Unpaid_assist_ns`, `M_25_34_Tot`, `M_35_44_Prvided_unpaid_assist` … |
+| `poa_g43` | 2,643 | repo (0.4 MB) | `POA_CODE_2021`, `P_15_yrs_over_M`, `P_15_yrs_over_F`, `P_15_yrs_over_P`, `lfs_Emplyed_wrked_full_time_M`, `lfs_Emplyed_wrked_full_time_F`, `lfs_Emplyed_wrked_full_time_P`, `lfs_Emplyed_wrked_part_time_M`, `lfs_Emplyed_wrked_part_time_F`, `lfs_Emplyed_wrked_part_time_P`, `lfs_Employed_away_from_work_M`, `lfs_Employed_away_from_work_F`, `lfs_Employed_away_from_work_P`, `lfs_Unmplyed_lookng_for_wrk_M` … |
+| `poa_g44` | 2,643 | repo (0.2 MB) | `POA_CODE_2021`, `Sme_Usl_ad_1_yr_ago_as_2021_M`, `Sme_Usl_ad_1_yr_ago_as_2021_F`, `Sme_Usl_ad_1_yr_ago_as_2021_P`, `Dif_Usl_ad_1_yr_ago_Sme_SA2_M`, `Dif_Usl_ad_1_yr_ago_Sme_SA2_F`, `Dif_Usl_ad_1_yr_ago_Sme_SA2_P`, `Dif_Us_ad_1_ago_Dif_SA2_NSW_M`, `Dif_Us_ad_1_ago_Dif_SA2_NSW_F`, `Dif_Us_ad_1_ago_Dif_SA2_NSW_P`, `Dif_Us_ad_1_ago_Dif_SA2_Vic_M`, `Dif_Us_ad_1_ago_Dif_SA2_Vic_F`, `Dif_Us_ad_1_ago_Dif_SA2_Vic_P`, `Dif_Us_ad_1_ago_Dif_SA2_Qld_M` … |
+| `poa_g45` | 2,643 | repo (0.3 MB) | `POA_CODE_2021`, `Sme_Usl_ad_5_yr_ago_as_2021_M`, `Sme_Usl_ad_5_yr_ago_as_2021_F`, `Sme_Usl_ad_5_yr_ago_as_2021_P`, `Dif_Usl_ad_5_yr_ago_Sme_SA2_M`, `Dif_Usl_ad_5_yr_ago_Sme_SA2_F`, `Dif_Usl_ad_5_yr_ago_Sme_SA2_P`, `Dif_Us_ad_5_ago_Dif_SA2_NSW_M`, `Dif_Us_ad_5_ago_Dif_SA2_NSW_F`, `Dif_Us_ad_5_ago_Dif_SA2_NSW_P`, `Dif_Us_ad_5_ago_Dif_SA2_Vic_M`, `Dif_Us_ad_5_ago_Dif_SA2_Vic_F`, `Dif_Us_ad_5_ago_Dif_SA2_Vic_P`, `Dif_Us_ad_5_ago_Dif_SA2_Qld_M` … |
+| `poa_g46` | 2,643 | repo (1.4 MB) | `POA_CODE_2021`, `M_Emp_FullT_15_19`, `M_Emp_FullT_20_24`, `M_Emp_FullT_25_34`, `M_Emp_FullT_35_44`, `M_Emp_FullT_45_54`, `M_Emp_FullT_55_64`, `M_Emp_FullT_65_74`, `M_Emp_FullT_75_84`, `M_Emp_FullT_85ov`, `M_Emp_FullT_Tot`, `M_Emp_PartT_15_19`, `M_Emp_PartT_20_24`, `M_Emp_PartT_25_34` … |
+| `poa_g50` | 2,643 | repo (1.3 MB) | `POA_CODE_2021`, `M_NatPhyl_Scn_15_24`, `M_NatPhyl_Scn_25_34`, `M_NatPhyl_Scn_35_44`, `M_NatPhyl_Scn_45_54`, `M_NatPhyl_Scn_55_64`, `M_NatPhyl_Scn_65_74`, `M_NatPhyl_Scn_75_84`, `M_NatPhyl_Scn_85ov`, `M_NatPhyl_Scn_Tot`, `M_InfoTech_15_24`, `M_InfoTech_25_34`, `M_InfoTech_35_44`, `M_InfoTech_45_54` … |
+| `poa_g54` | 2,643 | repo (1.6 MB) | `POA_CODE_2021`, `M_Ag_For_Fshg_15_19`, `M_Ag_For_Fshg_20_24`, `M_Ag_For_Fshg_25_34`, `M_Ag_For_Fshg_35_44`, `M_Ag_For_Fshg_45_54`, `M_Ag_For_Fshg_55_64`, `M_Ag_For_Fshg_65_74`, `M_Ag_For_Fshg_75_84`, `M_Ag_For_Fshg_85ov`, `M_Ag_For_Fshg_Tot`, `M_Mining_15_19`, `M_Mining_20_24`, `M_Mining_25_34` … |
+| `poa_g60` | 2,643 | repo (1.0 MB) | `POA_CODE_2021`, `M15_19_Managers`, `M15_19_Professionals`, `M15_19_TechnicTrades_Wrs`, `M15_19_CommunPersnlSvc_W`, `M15_19_ClericalAdminis_W`, `M15_19_Sales_W`, `M15_19_Mach_oper_drivers`, `M15_19_Labourers`, `M15_19_Occu_ID_NS`, `M15_19_Tot`, `M20_24_Managers`, `M20_24_Professionals`, `M20_24_TechnicTrades_W` … |
+| `sa2_g01` | 2,472 | repo (0.7 MB) | `SA2_CODE_2021`, `Tot_P_M`, `Tot_P_F`, `Tot_P_P`, `Age_0_4_yr_M`, `Age_0_4_yr_F`, `Age_0_4_yr_P`, `Age_5_14_yr_M`, `Age_5_14_yr_F`, `Age_5_14_yr_P`, `Age_15_19_yr_M`, `Age_15_19_yr_F`, `Age_15_19_yr_P`, `Age_20_24_yr_M` … |
+| `sa2_g02` | 2,472 | repo (0.0 MB) | `SA2_CODE_2021`, `Median_age_persons`, `Median_mortgage_repay_monthly`, `Median_tot_prsnl_inc_weekly`, `Median_rent_weekly`, `Median_tot_fam_inc_weekly`, `Average_num_psns_per_bedroom`, `Median_tot_hhd_inc_weekly`, `Average_household_size` |
+| `sa2_g18` | 2,472 | repo (0.7 MB) | `SA2_CODE_2021`, `M_0_4_yrs_Need_for_assistance`, `M_0_4_No_need_for_assistance`, `M_0_4_Need_for_assistance_ns`, `M_0_4_yrs_Tot`, `M_5_14_Need_for_assistance`, `M_5_14_No_need_for_assistance`, `M_5_14_Need_for_assistance_ns`, `M_5_14_yrs_Tot`, `M_15_19_Need_for_assistance`, `M_15_19_No_need_for_assistnce`, `M_15_19_Need_for_assistnce_ns`, `M_15_19_yrs_Tot`, `M_20_24_Need_for_assistance` … |
+| `sa2_g19` | 2,472 | repo (1.4 MB) | `SA2_CODE_2021`, `M_Arthritis_0_14`, `M_Arthritis_15_24`, `M_Arthritis_25_34`, `M_Arthritis_35_44`, `M_Arthritis_45_54`, `M_Arthritis_55_64`, `M_Arthritis_65_74`, `M_Arthritis_75_84`, `M_Arthritis_85_over`, `M_Arthritis_Tot`, `M_Asthma_0_14`, `M_Asthma_15_24`, `M_Asthma_25_34` … |
+| `sa2_g20` | 2,472 | repo (0.9 MB) | `SA2_CODE_2021`, `M_0_cond_0_14`, `M_0_cond_15_24`, `M_0_cond_25_34`, `M_0_cond_35_44`, `M_0_cond_45_54`, `M_0_cond_55_64`, `M_0_cond_65_74`, `M_0_cond_75_84`, `M_0_cond_85_over`, `M_0_cond_Tot`, `M_1_cond_0_14`, `M_1_cond_15_24`, `M_1_cond_25_34` … |
+| `sa2_g23` | 2,472 | repo (0.6 MB) | `SA2_CODE_2021`, `M_15_19_yr_Volunteer`, `M_15_19_yr_N_a_volunteer`, `M_15_19_yr_Voluntary_work_ns`, `M_15_19_yr_Tot`, `M_20_24_yr_Volunteer`, `M_20_24_yr_N_a_volunteer`, `M_20_24_yr_Voluntary_work_ns`, `M_20_24_yr_Tot`, `M_25_34_yr_Volunteer`, `M_25_34_yr_N_a_volunteer`, `M_25_34_yr_Voluntary_work_ns`, `M_25_34_yr_Tot`, `M_35_44_yr_Volunteer` … |
+| `sa2_g25` | 2,472 | repo (0.6 MB) | `SA2_CODE_2021`, `M_15_19_Prvided_unpaid_assist`, `M_15_19_No_unpad_asst_prvided`, `M_15_19_Unpaid_assist_ns`, `M_15_19_Tot`, `M_20_24_Prvided_unpaid_assist`, `M_20_24_No_unpad_asst_prvided`, `M_20_24_Unpaid_assist_ns`, `M_20_24_Tot`, `M_25_34_Prvided_unpaid_assist`, `M_25_34_No_unpad_asst_prvided`, `M_25_34_Unpaid_assist_ns`, `M_25_34_Tot`, `M_35_44_Prvided_unpaid_assist` … |
+| `sa2_g43` | 2,472 | repo (0.4 MB) | `SA2_CODE_2021`, `P_15_yrs_over_M`, `P_15_yrs_over_F`, `P_15_yrs_over_P`, `lfs_Emplyed_wrked_full_time_M`, `lfs_Emplyed_wrked_full_time_F`, `lfs_Emplyed_wrked_full_time_P`, `lfs_Emplyed_wrked_part_time_M`, `lfs_Emplyed_wrked_part_time_F`, `lfs_Emplyed_wrked_part_time_P`, `lfs_Employed_away_from_work_M`, `lfs_Employed_away_from_work_F`, `lfs_Employed_away_from_work_P`, `lfs_Unmplyed_lookng_for_wrk_M` … |
+| `sa2_g44` | 2,472 | repo (0.2 MB) | `SA2_CODE_2021`, `Sme_Usl_ad_1_yr_ago_as_2021_M`, `Sme_Usl_ad_1_yr_ago_as_2021_F`, `Sme_Usl_ad_1_yr_ago_as_2021_P`, `Dif_Usl_ad_1_yr_ago_Sme_SA2_M`, `Dif_Usl_ad_1_yr_ago_Sme_SA2_F`, `Dif_Usl_ad_1_yr_ago_Sme_SA2_P`, `Dif_Us_ad_1_ago_Dif_SA2_NSW_M`, `Dif_Us_ad_1_ago_Dif_SA2_NSW_F`, `Dif_Us_ad_1_ago_Dif_SA2_NSW_P`, `Dif_Us_ad_1_ago_Dif_SA2_Vic_M`, `Dif_Us_ad_1_ago_Dif_SA2_Vic_F`, `Dif_Us_ad_1_ago_Dif_SA2_Vic_P`, `Dif_Us_ad_1_ago_Dif_SA2_Qld_M` … |
+| `sa2_g45` | 2,472 | repo (0.3 MB) | `SA2_CODE_2021`, `Sme_Usl_ad_5_yr_ago_as_2021_M`, `Sme_Usl_ad_5_yr_ago_as_2021_F`, `Sme_Usl_ad_5_yr_ago_as_2021_P`, `Dif_Usl_ad_5_yr_ago_Sme_SA2_M`, `Dif_Usl_ad_5_yr_ago_Sme_SA2_F`, `Dif_Usl_ad_5_yr_ago_Sme_SA2_P`, `Dif_Us_ad_5_ago_Dif_SA2_NSW_M`, `Dif_Us_ad_5_ago_Dif_SA2_NSW_F`, `Dif_Us_ad_5_ago_Dif_SA2_NSW_P`, `Dif_Us_ad_5_ago_Dif_SA2_Vic_M`, `Dif_Us_ad_5_ago_Dif_SA2_Vic_F`, `Dif_Us_ad_5_ago_Dif_SA2_Vic_P`, `Dif_Us_ad_5_ago_Dif_SA2_Qld_M` … |
+| `sa2_g46` | 2,472 | repo (1.3 MB) | `SA2_CODE_2021`, `M_Emp_FullT_15_19`, `M_Emp_FullT_20_24`, `M_Emp_FullT_25_34`, `M_Emp_FullT_35_44`, `M_Emp_FullT_45_54`, `M_Emp_FullT_55_64`, `M_Emp_FullT_65_74`, `M_Emp_FullT_75_84`, `M_Emp_FullT_85ov`, `M_Emp_FullT_Tot`, `M_Emp_PartT_15_19`, `M_Emp_PartT_20_24`, `M_Emp_PartT_25_34` … |
+| `sa2_g50` | 2,472 | repo (1.2 MB) | `SA2_CODE_2021`, `M_NatPhyl_Scn_15_24`, `M_NatPhyl_Scn_25_34`, `M_NatPhyl_Scn_35_44`, `M_NatPhyl_Scn_45_54`, `M_NatPhyl_Scn_55_64`, `M_NatPhyl_Scn_65_74`, `M_NatPhyl_Scn_75_84`, `M_NatPhyl_Scn_85ov`, `M_NatPhyl_Scn_Tot`, `M_InfoTech_15_24`, `M_InfoTech_25_34`, `M_InfoTech_35_44`, `M_InfoTech_45_54` … |
+| `sa2_g54` | 2,472 | repo (1.6 MB) | `SA2_CODE_2021`, `M_Ag_For_Fshg_15_19`, `M_Ag_For_Fshg_20_24`, `M_Ag_For_Fshg_25_34`, `M_Ag_For_Fshg_35_44`, `M_Ag_For_Fshg_45_54`, `M_Ag_For_Fshg_55_64`, `M_Ag_For_Fshg_65_74`, `M_Ag_For_Fshg_75_84`, `M_Ag_For_Fshg_85ov`, `M_Ag_For_Fshg_Tot`, `M_Mining_15_19`, `M_Mining_20_24`, `M_Mining_25_34` … |
+| `sa2_g60` | 2,472 | repo (0.9 MB) | `SA2_CODE_2021`, `M15_19_Managers`, `M15_19_Professionals`, `M15_19_TechnicTrades_Wrs`, `M15_19_CommunPersnlSvc_W`, `M15_19_ClericalAdminis_W`, `M15_19_Sales_W`, `M15_19_Mach_oper_drivers`, `M15_19_Labourers`, `M15_19_Occu_ID_NS`, `M15_19_Tot`, `M20_24_Managers`, `M20_24_Professionals`, `M20_24_TechnicTrades_W` … |
+
+## Social Health Atlas of Australia, Population Health Areas (optional manual download) (`phidu`)
+
+PHIDU, Torrens University Australia. Tier 2; questions 1, 2. Licence: CC BY-NC-SA 3.0 AU. Source: https://phidu.torrens.edu.au/social-health-atlases/data
+
+PHIDU Social Health Atlas of Australia, by Population Health Area (optional; replaces the NATSEM estimates).
+
+Modelled small-area estimates of health and wellbeing (such as psychological distress and self-assessed health) and
+social indicators, beside regional IP use (context, not effect; section 2 of docs/data-plan.md). CC BY-NC-SA 3.0 AU
+(non-commercial use only). The site's pages answer this environment but its files do not, so the workbook is put in
+data/raw/phidu/ by hand and read with `corpus run phidu`: from https://phidu.torrens.edu.au/social-health-atlases/data,
+'Social Health Atlas of Australia: Population Health Areas', the Australia workbook (phidu_data_pha_aust.xlsx).
+Population Health Areas are SA2s or groups of SA2s; PHIDU publishes the concordance.
+
+Processed: one table per file and sheet, all columns as text; see `_manual.read_dropped`.
 
 *Not ingested yet: see the status in `docs/data-plan.md`.*
 
@@ -615,33 +704,78 @@ with the state or zone, region and subregion as published (footnote markers kept
 |---|---:|---|---|
 | `australian_gis` | 89 | repo (0.0 MB) | `state_zone`, `region`, `subregion` |
 
-## Border enforcement of IP (notices of objection and seizures) (`abf`)
+## IP judgments (Federal Court, Full Federal Court, High Court, Copyright Tribunal) (`fedcourt`)
 
-Australian Border Force. Tier 2; questions 1. Licence: see the publisher's terms. Source: https://www.abf.gov.au/
+The courts, via the Open Australian Legal Corpus (Isaacus). Tier 2; questions 1. Licence: CC BY 4.0 (the collection); judgments reproducible unaltered with acknowledgement of the court and source. Source: https://huggingface.co/datasets/isaacus/open-australian-legal-corpus
 
-Border enforcement of IP.
+IP judgments of the Federal Court, the Full Federal Court, the High Court and the Copyright Tribunal.
 
-Enforcement against counterfeits, and consumer safety (section 2 of docs/data-plan.md). This environment cannot fetch
-it: put the files in data/raw/abf/ and run `corpus run abf`. To get them: The Australian Border Force's figures on
-notices of objection and seizures of counterfeit and pirated goods, from the Department of Home Affairs annual reports
-(performance tables), entered as a CSV with columns year, measure, value, source. Not published as data.
+Enforcement costs and outcomes (Q1.3): which rights are litigated, by whom, in which technologies and industries, how
+long cases take from hearing to judgment, and which firms act. From the Open Australian Legal Corpus (Isaacus,
+https://huggingface.co/datasets/isaacus/open-australian-legal-corpus; the collection is CC BY 4.0; the courts permit
+judgments to be reproduced unaltered with acknowledgement of the court and the source), which holds every decision of
+those courts to its last collection (10 March 2025 for this release). The corpus is streamed (9.4 GB) and only IP
+decisions are kept: those the Federal Court files under the Intellectual Property practice area, or whose catchwords
+or legislation name an IP Act, or (older judgments, without a cover page) whose opening cites one; every Copyright
+Tribunal decision; High Court decisions whose opening cites an IP Act. Raw: those decisions (R2, gzipped JSON lines).
 
-Processed: one table per file (and per sheet of a workbook), all columns as text; see `_manual.read_dropped`.
+Processed (both in R2, because case names include individuals' names):
+- `judgments`: one row per decision, with the fields of the Federal Court's cover page (court, judges, dates of
+  hearing and judgment, catchwords, legislation, cases cited, practice area and sub-area, registry, number of
+  paragraphs, solicitors' firms; counsel's names are left out; dates as written, and `*_last` as the last day
+  they name, so a hearing over several days gives its last day), the rights involved (`rights`, from catchwords,
+  legislation and sub-area) and the IP Acts cited in the text with counts.
+- `judgment_text`: the full text of each decision, by `version_id`, for text analysis (outcomes, damages, costs).
 
 *Not ingested yet: see the status in `docs/data-plan.md`.*
 
-## Federal Court IP judgments (`fedcourt`)
+## Google Patents Public Data, the worldwide patent families touching Australia (`google_patents`)
 
-Federal Court of Australia. Tier 2; questions 1. Licence: see the publisher's terms. Source: https://www.judgments.fedcourt.gov.au/
+Google (BigQuery public dataset patents-public-data). Tier 3; questions 1, 3. Licence: CC BY 4.0. Source: https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data
 
-Federal Court IP judgments.
+Google Patents Public Data (BigQuery): the worldwide patent families that touch Australia.
 
-Enforcement costs and outcomes (Q1.3). This environment cannot fetch it: put the files in data/raw/fedcourt/ and run
-`corpus run fedcourt`. To get them: A CSV of IP judgments (patents, trade marks, designs, copyright) with columns
-citation, date, parties, right, outcome, url, from the Federal Court's judgments search or a licensed database. The
-Federal Court site and AustLII refuse this environment, and AustLII's terms do not allow bulk downloading.
+Q1 and Q3: patent families as value measures (how many offices an invention is filed in, forward citations), where
+Australian applicants and inventors file abroad, and which foreign families come to Australia. The families are those
+with a publication in Australia or an Australian applicant or inventor (by Google's harmonised country codes, which
+some offices leave blank, so foreign filings by Australians are undercounted), 1.75 million families and 17 million
+publications in the October 2026 release. Queried in BigQuery (`patents-public-data.patents.publications`, CC BY 4.0;
+about 60 GB of query per run, billed to `GCP_PROJECT_ID`); no raw files.
 
-Processed: one table per file (and per sheet of a workbook), all columns as text; see `_manual.read_dropped`.
+Processed (R2 unless small):
+- `members`: one row per publication in those families: numbers, office, kind, dates, applicant and inventor
+  countries and counts, first IPC and CPC codes and IPC subclasses, patent and non-patent citations made, the names
+  of Australian applicants (organisations and individuals, as published), and `au_application` (the 10-digit
+  Australian application number, to join to `iprapid`).
+- `families`: one row per family: first priority and filing dates, offices filed in (`offices`, `n_offices`), whether
+  granted in Australia and the United States, Australian applicant or inventor, the first IPC code, English title,
+  and forward citations (distinct citing families, in all and within five years of the family's first priority).
+- `citations`: family-level citation pairs (citing family, cited family, citing family's first priority date) where
+  the cited family is in the set.
+
+*Not ingested yet: see the status in `docs/data-plan.md`.*
+
+## Reliance on Science, US patents' citations to scientific papers (OpenAlex) (`reliance_on_science`)
+
+Matt Marx and Aaron Fuegi. Tier 3; questions 1, 2. Licence: CC BY-NC 4.0. Source: https://zenodo.org/records/22967630
+
+Reliance on Science (Marx and Fuegi): US patents' citations to scientific papers, matched to OpenAlex works.
+
+Q1 and Q2: knowledge flows from research to invention, in place of the Lens (whose API is paid). Every citation from
+a USPTO patent to a scholarly work, through 2025, with whether the applicant or examiner made it, a confidence score
+(1 to 10) and whether it is on the front page, in the body text or both; and the patent-paper pairs (USPTO, through
+2021). From https://zenodo.org/records/22967630, CC BY-NC 4.0 (non-commercial use; cite Marx and Fuegi 2020, Strategic
+Management Journal 41(9), and 2022, Journal of Economics and Management Strategy). Raw: the citations file (R2,
+1.4 GB) and the pairs file (repo).
+
+Processed:
+- `citations_au`: the citations made by US publications in patent families that touch Australia (from
+  `google_patents/members`), with the family, so the science behind Australian inventions (and foreign inventions
+  filed in Australia) can be traced. `oaid` is the OpenAlex work id without its 'W'.
+- `ppp`: patent-paper pairs, as published.
+
+Which citing patents rely on Australian research needs the OpenAlex works with an Australian institution (about 2.4
+million cited works); the full citations file is kept in R2 for that join.
 
 *Not ingested yet: see the status in `docs/data-plan.md`.*
 

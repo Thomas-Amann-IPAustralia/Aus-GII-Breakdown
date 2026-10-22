@@ -14,6 +14,7 @@ import datetime as dt
 import hashlib
 import json
 import os
+import re
 import subprocess
 import time
 from pathlib import Path
@@ -308,3 +309,15 @@ def gcp_credentials() -> Path:
     dest.write_text(json.dumps(key), encoding="utf-8")
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(dest)
     return dest
+
+
+def bigquery():
+    """A BigQuery client billed to `GCP_PROJECT_ID`, or to the service account's own project when that is unset or
+    is not a project id."""
+    from google.cloud import bigquery as bq
+
+    key = json.loads(gcp_credentials().read_text(encoding="utf-8"))
+    project = os.environ.get("GCP_PROJECT_ID", "")
+    if not re.fullmatch(r"[a-z][a-z0-9-]{4,28}[a-z0-9]", project):
+        project = key["project_id"]
+    return bq.Client(project=project)
