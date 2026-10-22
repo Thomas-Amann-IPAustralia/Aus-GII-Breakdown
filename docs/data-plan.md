@@ -233,7 +233,7 @@ columns. In short:
 
 | # | Source (`id`) | Status | What is there |
 |---|---|---|---|
-| 1 | IP RAPID (`iprapid`), replacing IPGOD 2022 | Ingested | All six tables, every right, to the current week (R2); a summary per right type and an applicant by financial year panel (repo). Its events include extensions of term (about 1,150 granted), lapses, assignments (about 108,000 patent assignments), registered licences (1,575) and oppositions |
+| 1 | IP RAPID (`iprapid`), replacing IPGOD 2022 | Ingested | All six tables, every right, to the current week (R2); a summary per right type and an applicant by financial year panel (repo). Its events include extensions of term (1,450 patents granted one), lapses (300,270 patents), assignments (110,600 patents), registered licences (1,700) and oppositions (1,831 lodged); current to the week of 19 October 2026 |
 | 2 | IPLORD 2020 (`iplord`) | Ingested | The full panel (R2) and its ABN rows (repo). The public release has no patent columns; `ipgod/applicant_year` covers patents to 2022 |
 | 3 | ABN Bulk Extract (`abr`) | Ingested | 20.6 million ABNs, current and cancelled (R2), without individuals' names |
 | 4 | ASIC companies (`asic`) | Ingested | 4.0 million companies (R2) |
@@ -243,7 +243,7 @@ columns. In short:
 | 8 | Places (`abs_regions`) | Ingested | ASGS 2021 mesh blocks, postal area to SA2 and remoteness, SEIFA 2021, Data by Region |
 | 9 | Concordances (`concordances`) | Ingested | WIPO's 35 technology fields (and each IP RAPID patent's fields), ALP IPC and Nice to ISIC and ANZSIC, the IPC Green Inventory |
 | 10 | Gender-name dictionary (`wgnd`) | Ingested | WGND 2.0 (CC0, not CC BY as first listed) |
-| — | Linkage (`linkage`) | Built | `abn_spine`: 345,727 ABNs (all found in the ABR) with ABR and ASIC attributes, source flags and first and last filing years |
+| — | Linkage (`linkage`) | Built | `abn_spine`: 391,983 ABNs (all found in the ABR) with ABR and ASIC attributes, source flags and first and last filing years |
 | — | GII 2026 (`gii`), Closing the Gap (`ctg`) | Ingested | Kept from the earlier corpus as context |
 | 11 | AusTender (`austender`) | Ingested | 1.55 million contract notices, July 2007 to October 2026, 94.5% with a supplier ABN |
 | 12 | ARC grants (`arc_grants`) | Ingested | 34,977 grants |
@@ -283,11 +283,10 @@ IP RAPID replaced IPGOD 2022 (the weekly public release covers 2022 to now), and
 
 ### A first look, to show the corpus works
 
-Not a finding (counted with IPGOD 2022, before IP RAPID replaced it; rerun on `linkage/abn_spine` for current
-figures): of the 18,487 companies in the R&D Tax Incentive reports, 36% appeared as an applicant for any right, and
-14% for a patent. Whether the rest
-are "missing filers" with protectable inventions, or firms for which registration has little value, is exactly the
-kind of question Q3 and Q4 ask.
+Not a finding: of the 18,487 companies in the R&D Tax Incentive reports (2021-22 to 2023-24), 49% appear in IP
+RAPID as an applicant for any right, and 18.5% for a patent (with IPGOD 2022, which stopped in early 2022, it was
+36% and 14%). Whether the rest are "missing filers" with protectable inventions, or firms for which registration has
+little value, is exactly the kind of question Q3 and Q4 ask.
 
 ### Repository size
 

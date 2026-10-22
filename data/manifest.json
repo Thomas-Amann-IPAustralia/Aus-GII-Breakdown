@@ -1757,7 +1757,7 @@
      "sha256": "ea0daa4ea19a6a8e1b864677f5c13d78b729f5049435e9a999325582b3f9ab0a"
     },
     "processed/patent_fields": {
-     "bytes": 5168955,
+     "bytes": 5794058,
      "columns": [
       "application_number",
       "field_no",
@@ -1765,11 +1765,11 @@
       "field",
       "sector"
      ],
-     "describe": "IPGOD patents to WIPO technology fields, weighted",
+     "describe": "IP RAPID patents to WIPO technology fields, weighted",
      "location": "repo",
      "path": "data/processed/concordances/patent_fields.parquet",
-     "rows": 1699357,
-     "sha256": "2dd316622660bb0cac6ba3f0a4b8807b997a95100ecf1bf9ce4e420780d575c4"
+     "rows": 1909193,
+     "sha256": "fd2fd8aaef744d5fc1c02c795cffeed4ea2929ab2e5b4de3882a09f8da717953"
     },
     "raw/alp-ipc-excl-service-v2209.zip": {
      "bytes": 4926289,
@@ -1801,7 +1801,7 @@
      "bytes": 299641,
      "location": "repo",
      "path": "data/raw/concordances/isic-rev-4-anzsic-2006.html",
-     "sha256": "e1a634cca4575a0e8e34f6d22e3df46a93063889f1fac8358e68ea4ce443bca3"
+     "sha256": "81acd5db672a30022634210f8254519df7827ccd8d15acca0a86817803270f10"
     }
    },
    "notes": [
@@ -2246,10 +2246,311 @@
    },
    "run": "2026-10-22"
   },
+  "iprapid": {
+   "files": {
+    "processed/applicant_year": {
+     "bytes": 15215318,
+     "columns": [
+      "applicant_id",
+      "applicant_id_type",
+      "party_type",
+      "country_code",
+      "state_code",
+      "post_code",
+      "ip_right_type",
+      "financial_year",
+      "filed",
+      "filed_weighted",
+      "became_enforceable",
+      "became_enforceable_weighted"
+     ],
+     "describe": "Applicant (ABN or party id) by right by financial year: filed and became enforceable",
+     "location": "repo",
+     "path": "data/processed/iprapid/applicant_year.parquet",
+     "rows": 3184671,
+     "sha256": "da37edb4f2335dd0cd15143453d0bea30a0539c94ef2cc87e3dd6aa6001305f0"
+    },
+    "processed/application": {
+     "bytes": 75372570,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "ip_right_sub_type",
+      "status",
+      "application_date",
+      "earliest_filed_date",
+      "priority_date",
+      "gained_registration_status_date",
+      "gained_enforceable_status_date",
+      "enforceable_from_date",
+      "deemed_retired_date"
+     ],
+     "describe": "IP RAPID application.csv, every right",
+     "key": "processed/iprapid/application.parquet",
+     "location": "r2",
+     "rows": 4368006,
+     "sha256": "c36c7d3bf0071165c99f0eb2d6730b0e9a5c2821a37c00cf2db711c09cbc9d3f"
+    },
+    "processed/classification": {
+     "bytes": 164443875,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "classification_system",
+      "classification",
+      "classification_importance",
+      "classification_inventiveness",
+      "classification_source",
+      "classifying_country_code",
+      "classification_date",
+      "classification_removal_date",
+      "classification_system_version",
+      "is_current",
+      "classification_area",
+      "coarse_classification_area"
+     ],
+     "describe": "IP RAPID application_classification.csv, every right",
+     "key": "processed/iprapid/classification.parquet",
+     "location": "r2",
+     "rows": 15209518,
+     "sha256": "85f130cda7f3ad809d8082d7affd2889d452d24ec13ea5bd0d7e0021ffe9205d"
+    },
+    "processed/description": {
+     "bytes": 96784671,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "description_type",
+      "description_value"
+     ],
+     "describe": "IP RAPID application_description.csv, every right",
+     "key": "processed/iprapid/description.parquet",
+     "location": "r2",
+     "rows": 7457402,
+     "sha256": "51ba8507be6dd119c456aafcd61abdaadb6d311e07d9164ea23b1e66b5f93513"
+    },
+    "processed/design_rights": {
+     "bytes": 4436549,
+     "columns": [
+      "application_number",
+      "ip_right_sub_type",
+      "status",
+      "application_date",
+      "earliest_filed_date",
+      "priority_date",
+      "gained_registration_status_date",
+      "gained_enforceable_status_date",
+      "enforceable_from_date",
+      "deemed_retired_date",
+      "applicant_count",
+      "applicant_party_id",
+      "applicant_name",
+      "applicant_type",
+      "applicant_country",
+      "applicant_state",
+      "applicant_postcode",
+      "applicant_abn",
+      "any_applicant_abn",
+      "any_applicant_in_australia",
+      "has_agent",
+      "main_class",
+      "main_area",
+      "class_count",
+      "classes"
+     ],
+     "describe": "One row per application: status, dates, first current applicant, attorney use, classes",
+     "location": "repo",
+     "path": "data/processed/iprapid/design_rights.parquet",
+     "rows": 268782,
+     "sha256": "a1819874a509c348286902174e50da50a513c46f5001a143fcca562de159e819"
+    },
+    "processed/events": {
+     "bytes": 361508436,
+     "columns": [
+      "application_number",
+      "ip_right_type",
+      "event_type",
+      "event_category",
+      "event_effective_date",
+      "event_declared_date",
+      "is_standing"
+     ],
+     "describe": "IP RAPID application_events.csv, every right",
+     "key": "processed/iprapid/events.parquet",
+     "location": "r2",
+     "rows": 49352557,
+     "sha256": "9826fa6f81f047c785f88b9f526b1361d5681c3cff64d057bcb7bbe3797dcb33"
+    },
+    "processed/links": {
+     "bytes": 47314947,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "link_type",
+      "linked_application_number",
+      "link_date",
+      "linked_application_country"
+     ],
+     "describe": "IP RAPID application_links.csv, every right",
+     "key": "processed/iprapid/links.parquet",
+     "location": "r2",
+     "rows": 3867277,
+     "sha256": "54a01663a27ca1090419645bb7d97db6a2ffb5fc2809c20376e65a15064e6753"
+    },
+    "processed/party": {
+     "bytes": 275223273,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "party_id",
+      "abn",
+      "party_role_category",
+      "party_role",
+      "party_type",
+      "party_name",
+      "state_code",
+      "post_code",
+      "country_code",
+      "effective_from_date",
+      "effective_to_date",
+      "is_current",
+      "is_founding"
+     ],
+     "describe": "IP RAPID party_activity.csv, every right",
+     "key": "processed/iprapid/party.parquet",
+     "location": "r2",
+     "rows": 12517064,
+     "sha256": "9c888c576198abdf4b54091e3ee850ed5212a4f8dda531a0f599d37383f65928"
+    },
+    "processed/patent_rights": {
+     "bytes": 35927494,
+     "columns": [
+      "application_number",
+      "ip_right_sub_type",
+      "status",
+      "application_date",
+      "earliest_filed_date",
+      "priority_date",
+      "gained_registration_status_date",
+      "gained_enforceable_status_date",
+      "enforceable_from_date",
+      "deemed_retired_date",
+      "applicant_count",
+      "applicant_party_id",
+      "applicant_name",
+      "applicant_type",
+      "applicant_country",
+      "applicant_state",
+      "applicant_postcode",
+      "applicant_abn",
+      "any_applicant_abn",
+      "any_applicant_in_australia",
+      "has_agent",
+      "main_class",
+      "main_area",
+      "class_count",
+      "classes"
+     ],
+     "describe": "One row per application: status, dates, first current applicant, attorney use, classes",
+     "location": "repo",
+     "path": "data/processed/iprapid/patent_rights.parquet",
+     "rows": 1752428,
+     "sha256": "ea6c4a6d9feb1d4fd014c6c496f3a02af1edfad63ed240b8fb371d3d6f92e73c"
+    },
+    "processed/pbr_rights": {
+     "bytes": 256852,
+     "columns": [
+      "application_number",
+      "ip_right_sub_type",
+      "status",
+      "application_date",
+      "earliest_filed_date",
+      "priority_date",
+      "gained_registration_status_date",
+      "gained_enforceable_status_date",
+      "enforceable_from_date",
+      "deemed_retired_date",
+      "applicant_count",
+      "applicant_party_id",
+      "applicant_name",
+      "applicant_type",
+      "applicant_country",
+      "applicant_state",
+      "applicant_postcode",
+      "applicant_abn",
+      "any_applicant_abn",
+      "any_applicant_in_australia",
+      "has_agent",
+      "main_class",
+      "main_area",
+      "class_count",
+      "classes"
+     ],
+     "describe": "One row per application: status, dates, first current applicant, attorney use, classes",
+     "location": "repo",
+     "path": "data/processed/iprapid/pbr_rights.parquet",
+     "rows": 11732,
+     "sha256": "1e7777d84430dd2b385d8a921a898c982c8c37789559dd6d5a6f6b8fa189630a"
+    },
+    "processed/trade_mark_rights": {
+     "bytes": 53561873,
+     "columns": [
+      "application_number",
+      "ip_right_sub_type",
+      "status",
+      "application_date",
+      "earliest_filed_date",
+      "priority_date",
+      "gained_registration_status_date",
+      "gained_enforceable_status_date",
+      "enforceable_from_date",
+      "deemed_retired_date",
+      "applicant_count",
+      "applicant_party_id",
+      "applicant_name",
+      "applicant_type",
+      "applicant_country",
+      "applicant_state",
+      "applicant_postcode",
+      "applicant_abn",
+      "any_applicant_abn",
+      "any_applicant_in_australia",
+      "has_agent",
+      "main_class",
+      "main_area",
+      "class_count",
+      "classes"
+     ],
+     "describe": "One row per application: status, dates, first current applicant, attorney use, classes",
+     "key": "processed/iprapid/trade_mark_rights.parquet",
+     "location": "r2",
+     "rows": 2335064,
+     "sha256": "60a43e2ddfef8cd6e8651f502d9715c2dda12fe9ad2cf2229d4bd4138540a7b5"
+    },
+    "raw/ip-rapid-data-dictionary.pdf": {
+     "bytes": 939148,
+     "location": "repo",
+     "path": "data/raw/iprapid/ip-rapid-data-dictionary.pdf",
+     "sha256": "8d86c11c8c26565d4c514b377fda59edc7a957a0797a36af5e352f45229fde91",
+     "url": "https://data.gov.au/data/dataset/423000b8-5735-4447-bcb9-792644bcd7ea/resource/f4750acd-decc-4b7b-99c9-4ed1c3c43441/download/ip-rapid-data-dictionary.pdf"
+    },
+    "raw/iprapid.zip": {
+     "bytes": 1345223671,
+     "key": "raw/iprapid/iprapid.zip",
+     "location": "r2",
+     "sha256": "e4e44598214283162b4b617a3aba6d3a173f3b82f992db891e9734139e3c3367",
+     "url": "https://data.gov.au/data/dataset/423000b8-5735-4447-bcb9-792644bcd7ea/resource/c79b3af6-3720-44ac-9e39-6a68f5635924/download/iprapid.zip"
+    }
+   },
+   "notes": [
+    "iprapid: release of 2026-10-19T00:32:40.599789"
+   ],
+   "run": "2026-10-22"
+  },
   "linkage": {
    "files": {
     "processed/abn_spine": {
-     "bytes": 11272053,
+     "bytes": 12709123,
      "columns": [
       "abn",
       "entity_type",
@@ -2270,10 +2571,10 @@
       "asic_status",
       "first_seen",
       "in_abr",
-      "in_ipgod_patent",
-      "in_ipgod_trade_mark",
-      "in_ipgod_design",
-      "in_ipgod_pbr",
+      "in_iprapid_patent",
+      "in_iprapid_trade_mark",
+      "in_iprapid_design",
+      "in_iprapid_pbr",
       "in_iplord",
       "in_rdti",
       "in_austender",
@@ -2291,8 +2592,8 @@
      "describe": "One row per ABN in the corpus, with ABR and ASIC attributes",
      "location": "repo",
      "path": "data/processed/linkage/abn_spine.parquet",
-     "rows": 345727,
-     "sha256": "c9875dde6df357d2d9f7d1d07267ce2e5e038c0a13345d5e8a7f0f60ffa1e566"
+     "rows": 391983,
+     "sha256": "8481b8baea171e7604d695644a96477717848cd055314ba21b71fcd84b5a2a95"
     }
    },
    "run": "2026-10-22"

@@ -8,65 +8,54 @@ what is still missing, is in `docs/data-plan.md`; how to use the corpus is in `R
 `ipholmes` bucket at `processed/<source>/<table>.parquet`; `corpus.load` and `corpus.path` fetch them once into
 `~/.cache/ipholmes` (R2 credentials in `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID` and `R2_SECRET_ACCESS_KEY`).
 
-**Join keys.** `abn` (11 digits, as text) joins IPGOD, IPLORD, the ABR, ASIC (through `acn`), the R&D Tax Incentive,
+**Join keys.** `abn` (11 digits, as text) joins IP RAPID, IPLORD, the ABR, ASIC (through `acn`), the R&D Tax Incentive,
 AusTender and the corporate tax reports; `linkage/abn_spine` already does it. Postcodes join to ABS geography through
 `abs_regions/poa` and `poa_sa2` (a postcode is a postal area code, as text). IPC subclasses join to industries and
 technology fields through `concordances`. ISO3 codes join the cross-country sources (`gii`, `oecd`, `wdi`).
 
-## Intellectual Property Government Open Data (IPGOD) 2022 (`ipgod`)
+## IP RAPID (IP Australia's open IP data, updated weekly; the successor to IPGOD) (`iprapid`)
 
-IP Australia. Tier 1; questions 1, 2, 3, 4. Licence: CC BY 2.5 AU. Source: https://data.gov.au/data/dataset/ipgod2022
+IP Australia. Tier 1; questions 1, 2, 3, 4. Licence: CC BY 4.0. Source: https://data.gov.au/data/dataset/iprapid
 
-IPGOD 2022: every Australian patent, trade mark, design and plant breeder's right application to early 2022.
+IP RAPID: every Australian patent, trade mark, design and plant breeder's right application, updated weekly.
 
-Raw: the release's zip (R2) and its data dictionary (repo). Processed, one Parquet table per IPGOD table (R2), typed:
-dates as dates, ABNs as 11-digit strings, flags as booleans. Then one summary per right type, a row per application
-with its applicants and attorneys reduced to a few columns (repo where it fits):
+IP Australia's open data product, the successor to IPGOD (same tables and columns, all four rights in each table, plus
+an application date and, for classifications, IP Australia's own technology area). The run takes the current weekly
+release, so a rerun brings the corpus up to date.
 
-- `<right>_application`, `_classification`, `_description`, `_events`, `_links`, `_party`: the IPGOD tables as published
-  (right is patent, trade_mark, design or pbr).
-- `<right>_rights`: one row per application: status and key dates; the number of current applicants; the first current
-  applicant's party id, name, type, country, state, postcode and ABN; whether any applicant is in Australia; whether an
-  attorney or agent acts; the main classification (patents: the first current IPC mark's four-character class;
-  trade marks: the Nice classes, as a count and a list; designs: the Locarno class; PBR: the genus). Individuals'
-  names are left out of these (repo) tables; the `_party` tables (R2) have them as IP Australia publishes them.
-- `applicant_year`: applicant (ABN where IPGOD has one, else party id) by right by financial year: applications filed
-  and rights that became enforceable, counted and weighted as IPLORD does. Unlike IPLORD 2020, it covers patents, and
-  runs to early 2022.
+Raw: the release's zip (R2) and its data dictionary (repo). Processed, typed (dates as dates, ABNs as 11-digit
+strings, flags as booleans):
 
-IPGOD's public party data has no inventors, only applicants, owners, agents and other parties.
+- `application`, `classification`, `description`, `events`, `links`, `party`: the IP RAPID tables as published, every
+  right in each, with `ip_right_type` (patent, trade_mark, design, pbr) (R2).
+- `<right>_rights`: one row per application of that right: status and key dates; the number of current applicants;
+  the first current applicant's party id, name, type, country, state, postcode and ABN; whether any applicant is in
+  Australia; whether an attorney or agent acts; the main classification (patents: the first current IPC mark's
+  subclass, and IP Australia's technology area; trade marks: the Nice classes, as a count and a list; designs: the
+  Locarno class; PBR: the genus). Individuals' names are left out of these (repo) tables; `party` (R2) has them as IP
+  Australia publishes them.
+- `applicant_year`: applicant (ABN where IP RAPID has one, else party id) by right by financial year: applications
+  filed and rights that became enforceable, counted and weighted as IPLORD does (repo).
+
+Useful event types (in `events`): extensions of term for pharmaceutical patents, lapses (renewals not paid),
+assignments, registered licences, oppositions and their outcomes, examination requests. The public party data has
+no inventors, only applicants, owners, agents and other parties.
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `applicant_year` | 2,678,084 | repo (12.6 MB) | `applicant_id`, `applicant_id_type`, `party_type`, `country_code`, `state_code`, `post_code`, `ip_right_type`, `financial_year`, `filed`, `filed_weighted`, `became_enforceable`, `became_enforceable_weighted` |
-| `design_application` | 224,211 | R2 (2.9 MB) | `ip_right_type`, `application_number`, `ip_right_sub_type`, `status`, `earliest_filed_date`, `priority_date`, `gained_registration_status_date`, `gained_enforceable_status_date`, `enforceable_from_date`, `deemed_retired_date` |
-| `design_classification` | 233,855 | R2 (1.6 MB) | `ip_right_type`, `application_number`, `classification_system`, `classification`, `classification_importance`, `classification_inventiveness`, `classification_source`, `classifying_country_code`, `classification_date`, `classification_removal_date`, `classification_system_version`, `is_current` |
-| `design_description` | 210,420 | R2 (2.5 MB) | `ip_right_type`, `application_number`, `description_type`, `description_value` |
-| `design_events` | 1,769,404 | R2 (8.5 MB) | `application_number`, `ip_right_type`, `event_type`, `event_category`, `event_effective_date`, `event_declared_date`, `is_standing` |
-| `design_links` | 97,748 | R2 (1.2 MB) | `ip_right_type`, `application_number`, `link_type`, `linked_application_number`, `link_date`, `linked_application_country` |
-| `design_party` | 509,951 | R2 (7.9 MB) | `ip_right_type`, `application_number`, `party_id`, `party_role_category`, `party_role`, `party_type`, `party_name`, `state_code`, `post_code`, `country_code`, `effective_from_date`, `effective_to_date`, `is_current`, `abn` … |
-| `design_rights` | 224,211 | repo (3.5 MB) | `application_number`, `ip_right_sub_type`, `status`, `earliest_filed_date`, `priority_date`, `gained_registration_status_date`, `gained_enforceable_status_date`, `enforceable_from_date`, `deemed_retired_date`, `applicant_count`, `applicant_party_id`, `applicant_name`, `applicant_type`, `applicant_country` … |
-| `patent_application` | 1,576,221 | R2 (20.3 MB) | `ip_right_type`, `application_number`, `ip_right_sub_type`, `status`, `earliest_filed_date`, `priority_date`, `gained_registration_status_date`, `gained_enforceable_status_date`, `enforceable_from_date`, `deemed_retired_date` |
-| `patent_classification` | 8,281,276 | R2 (51.7 MB) | `ip_right_type`, `application_number`, `classification_system`, `classification`, `classification_importance`, `classification_inventiveness`, `classification_source`, `classifying_country_code`, `classification_date`, `classification_removal_date`, `classification_system_version`, `is_current` |
-| `patent_description` | 1,576,221 | R2 (36.1 MB) | `ip_right_type`, `application_number`, `description_type`, `description_value` |
-| `patent_events` | 11,703,884 | R2 (52.7 MB) | `application_number`, `ip_right_type`, `event_type`, `event_category`, `event_effective_date`, `event_declared_date`, `is_standing` |
-| `patent_links` | 1,887,935 | R2 (25.1 MB) | `ip_right_type`, `application_number`, `link_type`, `linked_application_number`, `link_date`, `linked_application_country` |
-| `patent_party` | 3,458,445 | R2 (56.3 MB) | `ip_right_type`, `application_number`, `party_id`, `party_role_category`, `party_role`, `party_type`, `party_name`, `state_code`, `post_code`, `country_code`, `effective_from_date`, `effective_to_date`, `is_current`, `abn` … |
-| `patent_rights` | 1,576,221 | repo (30.3 MB) | `application_number`, `ip_right_sub_type`, `status`, `earliest_filed_date`, `priority_date`, `gained_registration_status_date`, `gained_enforceable_status_date`, `enforceable_from_date`, `deemed_retired_date`, `applicant_count`, `applicant_party_id`, `applicant_name`, `applicant_type`, `applicant_country` … |
-| `pbr_application` | 10,368 | R2 (0.1 MB) | `ip_right_type`, `application_number`, `ip_right_sub_type`, `status`, `earliest_filed_date`, `priority_date`, `gained_registration_status_date`, `gained_enforceable_status_date`, `enforceable_from_date`, `deemed_retired_date` |
-| `pbr_classification` | 30,825 | R2 (0.1 MB) | `ip_right_type`, `application_number`, `classification_system`, `classification`, `classification_importance`, `classification_inventiveness`, `classification_source`, `classifying_country_code`, `classification_date`, `classification_removal_date`, `classification_system_version`, `is_current` |
-| `pbr_description` | 10,368 | R2 (0.1 MB) | `ip_right_type`, `application_number`, `description_type`, `description_value` |
-| `pbr_events` | 55,099 | R2 (0.2 MB) | `application_number`, `ip_right_type`, `event_type`, `event_category`, `event_effective_date`, `event_declared_date`, `is_standing` |
-| `pbr_links` | 0 | R2 (0.0 MB) | `ip_right_type`, `application_number`, `link_type`, `linked_application_number`, `link_date`, `linked_application_country` |
-| `pbr_party` | 11,890 | R2 (0.1 MB) | `ip_right_type`, `application_number`, `party_id`, `party_role_category`, `party_role`, `party_type`, `party_name`, `state_code`, `post_code`, `country_code`, `effective_from_date`, `effective_to_date`, `is_current`, `abn` … |
-| `pbr_rights` | 10,368 | repo (0.2 MB) | `application_number`, `ip_right_sub_type`, `status`, `earliest_filed_date`, `priority_date`, `gained_registration_status_date`, `gained_enforceable_status_date`, `enforceable_from_date`, `deemed_retired_date`, `applicant_count`, `applicant_party_id`, `applicant_name`, `applicant_type`, `applicant_country` … |
-| `trade_mark_application` | 1,910,924 | R2 (30.6 MB) | `ip_right_type`, `application_number`, `ip_right_sub_type`, `status`, `earliest_filed_date`, `priority_date`, `gained_registration_status_date`, `gained_enforceable_status_date`, `enforceable_from_date`, `deemed_retired_date` |
-| `trade_mark_classification` | 3,028,595 | R2 (17.8 MB) | `ip_right_type`, `application_number`, `classification_system`, `classification`, `classification_importance`, `classification_inventiveness`, `classification_source`, `classifying_country_code`, `classification_date`, `classification_removal_date`, `classification_system_version`, `is_current` |
-| `trade_mark_description` | 4,432,633 | R2 (42.5 MB) | `ip_right_type`, `application_number`, `description_type`, `description_value` |
-| `trade_mark_events` | 26,968,088 | R2 (130.4 MB) | `application_number`, `ip_right_type`, `event_type`, `event_category`, `event_effective_date`, `event_declared_date`, `is_standing` |
-| `trade_mark_links` | 1,263,346 | R2 (13.2 MB) | `ip_right_type`, `application_number`, `link_type`, `linked_application_number`, `link_date`, `linked_application_country` |
-| `trade_mark_party` | 5,764,299 | R2 (103.0 MB) | `ip_right_type`, `application_number`, `party_id`, `party_role_category`, `party_role`, `party_type`, `party_name`, `state_code`, `post_code`, `country_code`, `effective_from_date`, `effective_to_date`, `is_current`, `abn` … |
-| `trade_mark_rights` | 1,910,924 | repo (41.6 MB) | `application_number`, `ip_right_sub_type`, `status`, `earliest_filed_date`, `priority_date`, `gained_registration_status_date`, `gained_enforceable_status_date`, `enforceable_from_date`, `deemed_retired_date`, `applicant_count`, `applicant_party_id`, `applicant_name`, `applicant_type`, `applicant_country` … |
+| `applicant_year` | 3,184,671 | repo (15.2 MB) | `applicant_id`, `applicant_id_type`, `party_type`, `country_code`, `state_code`, `post_code`, `ip_right_type`, `financial_year`, `filed`, `filed_weighted`, `became_enforceable`, `became_enforceable_weighted` |
+| `application` | 4,368,006 | R2 (75.4 MB) | `ip_right_type`, `application_number`, `ip_right_sub_type`, `status`, `application_date`, `earliest_filed_date`, `priority_date`, `gained_registration_status_date`, `gained_enforceable_status_date`, `enforceable_from_date`, `deemed_retired_date` |
+| `classification` | 15,209,518 | R2 (164.4 MB) | `ip_right_type`, `application_number`, `classification_system`, `classification`, `classification_importance`, `classification_inventiveness`, `classification_source`, `classifying_country_code`, `classification_date`, `classification_removal_date`, `classification_system_version`, `is_current`, `classification_area`, `coarse_classification_area` |
+| `description` | 7,457,402 | R2 (96.8 MB) | `ip_right_type`, `application_number`, `description_type`, `description_value` |
+| `design_rights` | 268,782 | repo (4.4 MB) | `application_number`, `ip_right_sub_type`, `status`, `application_date`, `earliest_filed_date`, `priority_date`, `gained_registration_status_date`, `gained_enforceable_status_date`, `enforceable_from_date`, `deemed_retired_date`, `applicant_count`, `applicant_party_id`, `applicant_name`, `applicant_type` … |
+| `events` | 49,352,557 | R2 (361.5 MB) | `application_number`, `ip_right_type`, `event_type`, `event_category`, `event_effective_date`, `event_declared_date`, `is_standing` |
+| `links` | 3,867,277 | R2 (47.3 MB) | `ip_right_type`, `application_number`, `link_type`, `linked_application_number`, `link_date`, `linked_application_country` |
+| `party` | 12,517,064 | R2 (275.2 MB) | `ip_right_type`, `application_number`, `party_id`, `abn`, `party_role_category`, `party_role`, `party_type`, `party_name`, `state_code`, `post_code`, `country_code`, `effective_from_date`, `effective_to_date`, `is_current` … |
+| `patent_rights` | 1,752,428 | repo (35.9 MB) | `application_number`, `ip_right_sub_type`, `status`, `application_date`, `earliest_filed_date`, `priority_date`, `gained_registration_status_date`, `gained_enforceable_status_date`, `enforceable_from_date`, `deemed_retired_date`, `applicant_count`, `applicant_party_id`, `applicant_name`, `applicant_type` … |
+| `pbr_rights` | 11,732 | repo (0.3 MB) | `application_number`, `ip_right_sub_type`, `status`, `application_date`, `earliest_filed_date`, `priority_date`, `gained_registration_status_date`, `gained_enforceable_status_date`, `enforceable_from_date`, `deemed_retired_date`, `applicant_count`, `applicant_party_id`, `applicant_name`, `applicant_type` … |
+| `trade_mark_rights` | 2,335,064 | R2 (53.6 MB) | `application_number`, `ip_right_sub_type`, `status`, `application_date`, `earliest_filed_date`, `priority_date`, `gained_registration_status_date`, `gained_enforceable_status_date`, `enforceable_from_date`, `deemed_retired_date`, `applicant_count`, `applicant_party_id`, `applicant_name`, `applicant_type` … |
+
+- Note: iprapid: release of 2026-10-19T00:32:40.599789
 
 ## Intellectual Property Longitudinal Research Data (IPLORD) 2020 (`iplord`)
 
@@ -76,7 +65,7 @@ IPLORD 2020: IP Australia's applicant by financial year panel, 1904 to 2020, wit
 
 The public 2020 release covers designs (`d_`), plant breeder's rights (`pbr_`) and trade marks (`tm_`, with
 `tm_services_` for service classes); it has no patent columns, although its dictionary describes them. For patents,
-and for years after 2020, use `ipgod/applicant_year`, built the same way from IPGOD 2022.
+and for years after 2020, use `iprapid/applicant_year`, built the same way from IP RAPID.
 
 Raw: the release's zip (R2) and dictionary (repo). Processed: `iplord` (the full data set, typed: ids as text, years
 and counts as integers, weighted counts as doubles), in R2; `iplord_abn`, the rows identified by an ABN (repo if it
@@ -228,7 +217,7 @@ its web app. Processed:
 
 - `ipc_technology`: the 35 fields' IPC rules (prefix; groups it is limited to; groups or subclass it excludes; and
   `unless_also`, a subclass whose presence on the same patent moves it out of the field, as in WIPO's method).
-- `patent_fields`: each IPGOD patent application's technology fields, from its current IPC marks, with `weight`
+- `patent_fields`: each IP RAPID patent application's technology fields, from its current IPC marks, with `weight`
   (1/n over its n distinct fields, so each application sums to 1).
 - `alp_ipc4_isic4`, `alp_nice_isic4`: the probability-weighted links from IPC subclass, and from Nice class, to ISIC
   Rev. 4 four-digit classes.
@@ -246,7 +235,7 @@ its web app. Processed:
 | `ipc_technology` | 369 | repo (0.0 MB) | `field_no`, `field`, `sector`, `ipc_prefix`, `groups`, `except_groups`, `except_prefix`, `unless_also` |
 | `isic4_anzsic` | 1,138 | repo (0.0 MB) | `isic4`, `anzsic`, `anzsic_title`, `partial` |
 | `nice_anzsic` | 826 | repo (0.0 MB) | `nice`, `anzsic`, `anzsic_title`, `weight` |
-| `patent_fields` | 1,699,357 | repo (5.2 MB) | `application_number`, `field_no`, `weight`, `field`, `sector` |
+| `patent_fields` | 1,909,193 | repo (5.8 MB) | `application_number`, `field_no`, `weight`, `field`, `sector` |
 
 - Note: concordances: nice_anzsic: 0.0% of ALP weight is on ISIC classes the ABS table lacks
 
@@ -256,8 +245,8 @@ WIPO (Harvard Dataverse). Tier 1; questions 2. Licence: CC0 1.0. Source: https:/
 
 World Gender-Name Dictionary 2.0 (WIPO, 2021): first names with the gender they are given to, by country.
 
-For estimating the gender of individual applicants in IPGOD from first names, the method WIPO and IP Australia have
-used. IPGOD's public party data has no inventors, so this covers individual applicants (and owners) only.
+For estimating the gender of individual applicants in IP RAPID from first names, the method WIPO and IP Australia have
+used. IP RAPID's public party data has no inventors, so this covers individual applicants (and owners) only.
 Raw: the two Dataverse tables (R2). Processed: `name_gender_code` (name, ISO country code, gender F/M/?, and
 `wgt`, the share of the name's bearers of that gender where known) and `name_gender` (the same without country).
 Names are as WGND gives them (lower case, accents kept).
@@ -478,7 +467,7 @@ Department of Health, Disability and Ageing. Tier 2; questions 1. Licence: CC BY
 
 PBS date-of-supply data: prescriptions and costs for every PBS item by month (Department of Health, Disability
 and Ageing), for the health pathway of public value (section 2 of docs/data-plan.md): what the public pays for
-medicines, which can be followed through patent expiry and IPGOD's pharmaceutical extensions of term.
+medicines, which can be followed through patent expiry and IP RAPID's pharmaceutical extensions of term.
 
 Raw: every file on the date-of-supply page (R2). Processed: `supply` (every row of the yearly CSVs, July 2020 on:
 month, item, drug type, patient category, pharmacy type, script type, prescriptions and the patient, government and
@@ -520,7 +509,11 @@ Australian institution: OpenAlex id, ROR, name, type, city, works and citations 
 and citations by institution and year, as OpenAlex counts them, for the last ten years), and `field_year` (works with
 an Australian institution, by primary field and publication year, 2000 on).
 
-*Not ingested yet: see the status in `docs/data-plan.md`.*
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `field_year` | 702 | repo (0.0 MB) | `year`, `field_id`, `field`, `works` |
+| `institution_year` | 18,532 | repo (0.1 MB) | `id`, `year`, `works_count`, `cited_by_count` |
+| `institutions` | 1,910 | repo (0.1 MB) | `id`, `ror`, `name`, `type`, `city`, `region`, `works_count`, `cited_by_count` |
 
 ## Evidence register (key literature and evaluations) (`evidence`)
 
@@ -614,7 +607,7 @@ Wine Australia. Tier 2; questions 1. Licence: see the publisher's terms. Source:
 Australian wine geographical indications (Wine Australia's register of protected GIs and other terms).
 
 For the cultural and regional identity pathway (section 2 of docs/data-plan.md); certification and collective trade
-marks in IPGOD are the other side of it. Raw: the register page's HTML and its PDFs (the EU GI register, traditional
+marks in IP RAPID are the other side of it. Raw: the register page's HTML and its PDFs (the EU GI register, traditional
 expressions, additional terms and quality wine terms; repo). Processed: `australian_gis`, one row per register line
 with the state or zone, region and subregion as published (footnote markers kept).
 
@@ -670,11 +663,11 @@ id, title, status, priority, tags, issue summary, comments and URL, as IP Austra
 
 ## The ABN spine (every ABN in the corpus, with ABR and ASIC attributes and source flags) (`linkage`)
 
-built here from abr, asic, ipgod, iplord, rdti, austender and ato_ctt. Tier 1; questions 2, 3, 4. Licence: as its sources (CC BY 3.0 AU and CC BY 4.0). Source: src/corpus/sources/linkage.py
+built here from abr, asic, iprapid, iplord, rdti, austender and ato_ctt. Tier 1; questions 2, 3, 4. Licence: as its sources (CC BY 3.0 AU and CC BY 4.0). Source: src/corpus/sources/linkage.py
 
 The ABN spine: one row per ABN that appears anywhere in the corpus, with what the business registers say about it.
 
-Built from the other sources (run it after them). Processed: `abn_spine` (repo), one row per ABN seen in IPGOD's
+Built from the other sources (run it after them). Processed: `abn_spine` (repo), one row per ABN seen in IP RAPID's
 parties, IPLORD, the R&D Tax Incentive reports, AusTender suppliers or the corporate tax transparency reports, with:
 
 - from the ABR: entity type, ABN status and the date it took effect, GST status and date, state, postcode, ACN, and
@@ -682,12 +675,12 @@ parties, IPLORD, the R&D Tax Incentive reports, AusTender suppliers or the corpo
 - from ASIC (through the ACN): company registration and deregistration dates, type, class and status;
 - `first_seen`, the earliest of the ABN status date (for an active ABN), GST registration and ASIC registration: a
   lower bound on the business's start, since the public ABR gives only the date of the current status;
-- flags for each source it appears in (`in_ipgod_patent` and so on, `in_rdti`, `in_austender`, `in_ato_ctt`), and its
-  first and last filing financial years by right type from `ipgod/applicant_year`.
+- flags for each source it appears in (`in_iprapid_patent` and so on, `in_rdti`, `in_austender`, `in_ato_ctt`), and its
+  first and last filing financial years by right type from `iprapid/applicant_year`.
 
-`abn_spine` is how the analysis joins IP use to R&D, procurement, size and survival. ABNs in IPGOD cover Australian
+`abn_spine` is how the analysis joins IP use to R&D, procurement, size and survival. ABNs in IP RAPID cover Australian
 applicants that IP Australia matched to the ABR; foreign applicants and many individuals have none.
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `abn_spine` | 345,727 | repo (11.3 MB) | `abn`, `entity_type`, `entity_type_text`, `abn_status`, `abn_status_from`, `gst_status`, `gst_status_from`, `state`, `postcode`, `acn`, `dgr`, `name`, `asic_registered`, `asic_deregistered` … |
+| `abn_spine` | 391,983 | repo (12.7 MB) | `abn`, `entity_type`, `entity_type_text`, `abn_status`, `abn_status_from`, `gst_status`, `gst_status_from`, `state`, `postcode`, `acn`, `dgr`, `name`, `asic_registered`, `asic_deregistered` … |
