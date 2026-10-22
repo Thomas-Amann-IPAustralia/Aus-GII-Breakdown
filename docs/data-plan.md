@@ -290,5 +290,5 @@ kind of question Q3 and Q4 ask.
 
 ### Repository size
 
-The repo holds about 550 MB of data (the largest parts: OECD panels, IPGOD summaries, ABS regional data), every file
+The repo holds about 640 MB of data (the largest parts: OECD panels, IPGOD summaries, ABS regional data), every file
 under 50 MB. If it grows past about 1 GB, move the OECD raw files to R2 (`keep="r2"` in `oecd.py`).
