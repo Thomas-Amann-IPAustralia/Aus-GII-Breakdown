@@ -16,10 +16,10 @@ jobs:
         with:
           python-version: "3.12"
       - name: Install
-        run: uv sync --group dev
+        run: uv sync --group dev --group analysis
       - name: Lint and format
         run: |
-          uv run ruff check src tests
-          uv run ruff format --check src tests
+          uv run ruff check src tests analysis
+          uv run ruff format --check src tests analysis
       - name: Tests (including the committed data against data/manifest.json)
         run: uv run pytest -q

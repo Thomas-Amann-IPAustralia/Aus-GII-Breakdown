@@ -1,0 +1,141 @@
+# The variable register: every column of every lens table, in plain English.
+#
+# label: what the column holds, as a chart axis should say it.
+# kind:  id | category | binary | count | money | numeric | rate | date | year. It decides which univariate checks apply.
+# unit:  the unit, where there is one.
+# note:  how it was made, or what to watch for. Definitions of derived columns are in analysis/eda/build.py.
+
+rights:
+  application_number: {label: Application number, kind: id}
+  ip_right_type: {label: Type of right, kind: category, note: "patent, trade_mark, design or pbr (plant breeder's right)"}
+  ip_right_sub_type: {label: Sub-type of right, kind: category, note: "e.g. standard or innovation patent"}
+  status: {label: Current status, kind: category, note: "as IP RAPID records it today; 'unknown' is common for old rights"}
+  application_date: {label: Application date, kind: date}
+  filing_fy: {label: Financial year of application, kind: year, note: "year ending 30 June"}
+  priority_date: {label: Priority date, kind: date, note: "the earliest claimed filing anywhere"}
+  registered_date: {label: Date registered or granted, kind: date, note: "empty if never registered"}
+  days_to_registration: {label: Days from application to registration, kind: numeric, unit: days}
+  retired_date: {label: Date the right ended, kind: date, note: "lapsed, expired, ceased, withdrawn or refused"}
+  applicant_count: {label: Number of applicants, kind: count}
+  applicant_type: {label: Applicant type, kind: category, note: "organisation or individual (first applicant)"}
+  applicant_country: {label: Applicant country, kind: category, note: "two-letter code (first applicant)"}
+  applicant_state: {label: Applicant state, kind: category}
+  applicant_postcode: {label: Applicant postcode, kind: category, note: "Australian applicants only; cleaned to 4 digits"}
+  applicant_abn: {label: Applicant ABN, kind: id, note: "the first applicant with an ABN"}
+  has_abn: {label: An applicant has an ABN, kind: binary}
+  australian_applicant: {label: An applicant is in Australia, kind: binary}
+  has_agent: {label: Filed through an attorney or agent, kind: binary}
+  main_class: {label: Main class, kind: category, note: "IPC subclass for patents, Nice class for trade marks, Locarno for designs"}
+  main_area: {label: Technology area, kind: category, note: "WIPO's 35 technology fields (patents)"}
+  class_count: {label: Number of classes, kind: count}
+
+firms:
+  abn: {label: ABN, kind: id}
+  entity_type: {label: Entity type (ABR), kind: category}
+  entity_group: {label: Entity group, kind: category, note: "entity_type grouped into eight kinds; see build.py"}
+  abn_active: {label: ABN is active, kind: binary}
+  gst_registered: {label: Registered for GST, kind: binary, note: "a rough marker of turnover of $75,000 or more"}
+  state: {label: State, kind: category}
+  postcode: {label: Postcode, kind: category}
+  remoteness: {label: Remoteness of postcode, kind: category, note: "ABS Remoteness Area of the postal area"}
+  irsad_decile: {label: Advantage of postcode (IRSAD decile), kind: numeric, note: "1 = most disadvantaged tenth of areas, 10 = most advantaged"}
+  asic_type: {label: ASIC company type, kind: category}
+  first_seen: {label: First seen (earliest registration), kind: date}
+  age_years: {label: Age, kind: numeric, unit: years, note: "from first_seen to the corpus build date (2026-10-22)"}
+  in_iprapid_patent: {label: Has applied for a patent, kind: binary}
+  in_iprapid_trade_mark: {label: Has applied for a trade mark, kind: binary}
+  in_iprapid_design: {label: Has applied for a design, kind: binary}
+  in_rdti: {label: Claimed the R&D Tax Incentive (2021-22 to 2023-24), kind: binary}
+  in_austender: {label: Has a government contract (AusTender), kind: binary}
+  in_ato_ctt: {label: In the ATO tax transparency reports, kind: binary, note: "large entities only: total income of $100m or more (Australian-owned private companies: $200m until 2021-22)"}
+  patent_first_fy: {label: Financial year of first patent application, kind: year}
+  trade_mark_first_fy: {label: Financial year of first trade mark application, kind: year}
+  design_first_fy: {label: Financial year of first design application, kind: year}
+  ip_filed_total: {label: IP applications (shared ones split), kind: numeric, note: "from IP RAPID's applicant panel; a right with two applicants counts 0.5 each"}
+  n_patents: {label: Patent applications, kind: count, note: "where this ABN is the first applicant with an ABN"}
+  n_trade_marks: {label: Trade mark applications, kind: count, note: "as n_patents"}
+  n_designs: {label: Design applications, kind: count, note: "as n_patents"}
+  rdti_years: {label: Years claiming the R&D Tax Incentive, kind: count, note: "0 to 3"}
+  rd_expenditure_mean: {label: Average R&D spend claimed, kind: money, unit: AUD a year}
+  rd_latest: {label: R&D spend claimed (latest year), kind: money, unit: AUD}
+  ato_ctt_years: {label: Years in the tax transparency reports, kind: count}
+  total_income_latest: {label: Total income (latest year reported), kind: money, unit: AUD}
+  austender_contracts: {label: Government contracts, kind: count}
+  austender_value: {label: Value of government contracts, kind: money, unit: AUD}
+
+regions:
+  poa_code: {label: Postal area, kind: id}
+  state: {label: State, kind: category}
+  remoteness: {label: Remoteness, kind: category}
+  share_major_cities: {label: Share of people in major cities, kind: rate}
+  persons: {label: Population (2021 Census), kind: count, unit: people}
+  irsad_score: {label: Socio-economic advantage and disadvantage (IRSAD score), kind: numeric}
+  irsad_decile: {label: IRSAD decile, kind: numeric, note: "1 = most disadvantaged tenth of areas"}
+  irsd_score: {label: Socio-economic disadvantage (IRSD score), kind: numeric}
+  irsd_decile: {label: IRSD decile, kind: numeric}
+  ier_score: {label: Economic resources (IER score), kind: numeric}
+  ier_decile: {label: IER decile, kind: numeric}
+  ieo_score: {label: Education and occupation (IEO score), kind: numeric}
+  ieo_decile: {label: IEO decile, kind: numeric}
+  median_age: {label: Median age, kind: numeric, unit: years}
+  median_personal_income_weekly: {label: Median personal income, kind: money, unit: AUD a week}
+  median_household_income_weekly: {label: Median household income, kind: money, unit: AUD a week}
+  median_rent_weekly: {label: Median rent, kind: money, unit: AUD a week}
+  average_household_size: {label: Average household size, kind: numeric, unit: people}
+  active_abns: {label: Active ABNs, kind: count, note: "includes many sole traders and inactive holders"}
+  active_gst_abns: {label: Active GST-registered ABNs, kind: count, note: "the businesses denominator for the rates below"}
+  patents: {label: Patent applications FY2017-FY2026, kind: count, note: "Australian applicants with a postcode here"}
+  trade_marks: {label: Trade mark applications FY2017-FY2026, kind: count}
+  designs: {label: Design applications FY2017-FY2026, kind: count}
+  ip_filing_firms: {label: Active firms that have ever filed IP, kind: count}
+  rdti_firms: {label: Active firms claiming the R&D Tax Incentive, kind: count}
+  rdti_firms_no_ip: {label: R&D Tax Incentive claimants that have never filed IP, kind: count}
+  patents_per_1k_businesses: {label: Patent applications per 1,000 GST-registered businesses, kind: rate}
+  trade_marks_per_1k_businesses: {label: Trade mark applications per 1,000 GST-registered businesses, kind: rate}
+  designs_per_1k_businesses: {label: Design applications per 1,000 GST-registered businesses, kind: rate}
+
+national:
+  iso3: {label: Country code, kind: id}
+  country: {label: Country, kind: category}
+  year: {label: Year, kind: year}
+  indicator: {label: Indicator code, kind: category}
+  indicator_name: {label: Indicator, kind: category}
+  value: {label: Value, kind: numeric, note: "units differ by indicator; compare within one indicator only"}
+  source: {label: Source, kind: category, note: "WDI or WIPO"}
+  oecd: {label: OECD member, kind: binary}
+  australia: {label: Australia, kind: binary}
+
+# One row per month, January 1904 to September 2026, for IP Australia's whole register (Australian and overseas
+# applicants). A series is empty (not 0) before its first recorded month. Definitions: TIMELINE_* in build.py.
+timeline:
+  month: {label: Month, kind: date, note: "the first day of the month"}
+  year: {label: Year, kind: year}
+  month_of_year: {label: Month of the year, kind: category, note: "1 = January; for seasonal patterns"}
+  fy: {label: Financial year, kind: year, note: "year ending 30 June"}
+  days_in_month: {label: Days in the month, kind: count, note: "28 to 31; months differ in length, which affects monthly counts"}
+  patents_standard_au: {label: Standard patent applications from Australian applicants, kind: count}
+  patents_standard_overseas: {label: Standard patent applications from overseas applicants, kind: count}
+  patents_provisional: {label: Provisional patent applications, kind: count, note: "placeholders, never granted themselves"}
+  patents_second_tier: {label: Innovation and petty patent applications, kind: count, note: "petty patents to 2001, innovation patents from 2001 until they closed on 26 August 2021"}
+  trade_marks_au: {label: Trade mark applications from Australian applicants, kind: count}
+  trade_marks_overseas: {label: Trade mark applications from overseas applicants, kind: count}
+  designs_au: {label: Design applications from Australian applicants, kind: count}
+  designs_overseas: {label: Design applications from overseas applicants, kind: count}
+  pbr_applications: {label: Plant breeder's rights applications, kind: count}
+  patents_granted: {label: Patents granted, kind: count}
+  trade_marks_registered: {label: Trade marks registered, kind: count}
+  designs_registered: {label: Designs registered, kind: count, note: "the first month, January 1970, looks like a placeholder date"}
+  pbr_granted: {label: Plant breeder's rights granted, kind: count}
+  patents_lapsed: {label: Patents lapsed, kind: count, note: "renewal fees not paid"}
+  trade_marks_lapsed: {label: Trade marks lapsed, kind: count}
+  designs_lapsed: {label: Designs lapsed, kind: count}
+  patents_ceased: {label: Patents ceased, kind: count, note: "IP RAPID's 'ceased' category; its meaning is a Stage 1 check"}
+  trade_marks_ceased: {label: Trade marks ceased, kind: count}
+  designs_ceased: {label: Designs ceased, kind: count}
+  patents_expired: {label: Patents expired, kind: count, note: "reached the end of their term"}
+  patent_oppositions: {label: Patent oppositions lodged (published), kind: count, note: "recorded from 2003"}
+  trade_mark_oppositions: {label: Trade mark oppositions and non-use removal requests, kind: count}
+  patent_extensions_of_term: {label: Pharmaceutical patent extensions of term granted, kind: count}
+  patent_assignments: {label: Patent assignments (ownership transfers) published, kind: count}
+  trade_mark_assignments: {label: Trade mark assignments (ownership transfers) published, kind: count}
+  policy_events: {label: IP policy changes taking effect, kind: category, note: "ids from policy_events/events, comma-separated"}
