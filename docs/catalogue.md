@@ -842,7 +842,11 @@ Processed:
 - `patent_citations`: every USPTO patent citation to Australian research (patent, work, reference type, confidence,
   where found), with whether the citing patent's family has an Australian applicant or inventor (`google_patents`).
 
-*Not ingested yet: see the status in `docs/data-plan.md`.*
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `au_works` | 2,456,961 | repo (16.3 MB) | `work_id`, `year`, `type`, `field`, `subfield` |
+| `cited_au_works` | 171,565 | repo (1.1 MB) | `work_id`, `institution_id`, `institution`, `institution_type` |
+| `patent_citations` | 614,148 | repo (3.4 MB) | `patent`, `work_id`, `reftype`, `confscore`, `wherefound`, `citing_au_family` |
 
 ## IP policy changes (dates and terms) for natural experiments (`policy_events`)
 

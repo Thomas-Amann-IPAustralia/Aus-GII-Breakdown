@@ -10770,6 +10770,1124 @@
    },
    "run": "2026-10-22"
   },
+  "openalex_works": {
+   "files": {
+    "processed/au_works": {
+     "bytes": 16279833,
+     "columns": [
+      "work_id",
+      "year",
+      "type",
+      "field",
+      "subfield"
+     ],
+     "describe": "Cited works with an Australian institution (OpenAlex)",
+     "location": "repo",
+     "path": "data/processed/openalex_works/au_works.parquet",
+     "rows": 2456961,
+     "sha256": "2d552b6c950268b458b86fac7a8697af2f91ae47edac9459ce4b9d80fd3a4f1f"
+    },
+    "processed/cited_au_works": {
+     "bytes": 1072022,
+     "columns": [
+      "work_id",
+      "institution_id",
+      "institution",
+      "institution_type"
+     ],
+     "describe": "Australian works cited by US patents, by Australian institution",
+     "location": "repo",
+     "path": "data/processed/openalex_works/cited_au_works.parquet",
+     "rows": 171565,
+     "sha256": "2b834c13e72ce54450daad26938ff3eb9019e83b29cf61bbab548b382b34593d"
+    },
+    "processed/patent_citations": {
+     "bytes": 3423785,
+     "columns": [
+      "patent",
+      "work_id",
+      "reftype",
+      "confscore",
+      "wherefound",
+      "citing_au_family"
+     ],
+     "describe": "USPTO patent citations to Australian research",
+     "location": "repo",
+     "path": "data/processed/openalex_works/patent_citations.parquet",
+     "rows": 614148,
+     "sha256": "5c4a47efd44701c57e953e8b0039be90ddc2673603c078b2f2ddbd155e916c7c"
+    },
+    "raw/au_works_1818.csv.gz": {
+     "bytes": 104,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1818.csv.gz",
+     "sha256": "34c9a06fd5e2dac49f7939262de3e7716d15305c1bc3ae473e05b4a44a6e240d"
+    },
+    "raw/au_works_1840.csv.gz": {
+     "bytes": 103,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1840.csv.gz",
+     "sha256": "a73c08f91e41f92f5d788b5b745c53161b84bfd7e73a72070527bcf6722ba398"
+    },
+    "raw/au_works_1841.csv.gz": {
+     "bytes": 135,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1841.csv.gz",
+     "sha256": "cb13ce6397c6282d03665469fb1b90a73c91a0a061843cf342aea38203fa950c"
+    },
+    "raw/au_works_1848.csv.gz": {
+     "bytes": 103,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1848.csv.gz",
+     "sha256": "8cb4e4e9a32a358aadee4dc74557c3753045b94680c3c6aa854c100ad386abe9"
+    },
+    "raw/au_works_1852.csv.gz": {
+     "bytes": 198,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1852.csv.gz",
+     "sha256": "951d6c07fff8d89c5962bfe0375b3987fbfee7a61d6abccd97db9f334a29d736"
+    },
+    "raw/au_works_1853.csv.gz": {
+     "bytes": 156,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1853.csv.gz",
+     "sha256": "a04089d72c177e8fb67b8d1e84ffdd7ea69113239b57a568ef04941c63cd443e"
+    },
+    "raw/au_works_1854.csv.gz": {
+     "bytes": 200,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1854.csv.gz",
+     "sha256": "96e102cfc8ffe0baaca3a0c858d2143b5df76d1622bfa3ee9e9b5a30a46da637"
+    },
+    "raw/au_works_1855.csv.gz": {
+     "bytes": 271,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1855.csv.gz",
+     "sha256": "cc342c873add5e61a7198b60bc8596641a796fbd3f3b813ed72b9cffe3f92f76"
+    },
+    "raw/au_works_1858.csv.gz": {
+     "bytes": 120,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1858.csv.gz",
+     "sha256": "00486384e7eb0a37505cc723ff3a49773b97439c81ed9d7ff851611952efd578"
+    },
+    "raw/au_works_1859.csv.gz": {
+     "bytes": 255,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1859.csv.gz",
+     "sha256": "908fc21f5227393f479d4b9ed32fdf31ab41357ff91c62d6807c4e8d7676deae"
+    },
+    "raw/au_works_1860.csv.gz": {
+     "bytes": 151,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1860.csv.gz",
+     "sha256": "979ddadfad15854d20c78ec973bf80c8fdf99454409fb54fdf8098b625113313"
+    },
+    "raw/au_works_1861.csv.gz": {
+     "bytes": 134,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1861.csv.gz",
+     "sha256": "4193bcdfd24e790ceeadb7c617e2b1bb00d0ed73f9d198dd0f40b273ccb1b825"
+    },
+    "raw/au_works_1862.csv.gz": {
+     "bytes": 126,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1862.csv.gz",
+     "sha256": "7658d5363ec5713e62fc1dec25d7d9fc3edcabc9eba73d665ff8274926cf5e12"
+    },
+    "raw/au_works_1863.csv.gz": {
+     "bytes": 114,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1863.csv.gz",
+     "sha256": "19eb084ccc6536c9965014d7e50dcc9811ae8717fdd3c0275bf6e023771f439e"
+    },
+    "raw/au_works_1864.csv.gz": {
+     "bytes": 163,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1864.csv.gz",
+     "sha256": "bc47023df3d4a1f069a935b9e40ec01a372dc157ff359e14d5bd0d7f72376563"
+    },
+    "raw/au_works_1865.csv.gz": {
+     "bytes": 227,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1865.csv.gz",
+     "sha256": "af6e4bfe5f73488dba2f63a84edcb954f25e06255fcc005738050610f3d96e0c"
+    },
+    "raw/au_works_1866.csv.gz": {
+     "bytes": 342,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1866.csv.gz",
+     "sha256": "255f981aaaf4318b43776eeea46ad4ace15060489dd071a9c3f4a3d4e2d46e69"
+    },
+    "raw/au_works_1867.csv.gz": {
+     "bytes": 315,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1867.csv.gz",
+     "sha256": "7953c6a5e32af40a5bab065ee58a08b851f55c934472ce6b47b8a0f04f5685cd"
+    },
+    "raw/au_works_1868.csv.gz": {
+     "bytes": 237,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1868.csv.gz",
+     "sha256": "ef118ae6df10af331a2da32e475b02c4fcbec874badf460f521affb4c68f0a80"
+    },
+    "raw/au_works_1869.csv.gz": {
+     "bytes": 191,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1869.csv.gz",
+     "sha256": "9a80d91966e595d9e29999a78e779d0e4bfabe56ae4259d94c0a755a1aa53b9f"
+    },
+    "raw/au_works_1870.csv.gz": {
+     "bytes": 205,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1870.csv.gz",
+     "sha256": "86028d0683c7ece41edb04da1c09de1f9c0b6e862c7920354dd9b987f8efd9da"
+    },
+    "raw/au_works_1871.csv.gz": {
+     "bytes": 106,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1871.csv.gz",
+     "sha256": "859a9cea5f126739f47fb46a2038f4c3baa6e20b38e64b13e20027e8dbffde2c"
+    },
+    "raw/au_works_1872.csv.gz": {
+     "bytes": 154,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1872.csv.gz",
+     "sha256": "559aed3c14c73c3a32a80a0f3a280d47aa7fbe331583259f9a17a83729d84e77"
+    },
+    "raw/au_works_1873.csv.gz": {
+     "bytes": 248,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1873.csv.gz",
+     "sha256": "86aab2867990155db3f5b5dc8e7f4ea702b916e7c242644f4989fc78453d71ea"
+    },
+    "raw/au_works_1874.csv.gz": {
+     "bytes": 275,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1874.csv.gz",
+     "sha256": "6fe451b098f56b514d0a113371afc8742d959a6149e70854291a7e8d8235ad1a"
+    },
+    "raw/au_works_1875.csv.gz": {
+     "bytes": 245,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1875.csv.gz",
+     "sha256": "6e6f25f7cdd718c4652daa693f445579457e5600dc75f4622264b396180a1d7c"
+    },
+    "raw/au_works_1876.csv.gz": {
+     "bytes": 263,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1876.csv.gz",
+     "sha256": "0d71213b74f3d787c1d410742faccdc0dfe2eab47131c5bd12ce3ea9b31e06a5"
+    },
+    "raw/au_works_1877.csv.gz": {
+     "bytes": 404,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1877.csv.gz",
+     "sha256": "9e512f711a8fcd4a428537d6c99d0068cb7e85b87e0bf7123f0b484a362aee92"
+    },
+    "raw/au_works_1878.csv.gz": {
+     "bytes": 292,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1878.csv.gz",
+     "sha256": "5f1bd7c54830c42293f42385b83087b5c7b7a9e4e390bd2998625d39327368d5"
+    },
+    "raw/au_works_1879.csv.gz": {
+     "bytes": 274,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1879.csv.gz",
+     "sha256": "5482a3fd283066fa9cfbcf17c3b107e1bdbf675bcd7c017a543d098da9b212de"
+    },
+    "raw/au_works_1880.csv.gz": {
+     "bytes": 233,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1880.csv.gz",
+     "sha256": "779e928f2cb84f726e1a0ba3add1b76548321c2def49708e05dc0af3f4236249"
+    },
+    "raw/au_works_1881.csv.gz": {
+     "bytes": 228,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1881.csv.gz",
+     "sha256": "5026f5390fcc7b4d119ed5acbd2be3e47a159890a8d5f76cfc9ac5110956df44"
+    },
+    "raw/au_works_1882.csv.gz": {
+     "bytes": 292,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1882.csv.gz",
+     "sha256": "060caf2a82e37cadf3630620defa89b63055ec62573f0054557bb5a3a8901cd0"
+    },
+    "raw/au_works_1883.csv.gz": {
+     "bytes": 264,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1883.csv.gz",
+     "sha256": "a54a0d6d46384cf013cb8c01b2a7b5bb4fa7236b5efc1e6c782d64cf5073fe80"
+    },
+    "raw/au_works_1884.csv.gz": {
+     "bytes": 370,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1884.csv.gz",
+     "sha256": "b5db615fbfa92a3d6bbe0fb50823a27235c75efce67061bc950acb351acd9c92"
+    },
+    "raw/au_works_1885.csv.gz": {
+     "bytes": 509,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1885.csv.gz",
+     "sha256": "3e2868bbe0a47451c4aa0769c51b600f3c6e99f93e2c367304aad149b23990c6"
+    },
+    "raw/au_works_1886.csv.gz": {
+     "bytes": 488,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1886.csv.gz",
+     "sha256": "c83f86f08a391eec46a33bd77df253e20a94c01638b7f9aca4846003bc094583"
+    },
+    "raw/au_works_1887.csv.gz": {
+     "bytes": 578,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1887.csv.gz",
+     "sha256": "9b9787d0571f3ea0cebf6d9fa052f590b750a2284eda6580ae86fc10765bfb66"
+    },
+    "raw/au_works_1888.csv.gz": {
+     "bytes": 476,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1888.csv.gz",
+     "sha256": "521e23b508a27d8ce89846eee008c9035c939610da9e17c7820ab2914a51eba9"
+    },
+    "raw/au_works_1889.csv.gz": {
+     "bytes": 493,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1889.csv.gz",
+     "sha256": "6efe961531da0256cfd6d0525dc5d9f3f9aa782ba276c8a1bd63abba4df049bf"
+    },
+    "raw/au_works_1890.csv.gz": {
+     "bytes": 536,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1890.csv.gz",
+     "sha256": "cd06e53ef3cf82cd82464deb5ea6a7a04a6d4b16f2e39158958743485acf5fa1"
+    },
+    "raw/au_works_1891.csv.gz": {
+     "bytes": 396,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1891.csv.gz",
+     "sha256": "629417de5f5fc2cd74624ec04ceccddb9f912fd6eca7a12ac89b6c943a07c7ca"
+    },
+    "raw/au_works_1892.csv.gz": {
+     "bytes": 599,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1892.csv.gz",
+     "sha256": "1fd835554a0489dd8bccb3872b1f330f4a3625ab7218c5dbd632d9427aae70e5"
+    },
+    "raw/au_works_1893.csv.gz": {
+     "bytes": 519,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1893.csv.gz",
+     "sha256": "d0f88339117c9035449928154941b20a2d55b08ee22a78e2276285b281f10651"
+    },
+    "raw/au_works_1894.csv.gz": {
+     "bytes": 396,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1894.csv.gz",
+     "sha256": "f9dfdb6546b8d0f913b66c4e2106089854d3e51b6b0fbca4036f838ccc370fc8"
+    },
+    "raw/au_works_1895.csv.gz": {
+     "bytes": 469,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1895.csv.gz",
+     "sha256": "e477d5fc90e03521fa56009cce13fcbb33263af29fa12e05a0092441b5f0f317"
+    },
+    "raw/au_works_1896.csv.gz": {
+     "bytes": 455,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1896.csv.gz",
+     "sha256": "70ee55fb92700b07abf4499d3bd75ce68982bbd2387aa94f5e1624f92aa1dfd8"
+    },
+    "raw/au_works_1897.csv.gz": {
+     "bytes": 482,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1897.csv.gz",
+     "sha256": "664b94994661545a1407dac2309151326035ec31e0ec05b0ef92000643793216"
+    },
+    "raw/au_works_1898.csv.gz": {
+     "bytes": 486,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1898.csv.gz",
+     "sha256": "e62b0b417e9eb6cd7d3297e2843380fe9cac2ecb5661cea6376ed0b9da78daea"
+    },
+    "raw/au_works_1899.csv.gz": {
+     "bytes": 374,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1899.csv.gz",
+     "sha256": "ace6d5891c4b1825daf0f99dddc1f1f99a6214080ea4fb48b5976aa7b5e80cfa"
+    },
+    "raw/au_works_1900.csv.gz": {
+     "bytes": 538,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1900.csv.gz",
+     "sha256": "3e82f32711ac5dea1a01bede50d16c962478e2815bdc38199e6388f3d20e5ea8"
+    },
+    "raw/au_works_1901.csv.gz": {
+     "bytes": 391,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1901.csv.gz",
+     "sha256": "6fdb7b43095ad7146bae2eb38eeb0d18d498246668c967a67b1c28e88b95f80d"
+    },
+    "raw/au_works_1902.csv.gz": {
+     "bytes": 560,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1902.csv.gz",
+     "sha256": "a97458b01f53603208428d564de2c864e1f21cf56801ac11b8ed208975c4aa8e"
+    },
+    "raw/au_works_1903.csv.gz": {
+     "bytes": 572,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1903.csv.gz",
+     "sha256": "ce8f020c2e51151c99eaf104dbae2ffac9ffc2e7050b5c81f00d10768b125201"
+    },
+    "raw/au_works_1904.csv.gz": {
+     "bytes": 477,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1904.csv.gz",
+     "sha256": "5d7a4429c43c36941a88b189fbd4e1debb14e5e0b0bb481562ca76e7d2574ca8"
+    },
+    "raw/au_works_1905.csv.gz": {
+     "bytes": 613,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1905.csv.gz",
+     "sha256": "62843ac5c437b06d3203167894c2efb9d0261306a1302defc71f3e4d33ac3b3e"
+    },
+    "raw/au_works_1906.csv.gz": {
+     "bytes": 636,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1906.csv.gz",
+     "sha256": "616526e25a874fb95499681a5caabb5707120f029f116cad8dfecfbd97e3ac8b"
+    },
+    "raw/au_works_1907.csv.gz": {
+     "bytes": 675,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1907.csv.gz",
+     "sha256": "21dd02ce3fff5609cc5b1c2b37a6cc89bd77e292cfd358523cc1c5b96f81bff3"
+    },
+    "raw/au_works_1908.csv.gz": {
+     "bytes": 602,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1908.csv.gz",
+     "sha256": "223fa3d28f679875211eb47c6614d5ac48ba021a46506e590439a6173f25c88c"
+    },
+    "raw/au_works_1909.csv.gz": {
+     "bytes": 660,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1909.csv.gz",
+     "sha256": "28c0197da3b40db890d8556cdcaddddc63fa152b02971f3cd09efdffaf3ca8b8"
+    },
+    "raw/au_works_1910.csv.gz": {
+     "bytes": 902,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1910.csv.gz",
+     "sha256": "b8c172e8dbb194589cc8bf6e9893374b0e8d426083c14a0e7fe8044f524e6d91"
+    },
+    "raw/au_works_1911.csv.gz": {
+     "bytes": 728,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1911.csv.gz",
+     "sha256": "36b0db8e24d1a16f881ab8f155013429e489d6b29182965de6080092d45a503f"
+    },
+    "raw/au_works_1912.csv.gz": {
+     "bytes": 609,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1912.csv.gz",
+     "sha256": "db1f06e219261a204b1425ee4c144321e3bc1862695b9e4dfe2d55b6f1b2a9ae"
+    },
+    "raw/au_works_1913.csv.gz": {
+     "bytes": 627,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1913.csv.gz",
+     "sha256": "fe67d9c56e1c90d31efc40d511566b56c35f08706c7674397a9bfc2c445d1c46"
+    },
+    "raw/au_works_1914.csv.gz": {
+     "bytes": 1036,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1914.csv.gz",
+     "sha256": "ad3737f995abaf29b337b3a8ba6df2659b979fc14d0f755e8d5a079a7a4ba428"
+    },
+    "raw/au_works_1915.csv.gz": {
+     "bytes": 997,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1915.csv.gz",
+     "sha256": "e1b46d28da22f144a9c57baf30070aa8c9b4ec84afe7f758d45dd178ac4ef055"
+    },
+    "raw/au_works_1916.csv.gz": {
+     "bytes": 848,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1916.csv.gz",
+     "sha256": "fb7a8ee30c37e4c2d21e533b130fb963d14bd8804bacf80f1cadf82e5e0cef91"
+    },
+    "raw/au_works_1917.csv.gz": {
+     "bytes": 976,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1917.csv.gz",
+     "sha256": "c3038fceb2149ad0162b0c9025bd3061a65a63e2c3f04fb052ed097d1de619c2"
+    },
+    "raw/au_works_1918.csv.gz": {
+     "bytes": 939,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1918.csv.gz",
+     "sha256": "073586ac0a7c9facede1844229aa2c5c4d797fa140bb01e3e9908e23399e5abe"
+    },
+    "raw/au_works_1919.csv.gz": {
+     "bytes": 1095,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1919.csv.gz",
+     "sha256": "9b43622c5382e35a886bb0145e13788d39ee4ee9bf57107d520a325dd9071e4d"
+    },
+    "raw/au_works_1920.csv.gz": {
+     "bytes": 1040,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1920.csv.gz",
+     "sha256": "0ff926c6f47a9945ac9912031c851989d79349e868140f5b1a69a6931c9ccd7e"
+    },
+    "raw/au_works_1921.csv.gz": {
+     "bytes": 1275,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1921.csv.gz",
+     "sha256": "07426a7a83ae66594ff4b5c16df0681cf3e53ad2416fc2bb57a1326693cb859c"
+    },
+    "raw/au_works_1922.csv.gz": {
+     "bytes": 1537,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1922.csv.gz",
+     "sha256": "5420fc7aa6390233e7ab6ef7bd9904c87a4e355d419816dc3ac4c9af29e7cc3a"
+    },
+    "raw/au_works_1923.csv.gz": {
+     "bytes": 1700,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1923.csv.gz",
+     "sha256": "9c2d2936981fcb7b062ccf79fa30da1d9ef95a1874369d32999abb843c4af09c"
+    },
+    "raw/au_works_1924.csv.gz": {
+     "bytes": 1859,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1924.csv.gz",
+     "sha256": "6399bcde62811f104b297c80bba4e8fe1adba85a8a823289892d71eed4c5cecd"
+    },
+    "raw/au_works_1925.csv.gz": {
+     "bytes": 1849,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1925.csv.gz",
+     "sha256": "90bf4a9c2e9a36809c4cd1425acbfc7b4d9af9c080d4f71e011f72d71e1acefa"
+    },
+    "raw/au_works_1926.csv.gz": {
+     "bytes": 2070,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1926.csv.gz",
+     "sha256": "dc283ddf1f10fc262b999630bba4382e08a78d509d668ee5563562739325d1e4"
+    },
+    "raw/au_works_1927.csv.gz": {
+     "bytes": 2195,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1927.csv.gz",
+     "sha256": "e2ebf74734cc39c200320042bbf1625854ca20921c1532e0a46e7a86b4bc019e"
+    },
+    "raw/au_works_1928.csv.gz": {
+     "bytes": 2261,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1928.csv.gz",
+     "sha256": "d07dd3ef83512584d4838238ad6aacf0fa913939c17c5337c691170d55915807"
+    },
+    "raw/au_works_1929.csv.gz": {
+     "bytes": 2155,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1929.csv.gz",
+     "sha256": "f09d5340526d8aac366dcc5d75f6cd428ccceef7abc1b02b58a35c7c5c216062"
+    },
+    "raw/au_works_1930.csv.gz": {
+     "bytes": 2600,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1930.csv.gz",
+     "sha256": "db4ba78a58a86bf07602ea67dd501a5975b3e85dc9e3a4f4a566e75174315cbd"
+    },
+    "raw/au_works_1931.csv.gz": {
+     "bytes": 2774,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1931.csv.gz",
+     "sha256": "3d1ab322f7c52912a0d5fb5f7501ec65c501b3418afae0a10559f5140ef37368"
+    },
+    "raw/au_works_1932.csv.gz": {
+     "bytes": 2878,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1932.csv.gz",
+     "sha256": "0bb5037d1690155a6dcef2d6bf88fb32405351b748bb60a7c27488926ec35be0"
+    },
+    "raw/au_works_1933.csv.gz": {
+     "bytes": 2686,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1933.csv.gz",
+     "sha256": "a5ff63881b0595a4e045f7179cf42245d6aaed957a0e716e9b48673f2836d092"
+    },
+    "raw/au_works_1934.csv.gz": {
+     "bytes": 2651,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1934.csv.gz",
+     "sha256": "942470d067f2b14aa24f069bfa32c8f090741e158203761b4fbe278c69ae2910"
+    },
+    "raw/au_works_1935.csv.gz": {
+     "bytes": 2843,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1935.csv.gz",
+     "sha256": "5860c67890cb4997ef948da1c1b2443130a072605ec86d87a0b98d8fb9ed93a1"
+    },
+    "raw/au_works_1936.csv.gz": {
+     "bytes": 2616,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1936.csv.gz",
+     "sha256": "8676b98849a9a7eff23e255eb12c8c3076c8641862bd2664e44ba56860e4fb7e"
+    },
+    "raw/au_works_1937.csv.gz": {
+     "bytes": 2969,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1937.csv.gz",
+     "sha256": "add822b903d88770d105bcbe8b7447eb3d82e9a26d03ec004f6fdf14fde10640"
+    },
+    "raw/au_works_1938.csv.gz": {
+     "bytes": 3193,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1938.csv.gz",
+     "sha256": "9c54ddb3796b886d197299394a3a05385a0778d4a5a90bf7d2e2af5792480672"
+    },
+    "raw/au_works_1939.csv.gz": {
+     "bytes": 3055,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1939.csv.gz",
+     "sha256": "8cc51b7b2a58f8ddc84203dd6f52c91a9165db4c5f721ec6c4d6bc119afc7407"
+    },
+    "raw/au_works_1940.csv.gz": {
+     "bytes": 2626,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1940.csv.gz",
+     "sha256": "9312fc700a8f69e4d2c8a4c93a2463ae70e6ab6fc9bd7a6f12c9ace1d0b2a7ac"
+    },
+    "raw/au_works_1941.csv.gz": {
+     "bytes": 2575,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1941.csv.gz",
+     "sha256": "06753bdff4806b892de7532693edfbaeb1c68e6e17d465510738e3f9be47d494"
+    },
+    "raw/au_works_1942.csv.gz": {
+     "bytes": 2280,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1942.csv.gz",
+     "sha256": "8fc1086fdd6d2e3f7395fc2a2a10292d5636be437befcbe20612ef125a136654"
+    },
+    "raw/au_works_1943.csv.gz": {
+     "bytes": 2001,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1943.csv.gz",
+     "sha256": "68cb9b5c061f23b16eb3a8b439f9ebec60f3ab28eb0d7f34d402a7b531db5c8e"
+    },
+    "raw/au_works_1944.csv.gz": {
+     "bytes": 2248,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1944.csv.gz",
+     "sha256": "86c096d89762037bf77e8f948e8287f563c42a1e46d41bf5184273951d2ca16a"
+    },
+    "raw/au_works_1945.csv.gz": {
+     "bytes": 2644,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1945.csv.gz",
+     "sha256": "964b3f02f139b91080e2803d1837dc8582395ef6f76a8f6ed010215123f1ceb5"
+    },
+    "raw/au_works_1946.csv.gz": {
+     "bytes": 3183,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1946.csv.gz",
+     "sha256": "6d0f0ffa90c6228d809a1a01c00615c5047cda3e67785d27616000f70b578fbe"
+    },
+    "raw/au_works_1947.csv.gz": {
+     "bytes": 3276,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1947.csv.gz",
+     "sha256": "85d9a343ff6dcbe3f6932564ca8110224b1e1af41eb3fb1c56f4eac3cf2494c4"
+    },
+    "raw/au_works_1948.csv.gz": {
+     "bytes": 3701,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1948.csv.gz",
+     "sha256": "29ce52bc04094e187d56afab2823c4b604cd01bd77170d9147e62084e34ba586"
+    },
+    "raw/au_works_1949.csv.gz": {
+     "bytes": 4667,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1949.csv.gz",
+     "sha256": "0f8fbc23a46097ac12dcf673f458a2687dec3e075df267d53b23b0d3c9273a31"
+    },
+    "raw/au_works_1950.csv.gz": {
+     "bytes": 5217,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1950.csv.gz",
+     "sha256": "538da4143a2fc7649cd10c932d0792dd770371f830c9ebfcdad9f505107b858f"
+    },
+    "raw/au_works_1951.csv.gz": {
+     "bytes": 5416,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1951.csv.gz",
+     "sha256": "4dfb9a44aace4a4910d37d37fccf2a1bdddb1b00f34152f8f364c798ce486b23"
+    },
+    "raw/au_works_1952.csv.gz": {
+     "bytes": 6504,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1952.csv.gz",
+     "sha256": "0cdd656a894bbe3c91540da9756e812cbb0641c7e2bdf74bf8a7931176852b3e"
+    },
+    "raw/au_works_1953.csv.gz": {
+     "bytes": 8047,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1953.csv.gz",
+     "sha256": "a8d64de2e5b67a8ae6f71920b74470f7d327488e14ae6fabf70a5ef258001380"
+    },
+    "raw/au_works_1954.csv.gz": {
+     "bytes": 8353,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1954.csv.gz",
+     "sha256": "370e4a2b30bf639863d28240aab7dc4ac4f290842e7bfa20dade88ca6392cec8"
+    },
+    "raw/au_works_1955.csv.gz": {
+     "bytes": 8979,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1955.csv.gz",
+     "sha256": "45a57735af26331c6c819d367a94c44e27df186dd595f53fa6bc35f6766847a6"
+    },
+    "raw/au_works_1956.csv.gz": {
+     "bytes": 9968,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1956.csv.gz",
+     "sha256": "184d6ed97fbe214dd88a8b6213f374ae27e3311ad53272dc2ea4585bf6c62716"
+    },
+    "raw/au_works_1957.csv.gz": {
+     "bytes": 10628,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1957.csv.gz",
+     "sha256": "2ac13a8836481d58c0a51d504246ac7b8a428b637450fbc2e1f874bbc3795319"
+    },
+    "raw/au_works_1958.csv.gz": {
+     "bytes": 11233,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1958.csv.gz",
+     "sha256": "8d07dcbeccf67d07555e0630d1c8ed96497b0b673408eb7f6b0d47c955a67012"
+    },
+    "raw/au_works_1959.csv.gz": {
+     "bytes": 13508,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1959.csv.gz",
+     "sha256": "904c9e6a6d48acc3fbf58cbe378f06e190a20d36a2984e58065d39d27031afdc"
+    },
+    "raw/au_works_1960.csv.gz": {
+     "bytes": 14525,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1960.csv.gz",
+     "sha256": "ae5c665644194f8ad886d6e003a524d7dae07d93b0c930102266fbc9b560d98e"
+    },
+    "raw/au_works_1961.csv.gz": {
+     "bytes": 16172,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1961.csv.gz",
+     "sha256": "8b7736b3b63e58896d7558c137ab4eaf30dde315b943364535fb645ef4420041"
+    },
+    "raw/au_works_1962.csv.gz": {
+     "bytes": 19217,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1962.csv.gz",
+     "sha256": "a205cfc231a63ce1ed73d0a7d295c73406bd8e686fb4222c36607abead4d04a8"
+    },
+    "raw/au_works_1963.csv.gz": {
+     "bytes": 20998,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1963.csv.gz",
+     "sha256": "7c64b258267606b501aaebfb3befa642209371414a88b9a152437e19a9690c7a"
+    },
+    "raw/au_works_1964.csv.gz": {
+     "bytes": 23049,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1964.csv.gz",
+     "sha256": "ffdc3710620d8edc3b96d4f5a4a841f7946309c4bce1b0de512e4416959f8d91"
+    },
+    "raw/au_works_1965.csv.gz": {
+     "bytes": 25606,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1965.csv.gz",
+     "sha256": "271c8405cb868c1c627a1f880be226bfcd497f2f609b5c221987c5657f2bf664"
+    },
+    "raw/au_works_1966.csv.gz": {
+     "bytes": 28106,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1966.csv.gz",
+     "sha256": "6c2e99424e0b718c9afe7f0ad331f14bf5c68b805eb97c6f3ef271bb3b89ece6"
+    },
+    "raw/au_works_1967.csv.gz": {
+     "bytes": 32776,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1967.csv.gz",
+     "sha256": "240be8f5899661813930ed25fbcf9299ac9c31a3ac7e7d21d94868b29d409df1"
+    },
+    "raw/au_works_1968.csv.gz": {
+     "bytes": 34296,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1968.csv.gz",
+     "sha256": "0597039b800b242689ec6649f78e18fced7d25248fec5bbe934ad8bdb432bcb9"
+    },
+    "raw/au_works_1969.csv.gz": {
+     "bytes": 38801,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1969.csv.gz",
+     "sha256": "f685e59ec7a4a600b56226717e303a026ad41efd25a712d6756699bbae3de4bf"
+    },
+    "raw/au_works_1970.csv.gz": {
+     "bytes": 42338,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1970.csv.gz",
+     "sha256": "6d7c86da44968bde3db8396be59e5aa0db516e3a9be1ac19a16704d04980789e"
+    },
+    "raw/au_works_1971.csv.gz": {
+     "bytes": 40840,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1971.csv.gz",
+     "sha256": "8d316e571e71a483f3b2cbbfc12dbaa3f1561fa5fe24273723acc1e9c4934cf6"
+    },
+    "raw/au_works_1972.csv.gz": {
+     "bytes": 46728,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1972.csv.gz",
+     "sha256": "895f435208d4ab20a5de9609c24fd0332d84afd20cbfdf85626ae864411e7c66"
+    },
+    "raw/au_works_1973.csv.gz": {
+     "bytes": 50117,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1973.csv.gz",
+     "sha256": "140ad8745aa2a4ecf86faf5f181e1297494270d0be52dbd554b7b51a975a45e6"
+    },
+    "raw/au_works_1974.csv.gz": {
+     "bytes": 50632,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1974.csv.gz",
+     "sha256": "bcf34ef3054d1370c17053c8633a75fbad0abbc5e4357dc2cb4b5da0180a9fb2"
+    },
+    "raw/au_works_1975.csv.gz": {
+     "bytes": 51251,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1975.csv.gz",
+     "sha256": "274ed2f010b78396a579266b79c4d8e650054565d3015368a3da2b766e733e96"
+    },
+    "raw/au_works_1976.csv.gz": {
+     "bytes": 54470,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1976.csv.gz",
+     "sha256": "9679c657b13d1ca908eb63cb146f2c369fa3942d1e8c5f833cf7db7237fa9f87"
+    },
+    "raw/au_works_1977.csv.gz": {
+     "bytes": 59380,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1977.csv.gz",
+     "sha256": "0df9d76b2409ad30e9a2248801aab7fd53d9b2dd5e3ed964c0ab26c3d07a365a"
+    },
+    "raw/au_works_1978.csv.gz": {
+     "bytes": 63088,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1978.csv.gz",
+     "sha256": "620b54056a1a1b073cf557e99d9ed543cee17b5ed82ef815669e5808fdc14506"
+    },
+    "raw/au_works_1979.csv.gz": {
+     "bytes": 67188,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1979.csv.gz",
+     "sha256": "b7043475443c7fe4ec7967892855279adc7afab36cf349c91ce742365fb0bd4e"
+    },
+    "raw/au_works_1980.csv.gz": {
+     "bytes": 72890,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1980.csv.gz",
+     "sha256": "dd0c7271f24b54990e2009021f3222ac455e113c201d7427773174bc21486cda"
+    },
+    "raw/au_works_1981.csv.gz": {
+     "bytes": 78309,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1981.csv.gz",
+     "sha256": "05e19151af2f69f51b52ca8d49f046e6cc207f47f7a6e278f683f8737fec4629"
+    },
+    "raw/au_works_1982.csv.gz": {
+     "bytes": 79235,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1982.csv.gz",
+     "sha256": "93bc0c420bc17f2217fa449daa87486917f182c97904ac57b6fa33e132519462"
+    },
+    "raw/au_works_1983.csv.gz": {
+     "bytes": 85261,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1983.csv.gz",
+     "sha256": "ace72a0a88e7d2c686ed894f83602f60ed770e1fb6b30c807130e1cfde3e969e"
+    },
+    "raw/au_works_1984.csv.gz": {
+     "bytes": 91257,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1984.csv.gz",
+     "sha256": "e2d206b4610c58de9d166b8e4d3e3caa429ff7e1ad470d311c874ce83c710152"
+    },
+    "raw/au_works_1985.csv.gz": {
+     "bytes": 92008,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1985.csv.gz",
+     "sha256": "32de27ed2a83598e0dbbdbe67166e0e84a6cf9d13c3cd07cf14081b55968048d"
+    },
+    "raw/au_works_1986.csv.gz": {
+     "bytes": 97561,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1986.csv.gz",
+     "sha256": "915e65ed15aa8bb2b74a619e3dc5437f4974f248ff706553ce5bcadee54dd8e8"
+    },
+    "raw/au_works_1987.csv.gz": {
+     "bytes": 102966,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1987.csv.gz",
+     "sha256": "8668874b44ab0fb25c0c5b54092091fa8efe21922499613d09d15e7b455dd135"
+    },
+    "raw/au_works_1988.csv.gz": {
+     "bytes": 115591,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1988.csv.gz",
+     "sha256": "19da09a3975fdf41919bff2f0b6017026477e83296de0baae67a82c3a3c0817a"
+    },
+    "raw/au_works_1989.csv.gz": {
+     "bytes": 115459,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1989.csv.gz",
+     "sha256": "1e857cdcb67bc210717fc340a1eef368c390ca2fab4244afaa95a388e67e2d0f"
+    },
+    "raw/au_works_1990.csv.gz": {
+     "bytes": 129397,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1990.csv.gz",
+     "sha256": "b12963bb88095147ae5a285740745dee67471cc2583ac6a44dcbb13d59f6cfac"
+    },
+    "raw/au_works_1991.csv.gz": {
+     "bytes": 135224,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1991.csv.gz",
+     "sha256": "1b55ab4fc64f69149bf754bc34570ad11da76577fb5e84093ed2c784f18097c5"
+    },
+    "raw/au_works_1992.csv.gz": {
+     "bytes": 146855,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1992.csv.gz",
+     "sha256": "2f247df0efa1c9b06be743f1f0399e161ecac851a9f5c284ddc54e7ce22fd7c2"
+    },
+    "raw/au_works_1993.csv.gz": {
+     "bytes": 162997,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1993.csv.gz",
+     "sha256": "c0579e601103bff25a0168654d00648193f1e40d4e75721fc3aba3839e3dc022"
+    },
+    "raw/au_works_1994.csv.gz": {
+     "bytes": 176975,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1994.csv.gz",
+     "sha256": "b9d3f0e81d2b9a656510ae17cbabc2bbf006e4afe668f46aff50a79ec72511b1"
+    },
+    "raw/au_works_1995.csv.gz": {
+     "bytes": 189878,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1995.csv.gz",
+     "sha256": "087dff9e690b0e613eff2fcc0f233eb516d9c60d182c55019d0546c3cd4d9f8a"
+    },
+    "raw/au_works_1996.csv.gz": {
+     "bytes": 206295,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1996.csv.gz",
+     "sha256": "13d0e9cf00e93fad7ecc43edc60e3af38fd2312b3d0e4d31d0ef3abbb2caad94"
+    },
+    "raw/au_works_1997.csv.gz": {
+     "bytes": 223481,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1997.csv.gz",
+     "sha256": "1ba7a0b943399bae0f042d0507ce372f2a9558f9a78ee495f527eac784bd0c37"
+    },
+    "raw/au_works_1998.csv.gz": {
+     "bytes": 235621,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1998.csv.gz",
+     "sha256": "3b40149a26a2e57aceec37c762a83c37817ede9b0b7e6533c3b5cb1d2fd99a41"
+    },
+    "raw/au_works_1999.csv.gz": {
+     "bytes": 248534,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_1999.csv.gz",
+     "sha256": "1df4aed321077b2785db440760e50a9d4fee9de9cea876d6fde8914dc9323240"
+    },
+    "raw/au_works_2000.csv.gz": {
+     "bytes": 266657,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2000.csv.gz",
+     "sha256": "85f69cf7abeabc3afab590af71532de24e074bee250c6d0ec7ecf7ca2d20152c"
+    },
+    "raw/au_works_2001.csv.gz": {
+     "bytes": 286695,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2001.csv.gz",
+     "sha256": "ff54c29c5255fc73b60eb569afeb862eba9a82b55970499ddbb561393943ff77"
+    },
+    "raw/au_works_2002.csv.gz": {
+     "bytes": 357971,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2002.csv.gz",
+     "sha256": "903e1eb1357e7c6a81c6deaeaca0a66650c74f8cc78346ba2444a1e6211a533e"
+    },
+    "raw/au_works_2003.csv.gz": {
+     "bytes": 363509,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2003.csv.gz",
+     "sha256": "1c907631e5be74e3f5f86c3dc0d7d5cf2ad3031862cfe2c7df4bee5c6a5c3384"
+    },
+    "raw/au_works_2004.csv.gz": {
+     "bytes": 381080,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2004.csv.gz",
+     "sha256": "89ada036081cc047d7e01024e15164df6dbbe57e75643d7df7d5aa774495d713"
+    },
+    "raw/au_works_2005.csv.gz": {
+     "bytes": 427602,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2005.csv.gz",
+     "sha256": "8fdbc9e937b90ed401c4fec04099231e9c9ae1349d32855b02ba9d92d4c787f1"
+    },
+    "raw/au_works_2006.csv.gz": {
+     "bytes": 478006,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2006.csv.gz",
+     "sha256": "50f7084d17b9dc310a0554c59b7960b4e295a975aba28364942ec013105fd9e9"
+    },
+    "raw/au_works_2007.csv.gz": {
+     "bytes": 500242,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2007.csv.gz",
+     "sha256": "c8fd3829160e5e4cc0bf0a73388868534dd88fdba3e975b89e737a4b53ced121"
+    },
+    "raw/au_works_2008.csv.gz": {
+     "bytes": 542639,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2008.csv.gz",
+     "sha256": "7d5d599ac5e9e838d12a4a5a16658b122358aff5795f709e7e70247db3e8db42"
+    },
+    "raw/au_works_2009.csv.gz": {
+     "bytes": 588763,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2009.csv.gz",
+     "sha256": "3933079065075d4fbb1d1dd1623ac3736f61702fb29e1ea0652d598bd0f04223"
+    },
+    "raw/au_works_2010.csv.gz": {
+     "bytes": 635453,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2010.csv.gz",
+     "sha256": "d8a2f345d6f187c84d4af365a144bd623976d2c3167f5860bd8ad66a322f70a1"
+    },
+    "raw/au_works_2011.csv.gz": {
+     "bytes": 696119,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2011.csv.gz",
+     "sha256": "0fee584f9e279749e0510656b7b72290a2865e11c4d0eaa039ecbfcb633c1ab2"
+    },
+    "raw/au_works_2012.csv.gz": {
+     "bytes": 749709,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2012.csv.gz",
+     "sha256": "393b60acad292780a0bce7f59f8b66efd7816bc56fd33aca8e9c356fbf7ea385"
+    },
+    "raw/au_works_2013.csv.gz": {
+     "bytes": 827017,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2013.csv.gz",
+     "sha256": "cf8a4bac20c69d9d1be6a49b4d01405301b79bc6307ca2285ce14883ae63c150"
+    },
+    "raw/au_works_2014.csv.gz": {
+     "bytes": 873082,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2014.csv.gz",
+     "sha256": "18420da899692ce186b05bb9bfe0f31fb09ad242dc5761fe93abaa17d0f18793"
+    },
+    "raw/au_works_2015.csv.gz": {
+     "bytes": 938790,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2015.csv.gz",
+     "sha256": "6fbbdbb3f155ebc2f04728e5cfde29df1256f4cb35ac3040058ba4b522e0682e"
+    },
+    "raw/au_works_2016.csv.gz": {
+     "bytes": 957416,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2016.csv.gz",
+     "sha256": "a28f5ba5934dd7c19434fa2bc00b1ac2c765650e9ba343db9da4ff734a8dd7ea"
+    },
+    "raw/au_works_2017.csv.gz": {
+     "bytes": 973242,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2017.csv.gz",
+     "sha256": "906a22184e518b28059dec84d5277bd2845d2c17c018f43c94a82741090e669f"
+    },
+    "raw/au_works_2018.csv.gz": {
+     "bytes": 990887,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2018.csv.gz",
+     "sha256": "3efd3dfa6c5d21150aed9d7e2334b810d6d3d8992e1f473a780e1b1477350515"
+    },
+    "raw/au_works_2019.csv.gz": {
+     "bytes": 1046967,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2019.csv.gz",
+     "sha256": "6caef6856f89d8e1ffa97b386c70b8c0cd7e0d058133ca49ab2a3f6fd3b982e0"
+    },
+    "raw/au_works_2020.csv.gz": {
+     "bytes": 1134664,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2020.csv.gz",
+     "sha256": "369f3c534c1e91543b241669c6b0e949cc34ab9667138213dc14f17baf43a0e2"
+    },
+    "raw/au_works_2021.csv.gz": {
+     "bytes": 1137057,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2021.csv.gz",
+     "sha256": "8b185e99e2ec40301aa9ca8b7e87a7a5c83bd59787c41305c71833a18cd8fbc0"
+    },
+    "raw/au_works_2022.csv.gz": {
+     "bytes": 1021488,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2022.csv.gz",
+     "sha256": "33fabbe5eb35faecd72b4ab6d86019f9bed826b891f06f8b0f0f90aeab28e0ee"
+    },
+    "raw/au_works_2023.csv.gz": {
+     "bytes": 939194,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2023.csv.gz",
+     "sha256": "80adae1ad0f30bf6d3dca6f529dcbed08521a1acb64d2944d4452c4fbaaa6582"
+    },
+    "raw/au_works_2024.csv.gz": {
+     "bytes": 892722,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2024.csv.gz",
+     "sha256": "dc21eb35ec9857a74761e283e5f303031a1413b23340c5c2cc94c63651589ca7"
+    },
+    "raw/au_works_2025.csv.gz": {
+     "bytes": 734723,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2025.csv.gz",
+     "sha256": "252d8cc3f345eabe6cd5e0df31d525b3d4357331ef03ffff970a7d4842774eb9"
+    },
+    "raw/au_works_2026.csv.gz": {
+     "bytes": 243470,
+     "location": "repo",
+     "path": "data/raw/openalex_works/au_works_2026.csv.gz",
+     "sha256": "cc576afcb89c50ff24c3e8f8ec7ca83ec5e5e468837ce2c8f3bdd3e0c4a608bc"
+    },
+    "raw/cited_au_works.jsonl.gz": {
+     "bytes": 2400294,
+     "location": "repo",
+     "path": "data/raw/openalex_works/cited_au_works.jsonl.gz",
+     "sha256": "4a046a6cdb21801eb3af942bb5e53435f38f6147f1ee70664483f470f3662c5a"
+    }
+   },
+   "run": "2026-10-23"
+  },
   "pbs": {
    "files": {
     "processed/item_drug_map": {

@@ -269,15 +269,14 @@ columns. In short:
 | J | TGA register (`tga`) | Ingested (your download) | 98,147 ARTG entries (35,113 medicines, 62,647 devices) and their active ingredients; no dates |
 | E | Google Patents (`google_patents`) | Ingested | 1.75 million families with an Australian publication, applicant or inventor (offices, grants, forward citations, titles); 3.2 million publications, with Australian application numbers that join to IP RAPID; 1.85 million citation pairs |
 | F | Reliance on Science (`reliance_on_science`) | Ingested | 620,364 citations to 175,607 papers (OpenAlex ids) by US patents in 18,254 families with Australian applicants or inventors; 59,202 patent-paper pairs |
+| F | Australian research cited by patents (`openalex_works`) | Ingested | 2.46 million cited works with an Australian institution (OpenAlex); 103,644 of them are cited by 287,416 US patents (614,148 citations, 6% from patent families with Australian applicants or inventors), with their Australian institutions. Most cited: Melbourne, CSIRO, Sydney, Monash, Queensland |
 | 32 | Policy events (`policy_events`) | Ingested | 13 dated changes (four marked to verify) and IP Australia's policy register (155 proposals and their status) |
 
 ### What needs you
 
 Nothing is blocking. Optional:
 
-1. **Which citing patents rely on Australian research** (`openalex_works`): approved; it takes about 13,000 OpenAlex
-   calls, more than one day's free allowance (10,000), so it runs over two days, resuming where it stopped.
-2. **BigQuery**: `GCP_PROJECT_ID` should be a project id or left unset (the key's own project is used); giving the
+1. **BigQuery**: `GCP_PROJECT_ID` should be a project id or left unset (the key's own project is used); giving the
    service account the BigQuery Read Session User role makes `google_patents` download much faster.
 
 Lens was not pursued (its API is paid beyond a trial); Google Patents and Reliance on Science cover its uses.
