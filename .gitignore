@@ -8,3 +8,6 @@ __pycache__/
 node_modules/
 data/manifest.lock
 analysis/output/.duckdb_tmp/
+
+# Lens tables built by analysis/eda/build.py (rebuilt in minutes from the corpus)
+analysis/eda/data/
