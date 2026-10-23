@@ -1,5 +1,6 @@
 """OECD comparator panel: R&D, patents, protection methods, business demography, venture capital, IP tax regimes and
-How's Life? well-being, from the OECD Data Explorer's SDMX API, for every country the OECD publishes.
+How's Life? well-being (current and future, by sex, age and education, and child well-being) and selected Sustainable
+Development Goals (1, 2, 9 and 13), from the OECD Data Explorer's SDMX API, for every country the OECD publishes.
 
 Raw: each flow's CSV with labels (gzipped; repo when small, R2 when large). Processed: one tidy table per flow (named
 below), with a code and a `_label` column for every dimension, then `value`. The flows are the OECD's own; check each
@@ -31,7 +32,14 @@ FLOWS = {
     "wellbeing_current": "OECD.WISE.WDP,DSD_HSL@DF_HSL_CWB",
     "wellbeing_by_sex": "OECD.WISE.WDP,DSD_HSL@DF_HSL_CWB_SEX",
     "wellbeing_inequality": "OECD.WISE.WDP,DSD_HSL@DF_HSL_CWB_INEQ",
-    "wellbeing_future": "OECD.WISE.WDP,DSD_HSL@DF_HSL_FWB",
+    "wellbeing_future": "OECD.WISE.WDP,DSD_HSL@DF_HSL_FWB",  # includes trust in government, others and police
+    "wellbeing_by_age": "OECD.WISE.WDP,DSD_HSL@DF_HSL_CWB_AGE",
+    "wellbeing_by_education": "OECD.WISE.WDP,DSD_HSL@DF_HSL_CWB_EDU",
+    "child_wellbeing": "OECD.WISE.CWB,DSD_CWB@DF_CWB",
+    "sdg_01_no_poverty": "OECD.WISE.RSB,DSD_SDG@DF_SDG_G_1",  # distance to the Sustainable Development Goals
+    "sdg_02_zero_hunger": "OECD.WISE.RSB,DSD_SDG@DF_SDG_G_2",
+    "sdg_09_industry_innovation": "OECD.WISE.RSB,DSD_SDG@DF_SDG_G_9",
+    "sdg_13_climate_action": "OECD.WISE.RSB,DSD_SDG@DF_SDG_G_13",
 }
 
 

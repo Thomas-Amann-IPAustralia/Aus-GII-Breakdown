@@ -249,7 +249,7 @@ columns. In short:
 | 12 | ARC grants (`arc_grants`) | Ingested | 34,977 grants |
 | 12 | NHMRC grants (`nhmrc_grants`) | Ingested (your download) | 12,224 grants, application rounds 2013 to 2026, harmonised into one table; investigators' names left out |
 | 13 | Corporate tax transparency (`ato_ctt`) | Ingested | 2013-14 to 2024-25 |
-| 14, 26 | OECD panel (`oecd`) | Ingested | 17 flows: MSTI, methods used to protect IP, patents (WIPO fields, environment, ownership, co-invention, regions), business demography, venture capital, IP tax regimes, How's Life? |
+| 14, 26 | OECD panel (`oecd`) | Ingested | 24 flows: MSTI, methods used to protect IP, patents (WIPO fields, environment, ownership, co-invention, regions), business demography, venture capital, IP tax regimes, How's Life? (current and future well-being, including trust in government, others and the police; by sex, age and education; child well-being), and distance to the Sustainable Development Goals 1, 2, 9 and 13 |
 | 15 | WDI panel (`wdi`) | Ingested | 22 indicators, every country; the World Bank has archived its trade mark series |
 | 16 | WIPO IP statistics (`wipo_ipstats`) | Ingested | From the public API behind WIPO's data centre: every office by every origin, 1980 to 2024 (4.9 million values: patents, utility models, trade marks, designs; applications, grants, in force, by field or class), office workloads, and PCT, Madrid and Hague by origin |
 | 17 | TM-Link (`tmlink`) | Ingested | Links, applications, owners, classes, Madrid and property tables (R2); free-text tables left out |

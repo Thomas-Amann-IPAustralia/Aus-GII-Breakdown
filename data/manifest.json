@@ -9583,7 +9583,7 @@
   "oecd": {
    "files": {
     "processed/business_births_deaths": {
-     "bytes": 30239367,
+     "bytes": 30210701,
      "columns": [
       "flow",
       "frequency_of_observation",
@@ -9620,10 +9620,10 @@
      "location": "repo",
      "path": "data/processed/oecd/business_births_deaths.parquet",
      "rows": 5571658,
-     "sha256": "2fc1ad2b7417c2246e4c1a3ab1fd22fb38571738bc36d803400b0825e5663807"
+     "sha256": "364025f551841de0609cab758ec4d2d2100bab05a6d648ea93db3bfbc2330b40"
     },
     "processed/business_high_growth": {
-     "bytes": 4585028,
+     "bytes": 4589570,
      "columns": [
       "flow",
       "frequency_of_observation",
@@ -9660,10 +9660,10 @@
      "location": "repo",
      "path": "data/processed/oecd/business_high_growth.parquet",
      "rows": 1070680,
-     "sha256": "06c451c0f4cef0c426793008379e69e3b2e716b23b97515f103016702c869c3b"
+     "sha256": "77f3a9b8ec9b9b25d8d0c59fb2f0fbcfe75f7d1b94085daec38b487f96e894d8"
     },
     "processed/business_survival": {
-     "bytes": 42851305,
+     "bytes": 42718000,
      "columns": [
       "flow",
       "frequency_of_observation",
@@ -9700,7 +9700,39 @@
      "location": "repo",
      "path": "data/processed/oecd/business_survival.parquet",
      "rows": 7546335,
-     "sha256": "7b9933f8b9a102fd78cc10bf0ec35cc7ee54b1789bf09fff01f347ae3ebde38a"
+     "sha256": "999f1ed4869eec6f467cd934ffd8799a988850b74c33bd71c37fa22633a955b5"
+    },
+    "processed/child_wellbeing": {
+     "bytes": 53913,
+     "columns": [
+      "flow",
+      "reference_area",
+      "reference_area_label",
+      "measure",
+      "measure_label",
+      "domain",
+      "domain_label",
+      "time_period",
+      "time_period_label",
+      "observation_status",
+      "observation_status_label",
+      "unit_multiplier",
+      "unit_multiplier_label",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "base_period",
+      "base_period_label",
+      "decimals",
+      "decimals_label",
+      "population_group",
+      "population_group_label",
+      "value"
+     ],
+     "describe": "OECD.WISE.CWB,DSD_CWB@DF_CWB",
+     "location": "repo",
+     "path": "data/processed/oecd/child_wellbeing.parquet",
+     "rows": 15297,
+     "sha256": "c2ff4c57b4e62fd601a76fc1aaddcfdf9ce4c98aab57f7f21c5589be91a339b0"
     },
     "processed/innovation_ip_methods": {
      "bytes": 23821,
@@ -9809,7 +9841,7 @@
      "sha256": "07fc3e6fdf107b4c4a89bc885a2617df0b45a1547da61163de7faff72ecbfd4d"
     },
     "processed/patents_coinventors": {
-     "bytes": 19990404,
+     "bytes": 20022365,
      "columns": [
       "flow",
       "patent_authorities",
@@ -9848,10 +9880,10 @@
      "location": "repo",
      "path": "data/processed/oecd/patents_coinventors.parquet",
      "rows": 6824320,
-     "sha256": "55115b6fa04d7107631288b50b78724004c465bb7b749678398af943231b4ab0"
+     "sha256": "25b238eb03a51889e9872fa6633638e7f15684596f01ee20c3dfa524990dbe9d"
     },
     "processed/patents_domestic_ownership_abroad": {
-     "bytes": 22261401,
+     "bytes": 22257021,
      "columns": [
       "flow",
       "patent_authorities",
@@ -9890,10 +9922,10 @@
      "location": "repo",
      "path": "data/processed/oecd/patents_domestic_ownership_abroad.parquet",
      "rows": 6824320,
-     "sha256": "3d74bcefe5ba771c664bf57e8cdc8cc312cb13e332b8d9c97c3dde7c04e4284a"
+     "sha256": "be3bb4e8503cf6729e37077e07529af839fc840e3fefffe8b02a782e3c6ab90a"
     },
     "processed/patents_environment": {
-     "bytes": 5260010,
+     "bytes": 5259110,
      "columns": [
       "flow",
       "patent_authorities",
@@ -9932,10 +9964,10 @@
      "location": "repo",
      "path": "data/processed/oecd/patents_environment.parquet",
      "rows": 1751776,
-     "sha256": "b5d76e683da8fd9da944b861d8493551ee449b75ae2c5a6216ae3ecad2b40635"
+     "sha256": "724620af80dfe99e22b8dad04ab0cb5a0bad8ff1ef1d45e502425a2923ade8ca"
     },
     "processed/patents_foreign_ownership": {
-     "bytes": 20557243,
+     "bytes": 20544075,
      "columns": [
       "flow",
       "patent_authorities",
@@ -9974,10 +10006,10 @@
      "location": "repo",
      "path": "data/processed/oecd/patents_foreign_ownership.parquet",
      "rows": 6824320,
-     "sha256": "bbd6eb92eddc2d3b28f2b3470d033151a2199df801cd2cb44103391d3b39d251"
+     "sha256": "0ad48729cc4446faed04358a9b7ed78ea7e32466996186f5dbbe47746b20d3d2"
     },
     "processed/patents_regions": {
-     "bytes": 4757098,
+     "bytes": 4770921,
      "columns": [
       "flow",
       "frequency_of_observation",
@@ -10026,10 +10058,10 @@
      "location": "repo",
      "path": "data/processed/oecd/patents_regions.parquet",
      "rows": 796814,
-     "sha256": "c9fae7e19dc1206e629e3916d9bcadd017aeb5143a58254e7fb145b91be58d57"
+     "sha256": "a99cdce1420c8b02b05f3e440139fc9396c231904784022b23576e9f4257c5dc"
     },
     "processed/patents_wipo_fields": {
-     "bytes": 21868875,
+     "bytes": 21919374,
      "columns": [
       "flow",
       "patent_authorities",
@@ -10068,7 +10100,191 @@
      "location": "repo",
      "path": "data/processed/oecd/patents_wipo_fields.parquet",
      "rows": 4504032,
-     "sha256": "3b7107a22d1c8b4d146ed426492fe543a9953d698bc9f636be95789e9b69fdb9"
+     "sha256": "0fe14733bffb8909d11e683b3ebc803117eff017274059307e71423a26f6df21"
+    },
+    "processed/sdg_01_no_poverty": {
+     "bytes": 103768,
+     "columns": [
+      "flow",
+      "reference_area",
+      "reference_area_label",
+      "sdg_goal",
+      "sdg_goal_label",
+      "sdg_target",
+      "sdg_target_label",
+      "sdg_indicator",
+      "sdg_indicator_label",
+      "sdg_series",
+      "sdg_series_label",
+      "age",
+      "age_label",
+      "sex",
+      "sex_label",
+      "income_or_wealth_quantile",
+      "income_or_wealth_quantile_label",
+      "education_level",
+      "education_level_label",
+      "degree_of_urbanisation",
+      "degree_of_urbanisation_label",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "time_period",
+      "time_period_label",
+      "source",
+      "source_label",
+      "unit_multiplier",
+      "unit_multiplier_label",
+      "price_base",
+      "price_base_label",
+      "base_period",
+      "base_period_label",
+      "decimals",
+      "decimals_label",
+      "value"
+     ],
+     "describe": "OECD.WISE.RSB,DSD_SDG@DF_SDG_G_1",
+     "location": "repo",
+     "path": "data/processed/oecd/sdg_01_no_poverty.parquet",
+     "rows": 31088,
+     "sha256": "c86075556e5d3369048bdff6d914513ea1531018befca299d484f6ccd50fa0cb"
+    },
+    "processed/sdg_02_zero_hunger": {
+     "bytes": 88468,
+     "columns": [
+      "flow",
+      "reference_area",
+      "reference_area_label",
+      "sdg_goal",
+      "sdg_goal_label",
+      "sdg_target",
+      "sdg_target_label",
+      "sdg_indicator",
+      "sdg_indicator_label",
+      "sdg_series",
+      "sdg_series_label",
+      "age",
+      "age_label",
+      "sex",
+      "sex_label",
+      "income_or_wealth_quantile",
+      "income_or_wealth_quantile_label",
+      "education_level",
+      "education_level_label",
+      "degree_of_urbanisation",
+      "degree_of_urbanisation_label",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "time_period",
+      "time_period_label",
+      "source",
+      "source_label",
+      "unit_multiplier",
+      "unit_multiplier_label",
+      "price_base",
+      "price_base_label",
+      "base_period",
+      "base_period_label",
+      "decimals",
+      "decimals_label",
+      "value"
+     ],
+     "describe": "OECD.WISE.RSB,DSD_SDG@DF_SDG_G_2",
+     "location": "repo",
+     "path": "data/processed/oecd/sdg_02_zero_hunger.parquet",
+     "rows": 29438,
+     "sha256": "9c5a840f91ba2611885a82ae2d5be24d9a378b0d3bb21f457316eb2db071b682"
+    },
+    "processed/sdg_09_industry_innovation": {
+     "bytes": 64712,
+     "columns": [
+      "flow",
+      "reference_area",
+      "reference_area_label",
+      "sdg_goal",
+      "sdg_goal_label",
+      "sdg_target",
+      "sdg_target_label",
+      "sdg_indicator",
+      "sdg_indicator_label",
+      "sdg_series",
+      "sdg_series_label",
+      "age",
+      "age_label",
+      "sex",
+      "sex_label",
+      "income_or_wealth_quantile",
+      "income_or_wealth_quantile_label",
+      "education_level",
+      "education_level_label",
+      "degree_of_urbanisation",
+      "degree_of_urbanisation_label",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "time_period",
+      "time_period_label",
+      "source",
+      "source_label",
+      "unit_multiplier",
+      "unit_multiplier_label",
+      "price_base",
+      "price_base_label",
+      "base_period",
+      "base_period_label",
+      "decimals",
+      "decimals_label",
+      "value"
+     ],
+     "describe": "OECD.WISE.RSB,DSD_SDG@DF_SDG_G_9",
+     "location": "repo",
+     "path": "data/processed/oecd/sdg_09_industry_innovation.parquet",
+     "rows": 15314,
+     "sha256": "d97dccb10c4875c12b7a22590040c3fe9c5dfbce454b854ba824df5ebaeca7db"
+    },
+    "processed/sdg_13_climate_action": {
+     "bytes": 26902,
+     "columns": [
+      "flow",
+      "reference_area",
+      "reference_area_label",
+      "sdg_goal",
+      "sdg_goal_label",
+      "sdg_target",
+      "sdg_target_label",
+      "sdg_indicator",
+      "sdg_indicator_label",
+      "sdg_series",
+      "sdg_series_label",
+      "age",
+      "age_label",
+      "sex",
+      "sex_label",
+      "income_or_wealth_quantile",
+      "income_or_wealth_quantile_label",
+      "education_level",
+      "education_level_label",
+      "degree_of_urbanisation",
+      "degree_of_urbanisation_label",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "time_period",
+      "time_period_label",
+      "source",
+      "source_label",
+      "unit_multiplier",
+      "unit_multiplier_label",
+      "price_base",
+      "price_base_label",
+      "base_period",
+      "base_period_label",
+      "decimals",
+      "decimals_label",
+      "value"
+     ],
+     "describe": "OECD.WISE.RSB,DSD_SDG@DF_SDG_G_13",
+     "location": "repo",
+     "path": "data/processed/oecd/sdg_13_climate_action.parquet",
+     "rows": 5345,
+     "sha256": "2979aee25a08b26b7e4a1e9c7045fa9445d11ad79b2fc0036718d67a118b8de0"
     },
     "processed/venture_capital": {
      "bytes": 47339,
@@ -10101,6 +10317,78 @@
      "path": "data/processed/oecd/venture_capital.parquet",
      "rows": 5032,
      "sha256": "1f39b995372d07639b7d21bf918ab9ecdb35b0f8290ee9ed2db5640b58a1f217"
+    },
+    "processed/wellbeing_by_age": {
+     "bytes": 121363,
+     "columns": [
+      "flow",
+      "reference_area",
+      "reference_area_label",
+      "measure",
+      "measure_label",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "age",
+      "age_label",
+      "sex",
+      "sex_label",
+      "education_level",
+      "education_level_label",
+      "domain",
+      "domain_label",
+      "time_period",
+      "time_period_label",
+      "observation_status",
+      "observation_status_label",
+      "unit_multiplier",
+      "unit_multiplier_label",
+      "decimals",
+      "decimals_label",
+      "base_period",
+      "base_period_label",
+      "value"
+     ],
+     "describe": "OECD.WISE.WDP,DSD_HSL@DF_HSL_CWB_AGE",
+     "location": "repo",
+     "path": "data/processed/oecd/wellbeing_by_age.parquet",
+     "rows": 31903,
+     "sha256": "1069455ec07d4277c17dfaa5a614aebedce68f2916ddb5c1511c61f2f7fd5acb"
+    },
+    "processed/wellbeing_by_education": {
+     "bytes": 100246,
+     "columns": [
+      "flow",
+      "reference_area",
+      "reference_area_label",
+      "measure",
+      "measure_label",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "age",
+      "age_label",
+      "sex",
+      "sex_label",
+      "education_level",
+      "education_level_label",
+      "domain",
+      "domain_label",
+      "time_period",
+      "time_period_label",
+      "observation_status",
+      "observation_status_label",
+      "unit_multiplier",
+      "unit_multiplier_label",
+      "decimals",
+      "decimals_label",
+      "base_period",
+      "base_period_label",
+      "value"
+     ],
+     "describe": "OECD.WISE.WDP,DSD_HSL@DF_HSL_CWB_EDU",
+     "location": "repo",
+     "path": "data/processed/oecd/wellbeing_by_education.parquet",
+     "rows": 21106,
+     "sha256": "aae52543adbb3002512d30398b56db9bc535044c88569dc1db6a502dffcb3830"
     },
     "processed/wellbeing_by_sex": {
      "bytes": 144882,
@@ -10267,6 +10555,13 @@
      "sha256": "d5e0107ed1b32841b79953a4af9805146e5636c1a094588cc494b4c998867432",
      "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_SDBSBD_ISIC4@DF_BD_EMP_S/all"
     },
+    "raw/child_wellbeing.csv.gz": {
+     "bytes": 109588,
+     "location": "repo",
+     "path": "data/raw/oecd/child_wellbeing.csv.gz",
+     "sha256": "282f05136ff9f0c0a768b1c6d0dac3efe73b79f7a3ed9974e27aa1f8ef932745",
+     "url": "https://sdmx.oecd.org/public/rest/data/OECD.WISE.CWB,DSD_CWB@DF_CWB/all"
+    },
     "raw/innovation_ip_methods.csv.gz": {
      "bytes": 19322,
      "location": "repo",
@@ -10330,12 +10625,54 @@
      "sha256": "d1620984cc87498b50b2ec88d2f936b6c99e9cf579ebf8ed792060ff7b110f8a",
      "url": "https://sdmx.oecd.org/public/rest/data/OECD.STI.PIE,DSD_PATENTS@DF_PATENTS_WIPO/all"
     },
+    "raw/sdg_01_no_poverty.csv.gz": {
+     "bytes": 291089,
+     "location": "repo",
+     "path": "data/raw/oecd/sdg_01_no_poverty.csv.gz",
+     "sha256": "d6612e593fda0cded29a35ae03ae363b1fe3d30cc544fedbd9acb368f08e2966",
+     "url": "https://sdmx.oecd.org/public/rest/data/OECD.WISE.RSB,DSD_SDG@DF_SDG_G_1/all"
+    },
+    "raw/sdg_02_zero_hunger.csv.gz": {
+     "bytes": 268238,
+     "location": "repo",
+     "path": "data/raw/oecd/sdg_02_zero_hunger.csv.gz",
+     "sha256": "cd246c9f594e71feadd9a81e3630522f37573a70acef164429d02ef1cf240b51",
+     "url": "https://sdmx.oecd.org/public/rest/data/OECD.WISE.RSB,DSD_SDG@DF_SDG_G_2/all"
+    },
+    "raw/sdg_09_industry_innovation.csv.gz": {
+     "bytes": 149833,
+     "location": "repo",
+     "path": "data/raw/oecd/sdg_09_industry_innovation.csv.gz",
+     "sha256": "f93f1caf74c354cda0fab6de368441b676a85d4b307ed54a89366089318f4a17",
+     "url": "https://sdmx.oecd.org/public/rest/data/OECD.WISE.RSB,DSD_SDG@DF_SDG_G_9/all"
+    },
+    "raw/sdg_13_climate_action.csv.gz": {
+     "bytes": 47352,
+     "location": "repo",
+     "path": "data/raw/oecd/sdg_13_climate_action.csv.gz",
+     "sha256": "15f4f3afe35f0fddc0c675c25559259cbefad27fd642bab5e076f4a21d39d24b",
+     "url": "https://sdmx.oecd.org/public/rest/data/OECD.WISE.RSB,DSD_SDG@DF_SDG_G_13/all"
+    },
     "raw/venture_capital.csv.gz": {
      "bytes": 75631,
      "location": "repo",
      "path": "data/raw/oecd/venture_capital.csv.gz",
      "sha256": "a81723e0186ad06cb8bb060941b6e2dc8c42d302ef4b20f5f0982970b2572578",
      "url": "https://sdmx.oecd.org/public/rest/data/OECD.SDD.TPS,DSD_VC@DF_VC_INV/all"
+    },
+    "raw/wellbeing_by_age.csv.gz": {
+     "bytes": 251353,
+     "location": "repo",
+     "path": "data/raw/oecd/wellbeing_by_age.csv.gz",
+     "sha256": "7dfe4d29ed424e60a98e4cf1a1f4c06efdf95c6995f9d96bc3dd92239d4c9edb",
+     "url": "https://sdmx.oecd.org/public/rest/data/OECD.WISE.WDP,DSD_HSL@DF_HSL_CWB_AGE/all"
+    },
+    "raw/wellbeing_by_education.csv.gz": {
+     "bytes": 185088,
+     "location": "repo",
+     "path": "data/raw/oecd/wellbeing_by_education.csv.gz",
+     "sha256": "db9cab33c8eb5ad73c2620fba529915fb65c0f1e377e3b0f5707d510c7dcdfce",
+     "url": "https://sdmx.oecd.org/public/rest/data/OECD.WISE.WDP,DSD_HSL@DF_HSL_CWB_EDU/all"
     },
     "raw/wellbeing_by_sex.csv.gz": {
      "bytes": 264337,
@@ -10366,7 +10703,7 @@
      "url": "https://sdmx.oecd.org/public/rest/data/OECD.WISE.WDP,DSD_HSL@DF_HSL_CWB_INEQ/all"
     }
    },
-   "run": "2026-10-22"
+   "run": "2026-10-23"
   },
   "openalex": {
    "files": {
