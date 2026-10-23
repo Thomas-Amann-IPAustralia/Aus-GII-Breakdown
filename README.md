@@ -1,76 +1,100 @@
-# Australia in the GII, and a correlation explorer
+# The research corpus for IP Australia's research programme
 
-Early visual analysis for IP Australia's research programme (`docs/research-goal.md`): how Australia fares in the
-Global Innovation Index 2026, and an interactive tool for looking for patterns and correlations between the datasets
-behind the research goal. Two static pages, published with GitHub Pages:
+The data behind IP Australia's research programme (`docs/research-goal.md`): where, how and for whom IP Australia's
+interventions could generate the greatest additional public value. This repository holds the corpus, the code that
+builds it, and the plan that chose it. The analysis is done elsewhere, by sessions that read the corpus.
 
-- **The GII breakdown** (`index.html`): Australia's score, rank, pillars, strengths and weaknesses, and all 79
-  indicators, with WIPO's definitions and a way into the explorer from each.
-- **The correlation explorer** (`explorer/`): compare any two measures over time for Australia (2,442 series) or
-  across economies (221 measures, 197 economies); a correlation matrix with multicollinearity checks and a
-  descriptive regression; a scan for the measures that correlate with a target, corrected for multiple testing.
-  Every statistical term (Spearman, p-value, multicollinearity, effective n and others) has a hover call-out, and
-  every comparison comes with the checks that keep a correlation from being over-read.
+- **`docs/research-goal.md`**: the five core questions.
+- **`docs/data-plan.md`**: which data serve which question, what was dropped and why, how non-financial public value is
+  handled, and what is still missing.
+- **`docs/catalogue.md`**: every source and table, with rows, columns and where each lives (generated).
+- **`docs/evidence-register.md`**: the literature and evaluations the questions lean on (generated, checked against
+  Crossref).
 
-Everything shown is exploratory association, the first of the research goal's levels of evidence. Methods:
-`docs/methods.md`.
+## Using the corpus
 
-## Opening it
+```sh
+uv sync                       # Python 3.11+; installs pandas, pyarrow, duckdb and the rest
+```
 
-Once GitHub Pages is switched on (below), the pages are at
-**https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/**, and the explorer at `…/explorer/`.
+```python
+import corpus
 
-To run it on your own computer: `python3 -m http.server 8000` in the repository, then open http://localhost:8000/.
-(Opening `index.html` straight from disk doesn't work: browsers block a page from reading its own data files that way.)
+rights = corpus.load("iprapid", "patent_rights")           # a pandas DataFrame
+spine = corpus.load("linkage", "abn_spine", columns=["abn", "entity_type", "in_rdti", "patent_first_fy"])
 
-### Switching on GitHub Pages (once)
+import duckdb                                              # for the big tables, query the Parquet file directly
+events = corpus.path("iprapid", "events")                  # downloads from R2 once, into ~/.cache/ipholmes
+duckdb.sql(f"SELECT event_type, count(*) FROM '{events}' WHERE ip_right_type = 'patent' GROUP BY 1 ORDER BY 2 DESC").df()
+```
 
-1. On GitHub, open the repository, then **Settings**, then **Pages**.
-2. Under **Build and deployment**, set **Source** to **Deploy from a branch**.
-3. Choose the branch **main** and the folder **/ (root)**, and **Save**. The `.nojekyll` file tells GitHub to serve
-   the files as they are.
+Small and analysis-ready tables are in the repo (`data/processed/<source>/<table>.parquet`). Large ones are in the
+Cloudflare R2 bucket `ipholmes`; reading them needs `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID` and `R2_SECRET_ACCESS_KEY`
+in the environment. `docs/catalogue.md` says which is where.
 
-To preview a branch before it is merged, choose that branch in step 3 instead.
+**Join keys.** ABNs (11 digits, as text) join IP Australia's data to the business registers, the R&D Tax Incentive,
+AusTender and the corporate tax reports; `linkage/abn_spine` does that join once. Postcodes join to ABS geography
+through `abs_regions/poa`; IPC classes join to technology fields and industries through `concordances`.
+
+**Evidence levels.** As the research goal requires, findings should say whether they are descriptive, observational,
+causal or projected. Almost everything here supports descriptive and observational work; the natural experiments in
+`policy_events` support quasi-experimental designs; credible additionality needs data this corpus does not hold
+(see the data plan's Tier 3).
+
+## Building and checking it
+
+```sh
+uv sync --group dev
+uv run corpus list                  # the sources and what the manifest holds for each
+uv run corpus run rdti abs_bcs      # fetch and process sources (writes data/, uploads to R2, updates the manifest)
+uv run corpus run all               # everything (hours: IP RAPID, the ABR, AusTender and the legal corpus are large)
+uv run corpus verify --r2           # repo files against the manifest, and R2 holding the rest
+uv run corpus catalogue             # regenerate docs/catalogue.md
+uv run pytest -q                    # the rules, and the committed data against the manifest
+```
+
+Each source is one module in `src/corpus/sources/`, named by its id in `config/sources.yaml` (the source register:
+publisher, URL, licence, tier, questions). A run records every raw and processed file's SHA-256, size and location
+in `data/manifest.json`, and fails loudly with one line naming the source when a publisher changes its layout. Large
+raw files pass through a cache outside the repo (`$IPHOLMES_CACHE`, default `~/.cache/ipholmes`).
 
 ## The repository
 
 | Path | What it is |
 |---|---|
-| `index.html`, `explorer/index.html` | The two pages |
-| `assets/` | Styles, scripts (`js/stats.js` holds the statistics), Apache ECharts 5.6.1 (Apache-2.0, vendored), the icon |
-| `data/raw/<publisher>/` | The source files as uploaded, renamed by publisher (`config/sources.yaml` maps each to its original name, URL and licence) |
-| `data/processed/` | What the pages load, built from `data/raw` by `uv run breakdown build` |
-| `config/sources.yaml` | The source register: every raw file's publisher, original name, URL, licence and use |
-| `config/lenses.yaml` | The research goal's framework concepts as a lens on every measure (a suggestion; edit freely) |
-| `src/breakdown/` | The build: one module per source |
-| `tests/` | The build's rules and a rebuild check (pytest); the statistics against scipy (`node --test tests/js/*.test.mjs`) |
-| `docs/` | The research goal and the methods |
+| `config/sources.yaml` | The source register |
+| `src/corpus/` | The corpus: `core.py` (downloads, R2, Parquet, manifest), `cli.py`, one module per source |
+| `data/raw/<source>/` | Raw files small enough for the repo, as published (large ones are in R2 under `raw/`) |
+| `data/processed/<source>/` | Parquet tables small enough for the repo (large ones are in R2 under `processed/`) |
+| `data/manifest.json` | Every file's SHA-256, size, rows, columns and location |
+| `docs/` | The research goal, the data plan, the catalogue, the evidence register |
+| `tests/` | The rules, and the committed data against the manifest |
+| `index.html`, `assets/` | The GII breakdown page (Australia in the Global Innovation Index 2026), kept from the earlier site; it reads a frozen summary in `assets/data/`, and will be rebuilt on the corpus |
 
-## Rebuilding the data
+## Credentials
 
-After adding or replacing a file in `data/raw` (and its entry in `config/sources.yaml`):
+Keys and tokens go in the cloud environment's settings (the environment menu in the session's title bar, then
+Edit, then Network secrets or Environment variables), never in the repo. A new session picks them up.
 
-```sh
-uv sync --group dev
-uv run breakdown build          # writes data/processed/
-uv run pytest -q                # includes `breakdown build --check`
-node --test tests/js/*.test.mjs # the statistics against scipy
-```
+| Variable | For | Value |
+|---|---|---|
+| `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` | The `ipholmes` R2 bucket | From Cloudflare |
+| `OPENALEX_API_KEY` | `openalex` | A free OpenAlex key |
+| `GCP_SERVICE_ACCOUNT_JSON` | Google Patents Public Data in BigQuery (`google_patents`) | The whole contents of the service account's JSON key file (or the same, base64-encoded); `corpus.core.gcp_credentials()` writes it to a private file outside the repo at run time. The account needs the BigQuery Job User role; with BigQuery Read Session User as well, results download much faster |
+| `GCP_PROJECT_ID` | BigQuery billing project (optional) | The project queries are billed to; when unset, or not a project id, the key's own project is used. A full `google_patents` run queries about 140 GB, within BigQuery's free terabyte a month |
 
-A source whose layout changed stops the build with one line naming the file.
+## Privacy
+
+The corpus holds published data only. Individuals' names (sole traders, individual applicants) are left out of the
+tables in the repo: the ABN Bulk Extract is read without them, the IP RAPID summaries blank them, and the NHMRC grants
+leave out chief investigators. Tables that keep names as published (IP RAPID's party tables, Google Patents'
+Australian applicants, the IP judgments, whose case names name people) are in R2, for analyses (such as gender
+estimation from first names) that need them; summaries built from them should not republish names.
 
 ## Sources and licences
 
-WIPO Global Innovation Index 2026 (CC BY 4.0); World Bank World Development Indicators (CC BY 4.0); UNDP Human
-Development Reports; OECD How's Life? (CC BY 4.0); World Happiness Report 2026; Productivity Commission, Closing the Gap
-Annual Data Compilation Report 2026; UN SDSN Sustainable Development Report 2026 and World Economic Forum Global Gender
-Gap Report 2026 (context only). Each one's terms are in `config/sources.yaml` and on the explorer's Sources page; where
-we were not sure of a licence, the register says so.
-
-## Reused from IP Australia's other repositories
-
-- From **Moria** (its dashboard): the hover-explainer popover, the safe DOM and formatting helpers, the ECharts theming
-  and chart cards, the normal distribution, Holm and Benjamini-Hochberg code, the vendored ECharts, and the
-  no-third-party content security policy.
-- From **Econ**: the reading of the GII data file (`econ.ingest.gii`: the tree, scores against values by profile), and
-  the working principles: deterministic stages that fail loudly, hashes for every input and output, a source register.
+Each source's licence is in `config/sources.yaml` and `docs/catalogue.md`. Most are CC BY (IP Australia, the ABS, the
+ATO, ASIC, the ABR, the OECD, the World Bank, WIPO, Google Patents). Non-commercial only: Reliance on Science (CC BY-NC
+4.0) and PHIDU's Social Health Atlas (CC BY-NC-SA 3.0 AU). The judgments may be reproduced unaltered, acknowledging the
+court and the source.
+Where a licence was unclear, the register says so: check before republishing outside this repository.

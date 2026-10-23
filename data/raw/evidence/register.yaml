@@ -1,0 +1,174 @@
+# The evidence register: literature and evaluations the research questions lean on (docs/research-goal.md §3, Q1's
+# "what can existing evidence establish", and priors for Q5). Compiled here; `corpus run evidence` checks each
+# journal item against Crossref and records the DOI it finds. Add items freely; keep `why` to one sentence.
+# kind: study (peer-reviewed or working paper), review, report (government or agency), guidance, data (method papers
+# behind a dataset in the corpus).
+
+items:
+  # Q1: value of rights and the system's net contribution
+  - id: pc-2016
+    kind: report
+    authors: Productivity Commission
+    year: 2016
+    title: Intellectual Property Arrangements, Inquiry Report No. 78
+    url: https://www.pc.gov.au/inquiries/completed/intellectual-property/report
+    questions: [1, 4]
+    why: Australia's most thorough review of the IP system's costs and benefits, and the source of the innovation patent's abolition.
+  - id: schankerman-pakes-1986
+    kind: study
+    authors: Schankerman, M. and Pakes, A.
+    year: 1986
+    title: Estimates of the value of patent rights in European countries during the post-1950 period
+    venue: The Economic Journal
+    questions: [1, 3]
+    why: The renewal-based method for the private value of patents that IPGOD's renewals and lapses allow for Australia.
+  - id: farre-mensa-2020
+    kind: study
+    authors: Farre-Mensa, J., Hegde, D. and Ljungqvist, A.
+    year: 2020
+    title: What is a patent worth? Evidence from the U.S. patent "lottery"
+    venue: The Journal of Finance
+    questions: [1, 3, 5]
+    why: Uses examiner leniency to estimate what a first patent adds to a startup's growth and funding; the design that internal examination data would allow here.
+  - id: moser-2013
+    kind: review
+    authors: Moser, P.
+    year: 2013
+    title: "Patents and innovation: evidence from economic history"
+    venue: Journal of Economic Perspectives
+    questions: [1]
+    why: Historical evidence that patents shift the direction of innovation more than they raise its rate.
+  - id: boldrin-levine-2013
+    kind: review
+    authors: Boldrin, M. and Levine, D. K.
+    year: 2013
+    title: The case against patents
+    venue: Journal of Economic Perspectives
+    questions: [1]
+    why: The strongest statement of the view that patents' net contribution may be negative, to be tested rather than assumed.
+  - id: bloom-2019
+    kind: review
+    authors: Bloom, N., Van Reenen, J. and Williams, H.
+    year: 2019
+    title: A toolkit of policies to promote innovation
+    venue: Journal of Economic Perspectives
+    questions: [4, 5]
+    why: Compares the evidence on R&D tax credits, research funding, skills, competition and IP as innovation levers.
+
+  # Q1: costs to follow-on innovators, competitors and the public
+  - id: williams-2013
+    kind: study
+    authors: Williams, H. L.
+    year: 2013
+    title: "Intellectual property rights and innovation: evidence from the human genome"
+    venue: Journal of Political Economy
+    questions: [1]
+    why: Finds IP on genes reduced follow-on scientific research and product development.
+  - id: sampat-williams-2019
+    kind: study
+    authors: Sampat, B. and Williams, H. L.
+    year: 2019
+    title: "How do patents affect follow-on innovation? Evidence from the human genome"
+    venue: American Economic Review
+    questions: [1]
+    why: Using examiner leniency, finds gene patents did not on average reduce follow-on innovation, qualifying Williams (2013).
+  - id: galasso-schankerman-2015
+    kind: study
+    authors: Galasso, A. and Schankerman, M.
+    year: 2015
+    title: "Patents and cumulative innovation: causal evidence from the courts"
+    venue: The Quarterly Journal of Economics
+    questions: [1]
+    why: Patent invalidation raises follow-on citations, mainly when large firms' patents block small innovators.
+  - id: ouellette-2012
+    kind: study
+    authors: Ouellette, L. L.
+    year: 2012
+    title: Do patents disclose useful information?
+    venue: Harvard Journal of Law & Technology
+    questions: [1]
+    why: Survey evidence on whether disclosure, a public-value channel in section 2 of the data plan, actually informs other researchers.
+
+  # Q2 and Q3: who uses the system, and when registration helps
+  - id: hall-2014
+    kind: review
+    authors: Hall, B., Helmers, C., Rogers, M. and Sena, V.
+    year: 2014
+    title: "The choice between formal and informal intellectual property: a review"
+    venue: Journal of Economic Literature
+    questions: [3]
+    why: When firms choose secrecy, lead time or complexity over registration, and what follows.
+  - id: graham-2009
+    kind: study
+    authors: Graham, S. J. H., Merges, R. P., Samuelson, P. and Sichelman, T.
+    year: 2009
+    title: "High technology entrepreneurs and the patent system: results of the 2008 Berkeley Patent Survey"
+    venue: Berkeley Technology Law Journal
+    questions: [2, 3]
+    why: Why startups patent (finance, protection from copying) and why many do not (cost).
+  - id: jensen-webster-2006
+    kind: study
+    authors: Jensen, P. H. and Webster, E.
+    year: 2006
+    title: Firm size and the use of intellectual property rights
+    venue: Economic Record
+    questions: [2]
+    why: Australian evidence on how SMEs' use of patents, trade marks and designs differs from large firms'.
+  - id: webster-2014
+    kind: study
+    authors: Webster, E., Jensen, P. H. and Palangkaraya, A.
+    year: 2014
+    title: Patent examination outcomes and the national treatment principle
+    venue: The RAND Journal of Economics
+    questions: [2]
+    why: Whether patent offices treat domestic and foreign applicants alike; relevant to who benefits from IP Australia's decisions.
+  - id: hegde-2022
+    kind: study
+    authors: Hegde, D., Ljungqvist, A. and Raj, M.
+    year: 2022
+    title: "Quick or broad patents? Evidence from U.S. startups"
+    venue: The Review of Financial Studies
+    questions: [3, 4]
+    why: Faster examination helps startups grow and raise funds; examination timeliness is a lever IP Australia controls.
+  - id: lybbert-zolas-2014
+    kind: data
+    authors: Lybbert, T. J. and Zolas, N. J.
+    year: 2014
+    title: "Getting patents and economic data to speak to each other: an 'Algorithmic Links with Probabilities' approach for joint analyses of patenting and economic activity"
+    venue: Research Policy
+    questions: [2]
+    why: The method behind the IPC and Nice to industry concordances in the corpus.
+
+  # Q5: valuing non-financial outcomes, and appraising interventions
+  - id: green-book-wellbeing-2021
+    kind: guidance
+    authors: HM Treasury
+    year: 2021
+    title: "Wellbeing guidance for appraisal: supplementary Green Book guidance"
+    url: https://www.gov.uk/government/publications/green-book-supplementary-guidance-wellbeing
+    questions: [5]
+    why: How to value changes in life satisfaction (WELLBYs) alongside money in appraisal.
+  - id: frijters-krekel-2021
+    kind: review
+    authors: Frijters, P. and Krekel, C.
+    year: 2021
+    title: A Handbook for Wellbeing Policy-Making
+    venue: Oxford University Press
+    questions: [5]
+    why: Methods and parameters for wellbeing cost-benefit analysis.
+  - id: oia-vsl
+    kind: guidance
+    authors: Office of Impact Analysis
+    year: 2023
+    title: Value of statistical life (guidance note)
+    url: https://oia.pmc.gov.au/resources/guidance-assessing-impacts/value-statistical-life
+    questions: [5]
+    why: The Australian Government's value of a statistical life and life year, for valuing health outcomes.
+  - id: mwm-2023
+    kind: report
+    authors: The Treasury
+    year: 2023
+    title: Measuring What Matters, Australia's first wellbeing framework
+    url: https://treasury.gov.au/policy-topics/measuring-what-matters
+    questions: [1, 5]
+    why: The government's own definition of the outcomes public value is measured against (the `mwm` source holds its indicators).

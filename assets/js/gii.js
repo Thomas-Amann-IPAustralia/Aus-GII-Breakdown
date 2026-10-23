@@ -1,17 +1,14 @@
 // The GII breakdown page: Australia's Global Innovation Index 2026 from WIPO's data file (data/processed/
-// gii-australia.json), from the headline down to each of the 79 indicators, with ways into the correlation explorer.
+// gii-australia.json), from the headline down to each of the 79 indicators.
 
 import { axis, chart, chartCard, dataTable, legend, tipHtml, tokens } from "./charts.js";
 import { giiPage } from "./data.js";
 import { initPopover, term, tip } from "./glossary.js";
 import { el, fmt, initTheme, ordinal } from "./util.js";
 
-const BASE = "data/processed/";
-const EXPLORER = "explorer/";
+const BASE = "assets/data/"; // a frozen copy of the retired build's output, until the page is rebuilt on the corpus
 const root = document.getElementById("main");
 
-const scoreId = (num) => `gii:score:${num || "GII"}`;
-const explore = (route, q) => `${EXPLORER}#/${route}?${new URLSearchParams({ m: "economy", ...q })}`;
 
 async function render() {
   const g = await giiPage(BASE);
@@ -26,15 +23,11 @@ async function render() {
         el("p.eyebrow", `Global Innovation Index ${g.edition}`),
         el("h1", `Australia ranks ${ordinal(top.au.rank)} of ${g.economies} economies`),
         el("p.lede", "WIPO's ", term("gii", "Global Innovation Index"), " scores economies on 79 indicators in seven ", term("pillar", "pillars"), ". Australia does much better on ",
-          term("inputs_outputs", "inputs"), ` (${ordinal(inp.au.rank)}) than on outputs (${ordinal(out.au.rank)}): it has the ingredients of innovation in greater measure than its measured results. This page breaks the score down; the explorer lets you test what goes with what.`)),
+          term("inputs_outputs", "inputs"), ` (${ordinal(inp.au.rank)}) than on outputs (${ordinal(out.au.rank)}): it has the ingredients of innovation in greater measure than its measured results. This page breaks the score down.`)),
       el("div.tiles",
         tile("GII score", top, "the simple average of inputs and outputs"),
         tile("Innovation inputs", inp, "five pillars"),
-        tile("Innovation outputs", out, "two pillars"))),
-    el("div.cta.mt",
-      el("div", el("h2", "Correlation explorer"),
-        el("p", "Compare any two measures from the GII, the World Bank, UNDP, the OECD, the World Happiness Report and Closing the Gap: over time for Australia or across economies, with every statistical term explained on hover.")),
-      el("a.btn", { href: EXPLORER }, "Open the explorer →")));
+        tile("Innovation outputs", out, "two pillars"))));
 
   // ---------------------------------------------------------------------------------------- pillars
   root.append(el("div.grid.g2.mt2",
@@ -61,7 +54,7 @@ async function render() {
   const swList = (flag, title, sub) => el("div.card",
     el("h3", title, tip("strength")), el("p.card-sub", sub),
     dataTable(sw(flag), [
-      { label: "Indicator", node: (d) => el("a", { href: explore("compare", { x: "gii:economy:PPPPC", tx: "log", y: d.profile === "Value" ? `gii:value:${d.num}` : scoreId(d.num) }) }, `${d.num.replace(/^(IN|OUT)\./, "")} ${d.name}`) },
+      { label: "Indicator", node: (d) => `${d.num.replace(/^(IN|OUT)\./, "")} ${d.name}` },
       { label: "Rank", n: true, value: (d) => ordinal(d.au.rank) },
       { label: "Value", n: true, value: (d) => (d.au.value != null ? fmt(d.au.value, 3) : "–") }]));
   root.append(el("div.grid.g2.mt2",
@@ -74,27 +67,20 @@ async function render() {
   for (const p of pillars) tree.append(node(p, g.nodes, by));
   root.append(el("div.card.mt2",
     el("div.card-head", el("div", el("h2", "The full breakdown"),
-      el("p.card-sub", "Open a pillar for its sub-pillars, and a sub-pillar for its indicators. Each indicator shows Australia's value, its data year, WIPO's definition and source, and links into the explorer. The tick on each bar is the high-income median.")),
+      el("p.card-sub", "Open a pillar for its sub-pillars, and a sub-pillar for its indicators. Each indicator shows Australia's value, its data year, and WIPO's definition and source. The tick on each bar is the high-income median.")),
     el("div.row", el("button.btn.small", { type: "button", onclick: () => tree.querySelectorAll("details").forEach((d) => (d.open = true)) }, "Open all"),
       el("button.btn.small", { type: "button", onclick: () => tree.querySelectorAll("details").forEach((d) => (d.open = false)) }, "Close all"))),
     tree));
 
   // ---------------------------------------------------------------------------------------- the research goal and context
-  root.append(el("div.grid.g2.mt2",
+  root.append(el("div.mt2",
     el("div.card",
       el("h2", "Why this page exists"),
       el("p", "IP Australia's research programme asks: ", el("em", "where, how and for whom can IP Australia's interventions generate the greatest additional public value, and what evidence would justify acting on those opportunities?")),
       el("p.ink2", "Its framework separates five concepts: ", term("potential", "innovation potential"), ", ", term("activity", "innovation activity"), ", ", term("ip", "IP protection and use"), ", ",
-        term("outcomes", "private and organisational outcomes"), " and ", term("public_value", "public value"), ", and treats the links between them as empirical questions. The explorer tags every measure with one of them, to help look for those links."),
+        term("outcomes", "private and organisational outcomes"), " and ", term("public_value", "public value"), ", and treats the links between them as empirical questions."),
       el("p.ink2", "A ranking like the GII is a starting point. Its pillars are averages of very different things, and its scores are relative to other economies. Use it to find where to look, then look underneath."),
-      el("p", el("a", { href: "https://github.com/Thomas-Amann-IPAustralia/Aus-GII-Breakdown/blob/main/docs/research-goal.md" }, "Read the research goal →"))),
-    el("div.card",
-      el("h2", "Other profiles of Australia"),
-      el("p.ink2", "Two one-year profiles in the repository give context but no series to compare:"),
-      el("ul",
-        el("li", el("a", { href: "data/raw/reports/sdr-2026-australia.pdf" }, "Sustainable Development Report 2026"), " (UN SDSN): an overall SDG score of 79.0, ranked 29th of 169 countries; the regional (OECD) average is 78.2."),
-        el("li", el("a", { href: "data/raw/reports/gggr-2026-australia.pdf" }, "Global Gender Gap Report 2026"), " (World Economic Forum): a score of 0.819, ranked 8th of 145 (13th in 2025), with political empowerment its weakest subindex at 0.539.")),
-      el("p.small.muted", "Figures as printed in each PDF's first page. ", el("a", { href: `${EXPLORER}#/sources` }, "Every source and its terms →")))));
+      el("p", el("a", { href: "https://github.com/Thomas-Amann-IPAustralia/Aus-GII-Breakdown/blob/main/docs/research-goal.md" }, "Read the research goal →")))));
 }
 
 function tile(label, nd, sub) {
@@ -121,7 +107,6 @@ function node(nd, nodes, by) {
   const d = el(`details.lvl-${nd.level}${isLeaf ? ".leaf" : ""}`, summary);
   const desc = el("div.desc");
   if (isLeaf) {
-    const valueId = nd.profile === "Value" ? `gii:value:${nd.num}` : null;
     desc.append(
       el("p", nd.description || ""),
       el("p",
@@ -129,14 +114,10 @@ function node(nd, nodes, by) {
         `${nd.n_scored} economies scored; the top is ${nd.best?.name} (${fmt(nd.best?.score, 3)}).`,
         nd.bad ? [" ", el("span.flagtxt", { "data-term": "bad", tabindex: 0 }, "higher is worse")] : "",
         nd.half_weight ? " Half weight in its sub-pillar." : ""),
-      el("p.small.muted", nd.type ? `${nd.type === "Data" ? "Hard data" : nd.type === "Index" ? "A composite indicator" : "A survey question"}. ` : "", nd.source ? `Source: ${nd.source}.` : ""),
-      el("p.small.row",
-        el("a", { href: explore("compare", { x: "gii:economy:PPPPC", tx: "log", y: valueId || scoreId(nd.num) }) }, "Against GDP per capita →"),
-        el("a", { href: explore("scan", { x: valueId || scoreId(nd.num) }) }, "What correlates with it →")));
+      el("p.small.muted", nd.type ? `${nd.type === "Data" ? "Hard data" : nd.type === "Index" ? "A composite indicator" : "A survey question"}. ` : "", nd.source ? `Source: ${nd.source}.` : ""));
   } else {
     desc.append(el("p", nd.description || ""),
-      el("p.small.row", el("span.muted", `High-income median ${fmt(nd.median_high_income, 3)} · top ${nd.best?.name} ${fmt(nd.best?.score, 3)}`),
-        el("a", { href: explore("scan", { x: scoreId(nd.num) }) }, "What correlates with it →")));
+      el("p.small.row", el("span.muted", `High-income median ${fmt(nd.median_high_income, 3)} · top ${nd.best?.name} ${fmt(nd.best?.score, 3)}`)));
   }
   d.append(desc);
   if (kids.length) d.append(el("div.kids", kids.map((k) => node(k, nodes, by))));
@@ -191,7 +172,7 @@ function leagueChart(box, league) {
 }
 
 initTheme(document.getElementById("theme"));
-initPopover("explorer/#/glossary/");
+initPopover(null);
 render().catch((e) => {
   root.append(el("div.notice", `Could not load the data (${e.message}). If you opened this file from disk, serve the folder instead: python3 -m http.server, then open http://localhost:8000/.`));
   throw e;

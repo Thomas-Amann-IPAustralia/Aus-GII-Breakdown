@@ -416,7 +416,7 @@ function show(target) {
   if (value != null && !Number.isNaN(value) && t.interpret) html += `<p class="p-value"><strong>This value:</strong> ${esc(t.interpret(value))}</p>`;
   if (t.tool) html += `<p class="p-tool"><strong>Here:</strong> ${esc(t.tool)}</p>`;
   if (t.watch) html += `<p class="p-watch"><strong>Watch out:</strong> ${esc(t.watch)}</p>`;
-  html += `<p class="p-more"><a href="${esc(glossaryHref)}${esc(key)}">More in the glossary</a></p>`;
+  if (glossaryHref) html += `<p class="p-more"><a href="${esc(glossaryHref)}${esc(key)}">More in the glossary</a></p>`;
   pop.innerHTML = html; // every piece of text above is escaped
   pop.hidden = false;
   place(target);
@@ -432,7 +432,7 @@ function hideSoon() {
 
 let glossaryHref = "#/glossary/";
 
-/** Wire the popover once per page. `href` + a term's key is where "More in the glossary" points. */
+/** Wire the popover once per page. `href` + a term's key is where "More in the glossary" points (null: no link). */
 export function initPopover(href = "#/glossary/") {
   glossaryHref = href;
   pop = document.getElementById("popover");

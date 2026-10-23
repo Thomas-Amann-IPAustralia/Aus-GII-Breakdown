@@ -1,0 +1,2174 @@
+[
+ {
+  "expanded": true,
+  "folder": true,
+  "key": "_1",
+  "title": "ALTERNATIVE ENERGY PRODUCTION",
+  "data": {
+   "trans": "PRODUCTION D'ÉNERGIE DE SUBSTITUTION",
+   "IPC": ""
+  },
+  "children": [
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_2",
+    "title": "Bio-fuels",
+    "data": {
+     "trans": "Biocarburants",
+     "IPC": ""
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_3",
+      "title": "Solid fuels",
+      "data": {
+       "trans": "Combustibles solides",
+       "IPC": "C10L 5/00, 5/40-5/48"
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_4",
+        "title": "Torrefaction of biomass",
+        "data": {
+         "trans": "Thermotransformation de la biomasse",
+         "IPC": "C10B 53/02. C10L 5/40, 9/00"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_5",
+      "title": "Liquid fuels",
+      "data": {
+       "trans": "Combustibles liquides",
+       "IPC": "C10L 1/00, 1/02, 1/14"
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_6",
+        "title": "Vegetable oils",
+        "data": {
+         "trans": "Huiles végétales",
+         "IPC": "C10L 1/02, 1/19"
+        }
+       },
+       {
+        "expanded": false,
+        "folder": false,
+        "key": "_7",
+        "title": "Biodiesel",
+        "data": {
+         "trans": "Biogazole",
+         "IPC": "C07C 67/00, 69/00. C10G. C10L 1/02, 1/19. C11C 3/10. C12P 7/649"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_8",
+        "title": "Bioethanol",
+        "data": {
+         "trans": "Bioéthanol",
+         "IPC": "C10L 1/02, 1/182. C12N 9/24. C12P 7/06-7/14"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_9",
+      "title": "Biogas",
+      "data": {
+       "trans": "Biogaz",
+       "IPC": "C02F 3/28, 11/04. C10L 3/00. C12M 1/107. C12P 5/02"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_10",
+      "title": "From genetically engineered organisms",
+      "data": {
+       "trans": "À partir d'organismes génétiquement modifiés",
+       "IPC": "C12N 1/13, 1/15, 1/21, 5/10, 15/00. A01H"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_11",
+    "title": "Integrated gasification combined cycle (IGCC)",
+    "data": {
+     "trans": "Cycle combiné de gazéification intégrée",
+     "IPC": "C10L 3/00. F02C 3/28"
+    }
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_12",
+    "title": "Fuel cells",
+    "data": {
+     "trans": "Piles à combustible",
+     "IPC": "H01M 4/86-4/98, 8/00-8/24, 12/00-12/08"
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_13",
+      "title": "Electrodes",
+      "data": {
+       "trans": "Électrodes",
+       "IPC": "H01M 4/86-4/98"
+      },
+      "children": [
+       {
+        "expanded": false,
+        "folder": false,
+        "key": "_14",
+        "title": "Inert electrodes with catalytic activity",
+        "data": {
+         "trans": "Électrodes inertes à activité catalytique",
+         "IPC": "H01M 4/86-4/98"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_15",
+      "title": "Non-active parts",
+      "data": {
+       "trans": "Parties non actives",
+       "IPC": "H01M 8/00-8/24, 50/00-50/171"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_16",
+      "title": "Within hybrid cells",
+      "data": {
+       "trans": "À l'intérieur de piles hybrides",
+       "IPC": "H01M 12/00-12/08"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_17",
+    "title": "Pyrolysis or gasification of biomass",
+    "data": {
+     "trans": "Pyrolyse ou gazéification de la biomasse",
+     "IPC": "C10B 53/00. C10J"
+    }
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_18",
+    "title": "Harnessing energy from manmade waste",
+    "data": {
+     "trans": "Exploitation de l'énergie provenant des déchets anthropiques",
+     "IPC": ""
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_19",
+      "title": "Agricultural waste",
+      "data": {
+       "trans": "Déchets agricoles",
+       "IPC": "C10L 5/00"
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_20",
+        "title": "Fuel from animal waste and crop residues",
+        "data": {
+         "trans": "Combustible provenant des déchets animaux et des résidus de cultures",
+         "IPC": "C10L 5/42, 5/44"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_21",
+        "title": "Incinerators for field, garden or wood waste",
+        "data": {
+         "trans": "Incinérateurs pour déchets provenant des champs, des jardins ou du bois",
+         "IPC": "F23G 7/00, 7/10"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_22",
+      "title": "Gasification",
+      "data": {
+       "trans": "Gazéification",
+       "IPC": "C10J 3/02, 3/46. F23B 90/00. F23G 5/027"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_23",
+      "title": "Chemical waste",
+      "data": {
+       "trans": "Déchets chimiques",
+       "IPC": "B09B 3/00. F23G 7/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_24",
+      "title": "Industrial waste",
+      "data": {
+       "trans": "Déchets industriels",
+       "IPC": "C10L 5/48. F23G 5/00, 7/00"
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_25",
+        "title": "Using top gas in blast furnaces to power pig-iron production",
+        "data": {
+         "trans": "Utilisant le gaz de sortie des hauts fourneaux pour alimenter la production de fonte en gueuse",
+         "IPC": "C21B 5/06"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_26",
+        "title": "Pulp liquors",
+        "data": {
+         "trans": "Utilisation des liqueurs noires",
+         "IPC": "D21C 11/00"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_27",
+        "title": "Anaerobic digestion of industrial waste",
+        "data": {
+         "trans": "Digestion anaérobique des déchets industriels",
+         "IPC": "A62D 3/02. C02F 11/04, 11/14"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_28",
+        "title": "Industrial wood waste",
+        "data": {
+         "trans": "Déchets de bois industriels",
+         "IPC": "F23G 7/00, 7/10"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_29",
+      "title": "Hospital waste",
+      "data": {
+       "trans": "Déchets hospitaliers",
+       "IPC": "B09B 3/00. F23G 5/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_30",
+      "title": "Landfill gas",
+      "data": {
+       "trans": "Gaz de déchets d'enfouissement",
+       "IPC": "B09B"
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_31",
+        "title": "Separation of components",
+        "data": {
+         "trans": "Séparation des constituants",
+         "IPC": "B01D 53/02, 53/04, 53/047, 53/14, 53/22, 53/24"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_32",
+      "title": "Municipal waste",
+      "data": {
+       "trans": "Boues d'égout, ordures ménagères, gadoues",
+       "IPC": "C10L 5/46. F23G 5/00"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_33",
+    "title": "Hydro energy",
+    "data": {
+     "trans": "Énergie hydro-électrique",
+     "IPC": ""
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_34",
+      "title": "Water-power plants",
+      "data": {
+       "trans": "Installations hydrauliques",
+       "IPC": "E02B 9/00-9/06"
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_35",
+        "title": "Tide or wave power plants",
+        "data": {
+         "trans": "Installations marémotrices ou houlomotrices",
+         "IPC": "E02B 9/08"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_36",
+      "title": "Machines or engines for liquids",
+      "data": {
+       "trans": "Machines ou machines motrices pour liquides",
+       "IPC": "F03B. F03C"
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_37",
+        "title": "Using wave or tide energy",
+        "data": {
+         "trans": "Utilisant l'énergie des vagues ou des marées",
+         "IPC": "F03B 13/12-13/26"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_38",
+      "title": "Regulating, controlling or safety means of machines or engines",
+      "data": {
+       "trans": "Régulation, commande ou moyens de sécurité des machines ou machines motrices",
+       "IPC": "F03B 15/00-15/22"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_39",
+      "title": "Propulsion of marine vessels using energy derived from water movement",
+      "data": {
+       "trans": "Propulsion des navires utilisant l'énergie du mouvement ambiant de la mer",
+       "IPC": "B63H 19/02, 19/04"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_40",
+    "title": "Ocean thermal energy conversion (OTEC)",
+    "data": {
+     "trans": "Conversion de l'énergie thermique des océans",
+     "IPC": "F03G 7/05"
+    }
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_41",
+    "title": "Wind energy",
+    "data": {
+     "trans": "Énergie éolienne",
+     "IPC": "F03D"
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_42",
+      "title": "Structural association of electric generator with mechanical driving motor",
+      "data": {
+       "trans": "Association structurale d'un générateur électrique à un moteur d'entraînement mécanique",
+       "IPC": "H02K 7/18"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_43",
+      "title": "Structural aspects of wind turbines",
+      "data": {
+       "trans": "Aspects structuraux des éoliennes",
+       "IPC": "B63B 35/00. E04H 12/00. F03D 13/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_44",
+      "title": "Propulsion of vehicles using wind power",
+      "data": {
+       "trans": "Propulsion des véhicules au moyen de l'énergie éolienne",
+       "IPC": "B60K 16/00"
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_45",
+        "title": "Electric propulsion of vehicles using wind power",
+        "data": {
+         "trans": "Propulsion électrique des véhicules au moyen de l'énergie éolienne",
+         "IPC": "B60L 8/00"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_46",
+      "title": "Propulsion of marine vessels by wind-powered motors",
+      "data": {
+       "trans": "Propulsion des navires par aéromoteurs",
+       "IPC": "B63H 13/00"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_47",
+    "title": "Solar energy",
+    "data": {
+     "trans": "Énergie solaire",
+     "IPC": "F24S. H02S"
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_48",
+      "title": "Photovoltaics (PV)",
+      "data": {
+       "trans": "Photovoltaïque",
+       "IPC": ""
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": true,
+        "key": "_49",
+        "title": "Devices adapted for the conversion of radiation energy into electrical energy",
+        "data": {
+         "trans": "Dispositifs adaptés à la conversion de l'énergie de rayonnement en énergie électrique",
+         "IPC": "H01G 9/20. H02S 10/00. H10F"
+        },
+        "children": [
+         {
+          "expanded": true,
+          "folder": false,
+          "key": "_50",
+          "title": "Using organic materials as the active part",
+          "data": {
+           "trans": "Utilisant des matériaux organiques comme partie active",
+           "IPC": "H10K"
+          }
+         }
+        ]
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_51",
+        "title": "Assemblies of a plurality of solar cells",
+        "data": {
+         "trans": "Ensembles constitués d'une pluralité de cellules solaires",
+         "IPC": "H10F 19/00. H10K 39/00"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_52",
+        "title": "Silicon; single-crystal growth",
+        "data": {
+         "trans": "Silicium; croissance de monocristaux",
+         "IPC": "C01B 33/02. C23C 14/14, 16/24. C30B 29/06"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_53",
+        "title": "Regulating to the maximum power available from solar cells",
+        "data": {
+         "trans": "Régulation à la puissance maximale que peuvent fournir des cellules solaires",
+         "IPC": "G05F 1/67"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_54",
+        "title": "Electric lighting devices with, or rechargeable with, solar cells",
+        "data": {
+         "trans": "Dispositifs d'éclairage électriques à cellules solaires ou rechargeables avec ces dernières",
+         "IPC": "F21L 4/00. F21S 9/03"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_55",
+        "title": "Charging batteries",
+        "data": {
+         "trans": "Charge des batteries",
+         "IPC": "H02J 7/35"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_56",
+        "title": "Dye-sensitised solar cells (DSSC)",
+        "data": {
+         "trans": "Cellules solaires à colorant",
+         "IPC": "H01G 9/20. H01M 14/00"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_57",
+      "title": "Use of solar heat",
+      "data": {
+       "trans": "Utilisation de la chaleur solaire",
+       "IPC": "F24S"
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_58",
+        "title": "For domestic hot water systems",
+        "data": {
+         "trans": "Pour les systèmes domestiques d'eau chaude",
+         "IPC": "F24D 17/00, 18/00"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_59",
+        "title": "For space heating",
+        "data": {
+         "trans": "Pour le chauffage de locaux",
+         "IPC": "F24D 3/00, 5/00, 11/00, 19/00"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_60",
+        "title": "For swimming pools",
+        "data": {
+         "trans": "Pour les piscines",
+         "IPC": "F24S 90/00"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_61",
+        "title": "Solar updraft towers",
+        "data": {
+         "trans": "Tours solaires verticales",
+         "IPC": "F03D 1/04, 9/00, 13/20. F03G 6/00"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_62",
+        "title": "For treatment of water, waste water or sludge",
+        "data": {
+         "trans": "Pour le traitement de l'eau, des eaux résiduaires ou des boues d'égout",
+         "IPC": "C02F 1/14"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_63",
+        "title": "Gas turbine power plants using solar heat source",
+        "data": {
+         "trans": "Centrales électriques équipées de turbines à gaz et utilisant une source de chaleur solaire",
+         "IPC": "F02C 1/05"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_64",
+      "title": "Hybrid solar thermal-PV systems",
+      "data": {
+       "trans": "Systèmes solaires hybrides thermiques-photovoltaïques",
+       "IPC": "H02S 40/44. H10F 10/00-19/90, 77/67"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_65",
+      "title": "Propulsion of vehicles using solar power",
+      "data": {
+       "trans": "Propulsion des véhicules au moyen de l'énergie solaire",
+       "IPC": "B60K 16/00"
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_66",
+        "title": "Electric propulsion of vehicles using solar power",
+        "data": {
+         "trans": "Propulsion électrique des véhicules au moyen de l'énergie solaire",
+         "IPC": "B60L 8/00"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_67",
+      "title": "Producing mechanical power from solar energy",
+      "data": {
+       "trans": "Production de puissance mécanique à partir d'énergie solaire",
+       "IPC": "F03G 6/00-6/06"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_68",
+      "title": "Roof covering aspects of energy collecting devices",
+      "data": {
+       "trans": "Aspects de la couverture du toit relatifs aux dispositifs collecteurs d'énergie",
+       "IPC": "E04D 13/00, 13/18"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_69",
+      "title": "Steam generation using solar heat",
+      "data": {
+       "trans": "Production de vapeur au moyen de chaleur solaire",
+       "IPC": "F22B 1/00. F24V 30/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_70",
+      "title": "Refrigeration or heat pump systems using solar energy",
+      "data": {
+       "trans": "Systèmes de réfrigération ou de pompes à chaleur utilisant l'énergie solaire",
+       "IPC": "F25B 27/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_71",
+      "title": "Use of solar energy for drying materials or objects",
+      "data": {
+       "trans": "Utilisation de l'énergie solaire pour le séchage de matériaux ou d'objets",
+       "IPC": "F26B 3/00, 3/28"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_72",
+      "title": "Solar concentrators",
+      "data": {
+       "trans": "Concentrateurs solaires",
+       "IPC": "F24S 23/00. G02B 7/183"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_73",
+      "title": "Solar ponds",
+      "data": {
+       "trans": "Collecteurs de chaleur solaire avec fluide",
+       "IPC": "F24S 10/10"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_74",
+    "title": "Geothermal energy",
+    "data": {
+     "trans": "Énergie géothermique",
+     "IPC": "F24T"
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_75",
+      "title": "Use of geothermal heat",
+      "data": {
+       "trans": "Utilisation de la chaleur géothermique",
+       "IPC": "F01K. F24F 5/00. F24T 10/00-50/00. H02N 10/00. F25B 30/06"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_76",
+      "title": "Production of mechanical power from geothermal energy",
+      "data": {
+       "trans": "Production de puissance mécanique à partir d'énergie géothermique",
+       "IPC": "F03G 4/00-4/06, 7/04"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_77",
+    "title": "Other production or use of heat, not derived from combustion, e.g. natural heat",
+    "data": {
+     "trans": "Autre production ou utilisation de la chaleur ne provenant pas d'une combustion, p.ex. la chaleur naturelle",
+     "IPC": "F24T 10/00-50/00. F24V 30/00-50/00"
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_78",
+      "title": "Heat pumps in central heating systems using heat accumulated in storage masses",
+      "data": {
+       "trans": "Pompes à chaleur dans des systèmes de chauffage central utilisant la chaleur accumulée dans des matériaux accumulateurs",
+       "IPC": "F24D 11/02"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_79",
+      "title": "Heat pumps in other domestic- or space-heating systems",
+      "data": {
+       "trans": "Pompes à chaleur dans d'autres systèmes de chauffage de locaux domestiques ou d'autres locaux",
+       "IPC": "F24D 15/04"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_80",
+      "title": "Heat pumps in domestic hot-water supply systems",
+      "data": {
+       "trans": "Pompes à chaleur dans des systèmes d’alimentation en eau chaude domestique",
+       "IPC": "F24D 17/02, 18/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_81",
+      "title": "Air or water heaters using heat pumps",
+      "data": {
+       "trans": "Réchauffeurs d'air ou chauffe-eau utilisant des pompes à chaleur",
+       "IPC": "F24H 4/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_82",
+      "title": "Heat pumps",
+      "data": {
+       "trans": "Pompes à chaleur",
+       "IPC": "F25B 30/00"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_83",
+    "title": "Using waste heat",
+    "data": {
+     "trans": "Utilisant la chaleur perdue",
+     "IPC": ""
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_84",
+      "title": "To produce mechanical energy",
+      "data": {
+       "trans": "Pour produire l'énergie mécanique",
+       "IPC": "F01K 27/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_85",
+      "title": "Of combustion engines",
+      "data": {
+       "trans": "Des moteurs à combustion",
+       "IPC": "F01K 23/06-23/10. F01N 5/00. F02G 5/00-5/04. F25B 27/02"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_86",
+      "title": "Of steam engine plants",
+      "data": {
+       "trans": "Des ensembles fonctionnels de machines motrices à vapeur",
+       "IPC": "F01K 17/00, 23/04"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_87",
+      "title": "Of gas-turbine plants",
+      "data": {
+       "trans": "Des centrales à turbines à gaz",
+       "IPC": "F02C 6/18"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_88",
+      "title": "As source of energy for refrigeration plants",
+      "data": {
+       "trans": "Comme source d'énergie pour centrales de réfrigération",
+       "IPC": "F25B 27/02"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_89",
+      "title": "For treatment of water, waste water or sewage",
+      "data": {
+       "trans": "Pour le traitement de l'eau, des eaux résiduaires ou des eaux d'égout",
+       "IPC": "C02F 1/16"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_90",
+      "title": "Recovery of waste heat in paper production",
+      "data": {
+       "trans": "Récupération de la chaleur perdue lors de la production de papier",
+       "IPC": "D21F 5/20"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_91",
+      "title": "For steam generation by exploitation of the heat content of hot heat carriers",
+      "data": {
+       "trans": "Pour la production de vapeur par exploitation du contenu calorifique de caloporteurs chauds",
+       "IPC": "F22B 1/02"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_92",
+      "title": "Recuperation of heat energy from waste incineration",
+      "data": {
+       "trans": "Récupération de l'énergie calorifique dégagée par l'incinération des déchets",
+       "IPC": "F23G 5/46"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_93",
+      "title": "Energy recovery in air conditioning",
+      "data": {
+       "trans": "Récupération d'énergie dans l'air conditionné",
+       "IPC": "F24F 12/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_94",
+      "title": "Arrangements for using waste heat from furnaces, kilns, ovens or retorts",
+      "data": {
+       "trans": "Agencements pour l'utilisation de la chaleur perdue dégagée par les générateurs de chaleur, les fours, les étuves ou les cornues",
+       "IPC": "F27D 17/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_95",
+      "title": "Regenerative heat-exchange apparatus",
+      "data": {
+       "trans": "Échangeurs de chaleur à récupération",
+       "IPC": "F28D 17/00-20/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_96",
+      "title": "Of gasification plants",
+      "data": {
+       "trans": "D'unités de gazéification",
+       "IPC": "C10J 3/86"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_97",
+    "title": "Devices for producing mechanical power from muscle energy",
+    "data": {
+     "trans": "Dispositifs pour produire de la puissance mécanique à partir de l'énergie musculaire",
+     "IPC": "F03G 5/00-5/08"
+    }
+   }
+  ]
+ },
+ {
+  "expanded": true,
+  "folder": true,
+  "key": "_98",
+  "title": "TRANSPORTATION",
+  "data": {
+   "trans": "TRANSPORTS",
+   "IPC": ""
+  },
+  "children": [
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_99",
+    "title": "Vehicles in general",
+    "data": {
+     "trans": "Véhicules en général",
+     "IPC": ""
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_100",
+      "title": "Hybrid vehicles, e.g. Hybrid Electric Vehicles (HEVs)",
+      "data": {
+       "trans": "Véhicules hybrides, p.ex. véhicules électriques hybrides (VEH)",
+       "IPC": "B60K 6/00, 6/20"
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_101",
+        "title": "Control systems",
+        "data": {
+         "trans": "Systèmes de commande",
+         "IPC": "B60W 20/00"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_102",
+        "title": "Gearings therefor",
+        "data": {
+         "trans": "Leurs transmissions",
+         "IPC": "F16H 3/00-3/78, 48/00-48/30"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_103",
+      "title": "Brushless motors",
+      "data": {
+       "trans": "Moteurs sans balais",
+       "IPC": "H02K 29/08"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_104",
+      "title": "Electromagnetic clutches",
+      "data": {
+       "trans": "Embrayages électromagnétiques",
+       "IPC": "H02K 49/10"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_105",
+      "title": "Regenerative braking systems",
+      "data": {
+       "trans": "Systèmes de freinage par récupération",
+       "IPC": "B60L 7/10-7/22"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_106",
+      "title": "Electric propulsion with power supply from force of nature, e.g.  sun, wind",
+      "data": {
+       "trans": "Propulsion électrique avec alimentation en énergie fournie par les forces de la nature, p.ex. le soleil, le vent",
+       "IPC": "B60L 8/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_107",
+      "title": "Electric propulsion with power supply external to vehicle",
+      "data": {
+       "trans": "Propulsion électrique avec alimentation en énergie extérieure au véhicule",
+       "IPC": "B60L 9/00"
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_108",
+        "title": "With power supply from fuel cells, e.g. for hydrogen vehicles",
+        "data": {
+         "trans": "Avec alimentation en énergie fournie par des piles à combustible, p.ex. pour véhicules à hydrogène",
+         "IPC": " B60L 50/50-58/40"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_109",
+      "title": "Combustion engines operating on gaseous fuels, e.g. hydrogen",
+      "data": {
+       "trans": "Moteurs à combustion fonctionnant avec des combustibles gazeux, p.ex. de l'hydrogène",
+       "IPC": "F02B 43/00. F02M 21/02, 27/02"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_110",
+      "title": "Power supply from force of nature, e.g. sun, wind",
+      "data": {
+       "trans": "Alimentation en énergie fournie par les forces de la nature, p.ex. le soleil, le vent",
+       "IPC": "B60K 16/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_111",
+      "title": "Charging stations for electric vehicles",
+      "data": {
+       "trans": "Bornes de recharge pour véhicules électriques",
+       "IPC": "H02J 7/00"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_112",
+    "title": "Vehicles other than rail vehicles",
+    "data": {
+     "trans": "Véhicules autres que véhicules sur rails",
+     "IPC": ""
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_113",
+      "title": "Drag reduction",
+      "data": {
+       "trans": "Réduction de la traînée",
+       "IPC": "B62D 35/00, 35/02. B63B 1/34-1/40"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_114",
+      "title": "Human-powered vehicle",
+      "data": {
+       "trans": "Véhicule à propulsion humaine",
+       "IPC": "B62K. B62M 1/00, 3/00, 5/00, 6/00"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_115",
+    "title": "Rail vehicles",
+    "data": {
+     "trans": "Véhicules sur rails",
+     "IPC": "B61"
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_116",
+      "title": "Drag reduction",
+      "data": {
+       "trans": "Réduction de la traînée",
+       "IPC": "B61D 17/02"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_117",
+    "title": "Marine vessel propulsion",
+    "data": {
+     "trans": "Propulsion des navires",
+     "IPC": ""
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_118",
+      "title": "Propulsive devices directly acted on by wind",
+      "data": {
+       "trans": "Dispositifs propulseurs directement soumis à l'action du vent",
+       "IPC": "B63H 9/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_119",
+      "title": "Propulsion by wind-powered motors",
+      "data": {
+       "trans": "Propulsion par aéromoteurs",
+       "IPC": "B63H 13/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_120",
+      "title": "Propulsion using energy derived from water movement",
+      "data": {
+       "trans": "Propulsion au moyen de l'énergie dérivée du mouvement de l'eau",
+       "IPC": "B63H 19/02, 19/04"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_121",
+      "title": "Propulsion by muscle power",
+      "data": {
+       "trans": "Propulsion par énergie musculaire",
+       "IPC": "B63H 16/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_122",
+      "title": "Propulsion derived from nuclear energy",
+      "data": {
+       "trans": "Propulsion dérivée de l'énergie nucléaire",
+       "IPC": "B63H 21/18"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_123",
+    "title": "Cosmonautic vehicles using solar energy",
+    "data": {
+     "trans": "Véhicules spatiaux utilisant l'énergie solaire",
+     "IPC": "B64G 1/44"
+    }
+   }
+  ]
+ },
+ {
+  "expanded": true,
+  "folder": true,
+  "key": "_124",
+  "title": "ENERGY CONSERVATION",
+  "data": {
+   "trans": "CONSERVATION ET ÉCONOMIES D'ÉNERGIE",
+   "IPC": ""
+  },
+  "children": [
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_125",
+    "title": "Storage of electrical energy",
+    "data": {
+     "trans": "Accumulation de l'énergie électrique",
+     "IPC": "B60K 6/28. B60W 10/26. H01M 10/44-10/46. H01G 11/00. H02J 3/28, 7/00, 15/00"
+    }
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_126",
+    "title": "Power supply circuitry",
+    "data": {
+     "trans": "Circuits d'alimentation électrique",
+     "IPC": "H02J"
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_127",
+      "title": "With power saving modes",
+      "data": {
+       "trans": "Avec modes d'économie d'énergie",
+       "IPC": "H02J 9/00"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_128",
+    "title": "Measurement of electricity consumption",
+    "data": {
+     "trans": "Mesure de la consommation d'électricité",
+     "IPC": "B60L 3/00. G01R"
+    }
+   },
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_129",
+    "title": "Storage of thermal energy",
+    "data": {
+     "trans": "Accumulation de l'énergie thermique",
+     "IPC": "C09K 5/00. F24H 7/00. F28D 20/00, 20/02"
+    }
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_130",
+    "title": "Low energy lighting",
+    "data": {
+     "trans": "Éclairage à basse consommation",
+     "IPC": ""
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_131",
+      "title": "Electroluminescent light sources (e.g. LEDs, OLEDs, PLEDs)",
+      "data": {
+       "trans": "Sources lumineuses électroluminescentes (p.ex. diodes électroluminescentes, diodes électroluminescentes organiques, diodes électroluminescentes polymères)",
+       "IPC": "F21K 99/00. F21L 4/02. H05B 33/00.  H10H 20/00. H10K 50/00-50/30"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_132",
+    "title": "Thermal building insulation, in general",
+    "data": {
+     "trans": "Isolation thermique des bâtiments, en général",
+     "IPC": "E04B 1/62, 1/74-1/80, 1/88, 1/90"
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_133",
+      "title": "Insulating building elements",
+      "data": {
+       "trans": "Éléments de construction isolants",
+       "IPC": "E04C 1/40, 1/41, 2/284-2/296"
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_134",
+        "title": "For door or window openings",
+        "data": {
+         "trans": "Pour ouvertures de portes ou de fenêtres",
+         "IPC": "E06B 3/263"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_135",
+        "title": "For walls",
+        "data": {
+         "trans": "Pour murs",
+         "IPC": "E04B 2/00. E04F 13/08"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_136",
+        "title": "For floors",
+        "data": {
+         "trans": "Pour planchers",
+         "IPC": "E04B 5/00. E04F 15/18"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_137",
+        "title": "For roofs",
+        "data": {
+         "trans": "Pour toits",
+         "IPC": "E04B 7/00. E04D 1/28, 3/35, 13/16"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_138",
+        "title": "For ceilings",
+        "data": {
+         "trans": "Pour plafonds",
+         "IPC": "E04B 9/00. E04F 13/08"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_139",
+    "title": "Recovering mechanical energy",
+    "data": {
+     "trans": "Récupération de l'énergie produite par les mouvements d'une machine",
+     "IPC": "F03G 7/08"
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_140",
+      "title": "Chargeable mechanical accumulators in vehicles",
+      "data": {
+       "trans": "Accumulateurs mécaniques rechargeables dans les véhicules",
+       "IPC": "B60K 6/10, 6/30. B60L 50/30"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "expanded": true,
+  "folder": true,
+  "key": "_141",
+  "title": "WASTE MANAGEMENT",
+  "data": {
+   "trans": "GESTION DES DÉCHETS",
+   "IPC": ""
+  },
+  "children": [
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_142",
+    "title": "Waste disposal",
+    "data": {
+     "trans": "Élimination ou enlèvement des déchets",
+     "IPC": "B09B. B65F"
+    }
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_143",
+    "title": "Treatment of waste",
+    "data": {
+     "trans": "Traitement des déchets",
+     "IPC": ""
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_144",
+      "title": "Disinfection or sterilisation",
+      "data": {
+       "trans": "Désinfection ou stérilisation",
+       "IPC": "A61L 11/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_145",
+      "title": "Treatment of hazardous or toxic waste",
+      "data": {
+       "trans": "Traitement des déchets dangereux ou toxiques",
+       "IPC": "A62D 3/00, 101/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_146",
+      "title": "Treating radioactively contaminated material; decontamination arrangements therefor",
+      "data": {
+       "trans": "Traitement des matériaux contaminés par la radioactivité; agencements de décontamination à cet effet",
+       "IPC": "G21F 9/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_147",
+      "title": "Refuse separation",
+      "data": {
+       "trans": "Tri des ordures",
+       "IPC": "B03B 9/06"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_148",
+      "title": "Reclamation of contaminated soil",
+      "data": {
+       "trans": "Régénération des sols contaminés",
+       "IPC": "B09C"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_149",
+      "title": "Mechanical treatment of waste paper",
+      "data": {
+       "trans": "Traitement mécanique des vieux papiers",
+       "IPC": "D21B 1/08, 1/32"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_150",
+    "title": "Consuming waste by combustion",
+    "data": {
+     "trans": "Incinération des déchets par combustion",
+     "IPC": "F23G"
+    }
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_151",
+    "title": "Reuse of waste materials",
+    "data": {
+     "trans": "Valorisation des déchets",
+     "IPC": ""
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_152",
+      "title": "Use of rubber waste in footwear",
+      "data": {
+       "trans": "Emploi de déchets de caoutchouc dans les chaussures",
+       "IPC": "A43B 1/12, 21/14"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_153",
+      "title": "Manufacture of articles from waste metal particles",
+      "data": {
+       "trans": "Fabrication d'articles à partir de particules métalliques résiduaires",
+       "IPC": "B22F 8/00"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_154",
+      "title": "Production of hydraulic cements from waste materials",
+      "data": {
+       "trans": "Production de ciments hydrauliques à partir de déchets",
+       "IPC": "C04B 7/24-7/30"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_155",
+      "title": "Use of waste materials as fillers for mortars, concrete",
+      "data": {
+       "trans": "Emploi de déchets comme charges pour mortiers, béton",
+       "IPC": "C04B 18/04-18/10"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_156",
+      "title": "Production of fertilisers from waste or refuse",
+      "data": {
+       "trans": "Production d'engrais à partir de déchets ou d'ordures",
+       "IPC": "C05F"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_157",
+      "title": "Recovery or working-up of waste materials",
+      "data": {
+       "trans": "Récupération ou traitement de déchets",
+       "IPC": "C08J 11/00-11/28. C09K 11/01. C11B 11/00, 13/00-13/04. C14C 3/32. C21B 3/04. C25C 1/00. D01F 13/00-13/04"
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_158",
+        "title": "Recovery of plastics materials from waste",
+        "data": {
+         "trans": "Récupération de matières plastiques à partir de déchets",
+         "IPC": "B29B 17/00"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_159",
+        "title": "Disassembly of vehicles for recovery of salvageable parts",
+        "data": {
+         "trans": "Désassemblage systématique des véhicules pour la récupération d'éléments réutilisables",
+         "IPC": "B62D 67/00"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_160",
+        "title": "Of polymers",
+        "data": {
+         "trans": "Des polymères",
+         "IPC": "C08J 11/04-11/28"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_161",
+        "title": "Production of liquid hydrocarbons from rubber waste",
+        "data": {
+         "trans": "Production d'hydrocarbures liquides à partir de déchets de caoutchouc",
+         "IPC": "C10G 1/10"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_162",
+        "title": "Solid fuels derived from waste",
+        "data": {
+         "trans": "Combustibles solides dérivés de déchets",
+         "IPC": "C10L 5/46, 5/48"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_163",
+        "title": "Obtaining metals from scrap",
+        "data": {
+         "trans": "Obtention de métaux à partir de déchets métalliques ou de rognures",
+         "IPC": "C22B 7/00-7/04, 19/30, 25/06"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_164",
+        "title": "Disintegrating fibrous materials for reuse",
+        "data": {
+         "trans": "Désintégration de matériaux fibreux pour réutilisation",
+         "IPC": "D01G 11/00"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_165",
+        "title": "Working-up waste paper to obtain cellulose",
+        "data": {
+         "trans": "Obtention de cellulose à partir de vieux papiers",
+         "IPC": "D21C 5/02"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_166",
+        "title": "Reclaiming salvageable components or material from electric discharge tubes or lamps",
+        "data": {
+         "trans": "Récupération des composants ou des matériaux récupérables provenant des tubes ou des lampes à décharge électrique",
+         "IPC": "H01J 9/50, 9/52"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_167",
+        "title": "Reclaiming serviceable parts of waste cells, batteries or accumulators",
+        "data": {
+         "trans": "Récupération des parties utiles des piles, batteries ou accumulateurs usagés",
+         "IPC": "H01M 6/52, 10/54"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_168",
+    "title": "Pollution control",
+    "data": {
+     "trans": "Lutte antipollution",
+     "IPC": ""
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_169",
+      "title": "Carbon capture and storage",
+      "data": {
+       "trans": "Capture et stockage du carbone",
+       "IPC": "B01D 53/14, 53/22, 53/62. B65G 5/00. C01B 32/50. E21B 41/00, 43/16. E21F 17/16. F25J 3/02"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_170",
+      "title": "Air quality management",
+      "data": {
+       "trans": "Gestion de la qualité de l'air",
+       "IPC": ""
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": true,
+        "key": "_171",
+        "title": "Treatment of waste gases",
+        "data": {
+         "trans": "Traitement des gaz résiduaires",
+         "IPC": "B01D 53/00-53/96"
+        },
+        "children": [
+         {
+          "expanded": true,
+          "folder": false,
+          "key": "_172",
+          "title": "Exhaust apparatus for combustion engines with means for treating exhaust",
+          "data": {
+           "trans": "Appareils d'échappement pour moteurs à combustion avec moyens pour traiter les gaz d'échappement",
+           "IPC": "F01N 3/00-3/38"
+          }
+         },
+         {
+          "expanded": true,
+          "folder": false,
+          "key": "_173",
+          "title": "Rendering exhaust gases innocuous",
+          "data": {
+           "trans": "Rendre inoffensifs les gaz d'échappement",
+           "IPC": "B01D 53/92. F02B 75/10"
+          }
+         },
+         {
+          "expanded": true,
+          "folder": false,
+          "key": "_174",
+          "title": "Removal of waste gases or dust in steel production",
+          "data": {
+           "trans": "Élimination des gaz résiduaires ou des poussières lors de la production d'acier",
+           "IPC": "C21C 5/38"
+          }
+         },
+         {
+          "expanded": true,
+          "folder": false,
+          "key": "_175",
+          "title": "Combustion apparatus using recirculation of flue gases",
+          "data": {
+           "trans": "Appareils à combustion utilisant la recirculation des gaz brûlés",
+           "IPC": "C10B 21/18. F23B 80/02. F23C 9/00"
+          }
+         },
+         {
+          "expanded": true,
+          "folder": false,
+          "key": "_176",
+          "title": "Combustion of waste gases or noxious gases",
+          "data": {
+           "trans": "Combustion des gaz résiduaires ou des gaz nocifs",
+           "IPC": "F23G 7/06"
+          }
+         },
+         {
+          "expanded": true,
+          "folder": false,
+          "key": "_177",
+          "title": "Electrical control of exhaust gas treating apparatus",
+          "data": {
+           "trans": "Commande électrique des appareils de traitement des gaz d'échappement",
+           "IPC": "F01N 9/00"
+          }
+         }
+        ]
+       },
+       {
+        "expanded": true,
+        "folder": true,
+        "key": "_178",
+        "title": "Separating dispersed particles from gases or vapours",
+        "data": {
+         "trans": "Séparation des particules dispersées présentes dans les gaz ou les vapeurs",
+         "IPC": "B01D 45/00-51/00. B03C 3/00"
+        },
+        "children": [
+         {
+          "expanded": true,
+          "folder": false,
+          "key": "_179",
+          "title": "Dust removal from furnaces",
+          "data": {
+           "trans": "Élimination des poussières provenant des fours",
+           "IPC": "C21B 7/22. C21C 5/38. F27B 1/18. F27B 15/12"
+          }
+         }
+        ]
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_180",
+        "title": "Use of additives in fuels or fires to reduce smoke or facilitate soot removal",
+        "data": {
+         "trans": "Emploi d'additifs dans les combustibles ou les foyers pour réduire la fumée ou faciliter l'élimination de la suie",
+         "IPC": "C10L 10/02, 10/06. F23J 7/00"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_181",
+        "title": "Arrangements of devices for treating smoke or fumes from combustion apparatus",
+        "data": {
+         "trans": "Aménagement des dispositifs de traitement de fumées ou de vapeurs provenant d'appareils à combustion",
+         "IPC": "F23J 15/00"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_182",
+        "title": "Dust-laying or dust-absorbing materials",
+        "data": {
+         "trans": "Substances d'abattage ou d'absorption des poussières",
+         "IPC": "C09K 3/22"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_183",
+        "title": "Pollution alarms",
+        "data": {
+         "trans": "Alarmes de pollution",
+         "IPC": "G08B 21/12"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": true,
+      "key": "_184",
+      "title": "Control of water pollution",
+      "data": {
+       "trans": "Lutte contre la pollution des eaux",
+       "IPC": ""
+      },
+      "children": [
+       {
+        "expanded": true,
+        "folder": true,
+        "key": "_185",
+        "title": "Treating waste-water or sewage",
+        "data": {
+         "trans": "Traitement des eaux résiduaires ou des eaux d'égout",
+         "IPC": "B63J 4/00. C02F"
+        },
+        "children": [
+         {
+          "expanded": true,
+          "folder": false,
+          "key": "_186",
+          "title": "To produce fertilisers",
+          "data": {
+           "trans": "Pour produire des engrais",
+           "IPC": "C05F 7/00"
+          }
+         }
+        ]
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_187",
+        "title": "Materials for treating liquid pollutants",
+        "data": {
+         "trans": "Substances pour traiter les polluants liquides",
+         "IPC": "C09K 3/32"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_188",
+        "title": "Removing pollutants from open water",
+        "data": {
+         "trans": "Élimination des polluants présents dans les eaux libres",
+         "IPC": "B63B 35/32. E02B 15/04"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_189",
+        "title": "Plumbing installations for waste water",
+        "data": {
+         "trans": "Installations de plomberie pour l'évacuation des eaux résiduaires",
+         "IPC": "E03C 1/12"
+        }
+       },
+       {
+        "expanded": true,
+        "folder": false,
+        "key": "_190",
+        "title": "Management of sewage",
+        "data": {
+         "trans": "Gestion des eaux d'égout",
+         "IPC": "C02F 1/00, 3/00, 9/00. E03F"
+        }
+       }
+      ]
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_191",
+      "title": "Means for preventing radioactive contamination in the event of reactor leakage",
+      "data": {
+       "trans": "Moyens pour prévenir la contamination radioactive en cas de fuite dans un réacteur",
+       "IPC": "G21C 13/10"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "expanded": true,
+  "folder": true,
+  "key": "_192",
+  "title": "AGRICULTURE / FORESTRY",
+  "data": {
+   "trans": "AGRICULTURE/SYLVICULTURE",
+   "IPC": ""
+  },
+  "children": [
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_193",
+    "title": "Forestry techniques",
+    "data": {
+     "trans": "Techniques de sylviculture",
+     "IPC": "A01G 23/00"
+    }
+   },
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_194",
+    "title": "Alternative irrigation techniques",
+    "data": {
+     "trans": "Techniques alternatives d'irrigation",
+     "IPC": "A01G 25/00"
+    }
+   },
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_195",
+    "title": "Pesticide alternatives",
+    "data": {
+     "trans": "Produits de remplacement des pesticides",
+     "IPC": "A01N 25/00-65/00"
+    }
+   },
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_196",
+    "title": "Soil improvement",
+    "data": {
+     "trans": "Amendement des sols",
+     "IPC": "C09K 17/00. E02D 3/00"
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_197",
+      "title": "Organic fertilisers derived from waste",
+      "data": {
+       "trans": "Engrais organiques dérivés des déchets",
+       "IPC": "C05F"
+      }
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "expanded": true,
+  "folder": true,
+  "key": "_198",
+  "title": "ADMINISTRATIVE, REGULATORY OR DESIGN ASPECTS",
+  "data": {
+   "trans": "ASPECTS ADMINISTRATIFS, RÉGLEMENTAIRES OU CONCEPTUELS",
+   "IPC": ""
+  },
+  "children": [
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_199",
+    "title": "Commuting, e.g., HOV, teleworking, etc.",
+    "data": {
+     "trans": "Optimisation des trajets journaliers, p.ex. covoiturage, télétravail, etc.",
+     "IPC": "G06Q. G08G"
+    }
+   },
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_200",
+    "title": "Carbon/emissions trading, e.g. pollution credits",
+    "data": {
+     "trans": "Échange de droits d'émission de carbone, p.ex. crédits de pollution",
+     "IPC": "G06Q"
+    }
+   },
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_201",
+    "title": "Static structure design",
+    "data": {
+     "trans": "Conception de constructions fixes",
+     "IPC": "E04H 1/00"
+    }
+   }
+  ]
+ },
+ {
+  "expanded": true,
+  "folder": true,
+  "key": "_202",
+  "title": "NUCLEAR POWER GENERATION",
+  "data": {
+   "trans": "PRODUCTION D'ÉNERGIE NUCLÉAIRE",
+   "IPC": ""
+  },
+  "children": [
+   {
+    "expanded": true,
+    "folder": true,
+    "key": "_203",
+    "title": "Nuclear engineering",
+    "data": {
+     "trans": "Génie nucléaire",
+     "IPC": "G21"
+    },
+    "children": [
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_204",
+      "title": "Fusion reactors",
+      "data": {
+       "trans": "Réacteurs de fusion",
+       "IPC": "G21B"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_205",
+      "title": "Nuclear (fission) reactors",
+      "data": {
+       "trans": "Réacteurs (à fission) nucléaires",
+       "IPC": "G21C"
+      }
+     },
+     {
+      "expanded": true,
+      "folder": false,
+      "key": "_206",
+      "title": "Nuclear power plant",
+      "data": {
+       "trans": "Centrale nucléaire",
+       "IPC": "G21D"
+      }
+     }
+    ]
+   },
+   {
+    "expanded": true,
+    "folder": false,
+    "key": "_207",
+    "title": "Gas turbine power plants using heat source of nuclear origin",
+    "data": {
+     "trans": "Centrales électriques équipées de turbines à gaz et utilisant une source de chaleur d'origine nucléaire",
+     "IPC": "F02C 1/05"
+    }
+   }
+  ]
+ }
+]
