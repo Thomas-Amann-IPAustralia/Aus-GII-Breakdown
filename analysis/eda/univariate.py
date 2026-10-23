@@ -172,3 +172,37 @@ def over_time(counts_by_year: pd.DataFrame, *, x: str, y: str, hue: str | None =
     ax.set_title(title)
     ax.set_ylabel(ylabel or y)
     return fig
+
+
+def monthly(
+    timeline: pd.DataFrame,
+    columns: list[str],
+    *,
+    start=None,
+    title: str = "",
+    average: int = 12,
+    events: bool | list[str] = True,
+):
+    """Monthly counts from the timeline lens: a thin line per month and a thick line for the `average`-month moving
+    average (which smooths out seasons and month length), with policy changes marked."""
+    from .style import PALETTE, label, mark_events
+
+    t = timeline if start is None else timeline[timeline["month"] >= pd.Timestamp(start)]
+    fig, ax = plt.subplots(figsize=(13, 5))
+    for colour, c in zip(PALETTE, columns, strict=False):
+        y = t[c].astype(float)
+        ax.plot(t["month"], y, color=colour, lw=0.6, alpha=0.45)
+        ax.plot(
+            t["month"],
+            y.rolling(average, min_periods=average).mean(),
+            color=colour,
+            lw=2.2,
+            label=label("timeline", c, unit=False),
+        )
+    ax.legend(frameon=False, fontsize=9, loc="upper left", bbox_to_anchor=(0, -0.08), ncol=2)
+    ax.set_ylabel(f"per month (thick line: {average}-month average)")
+    thousands(ax)
+    ax.set_title(title)
+    if events:
+        mark_events(ax, timeline, ids=None if events is True else events)
+    return fig

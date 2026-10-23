@@ -82,3 +82,28 @@ def thousands(ax: plt.Axes, axis: str = "y") -> None:
 def source(fig: plt.Figure, text: str) -> None:
     """A small grey caption under the figure naming its data (every chart should say where its numbers come from)."""
     fig.text(0.0, -0.02, f"Source: {text}", ha="left", va="top", fontsize=8.5, color=MUTED)
+
+
+def mark_events(ax: plt.Axes, timeline: pd.DataFrame, *, ids: list[str] | None = None, labels: bool = True) -> None:
+    """Dashed vertical lines at the months when IP policy changes took effect (from the timeline lens's
+    `policy_events`), labelled with their ids. `ids` limits them to the changes that matter for the chart."""
+    marked = timeline.loc[timeline["policy_events"].notna(), ["month", "policy_events"]]
+    lo, hi = ax.get_xlim()
+    for month, names in marked.itertuples(index=False):
+        names = [n for n in names.split(", ") if ids is None or n in ids]
+        x = mpl.dates.date2num(month)
+        if not names or not lo <= x <= hi:
+            continue
+        ax.axvline(month, color=MUTED, ls="--", lw=1)
+        if labels:
+            ax.text(
+                month,
+                0.98,
+                " " + ", ".join(names),
+                transform=ax.get_xaxis_transform(),
+                rotation=90,
+                va="top",
+                ha="right",
+                fontsize=7.5,
+                color=MUTED,
+            )

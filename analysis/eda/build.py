@@ -9,6 +9,7 @@
 | `firms` | ABN in any IP, R&D, procurement or tax source | `linkage/abn_spine`, `rights`, `rdti`, `ato_ctt` |
 | `regions` | Postal area (the ABS's version of a postcode) | `abs_regions`, `abs_census`, `abr`, `rights`, `firms` |
 | `national` | Country, year and indicator | `wdi/panel`, `wipo_ipstats/office_origin` |
+| `timeline` | Month, for Australia (IP Australia's whole register) | `rights`, `iprapid/events`, `policy_events` |
 
 Every column is described, in plain English, in `analysis/eda/variables.yaml`. Derived columns are defined here and
 nowhere else, so a reader can check exactly how each was made.
@@ -28,6 +29,57 @@ from .data import LENS_DIR, connect, lens_table, resolve
 # in FY2025 or FY2026 (35,065 and 41,257). Stage 1 checks this again.
 WINDOW = (2017, 2026)
 TODAY = "2026-10-22"  # the corpus build date, so ages do not change with the day the notebook is run
+TIMELINE_START, TIMELINE_END = (
+    "1904-01-01",
+    "2026-09-01",
+)  # IP RAPID runs to mid-October 2026: Sep is the last full month
+
+# The timeline's monthly series: (column, condition). Applications are counted by application date from the `rights`
+# lens; outcomes by effective date from IP RAPID's events, using only categories recorded consistently over time.
+# Left out: renewals (their records stop in 2016 for designs and 2018 for trade marks) and every '_historical'
+# category (dated on the day records moved between systems, such as 10 November 2018 for trade marks).
+TIMELINE_APPLICATIONS = [
+    (
+        "patents_standard_au",
+        "ip_right_type = 'patent' AND ip_right_sub_type = 'standard_complete' AND australian_applicant",
+    ),
+    (
+        "patents_standard_overseas",
+        "ip_right_type = 'patent' AND ip_right_sub_type = 'standard_complete' AND NOT australian_applicant",
+    ),
+    ("patents_provisional", "ip_right_type = 'patent' AND ip_right_sub_type = 'provisional'"),
+    ("patents_second_tier", "ip_right_type = 'patent' AND ip_right_sub_type IN ('innovation', 'petty')"),
+    ("trade_marks_au", "ip_right_type = 'trade_mark' AND australian_applicant"),
+    ("trade_marks_overseas", "ip_right_type = 'trade_mark' AND NOT australian_applicant"),
+    ("designs_au", "ip_right_type = 'design' AND australian_applicant"),
+    ("designs_overseas", "ip_right_type = 'design' AND NOT australian_applicant"),
+    ("pbr_applications", "ip_right_type = 'pbr'"),
+]
+TIMELINE_EVENTS = [
+    ("patents_granted", "ip_right_type = 'patent' AND event_category = 'granted'"),
+    ("trade_marks_registered", "ip_right_type = 'trade_mark' AND event_category = 'granted'"),
+    ("designs_registered", "ip_right_type = 'design' AND event_category = 'registered'"),
+    ("pbr_granted", "ip_right_type = 'pbr' AND event_category = 'granted'"),
+    ("patents_lapsed", "ip_right_type = 'patent' AND event_category = 'lapsed'"),
+    ("trade_marks_lapsed", "ip_right_type = 'trade_mark' AND event_category = 'lapsed'"),
+    ("designs_lapsed", "ip_right_type = 'design' AND event_category = 'lapsed'"),
+    ("patents_ceased", "ip_right_type = 'patent' AND event_category = 'ceased'"),
+    ("trade_marks_ceased", "ip_right_type = 'trade_mark' AND event_category = 'ceased'"),
+    ("designs_ceased", "ip_right_type = 'design' AND event_category = 'ceased'"),
+    ("patents_expired", "ip_right_type = 'patent' AND event_category = 'expired'"),
+    (
+        "patent_oppositions",
+        "ip_right_type = 'patent' AND event_type IN "
+        "('published_opposition_lodged', 'published_opposition_under_section_104_4_lodged')",
+    ),
+    ("trade_mark_oppositions", "ip_right_type = 'trade_mark' AND event_category = 'opposition'"),
+    (
+        "patent_extensions_of_term",
+        "event_type = 'published_extension_of_term_of_standard_patent_extension_granted'",
+    ),
+    ("patent_assignments", "ip_right_type = 'patent' AND event_type LIKE 'published_assignments%'"),
+    ("trade_mark_assignments", "ip_right_type = 'trade_mark' AND event_category = 'publish_ownership'"),
+]
 
 OECD = (
     "AUS AUT BEL CAN CHL COL CRI CZE DNK EST FIN FRA DEU GRC HUN ISL IRL ISR ITA JPN KOR LVA LTU LUX MEX NLD NZL NOR "
@@ -261,8 +313,61 @@ def national_sql() -> str:
     """
 
 
-LENSES = {"rights": rights_sql, "firms": firms_sql, "regions": regions_sql, "national": national_sql}
-ORDER = ["rights", "firms", "regions", "national"]  # firms and regions read the lenses before them
+def timeline_sql() -> str:
+    """One row per month. A series is NULL before its first recorded month, so 'not yet recorded' is not read as 0."""
+    series = [c for c, _ in TIMELINE_APPLICATIONS + TIMELINE_EVENTS]
+
+    def counts(defs):
+        return ",\n            ".join(f"count(*) FILTER ({cond}) AS {col}" for col, cond in defs)
+
+    window = f"BETWEEN DATE '{TIMELINE_START}' AND DATE '{TIMELINE_END}' + INTERVAL 1 MONTH - INTERVAL 1 DAY"
+    firsts = ", ".join(f"min(month) FILTER ({c} > 0) AS first_{c}" for c in series)
+    kept = ",\n        ".join(f"CASE WHEN j.month >= f.first_{c} THEN coalesce(j.{c}, 0) END AS {c}" for c in series)
+    return f"""
+    WITH months AS (
+        SELECT CAST(m AS DATE) AS month
+        FROM unnest(generate_series(DATE '{TIMELINE_START}', DATE '{TIMELINE_END}', INTERVAL 1 MONTH)) t(m)
+    ),
+    apps AS (
+        SELECT CAST(date_trunc('month', application_date) AS DATE) AS month,
+            {counts(TIMELINE_APPLICATIONS)}
+        FROM {lens_table("rights")} WHERE application_date {window} GROUP BY 1
+    ),
+    events AS (
+        SELECT CAST(date_trunc('month', event_effective_date) AS DATE) AS month,
+            {counts(TIMELINE_EVENTS)}
+        FROM {{iprapid/events}} WHERE event_effective_date {window} GROUP BY 1
+    ),
+    policy AS (
+        SELECT CAST(date_trunc('month', date) AS DATE) AS month, string_agg(id, ', ' ORDER BY date) AS policy_events
+        FROM {{policy_events/events}} GROUP BY 1
+    ),
+    j AS (
+        SELECT months.month, apps.* EXCLUDE (month), events.* EXCLUDE (month), policy.policy_events
+        FROM months LEFT JOIN apps USING (month) LEFT JOIN events USING (month) LEFT JOIN policy USING (month)
+    ),
+    f AS (SELECT {firsts} FROM j)
+    SELECT
+        j.month,
+        year(j.month) AS year,
+        month(j.month) AS month_of_year,
+        {_fy("j.month")} AS fy,
+        day(last_day(j.month)) AS days_in_month,
+        {kept},
+        j.policy_events
+    FROM j CROSS JOIN f
+    ORDER BY j.month
+    """
+
+
+LENSES = {
+    "rights": rights_sql,
+    "firms": firms_sql,
+    "regions": regions_sql,
+    "national": national_sql,
+    "timeline": timeline_sql,
+}
+ORDER = ["rights", "firms", "regions", "national", "timeline"]  # later lenses read the earlier ones
 
 
 def build(name: str) -> None:

@@ -33,7 +33,7 @@ def test_resolve_leaves_ordinary_braces_alone(monkeypatch):
 
 def test_register_is_well_formed():
     reg = style.register()
-    assert set(reg) == {"rights", "firms", "regions", "national"}
+    assert set(reg) == {"rights", "firms", "regions", "national", "timeline"}
     for lens, cols in reg.items():
         for col, v in cols.items():
             assert v.get("label"), f"{lens}.{col} has no label"
@@ -42,7 +42,7 @@ def test_register_is_well_formed():
     assert style.label("firms", "not_a_column") == "not_a_column"
 
 
-@pytest.mark.parametrize("lens", ["rights", "firms", "regions", "national"])
+@pytest.mark.parametrize("lens", ["rights", "firms", "regions", "national", "timeline"])
 def test_register_matches_built_lens(lens):
     p = data.LENS_DIR / f"{lens}.parquet"
     if not p.exists():
@@ -124,6 +124,11 @@ def test_charts_draw():
         multi.corr_heatmap(pd.DataFrame({"a": s, "b": s**2, "c": -s}), ["a", "b", "c"]),
     ):
         assert isinstance(fig, plt.Figure)
+    months = pd.date_range("2000-01-01", periods=48, freq="MS")
+    timeline = pd.DataFrame({"month": months, "patents_granted": pd.array(range(48), dtype="Int64")})
+    timeline["policy_events"] = None
+    timeline.loc[20, "policy_events"] = "raising-the-bar"
+    assert isinstance(uni.monthly(timeline, ["patents_granted"], events=["raising-the-bar"]), plt.Figure)
     fig, ax = plt.subplots()
     bi.scatter_trend(ax, s, s * 2, sample=500)
     plt.close("all")

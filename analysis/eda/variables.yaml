@@ -104,3 +104,38 @@ national:
   source: {label: Source, kind: category, note: "WDI or WIPO"}
   oecd: {label: OECD member, kind: binary}
   australia: {label: Australia, kind: binary}
+
+# One row per month, January 1904 to September 2026, for IP Australia's whole register (Australian and overseas
+# applicants). A series is empty (not 0) before its first recorded month. Definitions: TIMELINE_* in build.py.
+timeline:
+  month: {label: Month, kind: date, note: "the first day of the month"}
+  year: {label: Year, kind: year}
+  month_of_year: {label: Month of the year, kind: category, note: "1 = January; for seasonal patterns"}
+  fy: {label: Financial year, kind: year, note: "year ending 30 June"}
+  days_in_month: {label: Days in the month, kind: count, note: "28 to 31; months differ in length, which affects monthly counts"}
+  patents_standard_au: {label: Standard patent applications from Australian applicants, kind: count}
+  patents_standard_overseas: {label: Standard patent applications from overseas applicants, kind: count}
+  patents_provisional: {label: Provisional patent applications, kind: count, note: "placeholders, never granted themselves"}
+  patents_second_tier: {label: Innovation and petty patent applications, kind: count, note: "petty patents to 2001, innovation patents from 2001 until they closed on 26 August 2021"}
+  trade_marks_au: {label: Trade mark applications from Australian applicants, kind: count}
+  trade_marks_overseas: {label: Trade mark applications from overseas applicants, kind: count}
+  designs_au: {label: Design applications from Australian applicants, kind: count}
+  designs_overseas: {label: Design applications from overseas applicants, kind: count}
+  pbr_applications: {label: Plant breeder's rights applications, kind: count}
+  patents_granted: {label: Patents granted, kind: count}
+  trade_marks_registered: {label: Trade marks registered, kind: count}
+  designs_registered: {label: Designs registered, kind: count, note: "the first month, January 1970, looks like a placeholder date"}
+  pbr_granted: {label: Plant breeder's rights granted, kind: count}
+  patents_lapsed: {label: Patents lapsed, kind: count, note: "renewal fees not paid"}
+  trade_marks_lapsed: {label: Trade marks lapsed, kind: count}
+  designs_lapsed: {label: Designs lapsed, kind: count}
+  patents_ceased: {label: Patents ceased, kind: count, note: "IP RAPID's 'ceased' category; its meaning is a Stage 1 check"}
+  trade_marks_ceased: {label: Trade marks ceased, kind: count}
+  designs_ceased: {label: Designs ceased, kind: count}
+  patents_expired: {label: Patents expired, kind: count, note: "reached the end of their term"}
+  patent_oppositions: {label: Patent oppositions lodged (published), kind: count, note: "recorded from 2003"}
+  trade_mark_oppositions: {label: Trade mark oppositions and non-use removal requests, kind: count}
+  patent_extensions_of_term: {label: Pharmaceutical patent extensions of term granted, kind: count}
+  patent_assignments: {label: Patent assignments (ownership transfers) published, kind: count}
+  trade_mark_assignments: {label: Trade mark assignments (ownership transfers) published, kind: count}
+  policy_events: {label: IP policy changes taking effect, kind: category, note: "ids from policy_events/events, comma-separated"}
