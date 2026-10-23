@@ -17,6 +17,10 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Application, registration, grant** | A right starts as an application. If it passes examination it is *registered* (trade marks, designs) or *granted* (patents). |
 | **Lapse** | A right ends early because the owner stopped paying its renewal fees. Lapse is a signal that the owner judged the right no longer worth its cost. |
 | **Priority date** | The earliest filing date the application can claim, which may be from an earlier filing overseas. |
+| **Opposition** | A formal challenge by a third party to an application (or, for trade marks, a request to remove a mark that is not being used). |
+| **Assignment** | A transfer of ownership of a right, for example when a business sells its patents. |
+| **Extension of term** | Up to five extra years on a patent for a pharmaceutical substance, to make up for time lost waiting for regulatory approval. |
+| **Ceased** | IP RAPID's label for a right or application that has ended; how it differs from *lapsed* is checked in Stage 1. |
 | **Attorney or agent** | A professional who files for the applicant. Applicants who file without one are *self-filers*. |
 | **IPC class** | The International Patent Classification: a code for the technology a patent covers (for example `A61K`, medical preparations). |
 | **WIPO technology field** | One of 35 broad technology areas that WIPO builds from IPC classes. |
@@ -48,7 +52,7 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | Term | Meaning |
 |---|---|
 | **Corpus** | All the data collected for this project (`docs/catalogue.md`). |
-| **Lens** | One analysis-ready table with one row per thing being studied: a right, a firm, a place, or a country in a year. The EDA works one lens at a time. |
+| **Lens** | One analysis-ready table with one row per thing being studied: a right, a firm, a place, a country in a year, or a month in Australia's history (the *timeline*). The EDA works one lens at a time. |
 | **Unit of analysis** | What one row stands for. Counting or averaging only makes sense once this is clear. |
 | **EDA** | Exploratory data analysis: getting to know the data before trying to answer questions with it. |
 | **Univariate, bivariate, multivariate** | Looking at one variable at a time, at two together, or at several together. These are the EDA's three stages. |
@@ -72,6 +76,13 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **PCA** | Principal component analysis: it combines many related variables into a few summary measures. |
 | **VIF** | Variance inflation factor: how far a variable can be predicted from the others. Above about 5 to 10, the variables are repeating one another. |
 | **Clustering (k-means)** | Sorting rows into groups that look alike across several variables. The *silhouette* score (-1 to 1) says how well separated the groups are. |
+| **Trend** | The long-run direction of a series over years, ignoring short ups and downs. |
+| **Seasonality** | A pattern that repeats every year, such as fewer applications over the Christmas holidays. |
+| **Moving average** | The average of the last few values (here, usually 12 months), redrawn each month. It smooths out seasons and one-off spikes. |
+| **Structural break** | A point where a series jumps or changes direction, for example when a rule changes. |
+| **Interrupted time series** | A way to measure a break: the series' trend and season before a change are used to estimate what would have happened without it, and compared with what did. |
+| **Placebo test** | Running the same analysis at a date when nothing happened. If it finds "breaks" there too, a break at the real date is less convincing. |
+| **STL decomposition** | A method that splits a series into its trend, its seasonal pattern and what is left over. |
 | **Spurious correlation** | A link with no real connection behind it. It is common between time series that all trend upward over the same years. |
 | **Strength of evidence** | Every observation is labelled with one of four strengths, from the research goal:<br>- **descriptive**: what the data shows;<br>- **observational**: a link that may have other explanations;<br>- **causal**: an effect, shown by a suitable design;<br>- **projected**: an estimate of the future. |
 | **Additionality** | What happens *because of* a right or an intervention, compared with what would have happened anyway. It is the research goal's central test. |

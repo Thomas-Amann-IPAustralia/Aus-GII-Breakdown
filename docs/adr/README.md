@@ -7,9 +7,10 @@ the owner's, or Claude's, which the owner can overturn.
 | # | Decision | Date | Whose |
 |---|---|---|---|
 | [0001](0001-working-agreement.md) | Claude gets on with the work and asks only about direction, money, adoption and outward-facing actions | 2026-10-23 | Owner |
-| [0002](0002-eda-in-three-notebooks-by-lens.md) | The EDA is three notebooks (one per stage), each organised by four lenses | 2026-10-23 | Owner (stages), Claude (lenses) |
+| [0002](0002-eda-in-three-notebooks-by-lens.md) | The EDA is three notebooks (one per stage), each organised by four lenses (five from 0006) | 2026-10-23 | Owner (stages), Claude (lenses) |
 | [0003](0003-duckdb-first-context-safe-analysis.md) | Aggregate in DuckDB; notebooks committed with outputs; lens tables rebuilt, not committed | 2026-10-23 | Claude |
 | [0004](0004-evidence-conventions.md) | Numbered, evidenced observations with a strength label; plain English; accessible charts | 2026-10-23 | Owner (principles), Claude (format) |
 | [0005](0005-lens-definitions-v1.md) | How the four lenses are defined, and their known limits | 2026-10-23 | Claude |
+| [0006](0006-timeline-lens.md) | Add a fifth lens: Australia over time, one row per month | 2026-10-23 | Owner (the lens), Claude (its contents) |
 
-Next free number: 0006.
+Next free number: 0007.

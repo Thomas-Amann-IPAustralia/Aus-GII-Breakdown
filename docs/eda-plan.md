@@ -12,9 +12,9 @@ say: how complete each measure is, how it is distributed, what its quirks are, a
 enough to be worth a proper test. The EDA builds that understanding in three stages and ends with a short list of
 early signals and data gaps. Only then are the questions themselves tackled.
 
-## The units of analysis: four lenses
+## The units of analysis: five lenses
 
-The corpus has 152 tables at many levels of detail. The EDA works on four analysis-ready tables (lenses), each with
+The corpus has 152 tables at many levels of detail. The EDA works on five analysis-ready tables (lenses), each with
 one clear meaning per row. They are built in seconds by `uv run python -m eda.build`.
 
 | Lens | One row per | Rows | Main questions | What it holds |
@@ -23,15 +23,20 @@ one clear meaning per row. They are built in seconds by `uv run python -m eda.bu
 | `firms` | ABN in any IP, R&D, procurement or tax source | 391,983 | Q2, Q3, Q4 | Entity type, age, place, IP applications, R&D claims, income, government contracts |
 | `regions` | Postal area | 2,641 | Q2, Q4 | Population, remoteness, SEIFA, Census medians, businesses, IP applications and rates, R&D claimants |
 | `national` | Country, year and indicator | 127,309 | Q1, Q4 (context) | 22 World Bank indicators and WIPO filings by residents, for every country |
+| `timeline` | Month, for Australia (Jan 1904 to Sep 2026) | 1,473 | Q1, Q4, Q5 | Applications by type and origin; grants, lapses, expiries, oppositions, assignments, extensions of term; the 13 IP policy changes |
 
-Everything else in the corpus (IP events, citations, grants, PBS, court judgments, policy changes, wellbeing data) is
-profiled in Stage 1 and brought in when a question needs it.
+Time is a column in every lens; the `timeline` lens adds Australia's own month-by-month view, for seasonal patterns,
+what happened around each policy change, and any later forecasting (ADR 0006). Comparisons over time use changes or
+the months around events, not levels, because series that trend together over decades correlate whatever their link.
+
+Everything else in the corpus (citations, grants, PBS, court judgments, wellbeing data) is profiled in Stage 1 and
+brought in when a question needs it.
 
 ## The three stages
 
 | Stage | Notebook | Asks | Main tools (`analysis/eda/`) | Finished when |
 |---|---|---|---|---|
-| 1. Univariate | `analysis/notebooks/01_univariate.ipynb` | What does each variable look like on its own: completeness, shape, outliers, quirks? | `univariate`: `overview`, `describe`, `distribution`, `bin_check`, `counts`, `missing`, `over_time` | Every lens variable has a section with evidenced observations; exclusions and transformations are decided and recorded; the pairs to test are listed |
+| 1. Univariate | `analysis/notebooks/01_univariate.ipynb` | What does each variable look like on its own: completeness, shape, outliers, quirks? | `univariate`: `overview`, `describe`, `distribution`, `bin_check`, `counts`, `missing`, `over_time`, `monthly` | Every lens variable has a section with evidenced observations; exclusions and transformations are decided and recorded; the pairs to test are listed |
 | 2. Bivariate | `02_bivariate.ipynb` | Which pairs move together, in what shape, how strongly, for whom? | `bivariate`: `screen_pairs`, `pair_stats`, `scatter_trend`, `binned_summary`, `compare_groups`, `rate_by`, `rate_chart` | The planned pairs are tested; each signal has its size and interval; candidate third factors are listed |
 | 3. Multivariate | `03_multivariate.ipynb` | Do the signals survive other factors? What structure and segments exist? | `multivariate`: `corr_heatmap`, `pca`, `scree`, `vif`, `partial_corr`, `clusters`, `assign` | A table of early signals (evidence, strength, question, next step) and a table of data gaps (why, possible source, cost) |
 
@@ -62,6 +67,10 @@ Found while building the lenses; not yet findings.
 - About 80% of patent rights have no Australian postcode (their applicants are overseas).
 - Some postal areas have no residents (population, median age and income of 0).
 - Australia's World Bank series for researchers in R&D ends in 2010, and R&D spending (% of GDP) in 2021.
+- Rushes before rule changes: the busiest month for standard patent applications is April 2013 (1,018 from Australian
+  applicants, 5,407 from overseas), when the Raising the Bar reforms took effect; second-tier patent applications peak
+  at 2,789 in August 2021, the month innovation patents closed.
+- Designs registered begin in January 1970, which looks like a placeholder date.
 
 ## After Stage 3
 

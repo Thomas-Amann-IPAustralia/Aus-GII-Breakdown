@@ -35,7 +35,7 @@ until Stage 3 is done and the owner says so.
 
 - Keep context small. Never print raw rows or whole tables: aggregate in DuckDB with `eda.sql`, which refuses results
   over 250,000 rows. Read `analysis/output/columns.csv` with filters, not whole.
-- **Lenses** are the units of analysis: `rights`, `firms`, `regions` and `national`.
+- **Lenses** are the units of analysis: `rights`, `firms`, `regions`, `national` and `timeline` (monthly).
   - They are built by `analysis/eda/build.py` into `analysis/eda/data/`, which is gitignored.
   - Each column is described in `analysis/eda/variables.yaml`. Keep it in step with `build.py`; a test checks.
 - Corpus reference:

@@ -5,12 +5,12 @@ what is learned by using it.
 
 ## Exploratory data analysis (EDA)
 
-Three notebooks, one per stage, each organised by four *lenses* (analysis-ready tables with one row per right, firm,
-postal area, or country-year). The plan is `docs/eda-plan.md`; the status is `docs/handover-eda.md`.
+Three notebooks, one per stage, each organised by five *lenses* (analysis-ready tables with one row per right, firm,
+postal area, country-year, or month for Australia). The plan is `docs/eda-plan.md`; the status is `docs/handover-eda.md`.
 
 ```sh
 uv sync --group dev --group analysis
-uv run python -m eda.build          # the lens tables, into analysis/eda/data/ (gitignored; about 10 seconds)
+uv run python -m eda.build          # the lens tables, into analysis/eda/data/ (gitignored; under a minute)
 uv run jupyter nbconvert --to notebook --execute --inplace analysis/notebooks/01_univariate.ipynb
 ```
 
