@@ -2,7 +2,8 @@
 
 The data behind IP Australia's research programme (`docs/research-goal.md`): where, how and for whom IP Australia's
 interventions could generate the greatest additional public value. This repository holds the corpus, the code that
-builds it, and the plan that chose it. The analysis is done elsewhere, by sessions that read the corpus.
+builds it, the plan that chose it, and the analysis of it (`analysis/`), which starts with an exploratory data analysis
+in three stages (`docs/eda-plan.md`). Terms are explained in `GLOSSARY.md`; decisions are recorded in `docs/adr/`.
 
 - **`docs/research-goal.md`**: the five core questions.
 - **`docs/data-plan.md`**: which data serve which question, what was dropped and why, how non-financial public value is
@@ -68,6 +69,8 @@ raw files pass through a cache outside the repo (`$IPHOLMES_CACHE`, default `~/.
 | `data/processed/<source>/` | Parquet tables small enough for the repo (large ones are in R2 under `processed/`) |
 | `data/manifest.json` | Every file's SHA-256, size, rows, columns and location |
 | `docs/` | The research goal, the data plan, the catalogue, the evidence register |
+| `analysis/` | The analysis: the corpus profile, the EDA helpers (`analysis/eda/`) and notebooks (`analysis/notebooks/`) |
+| `CLAUDE.md`, `GLOSSARY.md`, `docs/adr/` | How Claude sessions work here, the plain-English glossary, and the decision records |
 | `tests/` | The rules, and the committed data against the manifest |
 | `index.html`, `assets/` | The GII breakdown page (Australia in the Global Innovation Index 2026), kept from the earlier site; it reads a frozen summary in `assets/data/`, and will be rebuilt on the corpus |
 

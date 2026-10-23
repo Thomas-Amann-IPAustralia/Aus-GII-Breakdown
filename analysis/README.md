@@ -3,6 +3,26 @@
 Code and outputs for the analysis sessions. The corpus itself is described in `docs/catalogue.md`; this folder holds
 what is learned by using it.
 
+## Exploratory data analysis (EDA)
+
+Three notebooks, one per stage, each organised by four *lenses* (analysis-ready tables with one row per right, firm,
+postal area, or country-year). The plan is `docs/eda-plan.md`; the status is `docs/handover-eda.md`.
+
+```sh
+uv sync --group dev --group analysis
+uv run python -m eda.build          # the lens tables, into analysis/eda/data/ (gitignored; about 10 seconds)
+uv run jupyter nbconvert --to notebook --execute --inplace analysis/notebooks/01_univariate.ipynb
+```
+
+| Path | What it holds |
+|---|---|
+| `notebooks/01_univariate.ipynb`, `02_bivariate.ipynb`, `03_multivariate.ipynb` | The three stages, committed with their outputs so they read on GitHub |
+| `eda/build.py` | How each lens is built from the corpus (every derived column is defined here) |
+| `eda/variables.yaml` | Every lens column in plain English: label, kind, unit, notes |
+| `eda/data.py` | `sql()`: DuckDB over the corpus (`{source/table}`) and the lenses (`{lens/name}`), refusing un-aggregated results |
+| `eda/style.py` | One look for every chart (colour-blind-safe palette), labels, source captions |
+| `eda/univariate.py`, `bivariate.py`, `multivariate.py` | The tools of each stage |
+
 ## Profiling the corpus
 
 ```sh
