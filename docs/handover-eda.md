@@ -2,6 +2,9 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
+**The owner's decisions (2026-10-25, end of session):** do the events attachment (B5) next, then `firms`; N01 and
+N06 are confirmed as settled (ADR 0010).
+
 **Status (2026-10-25, latest):** Stage 1 is under way. The `timeline` section (5) of `01_univariate.ipynb` now
 profiles every column of that lens (U22 to U30), after one more repair (ADR 0014): 15 monthly series started too
 early, on records where IP RAPID holds only the rights that survived until it was computerised (trade marks before
@@ -105,7 +108,7 @@ and BLADE stays ruled out.
     cells, and 5,181 World Bank trade mark values under the current codes;
   - one row per key: CER (7.05 million rows were 3.49 million values, each read twice), PHIDU (sub-indicators and
     area types restored, and a PHA-to-SA2 table), CABEE's survival rates by size, the ARTG.
-- **Settled (descriptive, ADR 0010):** the register does not drop provisional applications once a full application
+- **Settled (descriptive, ADR 0010; confirmed by the owner, 2026-10-25):** the register does not drop provisional applications once a full application
   claims them (N01, refuted), so FY2026's jump to 10,069 provisionals is real; `application_date` for a PCT filing is
   the date it entered Australia's national phase (N06).
 - **Corrected this session** (each in the record as well):
@@ -123,21 +126,27 @@ and BLADE stays ruled out.
 
 ## Next, in order
 
-1. **The rest of the `rights` attachments, as sub-sections of 1.8,** each built into the lens first:
-   - the events per right (B5): the dates of examination, acceptance, grant, opposition, assignment, extension of term
-     and the end of each right, giving lifetimes. The assignment events also test `holder_changed` for patents filed
-     before FY2003, where the party records cannot. Add innovation patents' certification: their grant follows a
-     check of formalities only, so certification is their examination (glossary; U10 and U11);
+1. **The events attachment (B5), as 1.8.2 (the owner agreed, 2026-10-25).** Stage 1 work: new columns on `rights`,
+   built into the lens first (an ADR), each then profiled on its own. The columns: the dates of examination request,
+   acceptance, grant, opposition, assignment, extension of term and the end of each right, giving lifetimes. Add
+   innovation patents' certification: their grant follows a check of formalities only, so certification is their
+   examination (glossary; U10 and U11). Read the event dates with ADR 0014 in mind: before 1995 some are dated in
+   batches, and before 1979 patents have no outcomes. On the way, describe (not explain):
+   - whether assignment events fill the gap in `holder_changed` for patents filed before FY2003 (U17);
+   - at what age of mark the 2002 fall in trade mark cessations, and rise in lapses, happen (U27);
+   - whether the April lows in design lapses, 1996 to 2002, come from how lapses are recorded (U29).
+2. **`firms`, then `regions` (the B3 rules for small areas first: a minimum denominator or pooling, intervals, a
+   per-person rate), then `national`,** in the order the plan gives. Before their profiles, `firms` and `regions`
+   switch their application counts from the current holder to the filer (`founder_abn`, `founder_postcode`; ADR 0013).
+3. **The rest of the `rights` attachments, as sub-sections of 1.8, when the owner says** (the plan had them before the
+   timeline; the owner's order is events, then `firms`):
    - the links, with the PCT country check;
    - Google Patents (B4);
    - the inventors (gender estimates checked country by country against WIPO's published shares, above all China and
      Korea).
-2. **Done: the `timeline` section (U22 to U30, ADR 0014).** Its later attachments (Labour Force, wages, PBS, CER,
+4. **Done: the `timeline` section (U22 to U30, ADR 0014).** Its later attachments (Labour Force, wages, PBS, CER,
    judgments, contracts, fees) become sub-sections of section 5 as each is built.
-3. **`firms`, then `regions` (the B3 rules for small areas first: a minimum denominator or pooling, intervals, a
-   per-person rate), then `national`,** in the order the plan gives. Before their profiles, `firms` and `regions`
-   switch their application counts from the current holder to the filer (`founder_abn`, `founder_postcode`; ADR 0013).
-4. **The plan's "high value, little work" additions, with the lens each serves:** the RBA's cash rate and exchange
+5. **The plan's "high value, little work" additions, with the lens each serves:** the RBA's cash rate and exchange
    rates and the ABS national accounts (timeline), the ATO's statistics by postcode (regions), and IP Australia's own
    published figures as a benchmark (which would also test the provisional rise, U8).
 
@@ -169,16 +178,11 @@ and BLADE stays ruled out.
 ## For the owner
 
 Nothing blocks the rest of Stage 1. Only you can do these:
-1. **Confirm N01 and N06 as settled** (ADR 0010): both are descriptive facts about the register, not research
-   findings, but they close two of the review's open questions.
-2. **The provisional rise (U8), if you can ask IP Australia:** whether a change in filing (a new channel, a fee, or
+1. **The provisional rise (U8), if you can ask IP Australia:** whether a change in filing (a new channel, a fee, or
    drafting tools) explains individuals' provisionals doubling in FY2026. The data show when and who, not why.
-3. **TableBuilder, only if a question needs owner-managers by sex or Indigenous status for each postal area:** register
+2. **TableBuilder, only if a question needs owner-managers by sex or Indigenous status for each postal area:** register
    as a private user, and check that the free Basic version has the variables (`docs/tablebuilder-owner-managers.md`).
-4. **What next (direction):** the plan's next lens is `firms`, but section 1's other attachments are still open. The
-   events attachment (B5) is Stage 1 work (new columns on `rights`, each profiled on its own); on the way it would
-   check how the register records three timeline leads (U27, U29) and whether assignments fill the gap in
-   `holder_changed` before FY2003. So I would do it first, then `firms`. What drives lifetimes is Stage 2's.
+3. **When to do the other `rights` attachments** (links, Google Patents, inventors): after `firms`, or later.
 
 ## Conventions to keep
 

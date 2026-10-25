@@ -104,7 +104,8 @@ it is built. Each lens's repairs come first.
    attorney use unknown for provisionals and excluding the applicant itself, the technology area for patents only,
    placeholder dates, the state from the postcode). **Core variables profiled (U1 to U16); the parties attached and
    profiled (B1, ADR 0013, U17 to U21).** Then come the other attachments: events per right, links, Google Patents
-   (B4) and the inventors (with their estimated gender).
+   (B4) and the inventors (with their estimated gender). The owner agreed (2026-10-25) to do the events attachment
+   next, then `firms`.
 2. **`timeline`** (repairs done, ADR 0010: A3 at both ends, events counted once, trade mark registrations by the date
    entered, the policy dates (B7), the quarterly CPI; ADR 0014: 15 series start where their records are complete, and
    the 1995 term change). **Every column profiled (U22 to U30).** Later attachments, each a sub-section of section 5:
@@ -148,7 +149,7 @@ Re-checked on 2026-10-25 with the owner's steer to go broad. Every source here i
    - trade marks: up 13.3%, as reported;
    - designs: up 7.1%, as reported.
 
-   It would also confirm the provisional-application puzzle (N01).
+   It would also check the provisional rise (U8); N01 itself is settled.
 
 **High value, more work:**
 5. **Historical official fees (R3).** IP Australia's own lever. With the CPI now held, fees can be compared in real
@@ -223,7 +224,7 @@ Found while building the lenses or in the review. Those confirmed in Stage 1 nam
 
 - 264,024 patent rows are provisional applications, which are never granted. They make up 60% of the Australian patent
   records in the regional counts (FY2017–26). FY2026 has 10,069 of them, against 4,143–5,047 a year in FY2022–FY2025.
-  The register does not drop a provisional once a full application claims it (N01, refuted in ADR 0010: 99.9% to 100%
+  The register does not drop a provisional once a full application claims it (N01, refuted in ADR 0010 and confirmed by the owner: 99.9% to 100%
   of claimed provisionals are present in every year from 2000); the jump is real, from more applicants (5,165 against
   3,361) and above all individuals (5,399 provisionals against 1,926). Why is the lead. **Confirmed in Stage 1 (U8):**
   it starts in early 2025, peaks in March and April 2026 and eases by September 2026; distinct ABNs are flat, and it
@@ -245,7 +246,7 @@ Found while building the lenses or in the review. Those confirmed in Stage 1 nam
   remain.
 - Patent applications per year show no drop-off in the latest years (FY2025: 35,065; FY2026: 41,257), and the counts
   match IP Australia's published 2025 figures. That is because, for a PCT filing, `application_date` is the date it
-  entered Australia's national phase, about 30 months after priority (N06, answered in ADR 0010);
+  entered Australia's national phase, about 30 months after priority (N06, answered in ADR 0010 and confirmed by the owner);
   `earliest_filed_date` is the international filing date. **Confirmed (U6)** for every type of right.
 - Fixed (ADR 0010): several timeline series showed decades of zeros between a stray early record and the start of
   continuous records (trade mark oppositions read 0 for 777 months, to October 1973; F38), and some ended on a cliff
