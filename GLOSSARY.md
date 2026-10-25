@@ -11,6 +11,8 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Standard patent** | The usual patent, examined in full before it is granted. |
 | **Provisional application** | A cheap placeholder that secures a filing date for 12 months. It is never granted itself; the applicant must follow it with a full application. |
 | **Innovation patent** | A cheaper, shorter (8-year) patent for smaller steps. It was phased out: no new ones could be filed after 25 August 2021. |
+| **Petty patent** | The innovation patent's predecessor, a short-term patent for minor inventions, available until 2001. |
+| **Second-tier patent** | A petty or innovation patent: cheaper and shorter than a standard patent, for smaller steps. The lenses count them apart from standard and provisional patents. |
 | **Trade mark** | Protection for a brand (a name, logo, sound and so on) used for particular goods or services. It can be renewed indefinitely. |
 | **Design** | Protection for how a product looks (its shape, pattern or ornamentation), for up to 10 years. |
 | **Plant breeder's right (PBR)** | Protection for a new plant variety. |
@@ -29,6 +31,10 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **PCT, Madrid, Hague** | International filing routes, for patents, trade marks and designs respectively. |
 | **IP RAPID** | IP Australia's open data on every Australian IP right, updated weekly. The `rights` lens is built from it. |
 | **IPLORD** | IP Australia's longitudinal research dataset, which links IP applicants to businesses. |
+| **Applicant origin** | Whether a right's applicants are in Australia or overseas: *Australian* if any current applicant is in Australia, *overseas* if at least one has a known country and none is in Australia, and *origin unknown* if no applicant's country is recorded (most patents filed before 1980). |
+| **Patent family** | All the filings for one invention, in every country, that share the same priority filing. One invention filed in Australia, the US and Europe is one family with several publications. |
+| **Inventor** | The person who made the invention, named on the patent. The inventor can differ from the applicant (the owner), such as an employee inventing for a firm. IP RAPID does not record inventors; Google Patents does. |
+| **Harmonised name** | A name tidied by Google Patents so the same person reads the same way across records. It is imperfect: the same inventor can still appear as "SMITH JOHN" on one publication and "SMITH JOHN A" on another. |
 
 ## Businesses and places
 
@@ -97,3 +103,5 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Strength of evidence** | Every observation is labelled with one of four strengths, from the research goal:<br>- **descriptive**: what the data shows;<br>- **observational**: a link that may have other explanations;<br>- **causal**: an effect, shown by a suitable design;<br>- **projected**: an estimate of the future. |
 | **Additionality** | What happens *because of* a right or an intervention, compared with what would have happened anyway. It is the research goal's central test. |
 | **Natural experiment** | A change (a new fee or rule, say) that affects some people and not others, for reasons unrelated to their outcomes. Comparing the two groups comes close to an experiment. |
+| **Estimated gender** | The probability that a person is a woman, worked out from their first name and country with a name-gender dictionary (WGND). It is not anyone's stated gender. Added up over many people, it gives an *expected count* of women and men, which is reliable for large groups but not for any one person. |
+| **Lower bound** | A count that is at least this large; the true figure may be higher. |

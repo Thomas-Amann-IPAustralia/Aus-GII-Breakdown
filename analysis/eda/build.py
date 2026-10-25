@@ -5,7 +5,7 @@
 
 | Lens | One row per | Built from |
 |---|---|---|
-| `rights` | IP right (patent, trade mark, design, plant breeder's right) | `iprapid/*_rights` |
+| `rights` | IP right (patent, trade mark, design, plant breeder's right) | `iprapid/*_rights`, `iprapid/party` |
 | `firms` | ABN in any IP, R&D, procurement or tax source | `linkage/abn_spine`, `rights`, `rdti`, `ato_ctt` |
 | `regions` | Postal area (the ABS's version of a postcode) | `abs_regions`, `abs_census`, `abr`, `rights`, `firms` |
 | `national` | Country, year and indicator | `wdi/panel`, `wipo_ipstats/office_origin` |
@@ -38,21 +38,18 @@ TIMELINE_START, TIMELINE_END = (
 # lens; outcomes by effective date from IP RAPID's events, using only categories recorded consistently over time.
 # Left out: renewals (their records stop in 2016 for designs and 2018 for trade marks) and every '_historical'
 # category (dated on the day records moved between systems, such as 10 November 2018 for trade marks).
+# Origin has three values (ADR 0009): a right with no applicant country counts as "origin unknown", never as overseas.
+ORIGINS = [
+    ("au", "australian_applicant"),
+    ("overseas", "NOT australian_applicant"),
+    ("origin_unknown", "australian_applicant IS NULL"),
+]
 TIMELINE_APPLICATIONS = [
-    (
-        "patents_standard_au",
-        "ip_right_type = 'patent' AND ip_right_sub_type = 'standard_complete' AND australian_applicant",
-    ),
-    (
-        "patents_standard_overseas",
-        "ip_right_type = 'patent' AND ip_right_sub_type = 'standard_complete' AND NOT australian_applicant",
-    ),
-    ("patents_provisional", "ip_right_type = 'patent' AND ip_right_sub_type = 'provisional'"),
-    ("patents_second_tier", "ip_right_type = 'patent' AND ip_right_sub_type IN ('innovation', 'petty')"),
-    ("trade_marks_au", "ip_right_type = 'trade_mark' AND australian_applicant"),
-    ("trade_marks_overseas", "ip_right_type = 'trade_mark' AND NOT australian_applicant"),
-    ("designs_au", "ip_right_type = 'design' AND australian_applicant"),
-    ("designs_overseas", "ip_right_type = 'design' AND NOT australian_applicant"),
+    *[(f"patents_standard_{o}", f"patent_type = 'standard' AND {cond}") for o, cond in ORIGINS],
+    ("patents_provisional", "patent_type = 'provisional'"),
+    ("patents_second_tier", "patent_type = 'second_tier'"),
+    *[(f"trade_marks_{o}", f"ip_right_type = 'trade_mark' AND {cond}") for o, cond in ORIGINS],
+    *[(f"designs_{o}", f"ip_right_type = 'design' AND {cond}") for o, cond in ORIGINS],
     ("pbr_applications", "ip_right_type = 'pbr'"),
 ]
 TIMELINE_EVENTS = [
@@ -101,41 +98,69 @@ def _fy(col: str) -> str:
 
 
 def rights_sql() -> str:
+    """One row per right. Origin comes from every current applicant (ADR 0009): Australian if any is in Australia,
+    overseas if at least one has a known country and none is in Australia, else unknown (NULL). IP RAPID's own
+    `any_applicant_in_australia` turns unknown into false, so it is not used."""
     parts = []
     for kind in ("patent", "trade_mark", "design", "pbr"):
         parts.append(f"""
-        SELECT
-            application_number,
-            '{kind}' AS ip_right_type,
-            ip_right_sub_type,
-            status,
-            application_date,
-            {_fy("application_date")} AS filing_fy,
-            priority_date,
-            gained_registration_status_date AS registered_date,
-            date_diff('day', application_date, gained_registration_status_date) AS days_to_registration,
-            deemed_retired_date AS retired_date,
-            applicant_count,
-            applicant_type,
-            applicant_country,
-            applicant_state,
-            CASE WHEN applicant_country = 'au' THEN {_postcode("applicant_postcode")} END AS applicant_postcode,
-            any_applicant_abn AS applicant_abn,
-            any_applicant_abn IS NOT NULL AS has_abn,
-            any_applicant_in_australia AS australian_applicant,
-            has_agent,
-            main_class,
-            main_area,
-            class_count
-        FROM {{iprapid/{kind}_rights}}""")
-    return " UNION ALL ".join(parts)
+        SELECT '{kind}' AS ip_right_type, * FROM {{iprapid/{kind}_rights}}""")
+    return f"""
+    WITH r AS ({" UNION ALL BY NAME ".join(parts)}),
+    applicants AS (
+        SELECT ip_right_type, application_number,
+               count(DISTINCT party_id) FILTER (country_code = 'au') AS applicants_au,
+               count(DISTINCT party_id) FILTER (country_code <> 'au') AS applicants_overseas,
+               count(DISTINCT party_id) FILTER (country_code IS NULL) AS applicants_country_unknown,
+               string_agg(DISTINCT country_code, ' ' ORDER BY country_code) AS applicant_countries
+        FROM {{iprapid/party}}
+        WHERE party_role_category IN ('applicant', 'owner') AND is_current IS NOT false
+        GROUP BY 1, 2
+    )
+    SELECT
+        r.application_number,
+        r.ip_right_type,
+        r.ip_right_sub_type,
+        CASE WHEN r.ip_right_type = 'patent' THEN
+            CASE WHEN r.ip_right_sub_type = 'standard_complete' THEN 'standard'
+                 WHEN r.ip_right_sub_type = 'provisional' THEN 'provisional'
+                 WHEN r.ip_right_sub_type IN ('innovation', 'petty') THEN 'second_tier' END
+        END AS patent_type,
+        r.status,
+        r.application_date,
+        {_fy("r.application_date")} AS filing_fy,
+        r.priority_date,
+        r.gained_registration_status_date AS registered_date,
+        date_diff('day', r.application_date, r.gained_registration_status_date) AS days_to_registration,
+        r.deemed_retired_date AS retired_date,
+        r.applicant_count,
+        r.applicant_type,
+        r.applicant_country,
+        r.applicant_state,
+        CASE WHEN r.applicant_country = 'au' THEN {_postcode("r.applicant_postcode")} END AS applicant_postcode,
+        nullif(trim(r.applicant_postcode), '') AS applicant_postcode_raw,
+        a.applicant_countries,
+        coalesce(a.applicants_au, 0) AS applicants_au,
+        coalesce(a.applicants_overseas, 0) AS applicants_overseas,
+        coalesce(a.applicants_country_unknown, 0) AS applicants_country_unknown,
+        r.any_applicant_abn AS applicant_abn,
+        r.any_applicant_abn IS NOT NULL AS has_abn,
+        CASE WHEN a.applicants_au > 0 THEN true WHEN a.applicants_overseas > 0 THEN false END AS australian_applicant,
+        r.has_agent,
+        r.main_class,
+        r.main_area,
+        r.class_count
+    FROM r LEFT JOIN applicants a USING (ip_right_type, application_number)
+    """
 
 
 def firms_sql() -> str:
     return f"""
     WITH ip AS (
         SELECT applicant_abn AS abn,
-               count(*) FILTER (ip_right_type = 'patent') AS n_patents,
+               count(*) FILTER (patent_type = 'standard') AS n_patents_standard,
+               count(*) FILTER (patent_type = 'provisional') AS n_patents_provisional,
+               count(*) FILTER (patent_type = 'second_tier') AS n_patents_second_tier,
                count(*) FILTER (ip_right_type = 'trade_mark') AS n_trade_marks,
                count(*) FILTER (ip_right_type = 'design') AS n_designs
         FROM {lens_table("rights")} WHERE applicant_abn IS NOT NULL GROUP BY 1
@@ -188,7 +213,9 @@ def firms_sql() -> str:
         s.in_rdti, s.in_austender, s.in_ato_ctt,
         s.patent_first_fy, s.trade_mark_first_fy, s.design_first_fy,
         s.ip_filed_total,
-        coalesce(ip.n_patents, 0) AS n_patents,
+        coalesce(ip.n_patents_standard, 0) AS n_patents_standard,
+        coalesce(ip.n_patents_provisional, 0) AS n_patents_provisional,
+        coalesce(ip.n_patents_second_tier, 0) AS n_patents_second_tier,
         coalesce(ip.n_trade_marks, 0) AS n_trade_marks,
         coalesce(ip.n_designs, 0) AS n_designs,
         coalesce(rd.rdti_years, 0) AS rdti_years,
@@ -236,7 +263,9 @@ def regions_sql() -> str:
     ),
     ip AS (
         SELECT applicant_postcode AS poa_code,
-               count(*) FILTER (ip_right_type = 'patent') AS patents,
+               count(*) FILTER (patent_type = 'standard') AS patents_standard,
+               count(*) FILTER (patent_type = 'provisional') AS patents_provisional,
+               count(*) FILTER (patent_type = 'second_tier') AS patents_second_tier,
                count(*) FILTER (ip_right_type = 'trade_mark') AS trade_marks,
                count(*) FILTER (ip_right_type = 'design') AS designs
         FROM {lens_table("rights")}
@@ -260,13 +289,16 @@ def regions_sql() -> str:
         census.* EXCLUDE (poa_code),
         coalesce(abr.active_abns, 0) AS active_abns,
         coalesce(abr.active_gst_abns, 0) AS active_gst_abns,
-        coalesce(ip.patents, 0) AS patents,
+        coalesce(ip.patents_standard, 0) AS patents_standard,
+        coalesce(ip.patents_provisional, 0) AS patents_provisional,
+        coalesce(ip.patents_second_tier, 0) AS patents_second_tier,
         coalesce(ip.trade_marks, 0) AS trade_marks,
         coalesce(ip.designs, 0) AS designs,
         coalesce(firms.ip_filing_firms, 0) AS ip_filing_firms,
         coalesce(firms.rdti_firms, 0) AS rdti_firms,
         coalesce(firms.rdti_firms_no_ip, 0) AS rdti_firms_no_ip,
-        1000.0 * coalesce(ip.patents, 0) / nullif(abr.active_gst_abns, 0) AS patents_per_1k_businesses,
+        1000.0 * coalesce(ip.patents_standard, 0) / nullif(abr.active_gst_abns, 0)
+            AS patents_standard_per_1k_businesses,
         1000.0 * coalesce(ip.trade_marks, 0) / nullif(abr.active_gst_abns, 0) AS trade_marks_per_1k_businesses,
         1000.0 * coalesce(ip.designs, 0) / nullif(abr.active_gst_abns, 0) AS designs_per_1k_businesses
     FROM {{abs_regions/poa}} p

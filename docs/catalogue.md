@@ -869,18 +869,27 @@ gives "hiroshi" in Japan a 17% chance of being a woman), so Stage 1 checks the e
 name is the word after a comma ("SMITH, JOHN"), else the first or second word, whichever matches the dictionary more
 often (logged at each run).
 
-Harmonised names can still differ across a family's publications (a middle initial, say), so a few inventors are
-counted twice; the counts per family are upper bounds.
+Harmonised names differ across a family's publications (a middle initial, a transliteration), so counting the distinct
+names in a family roughly doubles its inventors (ADR 0008). Each family's inventors are therefore those of one
+publication: the one naming the most inventors (then the most with a country). An inventor that publication gives no
+country takes the most common one given to the same name elsewhere in the family, else to the same first two words. A
+family member that adds an inventor (a divisional, say) is missed, so the counts per family are lower bounds.
 
 Processed:
-- `inventors` (R2, because it holds names as published): one row per family and inventor (Google's harmonised name),
-  with the inventor's country (the most common one across the family's publications; empty if none is given), the
-  publications naming them, the given name used, `p_female`, and its basis (`country` or `name`).
+- `inventors` (R2, because it holds names as published): one row per family and inventor (Google's harmonised name,
+  as the representative publication gives it), with the inventor's country and where it came from (`country_basis`:
+  `publication`, `name` or `name_key`; empty if none is given), the family's publications naming them, the given name
+  used, `p_female`, and its basis (`country` or `name`).
 - `family_inventors` (repo if it fits): one row per family: inventors; inventors in Australia, abroad and of unknown
   country; their countries; the expected numbers of women and men among the inventors with an estimate; and how many
   have none. No names.
 
-*Not ingested yet: see the status in `docs/data-plan.md`.*
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `family_inventors` | 1,548,276 | repo (16.0 MB) | `family_id`, `inventors`, `inventors_au`, `inventors_abroad`, `inventors_country_unknown`, `countries`, `women_expected`, `men_expected`, `gender_unknown` |
+| `inventors` | 4,131,009 | R2 (54.6 MB) | `family_id`, `name`, `country_code`, `country_basis`, `publications`, `given_name`, `p_female`, `p_female_basis` |
+
+- Note: google_patents_inventors: given name taken as word 2 of Google's harmonised names
 
 ## Reliance on Science, US patents' citations to scientific papers (OpenAlex) (`reliance_on_science`)
 

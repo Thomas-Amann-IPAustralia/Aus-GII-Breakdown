@@ -132,3 +132,18 @@ def test_charts_draw():
     fig, ax = plt.subplots()
     bi.scatter_trend(ax, s, s * 2, sample=500)
     plt.close("all")
+
+
+def test_rights_origin_is_three_valued_and_patents_are_typed():
+    p = data.LENS_DIR / "rights.parquet"
+    if not p.exists():
+        pytest.skip("lens not built here (run: uv run python -m eda.build)")
+    bad = data.sql(f"""
+        SELECT
+            count(*) FILTER (australian_applicant IS DISTINCT FROM
+                CASE WHEN applicants_au > 0 THEN true WHEN applicants_overseas > 0 THEN false END) AS origin,
+            count(*) FILTER (applicants_au + applicants_overseas + applicants_country_unknown <> applicant_count)
+                AS applicants,
+            count(*) FILTER ((ip_right_type = 'patent') <> (patent_type IS NOT NULL)) AS patent_type
+        FROM read_parquet('{p}')""").iloc[0]
+    assert bad.to_dict() == {"origin": 0, "applicants": 0, "patent_type": 0}
