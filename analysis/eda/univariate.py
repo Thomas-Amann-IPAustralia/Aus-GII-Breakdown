@@ -280,3 +280,50 @@ def around_events(timeline: pd.DataFrame, targets: dict[str, list[str]], *, mont
     for ax in axes.flat[len(targets) :]:
         ax.set_visible(False)
     return fig
+
+
+def kaplan_meier(
+    counts: pd.DataFrame,
+    *,
+    time: str = "t",
+    ended: str = "ended",
+    unfinished: str = "unfinished",
+    by: str | None = None,
+) -> pd.DataFrame:
+    """Survival curves from grouped counts: one row per (group and) time, with the number that `ended` then and the
+    number still going (`unfinished`, censored) last seen then. Returns, for each time, the share still going after
+    it (Kaplan-Meier: the product over times of 1 minus the share at risk that ended), the number at risk, and a 95%
+    interval (Greenwood's variance, on the log-log scale, so it stays between 0 and 1). Aggregate in SQL first: a
+    curve needs only counts, never the rows."""
+    groups = counts.groupby(by) if by else [(None, counts)]
+    out = []
+    for g, d in groups:
+        d = d.groupby(time)[[ended, unfinished]].sum().sort_index()
+        at_risk = d[ended].add(d[unfinished]).iloc[::-1].cumsum().iloc[::-1]
+        q = (d[ended] / at_risk).clip(upper=1)
+        s = (1 - q).cumprod()
+        var = (d[ended] / (at_risk * (at_risk - d[ended])).where(at_risk > d[ended])).cumsum()
+        with np.errstate(divide="ignore", invalid="ignore"):
+            se = np.sqrt(var) / np.log(s).abs()
+            lo, hi = s ** np.exp(1.96 * se), s ** np.exp(-1.96 * se)
+        r = pd.DataFrame({"at_risk": at_risk, "survival": s, "lower": lo, "upper": hi}).reset_index()
+        if by:
+            r.insert(0, by, g)
+        out.append(r)
+    return pd.concat(out, ignore_index=True)
+
+
+def survival_at(curves: pd.DataFrame, years, *, by: str, time: str = "t", min_at_risk: int = 30) -> pd.DataFrame:
+    """The share still going at each of `years` (the curve's value at the last time not after it), by group. Empty
+    where the curve has not reached that time, or fewer than `min_at_risk` are left at risk by then."""
+    rows = {}
+    for g, d in curves.groupby(by, sort=False):
+        d = d.set_index(time).sort_index()
+        rows[g] = {}
+        for y in years:
+            seen = d[d.index <= y]
+            if y > d.index.max() or (len(seen) and seen.at_risk.iloc[-1] < min_at_risk):
+                rows[g][y] = np.nan
+            else:
+                rows[g][y] = seen.survival.iloc[-1] if len(seen) else 1.0
+    return pd.DataFrame(rows).T.rename_axis(index=by, columns="years")

@@ -5,7 +5,7 @@
 
 | Lens | One row per | Built from |
 |---|---|---|
-| `rights` | IP right (patent, trade mark, design, plant breeder's right) | `iprapid/*_rights`, `iprapid/party` |
+| `rights` | IP right (patent, trade mark, design, plant breeder's right) | `iprapid/*_rights`, `party`, `events` |
 | `firms` | ABN in any IP, R&D, procurement or tax source | `linkage/abn_spine`, `rights`, `rdti`, `ato_ctt` |
 | `regions` | Postal area (the ABS's version of a postcode) | `abs_regions`, `abs_census`, `abr`, `rights`, `firms` |
 | `national` | Country, year and indicator | `wdi/panel`, `wipo_ipstats/office_origin`, `oecd/msti` |
@@ -148,6 +148,47 @@ TIMELINE_LAG = {
     "designs_origin_unknown": 3,
 }
 
+# The events attachment (B5, ADR 0015): each right's milestones, from IP RAPID's events, as (column, condition). Each
+# is the first such event the register still holds as standing (a lapse later reversed, or an acceptance withdrawn, is
+# not standing), dated from 1904 to the corpus date and not before the right's earliest filing (171 events are, such
+# as 26 trade mark oppositions dated 1909); 1 January 1970 is a placeholder (3,154 events) and is left out.
+# A grant is not here: the grant event's date is `registered_date` for every granted patent.
+EXPEDITED = (
+    "(ip_right_type = 'patent' AND event_type LIKE 'exam_expedited%') OR event_category = 'exam_request_expedite'"
+)
+ASSIGNED = (  # one record, published twice for patents (as an assignment and as a party change): the first is used
+    "(ip_right_type = 'patent' AND event_type LIKE 'published_assignments%') "
+    "OR (ip_right_type IN ('trade_mark', 'design') AND event_category = 'publish_ownership')"
+)
+RIGHT_EVENTS = [
+    # The date the term of a patent runs from: the filing date of the complete application (for a PCT application,
+    # the international filing date; for a divisional, often the parent's)
+    ("date_of_patent", "ip_right_type = 'patent' AND event_category = 'ip_right_date'"),
+    # Examination asked for: patents and designs (a trade mark is examined without a request), not re-examination
+    (
+        "exam_requested_date",
+        f"ip_right_type IN ('patent', 'design') AND (event_category = 'exam_request' OR {EXPEDITED}) "
+        "AND event_type NOT LIKE '%re_examination%'",
+    ),
+    ("accepted_date", "event_category = 'accepted'"),
+    ("certified_date", "ip_right_type IN ('patent', 'design') AND event_category = 'certified'"),
+    # An opposition to the grant or registration; a trade mark's application for removal for non-use is not one
+    (
+        "opposed_date",
+        "(ip_right_type = 'patent' AND event_type IN "
+        "('published_opposition_lodged', 'published_opposition_under_section_104_4_lodged')) "
+        "OR (ip_right_type = 'trade_mark' AND event_type = 'dispute_registration')",
+    ),
+    ("first_assigned_date", ASSIGNED),
+    ("term_extended_date", "event_type = 'published_extension_of_term_of_standard_patent_extension_granted'"),
+]
+# A right's lifetime runs from the date its term runs from (a patent's date of patent; a trade mark's or design's
+# earliest filing date, which for a Madrid trade mark is the international registration's; a plant breeder's right's
+# grant) to its end, or to the last date the register has finished recording
+# ends, after which it counts as still in force. Trade marks and designs cease only after a six-month grace period
+# for renewal, so the register's record of their ends stops six months early, as in `TIMELINE_LAG`.
+OBSERVED_UNTIL = {"trade_mark": "2026-03-31", "design": "2026-03-31"}
+
 OECD = (
     "AUS AUT BEL CAN CHL COL CRI CZE DNK EST FIN FRA DEU GRC HUN ISL IRL ISR ITA JPN KOR LVA LTU LUX MEX NLD NZL NOR "
     "POL PRT SVK SVN ESP SWE CHE TUR GBR USA"
@@ -188,7 +229,30 @@ def rights_sql() -> str:
     through changes of address; it is empty for patents filed before FY2003, for which IP RAPID keeps one set of
     applicants, entered when records moved between systems, so filer and holder cannot be told apart. The agent is
     the right's agent who is not an applicant and who acts for the most applicants across the register; an agent of
-    five or more is counted as an attorney."""
+    five or more is counted as an attorney.
+
+    The events attachment (B5, ADR 0015) adds each right's milestones (`RIGHT_EVENTS`) and its lifetime: the years
+    from the date its term runs from to its end, or to `OBSERVED_UNTIL` if it is still in force then (`in_force` is
+    then true, and the lifetime is unfinished). Only rights that were granted or registered have a lifetime."""
+    milestones = ",\n               ".join(
+        f"min(event_effective_date) FILTER ({cond}) AS {col}" for col, cond in RIGHT_EVENTS
+    )
+    any_milestone = " OR ".join(f"({cond})" for cond in [*(c for _, c in RIGHT_EVENTS), EXPEDITED])
+    term_from = (
+        "CASE r.ip_right_type WHEN 'patent' THEN m.date_of_patent WHEN 'pbr' THEN r.registered "
+        "ELSE r.earliest_filed_date END"
+    )
+    until = (
+        "CASE r.ip_right_type "
+        + " ".join(f"WHEN '{t}' THEN DATE '{d}'" for t, d in OBSERVED_UNTIL.items())
+        + f" ELSE DATE '{TODAY}' END"
+    )
+    # In force at some time and observed since; with an end date no earlier than its term began (26 rights end
+    # earlier), or, with none, a status of a right in force (6,621 rights have a status that ended them but no date)
+    observed = (
+        f"r.registered IS NOT NULL AND {term_from} <= {until} "
+        f"AND coalesce(r.retired >= {term_from}, r.status IN ('granted', 'certified', 'protected', 'registered'))"
+    )
     parts = []
     for kind in ("patent", "trade_mark", "design", "pbr"):
         parts.append(f"""
@@ -277,6 +341,19 @@ def rights_sql() -> str:
                    WHEN 'Northern Territory' THEN 'nt' WHEN 'Australian Capital Territory' THEN 'act' END AS state
         FROM {{abs_regions/poa}}
     ),
+    milestones AS (  -- the events attachment (B5, ADR 0015)
+        SELECT ip_right_type, application_number,
+               {milestones},
+               bool_or({EXPEDITED}) AS expedited,
+               count(DISTINCT event_effective_date) FILTER ({ASSIGNED}) AS assignments
+        FROM {{iprapid/events}} JOIN r USING (ip_right_type, application_number)
+        WHERE is_standing AND event_effective_date BETWEEN DATE '1904-01-01' AND DATE '{TODAY}'
+          AND event_effective_date <> DATE '1970-01-01'
+          AND (event_category = 'ip_right_date'
+               OR event_effective_date >= coalesce(earliest_filed_date, DATE '1904-01-01'))
+          AND ({any_milestone})
+        GROUP BY 1, 2
+    ),
     dated AS (
         SELECT *,
                CASE WHEN applicant_country = 'au' THEN {_postcode("applicant_postcode")} END AS postcode_au,
@@ -342,7 +419,21 @@ def rights_sql() -> str:
         CASE WHEN r.ip_right_sub_type = 'provisional' THEN NULL
              WHEN g.agent_clients >= 5 THEN 'attorney'
              WHEN g.agent_id IS NOT NULL THEN 'other_agent'
-             ELSE 'self' END AS representation
+             ELSE 'self' END AS representation,
+        m.date_of_patent,
+        m.exam_requested_date,
+        CASE WHEN m.expedited THEN true
+             WHEN r.ip_right_type = 'trade_mark' OR m.exam_requested_date IS NOT NULL THEN false END AS exam_expedited,
+        m.accepted_date,
+        m.certified_date,
+        m.opposed_date,
+        CASE WHEN r.ip_right_type <> 'pbr' THEN coalesce(m.assignments, 0) END AS assignment_count,
+        m.first_assigned_date,
+        m.term_extended_date,
+        CASE WHEN {observed} THEN r.retired IS NULL OR r.retired > {until} END AS in_force,
+        CASE WHEN {observed}
+             THEN round(date_diff('day', {term_from}, least(coalesce(r.retired, {until}), {until})) / 365.25, 2)
+        END AS years_in_force
     FROM dated r
     LEFT JOIN applicants a USING (ip_right_type, application_number)
     LEFT JOIN agents g USING (ip_right_type, application_number)
@@ -351,6 +442,7 @@ def rights_sql() -> str:
     LEFT JOIN holders h USING (ip_right_type, application_number)
     LEFT JOIN poa_state ps ON ps.poa_code = r.postcode_au
     LEFT JOIN poa_state fs ON fs.poa_code = f.founder_postcode
+    LEFT JOIN milestones m USING (ip_right_type, application_number)
     """
 
 
