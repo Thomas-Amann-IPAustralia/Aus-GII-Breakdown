@@ -144,7 +144,15 @@ def rights_sql() -> str:
     1 January 1970, for 1,282 rights filed from 2013, and a registration before 1904); and a trade mark's days to
     registration are empty before 1986, when its registration date is its filing date. An Australian applicant's
     missing state is taken from the postcode's postal area (IP RAPID leaves it out for many Australian standard
-    patents filed from FY2023; where both exist they agree for 99.9% of rights)."""
+    patents filed from FY2023; where both exist they agree for 99.9% of rights).
+
+    The parties attachment (B1, ADR 0013) adds who filed the right beside who holds it now, and who represents them.
+    The founding applicants are those IP RAPID marks `is_founding`, each as first recorded; the applicant columns
+    above describe the current holder. `holder_changed` compares the two sets by party id, which IP RAPID keeps
+    through changes of address; it is empty for patents filed before FY2003, for which IP RAPID keeps one set of
+    applicants, entered when records moved between systems, so filer and holder cannot be told apart. The agent is
+    the right's agent who is not an applicant and who acts for the most applicants across the register; an agent of
+    five or more is counted as an attorney."""
     parts = []
     for kind in ("patent", "trade_mark", "design", "pbr"):
         parts.append(f"""
@@ -167,14 +175,64 @@ def rights_sql() -> str:
         FROM {{iprapid/party}}
         WHERE party_role_category IN ('applicant', 'owner', 'applicant_agent')
     ),
-    agents AS (  -- an agent who is not one of the right's applicants or owners, at any time
-        SELECT DISTINCT ag.ip_right_type, ag.application_number
+    other_agents AS (  -- agents who are not one of the right's applicants or owners, at any time
+        SELECT DISTINCT ag.ip_right_type, ag.application_number, ag.party_id
         FROM party ag
         ANTI JOIN party ap
             ON ap.ip_right_type = ag.ip_right_type AND ap.application_number = ag.application_number
            AND ap.party_role_category IN ('applicant', 'owner')
            AND (ap.party_id = ag.party_id OR ap.name = ag.name)
         WHERE ag.party_role_category = 'applicant_agent'
+    ),
+    clients AS (  -- how many different applicants each such agent acts for, across the whole register
+        SELECT o.party_id, count(DISTINCT ap.party_id) AS clients
+        FROM other_agents o
+        JOIN party ap USING (ip_right_type, application_number)
+        WHERE ap.party_role_category IN ('applicant', 'owner')
+        GROUP BY 1
+    ),
+    agents AS (  -- the right's main agent: the one acting for the most applicants
+        SELECT o.ip_right_type, o.application_number,
+               arg_max(o.party_id, (c.clients, o.party_id)) AS agent_id, max(c.clients) AS agent_clients
+        FROM other_agents o JOIN clients c USING (party_id)
+        GROUP BY 1, 2
+    ),
+    agent_info AS (
+        SELECT party_id AS agent_id,
+               any_value(CASE WHEN party_type = 'organisation' THEN party_name END) AS agent_name
+        FROM {{iprapid/party}} WHERE party_role_category = 'applicant_agent'
+        GROUP BY 1
+    ),
+    founders AS (  -- each founding applicant or owner, as first recorded
+        SELECT * FROM (
+            SELECT ip_right_type, application_number, party_id, party_type, country_code, state_code,
+                   {_postcode("post_code")} AS postcode, effective_from_date AS since,
+                   max(abn) OVER (PARTITION BY ip_right_type, application_number, party_id) AS abn,
+                   row_number() OVER (PARTITION BY ip_right_type, application_number, party_id
+                                      ORDER BY effective_from_date, country_code NULLS LAST) AS k
+            FROM {{iprapid/party}}
+            WHERE party_role_category IN ('applicant', 'owner') AND is_founding
+        ) WHERE k = 1
+    ),
+    founding AS (
+        SELECT ip_right_type, application_number,
+               count(*) AS founder_count,
+               arg_min_null(party_type, (since, party_id)) AS founder_type,
+               arg_min_null(country_code, (since, party_id)) AS founder_country,
+               CASE WHEN bool_or(country_code = 'au') THEN true
+                    WHEN bool_or(country_code IS NOT NULL) THEN false END AS founding_australian,
+               arg_min_null(postcode, (since, party_id)) FILTER (country_code = 'au') AS founder_postcode,
+               arg_min_null(CASE state_code WHEN 'queensland' THEN 'qld' ELSE state_code END, (since, party_id))
+                   FILTER (country_code = 'au') AS founder_state,
+               arg_min(abn, (since, party_id)) FILTER (abn IS NOT NULL) AS founder_abn,
+               list(party_id ORDER BY party_id) AS ids
+        FROM founders GROUP BY 1, 2
+    ),
+    holders AS (
+        SELECT ip_right_type, application_number, list(DISTINCT party_id ORDER BY party_id) AS ids
+        FROM {{iprapid/party}}
+        WHERE party_role_category IN ('applicant', 'owner') AND is_current IS NOT false
+        GROUP BY 1, 2
     ),
     poa_state AS (  -- each postal area's state (ASGS 2021), for an Australian applicant whose state is missing
         SELECT poa_code,
@@ -225,14 +283,38 @@ def rights_sql() -> str:
         r.any_applicant_abn IS NOT NULL AS has_abn,
         CASE WHEN a.applicants_au > 0 THEN true WHEN a.applicants_overseas > 0 THEN false END AS australian_applicant,
         CASE WHEN r.ip_right_sub_type <> 'provisional'  -- no agents are published for provisionals
-             THEN g.application_number IS NOT NULL END AS has_agent,
+             THEN g.agent_id IS NOT NULL END AS has_agent,
         r.main_class,
         CASE WHEN r.ip_right_type = 'patent' AND r.main_area <> '99_unknown' THEN r.main_area END AS main_area,
-        r.class_count
+        r.class_count,
+        coalesce(f.founder_count, 0) AS founder_count,
+        f.founder_type,
+        f.founder_country,
+        f.founding_australian,
+        f.founder_postcode,
+        coalesce(
+            CASE WHEN f.founder_state IN ('nsw', 'vic', 'qld', 'sa', 'wa', 'tas', 'nt', 'act') THEN f.founder_state END,
+            fs.state
+        ) AS founder_state,
+        f.founder_abn,
+        CASE WHEN r.ip_right_type = 'patent' AND coalesce(r.application_date, DATE '1900-01-01') < DATE '2002-07-01'
+             THEN NULL  -- one set of applicants, entered when records moved between systems (ADR 0013)
+             WHEN len(f.ids) > 0 AND len(h.ids) > 0 THEN f.ids <> h.ids END AS holder_changed,
+        g.agent_id,
+        ai.agent_name,
+        g.agent_clients,
+        CASE WHEN r.ip_right_sub_type = 'provisional' THEN NULL
+             WHEN g.agent_clients >= 5 THEN 'attorney'
+             WHEN g.agent_id IS NOT NULL THEN 'other_agent'
+             ELSE 'self' END AS representation
     FROM dated r
     LEFT JOIN applicants a USING (ip_right_type, application_number)
     LEFT JOIN agents g USING (ip_right_type, application_number)
+    LEFT JOIN agent_info ai ON ai.agent_id = g.agent_id
+    LEFT JOIN founding f USING (ip_right_type, application_number)
+    LEFT JOIN holders h USING (ip_right_type, application_number)
     LEFT JOIN poa_state ps ON ps.poa_code = r.postcode_au
+    LEFT JOIN poa_state fs ON fs.poa_code = f.founder_postcode
     """
 
 
