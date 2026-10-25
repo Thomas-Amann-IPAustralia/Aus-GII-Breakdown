@@ -176,8 +176,9 @@ Nothing blocks the rest of Stage 1. Only you can do these:
 3. **TableBuilder, only if a question needs owner-managers by sex or Indigenous status for each postal area:** register
    as a private user, and check that the free Basic version has the variables (`docs/tablebuilder-owner-managers.md`).
 4. **What next (direction):** the plan's next lens is `firms`, but section 1's other attachments are still open. The
-   events attachment (B5) would also test three timeline leads (U27, U29) and `holder_changed` before FY2003, so I
-   would do it first, then `firms`.
+   events attachment (B5) is Stage 1 work (new columns on `rights`, each profiled on its own); on the way it would
+   check how the register records three timeline leads (U27, U29) and whether assignments fill the gap in
+   `holder_changed` before FY2003. So I would do it first, then `firms`. What drives lifetimes is Stage 2's.
 
 ## Conventions to keep
 
