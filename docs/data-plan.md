@@ -142,7 +142,7 @@ Tier 2 adds complements, outcomes and comparators. Tier 3 needs your help or an 
 | 7 | **Counts of Australian Businesses** (entries, exits, by industry, size and SA2) | ABS | Denominators: IP users per 1,000 businesses by industry, size and region, and the comparison population for non-users | Q2, Q4 | ~50 MB | CC BY 4.0 |
 | 8 | **SEIFA 2021 by postal area and SA2**, **Data by Region** (ASGS 2021 and remoteness), **ASGS postcode and SA2 correspondences** | ABS Data API | Places IP users in socio-economic and remoteness context; regional innovation potential (education, occupation, industry mix) | Q2, Q4 | ~100 MB | CC BY 4.0 |
 | 9 | **Concordances**: WIPO IPC to 35 technology fields; IPC to industry (Algorithmic Links with Probabilities, ISIC and ANZSIC); Nice class to industry; WIPO IPC Green Inventory | WIPO, academic (Lybbert and Zolas), ABS | Turn patent and trade mark classes into industries and green technologies (environmental public value) | Q1, Q2 | < 10 MB | open |
-| 10 | **World Gender-Name Dictionary 2.0** | WIPO, Harvard Dataverse | Infers inventor and individual applicant gender from names, the established method (WIPO, IP Australia's own past reports) | Q2 | ~50 MB | CC BY 4.0 |
+| 10 | **World Gender-Name Dictionary 2.0** | WIPO, Harvard Dataverse | Infers inventor gender from names, the established method (WIPO, IP Australia's own past reports). Inventors' names come from Google Patents (`google_patents_inventors`); IP RAPID's individual applicants are pseudonymised codes, so their gender cannot be estimated | Q2 | ~50 MB | CC BY 4.0 |
 
 ### Tier 2: complements, outcomes and comparators (programmatic)
 
@@ -178,7 +178,7 @@ Listed in order of value. Items marked "you" are the limited fetches you offered
 | # | Dataset | Why it matters | How |
 |---|---|---|---|
 | A | ~~A current IPGOD and IPLORD extract~~ | **Done with public data:** IP RAPID, IP Australia's weekly open data release, covers every application to the current week (`iprapid`) | Ingested |
-| B | ~~ABS BLADE with IP Australia's linked IP data~~ | **Ruled out (2026-10-22): no ABS integrated data assets.** It was the only source of small firms' turnover, employment and productivity | Not pursued |
+| B | ~~ABS BLADE with IP Australia's linked IP data~~ | **Ruled out (2026-10-22; confirmed 2026-10-25): no ABS integrated data assets.** It was the only source of small firms' turnover, employment and productivity | Not pursued |
 | C | ~~Examination records with examiner assignment~~ | **Ruled out (2026-10-22): public data only.** It would have allowed the examiner leniency design | Not pursued |
 | D | ~~IP Australia customer and SME research microdata~~ | **Ruled out: public data only.** Published reports can go in the evidence register | Not pursued |
 | E | **Global patent data**: Google Patents Public Data (BigQuery) | Forward citations and patent families as value measures; Australian inventors abroad | **Ingested** (`google_patents`) |
@@ -201,7 +201,7 @@ as the research goal requires.
   patenting and its diffusion, Indigenous Knowledge and geographical indications, counterfeit enforcement, disclosure
   and the public domain (descriptive), framed against Measuring What Matters.
 - **Q2 Distribution.** IP use per business by industry, firm age, entity type, size proxy, remoteness and SEIFA
-  decile; gender of inventors and individual applicants; self-filers against attorney filers (descriptive).
+  decile; gender of inventors (estimated from Google Patents names; IP RAPID's individuals are pseudonymised); self-filers against attorney filers (descriptive).
 - **Q3 Conditions.** Survival and growth proxies (ABR, ASIC, GST status) for first-time filers against matched
   non-filers; R&D performers that do and do not register; IP holders' share of government contracts; international
   filing by firm type; formal against informal protection from BCS (observational).
@@ -234,7 +234,7 @@ columns. In short:
 | # | Source (`id`) | Status | What is there |
 |---|---|---|---|
 | 1 | IP RAPID (`iprapid`), replacing IPGOD 2022 | Ingested | All six tables, every right, to the current week (R2); a summary per right type and an applicant by financial year panel (repo). Its events include extensions of term (1,450 patents granted one), lapses (300,270 patents), assignments (110,600 patents), registered licences (1,700) and oppositions (1,831 lodged); current to the week of 19 October 2026 |
-| 2 | IPLORD 2020 (`iplord`) | Ingested | The full panel (R2) and its ABN rows (repo). The public release has no patent columns; `ipgod/applicant_year` covers patents to 2022 |
+| 2 | IPLORD 2020 (`iplord`) | Ingested | The full panel (R2) and its ABN rows (repo). The public release has no patent columns (confirmed in all seven CSVs of the raw zip, 2026-10-25); `iprapid/applicant_year` covers patents to the current week |
 | 3 | ABN Bulk Extract (`abr`) | Ingested | 20.6 million ABNs, current and cancelled (R2), without individuals' names |
 | 4 | ASIC companies (`asic`) | Ingested | 4.0 million companies (R2) |
 | 5 | R&D Tax Incentive (`rdti`) | Ingested | 38,512 claims, 2021-22 to 2023-24 |
@@ -250,12 +250,14 @@ columns. In short:
 | 12 | NHMRC grants (`nhmrc_grants`) | Ingested (your download) | 12,224 grants, application rounds 2013 to 2026, harmonised into one table; investigators' names left out |
 | 13 | Corporate tax transparency (`ato_ctt`) | Ingested | 2013-14 to 2024-25 |
 | 14, 26 | OECD panel (`oecd`) | Ingested | 24 flows: MSTI, methods used to protect IP, patents (WIPO fields, environment, ownership, co-invention, regions), business demography, venture capital, IP tax regimes, How's Life? (current and future well-being, including trust in government, others and the police; by sex, age and education; child well-being), and distance to the Sustainable Development Goals 1, 2, 9 and 13 |
-| 15 | WDI panel (`wdi`) | Ingested | 22 indicators, every country; the World Bank has archived its trade mark series |
+| 15 | WDI panel (`wdi`) | Ingested | 22 indicators, every country. The trade mark series moved to new codes (`IP.TMK.RSCT`, `IP.TMK.NRCT`, 2004–2024), which are not yet loaded; the old ones are archived |
 | 16 | WIPO IP statistics (`wipo_ipstats`) | Ingested | From the public API behind WIPO's data centre: every office by every origin, 1980 to 2024 (4.9 million values: patents, utility models, trade marks, designs; applications, grants, in force, by field or class), office workloads, and PCT, Madrid and Hague by origin |
 | 17 | TM-Link (`tmlink`) | Ingested | Links, applications, owners, classes, Madrid and property tables (R2); free-text tables left out |
 | 18 | IP Australia fees (`ipa_fees`) | Ingested (current only) | Application, examination, renewal, opposition fees; historical schedules need the Wayback Machine, which this environment cannot reach |
-| 19 | PBS (`pbs`) | Ingested | Date-of-supply data from July 2020 by item and month, and the item to drug map |
+| 19 | PBS (`pbs`) | Ingested | Date-of-supply data from July 2020 by item and month, and the item to drug map. The processed tables come from the pharmacy-type reports, which leave out Section 100 supply; the monthly workbook that includes it is held raw only |
 | 20 | ABS R&D and venture capital (`abs_rd_vc`) | Ingested | BERD 2023-24, GOVERD 2024-25, HERD 2024, venture capital to 2018-19 (discontinued) |
+| — | Prices, wages and living costs (`abs_prices`) | Ingested (2026-10-25) | CPI (quarterly from 1948, monthly from 2017), Selected Living Cost Indexes by household type (from 1998), Wage Price Index by sector and industry (from 1997), Residential Property Price Index (2002 to 2021, discontinued): background, and the deflators for money series |
+| — | Labour Force Survey (`abs_labour`) | Ingested (2026-10-25) | Headline series by sex and state, monthly from 1978; employed persons by status in employment (employees and owner-managers, by sex), monthly from 1991: the open count of who runs businesses |
 | 21 | OpenAlex (`openalex`) | Ingested | 1,910 Australian institutions (243 companies), works by field and year from 2000 |
 | 22 | Evidence register (`evidence`) | Ingested | 20 items, journal items checked against Crossref (one flagged: its only Crossref record is a later SSRN version) |
 | 23 | Cultural and creative activity (`bcarr_creative`) | Ingested (your download) | Both releases (2008-09 to 2022-23, 2015-16 to 2024-25) as one long table |

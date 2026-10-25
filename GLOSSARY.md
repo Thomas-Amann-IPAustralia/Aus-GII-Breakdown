@@ -15,12 +15,12 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Design** | Protection for how a product looks (its shape, pattern or ornamentation), for up to 10 years. |
 | **Plant breeder's right (PBR)** | Protection for a new plant variety. |
 | **Application, registration, grant** | A right starts as an application. If it passes examination it is *registered* (trade marks, designs) or *granted* (patents). |
-| **Lapse** | A right ends early because the owner stopped paying its renewal fees. Lapse is a signal that the owner judged the right no longer worth its cost. |
+| **Lapse** | An *application* ends before it is granted or registered, for example because the applicant stopped paying the fees to keep it going or did not respond to examination. In IP RAPID, no lapsed right was ever granted or registered. |
 | **Priority date** | The earliest filing date the application can claim, which may be from an earlier filing overseas. |
 | **Opposition** | A formal challenge by a third party to an application (or, for trade marks, a request to remove a mark that is not being used). |
 | **Assignment** | A transfer of ownership of a right, for example when a business sells its patents. |
 | **Extension of term** | Up to five extra years on a patent for a pharmaceutical substance, to make up for time lost waiting for regulatory approval. |
-| **Ceased** | IP RAPID's label for a right or application that has ended; how it differs from *lapsed* is checked in Stage 1. |
+| **Ceased** | A *granted or registered* right ends early, usually because the owner stopped paying renewal fees (or, for a trade mark, did not renew it). It signals that the owner judged the right no longer worth its cost. In IP RAPID, 99.9% of ceased patents and all ceased trade marks had been granted or registered. |
 | **Attorney or agent** | A professional who files for the applicant. Applicants who file without one are *self-filers*. |
 | **IPC class** | The International Patent Classification: a code for the technology a patent covers (for example `A61K`, medical preparations). |
 | **WIPO technology field** | One of 35 broad technology areas that WIPO builds from IPC classes. |
@@ -46,13 +46,22 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Remoteness area** | The ABS's five classes of remoteness, from Major Cities to Very Remote. |
 | **SEIFA** | The ABS's Socio-Economic Indexes for Areas, built from the Census. There are four indexes:<br>- **IRSAD**: advantage and disadvantage combined.<br>- **IRSD**: disadvantage only.<br>- **IER**: economic resources.<br>- **IEO**: education and occupation.<br>A *decile* of 1 is the most disadvantaged tenth of areas, and 10 the most advantaged. |
 | **Financial year (FY)** | July to June, named by the year it ends: FY2026 is July 2025 to June 2026. |
+| **ANZSIC** | The Australian and New Zealand Standard Industrial Classification. Its 19 *divisions* (such as Manufacturing) are the rows of the `industries` lens. |
+| **ROR** | The Research Organization Registry: an open identifier for each university, research institute and other research organisation. It keys the `institutions` lens. |
+| **Consumer Price Index (CPI)** | The ABS's measure of how the prices households pay change over time, quarterly since 1948. |
+| **Selected Living Cost Indexes** | ABS indexes of price change for particular kinds of household (employees, age pensioners, self-funded retirees and others). Unlike the CPI, they include mortgage interest, so they track what those households actually pay more closely. |
+| **Wage Price Index** | The ABS's measure of how the price of labour (hourly pay for the same work) changes over time. |
+| **Labour Force Survey** | The ABS's monthly survey of employment and unemployment. Most series come in three versions: *original* (as measured), *seasonally adjusted* (with the regular yearly pattern removed) and *trend* (smoothed further). An analysis uses one version. |
+| **Owner-manager** | A person who runs their own business, incorporated or not, with or without employees. It counts people, by their main job, not businesses: a business with two owners counts twice. |
+| **Real terms (deflating)** | A money amount adjusted for inflation, by dividing by a price index, so amounts from different years can be compared. The base year is always stated. |
 
 ## The analysis
 
 | Term | Meaning |
 |---|---|
 | **Corpus** | All the data collected for this project (`docs/catalogue.md`). |
-| **Lens** | One analysis-ready table with one row per thing being studied: a right, a firm, a place, a country in a year, or a month in Australia's history (the *timeline*). The EDA works one lens at a time. |
+| **Lens** | One analysis-ready table with one row per thing being studied: a right, a firm, a place, an industry in a year, a research institution in a year, a country in a year, or a month in Australia's history (the *timeline*). Every dataset is attached to at least one lens, so that it can be compared with the others. The EDA works one lens at a time. |
+| **Attachment** | Bringing a dataset into a lens, by joining it on the lens's key or by summing or averaging it up to the lens's unit (for example, Census counts by postal area into `regions`). |
 | **Unit of analysis** | What one row stands for. Counting or averaging only makes sense once this is clear. |
 | **EDA** | Exploratory data analysis: getting to know the data before trying to answer questions with it. |
 | **Univariate, bivariate, multivariate** | Looking at one variable at a time, at two together, or at several together. These are the EDA's three stages. |
@@ -84,6 +93,7 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Placebo test** | Running the same analysis at a date when nothing happened. If it finds "breaks" there too, a break at the real date is less convincing. |
 | **STL decomposition** | A method that splits a series into its trend, its seasonal pattern and what is left over. |
 | **Spurious correlation** | A link with no real connection behind it. It is common between time series that all trend upward over the same years. |
+| **Multiple comparisons** | When many pairs are tested at once, some look strong by chance alone. Stage 2 corrects for the number of pairs screened, and keeps a lead only if it also holds in a second period or sample. |
 | **Strength of evidence** | Every observation is labelled with one of four strengths, from the research goal:<br>- **descriptive**: what the data shows;<br>- **observational**: a link that may have other explanations;<br>- **causal**: an effect, shown by a suitable design;<br>- **projected**: an estimate of the future. |
 | **Additionality** | What happens *because of* a right or an intervention, compared with what would have happened anyway. It is the research goal's central test. |
 | **Natural experiment** | A change (a new fee or rule, say) that affects some people and not others, for reasons unrelated to their outcomes. Comparing the two groups comes close to an experiment. |

@@ -245,8 +245,9 @@ WIPO (Harvard Dataverse). Tier 1; questions 2. Licence: CC0 1.0. Source: https:/
 
 World Gender-Name Dictionary 2.0 (WIPO, 2021): first names with the gender they are given to, by country.
 
-For estimating the gender of individual applicants in IP RAPID from first names, the method WIPO and IP Australia have
-used. IP RAPID's public party data has no inventors, so this covers individual applicants (and owners) only.
+For estimating the gender of inventors from first names, the method WIPO and IP Australia have used. The names come
+from Google Patents (`google_patents_inventors`): IP RAPID's public party data has no inventors, and gives individual
+applicants as pseudonymised codes, so their gender cannot be estimated.
 Raw: the two Dataverse tables (R2). Processed: `name_gender_code` (name, ISO country code, gender F/M/?, and
 `wgt`, the share of the name's bearers of that gender where known) and `name_gender` (the same without country).
 Names are as WGND gives them (lower case, accents kept).
@@ -535,6 +536,62 @@ release's data cubes (repo). Processed: `cubes`, every table long (see `_abs_cub
 |---|---:|---|---|
 | `cubes` | 6,564 | repo (0.0 MB) | `sheet`, `title`, `section`, `row`, `column`, `value`, `release`, `cube`, `period` |
 
+## Prices, wages and living costs (Consumer Price Index, Selected Living Cost Indexes, Wage Price Index, Residential Property Price Index) (`abs_prices`)
+
+Australian Bureau of Statistics. Tier 2; questions 1, 2, 4, 5. Licence: CC BY 4.0. Source: https://data.api.abs.gov.au/
+
+Prices, wages and living costs (ABS Data API): the cost-of-living background, and the deflators for money series.
+
+For Q1, Q2, Q4 and Q5: fees, R&D claims and contract values in real terms, and whether cost-of-living pressure moves
+with IP filing over time (context, not effect; series that trend together over decades correlate whatever their link,
+so comparisons use changes). Australia by state capital, quarterly unless noted:
+
+- `CPI`: the Consumer Price Index, all groups and every expenditure group and class, quarterly from 1948-Q3 and
+  monthly from 2017-09 (one flow holds both; `frequency` tells them apart, and an analysis uses one, never both).
+  Index numbers are on one base, September 2025 = 100.
+- `LCI`: Selected Living Cost Indexes by household type (employees, age pensioners, self-funded retirees and others),
+  from 1998-Q2. Closer than the CPI to what each kind of household pays (they include mortgage interest).
+- `WPI`: the Wage Price Index by sector and industry, from 1997-Q3.
+- `RPPI`: the Residential Property Price Index, 2002-Q1 to 2021-Q4 (the ABS has discontinued it).
+
+Each flow is in the raw tidy form of the ABS sources: a code and a label for every dimension (measure, index,
+adjustment, region and so on), then `value`, the unit and the observation status. Raw: each flow's CSV (repo, gzipped).
+Processed: one table per flow, named after the flow in lower case.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `cpi` | 352,576 | repo (0.7 MB) | `flow`, `measure`, `measure_label`, `index`, `index_label`, `adjustment_type`, `adjustment_type_label`, `region`, `region_label`, `frequency`, `frequency_label`, `time_period`, `unit_of_measure`, `unit_of_measure_label` … |
+| `lci` | 18,900 | repo (0.1 MB) | `flow`, `measure`, `measure_label`, `index`, `index_label`, `household_type`, `household_type_label`, `region`, `region_label`, `frequency`, `frequency_label`, `time_period`, `unit_of_measure`, `unit_of_measure_label` … |
+| `rppi` | 6,372 | repo (0.0 MB) | `flow`, `measure`, `measure_label`, `property_type`, `property_type_label`, `region`, `region_label`, `frequency`, `frequency_label`, `time_period`, `unit_of_measure`, `unit_of_measure_label`, `observation_status`, `observation_status_label` … |
+| `wpi` | 45,936 | repo (0.1 MB) | `flow`, `measure`, `measure_label`, `index`, `index_label`, `sector`, `sector_label`, `industry`, `industry_label`, `adjustment_type`, `adjustment_type_label`, `region`, `region_label`, `frequency` … |
+
+## Labour Force Survey (headline series, and status in employment, including owner-managers) (`abs_labour`)
+
+Australian Bureau of Statistics. Tier 2; questions 2, 4, 5. Licence: CC BY 4.0. Source: https://data.api.abs.gov.au/
+
+The Labour Force Survey (ABS Data API): employment and unemployment, and how many people run their own business.
+
+Background for the timeline and national lenses (Q2, Q4, Q5): the labour market around each policy change, and the
+open count of owner-managers, the denominator for who runs businesses (TableBuilder's Census counts, by postal area,
+need an account; `docs/tablebuilder-owner-managers.md`). Monthly, Australia, and the states for `LF`:
+
+- `LF`: the headline series: labour force, employed (full-time and part-time), unemployed, unemployment and
+  participation rates, and the employment-to-population ratio, by sex and state, from 1978, each as original,
+  seasonally adjusted and trend. An analysis uses one adjustment type, never several.
+- `LF_STAT_EMP`: employed persons by status in employment of their main job: employees; owner-managers of
+  incorporated and of unincorporated enterprises, each with or without employees; contributing family workers. By sex,
+  for Australia, from 1991, in thousands (original, not seasonally adjusted). Owner-managers are people, not
+  businesses, counted by their main job.
+
+Each flow is in the raw tidy form of the ABS sources (a code and a label for every dimension, then `value`, the unit,
+the multiplier and the observation status). Raw: each flow's CSV (repo, gzipped). Processed: one table per flow, named
+after the flow in lower case.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `lf` | 434,496 | repo (3.6 MB) | `flow`, `measure`, `measure_label`, `sex`, `sex_label`, `age`, `age_label`, `adjustment_type`, `adjustment_type_label`, `region`, `region_label`, `frequency`, `frequency_label`, `time_period` … |
+| `lf_stat_emp` | 27,027 | repo (0.3 MB) | `flow`, `measure`, `measure_label`, `sex`, `sex_label`, `status_in_employment_of_main_job`, `status_in_employment_of_main_job_label`, `frequency`, `frequency_label`, `time_period`, `unit_of_measure`, `unit_of_measure_label`, `unit_of_multiplier`, `unit_of_multiplier_label` … |
+
 ## OpenAlex, research output of Australian institutions (`openalex`)
 
 OurResearch. Tier 2; questions 2, 4. Licence: CC0. Source: https://openalex.org/
@@ -788,6 +845,42 @@ Processed (R2 unless small):
 | `citations` | 1,854,268 | repo (18.5 MB) | `citing_family`, `cited_family`, `citing_priority_date` |
 | `families` | 1,753,104 | R2 (53.7 MB) | `family_id`, `first_priority_date`, `first_filing_date`, `first_grant_date`, `publications`, `offices`, `n_offices`, `pct`, `ep`, `filed_au`, `granted_au`, `granted_us`, `au_applicant`, `au_inventor` … |
 | `members` | 3,223,057 | R2 (117.7 MB) | `publication_number`, `application_number`, `pct_number`, `country_code`, `kind_code`, `application_kind`, `family_id`, `publication_date`, `filing_date`, `grant_date`, `priority_date`, `entity_status`, `assignee_countries`, `inventor_countries` … |
+
+## Google Patents Public Data, the inventors of the patent families touching Australia, with estimated gender (`google_patents_inventors`)
+
+Google (BigQuery public dataset patents-public-data); gender estimated with WIPO's World Gender-Name Dictionary. Tier 3; questions 1, 2. Licence: CC BY 4.0. Source: https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data
+
+Inventors of the patent families that touch Australia (Google Patents Public Data, BigQuery): who invents, from which
+country, and (estimated) of which gender.
+
+For Q1 and Q2: where the inventions filed in Australia are made, against who owns them; Australians' inventions owned
+abroad; and the gender of inventors. IP RAPID records no inventors, and its names for individual applicants are
+pseudonymised codes, so this is the corpus's only source of inventors and of names to estimate gender from. The families
+are those of `google_patents` (a publication in Australia, or an Australian applicant or inventor). Queried in BigQuery
+(CC BY 4.0), billed to `GCP_PROJECT_ID` as `google_patents` is: a dry run measures the query first, and the run stops if
+it would scan more than `MAX_GB`. The downloaded result is cached outside the repo, so the gender step can be re-run
+without querying again.
+
+Gender is an estimate from first names, the method WIPO and IP Australia use. The World Gender-Name Dictionary (`wgnd`)
+gives, for a first name in a country, the share of its bearers who are women; that share is the inventor's `p_female`.
+It falls back to the name without a country (0 or 1), and is empty for initials and for names the dictionary lacks. It
+is not anyone's stated gender, and family totals are expected counts. The dictionary's quality varies by country (it
+gives "hiroshi" in Japan a 17% chance of being a woman), so Stage 1 checks the estimates country by country. The given
+name is the word after a comma ("SMITH, JOHN"), else the first or second word, whichever matches the dictionary more
+often (logged at each run).
+
+Harmonised names can still differ across a family's publications (a middle initial, say), so a few inventors are
+counted twice; the counts per family are upper bounds.
+
+Processed:
+- `inventors` (R2, because it holds names as published): one row per family and inventor (Google's harmonised name),
+  with the inventor's country (the most common one across the family's publications; empty if none is given), the
+  publications naming them, the given name used, `p_female`, and its basis (`country` or `name`).
+- `family_inventors` (repo if it fits): one row per family: inventors; inventors in Australia, abroad and of unknown
+  country; their countries; the expected numbers of women and men among the inventors with an estimate; and how many
+  have none. No names.
+
+*Not ingested yet: see the status in `docs/data-plan.md`.*
 
 ## Reliance on Science, US patents' citations to scientific papers (OpenAlex) (`reliance_on_science`)
 

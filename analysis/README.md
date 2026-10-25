@@ -5,8 +5,10 @@ what is learned by using it.
 
 ## Exploratory data analysis (EDA)
 
-Three notebooks, one per stage, each organised by five *lenses* (analysis-ready tables with one row per right, firm,
-postal area, country-year, or month for Australia). The plan is `docs/eda-plan.md`; the status is `docs/handover-eda.md`.
+Three notebooks, one per stage, each organised by *lenses*: analysis-ready tables with one row per right, firm, postal
+area, country-year or month for Australia, with industries and research institutions planned. Every dataset is attached
+to a lens and goes through all three stages (ADR 0007). The plan is `docs/eda-plan.md`; the status is
+`docs/handover-eda.md`.
 
 ```sh
 uv sync --group dev --group analysis

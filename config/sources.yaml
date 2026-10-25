@@ -203,6 +203,24 @@ sources:
     url: https://www.abs.gov.au/
     licence: CC BY 4.0
 
+  - id: abs_prices
+    title: Prices, wages and living costs (Consumer Price Index, Selected Living Cost Indexes, Wage Price Index, Residential Property Price Index)
+    publisher: Australian Bureau of Statistics
+    tier: 2
+    questions: [1, 2, 4, 5]
+    url: https://data.api.abs.gov.au/
+    licence: CC BY 4.0
+    coverage: Australia and the state capitals, quarterly (CPI from 1948, monthly from 2017; living costs from 1998; wages from 1997; property prices 2002 to 2021, discontinued)
+
+  - id: abs_labour
+    title: Labour Force Survey (headline series, and status in employment, including owner-managers)
+    publisher: Australian Bureau of Statistics
+    tier: 2
+    questions: [2, 4, 5]
+    url: https://data.api.abs.gov.au/
+    licence: CC BY 4.0
+    coverage: Monthly; the headline series by sex and state from 1978; owner-managers and employees by sex, Australia, from 1991
+
   - id: openalex
     title: OpenAlex, research output of Australian institutions
     publisher: OurResearch
@@ -282,6 +300,15 @@ sources:
     questions: [1, 3]
     url: https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data
     licence: CC BY 4.0
+
+  - id: google_patents_inventors
+    title: Google Patents Public Data, the inventors of the patent families touching Australia, with estimated gender
+    publisher: Google (BigQuery public dataset patents-public-data); gender estimated with WIPO's World Gender-Name Dictionary
+    tier: 3
+    questions: [1, 2]
+    url: https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data
+    licence: CC BY 4.0
+    coverage: The inventors of the same families as google_patents; names stay in R2, and the repo holds counts per family
 
   - id: reliance_on_science
     title: Reliance on Science, US patents' citations to scientific papers (OpenAlex)

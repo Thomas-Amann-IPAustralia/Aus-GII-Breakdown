@@ -139,3 +139,38 @@ def test_google_patents_au_application_numbers_match_ip_rapid():
 
     got = _au_application(pa.array(["AU-2017352992-A", "AU-6508386-A", "US-123-A", None]))
     assert got == ["2017352992", "1986065083", None, None]
+
+
+def test_inventor_given_names_and_gender_estimates():
+    import duckdb
+
+    from corpus.sources.google_patents_inventors import estimate_sql, given_sql
+
+    con = duckdb.connect()
+    con.execute(
+        "CREATE TABLE n AS SELECT * FROM (VALUES (1, 'SMITH, JOHN A'), (2, 'JOHN A SMITH'), (3, 'J A SMITH'),"
+        " (4, 'O''BRIEN MARY-JANE')) t(id, name)"
+    )
+    first = [r[0] for r in con.execute(f"SELECT {given_sql('name', 1)} FROM n ORDER BY id").fetchall()]
+    second = [r[0] for r in con.execute(f"SELECT {given_sql('name', 2)} FROM n ORDER BY id").fetchall()]
+    assert first == ["john", "john", None, "obrien"]
+    assert second == ["john", None, None, "mary-jane"]
+
+    con.execute(
+        "CREATE TABLE inv AS SELECT * FROM (VALUES ('SMITH ANDREA', 'AU'), ('ROSSI ANDREA', 'IT'),"
+        " ('LEE JORDAN', 'NZ'), ('KUMAR X', 'IN')) t(name, country_code)"
+    )
+    con.execute(
+        "CREATE TABLE wc AS SELECT * FROM (VALUES ('andrea', 'AU', 'F', 0.93), ('andrea', 'AU', 'M', 0.07),"
+        " ('andrea', 'IT', 'M', 1.0)) t(name, code, gender, wgt)"
+    )
+    con.execute("CREATE TABLE wn AS SELECT * FROM (VALUES ('andrea', 'F'), ('jordan', 'M')) t(name, gender)")
+    got = con.execute(
+        f"SELECT name, round(p_female, 2), p_female_basis FROM ({estimate_sql('inv', 'wc', 'wn', 2)}) ORDER BY name"
+    ).fetchall()
+    assert got == [
+        ("KUMAR X", None, None),
+        ("LEE JORDAN", 0.0, "name"),
+        ("ROSSI ANDREA", 0.0, "country"),
+        ("SMITH ANDREA", 0.93, "country"),
+    ]

@@ -7023,6 +7023,240 @@
    },
    "run": "2026-10-22"
   },
+  "abs_labour": {
+   "files": {
+    "processed/lf": {
+     "bytes": 3611134,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "sex",
+      "sex_label",
+      "age",
+      "age_label",
+      "adjustment_type",
+      "adjustment_type_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "unit_of_multiplier",
+      "unit_of_multiplier_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "decimals",
+      "decimals_label",
+      "value"
+     ],
+     "describe": "Labour Force",
+     "location": "repo",
+     "path": "data/processed/abs_labour/lf.parquet",
+     "rows": 434496,
+     "sha256": "4dbe4a0d7ad20bb4f95bc6bb4741bc13deecc010a72a499db75be22c5d056e3c"
+    },
+    "processed/lf_stat_emp": {
+     "bytes": 277045,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "sex",
+      "sex_label",
+      "status_in_employment_of_main_job",
+      "status_in_employment_of_main_job_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "unit_of_multiplier",
+      "unit_of_multiplier_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "decimals",
+      "decimals_label",
+      "value"
+     ],
+     "describe": "Labour Force: Status in employment of main job and Sex",
+     "location": "repo",
+     "path": "data/processed/abs_labour/lf_stat_emp.parquet",
+     "rows": 27027,
+     "sha256": "c36fc2752d5bb589a17b76a273b80a51e9ca5b25e148e22fc94d6e2506469801"
+    },
+    "raw/LF.csv.gz": {
+     "bytes": 4256027,
+     "location": "repo",
+     "path": "data/raw/abs_labour/LF.csv.gz",
+     "sha256": "cfba2377b765f25a38ccc115fde08f0415148e38fac55b19afce51f5088a3108",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,LF/all"
+    },
+    "raw/LF_STAT_EMP.csv.gz": {
+     "bytes": 271614,
+     "location": "repo",
+     "path": "data/raw/abs_labour/LF_STAT_EMP.csv.gz",
+     "sha256": "913bbb813eacb0dd48802070b65c1c79fd35cec1567f3efebc3230ca9a107eaf",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,LF_STAT_EMP/all"
+    }
+   },
+   "run": "2026-10-25"
+  },
+  "abs_prices": {
+   "files": {
+    "processed/cpi": {
+     "bytes": 735449,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "index",
+      "index_label",
+      "adjustment_type",
+      "adjustment_type_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "decimals",
+      "observation_comment",
+      "reference_base_period",
+      "reference_base_period_label",
+      "value"
+     ],
+     "describe": "Consumer Price Index (CPI)",
+     "location": "repo",
+     "path": "data/processed/abs_prices/cpi.parquet",
+     "rows": 352576,
+     "sha256": "4f80739b47c2e081d2e8660408fc5c7293a7cc8da7cc8b066b26dfad81777ab1"
+    },
+    "processed/lci": {
+     "bytes": 57706,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "index",
+      "index_label",
+      "household_type",
+      "household_type_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "reference_base_period",
+      "observation_status",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "Selected Living Cost Indexes",
+     "location": "repo",
+     "path": "data/processed/abs_prices/lci.parquet",
+     "rows": 18900,
+     "sha256": "7b1abb97710081c52c94ad4f5018675cd44820561d61628907fb79b30c444bad"
+    },
+    "processed/rppi": {
+     "bytes": 23302,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "property_type",
+      "property_type_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "Residential Property Price Index",
+     "location": "repo",
+     "path": "data/processed/abs_prices/rppi.parquet",
+     "rows": 6372,
+     "sha256": "9fa547397a5f8e51d26897d735eef3df4cf7c4d237fd6f3ba68bec312d1377c3"
+    },
+    "processed/wpi": {
+     "bytes": 77972,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "index",
+      "index_label",
+      "sector",
+      "sector_label",
+      "industry",
+      "industry_label",
+      "adjustment_type",
+      "adjustment_type_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "reference_base_period",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "Wage Price Index",
+     "location": "repo",
+     "path": "data/processed/abs_prices/wpi.parquet",
+     "rows": 45936,
+     "sha256": "b581dd0e7e9c69a9433a9498bcd6fad5ce6ef9ec7fdd35205e458bec711010cf"
+    },
+    "raw/CPI.csv.gz": {
+     "bytes": 2227996,
+     "location": "repo",
+     "path": "data/raw/abs_prices/CPI.csv.gz",
+     "sha256": "39cf9db6393108688a9817b776f13168087c4a256fea959173c78f838ced0cbc",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,CPI/all"
+    },
+    "raw/LCI.csv.gz": {
+     "bytes": 117420,
+     "location": "repo",
+     "path": "data/raw/abs_prices/LCI.csv.gz",
+     "sha256": "c64c55d377bc4c6b1155e0da683fd274bcc90256bfeb0574fc6bcb6687350af4",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,LCI/all"
+    },
+    "raw/RPPI.csv.gz": {
+     "bytes": 37101,
+     "location": "repo",
+     "path": "data/raw/abs_prices/RPPI.csv.gz",
+     "sha256": "ce192f9b591ef70a320d2d3b42e4144e4ddaee514db53d014c5d13b2059adf82",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,RPPI/all"
+    },
+    "raw/WPI.csv.gz": {
+     "bytes": 249911,
+     "location": "repo",
+     "path": "data/raw/abs_prices/WPI.csv.gz",
+     "sha256": "007e4fd979ab2fb7052e8271bb98f5361f99983a3cdf36f483debc56a6df56ba",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,WPI/all"
+    }
+   },
+   "run": "2026-10-25"
+  },
   "abs_rd_vc": {
    "files": {
     "processed/cubes": {

@@ -83,16 +83,17 @@ Edit, then Network secrets or Environment variables), never in the repo. A new s
 |---|---|---|
 | `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` | The `ipholmes` R2 bucket | From Cloudflare |
 | `OPENALEX_API_KEY` | `openalex` | A free OpenAlex key |
-| `GCP_SERVICE_ACCOUNT_JSON` | Google Patents Public Data in BigQuery (`google_patents`) | The whole contents of the service account's JSON key file (or the same, base64-encoded); `corpus.core.gcp_credentials()` writes it to a private file outside the repo at run time. The account needs the BigQuery Job User role; with BigQuery Read Session User as well, results download much faster |
+| `GCP_SERVICE_ACCOUNT_JSON` (or `GCP_SA_KEY_B64`) | Google Patents Public Data in BigQuery (`google_patents`, `google_patents_inventors`) | The whole contents of the service account's JSON key file (or the same, base64-encoded); `corpus.core.gcp_credentials()` writes it to a private file outside the repo at run time. The account needs the BigQuery Job User role; with BigQuery Read Session User as well, results download much faster |
 | `GCP_PROJECT_ID` | BigQuery billing project (optional) | The project queries are billed to; when unset, or not a project id, the key's own project is used. A full `google_patents` run queries about 140 GB, within BigQuery's free terabyte a month |
 
 ## Privacy
 
 The corpus holds published data only. Individuals' names (sole traders, individual applicants) are left out of the
 tables in the repo: the ABN Bulk Extract is read without them, the IP RAPID summaries blank them, and the NHMRC grants
-leave out chief investigators. Tables that keep names as published (IP RAPID's party tables, Google Patents'
-Australian applicants, the IP judgments, whose case names name people) are in R2, for analyses (such as gender
-estimation from first names) that need them; summaries built from them should not republish names.
+leave out chief investigators. IP RAPID's own party table gives individuals as pseudonymised codes, not names. Tables
+that keep names as published (Google Patents' Australian applicants and inventors, the IP judgments, whose case names
+name people) are in R2, for analyses that need them, such as estimating inventors' gender from first names
+(`google_patents_inventors`); summaries built from them should not republish names.
 
 ## Sources and licences
 
