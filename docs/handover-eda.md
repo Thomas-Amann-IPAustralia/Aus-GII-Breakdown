@@ -94,7 +94,8 @@ and BLADE stays ruled out.
 1. **The rest of the `rights` attachments, as sub-sections of 1.8,** each built into the lens first:
    - the events per right (B5): the dates of examination, acceptance, grant, opposition, assignment, extension of term
      and the end of each right, giving lifetimes. The assignment events also test `holder_changed` for patents filed
-     before FY2003, where the party records cannot;
+     before FY2003, where the party records cannot. Add innovation patents' certification: their grant follows a
+     check of formalities only, so certification is their examination (glossary; U10 and U11);
    - the links, with the PCT country check;
    - Google Patents (B4);
    - the inventors (gender estimates checked country by country against WIPO's published shares, above all China and
