@@ -77,6 +77,7 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 | `abs_bcs` | industries | Innovation, barriers, finance and IP methods by industry and firm size (aggregate) | Status flags (S5) |
 | `abs_rd_vc` | industries, national | Business R&D by industry; R&D by sector; venture capital to 2019 | B10 (workbook parser) |
 | `bcarr_creative` | industries, national | Cultural and creative activity by industry and domain | — |
+| `abs_labour` (added 2026-10-25) | timeline, national | The Labour Force Survey: employment, unemployment and participation by sex and state, monthly from 1978; owner-managers and employees by sex, monthly from 1991 (the denominator for who runs businesses) | — |
 | `abs_prices` (added 2026-10-25) | timeline, industries | CPI (quarterly from 1948), living costs by household type, wages (also by industry) and property prices: background, and the deflator for every money series (fees, R&D, contracts, medicine costs) | — |
 | `wdi`, `wipo_ipstats`, `gii`, `oecd`, `mwm`, `ctg` | national | Country-year indicators: every OECD flow (one indicator per named breakdown); GII 2026; WIPO's filings at IP Australia by origin country, 1980–2024 (an independent view of which nations use the system); Australian annual series (Measuring What Matters, Closing the Gap) | F02 and F15 (A8); F01 (B10) |
 | `pbs` | timeline; medicines | Prescriptions, and government and patient costs, per month. Items are linked to ingredients for the medicine strand. | B9 (Section 100) |
@@ -118,16 +119,17 @@ Re-checked on 2026-10-25 with the owner's steer to go broad. Every source here i
 **Done:**
 - Prices, wages and living costs (`abs_prices`): 352,576 CPI values, 18,900 living-cost, 45,936 wage and 6,372 property
   values. Every non-empty source value is kept.
+- The Labour Force Survey (`abs_labour`): 434,496 headline values (1978 to September 2026) and 27,027 values of
+  employment by status (1991 to September 2026). Every non-empty source value is kept; one row per key. Owner-managers
+  numbered 2.14 million in August 2026 (34.8% women), against 1.45 million in August 1991 (31.0% women).
 
 **High value, little work. Add with the lens builds:**
 1. **RBA cash rate and exchange rates (monthly), for the timeline.** About 91% of standard patents filed in FY2017–2026
    came from overseas applicants, and the cost to them of filing here moves with the Australian dollar. The cash rate
    gives financing conditions.
-2. **ABS labour force and national accounts (unemployment monthly; GDP and state final demand quarterly), for the
-   timeline and national lenses.** Macro background. It comes through the same ABS service as `abs_prices`, with no
-   account needed. One flow, `LF_STAT_EMP`, counts owner-managers by type (incorporated or not, with or without
-   employees) and sex, monthly, January 1991 to September 2026, for Australia as a whole: the open stand-in for
-   TableBuilder's owner-manager counts.
+2. **ABS national accounts (GDP and state final demand, quarterly), for the timeline and national lenses.** Macro
+   background, through the same ABS service as `abs_prices`. (The Labour Force half of this item is done:
+   `abs_labour`, including the owner-manager counts that stand in for TableBuilder.)
 3. **ATO taxation statistics by postcode (annual, from 2012-13), for the regions lens.** Incomes that change over time
    (the lens now has only the 2021 Census), and a denominator for individual applicants, who make up 34% of Australian
    patent records. First check which table holds counts of business income.
@@ -163,10 +165,9 @@ Re-checked on 2026-10-25 with the owner's steer to go broad. Every source here i
     (F07).
 
 **Needs the owner (an account or a request):**
-15. **ABS TableBuilder (on hold, 2026-10-25, while the owner checks the conditions of use):** Census owner-managers by
+15. **ABS TableBuilder (on hold; if it is needed, the owner registers as a private user):** Census owner-managers by
     sex, Indigenous status, industry, age and postal area, the denominator for who runs businesses. The tables and
-    the clicks are in `docs/tablebuilder-owner-managers.md`. Meanwhile, the open sources in item 2 (owner-managers
-    nationally), CABEE (businesses by size, per area) and item 3 (individuals with business income, per postcode)
+    the clicks are in `docs/tablebuilder-owner-managers.md`. Meanwhile, `abs_labour` (owner-managers nationally), CABEE (businesses by size, per area) and item 3 (individuals with business income, per postcode)
     stand in. What only TableBuilder gives is owner-managers by sex and Indigenous status for each postal area.
 
 **Closed:** BLADE (linked small-firm outcomes) stays ruled out; the owner confirmed this on 2026-10-25. Firm-level

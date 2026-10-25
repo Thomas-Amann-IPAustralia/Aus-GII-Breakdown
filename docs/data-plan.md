@@ -257,6 +257,7 @@ columns. In short:
 | 19 | PBS (`pbs`) | Ingested | Date-of-supply data from July 2020 by item and month, and the item to drug map. The processed tables come from the pharmacy-type reports, which leave out Section 100 supply; the monthly workbook that includes it is held raw only |
 | 20 | ABS R&D and venture capital (`abs_rd_vc`) | Ingested | BERD 2023-24, GOVERD 2024-25, HERD 2024, venture capital to 2018-19 (discontinued) |
 | — | Prices, wages and living costs (`abs_prices`) | Ingested (2026-10-25) | CPI (quarterly from 1948, monthly from 2017), Selected Living Cost Indexes by household type (from 1998), Wage Price Index by sector and industry (from 1997), Residential Property Price Index (2002 to 2021, discontinued): background, and the deflators for money series |
+| — | Labour Force Survey (`abs_labour`) | Ingested (2026-10-25) | Headline series by sex and state, monthly from 1978; employed persons by status in employment (employees and owner-managers, by sex), monthly from 1991: the open count of who runs businesses |
 | 21 | OpenAlex (`openalex`) | Ingested | 1,910 Australian institutions (243 companies), works by field and year from 2000 |
 | 22 | Evidence register (`evidence`) | Ingested | 20 items, journal items checked against Crossref (one flagged: its only Crossref record is a later SSRN version) |
 | 23 | Cultural and creative activity (`bcarr_creative`) | Ingested (your download) | Both releases (2008-09 to 2022-23, 2015-16 to 2024-25) as one long table |

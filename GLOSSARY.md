@@ -51,6 +51,8 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Consumer Price Index (CPI)** | The ABS's measure of how the prices households pay change over time, quarterly since 1948. |
 | **Selected Living Cost Indexes** | ABS indexes of price change for particular kinds of household (employees, age pensioners, self-funded retirees and others). Unlike the CPI, they include mortgage interest, so they track what those households actually pay more closely. |
 | **Wage Price Index** | The ABS's measure of how the price of labour (hourly pay for the same work) changes over time. |
+| **Labour Force Survey** | The ABS's monthly survey of employment and unemployment. Most series come in three versions: *original* (as measured), *seasonally adjusted* (with the regular yearly pattern removed) and *trend* (smoothed further). An analysis uses one version. |
+| **Owner-manager** | A person who runs their own business, incorporated or not, with or without employees. It counts people, by their main job, not businesses: a business with two owners counts twice. |
 | **Real terms (deflating)** | A money amount adjusted for inflation, by dividing by a price index, so amounts from different years can be compared. The base year is always stated. |
 
 ## The analysis

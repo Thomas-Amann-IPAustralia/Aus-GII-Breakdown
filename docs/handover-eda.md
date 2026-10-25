@@ -6,10 +6,11 @@ For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md
 - the corpus has had an independent review, `docs/Aus-GII-Independent-Review-and-Action-Plan.md`. Its evidence and IDs
   (A1–A8, B1–B12, F01–F42, N01–N07) are used throughout the plan;
 - the owner has decided that every dataset goes through all three stages (ADR 0007), and confirmed the two new lenses;
-- prices, wages and living costs have been added (`abs_prices`);
+- prices, wages and living costs have been added (`abs_prices`), and the Labour Force Survey (`abs_labour`), including
+  owner-managers by sex, monthly from 1991;
 - the inventor loader (`google_patents_inventors`) is written and tested, and waits on BigQuery access (below);
-- TableBuilder is on hold: the owner is checking whether the project meets the ABS's conditions of use
-  (`docs/tablebuilder-owner-managers.md`). The open stand-ins are in the plan;
+- TableBuilder is on hold until a question needs postal-area detail. The owner pursues this exploration in a personal
+  capacity and would register as a private user (`docs/tablebuilder-owner-managers.md`);
 - BLADE stays ruled out (the owner confirmed it). Small-firm outcomes are a stated limit of the research.
 
 ## Where things stand
@@ -85,9 +86,8 @@ Nothing blocks Stage 1. Only you can do these:
 1. **BigQuery access, for the inventors.** Either add the service-account key used for the earlier `google_patents` runs
    as `GCP_SERVICE_ACCOUNT_JSON` in the environment's settings, or switch on the BigQuery API in the Google Cloud
    project of the current key and give its service account the BigQuery Job User role. A new session picks up either.
-2. **TableBuilder (on hold):** settle the registration route (IP Australia's ABS organisation) and whether IP
-   Australia's rules allow ABS tables in this repository and R2. Then the six tables in
-   `docs/tablebuilder-owner-managers.md` can be downloaded.
+2. **TableBuilder, only if a question needs owner-managers by sex or Indigenous status for each postal area:** register
+   as a private user, and check that the free Basic version has the variables (`docs/tablebuilder-owner-managers.md`).
 
 ## Conventions to keep
 
