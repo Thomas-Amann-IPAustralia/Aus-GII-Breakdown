@@ -134,6 +134,88 @@ def test_charts_draw():
     plt.close("all")
 
 
+def _built(lens):
+    p = data.LENS_DIR / f"{lens}.parquet"
+    if not p.exists():
+        pytest.skip("lens not built here (run: uv run python -m eda.build)")
+    return p
+
+
+@pytest.mark.parametrize(
+    ("lens", "key"),
+    [
+        ("rights", "ip_right_type, application_number"),
+        ("firms", "abn"),
+        ("regions", "poa_code"),
+        ("national", "iso3, year, indicator"),
+        ("timeline", "month"),
+    ],
+)
+def test_every_lens_has_one_row_per_key(lens, key):
+    p = _built(lens)
+    r = data.sql(f"SELECT count(*) AS n, count(DISTINCT ({key})) AS distinct_keys FROM read_parquet('{p}')").iloc[0]
+    assert r["n"] == r["distinct_keys"]
+
+
+def test_timeline_series_are_empty_where_not_recorded():
+    """No false zeros (ADR 0010): within each series' coverage, no run of zeros longer than 12 months (except the
+    'origin unknown' series, whose zeros are real); the months still being recorded are empty; and no series ends on
+    a cliff (its last month at least half its previous year's median). The cliff check applies where that median is
+    100 or more: a smaller series, such as design lapses at about 45 a month, halves by chance."""
+    from eda import build
+
+    _built("timeline")
+    t = data.load_lens("timeline").set_index("month")
+    for c, _ in build.TIMELINE_APPLICATIONS + build.TIMELINE_EVENTS:
+        s = t[c].dropna()
+        assert len(s), c
+        assert s.index.max() == t.index.max() - pd.DateOffset(months=build.TIMELINE_LAG.get(c, 0)), c
+        assert t[c].loc[s.index.min() : s.index.max()].notna().all(), f"{c} has gaps inside its coverage"
+        if c not in build.TIMELINE_STRUCTURAL_ZEROS:
+            run = longest = 0
+            for v in s:
+                run = run + 1 if v == 0 else 0
+                longest = max(longest, run)
+            assert longest <= 12, f"{c}: {longest} months of zeros inside its coverage"
+        median = s.iloc[-13:-1].median()
+        assert median < 100 or s.iloc[-1] >= median / 2, f"{c} ends on a cliff ({s.iloc[-1]} against {median})"
+
+
+def test_timeline_cpi_is_quarterly():
+    _built("timeline")
+    t = data.load_lens("timeline")
+    filled = t[t.cpi.notna()]
+    assert set(filled.month_of_year) == {3, 6, 9, 12} and len(filled) > 300
+
+
+def test_firms_age_basis_names_the_date_that_set_first_seen():
+    p = _built("firms")
+    bad = data.sql(f"""
+        SELECT count(*) FILTER (first_seen IS NOT NULL AND age_basis IS NULL) AS no_basis,
+               count(*) FILTER (age_truncated AND age_basis = 'asic') AS truncated_asic
+        FROM read_parquet('{p}')""").iloc[0]
+    assert bad.to_dict() == {"no_basis": 0, "truncated_asic": 0}
+
+
+def test_regions_have_no_zero_census_medians():
+    p = _built("regions")
+    cols = ["median_age", "median_personal_income_weekly", "median_household_income_weekly", "median_rent_weekly"]
+    zero = " + ".join(f"count(*) FILTER ({c} = 0)" for c in cols)
+    assert data.sql(f"SELECT {zero} AS n FROM read_parquet('{p}')").n[0] == 0
+
+
+def test_national_has_one_name_per_country_and_both_rd_series():
+    p = _built("national")
+    r = data.sql(f"""
+        SELECT (SELECT max(k) FROM (SELECT count(DISTINCT country) AS k FROM read_parquet('{p}') GROUP BY iso3))
+                 AS names,
+               count(*) FILTER (australia AND indicator = 'OECD.MSTI.G') AS au_oecd_rd,
+               count(*) FILTER (australia AND indicator = 'GB.XPD.RSDV.GD.ZS') AS au_wdi_rd,
+               count(*) FILTER (indicator LIKE 'IP.TMK%') AS trade_marks
+        FROM read_parquet('{p}')""").iloc[0]
+    assert r.names == 1 and r.au_oecd_rd > 0 and r.au_wdi_rd > 0 and r.trade_marks > 0
+
+
 def test_rights_origin_is_three_valued_and_patents_are_typed():
     p = data.LENS_DIR / "rights.parquet"
     if not p.exists():
@@ -144,6 +226,7 @@ def test_rights_origin_is_three_valued_and_patents_are_typed():
                 CASE WHEN applicants_au > 0 THEN true WHEN applicants_overseas > 0 THEN false END) AS origin,
             count(*) FILTER (applicants_au + applicants_overseas + applicants_country_unknown <> applicant_count)
                 AS applicants,
-            count(*) FILTER ((ip_right_type = 'patent') <> (patent_type IS NOT NULL)) AS patent_type
+            count(*) FILTER ((ip_right_type = 'patent') <> (patent_type IS NOT NULL)) AS patent_type,
+            count(*) FILTER (patent_type = 'provisional' AND has_agent IS NOT NULL) AS provisional_agents
         FROM read_parquet('{p}')""").iloc[0]
-    assert bad.to_dict() == {"origin": 0, "applicants": 0, "patent_type": 0}
+    assert bad.to_dict() == {"origin": 0, "applicants": 0, "patent_type": 0, "provisional_agents": 0}

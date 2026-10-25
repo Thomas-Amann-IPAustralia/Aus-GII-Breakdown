@@ -8,7 +8,7 @@
 | `rights` | IP right (patent, trade mark, design, plant breeder's right) | `iprapid/*_rights`, `iprapid/party` |
 | `firms` | ABN in any IP, R&D, procurement or tax source | `linkage/abn_spine`, `rights`, `rdti`, `ato_ctt` |
 | `regions` | Postal area (the ABS's version of a postcode) | `abs_regions`, `abs_census`, `abr`, `rights`, `firms` |
-| `national` | Country, year and indicator | `wdi/panel`, `wipo_ipstats/office_origin` |
+| `national` | Country, year and indicator | `wdi/panel`, `wipo_ipstats/office_origin`, `oecd/msti` |
 | `timeline` | Month, for Australia (IP Australia's whole register) | `rights`, `iprapid/events`, `policy_events` |
 
 Every column is described, in plain English, in `analysis/eda/variables.yaml`. Derived columns are defined here and
@@ -37,8 +37,11 @@ TIMELINE_START, TIMELINE_END = (
 # The timeline's monthly series: (column, condition). Applications are counted by application date from the `rights`
 # lens; outcomes by effective date from IP RAPID's events, using only categories recorded consistently over time.
 # Left out: renewals (their records stop in 2016 for designs and 2018 for trade marks) and every '_historical'
-# category (dated on the day records moved between systems, such as 10 November 2018 for trade marks).
+# category (dated on the day records moved between systems, such as 10 November 2018 for trade marks; at least 97% of
+# the rights each covers also have the same event with its real date).
 # Origin has three values (ADR 0009): a right with no applicant country counts as "origin unknown", never as overseas.
+# Outcomes are counts of events, each counted once: an event IP RAPID records twice for a right, with the same type and
+# date, counts once (ADR 0010).
 ORIGINS = [
     ("au", "australian_applicant"),
     ("overseas", "NOT australian_applicant"),
@@ -77,6 +80,37 @@ TIMELINE_EVENTS = [
     ("patent_assignments", "ip_right_type = 'patent' AND event_type LIKE 'published_assignments%'"),
     ("trade_mark_assignments", "ip_right_type = 'trade_mark' AND event_category = 'publish_ownership'"),
 ]
+# The date an event is counted at. A trade mark is registered "as from" its filing date, so IP RAPID's effective date
+# for a registration is the filing (priority) date for 85% of them; the date the registration was entered is the
+# declared date, which is what a count of registrations a month needs (ADR 0010).
+EVENT_DATE = (
+    "CASE WHEN ip_right_type = 'trade_mark' AND event_category = 'granted' "
+    "THEN coalesce(event_declared_date, event_effective_date) ELSE event_effective_date END"
+)
+# A series starts where its records become continuous: the first month from which at least 9 of the next 12 have a
+# record (ADR 0010), so decades of scattered early records are not read as zeros; earlier months are empty. Before the
+# rule, trade mark oppositions read 0 for 777 months. A start can be set by hand here, with the reason.
+TIMELINE_START_OVERRIDE = {
+    # Registrations are counted by the date entered, which IP RAPID records from December 1985 (every registration
+    # since 1986, under 2% before 1984). An earlier registration has only its effective date, which is its filing
+    # date (99% of them), so it would count in the month it was filed: a different measure, which leaves a false
+    # hole from mid-1983 (registrations entered then are dated at filing; filings then were entered after 1985).
+    "trade_marks_registered": "1986-01-01",
+}
+# Series whose zeros after their start are real, not gaps: the "origin unknown" series fall to zero once applicants'
+# countries came to be recorded.
+TIMELINE_STRUCTURAL_ZEROS = {"patents_standard_origin_unknown", "trade_marks_origin_unknown", "designs_origin_unknown"}
+# Months at the end left empty because the register records them late (ADR 0010): a trade mark or design ceases only
+# once its six-month grace period for renewal has passed (trade marks: 0 from May 2026, a median 198 days from the
+# effective date to the record); recent designs' applicant countries are filled in weeks after filing (origin unknown
+# for 843 of September 2026's designs, against about 50 a month before).
+TIMELINE_LAG = {
+    "trade_marks_ceased": 6,
+    "designs_ceased": 6,
+    "designs_au": 3,
+    "designs_overseas": 3,
+    "designs_origin_unknown": 3,
+}
 
 OECD = (
     "AUS AUT BEL CAN CHL COL CRI CZE DNK EST FIN FRA DEU GRC HUN ISL IRL ISR ITA JPN KOR LVA LTU LUX MEX NLD NZL NOR "
@@ -100,7 +134,8 @@ def _fy(col: str) -> str:
 def rights_sql() -> str:
     """One row per right. Origin comes from every current applicant (ADR 0009): Australian if any is in Australia,
     overseas if at least one has a known country and none is in Australia, else unknown (NULL). IP RAPID's own
-    `any_applicant_in_australia` turns unknown into false, so it is not used."""
+    `any_applicant_in_australia` turns unknown into false, so it is not used. IP RAPID publishes no agents for
+    provisional applications, so `has_agent` is empty (unknown) for them rather than false (ADR 0010)."""
     parts = []
     for kind in ("patent", "trade_mark", "design", "pbr"):
         parts.append(f"""
@@ -128,6 +163,7 @@ def rights_sql() -> str:
         END AS patent_type,
         r.status,
         r.application_date,
+        r.earliest_filed_date,
         {_fy("r.application_date")} AS filing_fy,
         r.priority_date,
         r.gained_registration_status_date AS registered_date,
@@ -146,7 +182,7 @@ def rights_sql() -> str:
         r.any_applicant_abn AS applicant_abn,
         r.any_applicant_abn IS NOT NULL AS has_abn,
         CASE WHEN a.applicants_au > 0 THEN true WHEN a.applicants_overseas > 0 THEN false END AS australian_applicant,
-        r.has_agent,
+        CASE WHEN r.ip_right_sub_type <> 'provisional' THEN r.has_agent END AS has_agent,  -- no agents are published
         r.main_class,
         r.main_area,
         r.class_count
@@ -165,20 +201,25 @@ def firms_sql() -> str:
                count(*) FILTER (ip_right_type = 'design') AS n_designs
         FROM {lens_table("rights")} WHERE applicant_abn IS NOT NULL GROUP BY 1
     ),
-    rd_year AS (  -- one value per ABN and year (a few claims are reported twice)
-        SELECT abn, income_year, max(rd_expenditure) AS rd FROM {{rdti/entities}} WHERE abn IS NOT NULL GROUP BY 1, 2
+    rd_year AS (  -- one value per ABN and year: the latest report's, amended where it was (ADR 0010)
+        SELECT abn, income_year, arg_max(coalesce(rd_expenditure_amended, rd_expenditure), report) AS rd
+        FROM {{rdti/entities}} WHERE abn IS NOT NULL GROUP BY 1, 2
     ),
     rd AS (
         SELECT abn, count(*) AS rdti_years, avg(rd) AS rd_expenditure_mean, arg_max(rd, income_year) AS rd_latest
         FROM rd_year GROUP BY 1
     ),
-    tax_year AS (
-        SELECT abn, income_year, max(total_income) AS income FROM {{ato_ctt/entities}}
+    tax_year AS (  -- as rd_year: a later report can restate a year
+        SELECT abn, income_year, arg_max(total_income, report) AS income FROM {{ato_ctt/entities}}
         WHERE abn IS NOT NULL GROUP BY 1, 2
     ),
     tax AS (
         SELECT abn, count(*) AS ato_ctt_years, arg_max(income, income_year) AS total_income_latest
         FROM tax_year GROUP BY 1
+    ),
+    filed AS (  -- applications as a founding applicant, a shared one split equally (IPLORD's weighting)
+        SELECT applicant_id AS abn, sum(filed_weighted) AS ip_filed_weighted FROM {{iprapid/applicant_year}}
+        WHERE applicant_id_type = 'abn' GROUP BY 1
     ),
     place AS (
         SELECT p.poa_code, p.ra_name, s.value AS irsad_decile
@@ -193,7 +234,7 @@ def firms_sql() -> str:
             WHEN s.entity_type_text = 'Australian Private Company' THEN 'Private company'
             WHEN s.entity_type_text = 'Australian Public Company' THEN 'Public company'
             WHEN s.entity_type_text = 'Individual/Sole Trader' THEN 'Sole trader'
-            WHEN s.entity_type_text ILIKE '%superannuation%' THEN 'Super fund'
+            WHEN s.entity_type_text ILIKE '%superannuation%' OR s.entity_type_text ILIKE '%APRA%fund%' THEN 'Super fund'
             WHEN s.entity_type_text ILIKE '%government%' OR s.entity_type_text ILIKE '%statutory%' THEN 'Government'
             WHEN s.entity_type_text ILIKE '%trust%' THEN 'Trust'
             WHEN s.entity_type_text ILIKE '%partnership%' THEN 'Partnership'
@@ -209,10 +250,17 @@ def firms_sql() -> str:
         s.asic_type,
         s.first_seen,
         round(date_diff('day', s.first_seen, DATE '{TODAY}') / 365.25, 1) AS age_years,
+        CASE WHEN s.first_seen IS NULL THEN NULL
+             WHEN s.first_seen = s.asic_registered THEN 'asic'
+             WHEN s.abn_status = 'ACT' AND s.first_seen = s.abn_status_from THEN 'abn'
+             WHEN s.first_seen = s.gst_status_from THEN 'gst' END AS age_basis,
+        -- ABNs and GST began in 1999-2000: a business first seen then through them may be older
+        s.first_seen < DATE '2001-01-01' AND s.first_seen IS DISTINCT FROM s.asic_registered AS age_truncated,
         s.in_iprapid_patent, s.in_iprapid_trade_mark, s.in_iprapid_design,
         s.in_rdti, s.in_austender, s.in_ato_ctt,
         s.patent_first_fy, s.trade_mark_first_fy, s.design_first_fy,
         s.ip_filed_total,
+        coalesce(filed.ip_filed_weighted, 0) AS ip_filed_weighted,
         coalesce(ip.n_patents_standard, 0) AS n_patents_standard,
         coalesce(ip.n_patents_provisional, 0) AS n_patents_provisional,
         coalesce(ip.n_patents_second_tier, 0) AS n_patents_second_tier,
@@ -229,6 +277,7 @@ def firms_sql() -> str:
     LEFT JOIN ip USING (abn)
     LEFT JOIN rd USING (abn)
     LEFT JOIN tax USING (abn)
+    LEFT JOIN filed USING (abn)
     LEFT JOIN place ON place.poa_code = {_postcode("s.postcode")}
     """
 
@@ -246,13 +295,13 @@ def regions_sql() -> str:
         {seifa}
         FROM {{abs_regions/seifa_poa}} GROUP BY 1
     ),
-    census AS (
+    census AS (  -- the Census gives 0 where a median has no one to describe (no renters, no residents): empty here
         SELECT replace(POA_CODE_2021, 'POA', '') AS poa_code,
-               Median_age_persons AS median_age,
-               Median_tot_prsnl_inc_weekly AS median_personal_income_weekly,
-               Median_tot_hhd_inc_weekly AS median_household_income_weekly,
-               Median_rent_weekly AS median_rent_weekly,
-               Average_household_size AS average_household_size
+               nullif(Median_age_persons, 0) AS median_age,
+               nullif(Median_tot_prsnl_inc_weekly, 0) AS median_personal_income_weekly,
+               nullif(Median_tot_hhd_inc_weekly, 0) AS median_household_income_weekly,
+               nullif(Median_rent_weekly, 0) AS median_rent_weekly,
+               nullif(Average_household_size, 0) AS average_household_size
         FROM {{abs_census/poa_g02}}
     ),
     abr AS (
@@ -327,34 +376,59 @@ def national_sql() -> str:
     return f"""
     WITH iso(a2, a3) AS (VALUES {pairs}),
     wdi AS (
-        SELECT p.iso3, p.country, p.year, p.indicator, p.indicator_name, p.value, 'WDI' AS source
+        SELECT p.iso3, p.country, p.year, p.indicator, p.indicator_name, p.value, NULL::VARCHAR AS status,
+               'WDI' AS source
         FROM {{wdi/panel}} p JOIN {{wdi/countries}} c ON c.iso3 = p.iso3
         WHERE NOT c.aggregate
+    ),
+    oecd AS (  -- R&D intensity from the OECD's MSTI, beside the World Bank's (never spliced: ADR 0010)
+        SELECT m.reference_area AS iso3, any_value(m.reference_area_label) AS country,
+               CAST(m.time_period AS INTEGER) AS year, 'OECD.MSTI.' || m.measure AS indicator,
+               any_value(m.measure_label) || ', % of GDP (OECD MSTI)' AS indicator_name,
+               any_value(m.value) AS value, any_value(m.observation_status_label) AS status, 'OECD' AS source
+        FROM {{oecd/msti}} m JOIN iso ON iso.a3 = m.reference_area
+        WHERE m.measure IN ('G', 'B') AND m.unit_of_measure = 'PT_B1GQ' AND m.value IS NOT NULL
+        GROUP BY m.reference_area, m.time_period, m.measure
     ),
     wipo AS (
         SELECT iso.a3 AS iso3, any_value(o.origin) AS country, o.year,
                CASE o.indicator_id {cases} END AS indicator,
                CASE o.indicator_id {names} END AS indicator_name,
-               sum(o.value) AS value, 'WIPO' AS source
+               sum(o.value) AS value, NULL::VARCHAR AS status, 'WIPO' AS source
         FROM {{wipo_ipstats/office_origin}} o JOIN iso ON iso.a2 = o.origin_code
         WHERE o.indicator_id IN ({", ".join(map(str, wipo))}) AND o.breakdown IS NULL
         GROUP BY iso.a3, o.year, o.indicator_id
     )
-    SELECT *, iso3 IN ({oecd}) AS oecd, iso3 = 'AUS' AS australia
-    FROM (SELECT * FROM wdi UNION ALL SELECT * FROM wipo)
+    SELECT u.* REPLACE (coalesce(n.name, u.country) AS country),  -- one name per country (the World Bank's)
+           u.iso3 IN ({oecd}) AS oecd, u.iso3 = 'AUS' AS australia
+    FROM (SELECT * FROM wdi UNION ALL SELECT * FROM wipo UNION ALL SELECT * FROM oecd) u
+    LEFT JOIN {{wdi/countries}} n ON n.iso3 = u.iso3
     """
 
 
 def timeline_sql() -> str:
-    """One row per month. A series is NULL before its first recorded month, so 'not yet recorded' is not read as 0."""
+    """One row per month. A series is empty before its records become continuous (the 9-in-12 rule, or
+    `TIMELINE_START_OVERRIDE`) and in the final months the register has not finished recording (`TIMELINE_LAG`), so
+    that 'not recorded' is not read as 0. The CPI is quarterly: it sits in each quarter's last month only."""
     series = [c for c, _ in TIMELINE_APPLICATIONS + TIMELINE_EVENTS]
 
     def counts(defs):
         return ",\n            ".join(f"count(*) FILTER ({cond}) AS {col}" for col, cond in defs)
 
     window = f"BETWEEN DATE '{TIMELINE_START}' AND DATE '{TIMELINE_END}' + INTERVAL 1 MONTH - INTERVAL 1 DAY"
-    firsts = ", ".join(f"min(month) FILTER ({c} > 0) AS first_{c}" for c in series)
-    kept = ",\n        ".join(f"CASE WHEN j.month >= f.first_{c} THEN coalesce(j.{c}, 0) END AS {c}" for c in series)
+    any_event = " OR ".join(f"({cond})" for _, cond in TIMELINE_EVENTS)
+    nonzero = ",\n        ".join(f"sum((coalesce({c}, 0) > 0)::INT) OVER w AS nz_{c}" for c in series)
+    starts = ", ".join(
+        f"DATE '{TIMELINE_START_OVERRIDE[c]}' AS start_{c}"
+        if c in TIMELINE_START_OVERRIDE
+        else f"min(month) FILTER (nz_{c} >= 9 AND months_ahead = 12) AS start_{c}"
+        for c in series
+    )
+    kept = ",\n        ".join(
+        f"CASE WHEN j.month >= f.start_{c} AND j.month <= DATE '{TIMELINE_END}' - INTERVAL {TIMELINE_LAG.get(c, 0)} "
+        f"MONTH THEN coalesce(j.{c}, 0) END AS {c}"
+        for c in series
+    )
     return f"""
     WITH months AS (
         SELECT CAST(m AS DATE) AS month
@@ -365,20 +439,36 @@ def timeline_sql() -> str:
             {counts(TIMELINE_APPLICATIONS)}
         FROM {lens_table("rights")} WHERE application_date {window} GROUP BY 1
     ),
+    e AS (  -- each event once: a right's repeated record of the same event on the same day counts once
+        SELECT DISTINCT ip_right_type, application_number, event_type, event_category, {EVENT_DATE} AS event_date
+        FROM {{iprapid/events}} WHERE {any_event}
+    ),
     events AS (
-        SELECT CAST(date_trunc('month', event_effective_date) AS DATE) AS month,
+        SELECT CAST(date_trunc('month', event_date) AS DATE) AS month,
             {counts(TIMELINE_EVENTS)}
-        FROM {{iprapid/events}} WHERE event_effective_date {window} GROUP BY 1
+        FROM e WHERE event_date {window} GROUP BY 1
     ),
     policy AS (
         SELECT CAST(date_trunc('month', date) AS DATE) AS month, string_agg(id, ', ' ORDER BY date) AS policy_events
         FROM {{policy_events/events}} GROUP BY 1
     ),
-    j AS (
-        SELECT months.month, apps.* EXCLUDE (month), events.* EXCLUDE (month), policy.policy_events
-        FROM months LEFT JOIN apps USING (month) LEFT JOIN events USING (month) LEFT JOIN policy USING (month)
+    cpi AS (  -- all groups, Australia (weighted average of the eight capitals), original, quarterly
+        SELECT make_date(CAST(left(time_period, 4) AS INTEGER), 3 * CAST(right(time_period, 1) AS INTEGER), 1) AS month,
+               value AS cpi
+        FROM {{abs_prices/cpi}}
+        WHERE index = '10001' AND region = '50' AND measure = '1' AND adjustment_type = '10' AND frequency = 'Q'
     ),
-    f AS (SELECT {firsts} FROM j)
+    j AS (
+        SELECT months.month, apps.* EXCLUDE (month), events.* EXCLUDE (month), policy.policy_events, cpi.cpi
+        FROM months LEFT JOIN apps USING (month) LEFT JOIN events USING (month) LEFT JOIN policy USING (month)
+        LEFT JOIN cpi USING (month)
+    ),
+    nz AS (
+        SELECT month, count(*) OVER w AS months_ahead,
+        {nonzero}
+        FROM j WINDOW w AS (ORDER BY month ROWS BETWEEN CURRENT ROW AND 11 FOLLOWING)
+    ),
+    f AS (SELECT {starts} FROM nz)
     SELECT
         j.month,
         year(j.month) AS year,
@@ -386,6 +476,7 @@ def timeline_sql() -> str:
         {_fy("j.month")} AS fy,
         day(last_day(j.month)) AS days_in_month,
         {kept},
+        j.cpi,
         j.policy_events
     FROM j CROSS JOIN f
     ORDER BY j.month
