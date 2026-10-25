@@ -551,15 +551,119 @@ def firms_sql() -> str:
     """
 
 
+# Postcodes Australia Post keeps for post office boxes and large-volume receivers, which have no residents and are
+# never ABS postal areas (S6, ADR 0017).
+NON_GEOGRAPHIC = [
+    ("0200", "0299"),
+    ("0900", "0999"),
+    ("1000", "1999"),
+    ("5800", "5999"),
+    ("6800", "6999"),
+    ("7800", "7999"),
+    ("8000", "9999"),
+]
+# The ranges for street addresses (Australia Post's delivery ranges; 6798 and 6799 are the Indian Ocean Territories,
+# 2899 Norfolk Island). A code in one of them that is not a postal area is a post office box, a university or
+# another large-volume receiver inside a delivery range, or a mistake.
+DELIVERY = [
+    ("0800", "0899"),
+    ("2000", "2999"),
+    ("3000", "3999"),
+    ("4000", "4999"),
+    ("5000", "5799"),
+    ("6000", "6799"),
+    ("7000", "7799"),
+]
+
+
+def postcode_range(col: str) -> str:
+    """Which of Australia Post's ranges a 4-digit postcode is in: 'delivery', 'non_geographic' or 'none'. Whether it
+    is an ABS postal area is a separate join."""
+
+    def any_of(ranges):
+        return " OR ".join(f"{col} BETWEEN '{lo}' AND '{hi}'" for lo, hi in ranges)
+
+    return (
+        f"CASE WHEN {col} IS NULL THEN NULL WHEN {any_of(NON_GEOGRAPHIC)} THEN 'non_geographic' "
+        f"WHEN {any_of(DELIVERY)} THEN 'delivery' ELSE 'none' END"
+    )
+
+
+# The rules for postal-area rates (B3, ADR 0017). Applications are counted where the filer was (the first founding
+# applicant in Australia), over the ten financial years of WINDOW, and rates are per year. A rate is empty where fewer
+# than MIN_EXPECTED applications of that type would be expected at the national rate: a Poisson count of 10 has a 95%
+# interval of about 5 to 18, so a smaller area's rate is mostly chance. Smaller areas are compared by pooling them
+# (`sa3_code`) or by shrinking their rates, in Stage 2.
+MIN_EXPECTED = 10
+RATE_TYPES = [
+    ("patents_standard", "patent_type = 'standard'"),
+    ("trade_marks", "ip_right_type = 'trade_mark'"),
+    ("designs", "ip_right_type = 'design'"),
+]
+
+
 def regions_sql() -> str:
+    """One row per ABS postal area with people or businesses (2021), outside the areas the ABS keeps for people with no
+    usual address, offshore and migratory, or outside Australia.
+
+    Applications (ADR 0017) are counted by the filer's postcode (`founder_postcode`, ADR 0013), not the current
+    holder's, so a right sold to another place stays where it was filed. Postcodes that are not postal areas (post
+    office boxes, universities, large-volume receivers: S6) are not counted here; they are in the state totals of the
+    rights lens. Rates per person count every filing; rates per business count organisations' filings only, as about
+    a fifth to a quarter of filings are by individuals, and the denominator is GST-registered businesses."""
     lo, hi = WINDOW
+    years = hi - lo + 1
     seifa = ",\n        ".join(
         f"max(value) FILTER (index_type = '{i}' AND measure = '{m}') AS {i.lower()}_{n}"
         for i in ("IRSAD", "IRSD", "IER", "IEO")
         for m, n in (("SCORE", "score"), ("RWAD", "decile"))
     )
+    by_org = " AND founder_type = 'organisation'"
+    counts = ",\n               ".join(
+        [
+            "count(*) FILTER (patent_type = 'standard') AS patents_standard",
+            "count(*) FILTER (patent_type = 'provisional') AS patents_provisional",
+            "count(*) FILTER (patent_type = 'second_tier') AS patents_second_tier",
+            "count(*) FILTER (ip_right_type = 'trade_mark') AS trade_marks",
+            "count(*) FILTER (ip_right_type = 'design') AS designs",
+            *(f"count(*) FILTER ({cond}{by_org}) AS {t}_by_organisations" for t, cond in RATE_TYPES),
+        ]
+    )
+
+    def rate(per: int, num: str, den: str, nat_num: str, nat_den: str) -> str:
+        # empty where the area would expect fewer than MIN_EXPECTED at the national rate
+        return (
+            f"CASE WHEN {den} * nat.{nat_num} / nat.{nat_den} >= {MIN_EXPECTED} "
+            f"THEN {per}.0 * {num} / {years} / {den} END"
+        )
+
+    per_person = [
+        rate(10_000, f"coalesce(ip.{t}, 0)", "p.persons", t, "persons") + f" AS {t}_per_10k_people"
+        for t, _ in RATE_TYPES
+    ]
+    org = [f"{t}_by_organisations" for t, _ in RATE_TYPES]
+    per_business = [
+        rate(1_000, f"coalesce(ip.{o}, 0)", "abr.active_gst_abns", o, "active_gst_abns") + f" AS {t}_per_1k_businesses"
+        for (t, _), o in zip(RATE_TYPES, org, strict=True)
+    ]
+    rates = ",\n        ".join(per_person + per_business)
+    nat = ", ".join(
+        [
+            *(
+                f"sum(coalesce(ip.{t}, 0)) AS {t}, sum(coalesce(ip.{t}_by_organisations, 0)) AS {t}_by_organisations"
+                for t, _ in RATE_TYPES
+            ),
+            "sum(p.persons) AS persons",
+            "sum(abr.active_gst_abns) AS active_gst_abns",
+        ]
+    )
     return f"""
-    WITH seifa AS (
+    WITH places AS (
+        SELECT * FROM {{abs_regions/poa}}
+        WHERE ra_name NOT IN ('Outside Australia', 'Migratory - Offshore - Shipping (WA)')
+          AND ra_name NOT LIKE 'No usual address%'
+    ),
+    seifa AS (
         SELECT postal_area_code AS poa_code,
         {seifa}
         FROM {{abs_regions/seifa_poa}} GROUP BY 1
@@ -579,15 +683,11 @@ def regions_sql() -> str:
                count(*) FILTER (abn_status = 'ACT' AND gst_status = 'ACT') AS active_gst_abns
         FROM {{abr/abns}} GROUP BY 1
     ),
-    ip AS (
-        SELECT applicant_postcode AS poa_code,
-               count(*) FILTER (patent_type = 'standard') AS patents_standard,
-               count(*) FILTER (patent_type = 'provisional') AS patents_provisional,
-               count(*) FILTER (patent_type = 'second_tier') AS patents_second_tier,
-               count(*) FILTER (ip_right_type = 'trade_mark') AS trade_marks,
-               count(*) FILTER (ip_right_type = 'design') AS designs
+    ip AS (  -- by the filer's postcode (ADR 0017)
+        SELECT founder_postcode AS poa_code,
+               {counts}
         FROM {lens_table("rights")}
-        WHERE applicant_postcode IS NOT NULL AND filing_fy BETWEEN {lo} AND {hi}
+        WHERE founder_postcode IS NOT NULL AND filing_fy BETWEEN {lo} AND {hi}
         GROUP BY 1
     ),
     firms AS (
@@ -596,12 +696,18 @@ def regions_sql() -> str:
                count(*) FILTER (abn_active AND in_rdti) AS rdti_firms,
                count(*) FILTER (abn_active AND in_rdti AND ip_filed_total = 0) AS rdti_firms_no_ip
         FROM {lens_table("firms")} GROUP BY 1
+    ),
+    nat AS (  -- national rates over the lens's places, for the minimum expected count
+        SELECT {nat}
+        FROM places p LEFT JOIN ip USING (poa_code) LEFT JOIN abr USING (poa_code)
     )
     SELECT
         p.poa_code,
         p.state_name AS state,
         p.ra_name AS remoteness,
         p.share_major_cities,
+        p.sa3_code,
+        p.sa3_name,
         p.persons,
         seifa.* EXCLUDE (poa_code),
         census.* EXCLUDE (poa_code),
@@ -612,21 +718,20 @@ def regions_sql() -> str:
         coalesce(ip.patents_second_tier, 0) AS patents_second_tier,
         coalesce(ip.trade_marks, 0) AS trade_marks,
         coalesce(ip.designs, 0) AS designs,
+        coalesce(ip.patents_standard_by_organisations, 0) AS patents_standard_by_organisations,
+        coalesce(ip.trade_marks_by_organisations, 0) AS trade_marks_by_organisations,
+        coalesce(ip.designs_by_organisations, 0) AS designs_by_organisations,
         coalesce(firms.ip_filing_firms, 0) AS ip_filing_firms,
         coalesce(firms.rdti_firms, 0) AS rdti_firms,
         coalesce(firms.rdti_firms_no_ip, 0) AS rdti_firms_no_ip,
-        1000.0 * coalesce(ip.patents_standard, 0) / nullif(abr.active_gst_abns, 0)
-            AS patents_standard_per_1k_businesses,
-        1000.0 * coalesce(ip.trade_marks, 0) / nullif(abr.active_gst_abns, 0) AS trade_marks_per_1k_businesses,
-        1000.0 * coalesce(ip.designs, 0) / nullif(abr.active_gst_abns, 0) AS designs_per_1k_businesses
-    FROM {{abs_regions/poa}} p
+        {rates}
+    FROM places p
+    CROSS JOIN nat
     LEFT JOIN seifa USING (poa_code)
     LEFT JOIN census USING (poa_code)
     LEFT JOIN abr USING (poa_code)
     LEFT JOIN ip USING (poa_code)
     LEFT JOIN firms USING (poa_code)
-    WHERE p.ra_name NOT IN ('Outside Australia', 'Migratory - Offshore - Shipping (WA)')
-      AND p.ra_name NOT LIKE 'No usual address%'
     """
 
 

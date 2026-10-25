@@ -327,3 +327,46 @@ def survival_at(curves: pd.DataFrame, years, *, by: str, time: str = "t", min_at
             else:
                 rows[g][y] = seen.survival.iloc[-1] if len(seen) else 1.0
     return pd.DataFrame(rows).T.rename_axis(index=by, columns="years")
+
+
+def poisson_interval(count, z: float = 1.96) -> tuple[np.ndarray, np.ndarray]:
+    """The exact (Garwood) interval for a Poisson count, 95% by default: for a count of 10, about 4.8 to 18.4. Divide
+    by the exposure (people or businesses, times years) for a rate's interval. A count of 0 has a lower bound of 0."""
+    from scipy import stats
+
+    k = np.asarray(count, float)
+    a = 2 * stats.norm.sf(z)
+    lo = np.where(k > 0, stats.chi2.ppf(a / 2, 2 * k) / 2, 0.0)
+    hi = stats.chi2.ppf(1 - a / 2, 2 * (k + 1)) / 2
+    return lo, hi
+
+
+def funnel(
+    count: pd.Series, exposure: pd.Series, *, per: float = 1, title: str = "", xlabel: str = "", ylabel: str = ""
+):
+    """A funnel plot: each area's rate (count / exposure × `per`) against its exposure, with the national rate and the
+    95% and 99.8% limits a Poisson count would fall within by chance alone. Areas outside the funnel differ by more
+    than chance; inside it, small areas' high or low rates are what chance gives. Areas with no exposure are left out.
+    Returns the figure and the share of areas outside each pair of limits."""
+    d = pd.DataFrame({"k": count.astype(float), "e": exposure.astype(float)}).dropna()
+    d = d[d.e > 0]
+    national = d.k.sum() / d.e.sum()
+    fig, ax = plt.subplots(figsize=(11, 4.8))
+    ax.scatter(d.e, per * d.k / d.e, s=8, alpha=0.5, color=MAIN, linewidths=0)
+    grid = np.logspace(np.log10(d.e.min()), np.log10(d.e.max()), 200)
+    outside = {}
+    for z, style_ in ((1.96, "--"), (3.09, ":")):
+        lo, hi = poisson_interval(national * grid, z)
+        ax.plot(grid, per * lo / grid, style_, color=ACCENT, lw=1.2)
+        ax.plot(grid, per * hi / grid, style_, color=ACCENT, lw=1.2, label=f"{'95' if z < 2 else '99.8'}% limits")
+        lo_k, hi_k = poisson_interval(national * d.e, z)
+        outside[f"% above the {'95' if z < 2 else '99.8'}% limit"] = 100 * (d.k > hi_k).mean()
+        outside[f"% below the {'95' if z < 2 else '99.8'}% limit"] = 100 * (d.k < lo_k).mean()
+    ax.axhline(per * national, color="black", lw=1, label=f"national rate ({per * national:,.2f})")
+    ax.set_xscale("log")
+    ax.set_yscale("symlog", linthresh=max(per * national / 10, 1e-9))
+    ax.set_xlabel(xlabel)
+    ax.set_ylabel(ylabel)
+    ax.set_title(title)
+    ax.legend(frameon=False, fontsize=8.5)
+    return fig, pd.Series(outside)

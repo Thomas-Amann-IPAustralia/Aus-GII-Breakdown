@@ -69,6 +69,7 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **ACN** | Australian Company Number: the identifier ASIC gives a company. The ABR records each company's ACN beside its ABN, which links the two. |
 | **Tax transparency reports** | The ATO's published income and tax of large entities: total income of $100m or more ($200m for Australian-owned private companies until 2021-22). |
 | **Postal area (POA)** | The ABS's version of a postcode area, which can be matched to Census and other data. In the `regions` lens, one row is one postal area. |
+| **Non-geographic postcode** | A postcode Australia Post gives to post office boxes or to a single large-volume receiver (a GPO, a university, a large business), with no residents. It is not an ABS postal area, so filings from it are not in the `regions` lens's counts. Most are in set ranges (1000 to 1999 in New South Wales, 8000 to 8999 in Victoria and others); some, such as 2052 (UNSW), sit in the ranges for street addresses. |
 | **SA2** | Statistical Area Level 2: an ABS area of roughly 3,000 to 25,000 people. |
 | **SA3, SA4** | Larger ABS areas built from SA2s: SA3s have roughly 30,000 to 130,000 people, and SA4s are larger regions (for example, Central Coast). |
 | **Population Health Area (PHA)** | PHIDU's area for health statistics: one SA2, or a group of small SA2s, so that counts are large enough to publish. The `phidu/pha_sa2` table lists each PHA's SA2s. |
@@ -107,6 +108,13 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Cohort** | A group that starts at the same time, such as the trade marks filed in the 1990s. Comparing cohorts at the same age separates change over time from ageing. |
 | **Observation status** | A publisher's flag on a single value: *estimated*, *provisional* (likely to be revised), *definition differs* (from the standard one) or a *time series break* (a change of method, so values either side are not directly comparable). The national lens keeps the OECD's in `status`. |
 | **Reprocessing** | Rebuilding a corpus table from the raw files already stored, without fetching anything new, so that a parser fix changes the table but not the date of the data (`corpus reprocess`). |
+| **Filer's postcode** | The postcode of the first applicant in Australia who filed a right (its founding applicant), as first recorded. The `regions` lens counts applications there, not at the current holder's postcode, so a right sold to a firm elsewhere stays where it was filed. |
+| **Rate a year (per 10,000 people, per 1,000 businesses)** | Applications over the ten financial years FY2017 to FY2026, divided by 10, per 10,000 residents (2021 Census) or, for organisations' applications, per 1,000 GST-registered businesses. |
+| **Minimum expected count** | The rule for showing an area's rate: only where at least 10 applications would be expected if the area filed at the national rate. Below that, a rate is mostly chance, so it is left empty and the area is pooled or its rate shrunk instead. |
+| **Poisson interval** | The range a count of rare, independent events would fall in by chance. For a count of 10 the 95% interval is about 4.8 to 18.4: a small count says little about the underlying rate. |
+| **Funnel plot** | Each area's rate against its size, with the limits chance alone would give around the national rate. The limits narrow as areas grow, giving a funnel. Points outside it differ by more than chance; small areas' extreme rates inside it do not. |
+| **Overdispersion** | More variation between areas than chance would give. Counts that vary this way need a model with room for it, such as the *negative binomial*, rather than the Poisson, which assumes chance alone. |
+| **Pooling and shrinkage** | Two ways to steady small areas' rates: *pooling* adds areas together into larger ones (here, SA3s); *shrinkage* moves each small area's rate toward a wider average, the more so the smaller the area. |
 | **Unit of analysis** | What one row stands for. Counting or averaging only makes sense once this is clear. |
 | **EDA** | Exploratory data analysis: getting to know the data before trying to answer questions with it. |
 | **Univariate, bivariate, multivariate** | Looking at one variable at a time, at two together, or at several together. These are the EDA's three stages. |

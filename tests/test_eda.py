@@ -353,3 +353,42 @@ def test_firms_count_by_the_filer_and_name_their_state():
               AS filed
         FROM read_parquet('{p}')""").iloc[0]
     assert bad.to_dict() == dict.fromkeys(bad.index, 0)
+
+
+def test_poisson_interval_matches_known_values():
+    lo, hi = uni.poisson_interval([0, 10])
+    assert lo[0] == 0 and hi[0] == pytest.approx(3.689, abs=1e-3)
+    assert (lo[1], hi[1]) == (pytest.approx(4.795, abs=1e-3), pytest.approx(18.390, abs=1e-3))
+    fig, outside = uni.funnel(pd.Series([5, 50, 0, 400]), pd.Series([100, 1000, 10, 10_000]), per=1000)
+    assert set(outside.index) >= {"% above the 95% limit", "% below the 95% limit"}
+    plt.close("all")
+
+
+def test_postcode_ranges():
+    got = data.sql(f"""
+        SELECT {build.postcode_range("pc")} AS r FROM (VALUES ('2000'), ('1475'), ('9726'), ('0031'), (NULL)) t(pc)
+    """).r.tolist()
+    assert got[:4] == ["delivery", "non_geographic", "non_geographic", "none"] and pd.isna(got[4])
+
+
+def test_regions_count_by_the_filer_and_hide_unstable_rates():
+    """Applications are the rights filed from each postal area (by `founder_postcode`, in the window), and no rate is
+    shown where fewer than MIN_EXPECTED would be expected at the national rate (B3, ADR 0017)."""
+    p = _built("regions")
+    rights = _built("rights")
+    lo, hi = build.WINDOW
+    r = data.sql(f"""
+        WITH filed AS (
+            SELECT count(*) FILTER (ip_right_type = 'trade_mark') AS tm,
+                   count(*) FILTER (patent_type = 'standard') AS sp
+            FROM read_parquet('{rights}') WHERE filing_fy BETWEEN {lo} AND {hi}
+              AND founder_postcode IN (SELECT poa_code FROM read_parquet('{p}')))
+        , nat AS (SELECT sum(patents_standard) / sum(persons) AS rate FROM read_parquet('{p}'))
+        SELECT (SELECT tm FROM filed) - sum(trade_marks) AS tm, (SELECT sp FROM filed) - sum(patents_standard) AS sp,
+               count(*) FILTER (trade_marks_by_organisations > trade_marks) AS org,
+               count(*) FILTER (persons * nat.rate < {build.MIN_EXPECTED}
+                                AND patents_standard_per_10k_people IS NOT NULL) AS shown_small,
+               count(*) FILTER (persons * nat.rate >= {build.MIN_EXPECTED}
+                                AND patents_standard_per_10k_people IS NULL) AS hidden_large
+        FROM read_parquet('{p}'), nat GROUP BY nat.rate""").iloc[0]
+    assert r.to_dict() == dict.fromkeys(r.index, 0)
