@@ -12,6 +12,6 @@ the owner's, or Claude's, which the owner can overturn.
 | [0004](0004-evidence-conventions.md) | Numbered, evidenced observations with a strength label; plain English; accessible charts | 2026-10-23 | Owner (principles), Claude (format) |
 | [0005](0005-lens-definitions-v1.md) | How the four lenses are defined, and their known limits | 2026-10-23 | Claude |
 | [0006](0006-timeline-lens.md) | Add a fifth lens: Australia over time, one row per month | 2026-10-23 | Owner (the lens), Claude (its contents) |
-| [0007](0007-every-dataset-through-every-stage.md) | Every dataset goes through all three stages: each table attached to a lens, two new lenses (industries, institutions), repairs before each table's Stage 1 section | 2026-10-25 | Owner (the principle), Claude (how) |
+| [0007](0007-every-dataset-through-every-stage.md) | Every dataset goes through all three stages: each table attached to a lens, two new lenses (industries, institutions), repairs before each table's Stage 1 section | 2026-10-25 | Owner (the principle and the two lenses), Claude (how) |
 
 Next free number: 0008.

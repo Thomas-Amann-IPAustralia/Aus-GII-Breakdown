@@ -10,6 +10,13 @@ seven proposed workstreams (R1–R7). Scope and relevance are judged against `do
 **Status:** this is a review only. No code, data or other documents were changed. This file is the only change to the
 repository. Its recommendations are proposals until the owner sets the direction (section 5).
 
+**Corrections (2026-10-25):**
+1. Gender cannot be estimated from IP RAPID: its individual applicants are pseudonymised codes, not names. Where this
+   review says gender from first names is feasible (section 1, Q2; R5), that holds only for inventors from Google
+   Patents (`google_patents_inventors`).
+2. The tiers in section 4 are re-sequenced lens by lens in `docs/eda-plan.md`, because every dataset now goes through
+   all three stages (ADR 0007).
+
 ## 1. Overall assessment
 
 **Bottom line.** The ChatGPT audit's facts are mostly right. Every count I re-ran matched, to the row. Its remedies,

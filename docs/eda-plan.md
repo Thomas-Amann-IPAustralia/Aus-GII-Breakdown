@@ -41,8 +41,8 @@ All lenses are built by `uv run python -m eda.build`, and every column is descri
 | `regions` | Postal area | Built: 2,641 | Q2, Q4 |
 | `national` | Country, year and indicator | Built: 127,309 | Q1, Q4 (context) |
 | `timeline` | Month, for Australia (Jan 1904 to Sep 2026) | Built: 1,473 | Q1, Q4, Q5 |
-| `industries` | ANZSIC division and financial year | Planned (ADR 0007) | Q2, Q3, Q4 |
-| `institutions` | Australian research institution (ROR) and year | Planned (ADR 0007) | Q1, Q2, Q3 |
+| `industries` | ANZSIC division and financial year | Planned (ADR 0007; confirmed by the owner) | Q2, Q3, Q4 |
+| `institutions` | Australian research institution (ROR) and year | Planned (ADR 0007; confirmed by the owner) | Q1, Q2, Q3 |
 
 **Rules for time.**
 - Monthly and quarterly series join the `timeline`. Quarterly series are compared at quarterly resolution, never spread
@@ -60,7 +60,7 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 |---|---|---|---|
 | `iprapid` `*_rights`, `application` | rights | The base: one row per right | A2 (origin); keep every applicant's raw postcode, state and country |
 | `iprapid/events` | rights, timeline | **Per right:** the dates of the examination request, acceptance, grant, opposition, assignments, licences and extension of term, and of the lapse, cessation or expiry, giving each right's lifetime. **Per month:** counts (already built). | A3 (coverage starts); label events as events (F38); B5 (lifetimes) |
-| `iprapid/party` | rights, firms | Applicants by country, all of them rather than only the first; founding filer against current holder; the attorney firm; estimated gender of individual applicants (with `wgnd`) | B1 |
+| `iprapid/party` | rights, firms | Applicants by country, all of them rather than only the first; founding filer against current holder; the attorney firm. Individuals are pseudonymised codes in IP RAPID, so their gender cannot be estimated. | B1 |
 | `iprapid/links` | rights | The route into Australia: foreign priority claimed, PCT entry, divisional | — |
 | `iprapid/classification`, `concordances` | rights, industries | Technology fields and the green-technology flag per right; industry shares for `industries` | B6 (new IPC subclasses) |
 | `iprapid/applicant_year`, `iplord` | firms | Filing histories per ABN. IPLORD is used only to check `applicant_year` before 2020, never added to it. | — |
@@ -82,12 +82,12 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 | `pbs` | timeline; medicines | Prescriptions, and government and patient costs, per month. Items are linked to ingredients for the medicine strand. | B9 (Section 100) |
 | `tga` | own unit | ARTG entries; sponsors per ingredient (competition); joins PBS and extension-of-term patents by ingredient | — |
 | `fedcourt` | timeline; text | IP judgments per month by right; variables derived from the text later | — |
-| `google_patents` | rights, firms | Per Australian application: family size, offices, US grant, forward citations (with a follow-up flag), inventor countries | B4 |
+| `google_patents`, `google_patents_inventors` | rights, firms, institutions | Per Australian application: family size, offices, US grant, forward citations (with a follow-up flag); inventors by country and their estimated gender (expected counts, from `wgnd`) | B4; BigQuery access for the inventors |
 | `openalex`, `openalex_works`, `reliance_on_science` | institutions, rights | Output, citations and patent-cited works per institution; science cited by Australian-linked patent families | F37 test |
 | `arc_grants`, `nhmrc_grants` | institutions, timeline | Grants and funding per institution and year (ARC names matched to ROR) | Label round years (F41) |
 | `policy_events` | timeline | Policy changes per month; the policy register is reference | B7 |
 | `ipa_fees` | timeline, rights | The fee in force each month, and fees per right, once the fee history exists | R3 |
-| `wgnd` | rights | Estimated gender from first names (an estimate; coverage reported) | — |
+| `wgnd` | reference | The name-gender dictionary behind `google_patents_inventors` | — |
 | `evidence`, `wine_gi` | reference | The literature register; the GI list (for certification marks) | — |
 
 ## The order of work
@@ -97,7 +97,7 @@ it is built. Each lens's repairs come first.
 
 1. **`rights`** (about half a day before it starts): A2, A4, and keeping the raw applicant location. Then come the
    attachments: events per right, the parties' countries and founding applicants (B1), links, Google Patents (B4) and
-   gender.
+   the inventors (with their estimated gender).
 2. **`timeline`**: A2 and A3, the policy dates (B7), and quarterly prices and wages (now in the corpus). Later: PBS (B9),
    CER (B11), judgments, contracts, and fees once the fee history exists (R3).
 3. **`firms`**: A1, A5 and A6, then B1 and B2.
@@ -141,8 +141,10 @@ Re-checked on 2026-10-25 with the owner's steer to go broad. Every source here i
    terms.
 6. **PBS monthly report with Section 100 (B9).** The raw file is already in R2.
 7. **ABS business characteristics releases for 2023-24 and 2024-25,** from the data cubes. The API stops at 2023.
-8. **Inventors, from Google Patents (a BigQuery run, within the free monthly allowance).** IP RAPID records no inventors.
-   This would show where inventions are made against who owns them, and the estimated gender of inventors (with WGND).
+8. **Inventors, from Google Patents (approved 2026-10-25; the loader `google_patents_inventors` is written and tested,
+   and waits on BigQuery access).** IP RAPID records no inventors, and gives individual applicants as pseudonymised
+   codes, so this is the only route to inventors' countries and to gender. It shows where inventions are made against
+   who owns them, and the expected numbers of women and men among inventors (with WGND).
 9. **Research commercialisation:** NSRC unit records, 2000–2015 (licences, spin-outs, patents and income by
    institution), plus research income or R&D spending by university. For the institutions lens.
 10. **Court judgments after 10 March 2025.** The Open Australian Legal Corpus page was updated in March 2026, so check
@@ -158,9 +160,12 @@ Re-checked on 2026-10-25 with the owner's steer to go broad. Every source here i
     (F07).
 
 **Needs the owner (an account or a request):**
-15. **ABS TableBuilder (free registration):** Census owner-managers by sex, Indigenous status, industry and region, the
-    denominator for who runs businesses.
-16. **BLADE:** linked small-firm outcomes, ruled out on 2026-10-22. Reopening it needs an approach to the ABS.
+15. **ABS TableBuilder (approved 2026-10-25; the owner downloads the tables):** Census owner-managers by sex,
+    Indigenous status, industry, age and postal area, the denominator for who runs businesses. The tables and the
+    clicks are in `docs/tablebuilder-owner-managers.md`.
+
+**Closed:** BLADE (linked small-firm outcomes) stays ruled out; the owner confirmed this on 2026-10-25. Firm-level
+outcomes for small businesses are a limit of this research, stated wherever it bears on a finding.
 
 **Still not worth it, and why:**
 - **Mapping overseas postcodes to places:** the raw codes are kept, so this can be done later if a question needs it.

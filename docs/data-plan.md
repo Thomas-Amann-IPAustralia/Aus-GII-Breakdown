@@ -142,7 +142,7 @@ Tier 2 adds complements, outcomes and comparators. Tier 3 needs your help or an 
 | 7 | **Counts of Australian Businesses** (entries, exits, by industry, size and SA2) | ABS | Denominators: IP users per 1,000 businesses by industry, size and region, and the comparison population for non-users | Q2, Q4 | ~50 MB | CC BY 4.0 |
 | 8 | **SEIFA 2021 by postal area and SA2**, **Data by Region** (ASGS 2021 and remoteness), **ASGS postcode and SA2 correspondences** | ABS Data API | Places IP users in socio-economic and remoteness context; regional innovation potential (education, occupation, industry mix) | Q2, Q4 | ~100 MB | CC BY 4.0 |
 | 9 | **Concordances**: WIPO IPC to 35 technology fields; IPC to industry (Algorithmic Links with Probabilities, ISIC and ANZSIC); Nice class to industry; WIPO IPC Green Inventory | WIPO, academic (Lybbert and Zolas), ABS | Turn patent and trade mark classes into industries and green technologies (environmental public value) | Q1, Q2 | < 10 MB | open |
-| 10 | **World Gender-Name Dictionary 2.0** | WIPO, Harvard Dataverse | Infers inventor and individual applicant gender from names, the established method (WIPO, IP Australia's own past reports) | Q2 | ~50 MB | CC BY 4.0 |
+| 10 | **World Gender-Name Dictionary 2.0** | WIPO, Harvard Dataverse | Infers inventor gender from names, the established method (WIPO, IP Australia's own past reports). Inventors' names come from Google Patents (`google_patents_inventors`); IP RAPID's individual applicants are pseudonymised codes, so their gender cannot be estimated | Q2 | ~50 MB | CC BY 4.0 |
 
 ### Tier 2: complements, outcomes and comparators (programmatic)
 
@@ -178,7 +178,7 @@ Listed in order of value. Items marked "you" are the limited fetches you offered
 | # | Dataset | Why it matters | How |
 |---|---|---|---|
 | A | ~~A current IPGOD and IPLORD extract~~ | **Done with public data:** IP RAPID, IP Australia's weekly open data release, covers every application to the current week (`iprapid`) | Ingested |
-| B | ~~ABS BLADE with IP Australia's linked IP data~~ | **Ruled out (2026-10-22): no ABS integrated data assets.** It was the only source of small firms' turnover, employment and productivity | Not pursued |
+| B | ~~ABS BLADE with IP Australia's linked IP data~~ | **Ruled out (2026-10-22; confirmed 2026-10-25): no ABS integrated data assets.** It was the only source of small firms' turnover, employment and productivity | Not pursued |
 | C | ~~Examination records with examiner assignment~~ | **Ruled out (2026-10-22): public data only.** It would have allowed the examiner leniency design | Not pursued |
 | D | ~~IP Australia customer and SME research microdata~~ | **Ruled out: public data only.** Published reports can go in the evidence register | Not pursued |
 | E | **Global patent data**: Google Patents Public Data (BigQuery) | Forward citations and patent families as value measures; Australian inventors abroad | **Ingested** (`google_patents`) |
@@ -201,7 +201,7 @@ as the research goal requires.
   patenting and its diffusion, Indigenous Knowledge and geographical indications, counterfeit enforcement, disclosure
   and the public domain (descriptive), framed against Measuring What Matters.
 - **Q2 Distribution.** IP use per business by industry, firm age, entity type, size proxy, remoteness and SEIFA
-  decile; gender of inventors and individual applicants; self-filers against attorney filers (descriptive).
+  decile; gender of inventors (estimated from Google Patents names; IP RAPID's individuals are pseudonymised); self-filers against attorney filers (descriptive).
 - **Q3 Conditions.** Survival and growth proxies (ABR, ASIC, GST status) for first-time filers against matched
   non-filers; R&D performers that do and do not register; IP holders' share of government contracts; international
   filing by firm type; formal against informal protection from BCS (observational).
