@@ -150,6 +150,21 @@ corpus tables are as published.
 - **171 events are dated before the right's earliest filing,** including 26 trade mark oppositions dated 1909.
 - **Placeholders** (1 January 1800, 1900, 1970): 3,162 of 49.35 million events, 34 links and 105 party start dates.
 
+## Found in the firms lens's Stage 1 profile (2026-10-25, ADR 0016)
+
+From section 2 of `01_univariate.ipynb`.
+- **IPLORD links ABNs that IP RAPID does not.** 52,949 of the spine's ABNs are linked to trade marks, designs or plant
+  breeder's rights by IPLORD (to FY2020) but are on no IP RAPID right; 50,790 are in the spine for that reason alone.
+- **IPLORD's counts differ from IP RAPID's applicant panel,** built to the same design: for ABNs with trade marks in
+  both, 81.02% agree, but the largest filers run up to 7 times higher in IPLORD (total 1.84 times), while IPLORD's
+  weighted total is 0.42 times IP RAPID's. Do not add or splice them.
+- **IPLORD has no patents:** its columns cover trade marks, designs and plant breeder's rights only.
+- **The ABR leaves `state` blank** (an empty string) for 3,977 of the spine's ABNs.
+- **Recent filers are less often linked to an ABN:** Australian organisations' trade marks with a filer's ABN fall from
+  84.1% (FY2024) to 59.9% (FY2026).
+- **The tax transparency reports' first years** (2013-14 to 2015-16) hold 29 rows under $100 million, and the
+  2013-14 December sheet lists two ABNs twice.
+
 ## Not yet checked
 
 - Whether values mean the same thing across sources (for example, what counts as a "state" or an entity type).

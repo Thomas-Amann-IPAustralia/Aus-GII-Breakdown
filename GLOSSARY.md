@@ -62,6 +62,9 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **GST-registered** | Registered for the Goods and Services Tax. This is compulsory at a turnover of $75,000 or more, so it is used as a rough marker of an actively trading business. |
 | **R&D Tax Incentive (RDTI)** | A tax offset for research and development. The ATO publishes who claimed it and how much they spent. |
 | **AusTender** | The register of Australian Government contracts. |
+| **Entity type and entity group** | The ABR's legal form of the business behind an ABN (57 types, such as an Australian private company, a discretionary trading trust or an individual). The `firms` lens groups them into eight: private company, public company, sole trader, trust, partnership, government, super fund and other. |
+| **Active ABN** | An ABN whose registration is current. A cancelled ABN usually means the business has closed or changed its structure. |
+| **Filer and holder (of a firm's IP)** | The firm that applied for a right, and the firm that holds it now. The `firms` lens counts applications by the filer and, separately, the rights each firm holds (`n_held`). |
 | **Contract notice and amendment** | AusTender publishes a notice for each contract, and another each time it is amended (CN123-A1, CN123-A2 and so on). An amendment's value is the contract's new total, not the change, so a contract's value is that of its latest notice; adding up every notice counts a contract once per amendment. |
 | **ACN** | Australian Company Number: the identifier ASIC gives a company. The ABR records each company's ACN beside its ABN, which links the two. |
 | **Tax transparency reports** | The ATO's published income and tax of large entities: total income of $100m or more ($200m for Australian-owned private companies until 2021-22). |
@@ -143,6 +146,8 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Natural experiment** | A change (a new fee or rule, say) that affects some people and not others, for reasons unrelated to their outcomes. Comparing the two groups comes close to an experiment. |
 | **Estimated gender** | The probability that a person is a woman, worked out from their first name and country with a name-gender dictionary (WGND). It is not anyone's stated gender. Added up over many people, it gives an *expected count* of women and men, which is reliable for large groups but not for any one person. |
 | **Lower bound** | A count that is at least this large; the true figure may be higher. |
+| **Concentration (top 1% share)** | The share of a total held by the largest 1% of those who hold any of it. If the top 1% of filing firms file 55% of standard patents, a few hundred firms account for more than half. |
+| **Nominal dollars** | Money as recorded at the time, not adjusted for inflation (see *Real terms*). |
 | **Placeholder date** | A made-up date standing in for an unknown one, such as 1 January 1970 (the zero of many computer systems) or 1 January 1800. Placeholder dates are emptied, not counted. |
 | **Decided (applications)** | Applications whose outcome is known: granted or registered, or ended. Rates and times are compared only for years in which nearly all applications are decided, because the ones still pending would otherwise be missed. |
 | **Left-truncated (age)** | An age measured from a date that cannot be earlier than some cut-off, so older units all look as young as the cut-off allows. A business first seen through its ABN or GST date in 1999 or 2000 may be much older: ABNs and GST began then. |

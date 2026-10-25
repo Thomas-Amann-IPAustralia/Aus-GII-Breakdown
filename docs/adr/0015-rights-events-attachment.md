@@ -34,6 +34,9 @@ counts the same events by month (ADR 0010, 0014).
 4. **No lifetime** (both columns empty) where it cannot be measured: never granted; a status that ended the right with
    no end date (6,621 rights); or an end dated before the term began (26 rights).
 
+**Owner's decision (2026-10-25):** years in force (U36) is adopted as a working measure for Stage 2, on condition that
+it is used alongside other signals, never alone as a measure of value.
+
 **Use.** Lifetimes are compared with survival curves (`uni.kaplan_meier`, from counts aggregated in SQL), within
 cohorts that start where the register is complete (ADR 0014): patents by the year of their date of patent from 1980,
 trade marks by earliest filing from 1983, designs from 1986. Milestone shares are compared only within the years each

@@ -2,10 +2,21 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**The owner's decisions (2026-10-25, end of session):** do the events attachment (B5) next, then `firms`; N01 and
-N06 are confirmed as settled (ADR 0010).
+**The owner's decisions (2026-10-25):** after the events attachment, the owner adopted years in force (U36, with
+unfinished rights kept) as a working measure for Stage 2, on condition that it is used alongside other signals, and
+asked for the `firms` lens next. They will try to find out from IP Australia why provisionals rose (U8) and why trade
+mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
+settled (ADR 0010).
 
-**Status (2026-10-25, latest):** the events attachment (B5) is built and profiled, as section 1.8.2 of
+**Status (2026-10-25, latest):** the `firms` section (2) of `01_univariate.ipynb` profiles every column of that lens
+(U41 to U47), after four repairs (ADR 0016): applications are counted by the filer's ABN (`founder_abn`), not the
+current holder's; two new columns say what each firm holds (`n_held`, `n_held_in_force`); `in_iplord` flags the 50,790
+ABNs that only IPLORD links to IP (their IP counts are 0, so firms' IP counts are lower bounds); and blank ABR states
+are emptied (165 filled from the postcode). The profile found that recent filers are less often linked to an ABN
+(Australian organisations' trade marks 84.1% in FY2024, 59.9% in FY2026): firm filing by year is compared to FY2024
+for now. **Next is `regions`.**
+
+Before that, the same day: the events attachment (B5) is built and profiled, as section 1.8.2 of
 `01_univariate.ipynb` (U31 to U40, ADR 0015). Eleven columns join `rights` from `iprapid/events`: the date of patent,
 the examination request (and whether expedited), acceptance, certification, first opposition, assignments (count and
 first date), extension of term, and each right's lifetime (`in_force`, `years_in_force`), with rights still in force
@@ -36,6 +47,21 @@ and BLADE stays ruled out.
 
 ## Where things stand
 
+- **Stage 1, `firms` (section 2, every column).** What it found (all descriptive):
+  - who is in it (U41): 398,450 ABNs, 63.68% in IP RAPID alone, 13.69% AusTender alone, 12.75% linked to IP by IPLORD
+    alone; active ABNs from 47.02% (IPLORD-only) to 95.35% (IP and R&D); IPLORD's own counts differ from IP RAPID's
+    (81.02% agree; 99th percentile 7 times), so they are not used;
+  - entity types (U42): private companies are 74.7% of firms, 82.2% of IP filers, 94.5% of R&D claimants and 55.3% of
+    government suppliers;
+  - age (U43): median 13.6 years on the record; 5,279 firms first seen on 1 November 1999, the ABN's start;
+  - IP use (U44): medians of 1 application; the top 1% of filing firms filed 55.3% of standard patents and 25.9% of
+    trade marks; 116,240 firms hold 430,305 rights in force;
+  - ABN linking (U45): first-time trade mark filers fell from 11,318 (FY2024) to 7,384 (FY2026), but the share of
+    Australian organisations' trade marks with a filer's ABN fell from 84.1% to 59.9%: a lead, and a question for IP
+    Australia;
+  - money (U46): R&D claims median $307,490 (top 1%: 28.1%); contract value concentrated (top 1% of suppliers: 83.1%);
+  - place (U47): IP filers and R&D claimants more metropolitan (87.1%, 89.9% against 85.2%) and advantaged (decile 10:
+    39.3% of R&D claimants against 34.0% of firms); the ACT has 9.7% of government suppliers.
 - **Stage 1, `rights`, events (1.8.2).** What it found (all descriptive):
   - the checks (U31): the grant event is `registered_date` (99.99%); patent assignments are published twice (99.78%),
     counted once; 4.76% of patent lapse events were later reversed (not standing); a trade mark's term runs from its
@@ -114,7 +140,7 @@ and BLADE stays ruled out.
   - design origin is often unrecorded (4.0% to 6.3% unknown since FY2018, and rising), so design shares need care.
 - **Five lenses are built** (`analysis/eda/build.py`), in under a minute:
   - `rights`: 4,368,006 rows, 52 columns (29 core, 12 from the parties, 11 from the events);
-  - `firms`: 398,450 rows, 37 columns;
+  - `firms`: 398,450 rows, 40 columns (ADR 0016: `n_held`, `n_held_in_force`, `in_iplord`);
   - `regions`: 2,641 rows, 31 columns;
   - `national`: 135,140 rows, 10 columns;
   - `timeline`: 1,473 months, 35 columns.
@@ -159,6 +185,7 @@ and BLADE stays ruled out.
 - **Corrected this session (the timeline):** the policy register's note that the Patents Act 1990 brought in 20-year
   patents (it was 16 years until 1 July 1995); and section 1's U5 and U10, whose charts showed survivors' counts and
   registration rates for the years before 1983 (trade marks) and 1986 (designs) without saying so.
+- **Tests (firms):** 63 pass; new: the filing counts sum to the rights with a filer's ABN, holdings, states.
 - **Tests (events attachment):** 62 pass; new: the events columns' dates, types and lifetimes, and the survival
   helper against a hand count.
 - **Tests (before):** 60 pass (the lens tests skip unless the lenses are built); lint is clean. New: each hand-set timeline
@@ -166,21 +193,16 @@ and BLADE stays ruled out.
 
 ## Next, in order
 
-1. **`firms` (the owner's order, 2026-10-25),** section 2 of `01_univariate.ipynb`. First, count applications by the
-   filer's ABN (`founder_abn`, ADR 0013) rather than the current holder's: an ADR, then the build, then the profile of
-   every column, as the `rights` section did. The events columns can now give each firm its rights' lifetimes and
-   assignments, if the profile wants them (a new ADR would say so).
-2. **`regions`, then `national`,** in the order the plan gives. `regions` first switches its application counts to the
-   filer's postcode (`founder_postcode`) and sets the B3 rules for small areas (a minimum denominator or pooling,
-   intervals, a per-person rate).
-3. **The rest of the `rights` attachments, as sub-sections of 1.8, when the owner says:**
-   - the links, with the PCT country check;
-   - Google Patents (B4);
-   - the inventors (gender estimates checked country by country against WIPO's published shares, above all China and
-     Korea).
-4. **Done: the `timeline` section (U22 to U30, ADR 0014)** and **the events attachment (U31 to U40, ADR 0015).** The
-   timeline's later attachments (Labour Force, wages, PBS, CER, judgments, contracts, fees) become sub-sections of
-   section 5 as each is built.
+1. **`regions`, section 3 of `01_univariate.ipynb`.** First, in an ADR: count applications by the filer's postcode
+   (`founder_postcode`, ADR 0013) rather than the current holder's, and set the B3 rules for small areas (a minimum
+   denominator or pooling, intervals, a per-person rate); then the postcode check (S6); then profile every column.
+2. **`national`** (section 4), then the planned lenses, `industries` and `institutions`, in the order the plan gives.
+3. **The rest of the `rights` attachments, as sub-sections of 1.8, when the owner says:** the links (with the PCT
+   country check), Google Patents (B4), and the inventors (gender estimates checked country by country against WIPO's
+   published shares, above all China and Korea).
+4. **Done:** the `timeline` section (U22 to U30, ADR 0014), the events attachment (U31 to U40, ADR 0015) and the
+   `firms` section (U41 to U47, ADR 0016). The `firms` lens's later attachments (filing histories by year from
+   `applicant_year`; its rights' lifetimes and assignments) become sub-sections of section 2 as each is built.
 5. **The plan's "high value, little work" additions, with the lens each serves:** the RBA's cash rate and exchange
    rates and the ABS national accounts (timeline), the ATO's statistics by postcode (regions), and IP Australia's own
    published figures as a benchmark (which would also test the provisional rise, U8, and the trade mark expedite fall,
@@ -189,6 +211,8 @@ and BLADE stays ruled out.
 ## Open items
 
 1. Leads for Stage 2:
+   - fewer recent filers are linked to an ABN (U45): Australian organisations' trade marks 84.1% (FY2024) to 59.9%
+     (FY2026). Late linking, or ABNs collected less? Firm filing by year is compared to FY2024 until known;
    - trade mark requests for expedited examination fell from about 1,400 a month to about 230 in November 2018, when
      the trade mark records moved between systems (U34): recording or practice? IP Australia's published figures
      could tell;
@@ -215,14 +239,13 @@ and BLADE stays ruled out.
 ## For the owner
 
 Nothing blocks the rest of Stage 1. Only you can do these:
-1. **The provisional rise (U8), if you can ask IP Australia:** whether a change in filing (a new channel, a fee, or
-   drafting tools) explains individuals' provisionals doubling in FY2026. The data show when and who, not why.
+1. **Questions for IP Australia (you are looking into them):** why individuals' provisionals doubled in FY2026 (U8);
+   whether the November 2018 fall in trade mark expedite requests was a change in practice or in recording (U34); and,
+   new, whether ABNs are attached to recent applications late, or collected less, since FY2025 (U45).
 2. **TableBuilder, only if a question needs owner-managers by sex or Indigenous status for each postal area:** register
    as a private user, and check that the free Basic version has the variables (`docs/tablebuilder-owner-managers.md`).
 3. **When to do the other `rights` attachments** (links, Google Patents, inventors): after `firms`, or later.
-4. **Whether to adopt U36 as a working measure:** years in force (with unfinished rights kept) as Stage 2's measure of
-   how long owners keep their rights, the closest the data come to private value (Q1). It is descriptive, and
-   lifetime is not value; Stage 2 would use it alongside other signals.
+4. **Done:** years in force (U36) is adopted as a working measure for Stage 2, alongside other signals (2026-10-25).
 
 ## Conventions to keep
 
@@ -232,4 +255,4 @@ Nothing blocks the rest of Stage 1. Only you can do these:
   vintage (ADR 0011).
 - The `rights` section's cells are long; keep each new sub-section to a few cells, and the notebook under about
   25 MB (ADR 0002 says when to split it).
-- Next free ADR: 0016.
+- Next free ADR: 0017.
