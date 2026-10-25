@@ -386,6 +386,7 @@ def test_policy_events_are_checked_and_unique():
     e = load("policy_events", "events")
     assert not e["verify"].any() and e["id"].is_unique
     assert str(e.set_index("id").loc["patents-act-1990", "date"]) == "1991-04-30"  # s 2(2); not 1 May
+    assert str(e.set_index("id").loc["patent-term-20-years", "date"]) == "1995-07-01"  # 1994 Act, s 2 (ADR 0014)
 
 
 def test_ato_headers_become_snake_case_without_units():

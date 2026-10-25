@@ -20,4 +20,6 @@ the owner's, or Claude's, which the owner can overturn.
 | [0012](0012-rights-lens-stage-1-repairs.md) | Five repairs to the rights lens from its Stage 1 profile: attorney use excludes the applicant itself, the technology area is for patents only, two placeholder dates emptied, no time to registration for trade marks dated at filing, and a missing Australian state taken from the postcode | 2026-10-25 | Claude (owner asked for Stage 1 to begin) |
 | [0013](0013-rights-parties-attachment.md) | The parties attachment: the founding applicant beside the current holder, whether the holder changed (not knowable for patents filed before FY2003), the main agent, and representation as attorney, other agent or self | 2026-10-25 | Claude (owner asked for the rights attachments, parties first) |
 
-Next free number: 0014.
+| [0014](0014-timeline-stage-1-repairs.md) | The timeline's series start where their records are complete (15 hand-set starts, past survivors, partial records and batch dates), and the 1995 rise of the patent term to 20 years is the 17th policy event | 2026-10-25 | Claude (owner asked for the next lens's Stage 1) |
+
+Next free number: 0015.

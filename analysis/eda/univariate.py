@@ -5,6 +5,7 @@ Each function returns a small table or a figure, never the raw rows, so a notebo
 
 from __future__ import annotations
 
+import matplotlib.dates as mdates
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -205,4 +206,77 @@ def monthly(
     ax.set_title(title)
     if events:
         mark_events(ax, timeline, ids=None if events is True else events)
+    return fig
+
+
+def seasonal_profile(timeline: pd.DataFrame, columns: list[str], *, start=None, end=None) -> pd.DataFrame:
+    """Each series' typical month of the year: every month's count as a % of the centred 12-month average around it
+    (the average of two 12-month windows, so it centres on the month), then the median of each calendar month over
+    `start` to `end`. 100 is an ordinary month; 75 is a quarter below. One row per series, one column per month."""
+    t = timeline.set_index("month")
+    out = {}
+    for c in columns:
+        y = t[c].astype(float)
+        centred = y.rolling(12, center=True).mean().rolling(2).mean().shift(-1)
+        ratio = (100 * y / centred).loc[start:end].dropna()
+        out[c] = ratio.groupby(ratio.index.month).median()
+    return pd.DataFrame(out).T.rename_axis(columns="month of the year")
+
+
+def _event_months(timeline: pd.DataFrame) -> dict[str, pd.Timestamp]:
+    marked = timeline.loc[timeline["policy_events"].notna(), ["month", "policy_events"]]
+    return {e: m for m, names in marked.itertuples(index=False) for e in names.split(", ")}
+
+
+def event_windows(timeline: pd.DataFrame, targets: dict[str, list[str]], *, months: int = 12) -> pd.DataFrame:
+    """For each policy change and each series it targets: the average month in the `months` before the change's
+    month, the month before, the change's month, the average in the `months` after, and the changes between them.
+    Descriptive only: trends and seasons move these too, which Stage 2 allows for."""
+    when = _event_months(timeline)
+    t = timeline.set_index("month")
+    rows = []
+    for event, columns in targets.items():
+        i = t.index.get_loc(when[event])
+        for c in columns:
+            y = t[c].astype(float)
+            before, after = y.iloc[max(i - months, 0) : i].mean(), y.iloc[i + 1 : i + 1 + months].mean()
+            rows.append(
+                {
+                    "change": event,
+                    "month": f"{when[event]:%Y-%m}",
+                    "series": c,
+                    f"average, {months} months before": before,
+                    "month before": y.iloc[i - 1],
+                    "month of the change": y.iloc[i],
+                    f"average, {months} months after": after,
+                    "month of the change, × average before": y.iloc[i] / before if before else np.nan,
+                    "% change in the average": 100 * (after / before - 1) if before else np.nan,
+                }
+            )
+    return pd.DataFrame(rows).set_index(["change", "series"])
+
+
+def around_events(timeline: pd.DataFrame, targets: dict[str, list[str]], *, months: int = 24, ncols: int = 3):
+    """Small multiples: for each policy change, the series it targets in the `months` either side, with the change's
+    month marked. Each panel has its own scale."""
+    from .style import PALETTE, label
+
+    when = _event_months(timeline)
+    t = timeline.set_index("month")
+    nrows = -(-len(targets) // ncols)
+    fig, axes = plt.subplots(nrows, ncols, figsize=(14, 2.6 * nrows), squeeze=False)
+    for ax, (event, columns) in zip(axes.flat, targets.items(), strict=False):
+        m = when[event]
+        w = t.loc[m - pd.DateOffset(months=months) : m + pd.DateOffset(months=months)]
+        for colour, c in zip(PALETTE, columns, strict=False):
+            ax.plot(w.index, w[c].astype(float), color=colour, lw=1.4, label=label("timeline", c, unit=False))
+        ax.axvline(m, color=MUTED, ls="--", lw=1)
+        ax.set_title(f"{event} ({m:%b %Y})", fontsize=9.5)
+        ax.legend(frameon=False, fontsize=6.5, loc="upper left")
+        ax.xaxis.set_major_locator(mdates.YearLocator())
+        ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+        ax.tick_params(labelsize=7.5)
+        thousands(ax)
+    for ax in axes.flat[len(targets) :]:
+        ax.set_visible(False)
     return fig
