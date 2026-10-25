@@ -238,14 +238,10 @@ and BLADE stays ruled out.
 
 ## For the owner
 
-Nothing blocks the rest of Stage 1. Only you can do these:
-1. **Questions for IP Australia (you are looking into them):** why individuals' provisionals doubled in FY2026 (U8);
-   whether the November 2018 fall in trade mark expedite requests was a change in practice or in recording (U34); and,
-   new, whether ABNs are attached to recent applications late, or collected less, since FY2025 (U45).
-2. **TableBuilder, only if a question needs owner-managers by sex or Indigenous status for each postal area:** register
-   as a private user, and check that the free Basic version has the variables (`docs/tablebuilder-owner-managers.md`).
-3. **When to do the other `rights` attachments** (links, Google Patents, inventors): after `firms`, or later.
-4. **Done:** years in force (U36) is adopted as a working measure for Stage 2, alongside other signals (2026-10-25).
+The owner's questions are kept in **`docs/owner-questions.md`**: open ones (OQ1 to OQ4), those the owner is asking IP
+Australia (OQ5 to OQ7: the provisional rise, the trade mark expedite fall, ABN linking since FY2025), deferred ones,
+and every answer with its date. Nothing there blocks Stage 1. Add new questions there, and move answers to its
+"Answered" table.
 
 ## Conventions to keep
 
