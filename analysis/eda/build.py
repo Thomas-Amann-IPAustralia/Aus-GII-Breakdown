@@ -8,10 +8,12 @@
 | `rights` | IP right (patent, trade mark, design, plant breeder's right) | `iprapid/*_rights`, `party`, `events` |
 | `firms` | ABN in any IP, R&D, procurement or tax source | `linkage/abn_spine`, `rights`, `rdti`, `ato_ctt` |
 | `regions` | Postal area (the ABS's version of a postcode) | `abs_regions`, `abs_census`, `abr`, `rights`, `firms` |
+| `region_indicators` | Postal area, source, indicator, period | Census, Data by Region, CABEE, PHIDU, CER |
 | `national` | Country, year and indicator | `wdi/panel`, `wipo_ipstats/office_origin`, `oecd/msti` |
 | `timeline` | Month, for Australia (IP Australia's whole register) | `rights`, `iprapid/events`, `policy_events` |
 
-Every column is described, in plain English, in `analysis/eda/variables.yaml`. Derived columns are defined here and
+`regions` also reads `austender`; `region_indicators` holds its attachments, long (ADR 0018). Every column is
+described, in plain English, in `analysis/eda/variables.yaml`. Derived columns are defined here and
 nowhere else, so a reader can check exactly how each was made.
 """
 
@@ -697,6 +699,21 @@ def regions_sql() -> str:
                count(*) FILTER (abn_active AND in_rdti AND ip_filed_total = 0) AS rdti_firms_no_ip
         FROM {lens_table("firms")} GROUP BY 1
     ),
+    contracts AS (  -- each contract once, at its latest notice (as in `linkage/abn_spine`, ADR 0010)
+        SELECT parent_cn_id,
+               arg_max(supplier_abn, (amendment IS NOT NULL, amendment, published)) FILTER (supplier_abn IS NOT NULL)
+                 AS abn,
+               arg_max(trim(supplier_postcode), (amendment IS NOT NULL, amendment, published))
+                 FILTER (supplier_postcode IS NOT NULL) AS poa_code,
+               arg_max(value, (amendment IS NOT NULL, amendment, published)) FILTER (value IS NOT NULL) AS value,
+               min(published)::DATE AS first_published
+        FROM {{austender/contracts}} GROUP BY 1
+    ),
+    tender AS (  -- contracts first published in the window, by the supplier's postcode on the contract (ADR 0018)
+        SELECT poa_code, count(DISTINCT abn) AS austender_suppliers, count(*) AS austender_contracts,
+               sum(value) AS austender_value
+        FROM contracts WHERE {_fy("first_published")} BETWEEN {lo} AND {hi} GROUP BY 1
+    ),
     nat AS (  -- national rates over the lens's places, for the minimum expected count
         SELECT {nat}
         FROM places p LEFT JOIN ip USING (poa_code) LEFT JOIN abr USING (poa_code)
@@ -724,6 +741,9 @@ def regions_sql() -> str:
         coalesce(firms.ip_filing_firms, 0) AS ip_filing_firms,
         coalesce(firms.rdti_firms, 0) AS rdti_firms,
         coalesce(firms.rdti_firms_no_ip, 0) AS rdti_firms_no_ip,
+        coalesce(tender.austender_suppliers, 0) AS austender_suppliers,
+        coalesce(tender.austender_contracts, 0) AS austender_contracts,
+        tender.austender_value,
         {rates}
     FROM places p
     CROSS JOIN nat
@@ -732,6 +752,141 @@ def regions_sql() -> str:
     LEFT JOIN abr USING (poa_code)
     LEFT JOIN ip USING (poa_code)
     LEFT JOIN firms USING (poa_code)
+    LEFT JOIN tender USING (poa_code)
+    """
+
+
+# The regions lens's attachments (ADR 0018): every value of five area sources, one row per postal area, source,
+# indicator and period, in `region_indicators`. A count published for SA2s (or PHIDU's PHAs) is split among postal areas
+# by the share of the area's 2021 residents living in each (by mesh block; an area with no residents is split by its
+# mesh blocks); a level (a median, mean, rate or percentage) is averaged over the areas overlapping a postal area,
+# weighted by the residents they share.
+CENSUS_TABLES = {
+    "G01": "Selected person characteristics",
+    "G02": "Medians and averages",
+    "G18": "Core activity need for assistance",
+    "G19": "Long-term health conditions",
+    "G20": "Count of selected long-term health conditions",
+    "G23": "Voluntary work for an organisation or group",
+    "G25": "Unpaid assistance to a person with a disability, health condition or due to old age",
+    "G43": "Selected labour force, education and migration characteristics",
+    "G44": "Place of usual residence one year ago",
+    "G45": "Place of usual residence five years ago",
+    "G46": "Labour force status by age by sex",
+    "G50": "Non-school qualification: field of study by age by sex",
+    "G54": "Industry of employment by age by sex",
+    "G60": "Occupation by age by sex",
+}
+# A Data by Region item is a level, not a count that can be split or summed, if its unit is one or its label says so
+DBR_LEVEL_UNITS = ("PCT", "DECILE", "QUARTILE", "YR", "RATE", "PSNS_PER_SQKM", "ML_PER_HA")
+LEVEL_WORDS = "median|mean|average"
+# PHIDU's measures are free text: a rate, ratio, percentage or average is a level, the rest are counts of people,
+# events, dwellings or years. Its confidence limits are left out: they cannot be carried through an average.
+PHIDU_LEVEL = r"(^|[^a-z])(sr|asr|sdr)([^a-z]|$)|%|per cent|rate|ratio|median|average|mean|index"
+
+
+def region_indicators_sql() -> str:
+    census = " UNION ALL ".join(
+        f"""
+        SELECT replace(POA_CODE_2021, 'POA', '') AS poa_code, '{t}' AS t, indicator, value
+        FROM (UNPIVOT (SELECT POA_CODE_2021, COLUMNS(* EXCLUDE POA_CODE_2021)::DOUBLE
+                       FROM {{abs_census/poa_{t.lower()}}})
+              ON COLUMNS(* EXCLUDE POA_CODE_2021) INTO NAME indicator VALUE value)"""
+        for t in CENSUS_TABLES
+    )
+    topics = " ".join(f"WHEN '{t}' THEN '{t}: {name}'" for t, name in CENSUS_TABLES.items())
+    dbr_level = ", ".join(f"'{u}'" for u in DBR_LEVEL_UNITS)
+    return f"""
+    WITH places AS (SELECT poa_code FROM {lens_table("regions")}),
+    mb AS (  -- 2021 residents and mesh blocks in each SA2 and postal area
+        SELECT sa2_code, poa_code, sum(coalesce(persons, 0)) AS persons, count(*) AS blocks
+        FROM {{abs_regions/mesh_blocks}} WHERE poa_code IN (SELECT poa_code FROM places) GROUP BY 1, 2
+    ),
+    pha_mb AS (  -- the same for PHIDU's areas, each one SA2 or a group of them
+        SELECT p.pha_code AS area, mb.poa_code, sum(mb.persons) AS persons, sum(mb.blocks) AS blocks
+        FROM {{phidu/pha_sa2}} p JOIN mb USING (sa2_code) GROUP BY 1, 2
+    ),
+    overlap AS (SELECT 'sa2' AS kind, sa2_code AS area, poa_code, persons, blocks FROM mb
+                UNION ALL SELECT 'pha', area, poa_code, persons, blocks FROM pha_mb),
+    w AS (  -- share of the area's count in the postal area; and of the postal area's people in the area, for levels
+        SELECT kind, area, poa_code,
+               CASE WHEN sum(persons) OVER (PARTITION BY kind, area) > 0
+                    THEN persons / sum(persons) OVER (PARTITION BY kind, area)
+                    ELSE blocks / sum(blocks) OVER (PARTITION BY kind, area) END AS split,
+               CASE WHEN sum(persons) OVER (PARTITION BY kind, poa_code) > 0 THEN persons ELSE blocks END AS weight
+        FROM overlap
+    ),
+    census AS (
+        SELECT c.poa_code, 'census' AS source,
+               CASE c.t {topics} END AS topic,
+               c.t || '.' || c.indicator AS indicator, l.long AS label, '2021' AS period,
+               -- the Census gives 0 for a median or average with no one to describe (ADR 0010)
+               CASE WHEN c.t = 'G02' THEN nullif(c.value, 0) ELSE c.value END AS value,
+               CASE WHEN c.t = 'G02' OR c.indicator ILIKE 'perc%' THEN 'level' ELSE 'count' END AS kind,
+               'direct' AS method,
+               CASE WHEN c.indicator ILIKE 'perc%' THEN 'percent' WHEN c.t <> 'G02' THEN 'people' END AS unit
+        FROM ({census}) c
+        LEFT JOIN (SELECT short, regexp_extract(datapackfile, 'G\d\d') AS t, any_value(long) AS long
+                   FROM {{abs_census/cells}} GROUP BY 1, 2) l ON l.short = c.indicator AND l.t = c.t
+        WHERE c.poa_code IN (SELECT poa_code FROM places)
+    ),
+    dbr AS (
+        SELECT region AS area, data_item AS indicator, any_value(data_item_label) AS label, time_period AS period,
+               any_value(trim(unit_of_measure_label || coalesce(' (' || unit_of_multiplier_label || ')', ''))) AS unit,
+               any_value(CASE WHEN unit_of_measure IN ({dbr_level})
+                                OR regexp_matches(lower(data_item_label), '{LEVEL_WORDS}') THEN 'level'
+                              ELSE 'count' END) AS kind,
+               any_value(split_part(data_item_label, ':', 1)) AS topic, any_value(value) AS value
+        FROM {{abs_regions/region_asgs}} WHERE region_type = 'SA2' AND value IS NOT NULL GROUP BY 1, 2, 4
+    ),
+    cabee AS (
+        SELECT sa2_code AS area,
+               CASE cube WHEN '8165DC08' THEN 'employment' ELSE 'turnover' END || '|' || industry_code || '|' || size
+                 AS indicator,
+               'Businesses: ' || industry_label || ', ' || size AS label,
+               regexp_extract(table_title, 'June \d{{4}}') AS period, 'businesses' AS unit, 'count' AS kind,
+               'Businesses by industry division and ' ||
+                 CASE cube WHEN '8165DC08' THEN 'employment size' ELSE 'turnover size' END AS topic,
+               value
+        FROM {{abs_cabee/cubes}} WHERE cube IN ('8165DC08', '8165DC09') AND sa2_code IS NOT NULL AND value IS NOT NULL
+    ),
+    phidu AS (
+        SELECT area_code AS area,
+               workbook || '|' || sheet || '|' || indicator || '|' || coalesce(sub_indicator, '') || '|' || measure
+                 AS indicator,
+               indicator || coalesce(': ' || sub_indicator, '') || ' (' || measure || ')' AS label,
+               period, measure AS unit,
+               CASE WHEN regexp_matches(lower(measure), '{PHIDU_LEVEL}') THEN 'level' ELSE 'count' END AS kind,
+               workbook AS topic, value
+        FROM {{phidu/indicators}}
+        WHERE area_type = 'pha' AND measure NOT LIKE '%C.I.%' AND value IS NOT NULL
+    ),
+    split AS (  -- SA2 and PHA values to postal areas
+        SELECT 'data_by_region' AS source, 'sa2' AS kind_of_area, * FROM dbr
+        UNION ALL SELECT 'cabee', 'sa2', * FROM cabee
+        UNION ALL SELECT 'phidu', 'pha', * FROM phidu
+    ),
+    apportioned AS (
+        SELECT w.poa_code, s.source, any_value(s.topic) AS topic, s.indicator, any_value(s.label) AS label, s.period,
+               CASE any_value(s.kind) WHEN 'count' THEN sum(s.value * w.split)
+                    ELSE sum(s.value * w.weight) / nullif(sum(w.weight), 0) END AS value,
+               any_value(s.unit) AS unit, any_value(s.kind) AS kind,
+               'from ' || CASE any_value(s.kind_of_area) WHEN 'sa2' THEN 'SA2s' ELSE 'PHAs' END AS method
+        FROM split s JOIN w ON w.kind = s.kind_of_area AND w.area = s.area
+        GROUP BY w.poa_code, s.source, s.indicator, s.period
+    ),
+    cer AS (  -- installations and capacity per calendar year, by the installation's postcode
+        SELECT postcode AS poa_code, 'cer' AS source, technology AS topic, technology || '|' || series AS indicator,
+               replace(technology, '_', ' ') || ': ' || any_value(measure) AS label, left(month, 4) AS period,
+               sum(value) AS value, series AS unit, 'count' AS kind, 'direct' AS method
+        FROM {{cer/installations}}
+        WHERE postcode IN (SELECT poa_code FROM places) AND value IS NOT NULL
+        GROUP BY postcode, technology, series, left(month, 4)
+    )
+    SELECT poa_code, source, topic, indicator, label, period, value, unit, kind = 'count' AS additive, method
+    FROM (SELECT * FROM census
+          UNION ALL SELECT poa_code, source, topic, indicator, label, period, value, kind, method, unit FROM apportioned
+          UNION ALL SELECT poa_code, source, topic, indicator, label, period, value, kind, method, unit FROM cer)
     """
 
 
@@ -861,10 +1016,18 @@ LENSES = {
     "rights": rights_sql,
     "firms": firms_sql,
     "regions": regions_sql,
+    "region_indicators": region_indicators_sql,
     "national": national_sql,
     "timeline": timeline_sql,
 }
-ORDER = ["rights", "firms", "regions", "national", "timeline"]  # later lenses read the earlier ones
+ORDER = [
+    "rights",
+    "firms",
+    "regions",
+    "region_indicators",
+    "national",
+    "timeline",
+]  # later lenses read the earlier ones
 
 
 def build(name: str) -> None:

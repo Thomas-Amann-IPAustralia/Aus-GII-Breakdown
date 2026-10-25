@@ -135,12 +135,29 @@ regions:
   ip_filing_firms: {label: Active firms that have ever filed IP, kind: count, note: "by the firm's ABR postcode (its main business address)"}
   rdti_firms: {label: Active firms claiming the R&D Tax Incentive, kind: count, note: "as ip_filing_firms"}
   rdti_firms_no_ip: {label: R&D Tax Incentive claimants that have never filed IP, kind: count, note: "as ip_filing_firms"}
+  austender_suppliers: {label: Government suppliers FY2017-FY2026, kind: count, note: "distinct supplier ABNs on Australian Government contracts first published in FY2017 to FY2026, by the supplier's postcode on the contract at its latest notice (ADR 0018)"}
+  austender_contracts: {label: Government contracts FY2017-FY2026, kind: count, note: "as austender_suppliers; each contract once"}
+  austender_value: {label: Government contract value FY2017-FY2026, kind: money, unit: AUD, note: "the contracts' values at their latest notice (each over its whole life, as last amended), nominal dollars; empty where there are none. A supplier's postcode is often its head office"}
   patents_standard_per_10k_people: {label: "Standard patent applications a year per 10,000 people", kind: rate, note: "every filing, FY2017-FY2026, a year, per 2021 resident. Empty where fewer than 10 would be expected at the national rate (B3, ADR 0017): pool by sa3_code or shrink instead"}
   trade_marks_per_10k_people: {label: "Trade mark applications a year per 10,000 people", kind: rate, note: "as patents_standard_per_10k_people"}
   designs_per_10k_people: {label: "Design applications a year per 10,000 people", kind: rate, note: "as patents_standard_per_10k_people"}
   patents_standard_per_1k_businesses: {label: "Standard patent applications by organisations a year per 1,000 GST-registered businesses", kind: rate, note: "organisations' filings only (individuals are not businesses here), a year; empty as for the rates per person"}
   trade_marks_per_1k_businesses: {label: "Trade mark applications by organisations a year per 1,000 GST-registered businesses", kind: rate, note: "as patents_standard_per_1k_businesses"}
   designs_per_1k_businesses: {label: "Design applications by organisations a year per 1,000 GST-registered businesses", kind: rate, note: "as patents_standard_per_1k_businesses"}
+
+# The regions lens's attachments (ADR 0018), long: one row per postal area, source, indicator and period, for every value
+# of five area sources. Query it in SQL with filters on source and indicator; never load it whole (22.5 million rows).
+region_indicators:
+  poa_code: {label: Postal area, kind: id, note: "the regions lens's key; only its 2,641 postal areas"}
+  source: {label: Source, kind: category, note: "census (2021 Census General Community Profile, 14 tables), data_by_region (ABS Data by Region, SA2s, 2011 to 2025), cabee (ABS counts of businesses, SA2s, June 2023 to 2025), phidu (PHIDU's Social Health Atlas, PHAs) or cer (Clean Energy Regulator, small-scale installations by postcode)"}
+  topic: {label: Topic, kind: category, note: "the Census table, Data by Region's topic (the label before its first colon), CABEE's cube, PHIDU's workbook or CER's technology"}
+  indicator: {label: Indicator code, kind: category, note: "unique within a source: the Census table and cell (G01.Tot_P_P), Data by Region's item, CABEE's size measure, industry and size, PHIDU's workbook, sheet, indicator, sub-indicator and measure, or CER's technology and series"}
+  label: {label: Indicator, kind: category, note: "the publisher's own name for it (Census: the DataPack's long name)"}
+  period: {label: Period, kind: category, note: "the year (Census 2021; Data by Region and CER years), June of a year (CABEE) or PHIDU's period, as published"}
+  value: {label: Value, kind: numeric, note: "units differ by indicator: compare within one indicator only. Never add a total to its parts, or one source's measure to another's"}
+  unit: {label: Unit, kind: category, note: "as published (people for Census counts; Data by Region's unit; PHIDU's measure, such as SR or ASR per 100,000)"}
+  additive: {label: A count, kind: binary, note: "true for a count, which is split among postal areas by residents and can be summed over areas; false for a level (median, mean, rate, percentage, index), which is a residents-weighted average of the areas overlapping the postal area and must never be summed"}
+  method: {label: How it reached the postal area, kind: category, note: "direct (published for postal areas or postcodes: Census, CER), from SA2s (Data by Region, CABEE) or from PHAs (PHIDU), through 2021 residents by mesh block (an area with none is split by its mesh blocks). Values from SA2s or PHAs are estimates for the postal area, not published figures"}
 
 national:
   iso3: {label: Country code, kind: id}

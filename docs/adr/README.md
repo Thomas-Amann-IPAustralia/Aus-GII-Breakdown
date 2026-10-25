@@ -23,5 +23,6 @@ the owner's, or Claude's, which the owner can overturn.
 | [0015](0015-rights-events-attachment.md) | The events attachment: each right's milestones (examination, acceptance, certification, opposition, assignment, extension of term) and its lifetime, with rights still in force counted as unfinished and trade marks and designs observed to March 2026 | 2026-10-25 | Claude (owner agreed to the events attachment next) |
 | [0016](0016-firms-lens-stage-1-repairs.md) | The firms lens counts applications by the filer, adds what each firm holds (and holds in force), flags the ABNs only IPLORD links to IP, and repairs blank states | 2026-10-25 | Claude (owner asked for the firms lens next) |
 | [0017](0017-regions-lens-stage-1-repairs.md) | The regions lens counts applications at the filer's postcode, adds organisations' counts and rates per person, shows a rate only where 10 or more applications would be expected, adds SA3s for pooling, and classes the postcodes that are not postal areas | 2026-10-25 | Claude (owner asked for the regions lens) |
+| [0018](0018-regions-attachments.md) | The regions lens's attachments: every value of the Census, Data by Region, CABEE, PHIDU and the Clean Energy Regulator in a long table, `region_indicators`, reaching postal areas through 2021 residents by mesh block, and AusTender's suppliers, contracts and value in `regions` | 2026-10-25 | Claude (owner asked for the regions lens to be completed) |
 
-Next free number: 0018.
+Next free number: 0019.

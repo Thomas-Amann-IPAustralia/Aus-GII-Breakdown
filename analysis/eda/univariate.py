@@ -365,6 +365,7 @@ def funnel(
     ax.axhline(per * national, color="black", lw=1, label=f"national rate ({per * national:,.2f})")
     ax.set_xscale("log")
     ax.set_yscale("symlog", linthresh=max(per * national / 10, 1e-9))
+    ax.set_ylim(bottom=0)
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.set_title(title)
