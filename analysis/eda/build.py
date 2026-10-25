@@ -90,12 +90,48 @@ EVENT_DATE = (
 # A series starts where its records become continuous: the first month from which at least 9 of the next 12 have a
 # record (ADR 0010), so decades of scattered early records are not read as zeros; earlier months are empty. Before the
 # rule, trade mark oppositions read 0 for 777 months. A start can be set by hand here, with the reason.
+# The Stage 1 profile (ADR 0014) set 15 more by hand, where the rule starts a series too early: before them IP RAPID
+# holds only the rights still on the register when its records were computerised (survivors), or dates its events in
+# batches, with empty months between them. The evidence is in `01_univariate.ipynb`, section 5.0.
 TIMELINE_START_OVERRIDE = {
     # Registrations are counted by the date entered, which IP RAPID records from December 1985 (every registration
     # since 1986, under 2% before 1984). An earlier registration has only its effective date, which is its filing
     # date (99% of them), so it would count in the month it was filed: a different measure, which leaves a false
     # hole from mid-1983 (registrations entered then are dated at filing; filings then were entered after 1985).
     "trade_marks_registered": "1986-01-01",
+    # Survivors. Of trade marks filed in 1981, 2% to 5% were never registered, against 51% to 59% from January 1983
+    # to 1988: applications that failed before the records were computerised are missing.
+    **dict.fromkeys(["trade_marks_au", "trade_marks_overseas", "trade_marks_origin_unknown"], "1983-01-01"),
+    # Of designs filed in 1985, 0.2% to 0.7% were never registered, against 22% to 31% from January 1986 to 1988.
+    **dict.fromkeys(["designs_au", "designs_overseas", "designs_origin_unknown"], "1986-01-01"),
+    # About 100 provisionals a month to July 1985, then about 350 to 570 a month from September 1985.
+    "patents_provisional": "1985-09-01",
+    # Grants are recorded only for patents filed from 1979 (68.5% of them, against at most 1.9% of earlier ones);
+    # 99.4% of grants come within six years of filing, so from 1985 almost none are of earlier patents.
+    "patents_granted": "1985-01-01",
+    # Designs filed from 1986 are complete, and 90% of them are registered within 715 days.
+    "designs_registered": "1988-01-01",
+    # Batches. Cessations are dated on 0 to 3 days a month to March 1995 (31 of the 104 months from September 1986 are
+    # empty, and others hold several months' worth), then weekly; April 1995 holds the backlog (3,511).
+    "patents_ceased": "1995-05-01",
+    # Expiries likewise to December 1994 (20 of 101 months hold 5 or fewer), then dated daily. Their fall from July
+    # 1995 is real: the standard patent term rose from 16 to 20 years for every patent still in force (policy event
+    # `patent-term-20-years`).
+    "patents_expired": "1995-01-01",
+    # Lapses have empty months and backlogs to 1988 (3 in December 1985, 1,286 in July 1987); none since.
+    "patents_lapsed": "1989-01-01",
+    # Empty from October to December 1991, then a backlog of 1,187 in January 1992 (against about 150 a month).
+    "patent_assignments": "1992-02-01",
+    # 0 to 18 lapses a month to September 1985, then 522.
+    "trade_marks_lapsed": "1985-10-01",
+    # 0 to 58 a month to 1985, irregular in 1986 (8 to 328), 232 to 424 a month from January 1987.
+    "trade_marks_ceased": "1987-01-01",
+    # Empty from October to December 1986.
+    "trade_mark_assignments": "1987-01-01",
+    # Rising from 0 to 138 a month in 1988 as records filled in, and a backlog in May and June 1990 (705 and 1,194).
+    "designs_ceased": "1990-07-01",
+    # Empty months and backlogs to 1993 (0 in March 1993, 222 in August 1993).
+    "designs_lapsed": "1994-01-01",
 }
 # Series whose zeros after their start are real, not gaps: the "origin unknown" series fall to zero once applicants'
 # countries came to be recorded.

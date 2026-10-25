@@ -3,6 +3,8 @@
 # (https://www.legislation.gov.au/) before an analysis relies on it. Add events freely.
 # Checked 2026-10-25 against the Register's legislation histories (the endnotes of each Act's latest compilation) and,
 # for the 2018 Act, its commencement table (ADR 0011). `source` names the Register's id for the Act checked.
+# Added 2026-10-25 from the Stage 1 timeline profile (ADR 0014): the 1995 term change, checked against the 1994 Act as
+# made (s 2 commences s 4 and 7 on 1 July 1995; s 4 replaces "16" with "20" in s 67 of the Patents Act 1990).
 
 events:
   - id: pct-accession
@@ -16,7 +18,7 @@ events:
     date: 1991-04-30
     rights: [patent]
     lever: legislation
-    event: Patents Act 1990 commences (20-year standard patents; petty patents)
+    event: Patents Act 1990 commences (16-year standard patents, 20 years from 1 July 1995; petty patents)
     source: https://www.legislation.gov.au/C2004A04014 (legislation history, 30 Apr 1991, s 2(2))
     verify: false
   - id: pbr-act-1994
@@ -25,6 +27,13 @@ events:
     lever: legislation
     event: Plant Breeder's Rights Act 1994 commences
     source: https://www.legislation.gov.au/C2004A04783 (legislation history, 10 Nov 1994, s 2(1) and gaz 1994 No S392)
+    verify: false
+  - id: patent-term-20-years
+    date: 1995-07-01
+    rights: [patent]
+    lever: term
+    event: The standard patent term rises from 16 to 20 years (for the TRIPS Agreement), for patents granted from this date and for 16-year patents not yet expired
+    source: https://www.legislation.gov.au/C2004A04827 (Patents (World Trade Organization Amendments) Act 1994, s 2, 4 and 7, 1 July 1995)
     verify: false
   - id: trade-marks-act-1995
     date: 1996-01-01

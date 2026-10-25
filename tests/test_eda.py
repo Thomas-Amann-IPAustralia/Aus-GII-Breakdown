@@ -67,6 +67,23 @@ def test_overview_reports_completeness():
     assert pd.isna(o.loc["b", "min"])
 
 
+def test_seasonal_profile_finds_a_quiet_month():
+    months = pd.date_range("2000-01-01", periods=72, freq="MS")
+    y = pd.Series(100, index=months).where(months.month != 1, 50)  # every January half an ordinary month
+    p = uni.seasonal_profile(pd.DataFrame({"month": months, "s": y.values}), ["s"])
+    assert p.loc["s", 1] == pytest.approx(100 * 50 / (100 - 50 / 12), rel=1e-6)
+    assert p.loc["s", 7] == pytest.approx(100 / (1 - 50 / 1200), rel=1e-6)
+
+
+def test_event_windows_compare_the_months_either_side():
+    months = pd.date_range("2000-01-01", periods=36, freq="MS")
+    timeline = pd.DataFrame({"month": months, "s": [10] * 18 + [40] + [20] * 17, "policy_events": None})
+    timeline.loc[18, "policy_events"] = "a-change"
+    w = uni.event_windows(timeline, {"a-change": ["s"]}).loc[("a-change", "s")]
+    assert w["average, 12 months before"] == 10 and w["average, 12 months after"] == 20
+    assert w["month of the change, × average before"] == 4 and w["% change in the average"] == 100
+
+
 def test_pair_stats_and_screening():
     rng = np.random.default_rng(0)
     x = pd.Series(rng.normal(size=500), name="x")
@@ -129,6 +146,7 @@ def test_charts_draw():
     timeline["policy_events"] = None
     timeline.loc[20, "policy_events"] = "raising-the-bar"
     assert isinstance(uni.monthly(timeline, ["patents_granted"], events=["raising-the-bar"]), plt.Figure)
+    assert isinstance(uni.around_events(timeline, {"raising-the-bar": ["patents_granted"]}), plt.Figure)
     fig, ax = plt.subplots()
     bi.scatter_trend(ax, s, s * 2, sample=500)
     plt.close("all")
@@ -179,6 +197,25 @@ def test_timeline_series_are_empty_where_not_recorded():
             assert longest <= 12, f"{c}: {longest} months of zeros inside its coverage"
         median = s.iloc[-13:-1].median()
         assert median < 100 or s.iloc[-1] >= median / 2, f"{c} ends on a cliff ({s.iloc[-1]} against {median})"
+
+
+def test_timeline_series_start_where_set_and_have_no_batch_gaps():
+    """Each hand-set start is where the series begins (ADR 0014); and within a series' coverage no month falls below
+    a twentieth of the two years around it (where those run at 100 or more a month), except two known pauses: trade
+    mark registrations in January 1996, when the Trade Marks Act 1995 commenced, and patent cessations in February
+    2020 (7, against 2,468 in March)."""
+    from eda import build
+
+    _built("timeline")
+    t = data.load_lens("timeline").set_index("month")
+    for c, start in build.TIMELINE_START_OVERRIDE.items():
+        assert t[c].first_valid_index() == pd.Timestamp(start), c
+    known = {("trade_marks_registered", "1996-01"), ("patents_ceased", "2020-02")}
+    for c, _ in build.TIMELINE_APPLICATIONS + build.TIMELINE_EVENTS:
+        y = t[c].dropna().astype(float)
+        around = y.rolling(25, center=True, min_periods=13).median()
+        low = y[(around >= 100) & (y < around / 20)]
+        assert {(c, f"{m:%Y-%m}") for m in low.index} <= known, f"{c}: {list(low.index.strftime('%Y-%m'))}"
 
 
 def test_timeline_cpi_is_quarterly():

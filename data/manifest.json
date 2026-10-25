@@ -12394,7 +12394,7 @@
   "policy_events": {
    "files": {
     "processed/events": {
-     "bytes": 6834,
+     "bytes": 7007,
      "columns": [
       "id",
       "date",
@@ -12407,8 +12407,8 @@
      "describe": "Dated changes to the IP system",
      "location": "repo",
      "path": "data/processed/policy_events/events.parquet",
-     "rows": 16,
-     "sha256": "12f71d054fb9f5587a0ebaca1cdb23f1ed878ae24acf7966639efe81da225300"
+     "rows": 17,
+     "sha256": "43e92d875f1666653390be1329f2abffc6b457664cd8f6d69c2d1b181ada1032"
     },
     "processed/policy_register": {
      "bytes": 72513,
@@ -12429,10 +12429,10 @@
      "sha256": "ad9dea061f39511b27e5db6d5345dac8fe6fcbdfbcd95a9424a907bad1e3060e"
     },
     "raw/events.yaml": {
-     "bytes": 6049,
+     "bytes": 6713,
      "location": "repo",
      "path": "data/raw/policy_events/events.yaml",
-     "sha256": "7f20f33e03eaf7f87ba7f2824ce6405a461a8f8d6074b7bb713ba4d75649032a"
+     "sha256": "2045724208054cb5266ef8168267ce1a7533c05a5c99d01f86884c443720f471"
     },
     "raw/policy-register-pages.html.gz": {
      "bytes": 13789546,

@@ -13,7 +13,7 @@ rights:
   status: {label: Current status, kind: category, note: "as IP RAPID records it today; 'unknown' is common for old rights"}
   application_date: {label: Application date, kind: date, note: "the date of filing in Australia; for a PCT application (614,951 standard patents), the date it entered the national phase, a median 909 days after its priority date (ADR 0010)"}
   earliest_filed_date: {label: Earliest filing date, kind: date, note: "as IP RAPID gives it: for a PCT application, the international filing date; for a Madrid trade mark, the international registration's; for a divisional, often the parent's; otherwise the application date. It is later than the application date for 125 rights (120 of them trade marks), a quirk of the register"}
-  filing_fy: {label: Financial year of application, kind: year, note: "year ending 30 June, from application_date"}
+  filing_fy: {label: Financial year of application, kind: year, note: "year ending 30 June, from application_date. Counts per year understate filings before 1983 for trade marks, 1986 for designs and September 1985 for provisional applications: IP RAPID holds only the earlier rights still on the register when its records were computerised (ADR 0014)"}
   priority_date: {label: Priority date, kind: date, note: "the earliest claimed filing anywhere"}
   registered_date: {label: Date registered or granted, kind: date, note: "empty if never registered. For a trade mark registered before 1986 it is the filing date: IP RAPID holds no date entered before then (ADR 0010). One placeholder (1 January 1901) is emptied (ADR 0012). For an innovation patent it is the grant after a check of formalities only, not after examination: examination came later, as certification, and is not this date"}
   days_to_registration: {label: Days from application to registration, kind: numeric, unit: days, note: "empty for trade marks registered before 1986, whose registration date is their filing date (ADR 0012). Negative for 57 rights, 53 of them trade marks registered after their earliest filing date but before the later date IP RAPID gives as their application date. Recent cohorts are still being examined, so their typical times are understated. For innovation patents it is the time to a grant without examination, so it is not comparable with standard patents' times"}
@@ -145,30 +145,30 @@ timeline:
   patents_standard_au: {label: Standard patent applications from Australian applicants, kind: count, note: "by application date: for PCT applications, the month they entered Australia's national phase; empty before July 1971, when applicants' countries began to be recorded continuously"}
   patents_standard_overseas: {label: Standard patent applications from overseas applicants, kind: count, note: "as patents_standard_au; empty before October 1969"}
   patents_standard_origin_unknown: {label: Standard patent applications of unknown origin, kind: count, note: "no applicant country recorded: most standard patents before 1980; its zeros since are real"}
-  patents_provisional: {label: Provisional patent applications, kind: count, note: "placeholders, never granted themselves. The register keeps them after a complete application claims them (99.9% of claimed ones are present in every year); their rise from late 2025 is real (ADR 0010)"}
+  patents_provisional: {label: Provisional patent applications, kind: count, note: "placeholders, never granted themselves. The register keeps them after a complete application claims them (99.9% of claimed ones are present in every year); their rise from late 2025 is real (ADR 0010). Empty before September 1985: IP RAPID holds about a quarter of earlier ones (ADR 0014)"}
   patents_second_tier: {label: Innovation and petty patent applications, kind: count, note: "petty patents to 2001, innovation patents from 2001; new ones closed on 26 August 2021, after which only divisionals and conversions of earlier applications are filed (768 to October 2026)"}
-  trade_marks_au: {label: Trade mark applications from Australian applicants, kind: count}
-  trade_marks_overseas: {label: Trade mark applications from overseas applicants, kind: count}
-  trade_marks_origin_unknown: {label: Trade mark applications of unknown origin, kind: count}
-  designs_au: {label: Design applications from Australian applicants, kind: count, note: "the last three months are empty: recent designs' applicant countries are recorded weeks after filing"}
+  trade_marks_au: {label: Trade mark applications from Australian applicants, kind: count, note: "empty before January 1983: IP RAPID holds only the earlier trade marks still on the register when its records were computerised, not those that failed (ADR 0014)"}
+  trade_marks_overseas: {label: Trade mark applications from overseas applicants, kind: count, note: "as trade_marks_au"}
+  trade_marks_origin_unknown: {label: Trade mark applications of unknown origin, kind: count, note: "as trade_marks_au; its zeros since are real"}
+  designs_au: {label: Design applications from Australian applicants, kind: count, note: "empty before January 1986, for the reason given for trade_marks_au (ADR 0014); the last three months are empty: recent designs' applicant countries are recorded weeks after filing"}
   designs_overseas: {label: Design applications from overseas applicants, kind: count, note: "as designs_au"}
   designs_origin_unknown: {label: Design applications of unknown origin, kind: count, note: "as designs_au"}
   pbr_applications: {label: Plant breeder's rights applications, kind: count}
-  patents_granted: {label: Patents granted (events), kind: count, note: "by grant date"}
+  patents_granted: {label: Patents granted (events), kind: count, note: "by grant date; empty before January 1985, as IP RAPID records grants only for patents filed from 1979 (ADR 0014)"}
   trade_marks_registered: {label: Trade marks registered (events), kind: count, note: "by the date the registration was entered (IP RAPID's declared date). A trade mark is registered as from its filing date, which is its effective date, so counting by that would give the month of filing (ADR 0010). Empty before January 1986: IP RAPID records the date entered for every registration from then, and for under 2% before 1984"}
-  designs_registered: {label: Designs registered (events), kind: count, note: "the first records, in January 1970, look like a placeholder date"}
-  pbr_granted: {label: Plant breeder's rights granted (events), kind: count}
-  patents_lapsed: {label: Patents lapsed (events), kind: count, note: "applications that ended before grant (see the glossary: lapse)"}
-  trade_marks_lapsed: {label: Trade marks lapsed (events), kind: count}
-  designs_lapsed: {label: Designs lapsed (events), kind: count}
-  patents_ceased: {label: Patents ceased (events), kind: count, note: "granted patents that ended early, usually for unpaid renewal fees (see the glossary: ceased)"}
-  trade_marks_ceased: {label: Trade marks ceased (events), kind: count, note: "by the date protection ended; the last six months are empty, as a trade mark ceases on the record only after its six-month grace period for renewal"}
-  designs_ceased: {label: Designs ceased (events), kind: count, note: "as trade_marks_ceased"}
-  patents_expired: {label: Patents expired (events), kind: count, note: "reached the end of their term"}
+  designs_registered: {label: Designs registered (events), kind: count, note: "empty before January 1988, when designs filed from 1986 (the first complete year) have mostly been registered (ADR 0014)"}
+  pbr_granted: {label: Plant breeder's rights granted (events), kind: count, note: "grants cluster in March, June and September (12% each in 2005 to 2025, against 5% to 9% in other months), and some months have none: compare quarters"}
+  patents_lapsed: {label: Patents lapsed (events), kind: count, note: "applications that ended before grant (see the glossary: lapse); empty before 1989, when lapses were dated in irregular batches (ADR 0014)"}
+  trade_marks_lapsed: {label: Trade marks lapsed (events), kind: count, note: "empty before October 1985, when lapses begin to be recorded (ADR 0014)"}
+  designs_lapsed: {label: Designs lapsed (events), kind: count, note: "empty before 1994, when lapses were dated in irregular batches (ADR 0014)"}
+  patents_ceased: {label: Patents ceased (events), kind: count, note: "granted patents that ended early, usually for unpaid renewal fees (see the glossary: ceased). Empty before May 1995, when cessations were dated in irregular batches (ADR 0014); February 2020 (7) and March 2020 (2,468) are a pause and its backlog"}
+  trade_marks_ceased: {label: Trade marks ceased (events), kind: count, note: "by the date protection ended; empty before 1987 (ADR 0014); the last six months are empty, as a trade mark ceases on the record only after its six-month grace period for renewal"}
+  designs_ceased: {label: Designs ceased (events), kind: count, note: "as trade_marks_ceased; empty before July 1990 (ADR 0014)"}
+  patents_expired: {label: Patents expired (events), kind: count, note: "reached the end of their term; empty before 1995, when expiries were dated in irregular batches (ADR 0014). Almost none from July 1995 to June 1999: the term rose from 16 to 20 years for patents still in force"}
   patent_oppositions: {label: Patent oppositions lodged (published events), kind: count, note: "recorded from 2003"}
   trade_mark_oppositions: {label: Trade mark oppositions and non-use removal requests (events), kind: count}
   patent_extensions_of_term: {label: Pharmaceutical patent extensions of term granted (events), kind: count}
-  patent_assignments: {label: Patent assignments (ownership transfers) published (events), kind: count}
-  trade_mark_assignments: {label: Trade mark assignments (ownership transfers) published (events), kind: count}
+  patent_assignments: {label: Patent assignments (ownership transfers) published (events), kind: count, note: "empty before February 1992: January 1992 holds a backlog (ADR 0014)"}
+  trade_mark_assignments: {label: Trade mark assignments (ownership transfers) published (events), kind: count, note: "empty before 1987 (ADR 0014)"}
   cpi: {label: Consumer Price Index (all groups), kind: numeric, unit: index (Sep 2025 = 100), note: "ABS, Australia (the eight capital cities), original, quarterly: in each quarter's last month only, and empty in the other two. Compare it at quarterly resolution, never spread across months (ADR 0007); use it to deflate money series"}
   policy_events: {label: IP policy changes taking effect, kind: category, note: "ids from policy_events/events, comma-separated; dates checked against the Federal Register (ADR 0011)"}

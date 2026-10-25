@@ -11,7 +11,7 @@ check, which read every lens definition against the corpus, found more: trade ma
 date, series that end on a cliff because the register records them late, a firm measure whose documentation
 described a different measure, and attorney use recorded as "no" where IP RAPID publishes nothing.
 
-**Settled (descriptive).**
+**Settled (descriptive; N01 and N06 confirmed by the owner, 2026-10-25).**
 - **N01, refuted.** The review's hypothesis was that the register drops a provisional application once a complete
   application supersedes it. It does not: of the provisionals that standard patents claim as priority (Australian
   provisional numbers, YYYY9NNNNN), 99.9% to 100% are in the register in every financial year from 2000 to 2026. The
