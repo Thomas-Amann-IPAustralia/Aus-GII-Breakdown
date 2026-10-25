@@ -124,7 +124,10 @@ Re-checked on 2026-10-25 with the owner's steer to go broad. Every source here i
    came from overseas applicants, and the cost to them of filing here moves with the Australian dollar. The cash rate
    gives financing conditions.
 2. **ABS labour force and national accounts (unemployment monthly; GDP and state final demand quarterly), for the
-   timeline and national lenses.** Macro background. It comes through the same ABS service as `abs_prices`.
+   timeline and national lenses.** Macro background. It comes through the same ABS service as `abs_prices`, with no
+   account needed. One flow, `LF_STAT_EMP`, counts owner-managers by type (incorporated or not, with or without
+   employees) and sex, monthly, January 1991 to September 2026, for Australia as a whole: the open stand-in for
+   TableBuilder's owner-manager counts.
 3. **ATO taxation statistics by postcode (annual, from 2012-13), for the regions lens.** Incomes that change over time
    (the lens now has only the 2021 Census), and a denominator for individual applicants, who make up 34% of Australian
    patent records. First check which table holds counts of business income.
@@ -160,9 +163,11 @@ Re-checked on 2026-10-25 with the owner's steer to go broad. Every source here i
     (F07).
 
 **Needs the owner (an account or a request):**
-15. **ABS TableBuilder (approved 2026-10-25; the owner downloads the tables):** Census owner-managers by sex,
-    Indigenous status, industry, age and postal area, the denominator for who runs businesses. The tables and the
-    clicks are in `docs/tablebuilder-owner-managers.md`.
+15. **ABS TableBuilder (on hold, 2026-10-25, while the owner checks the conditions of use):** Census owner-managers by
+    sex, Indigenous status, industry, age and postal area, the denominator for who runs businesses. The tables and
+    the clicks are in `docs/tablebuilder-owner-managers.md`. Meanwhile, the open sources in item 2 (owner-managers
+    nationally), CABEE (businesses by size, per area) and item 3 (individuals with business income, per postcode)
+    stand in. What only TableBuilder gives is owner-managers by sex and Indigenous status for each postal area.
 
 **Closed:** BLADE (linked small-firm outcomes) stays ruled out; the owner confirmed this on 2026-10-25. Firm-level
 outcomes for small businesses are a limit of this research, stated wherever it bears on a finding.

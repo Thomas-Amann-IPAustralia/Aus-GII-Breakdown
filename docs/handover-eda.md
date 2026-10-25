@@ -8,7 +8,8 @@ For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md
 - the owner has decided that every dataset goes through all three stages (ADR 0007), and confirmed the two new lenses;
 - prices, wages and living costs have been added (`abs_prices`);
 - the inventor loader (`google_patents_inventors`) is written and tested, and waits on BigQuery access (below);
-- the owner will download Census owner-manager tables from TableBuilder (`docs/tablebuilder-owner-managers.md`);
+- TableBuilder is on hold: the owner is checking whether the project meets the ABS's conditions of use
+  (`docs/tablebuilder-owner-managers.md`). The open stand-ins are in the plan;
 - BLADE stays ruled out (the owner confirmed it). Small-firm outcomes are a stated limit of the research.
 
 ## Where things stand
@@ -63,7 +64,7 @@ For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md
 3. **`firms` (A1, A5, A6), `regions` (N03 rules, Census, CABEE), then `national` (A8):** in the order the plan gives.
 4. **When BigQuery access works:** `uv run corpus run google_patents_inventors`. Check the logged given-name word and
    its match rate, then the estimates country by country, before attaching it to `rights`.
-5. **When the TableBuilder files arrive:** move them to `data/raw/abs_owner_managers/`, write the loader (TableBuilder
+5. **If TableBuilder goes ahead and the files arrive:** move them to `data/raw/abs_owner_managers/`, write the loader (TableBuilder
    CSVs have title lines and a block per wafer), and check the totals against `abs_census`.
 6. **The "data worth adding" list in the plan:** the RBA rates, ABS labour force and national accounts, and ATO
    postcode statistics are cheap, and fit the lens builds.
@@ -84,7 +85,9 @@ Nothing blocks Stage 1. Only you can do these:
 1. **BigQuery access, for the inventors.** Either add the service-account key used for the earlier `google_patents` runs
    as `GCP_SERVICE_ACCOUNT_JSON` in the environment's settings, or switch on the BigQuery API in the Google Cloud
    project of the current key and give its service account the BigQuery Job User role. A new session picks up either.
-2. **The six TableBuilder tables** (`docs/tablebuilder-owner-managers.md`).
+2. **TableBuilder (on hold):** settle the registration route (IP Australia's ABS organisation) and whether IP
+   Australia's rules allow ABS tables in this repository and R2. Then the six tables in
+   `docs/tablebuilder-owner-managers.md` can be downloaded.
 
 ## Conventions to keep
 

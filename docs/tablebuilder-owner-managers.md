@@ -1,5 +1,15 @@
 # ABS TableBuilder: owner-managers from the 2021 Census
 
+> **On hold (2026-10-25).** The owner doubts that the project meets the ABS's conditions of use. Do not download until
+> the owner has settled two things:
+> - the registration route, which for IP Australia work should be through IP Australia's ABS organisation;
+> - whether IP Australia's own rules allow ABS tables to be kept in this repository and the R2 bucket and analysed with
+>   an AI assistant.
+>
+> The ABS's strict rules (undertakings, secure storage, no disclosure) are for unit-record microdata. TableBuilder gives
+> only aggregated, confidentialised tables, which the ABS says may be published with attribution. Open sources cover
+> the national picture meanwhile: see "Data worth adding" in `docs/eda-plan.md`.
+
 **What this is for.** People who run their own business ("owner-managers"), counted by postal area, industry, sex,
 Indigenous status and age. They are the denominators for questions such as how many of a place's, an industry's, or a
 group's business owners use the IP system. They feed the `regions` and `industries` lenses and the national view
