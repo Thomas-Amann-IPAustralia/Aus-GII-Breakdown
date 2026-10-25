@@ -1,17 +1,17 @@
 source,table,column,type,rows,null_rate,blank_strings,approx_distinct,min,max,len_min,len_max,example
-abr,abns,abn,VARCHAR,20612369,0.0,0.0,20004776,,,11.0,11.0,12128231729
-abr,abns,abn_status,VARCHAR,20612369,0.0,0.0,2,,,3.0,3.0,CAN
-abr,abns,abn_status_from,DATE,20612369,0.0,,10236,1999-01-11,2027-03-01,,,2017-07-21
-abr,abns,record_last_updated,DATE,20612369,0.0,,9918,1999-11-01,2026-10-21,,,2018-07-24
+abr,abns,abn,VARCHAR,20612369,0.0,0.0,20004776,,,11.0,11.0,11000000948
+abr,abns,abn_status,VARCHAR,20612369,0.0,0.0,2,,,3.0,3.0,ACT
+abr,abns,abn_status_from,DATE,20612369,0.0,,10236,1999-01-11,2027-03-01,,,1999-11-01
+abr,abns,record_last_updated,DATE,20612369,0.0,,9918,1999-11-01,2026-10-21,,,2018-02-16
 abr,abns,replaced,BOOLEAN,20612369,0.0,,1,,,,,false
-abr,abns,entity_type,VARCHAR,20612369,0.0,0.0,87,,,3.0,3.0,PRV
-abr,abns,entity_type_text,VARCHAR,20612369,0.0,0.0,85,,,10.0,63.0,Australian Private Company
-abr,abns,name,VARCHAR,20612369,0.544,0.0,9311517,,,1.0,200.0,Business Advisors Pty. Ltd.
-abr,abns,state,VARCHAR,20612369,0.0,59476.0,9,,,0.0,3.0,TAS
-abr,abns,postcode,VARCHAR,20612369,0.0,21489.0,15168,,,0.0,10.0,7310
-abr,abns,acn,VARCHAR,20612369,0.7986,0.0,4264518,,,9.0,9.0,128231729
-abr,abns,gst_status,VARCHAR,20612369,0.0,0.0,3,,,3.0,3.0,CAN
-abr,abns,gst_status_from,DATE,20612369,0.5432,,10085,1918-07-01,2027-07-01,,,2017-03-31
+abr,abns,entity_type,VARCHAR,20612369,0.0,0.0,87,,,3.0,3.0,PUB
+abr,abns,entity_type_text,VARCHAR,20612369,0.0,0.0,85,,,10.0,63.0,Australian Public Company
+abr,abns,name,VARCHAR,20612369,0.544,0.0,9311517,,,1.0,200.0,QBE INSURANCE (INTERNATIONAL) LTD
+abr,abns,state,VARCHAR,20612369,0.0,59476.0,9,,,0.0,3.0,NSW
+abr,abns,postcode,VARCHAR,20612369,0.0,21489.0,15168,,,0.0,10.0,2000
+abr,abns,acn,VARCHAR,20612369,0.7986,0.0,4264518,,,9.0,9.0,000000948
+abr,abns,gst_status,VARCHAR,20612369,0.0,0.0,3,,,3.0,3.0,ACT
+abr,abns,gst_status_from,DATE,20612369,0.5432,,10085,1918-07-01,2027-07-01,,,2000-07-01
 abr,abns,dgr,BOOLEAN,20612369,0.0,,2,,,,,false
 abr,abns,other_name_count,SMALLINT,20612369,0.0,,163,0,442,,,1
 abs_bcs,abs_it_barrier,flow,VARCHAR,17550,0.0,0.0,1,,,14.0,14.0,ABS_IT_BARRIER
@@ -301,7 +301,7 @@ abs_cabee,cubes,state_name,VARCHAR,3169744,0.6545,0.0,19,,,8.0,41.0,Tasmania
 abs_cabee,cubes,anzsic_industry_code,VARCHAR,3169744,0.7963,0.0,488,,,3.0,4.0,111
 abs_cabee,cubes,anzsic_industry_label,VARCHAR,3169744,0.7963,0.0,494,,,7.0,72.0,Nursery Production (Under Cover)
 abs_cabee,cubes,measure,VARCHAR,3169744,0.7476,0.0,11,,,5.0,36.0,Operating at start of financial year
-abs_cabee,cubes,size,VARCHAR,3169744,0.0,0.0,19,,,5.0,23.0,$5m to less than $10m
+abs_cabee,cubes,size,VARCHAR,3169744,0.0,0.0,17,,,5.0,23.0,$5m to less than $10m
 abs_cabee,cubes,unit,VARCHAR,3169744,0.0,0.0,2,,,1.0,3.0,no.
 abs_cabee,cubes,value,DOUBLE,3169744,0.0,,9843,-42795.0,2729648.0,,,3.0
 abs_cabee,cubes,release,VARCHAR,3169744,0.0,0.0,1,,,15.0,15.0,jul2021-jun2025
@@ -316,9 +316,9 @@ abs_cabee,cubes,lga_code,VARCHAR,3169744,0.8584,0.0,546,,,5.0,5.0,61410
 abs_cabee,cubes,lga_label,VARCHAR,3169744,0.8584,0.0,525,,,3.0,37.0,Clarence
 abs_cabee,national,table,VARCHAR,3339,0.0,0.0,16,,,7.0,8.0,Table 1
 abs_cabee,national,table_title,VARCHAR,3339,0.0,0.0,16,,,59.0,88.0,"Table 1: Counts of businesses, Australia"
-abs_cabee,national,period,VARCHAR,3339,0.286,0.0,4,,,7.0,7.0,2022-23
+abs_cabee,national,period,VARCHAR,3339,0.2285,0.0,8,,,7.0,22.0,2022-23
 abs_cabee,national,row,VARCHAR,3339,0.0,0.0,48,,,3.0,47.0,"Agriculture, Forestry and Fishing"
-abs_cabee,national,column,VARCHAR,3339,0.0,0.0,27,,,3.0,36.0,Operating at start of financial year
+abs_cabee,national,column,VARCHAR,3339,0.0,0.0,30,,,3.0,37.0,Operating at start of financial year
 abs_cabee,national,value,DOUBLE,3339,0.0,,2280,-50391.0,2814778.0,,,175272.0
 abs_cabee,national,release,VARCHAR,3339,0.0,0.0,1,,,15.0,15.0,jul2022-jun2026
 abs_census,cells,sequential,VARCHAR,16984,0.0,0.0,17031,,,2.0,6.0,G1
@@ -6341,15 +6341,141 @@ abs_census,sa2_g60,P_Tot_Mach_oper_drivers,BIGINT,2472,0.0,,788,0,1903,,,151
 abs_census,sa2_g60,P_Tot_Labourers,BIGINT,2472,0.0,,930,0,2155,,,211
 abs_census,sa2_g60,P_Tot_Occu_ID_NS,BIGINT,2472,0.0,,258,0,344,,,41
 abs_census,sa2_g60,P_Tot_Tot,BIGINT,2472,0.0,,2124,0,14280,,,2013
-abs_rd_vc,cubes,sheet,VARCHAR,6564,0.0,0.0,14,,,7.0,8.0,Table_1
-abs_rd_vc,cubes,title,VARCHAR,6564,0.0,0.0,49,,,57.0,147.0,"Table 1 Business expenditure on R&D, sum"
-abs_rd_vc,cubes,section,VARCHAR,6564,0.2502,0.0,71,,,5.0,64.0,Capital expenditure
-abs_rd_vc,cubes,row,VARCHAR,6564,0.0,0.0,323,,,4.0,100.0,0-4 persons
-abs_rd_vc,cubes,column,VARCHAR,6564,0.0,0.0,107,,,3.0,66.0,2023-24 | $'000
-abs_rd_vc,cubes,value,DOUBLE,6564,0.0,,3734,0.0,24410463.0,,,2744711.0
-abs_rd_vc,cubes,release,VARCHAR,6564,0.0,0.0,4,,,4.0,15.0,berd
-abs_rd_vc,cubes,cube,VARCHAR,6564,0.0,0.0,30,,,13.0,22.0,81040DO001_202324.xlsx
-abs_rd_vc,cubes,period,VARCHAR,6564,0.0,0.0,4,,,4.0,7.0,2023-24
+abs_labour,lf,flow,VARCHAR,434496,0.0,0.0,1,,,2.0,2.0,LF
+abs_labour,lf,measure,VARCHAR,434496,0.0,0.0,14,,,2.0,3.0,M1
+abs_labour,lf,measure_label,VARCHAR,434496,0.0,0.0,14,,,12.0,46.0,Employed - full-time
+abs_labour,lf,sex,VARCHAR,434496,0.0,0.0,3,,,1.0,1.0,3
+abs_labour,lf,sex_label,VARCHAR,434496,0.0,0.0,3,,,5.0,7.0,Persons
+abs_labour,lf,age,VARCHAR,434496,0.0,0.0,1,,,4.0,4.0,1599
+abs_labour,lf,age_label,VARCHAR,434496,0.0,0.0,1,,,11.0,11.0,Total (age)
+abs_labour,lf,adjustment_type,VARCHAR,434496,0.0,0.0,3,,,2.0,2.0,20
+abs_labour,lf,adjustment_type_label,VARCHAR,434496,0.0,0.0,3,,,5.0,19.0,Seasonally Adjusted
+abs_labour,lf,region,VARCHAR,434496,0.0,0.0,9,,,1.0,3.0,1
+abs_labour,lf,region_label,VARCHAR,434496,0.0,0.0,9,,,8.0,28.0,New South Wales
+abs_labour,lf,frequency,VARCHAR,434496,0.0,0.0,1,,,1.0,1.0,M
+abs_labour,lf,frequency_label,VARCHAR,434496,0.0,0.0,1,,,7.0,7.0,Monthly
+abs_labour,lf,time_period,VARCHAR,434496,0.0,0.0,587,,,7.0,7.0,1978-02
+abs_labour,lf,unit_of_measure,VARCHAR,434496,0.0,0.0,2,,,3.0,3.0,NUM
+abs_labour,lf,unit_of_measure_label,VARCHAR,434496,0.0,0.0,2,,,6.0,7.0,Number
+abs_labour,lf,unit_of_multiplier,VARCHAR,434496,0.0,0.0,2,,,1.0,1.0,3
+abs_labour,lf,unit_of_multiplier_label,VARCHAR,434496,0.0,0.0,2,,,5.0,9.0,Thousands
+abs_labour,lf,observation_status,VARCHAR,434496,0.9808,0.0,1,,,1.0,1.0,w
+abs_labour,lf,observation_status_label,VARCHAR,434496,0.9808,0.0,1,,,80.0,80.0,estimate is subject to sampling variabil
+abs_labour,lf,observation_comment,VARCHAR,434496,0.9887,0.0,1,,,175.0,175.0,Given large month-to-month changes durin
+abs_labour,lf,decimals,VARCHAR,434496,0.0,0.0,1,,,1.0,1.0,1
+abs_labour,lf,decimals_label,VARCHAR,434496,0.0,0.0,1,,,3.0,3.0,One
+abs_labour,lf,value,DOUBLE,434496,0.0001,,412611,0.0,23238.42200005,,,1796.20499456
+abs_labour,lf_stat_emp,flow,VARCHAR,27027,0.0,0.0,1,,,11.0,11.0,LF_STAT_EMP
+abs_labour,lf_stat_emp,measure,VARCHAR,27027,0.0,0.0,3,,,2.0,2.0,M3
+abs_labour,lf_stat_emp,measure_label,VARCHAR,27027,0.0,0.0,3,,,16.0,20.0,Employed persons
+abs_labour,lf_stat_emp,sex,VARCHAR,27027,0.0,0.0,3,,,1.0,1.0,3
+abs_labour,lf_stat_emp,sex_label,VARCHAR,27027,0.0,0.0,3,,,5.0,7.0,Persons
+abs_labour,lf_stat_emp,status_in_employment_of_main_job,VARCHAR,27027,0.0,0.0,7,,,1.0,3.0,1
+abs_labour,lf_stat_emp,status_in_employment_of_main_job_label,VARCHAR,27027,0.0,0.0,7,,,5.0,60.0,Employee
+abs_labour,lf_stat_emp,frequency,VARCHAR,27027,0.0,0.0,1,,,1.0,1.0,M
+abs_labour,lf_stat_emp,frequency_label,VARCHAR,27027,0.0,0.0,1,,,7.0,7.0,Monthly
+abs_labour,lf_stat_emp,time_period,VARCHAR,27027,0.0,0.0,441,,,7.0,7.0,1991-01
+abs_labour,lf_stat_emp,unit_of_measure,VARCHAR,27027,0.0,0.0,1,,,3.0,3.0,NUM
+abs_labour,lf_stat_emp,unit_of_measure_label,VARCHAR,27027,0.0,0.0,1,,,6.0,6.0,Number
+abs_labour,lf_stat_emp,unit_of_multiplier,VARCHAR,27027,0.0,0.0,1,,,1.0,1.0,3
+abs_labour,lf_stat_emp,unit_of_multiplier_label,VARCHAR,27027,0.0,0.0,1,,,9.0,9.0,Thousands
+abs_labour,lf_stat_emp,observation_status,VARCHAR,27027,0.9653,0.0,1,,,1.0,1.0,w
+abs_labour,lf_stat_emp,observation_status_label,VARCHAR,27027,0.9653,0.0,1,,,80.0,80.0,estimate is subject to sampling variabil
+abs_labour,lf_stat_emp,observation_comment,VARCHAR,27027,1.0,0.0,0,,,,,
+abs_labour,lf_stat_emp,decimals,VARCHAR,27027,0.0,0.0,1,,,1.0,1.0,1
+abs_labour,lf_stat_emp,decimals_label,VARCHAR,27027,0.0,0.0,1,,,3.0,3.0,One
+abs_labour,lf_stat_emp,value,DOUBLE,27027,0.0,,26925,0.0,14865.61356706,,,6146.038449
+abs_prices,cpi,flow,VARCHAR,352576,0.0,0.0,1,,,3.0,3.0,CPI
+abs_prices,cpi,measure,VARCHAR,352576,0.0,0.0,7,,,1.0,1.0,3
+abs_prices,cpi,measure_label,VARCHAR,352576,0.0,0.0,7,,,13.0,61.0,Percentage change from previous year
+abs_prices,cpi,index,VARCHAR,352576,0.0,0.0,162,,,4.0,6.0,30002
+abs_prices,cpi,index_label,VARCHAR,352576,0.0,0.0,160,,,4.0,70.0,Bread and cereal products
+abs_prices,cpi,adjustment_type,VARCHAR,352576,0.0,0.0,2,,,2.0,2.0,10
+abs_prices,cpi,adjustment_type_label,VARCHAR,352576,0.0,0.0,2,,,8.0,19.0,Original
+abs_prices,cpi,region,VARCHAR,352576,0.0,0.0,9,,,1.0,2.0,50
+abs_prices,cpi,region_label,VARCHAR,352576,0.0,0.0,9,,,5.0,9.0,Australia
+abs_prices,cpi,frequency,VARCHAR,352576,0.0,0.0,2,,,1.0,1.0,M
+abs_prices,cpi,frequency_label,VARCHAR,352576,0.0,0.0,2,,,7.0,9.0,Monthly
+abs_prices,cpi,time_period,VARCHAR,352576,0.0,0.0,397,,,7.0,7.0,2018-09
+abs_prices,cpi,unit_of_measure,VARCHAR,352576,0.0,0.0,4,,,2.0,7.0,PCT
+abs_prices,cpi,unit_of_measure_label,VARCHAR,352576,0.0,0.0,4,,,7.0,17.0,Percent
+abs_prices,cpi,observation_status,VARCHAR,352576,0.9921,0.0,1,,,1.0,1.0,r
+abs_prices,cpi,observation_status_label,VARCHAR,352576,0.9921,0.0,1,,,7.0,7.0,revised
+abs_prices,cpi,decimals,VARCHAR,352576,1.0,0.0,0,,,,,
+abs_prices,cpi,observation_comment,VARCHAR,352576,0.9996,0.0,2,,,30.0,65.0,Series commences from Dec-2025
+abs_prices,cpi,reference_base_period,VARCHAR,352576,0.0,0.0,1,,,2.0,2.0,25
+abs_prices,cpi,reference_base_period_label,VARCHAR,352576,0.0,0.0,1,,,16.0,16.0,Sep 2025 = 100.0
+abs_prices,cpi,value,DOUBLE,352576,0.0,,18947,-95.0,2313.83,,,0.9
+abs_prices,lci,flow,VARCHAR,18900,0.0,0.0,1,,,3.0,3.0,LCI
+abs_prices,lci,measure,VARCHAR,18900,0.0,0.0,5,,,1.0,1.0,1
+abs_prices,lci,measure_label,VARCHAR,18900,0.0,0.0,5,,,12.0,61.0,Index Number
+abs_prices,lci,index,VARCHAR,18900,0.0,0.0,15,,,5.0,6.0,10001
+abs_prices,lci,index_label,VARCHAR,18900,0.0,0.0,15,,,6.0,45.0,All groups
+abs_prices,lci,household_type,VARCHAR,18900,0.0,0.0,5,,,2.0,5.0,P1
+abs_prices,lci,household_type_label,VARCHAR,18900,0.0,0.0,5,,,19.0,46.0,Employee households
+abs_prices,lci,region,VARCHAR,18900,0.0,0.0,1,,,2.0,2.0,50
+abs_prices,lci,region_label,VARCHAR,18900,0.0,0.0,1,,,40.0,40.0,Weighted average of eight capital cities
+abs_prices,lci,frequency,VARCHAR,18900,0.0,0.0,1,,,1.0,1.0,Q
+abs_prices,lci,frequency_label,VARCHAR,18900,0.0,0.0,1,,,9.0,9.0,Quarterly
+abs_prices,lci,time_period,VARCHAR,18900,0.0,0.0,105,,,7.0,7.0,1998-Q2
+abs_prices,lci,unit_of_measure,VARCHAR,18900,0.0,0.0,3,,,2.0,3.0,IN
+abs_prices,lci,unit_of_measure_label,VARCHAR,18900,0.0,0.0,3,,,7.0,13.0,Index Numbers
+abs_prices,lci,reference_base_period,VARCHAR,18900,1.0,0.0,0,,,,,
+abs_prices,lci,observation_status,VARCHAR,18900,1.0,0.0,0,,,,,
+abs_prices,lci,observation_comment,VARCHAR,18900,1.0,0.0,0,,,,,
+abs_prices,lci,value,DOUBLE,18900,0.0,,4444,-33.5,130.67,,,46.51
+abs_prices,rppi,flow,VARCHAR,6372,0.0,0.0,1,,,4.0,4.0,RPPI
+abs_prices,rppi,measure,VARCHAR,6372,0.0,0.0,3,,,1.0,1.0,1
+abs_prices,rppi,measure_label,VARCHAR,6372,0.0,0.0,3,,,13.0,65.0,Index Numbers
+abs_prices,rppi,property_type,VARCHAR,6372,0.0,0.0,3,,,1.0,1.0,1
+abs_prices,rppi,property_type_label,VARCHAR,6372,0.0,0.0,3,,,18.0,20.0,Attached dwellings
+abs_prices,rppi,region,VARCHAR,6372,0.0,0.0,9,,,3.0,5.0,3GBRI
+abs_prices,rppi,region_label,VARCHAR,6372,0.0,0.0,9,,,13.0,40.0,Greater Brisbane
+abs_prices,rppi,frequency,VARCHAR,6372,0.0,0.0,1,,,1.0,1.0,Q
+abs_prices,rppi,frequency_label,VARCHAR,6372,0.0,0.0,1,,,9.0,9.0,Quarterly
+abs_prices,rppi,time_period,VARCHAR,6372,0.0,0.0,74,,,7.0,7.0,2003-Q3
+abs_prices,rppi,unit_of_measure,VARCHAR,6372,0.0,0.0,2,,,2.0,3.0,IN
+abs_prices,rppi,unit_of_measure_label,VARCHAR,6372,0.0,0.0,2,,,7.0,13.0,Index Numbers
+abs_prices,rppi,observation_status,VARCHAR,6372,0.9449,0.0,2,,,1.0,1.0,u
+abs_prices,rppi,observation_status_label,VARCHAR,6372,0.9449,0.0,2,,,13.0,14.0,not applicable
+abs_prices,rppi,observation_comment,VARCHAR,6372,0.9976,0.0,1,,,9.0,9.0,"imputed
+"
+abs_prices,rppi,value,DOUBLE,6372,0.0551,,1249,-11.0,242.0,,,60.5
+abs_prices,wpi,flow,VARCHAR,45936,0.0,0.0,1,,,3.0,3.0,WPI
+abs_prices,wpi,measure,VARCHAR,45936,0.0,0.0,3,,,1.0,1.0,2
+abs_prices,wpi,measure_label,VARCHAR,45936,0.0,0.0,3,,,15.0,61.0,Percentage change from previous quarter
+abs_prices,wpi,index,VARCHAR,45936,0.0,0.0,4,,,6.0,6.0,THRPIB
+abs_prices,wpi,index_label,VARCHAR,45936,0.0,0.0,4,,,43.0,51.0,Total hourly rates of pay including bonu
+abs_prices,wpi,sector,VARCHAR,45936,0.0,0.0,3,,,1.0,1.0,1
+abs_prices,wpi,sector_label,VARCHAR,45936,0.0,0.0,3,,,6.0,18.0,Private
+abs_prices,wpi,industry,VARCHAR,45936,0.0,0.0,19,,,1.0,3.0,TOT
+abs_prices,wpi,industry_label,VARCHAR,45936,0.0,0.0,17,,,6.0,47.0,All Industries
+abs_prices,wpi,adjustment_type,VARCHAR,45936,0.0,0.0,3,,,2.0,2.0,10
+abs_prices,wpi,adjustment_type_label,VARCHAR,45936,0.0,0.0,3,,,5.0,19.0,Original
+abs_prices,wpi,region,VARCHAR,45936,0.0,0.0,9,,,1.0,3.0,AUS
+abs_prices,wpi,region_label,VARCHAR,45936,0.0,0.0,9,,,8.0,28.0,Australia
+abs_prices,wpi,frequency,VARCHAR,45936,0.0,0.0,1,,,1.0,1.0,Q
+abs_prices,wpi,frequency_label,VARCHAR,45936,0.0,0.0,1,,,9.0,9.0,Quarterly
+abs_prices,wpi,time_period,VARCHAR,45936,0.0,0.0,107,,,7.0,7.0,1997-Q3
+abs_prices,wpi,unit_of_measure,VARCHAR,45936,0.0,0.0,2,,,2.0,3.0,PCT
+abs_prices,wpi,unit_of_measure_label,VARCHAR,45936,0.0,0.0,2,,,7.0,13.0,Percent
+abs_prices,wpi,reference_base_period,VARCHAR,45936,1.0,0.0,0,,,,,
+abs_prices,wpi,observation_status,VARCHAR,45936,0.9856,0.0,1,,,1.0,1.0,u
+abs_prices,wpi,observation_status_label,VARCHAR,45936,0.9856,0.0,1,,,14.0,14.0,not applicable
+abs_prices,wpi,observation_comment,VARCHAR,45936,1.0,0.0,0,,,,,
+abs_prices,wpi,value,DOUBLE,45936,0.0144,,1142,-1.0,174.2,,,0.9
+abs_rd_vc,cubes,sheet,VARCHAR,6592,0.0,0.0,14,,,7.0,8.0,Table_1
+abs_rd_vc,cubes,title,VARCHAR,6592,0.0,0.0,49,,,57.0,147.0,"Table 1 Business expenditure on R&D, sum"
+abs_rd_vc,cubes,section,VARCHAR,6592,0.013,0.0,78,,,5.0,64.0,Employment size
+abs_rd_vc,cubes,row,VARCHAR,6592,0.0,0.0,323,,,4.0,100.0,0-4 persons
+abs_rd_vc,cubes,column,VARCHAR,6592,0.0,0.0,107,,,3.0,66.0,2023-24 | $'000
+abs_rd_vc,cubes,unit,VARCHAR,6592,0.9948,0.0,2,,,3.0,5.0,$'000
+abs_rd_vc,cubes,value,DOUBLE,6592,0.0032,,3734,0.0,24410463.0,,,2744711.0
+abs_rd_vc,cubes,value_text,VARCHAR,6592,0.9958,0.0,3,,,1.0,5.0,-
+abs_rd_vc,cubes,sheet_row,BIGINT,6592,0.0,,128,6,132,,,8
+abs_rd_vc,cubes,release,VARCHAR,6592,0.0,0.0,4,,,4.0,15.0,berd
+abs_rd_vc,cubes,cube,VARCHAR,6592,0.0,0.0,30,,,13.0,22.0,81040DO001_202324.xlsx
+abs_rd_vc,cubes,period,VARCHAR,6592,0.0,0.0,4,,,4.0,7.0,2023-24
 abs_regions,mesh_blocks,mb_code,VARCHAR,368286,0.0,0.0,368850,,,11.0,11.0,10000010000
 abs_regions,mesh_blocks,mb_category,VARCHAR,368286,0.0,0.0,16,,,5.0,18.0,Residential
 abs_regions,mesh_blocks,sa1_code,VARCHAR,368286,0.0,0.0,64554,,,11.0,11.0,10901117207
@@ -6388,12 +6514,12 @@ abs_regions,poa_sa2,sa2_name,VARCHAR,5904,0.0,0.0,2583,,,3.0,45.0,Darwin City
 abs_regions,poa_sa2,persons,BIGINT,5904,0.0,,3522,0,28138,,,7172
 abs_regions,poa_sa2,share,DOUBLE,5904,0.0,,4221,0.0,1.0,,,1.0
 abs_regions,region_asgs,flow,VARCHAR,6484615,0.0,0.0,1,,,21.0,21.0,ABS_REGIONAL_ASGS2021
-abs_regions,region_asgs,data_item,VARCHAR,6484615,0.0,0.0,866,,,4.0,17.0,LFMIG_7
-abs_regions,region_asgs,data_item_label,VARCHAR,6484615,0.0,0.0,884,,,14.0,179.0,Overseas born population aged 15 years a
-abs_regions,region_asgs,region_type,VARCHAR,6484615,0.0,0.0,6,,,3.0,5.0,SA2
-abs_regions,region_asgs,region_type_label,VARCHAR,6484615,0.0,0.0,6,,,9.0,38.0,Statistical Area Level 2
-abs_regions,region_asgs,region,VARCHAR,6484615,0.0,0.0,2862,,,1.0,9.0,505021095
-abs_regions,region_asgs,region_label,VARCHAR,6484615,0.0,0.0,2919,,,3.0,45.0,Tuart Hill - Joondanna
+abs_regions,region_asgs,data_item,VARCHAR,6484615,0.0,0.0,866,,,4.0,17.0,LFMIG_2
+abs_regions,region_asgs,data_item_label,VARCHAR,6484615,0.0,0.0,884,,,14.0,179.0,Persons born overseas:Labour force statu
+abs_regions,region_asgs,region_type,VARCHAR,6484615,0.0,0.0,6,,,3.0,5.0,SA3
+abs_regions,region_asgs,region_type_label,VARCHAR,6484615,0.0,0.0,6,,,9.0,38.0,Statistical Area Level 3
+abs_regions,region_asgs,region,VARCHAR,6484615,0.0,0.0,2862,,,1.0,9.0,10604
+abs_regions,region_asgs,region_label,VARCHAR,6484615,0.0,0.0,2919,,,3.0,45.0,Upper Hunter
 abs_regions,region_asgs,frequency,VARCHAR,6484615,0.0,0.0,1,,,1.0,1.0,A
 abs_regions,region_asgs,frequency_label,VARCHAR,6484615,0.0,0.0,1,,,6.0,6.0,Annual
 abs_regions,region_asgs,time_period,VARCHAR,6484615,0.0,0.0,12,,,4.0,4.0,2021
@@ -6403,7 +6529,7 @@ abs_regions,region_asgs,unit_of_multiplier,VARCHAR,6484615,0.9732,0.0,1,,,1.0,1.
 abs_regions,region_asgs,unit_of_multiplier_label,VARCHAR,6484615,0.9732,0.0,1,,,8.0,8.0,Millions
 abs_regions,region_asgs,observation_status,VARCHAR,6484615,1.0,0.0,0,,,,,
 abs_regions,region_asgs,observation_comment,VARCHAR,6484615,1.0,0.0,0,,,,,
-abs_regions,region_asgs,value,DOUBLE,6484615,0.0,,134258,-169939.0,769616769.0,,,5047.0
+abs_regions,region_asgs,value,DOUBLE,6484615,0.0,,134258,-169939.0,769616769.0,,,1652.0
 abs_regions,region_lga,flow,VARCHAR,1180960,0.0,0.0,1,,,20.0,20.0,ABS_REGIONAL_LGA2021
 abs_regions,region_lga,data_item,VARCHAR,1180960,0.0,0.0,697,,,4.0,17.0,ERP_P_2
 abs_regions,region_lga,data_item_label,VARCHAR,1180960,0.0,0.0,715,,,14.0,179.0,Estimated resident population:Persons ag
@@ -6486,31 +6612,31 @@ arc_grants,grants,anticipated_end_date,VARCHAR,34977,0.0,72.0,5173,,,0.0,10.0,
 arc_grants,grants,investigators,VARCHAR,34977,0.0,72.0,31623,,,0.0,1855.0,
 arc_grants,grants,lief_register,VARCHAR,34977,0.0,34784.0,193,,,0.0,3641.0,
 arc_grants,grants,national_interest_test_statement,VARCHAR,34977,0.7726,0.0,8083,,,377.0,2108.0,In Australia productivity in the constru
-asic,companies,acn,VARCHAR,4018291,0.0,0.0,4246433,,,9.0,9.0,084890264
+asic,companies,acn,VARCHAR,4018291,0.0,0.0,4246433,,,9.0,9.0,063676924
 asic,companies,abn,VARCHAR,4018291,0.0,0.0,2329585,,,1.0,11.0,0
-asic,companies,name,VARCHAR,4018291,0.0,0.0,3907121,,,3.0,104.0,CALARDU NOWRA PTY LIMITED
+asic,companies,name,VARCHAR,4018291,0.0,0.0,3907121,,,3.0,104.0,ALLIN SORRENTO PTY LTD
 asic,companies,type,VARCHAR,4018291,0.0,0.0,5,,,4.0,4.0,APTY
 asic,companies,class,VARCHAR,4018291,0.0,0.0,6,,,4.0,4.0,LMSH
 asic,companies,sub_class,VARCHAR,4018291,0.0,0.0,18,,,4.0,4.0,PROP
 asic,companies,status,VARCHAR,4018291,0.0,0.0,7,,,4.0,4.0,REGD
-asic,companies,registered,DATE,4018291,0.0,,24431,1817-04-08,2026-10-19,,,1998-10-26
-asic,companies,deregistered,DATE,4018291,0.9472,,359,2001-01-01,2026-10-18,,,2025-11-30
-asic,companies,name_rows,BIGINT,4018291,0.0,,14,1,14,,,1
-asic,company_names,company_name,VARCHAR,4452194,0.0,0.0,4331464,,,3.0,104.0,PARSONS PROPERTIES (TAS) PTY LTD
-asic,company_names,acn,VARCHAR,4452194,0.0,0.0,4246433,,,9.0,9.0,060959088
+asic,companies,registered,DATE,4018291,0.0,,24431,1817-04-08,2026-10-19,,,1994-02-24
+asic,companies,deregistered,DATE,4018291,0.9472,,359,2001-01-01,2026-10-18,,,2026-06-10
+asic,companies,name_rows,BIGINT,4018291,0.0,,14,1,14,,,2
+asic,company_names,company_name,VARCHAR,4452194,0.0,0.0,4331464,,,3.0,104.0,LOVINI HOLDINGS PTY LTD
+asic,company_names,acn,VARCHAR,4452194,0.0,0.0,4246433,,,9.0,9.0,000000019
 asic,company_names,type,VARCHAR,4452194,0.0,0.0,5,,,4.0,4.0,APTY
 asic,company_names,class,VARCHAR,4452194,0.0,0.0,6,,,4.0,4.0,LMSH
 asic,company_names,sub_class,VARCHAR,4452194,0.0,0.0,18,,,4.0,4.0,PROP
 asic,company_names,status,VARCHAR,4452194,0.0,0.0,7,,,4.0,4.0,REGD
-asic,company_names,registered,DATE,4452194,0.0,,24431,1817-04-08,2026-10-19,,,1993-07-22
-asic,company_names,deregistered,DATE,4452194,0.9524,,359,2001-01-01,2026-10-18,,,2026-09-24
-asic,company_names,previous_state,VARCHAR,4452194,0.9274,0.0,9,,,2.0,3.0,TAS
-asic,company_names,state_registration_number,VARCHAR,4452194,0.9273,0.0,191764,,,4.0,10.0,055808681
+asic,company_names,registered,DATE,4452194,0.0,,24431,1817-04-08,2026-10-19,,,1990-01-08
+asic,company_names,deregistered,DATE,4452194,0.9524,,359,2001-01-01,2026-10-18,,,2026-03-13
+asic,company_names,previous_state,VARCHAR,4452194,0.9274,0.0,9,,,2.0,3.0,NSW
+asic,company_names,state_registration_number,VARCHAR,4452194,0.9273,0.0,191764,,,4.0,10.0,46869041
 asic,company_names,modified_since_last_report,VARCHAR,4452194,0.9964,0.0,1,,,1.0,1.0,Y
 asic,company_names,current_name_indicator,VARCHAR,4452194,0.0975,0.0,1,,,1.0,1.0,Y
-asic,company_names,abn,VARCHAR,4452194,0.0,0.0,2329585,,,1.0,11.0,0
-asic,company_names,current_name,VARCHAR,4452194,0.9025,0.0,333084,,,3.0,104.0,VISCOUNT PLASTICS (CHINA) PTY LTD
-asic,company_names,current_name_start,DATE,4452194,0.9027,,15671,1907-06-06,2026-10-18,,,2012-11-26
+asic,company_names,abn,VARCHAR,4452194,0.0,0.0,2329585,,,1.0,11.0,89000000019
+asic,company_names,current_name,VARCHAR,4452194,0.9025,0.0,333084,,,3.0,104.0,MONAKA PTY LTD
+asic,company_names,current_name_start,DATE,4452194,0.9027,,15671,1907-06-06,2026-10-18,,,2016-01-28
 ato_ctt,entities,name,VARCHAR,33098,0.0,0.0,8365,,,4.0,200.0,1 MENDS STREET PTY LTD
 ato_ctt,entities,abn,VARCHAR,33098,0.0085,0.0,6266,,,11.0,11.0,94600082111
 ato_ctt,entities,total_income,DOUBLE,33098,0.0002,,32753,211763.0,87387398006.0,,,108996236.0
@@ -6520,22 +6646,26 @@ ato_ctt,entities,income_year,VARCHAR,33098,0.0,0.0,12,,,7.0,7.0,2024-25
 ato_ctt,entities,report,VARCHAR,33098,0.0,0.0,12,,,7.0,7.0,2024-25
 ato_ctt,entities,sheet,VARCHAR,33098,0.0,0.0,7,,,5.0,18.0,Income tax details
 ato_ctt,entities,acn,VARCHAR,33098,1.0,0.0,0,,,,,
-austender,contracts,cn_id,VARCHAR,1548989,0.0,0.0,1347742,,,5.0,13.0,CN3785036
-austender,contracts,published,VARCHAR,1548989,0.0,0.0,6345,,,10.0,10.0,2021-06-23
-austender,contracts,signed,VARCHAR,1548989,0.5939,0.0,2300,,,10.0,10.0,2021-06-23
-austender,contracts,start,VARCHAR,1548989,0.0,0.0,9070,,,10.0,10.0,2021-06-06
-austender,contracts,end,VARCHAR,1548989,0.0,0.0,10150,,,10.0,10.0,2021-10-28
-austender,contracts,value,DOUBLE,1548989,0.0,,816439,0.02,14012651773.11,,,18645.0
-austender,contracts,description,VARCHAR,1548989,0.0,0.0,626026,,,1.0,3051.0,Shoulder Boards
-austender,contracts,unspsc,VARCHAR,1548989,0.0,0.0,3040,,,2.0,8.0,53102700
-austender,contracts,agency,VARCHAR,1548989,0.0,0.0,238,,,5.0,97.0,Department of Defence
-austender,contracts,supplier_name,VARCHAR,1548989,0.0278,0.0,164050,,,1.0,288.0,BABYLON INDUSTRIES PTY LTD
-austender,contracts,supplier_abn,VARCHAR,1548989,0.0556,0.0,70109,,,11.0,11.0,63002023752
-austender,contracts,supplier_postcode,VARCHAR,1548989,0.0055,3672.0,13408,,,0.0,20.0,2163
-austender,contracts,supplier_state,VARCHAR,1548989,0.0,0.0,23,,,2.0,17.0,NSW
-austender,contracts,supplier_country,VARCHAR,1548989,0.0,0.0,283,,,4.0,42.0,AUSTRALIA
-austender,contracts,procurement_method,VARCHAR,1548989,0.0,0.0,3,,,11.0,19.0,Limited tender
-austender,contracts,source,VARCHAR,1548989,0.0,0.0,2,,,3.0,4.0,api
+austender,contracts,cn_id,VARCHAR,1577643,0.0,0.0,1555815,,,5.0,14.0,CN3784977
+austender,contracts,parent_cn_id,VARCHAR,1577643,0.0,0.0,1234374,,,5.0,9.0,CN3784977
+austender,contracts,amendment,BIGINT,1577643,0.0,,253,0,254,,,0
+austender,contracts,published,VARCHAR,1577643,0.0,0.0,6679,,,10.0,10.0,2021-06-23
+austender,contracts,published_batch,BOOLEAN,1577643,0.0,,2,,,,,false
+austender,contracts,signed,VARCHAR,1577643,0.5522,0.0,4403,,,10.0,10.0,2021-06-23
+austender,contracts,start,VARCHAR,1577643,0.0,0.0,9007,,,10.0,10.0,2021-06-07
+austender,contracts,end,VARCHAR,1577643,0.0,0.0,10184,,,10.0,10.0,2022-07-08
+austender,contracts,value,DOUBLE,1577643,0.0,,828889,0.02,18594806188.15,,,23478.29
+austender,contracts,value_jump,BOOLEAN,1577643,0.0,,2,,,,,false
+austender,contracts,description,VARCHAR,1577643,0.0,0.0,622317,,,1.0,3051.0,Purchase of Aircraft Spares
+austender,contracts,unspsc,VARCHAR,1577643,0.0,0.0,3040,,,2.0,8.0,25131900
+austender,contracts,agency,VARCHAR,1577643,0.0,0.0,239,,,5.0,97.0,Department of Defence
+austender,contracts,supplier_name,VARCHAR,1577643,0.0277,0.0,164188,,,1.0,288.0,BOEING DEFENCE AUSTRALIA LTD
+austender,contracts,supplier_abn,VARCHAR,1577643,0.0554,0.0,70109,,,11.0,11.0,64006678119
+austender,contracts,supplier_postcode,VARCHAR,1577643,0.0054,3705.0,13430,,,0.0,20.0,4000
+austender,contracts,supplier_state,VARCHAR,1577643,0.0,0.0,23,,,2.0,17.0,QLD
+austender,contracts,supplier_country,VARCHAR,1577643,0.0,0.0,282,,,4.0,42.0,AUSTRALIA
+austender,contracts,procurement_method,VARCHAR,1577643,0.0,0.0,3,,,11.0,19.0,Limited tender
+austender,contracts,source,VARCHAR,1577643,0.0,0.0,2,,,3.0,4.0,api
 bcarr_creative,activity,release,VARCHAR,3209,0.0,0.0,2,,,18.0,18.0,2008-09 to 2022-23
 bcarr_creative,activity,table,BIGINT,3209,0.0,,23,2,24,,,3
 bcarr_creative,activity,table_title,VARCHAR,3209,0.0,0.0,22,,,13.0,58.0,Cultural and creative activity component
@@ -6544,11 +6674,16 @@ bcarr_creative,activity,unit,VARCHAR,3209,0.0,0.0,2,,,1.0,2.0,$m
 bcarr_creative,activity,fy_end,BIGINT,3209,0.0,,17,2009,2025,,,2009
 bcarr_creative,activity,financial_year,VARCHAR,3209,0.0,0.0,17,,,7.0,7.0,2008-09
 bcarr_creative,activity,value,DOUBLE,3209,0.0,,2868,-72290.8545174439,70285.6723694047,,,37102.3820012236
-cer,installations,dataset,VARCHAR,7051130,0.0,0.0,39,,,30.0,95.0,sres-postcode-data-installations-2001-to
-cer,installations,postcode,VARCHAR,7051130,0.0,0.0,3287,,,1.0,4.0,2585
-cer,installations,value,DOUBLE,7051130,0.0,,109179,0.0,1325035.0,,,0.0
-cer,installations,period,VARCHAR,7051130,0.0,0.0,321,,,2.0,45.0,2010-12
-cer,installations,measure,VARCHAR,7051130,0.0,0.0,22,,,2.0,30.0,Installations Quantity
+cer,battery_states,year,BIGINT,96,0.0,,12,2014,2025,,,2014
+cer,battery_states,state,VARCHAR,96,0.0,0.0,8,,,2.0,3.0,ACT
+cer,battery_states,installations,BIGINT,96,0.0,,91,1,7957,,,8
+cer,installations,dataset,VARCHAR,3494496,0.0,0.0,19,,,30.0,81.0,swh-solar-installations-2011-to-present-
+cer,installations,technology,VARCHAR,3494496,0.0,0.0,6,,,4.0,22.0,solar_water_heater
+cer,installations,series,VARCHAR,3494496,0.0,0.0,4,,,4.0,19.0,installations
+cer,installations,postcode,VARCHAR,3494496,0.0,0.0,3216,,,4.0,4.0,5084
+cer,installations,month,VARCHAR,3494496,0.0,0.0,312,,,7.0,7.0,2014-04
+cer,installations,measure,VARCHAR,3494496,0.0,0.0,7,,,14.0,24.0,Installation Quantity
+cer,installations,value,DOUBLE,3494496,0.0,,98182,0.0,392823.0,,,0.0
 concordances,alp_ipc4_isic4,ipc4,VARCHAR,3098,0.0,0.0,605,,,4.0,4.0,A01B
 concordances,alp_ipc4_isic4,isic4,VARCHAR,3098,0.0,0.0,214,,,4.0,4.0,0150
 concordances,alp_ipc4_isic4,weight,DOUBLE,3098,0.0,,3084,0.000105,1.0,,,0.0003256
@@ -6733,6 +6868,23 @@ google_patents,members,cpc_first,VARCHAR,3223057,0.1421,0.0,121016,,,8.0,13.0,G0
 google_patents,members,patent_citations,BIGINT,3223057,0.0,,893,0,4992,,,0
 google_patents,members,npl_citations,BIGINT,3223057,0.0,,596,0,2030,,,0
 google_patents,members,au_application,VARCHAR,3223057,0.2674,0.0,1752158,,,10.0,10.0,2010291144
+google_patents_inventors,family_inventors,family_id,VARCHAR,1548276,0.0,0.0,1641911,,,4.0,9.0,24809495
+google_patents_inventors,family_inventors,inventors,BIGINT,1548276,0.0,,58,1,133,,,1
+google_patents_inventors,family_inventors,inventors_au,BIGINT,1548276,0.0,,22,0,23,,,0
+google_patents_inventors,family_inventors,inventors_abroad,BIGINT,1548276,0.0,,58,0,133,,,0
+google_patents_inventors,family_inventors,inventors_country_unknown,BIGINT,1548276,0.0,,42,0,49,,,1
+google_patents_inventors,family_inventors,countries,VARCHAR,1548276,0.1625,0.0,5265,,,2.0,38.0,US
+google_patents_inventors,family_inventors,women_expected,DOUBLE,1548276,0.0737,,244636,0.0,30.746606663474193,,,0.0
+google_patents_inventors,family_inventors,men_expected,DOUBLE,1548276,0.0737,,267402,0.0,69.29762855729943,,,1.0
+google_patents_inventors,family_inventors,gender_unknown,BIGINT,1548276,0.0,,30,0,92,,,0
+google_patents_inventors,inventors,family_id,VARCHAR,4131009,0.0,0.0,1641911,,,4.0,9.0,11037042
+google_patents_inventors,inventors,name,VARCHAR,4131009,0.0,0.0,2061012,,,1.0,100.0,STAFFORD JAMES FRANCIS XAVIER
+google_patents_inventors,inventors,country_code,VARCHAR,4131009,0.1324,0.0,223,,,2.0,2.0,IE
+google_patents_inventors,inventors,country_basis,VARCHAR,4131009,0.1324,0.0,3,,,4.0,11.0,publication
+google_patents_inventors,inventors,publications,BIGINT,4131009,0.0,,250,1,673,,,1
+google_patents_inventors,inventors,given_name,VARCHAR,4131009,0.0325,0.0,198173,,,2.0,25.0,james
+google_patents_inventors,inventors,p_female,DOUBLE,4131009,0.1493,,10154,0.0,1.0,,,0.0
+google_patents_inventors,inventors,p_female_basis,VARCHAR,4131009,0.1493,0.0,2,,,4.0,7.0,name
 ipa_fees,fees,right,VARCHAR,173,0.0,0.0,6,,,3.0,11.0,patent
 ipa_fees,fees,page,VARCHAR,173,0.0,0.0,7,,,58.0,130.0,https://www.ipaustralia.gov.au/patents/t
 ipa_fees,fees,table,BIGINT,173,0.0,,13,0,12,,,0
@@ -6741,62 +6893,62 @@ ipa_fees,fees,row,VARCHAR,173,0.0,0.0,105,,,6.0,452.0,Action
 ipa_fees,fees,column,VARCHAR,173,0.0,0.0,5,,,1.0,31.0,1
 ipa_fees,fees,value,VARCHAR,173,0.0,0.0,84,,,3.0,86.0,Fee
 ipa_fees,fees,amount_aud,DOUBLE,173,0.3873,,59,100.0,8050.0,,,100.0
-iplord,iplord,lord_party_id,VARCHAR,7303207,0.0,0.0,889209,,,1.0,13.0,13002669141
+iplord,iplord,lord_party_id,VARCHAR,7303207,0.0,0.0,889209,,,1.0,13.0,11124340852
 iplord,iplord,lord_party_id_type,VARCHAR,7303207,0.0,0.0,2,,,3.0,8.0,abn
-iplord,iplord,party_name,VARCHAR,7303207,0.0,0.0,828102,,,1.0,288.0,equigroup holdings pty limited
+iplord,iplord,party_name,VARCHAR,7303207,0.0,0.0,828102,,,1.0,288.0,greener lawn supplies pty ltd
 iplord,iplord,country_code,VARCHAR,7303207,0.0368,0.0,205,,,2.0,14.0,au
 iplord,iplord,state_code,VARCHAR,7303207,0.395,0.0,2058,,,1.0,49.0,nsw
-iplord,iplord,post_code,VARCHAR,7303207,0.3886,0.0,16744,,,1.0,19.0,2060
+iplord,iplord,post_code,VARCHAR,7303207,0.3886,0.0,16744,,,1.0,19.0,2756
 iplord,iplord,d_first_earliest_filed_financial_year,INTEGER,7303207,0.8999,,48,1973,2020,,,2002
-iplord,iplord,pbr_first_earliest_filed_financial_year,INTEGER,7303207,0.9975,,34,1988,2020,,,2008
-iplord,iplord,tm_first_earliest_filed_financial_year,INTEGER,7303207,0.0315,,114,1907,2020,,,1992
-iplord,iplord,d_first_gained_enforceable_status_financial_year,INTEGER,7303207,0.9756,,16,2005,2020,,,2007
-iplord,iplord,pbr_first_gained_enforceable_status_financial_year,INTEGER,7303207,0.9977,,33,1989,2020,,,2011
-iplord,iplord,tm_first_gained_enforceable_status_financial_year,INTEGER,7303207,0.064,,114,1901,2020,,,1994
-iplord,iplord,financial_year,INTEGER,7303207,0.0,,120,1901,2020,,,2012
+iplord,iplord,pbr_first_earliest_filed_financial_year,INTEGER,7303207,0.9975,,34,1988,2020,,,1994
+iplord,iplord,tm_first_earliest_filed_financial_year,INTEGER,7303207,0.0315,,114,1907,2020,,,2008
+iplord,iplord,d_first_gained_enforceable_status_financial_year,INTEGER,7303207,0.9756,,16,2005,2020,,,2012
+iplord,iplord,pbr_first_gained_enforceable_status_financial_year,INTEGER,7303207,0.9977,,33,1989,2020,,,1996
+iplord,iplord,tm_first_gained_enforceable_status_financial_year,INTEGER,7303207,0.064,,114,1901,2020,,,2009
+iplord,iplord,financial_year,INTEGER,7303207,0.0,,120,1901,2020,,,2020
 iplord,iplord,d_filed_count,INTEGER,7303207,0.0,,342,0,1230,,,0
 iplord,iplord,pbr_filed_count,INTEGER,7303207,0.0,,29,0,61,,,0
-iplord,iplord,tm_filed_count,INTEGER,7303207,0.0,,815,0,4277,,,5
+iplord,iplord,tm_filed_count,INTEGER,7303207,0.0,,815,0,4277,,,0
 iplord,iplord,d_granted_count,INTEGER,7303207,0.0,,125,0,454,,,0
 iplord,iplord,pbr_granted_count,INTEGER,7303207,0.0,,23,0,48,,,0
-iplord,iplord,tm_granted_count,INTEGER,7303207,0.0,,669,0,3488,,,3
+iplord,iplord,tm_granted_count,INTEGER,7303207,0.0,,669,0,3488,,,0
 iplord,iplord,d_retired_count,INTEGER,7303207,0.0,,79,0,178,,,0
 iplord,iplord,pbr_retired_count,INTEGER,7303207,0.0,,20,0,41,,,0
 iplord,iplord,tm_retired_count,INTEGER,7303207,0.0,,446,0,3257,,,0
 iplord,iplord,d_enforceable_count,INTEGER,7303207,0.0,,335,0,1989,,,0
 iplord,iplord,pbr_enforceable_count,INTEGER,7303207,0.0,,82,0,96,,,0
-iplord,iplord,tm_enforceable_count,INTEGER,7303207,0.0,,2198,-32202,32390,,,32
-iplord,iplord,tm_services_filed_count,INTEGER,7303207,0.0,,815,0,4277,,,5
-iplord,iplord,tm_services_granted_count,INTEGER,7303207,0.0,,669,0,3488,,,3
+iplord,iplord,tm_enforceable_count,INTEGER,7303207,0.0,,2198,-32202,32390,,,1
+iplord,iplord,tm_services_filed_count,INTEGER,7303207,0.0,,815,0,4277,,,0
+iplord,iplord,tm_services_granted_count,INTEGER,7303207,0.0,,669,0,3488,,,0
 iplord,iplord,tm_services_retired_count,INTEGER,7303207,0.0,,446,0,3257,,,0
-iplord,iplord,tm_services_enforceable_count,INTEGER,7303207,0.0,,2198,-32202,32390,,,32
+iplord,iplord,tm_services_enforceable_count,INTEGER,7303207,0.0,,2198,-32202,32390,,,1
 iplord,iplord,d_filed_weighted_count,DOUBLE,7303207,0.0,,968,0.0,2.817857,,,0.0
 iplord,iplord,pbr_filed_weighted_count,DOUBLE,7303207,0.0,,2,0.0,1.0,,,0.0
-iplord,iplord,tm_filed_weighted_count,DOUBLE,7303207,0.0,,577,0.0,3.0198774,,,0.33333334
+iplord,iplord,tm_filed_weighted_count,DOUBLE,7303207,0.0,,577,0.0,3.0198774,,,0.0
 iplord,iplord,d_granted_weighted_count,DOUBLE,7303207,0.0,,368,0.0,2.4163802,,,0.0
 iplord,iplord,pbr_granted_weighted_count,DOUBLE,7303207,0.0,,2,0.0,1.0,,,0.0
-iplord,iplord,tm_granted_weighted_count,DOUBLE,7303207,0.0,,547,0.0,3.0198774,,,0.5
+iplord,iplord,tm_granted_weighted_count,DOUBLE,7303207,0.0,,547,0.0,3.0198774,,,0.0
 iplord,iplord,d_retired_weighted_count,DOUBLE,7303207,0.0,,174,0.0,2.1078675,,,0.0
 iplord,iplord,pbr_retired_weighted_count,DOUBLE,7303207,0.0,,2,0.0,1.0,,,0.0
 iplord,iplord,tm_retired_weighted_count,DOUBLE,7303207,0.0,,300,0.0,2.8289683,,,0.0
 iplord,iplord,d_enforceable_weighted_count,DOUBLE,7303207,0.0,,601,0.0,2.890134,,,0.0
 iplord,iplord,pbr_enforceable_weighted_count,DOUBLE,7303207,0.0,,2,0.0,1.0,,,0.0
-iplord,iplord,tm_enforceable_weighted_count,DOUBLE,7303207,0.0,,1094,0.0,3.4606662,,,1.0
-iplord,iplord,tm_services_filed_weighted_count,DOUBLE,7303207,0.0,,577,0.0,3.0198774,,,0.0
-iplord,iplord,tm_services_granted_weighted_count,DOUBLE,7303207,0.0,,547,0.0,3.0198774,,,0.0
+iplord,iplord,tm_enforceable_weighted_count,DOUBLE,7303207,0.0,,1094,0.0,3.4606662,,,0.75
+iplord,iplord,tm_services_filed_weighted_count,DOUBLE,7303207,0.0,,577,0.0,3.0198774,,,0.33333334
+iplord,iplord,tm_services_granted_weighted_count,DOUBLE,7303207,0.0,,547,0.0,3.0198774,,,0.5
 iplord,iplord,tm_services_retired_weighted_count,DOUBLE,7303207,0.0,,300,0.0,2.8289683,,,0.0
-iplord,iplord,tm_services_enforceable_weighted_count,DOUBLE,7303207,0.0,,1094,0.0,3.4606662,,,1.0
-iplord,iplord,d_filed_modal_class,VARCHAR,7303207,0.97,0.0,34,,,2.0,2.0,07
-iplord,iplord,pbr_filed_modal_class,VARCHAR,7303207,0.9994,0.0,492,,,3.0,21.0,lavandula
+iplord,iplord,tm_services_enforceable_weighted_count,DOUBLE,7303207,0.0,,1094,0.0,3.4606662,,,0.75
+iplord,iplord,d_filed_modal_class,VARCHAR,7303207,0.97,0.0,34,,,2.0,2.0,15
+iplord,iplord,pbr_filed_modal_class,VARCHAR,7303207,0.9994,0.0,492,,,3.0,21.0,calibrachoa
 iplord,iplord,tm_filed_modal_class,VARCHAR,7303207,1.0,0.0,0,,,,,
-iplord,iplord,d_granted_modal_class,VARCHAR,7303207,0.9971,0.0,33,,,2.0,2.0,21
-iplord,iplord,pbr_granted_modal_class,VARCHAR,7303207,0.9996,0.0,362,,,3.0,16.0,lavandula
+iplord,iplord,d_granted_modal_class,VARCHAR,7303207,0.9971,0.0,33,,,2.0,2.0,09
+iplord,iplord,pbr_granted_modal_class,VARCHAR,7303207,0.9996,0.0,362,,,3.0,16.0,calibrachoa
 iplord,iplord,tm_granted_modal_class,VARCHAR,7303207,1.0,0.0,0,,,,,
-iplord,iplord,d_retired_modal_class,VARCHAR,7303207,0.9987,0.0,33,,,2.0,2.0,21
-iplord,iplord,pbr_retired_modal_class,VARCHAR,7303207,0.9998,0.0,296,,,3.0,16.0,lavandula
+iplord,iplord,d_retired_modal_class,VARCHAR,7303207,0.9987,0.0,33,,,2.0,2.0,09
+iplord,iplord,pbr_retired_modal_class,VARCHAR,7303207,0.9998,0.0,296,,,3.0,16.0,petunia
 iplord,iplord,tm_retired_modal_class,VARCHAR,7303207,1.0,0.0,0,,,,,
-iplord,iplord,d_enforceable_modal_class,VARCHAR,7303207,0.9877,0.0,33,,,2.0,2.0,21
-iplord,iplord,pbr_enforceable_modal_class,VARCHAR,7303207,0.9982,0.0,339,,,3.0,16.0,lavandula
+iplord,iplord,d_enforceable_modal_class,VARCHAR,7303207,0.9877,0.0,33,,,2.0,2.0,09
+iplord,iplord,pbr_enforceable_modal_class,VARCHAR,7303207,0.9982,0.0,339,,,3.0,16.0,calibrachoa
 iplord,iplord,tm_enforceable_modal_class,VARCHAR,7303207,1.0,0.0,0,,,,,
 iplord,iplord,tm_services_filed_modal_class,VARCHAR,7303207,1.0,0.0,0,,,,,
 iplord,iplord,tm_services_granted_modal_class,VARCHAR,7303207,1.0,0.0,0,,,,,
@@ -6818,22 +6970,22 @@ iplord,iplord,tm_services_filed_class_scope,INTEGER,7303207,0.0,,1,0,0,,,0
 iplord,iplord,tm_services_granted_class_scope,INTEGER,7303207,0.0,,1,0,0,,,0
 iplord,iplord,tm_services_retired_class_scope,INTEGER,7303207,0.0,,1,0,0,,,0
 iplord,iplord,tm_services_enforceable_class_scope,INTEGER,7303207,0.0,,1,0,0,,,0
-iplord,iplord_abn,lord_party_id,VARCHAR,2089555,0.0,0.0,215342,,,11.0,11.0,26213100110
+iplord,iplord_abn,lord_party_id,VARCHAR,2089555,0.0,0.0,215342,,,11.0,11.0,15895141817
 iplord,iplord_abn,lord_party_id_type,VARCHAR,2089555,0.0,0.0,1,,,3.0,3.0,abn
-iplord,iplord_abn,party_name,VARCHAR,2089555,0.0174,0.0,207453,,,1.0,200.0,element windows pty ltd
-iplord,iplord_abn,country_code,VARCHAR,2089555,0.0051,0.0,91,,,2.0,2.0,au
-iplord,iplord_abn,state_code,VARCHAR,2089555,0.0409,0.0,337,,,1.0,30.0,vic
-iplord,iplord_abn,post_code,VARCHAR,2089555,0.0402,0.0,4017,,,1.0,11.0,3803
-iplord,iplord_abn,d_first_earliest_filed_financial_year,INTEGER,2089555,0.9002,,48,1973,2020,,,2005
+iplord,iplord_abn,party_name,VARCHAR,2089555,0.0174,0.0,207453,,,1.0,200.0,samsung c&t corporation
+iplord,iplord_abn,country_code,VARCHAR,2089555,0.0051,0.0,91,,,2.0,2.0,kr
+iplord,iplord_abn,state_code,VARCHAR,2089555,0.0409,0.0,337,,,1.0,30.0,seoul
+iplord,iplord_abn,post_code,VARCHAR,2089555,0.0402,0.0,4017,,,1.0,11.0,3166
+iplord,iplord_abn,d_first_earliest_filed_financial_year,INTEGER,2089555,0.9002,,48,1973,2020,,,2017
 iplord,iplord_abn,pbr_first_earliest_filed_financial_year,INTEGER,2089555,1.0,,0,,,,,
-iplord,iplord_abn,tm_first_earliest_filed_financial_year,INTEGER,2089555,0.0035,,114,1907,2020,,,2008
-iplord,iplord_abn,d_first_gained_enforceable_status_financial_year,INTEGER,2089555,0.9766,,16,2005,2020,,,2011
+iplord,iplord_abn,tm_first_earliest_filed_financial_year,INTEGER,2089555,0.0035,,114,1907,2020,,,1990
+iplord,iplord_abn,d_first_gained_enforceable_status_financial_year,INTEGER,2089555,0.9766,,16,2005,2020,,,2018
 iplord,iplord_abn,pbr_first_gained_enforceable_status_financial_year,INTEGER,2089555,1.0,,0,,,,,
-iplord,iplord_abn,tm_first_gained_enforceable_status_financial_year,INTEGER,2089555,0.0342,,114,1901,2020,,,2008
-iplord,iplord_abn,financial_year,INTEGER,2089555,0.0,,120,1901,2020,,,2009
+iplord,iplord_abn,tm_first_gained_enforceable_status_financial_year,INTEGER,2089555,0.0342,,114,1901,2020,,,1992
+iplord,iplord_abn,financial_year,INTEGER,2089555,0.0,,120,1901,2020,,,2010
 iplord,iplord_abn,d_filed_count,INTEGER,2089555,0.0,,338,0,1230,,,0
 iplord,iplord_abn,pbr_filed_count,INTEGER,2089555,0.0,,1,0,0,,,0
-iplord,iplord_abn,tm_filed_count,INTEGER,2089555,0.0,,813,0,4277,,,0
+iplord,iplord_abn,tm_filed_count,INTEGER,2089555,0.0,,813,0,4277,,,1
 iplord,iplord_abn,d_granted_count,INTEGER,2089555,0.0,,110,0,454,,,0
 iplord,iplord_abn,pbr_granted_count,INTEGER,2089555,0.0,,1,0,0,,,0
 iplord,iplord_abn,tm_granted_count,INTEGER,2089555,0.0,,669,0,3488,,,0
@@ -6842,14 +6994,14 @@ iplord,iplord_abn,pbr_retired_count,INTEGER,2089555,0.0,,1,0,0,,,0
 iplord,iplord_abn,tm_retired_count,INTEGER,2089555,0.0,,446,0,3257,,,0
 iplord,iplord_abn,d_enforceable_count,INTEGER,2089555,0.0,,225,0,1989,,,0
 iplord,iplord_abn,pbr_enforceable_count,INTEGER,2089555,0.0,,1,0,0,,,0
-iplord,iplord_abn,tm_enforceable_count,INTEGER,2089555,0.0,,2155,-32202,32390,,,1
-iplord,iplord_abn,tm_services_filed_count,INTEGER,2089555,0.0,,813,0,4277,,,0
+iplord,iplord_abn,tm_enforceable_count,INTEGER,2089555,0.0,,2155,-32202,32390,,,11
+iplord,iplord_abn,tm_services_filed_count,INTEGER,2089555,0.0,,813,0,4277,,,1
 iplord,iplord_abn,tm_services_granted_count,INTEGER,2089555,0.0,,669,0,3488,,,0
 iplord,iplord_abn,tm_services_retired_count,INTEGER,2089555,0.0,,446,0,3257,,,0
-iplord,iplord_abn,tm_services_enforceable_count,INTEGER,2089555,0.0,,2155,-32202,32390,,,1
+iplord,iplord_abn,tm_services_enforceable_count,INTEGER,2089555,0.0,,2155,-32202,32390,,,11
 iplord,iplord_abn,d_filed_weighted_count,DOUBLE,2089555,0.0,,436,0.0,2.817857,,,0.0
 iplord,iplord_abn,pbr_filed_weighted_count,DOUBLE,2089555,0.0,,1,0.0,0.0,,,0.0
-iplord,iplord_abn,tm_filed_weighted_count,DOUBLE,2089555,0.0,,526,0.0,3.0198774,,,0.0
+iplord,iplord_abn,tm_filed_weighted_count,DOUBLE,2089555,0.0,,526,0.0,3.0198774,,,0.33333334
 iplord,iplord_abn,d_granted_weighted_count,DOUBLE,2089555,0.0,,181,0.0,2.4163802,,,0.0
 iplord,iplord_abn,pbr_granted_weighted_count,DOUBLE,2089555,0.0,,1,0.0,0.0,,,0.0
 iplord,iplord_abn,tm_granted_weighted_count,DOUBLE,2089555,0.0,,501,0.0,3.0198774,,,0.0
@@ -6908,34 +7060,34 @@ iprapid,applicant_year,filed_weighted,DOUBLE,3184671,0.0,,2432,0.0,613.4,,,1.0
 iprapid,applicant_year,became_enforceable,BIGINT,3184671,0.0,,207,0,620,,,0
 iprapid,applicant_year,became_enforceable_weighted,DOUBLE,3184671,0.0,,1334,0.0,617.5,,,0.0
 iprapid,application,ip_right_type,VARCHAR,4368006,0.0,0.0,4,,,3.0,10.0,patent
-iprapid,application,application_number,VARCHAR,4368006,0.0,0.0,4303001,,,1.0,28.0,2015202848
+iprapid,application,application_number,VARCHAR,4368006,0.0,0.0,4303001,,,1.0,28.0,1994073322
 iprapid,application,ip_right_sub_type,VARCHAR,4368006,0.0,0.0,12,,,3.0,24.0,standard_complete
-iprapid,application,status,VARCHAR,4368006,0.0,0.0,27,,,3.0,20.0,lapsed
-iprapid,application,application_date,DATE,4368006,0.0142,,38631,1904-02-13,2026-10-17,,,2015-05-26
-iprapid,application,earliest_filed_date,DATE,4368006,0.0142,,39024,1904-02-13,2026-10-16,,,2015-05-26
-iprapid,application,priority_date,DATE,4368006,0.0141,,39635,1904-02-13,2026-10-16,,,2014-06-20
-iprapid,application,gained_registration_status_date,DATE,4368006,0.4226,,24360,1901-01-01,2026-10-16,,,2015-12-03
-iprapid,application,gained_enforceable_status_date,DATE,4368006,0.4781,,24100,1901-01-01,2026-10-16,,,2015-12-03
+iprapid,application,status,VARCHAR,4368006,0.0,0.0,27,,,3.0,20.0,ceased
+iprapid,application,application_date,DATE,4368006,0.0142,,38631,1904-02-13,2026-10-17,,,1996-01-10
+iprapid,application,earliest_filed_date,DATE,4368006,0.0142,,39024,1904-02-13,2026-10-16,,,1994-07-13
+iprapid,application,priority_date,DATE,4368006,0.0141,,39635,1904-02-13,2026-10-16,,,1993-07-22
+iprapid,application,gained_registration_status_date,DATE,4368006,0.4226,,24360,1901-01-01,2026-10-16,,,1997-08-21
+iprapid,application,gained_enforceable_status_date,DATE,4368006,0.4781,,24100,1901-01-01,2026-10-16,,,1997-08-21
 iprapid,application,enforceable_from_date,DATE,4368006,0.6192,,28480,1901-01-01,2026-10-16,,,2019-08-06
-iprapid,application,deemed_retired_date,DATE,4368006,0.4437,,16954,1907-12-19,2029-04-27,,,2019-12-10
+iprapid,application,deemed_retired_date,DATE,4368006,0.4437,,16954,1907-12-19,2029-04-27,,,2012-02-16
 iprapid,classification,ip_right_type,VARCHAR,15209518,0.0,0.0,4,,,3.0,10.0,patent
-iprapid,classification,application_number,VARCHAR,15209518,0.0,0.0,3881306,,,1.0,28.0,1999024821
+iprapid,classification,application_number,VARCHAR,15209518,0.0,0.0,3881306,,,1.0,28.0,1988017049
 iprapid,classification,classification_system,VARCHAR,15209518,0.0,0.0,7,,,4.0,13.0,ipc_mark
-iprapid,classification,classification,VARCHAR,15209518,0.0,0.0,122512,,,1.0,94.0,C07D 295/12
+iprapid,classification,classification,VARCHAR,15209518,0.0,0.0,122512,,,1.0,94.0,C07K 14/195
 iprapid,classification,classification_importance,VARCHAR,15209518,0.2711,0.0,2,,,7.0,9.0,secondary
 iprapid,classification,classification_inventiveness,VARCHAR,15209518,0.2711,0.0,4,,,7.0,13.0,inventive
 iprapid,classification,classification_source,VARCHAR,15209518,0.2711,0.0,4,,,1.0,7.0,machine
 iprapid,classification,classifying_country_code,VARCHAR,15209518,0.0,0.0,40,,,2.0,2.0,au
-iprapid,classification,classification_date,DATE,15209518,0.0367,,28810,1906-07-02,2026-10-16,,,2010-06-03
-iprapid,classification,classification_removal_date,DATE,15209518,0.6152,,5984,2005-12-05,2026-10-16,,,2007-09-29
+iprapid,classification,classification_date,DATE,15209518,0.0367,,28810,1906-07-02,2026-10-16,,,2006-04-08
+iprapid,classification,classification_removal_date,DATE,15209518,0.6152,,5984,2005-12-05,2026-10-16,,,2026-08-27
 iprapid,classification,classification_system_version,VARCHAR,15209518,0.0023,0.0,81,,,1.0,10.0,2006-01-01
 iprapid,classification,is_current,BOOLEAN,15209518,0.0,,2,,,,,true
-iprapid,classification,classification_area,VARCHAR,15209518,0.0063,0.0,102,,,1.0,39.0,14_organic_fine_chemistry
+iprapid,classification,classification_area,VARCHAR,15209518,0.0063,0.0,102,,,1.0,39.0,15_biotechnology
 iprapid,classification,coarse_classification_area,VARCHAR,15209518,0.0,0.0,10,,,5.0,22.0,chemistry
 iprapid,description,ip_right_type,VARCHAR,7457402,0.0,0.0,4,,,3.0,10.0,patent
-iprapid,description,application_number,VARCHAR,7457402,0.0,0.0,4301601,,,1.0,28.0,2002342393
+iprapid,description,application_number,VARCHAR,7457402,0.0,0.0,4301601,,,1.0,28.0,1993032915
 iprapid,description,description_type,VARCHAR,7457402,0.0,0.0,20,,,7.0,28.0,description
-iprapid,description,description_value,VARCHAR,7457402,0.0096,0.0,3538457,,,1.0,3349.0,Non-motion detection
+iprapid,description,description_value,VARCHAR,7457402,0.0096,0.0,3538457,,,1.0,3349.0,Baby sun top
 iprapid,design_rights,application_number,VARCHAR,268782,0.0,0.0,271355,,,9.0,9.0,202516601
 iprapid,design_rights,ip_right_sub_type,VARCHAR,268782,0.0,0.0,1,,,6.0,6.0,design
 iprapid,design_rights,status,VARCHAR,268782,0.0,0.0,10,,,5.0,10.0,registered
@@ -6961,59 +7113,59 @@ iprapid,design_rights,main_class,VARCHAR,268782,0.0745,0.0,34,,,2.0,2.0,08
 iprapid,design_rights,main_area,VARCHAR,268782,0.0745,0.0,34,,,2.0,2.0,08
 iprapid,design_rights,class_count,BIGINT,268782,0.0745,,5,1,5,,,1
 iprapid,design_rights,classes,VARCHAR,268782,0.0745,0.0,610,,,2.0,14.0,08
-iprapid,events,application_number,VARCHAR,49352557,0.0,0.0,4252521,,,1.0,28.0,2009245659
+iprapid,events,application_number,VARCHAR,49352557,0.0,0.0,4252521,,,1.0,28.0,1999029857
 iprapid,events,ip_right_type,VARCHAR,49352557,0.0,0.0,4,,,3.0,10.0,patent
 iprapid,events,event_type,VARCHAR,49352557,0.0,0.0,325,,,3.0,83.0,exam_direction_to_request_exam
 iprapid,events,event_category,VARCHAR,49352557,0.0005,0.0,115,,,3.0,34.0,exam_direction
-iprapid,events,event_effective_date,DATE,49352557,0.0,,41021,1800-01-01,2033-02-01,,,2012-09-11
-iprapid,events,event_declared_date,DATE,49352557,0.7612,,28686,1906-07-02,2026-10-18,,,2020-11-09
+iprapid,events,event_effective_date,DATE,49352557,0.0,,41021,1800-01-01,2033-02-01,,,2000-10-11
+iprapid,events,event_declared_date,DATE,49352557,0.7612,,28686,1906-07-02,2026-10-18,,,2021-09-13
 iprapid,events,is_standing,BOOLEAN,49352557,0.0,,2,,,,,true
 iprapid,links,ip_right_type,VARCHAR,3867277,0.0,0.0,3,,,6.0,10.0,patent
-iprapid,links,application_number,VARCHAR,3867277,0.0,0.0,2038902,,,1.0,10.0,2020257211
-iprapid,links,link_type,VARCHAR,3867277,0.0,0.0,42,,,6.0,81.0,pct_application_number
-iprapid,links,linked_application_number,VARCHAR,3867277,0.0053,0.0,2884933,,,1.0,35.0,PCTUS2020028375
-iprapid,links,link_date,DATE,3867277,0.0454,,35935,1800-01-01,2026-10-16,,,2021-10-14
+iprapid,links,application_number,VARCHAR,3867277,0.0,0.0,2038902,,,1.0,10.0,2000909434
+iprapid,links,link_type,VARCHAR,3867277,0.0,0.0,42,,,6.0,81.0,provisional_from_petty
+iprapid,links,linked_application_number,VARCHAR,3867277,0.0053,0.0,2884933,,,1.0,35.0,2000039398
+iprapid,links,link_date,DATE,3867277,0.0454,,35935,1800-01-01,2026-10-16,,,1984-01-26
 iprapid,links,linked_application_country,VARCHAR,3867277,0.0002,0.0,193,,,2.0,3.0,au
 iprapid,party,ip_right_type,VARCHAR,12517064,0.0,0.0,4,,,3.0,10.0,patent
-iprapid,party,application_number,VARCHAR,12517064,0.0,0.0,4203835,,,1.0,10.0,2002300309
-iprapid,party,party_id,VARCHAR,12517064,0.0,0.0,1712188,,,2.0,39.0,o381468
-iprapid,party,abn,VARCHAR,12517064,0.5915,0.0,301384,,,11.0,11.0,49103793380
+iprapid,party,application_number,VARCHAR,12517064,0.0,0.0,4203835,,,1.0,10.0,2002222115
+iprapid,party,party_id,VARCHAR,12517064,0.0,0.0,1712188,,,2.0,39.0,o38918
+iprapid,party,abn,VARCHAR,12517064,0.5915,0.0,301384,,,11.0,11.0,59727365753
 iprapid,party,party_role_category,VARCHAR,12517064,0.0,0.0,9,,,5.0,17.0,applicant_agent
 iprapid,party,party_role,VARCHAR,12517064,0.0,0.0,51,,,5.0,44.0,agent
 iprapid,party,party_type,VARCHAR,12517064,0.0014,0.0,2,,,10.0,12.0,organisation
-iprapid,party,party_name,VARCHAR,12517064,0.0001,0.0,1893146,,,1.0,383.0,griffith hack
-iprapid,party,state_code,VARCHAR,12517064,0.3998,0.0,107,,,2.0,19.0,nsw
-iprapid,party,post_code,VARCHAR,12517064,0.2896,0.0,69258,,,1.0,20.0,2001
+iprapid,party,party_name,VARCHAR,12517064,0.0001,0.0,1893146,,,1.0,383.0,allens patent & trade mark attorneys
+iprapid,party,state_code,VARCHAR,12517064,0.3998,0.0,107,,,2.0,19.0,vic
+iprapid,party,post_code,VARCHAR,12517064,0.2896,0.0,69258,,,1.0,20.0,3000
 iprapid,party,country_code,VARCHAR,12517064,0.0519,0.0,238,,,2.0,2.0,au
-iprapid,party,effective_from_date,DATE,12517064,0.0,,28905,1800-01-01,2026-10-17,,,2002-07-30
-iprapid,party,effective_to_date,DATE,12517064,0.6978,,10180,1952-09-01,2026-10-16,,,2005-04-11
+iprapid,party,effective_from_date,DATE,12517064,0.0,,28905,1800-01-01,2026-10-17,,,2003-05-30
+iprapid,party,effective_to_date,DATE,12517064,0.6978,,10180,1952-09-01,2026-10-16,,,2024-05-29
 iprapid,party,is_current,BOOLEAN,12517064,0.0,,2,,,,,false
 iprapid,party,is_founding,BOOLEAN,12517064,0.0,,2,,,,,true
-iprapid,patent_rights,application_number,VARCHAR,1752428,0.0,0.0,1873054,,,10.0,10.0,1953019728
-iprapid,patent_rights,ip_right_sub_type,VARCHAR,1752428,0.0,0.0,4,,,5.0,17.0,standard_complete
+iprapid,patent_rights,application_number,VARCHAR,1752428,0.0,0.0,1873054,,,10.0,10.0,1978905105
+iprapid,patent_rights,ip_right_sub_type,VARCHAR,1752428,0.0,0.0,4,,,5.0,17.0,provisional
 iprapid,patent_rights,status,VARCHAR,1752428,0.0,0.0,14,,,3.0,9.0,unknown
-iprapid,patent_rights,application_date,DATE,1752428,0.0289,,37779,1904-02-13,2026-10-17,,,1953-07-10
-iprapid,patent_rights,earliest_filed_date,DATE,1752428,0.0289,,38427,1904-02-13,2026-10-16,,,1953-07-10
-iprapid,patent_rights,priority_date,DATE,1752428,0.0289,,38898,1904-02-13,2026-10-16,,,1953-07-10
-iprapid,patent_rights,gained_registration_status_date,DATE,1752428,0.624,,4495,1957-09-12,2026-10-15,,,1957-09-12
-iprapid,patent_rights,gained_enforceable_status_date,DATE,1752428,0.6457,,5354,1957-09-12,2026-10-15,,,1957-09-12
+iprapid,patent_rights,application_date,DATE,1752428,0.0289,,37779,1904-02-13,2026-10-17,,,1978-07-17
+iprapid,patent_rights,earliest_filed_date,DATE,1752428,0.0289,,38427,1904-02-13,2026-10-16,,,1978-07-17
+iprapid,patent_rights,priority_date,DATE,1752428,0.0289,,38898,1904-02-13,2026-10-16,,,1978-07-17
+iprapid,patent_rights,gained_registration_status_date,DATE,1752428,0.624,,4495,1957-09-12,2026-10-15,,,1982-12-08
+iprapid,patent_rights,gained_enforceable_status_date,DATE,1752428,0.6457,,5354,1957-09-12,2026-10-15,,,1982-12-08
 iprapid,patent_rights,enforceable_from_date,DATE,1752428,1.0,,0,,,,,
-iprapid,patent_rights,deemed_retired_date,DATE,1752428,0.4548,,11393,1914-02-17,2026-10-16,,,1975-05-24
+iprapid,patent_rights,deemed_retired_date,DATE,1752428,0.4548,,11393,1914-02-17,2026-10-16,,,1995-04-06
 iprapid,patent_rights,applicant_count,BIGINT,1752428,0.0,,24,0,30,,,1
-iprapid,patent_rights,applicant_party_id,VARCHAR,1752428,0.0436,0.0,409844,,,2.0,13.0,o274602
-iprapid,patent_rights,applicant_name,VARCHAR,1752428,0.199,0.0,281811,,,1.0,240.0,eclipse sleep products inc
+iprapid,patent_rights,applicant_party_id,VARCHAR,1752428,0.0436,0.0,409844,,,2.0,13.0,o975679
+iprapid,patent_rights,applicant_name,VARCHAR,1752428,0.199,0.0,281811,,,1.0,240.0,unisearch limited
 iprapid,patent_rights,applicant_type,VARCHAR,1752428,0.0436,0.0,2,,,10.0,12.0,organisation
-iprapid,patent_rights,applicant_country,VARCHAR,1752428,0.2953,0.0,206,,,2.0,2.0,gb
-iprapid,patent_rights,applicant_state,VARCHAR,1752428,0.815,0.0,8,,,2.0,3.0,act
-iprapid,patent_rights,applicant_postcode,VARCHAR,1752428,0.5651,0.0,43446,,,1.0,20.0,2602
-iprapid,patent_rights,applicant_abn,VARCHAR,1752428,0.8397,0.0,37050,,,11.0,11.0,99050059419
-iprapid,patent_rights,any_applicant_abn,VARCHAR,1752428,0.8359,0.0,37571,,,11.0,11.0,99050059419
+iprapid,patent_rights,applicant_country,VARCHAR,1752428,0.2953,0.0,206,,,2.0,2.0,au
+iprapid,patent_rights,applicant_state,VARCHAR,1752428,0.815,0.0,8,,,2.0,3.0,nsw
+iprapid,patent_rights,applicant_postcode,VARCHAR,1752428,0.5651,0.0,43446,,,1.0,20.0,2222
+iprapid,patent_rights,applicant_abn,VARCHAR,1752428,0.8397,0.0,37050,,,11.0,11.0,24147485569
+iprapid,patent_rights,any_applicant_abn,VARCHAR,1752428,0.8359,0.0,37571,,,11.0,11.0,24147485569
 iprapid,patent_rights,any_applicant_in_australia,BOOLEAN,1752428,0.0,,2,,,,,false
 iprapid,patent_rights,has_agent,BOOLEAN,1752428,0.0,,2,,,,,false
-iprapid,patent_rights,main_class,VARCHAR,1752428,0.2343,0.0,636,,,4.0,4.0,A47C
-iprapid,patent_rights,main_area,VARCHAR,1752428,0.2346,0.0,37,,,8.0,39.0,33_furniture_games
-iprapid,patent_rights,class_count,BIGINT,1752428,0.2343,,23,1,23,,,1
-iprapid,patent_rights,classes,VARCHAR,1752428,0.2343,0.0,125217,,,4.0,114.0,A47C
+iprapid,patent_rights,main_class,VARCHAR,1752428,0.2343,0.0,636,,,4.0,4.0,B60J
+iprapid,patent_rights,main_area,VARCHAR,1752428,0.2346,0.0,37,,,8.0,39.0,32_transport
+iprapid,patent_rights,class_count,BIGINT,1752428,0.2343,,23,1,23,,,4
+iprapid,patent_rights,classes,VARCHAR,1752428,0.2343,0.0,125217,,,4.0,114.0,B60J H03D H03J H04B
 iprapid,pbr_rights,application_number,VARCHAR,11732,0.0,0.0,11486,,,8.0,28.0,1988/001
 iprapid,pbr_rights,ip_right_sub_type,VARCHAR,11732,0.0,0.0,1,,,3.0,3.0,pbr
 iprapid,pbr_rights,status,VARCHAR,11732,0.0,0.0,11,,,3.0,11.0,expired
@@ -7039,67 +7191,67 @@ iprapid,pbr_rights,main_class,VARCHAR,11732,0.0069,0.0,563,,,1.0,16.0,macadamia
 iprapid,pbr_rights,main_area,VARCHAR,11732,1.0,0.0,0,,,,,
 iprapid,pbr_rights,class_count,BIGINT,11732,0.0069,,1,1,1,,,1
 iprapid,pbr_rights,classes,VARCHAR,11732,0.0069,0.0,563,,,1.0,16.0,macadamia
-iprapid,trade_mark_rights,application_number,VARCHAR,2335064,0.0,0.0,2250569,,,1.0,7.0,627097
+iprapid,trade_mark_rights,application_number,VARCHAR,2335064,0.0,0.0,2250569,,,1.0,7.0,379105
 iprapid,trade_mark_rights,ip_right_sub_type,VARCHAR,2335064,0.0,0.0,6,,,9.0,24.0,trade_mark
 iprapid,trade_mark_rights,status,VARCHAR,2335064,0.0,0.0,14,,,6.0,20.0,lapsed
-iprapid,trade_mark_rights,application_date,DATE,2335064,0.0,,28701,1906-07-02,2026-10-16,,,1994-04-14
-iprapid,trade_mark_rights,earliest_filed_date,DATE,2335064,0.0,,28604,1906-07-02,2026-10-16,,,1994-04-14
-iprapid,trade_mark_rights,priority_date,DATE,2335064,0.0,,29068,1906-07-02,2026-10-16,,,1994-04-14
-iprapid,trade_mark_rights,gained_registration_status_date,DATE,2335064,0.303,,22568,1901-01-01,2026-10-16,,,1997-01-31
-iprapid,trade_mark_rights,gained_enforceable_status_date,DATE,2335064,0.303,,22568,1901-01-01,2026-10-16,,,1997-01-31
-iprapid,trade_mark_rights,enforceable_from_date,DATE,2335064,0.303,,28417,1901-01-01,2026-10-07,,,1994-04-14
-iprapid,trade_mark_rights,deemed_retired_date,DATE,2335064,0.4507,,16778,1907-12-19,2026-10-16,,,1996-07-15
+iprapid,trade_mark_rights,application_date,DATE,2335064,0.0,,28701,1906-07-02,2026-10-16,,,1982-07-30
+iprapid,trade_mark_rights,earliest_filed_date,DATE,2335064,0.0,,28604,1906-07-02,2026-10-16,,,1982-07-30
+iprapid,trade_mark_rights,priority_date,DATE,2335064,0.0,,29068,1906-07-02,2026-10-16,,,1982-07-30
+iprapid,trade_mark_rights,gained_registration_status_date,DATE,2335064,0.303,,22568,1901-01-01,2026-10-16,,,1982-07-30
+iprapid,trade_mark_rights,gained_enforceable_status_date,DATE,2335064,0.303,,22568,1901-01-01,2026-10-16,,,1982-07-30
+iprapid,trade_mark_rights,enforceable_from_date,DATE,2335064,0.303,,28417,1901-01-01,2026-10-07,,,1982-07-30
+iprapid,trade_mark_rights,deemed_retired_date,DATE,2335064,0.4507,,16778,1907-12-19,2026-10-16,,,1986-04-21
 iprapid,trade_mark_rights,applicant_count,BIGINT,2335064,0.0,,22,0,29,,,1
-iprapid,trade_mark_rights,applicant_party_id,VARCHAR,2335064,0.0002,0.0,903995,,,2.0,33.0,o877014
-iprapid,trade_mark_rights,applicant_name,VARCHAR,2335064,0.1676,0.0,592715,,,2.0,383.0,success motivation institute australia p
-iprapid,trade_mark_rights,applicant_type,VARCHAR,2335064,0.0002,0.0,2,,,10.0,12.0,organisation
+iprapid,trade_mark_rights,applicant_party_id,VARCHAR,2335064,0.0002,0.0,903995,,,2.0,33.0,i564894
+iprapid,trade_mark_rights,applicant_name,VARCHAR,2335064,0.1676,0.0,592715,,,2.0,383.0,david syme & co limited
+iprapid,trade_mark_rights,applicant_type,VARCHAR,2335064,0.0002,0.0,2,,,10.0,12.0,individual
 iprapid,trade_mark_rights,applicant_country,VARCHAR,2335064,0.0168,0.0,205,,,2.0,2.0,au
 iprapid,trade_mark_rights,applicant_state,VARCHAR,2335064,0.4048,0.0,8,,,2.0,3.0,vic
-iprapid,trade_mark_rights,applicant_postcode,VARCHAR,2335064,0.3449,0.0,21447,,,1.0,10.0,3146
-iprapid,trade_mark_rights,applicant_abn,VARCHAR,2335064,0.6202,0.0,235225,,,11.0,11.0,32125928190
-iprapid,trade_mark_rights,any_applicant_abn,VARCHAR,2335064,0.6151,0.0,242498,,,11.0,11.0,32125928190
+iprapid,trade_mark_rights,applicant_postcode,VARCHAR,2335064,0.3449,0.0,21447,,,1.0,10.0,3068
+iprapid,trade_mark_rights,applicant_abn,VARCHAR,2335064,0.6202,0.0,235225,,,11.0,11.0,32000005087
+iprapid,trade_mark_rights,any_applicant_abn,VARCHAR,2335064,0.6151,0.0,242498,,,11.0,11.0,32000005087
 iprapid,trade_mark_rights,any_applicant_in_australia,BOOLEAN,2335064,0.0,,2,,,,,true
 iprapid,trade_mark_rights,has_agent,BOOLEAN,2335064,0.0,,2,,,,,true
-iprapid,trade_mark_rights,main_class,VARCHAR,2335064,0.0,0.0,45,,,1.0,2.0,9
-iprapid,trade_mark_rights,main_area,VARCHAR,2335064,0.0,0.0,45,,,1.0,2.0,9
+iprapid,trade_mark_rights,main_class,VARCHAR,2335064,0.0,0.0,45,,,1.0,2.0,16
+iprapid,trade_mark_rights,main_area,VARCHAR,2335064,0.0,0.0,45,,,1.0,2.0,16
 iprapid,trade_mark_rights,class_count,BIGINT,2335064,0.0,,46,1,45,,,1
-iprapid,trade_mark_rights,classes,VARCHAR,2335064,0.0,0.0,45271,,,1.0,125.0,9
-linkage,abn_spine,abn,VARCHAR,391983,0.0,0.0,402676,,,11.0,11.0,94167810755
-linkage,abn_spine,entity_type,VARCHAR,391983,0.0002,0.0,57,,,3.0,3.0,PRV
-linkage,abn_spine,entity_type_text,VARCHAR,391983,0.0002,0.0,59,,,11.0,59.0,Australian Private Company
-linkage,abn_spine,abn_status,VARCHAR,391983,0.0002,0.0,2,,,3.0,3.0,ACT
-linkage,abn_spine,abn_status_from,DATE,391983,0.0002,,9592,1999-11-01,2026-10-20,,,2014-02-01
-linkage,abn_spine,gst_status,VARCHAR,391983,0.0002,0.0,3,,,3.0,3.0,ACT
-linkage,abn_spine,gst_status_from,DATE,391983,0.1359,,9447,2000-07-01,2026-12-01,,,2014-02-01
-linkage,abn_spine,state,VARCHAR,391983,0.0002,3848.0,9,,,0.0,3.0,NSW
-linkage,abn_spine,postcode,VARCHAR,391983,0.0002,1848.0,3552,,,0.0,10.0,2360
-linkage,abn_spine,acn,VARCHAR,391983,0.2203,0.0,312136,,,9.0,9.0,167810755
-linkage,abn_spine,dgr,BOOLEAN,391983,0.0002,,2,,,,,false
-linkage,abn_spine,name,VARCHAR,391983,0.0668,0.0,363348,,,3.0,200.0,PRINT FRESH PTY LIMITED
-linkage,abn_spine,asic_registered,DATE,391983,0.4831,,17614,1817-04-08,2026-08-13,,,2014-01-31
-linkage,abn_spine,asic_deregistered,DATE,391983,0.9774,,309,2001-01-01,2026-10-18,,,2026-03-20
-linkage,abn_spine,asic_type,VARCHAR,391983,0.4831,0.0,4,,,4.0,4.0,APTY
-linkage,abn_spine,asic_class,VARCHAR,391983,0.4831,0.0,6,,,4.0,4.0,LMSH
-linkage,abn_spine,asic_status,VARCHAR,391983,0.4831,0.0,7,,,4.0,4.0,REGD
-linkage,abn_spine,first_seen,DATE,391983,0.0689,,18983,1817-04-08,2026-10-19,,,2014-01-31
-linkage,abn_spine,in_abr,BOOLEAN,391983,0.0,,2,,,,,true
-linkage,abn_spine,in_iprapid_patent,BOOLEAN,391983,0.0,,2,,,,,false
-linkage,abn_spine,in_iprapid_trade_mark,BOOLEAN,391983,0.0,,2,,,,,true
-linkage,abn_spine,in_iprapid_design,BOOLEAN,391983,0.0,,2,,,,,false
-linkage,abn_spine,in_iprapid_pbr,BOOLEAN,391983,0.0,,1,,,,,false
-linkage,abn_spine,in_iplord,BOOLEAN,391983,0.0,,2,,,,,true
-linkage,abn_spine,in_rdti,BOOLEAN,391983,0.0,,2,,,,,false
-linkage,abn_spine,in_austender,BOOLEAN,391983,0.0,,2,,,,,false
-linkage,abn_spine,in_ato_ctt,BOOLEAN,391983,0.0,,2,,,,,false
-linkage,abn_spine,patent_first_fy,INTEGER,391983,0.9005,,124,1904,2027,,,2005
-linkage,abn_spine,patent_last_fy,INTEGER,391983,0.9005,,124,1904,2027,,,2017
-linkage,abn_spine,trade_mark_first_fy,INTEGER,391983,0.3788,,121,1907,2027,,,2015
-linkage,abn_spine,trade_mark_last_fy,INTEGER,391983,0.3788,,116,1907,2027,,,2015
-linkage,abn_spine,design_first_fy,INTEGER,391983,0.9678,,55,1973,2027,,,2017
-linkage,abn_spine,design_last_fy,INTEGER,391983,0.9678,,55,1974,2027,,,2017
-linkage,abn_spine,ip_filed_total,DOUBLE,391983,0.0,,470,0.0,7711.0,,,1.0
-linkage,abn_spine,austender_contracts,BIGINT,391983,0.0,,791,0,34443,,,0
-linkage,abn_spine,austender_value,DOUBLE,391983,0.8159,,48611,10000.0,225627593934.1799,,,847048.4
+iprapid,trade_mark_rights,classes,VARCHAR,2335064,0.0,0.0,45271,,,1.0,125.0,16
+linkage,abn_spine,abn,VARCHAR,398450,0.0,0.0,405098,,,11.0,11.0,93007422175
+linkage,abn_spine,entity_type,VARCHAR,398450,0.0002,0.0,57,,,3.0,3.0,PRV
+linkage,abn_spine,entity_type_text,VARCHAR,398450,0.0002,0.0,59,,,11.0,59.0,Australian Private Company
+linkage,abn_spine,abn_status,VARCHAR,398450,0.0002,0.0,2,,,3.0,3.0,CAN
+linkage,abn_spine,abn_status_from,DATE,398450,0.0002,,9592,1999-11-01,2026-10-20,,,2017-11-07
+linkage,abn_spine,gst_status,VARCHAR,398450,0.0002,0.0,3,,,3.0,3.0,CAN
+linkage,abn_spine,gst_status_from,DATE,398450,0.1366,,9447,2000-07-01,2026-12-01,,,2015-10-16
+linkage,abn_spine,state,VARCHAR,398450,0.0002,3977.0,9,,,0.0,3.0,VIC
+linkage,abn_spine,postcode,VARCHAR,398450,0.0002,1904.0,3558,,,0.0,10.0,3195
+linkage,abn_spine,acn,VARCHAR,398450,0.2185,0.0,317526,,,9.0,9.0,007422175
+linkage,abn_spine,dgr,BOOLEAN,398450,0.0002,,2,,,,,false
+linkage,abn_spine,name,VARCHAR,398450,0.0664,0.0,370523,,,3.0,200.0,EXCEL (AUSTRALIA) PTY. LTD.
+linkage,abn_spine,asic_registered,DATE,398450,0.48,,17614,1817-04-08,2026-08-13,,,1990-06-20
+linkage,abn_spine,asic_deregistered,DATE,398450,0.9771,,309,2001-01-01,2026-10-18,,,2026-10-14
+linkage,abn_spine,asic_type,VARCHAR,398450,0.48,0.0,4,,,4.0,4.0,APTY
+linkage,abn_spine,asic_class,VARCHAR,398450,0.48,0.0,6,,,4.0,4.0,LMSH
+linkage,abn_spine,asic_status,VARCHAR,398450,0.48,0.0,7,,,4.0,4.0,REGD
+linkage,abn_spine,first_seen,DATE,398450,0.0688,,18983,1817-04-08,2026-10-19,,,2015-10-16
+linkage,abn_spine,in_abr,BOOLEAN,398450,0.0,,2,,,,,true
+linkage,abn_spine,in_iprapid_patent,BOOLEAN,398450,0.0,,2,,,,,false
+linkage,abn_spine,in_iprapid_trade_mark,BOOLEAN,398450,0.0,,2,,,,,false
+linkage,abn_spine,in_iprapid_design,BOOLEAN,398450,0.0,,2,,,,,false
+linkage,abn_spine,in_iprapid_pbr,BOOLEAN,398450,0.0,,1,,,,,false
+linkage,abn_spine,in_iplord,BOOLEAN,398450,0.0,,2,,,,,true
+linkage,abn_spine,in_rdti,BOOLEAN,398450,0.0,,2,,,,,false
+linkage,abn_spine,in_austender,BOOLEAN,398450,0.0,,2,,,,,false
+linkage,abn_spine,in_ato_ctt,BOOLEAN,398450,0.0,,2,,,,,false
+linkage,abn_spine,patent_first_fy,INTEGER,398450,0.9021,,124,1904,2027,,,1998
+linkage,abn_spine,patent_last_fy,INTEGER,398450,0.9021,,124,1904,2027,,,1998
+linkage,abn_spine,trade_mark_first_fy,INTEGER,398450,0.3889,,121,1907,2027,,,1983
+linkage,abn_spine,trade_mark_last_fy,INTEGER,398450,0.3889,,116,1907,2027,,,2010
+linkage,abn_spine,design_first_fy,INTEGER,398450,0.9683,,55,1973,2027,,,1997
+linkage,abn_spine,design_last_fy,INTEGER,398450,0.9683,,55,1974,2027,,,1997
+linkage,abn_spine,ip_filed_total,DOUBLE,398450,0.0,,470,0.0,7711.0,,,0.0
+linkage,abn_spine,austender_contracts,BIGINT,398450,0.0,,710,0,25373,,,0
+linkage,abn_spine,austender_value,DOUBLE,398450,0.8192,,53701,0.02,23277877826.33,,,180730.0
 mwm,data,theme,VARCHAR,5343,0.0,0.0,6,,,6.0,11.0,overall
 mwm,data,indicator,VARCHAR,5343,0.0,0.0,48,,,5.0,54.0,overall-life-satisfaction
 mwm,data,table,BIGINT,5343,0.0,,4,0,3,,,0
@@ -7138,32 +7290,32 @@ nhmrc_grants,grants,end_year,BIGINT,12224,0.6477,,17,2015,2033,,,2019
 oecd,business_births_deaths,flow,VARCHAR,5571658,0.0,0.0,1,,,43.0,43.0,"OECD.SDD.TPS,DSD_SDBSBD_ISIC4@DF_BD_EMP_"
 oecd,business_births_deaths,frequency_of_observation,VARCHAR,5571658,0.0,0.0,1,,,1.0,1.0,A
 oecd,business_births_deaths,frequency_of_observation_label,VARCHAR,5571658,0.0,0.0,1,,,6.0,6.0,Annual
-oecd,business_births_deaths,reference_area,VARCHAR,5571658,0.0,0.0,42,,,3.0,3.0,LTU
-oecd,business_births_deaths,reference_area_label,VARCHAR,5571658,0.0,0.0,43,,,5.0,15.0,Lithuania
-oecd,business_births_deaths,measure,VARCHAR,5571658,0.0,0.0,5,,,3.0,7.0,EMP
-oecd,business_births_deaths,measure_label,VARCHAR,5571658,0.0,0.0,5,,,9.0,26.0,Persons employed
-oecd,business_births_deaths,economic_activity,VARCHAR,5571658,0.0,0.0,524,,,1.0,9.0,N7740
-oecd,business_births_deaths,economic_activity_label,VARCHAR,5571658,0.0,0.0,364,,,7.0,213.0,Leasing of intellectual property and sim
-oecd,business_births_deaths,size_class,VARCHAR,5571658,0.0,0.0,8,,,2.0,6.0,S5T9
-oecd,business_births_deaths,size_class_label,VARCHAR,5571658,0.0,0.0,8,,,9.0,17.0,From 5 to 9
+oecd,business_births_deaths,reference_area,VARCHAR,5571658,0.0,0.0,42,,,3.0,3.0,NZL
+oecd,business_births_deaths,reference_area_label,VARCHAR,5571658,0.0,0.0,43,,,5.0,15.0,New Zealand
+oecd,business_births_deaths,measure,VARCHAR,5571658,0.0,0.0,5,,,3.0,7.0,ENT
+oecd,business_births_deaths,measure_label,VARCHAR,5571658,0.0,0.0,5,,,9.0,26.0,Enterprises
+oecd,business_births_deaths,economic_activity,VARCHAR,5571658,0.0,0.0,524,,,1.0,9.0,D352
+oecd,business_births_deaths,economic_activity_label,VARCHAR,5571658,0.0,0.0,364,,,7.0,213.0,Manufacture of gas; distribution of gase
+oecd,business_births_deaths,size_class,VARCHAR,5571658,0.0,0.0,8,,,2.0,6.0,_T
+oecd,business_births_deaths,size_class_label,VARCHAR,5571658,0.0,0.0,8,,,9.0,17.0,Total - All sizes
 oecd,business_births_deaths,enterprise_age,VARCHAR,5571658,0.0,0.0,2,,,2.0,5.0,_T
 oecd,business_births_deaths,enterprise_age_label,VARCHAR,5571658,0.0,0.0,2,,,5.0,17.0,Total
 oecd,business_births_deaths,enterprise_type,VARCHAR,5571658,0.0,0.0,1,,,7.0,7.0,ENT_EMP
 oecd,business_births_deaths,enterprise_type_label,VARCHAR,5571658,0.0,0.0,1,,,20.0,20.0,Employer enterprises
 oecd,business_births_deaths,business_stage,VARCHAR,5571658,0.0,0.0,3,,,1.0,6.0,D
 oecd,business_births_deaths,business_stage_label,VARCHAR,5571658,0.0,0.0,3,,,16.0,18.0,Enterprise death
-oecd,business_births_deaths,unit_of_measure,VARCHAR,5571658,0.0,0.0,6,,,2.0,9.0,PS
-oecd,business_births_deaths,unit_of_measure_label,VARCHAR,5571658,0.0,0.0,6,,,5.0,34.0,Persons
+oecd,business_births_deaths,unit_of_measure,VARCHAR,5571658,0.0,0.0,6,,,2.0,9.0,PT_ENT_EM
+oecd,business_births_deaths,unit_of_measure_label,VARCHAR,5571658,0.0,0.0,6,,,5.0,34.0,Percentage of employer enterprises
 oecd,business_births_deaths,time_period,VARCHAR,5571658,0.0,0.0,36,,,4.0,4.0,2017
 oecd,business_births_deaths,time_period_label,VARCHAR,5571658,1.0,0.0,0,,,,,
-oecd,business_births_deaths,decimals,VARCHAR,5571658,0.0,0.0,2,,,1.0,1.0,0
-oecd,business_births_deaths,decimals_label,VARCHAR,5571658,0.0,0.0,2,,,3.0,4.0,Zero
+oecd,business_births_deaths,decimals,VARCHAR,5571658,0.0,0.0,2,,,1.0,1.0,2
+oecd,business_births_deaths,decimals_label,VARCHAR,5571658,0.0,0.0,2,,,3.0,4.0,Two
 oecd,business_births_deaths,observation_status,VARCHAR,5571658,0.0,0.0,8,,,1.0,1.0,A
 oecd,business_births_deaths,observation_status_label,VARCHAR,5571658,0.0,0.0,8,,,12.0,35.0,Normal value
 oecd,business_births_deaths,unit_multiplier,VARCHAR,5571658,0.0,0.0,1,,,1.0,1.0,0
 oecd,business_births_deaths,unit_multiplier_label,VARCHAR,5571658,0.0,0.0,1,,,5.0,5.0,Units
-oecd,business_births_deaths,variable,VARCHAR,5571658,0.0,0.0,16,,,2.0,11.0,D_EMPN 
-oecd,business_births_deaths,variable_label,VARCHAR,5571658,0.0,0.0,17,,,10.0,66.0,Number of persons employed in the popula
+oecd,business_births_deaths,variable,VARCHAR,5571658,0.0,0.0,16,,,2.0,11.0,D_R 
+oecd,business_births_deaths,variable_label,VARCHAR,5571658,0.0,0.0,17,,,10.0,66.0,Death rate
 oecd,business_births_deaths,value,DOUBLE,5571658,0.0,,887448,0.0,42831944.0,,,0.0
 oecd,business_high_growth,flow,VARCHAR,1070680,0.0,0.0,1,,,42.0,42.0,"OECD.SDD.TPS,DSD_SDBSBD_ISIC4@DF_BD_EMP_"
 oecd,business_high_growth,frequency_of_observation,VARCHAR,1070680,0.0,0.0,1,,,1.0,1.0,A
@@ -7172,10 +7324,10 @@ oecd,business_high_growth,reference_area,VARCHAR,1070680,0.0,0.0,40,,,3.0,3.0,NZ
 oecd,business_high_growth,reference_area_label,VARCHAR,1070680,0.0,0.0,41,,,5.0,15.0,New Zealand
 oecd,business_high_growth,measure,VARCHAR,1070680,0.0,0.0,4,,,3.0,7.0,SAL
 oecd,business_high_growth,measure_label,VARCHAR,1070680,0.0,0.0,4,,,9.0,27.0,Employees
-oecd,business_high_growth,economic_activity,VARCHAR,1070680,0.0,0.0,561,,,1.0,9.0,C241
-oecd,business_high_growth,economic_activity_label,VARCHAR,1070680,0.0,0.0,364,,,7.0,213.0,Manufacture of basic iron and steel
-oecd,business_high_growth,size_class,VARCHAR,1070680,0.0,0.0,8,,,2.0,6.0,_T
-oecd,business_high_growth,size_class_label,VARCHAR,1070680,0.0,0.0,8,,,9.0,17.0,Total - All sizes
+oecd,business_high_growth,economic_activity,VARCHAR,1070680,0.0,0.0,561,,,1.0,9.0,F429
+oecd,business_high_growth,economic_activity_label,VARCHAR,1070680,0.0,0.0,364,,,7.0,213.0,Construction of other civil engineering 
+oecd,business_high_growth,size_class,VARCHAR,1070680,0.0,0.0,8,,,2.0,6.0,S5T9
+oecd,business_high_growth,size_class_label,VARCHAR,1070680,0.0,0.0,8,,,9.0,17.0,From 5 to 9
 oecd,business_high_growth,enterprise_age,VARCHAR,1070680,0.0,0.0,2,,,2.0,4.0,_T
 oecd,business_high_growth,enterprise_age_label,VARCHAR,1070680,0.0,0.0,2,,,5.0,17.0,Total
 oecd,business_high_growth,enterprise_type,VARCHAR,1070680,0.0,0.0,1,,,7.0,7.0,ENT_EMP
@@ -7184,7 +7336,7 @@ oecd,business_high_growth,business_stage,VARCHAR,1070680,0.0,0.0,6,,,5.0,8.0,HGE
 oecd,business_high_growth,business_stage_label,VARCHAR,1070680,0.0,0.0,6,,,53.0,66.0,"Medium and high growth enterprises, 10% "
 oecd,business_high_growth,unit_of_measure,VARCHAR,1070680,0.0,0.0,5,,,2.0,9.0,PS
 oecd,business_high_growth,unit_of_measure_label,VARCHAR,1070680,0.0,0.0,5,,,7.0,51.0,Persons
-oecd,business_high_growth,time_period,VARCHAR,1070680,0.0,0.0,21,,,4.0,4.0,2004
+oecd,business_high_growth,time_period,VARCHAR,1070680,0.0,0.0,21,,,4.0,4.0,2007
 oecd,business_high_growth,time_period_label,VARCHAR,1070680,1.0,0.0,0,,,,,
 oecd,business_high_growth,decimals,VARCHAR,1070680,0.0,0.0,2,,,1.0,1.0,0
 oecd,business_high_growth,decimals_label,VARCHAR,1070680,0.0,0.0,2,,,3.0,4.0,Zero
@@ -7198,32 +7350,32 @@ oecd,business_high_growth,value,DOUBLE,1070680,0.0,,92424,0.0,9485970.0,,,0.0
 oecd,business_survival,flow,VARCHAR,7546335,0.0,0.0,1,,,41.0,41.0,"OECD.SDD.TPS,DSD_SDBSBD_ISIC4@DF_BD_EMP_"
 oecd,business_survival,frequency_of_observation,VARCHAR,7546335,0.0,0.0,1,,,1.0,1.0,A
 oecd,business_survival,frequency_of_observation_label,VARCHAR,7546335,0.0,0.0,1,,,6.0,6.0,Annual
-oecd,business_survival,reference_area,VARCHAR,7546335,0.0,0.0,41,,,3.0,3.0,CZE
-oecd,business_survival,reference_area_label,VARCHAR,7546335,0.0,0.0,42,,,5.0,15.0,Czechia
+oecd,business_survival,reference_area,VARCHAR,7546335,0.0,0.0,41,,,3.0,3.0,NZL
+oecd,business_survival,reference_area_label,VARCHAR,7546335,0.0,0.0,42,,,5.0,15.0,New Zealand
 oecd,business_survival,measure,VARCHAR,7546335,0.0,0.0,3,,,3.0,3.0,ENT
 oecd,business_survival,measure_label,VARCHAR,7546335,0.0,0.0,3,,,9.0,16.0,Enterprises
-oecd,business_survival,economic_activity,VARCHAR,7546335,0.0,0.0,826,,,1.0,9.0,K65
-oecd,business_survival,economic_activity_label,VARCHAR,7546335,0.0,0.0,614,,,7.0,213.0,"Insurance, reinsurance and pension fundi"
-oecd,business_survival,size_class,VARCHAR,7546335,0.0,0.0,8,,,2.0,6.0,S5T9
-oecd,business_survival,size_class_label,VARCHAR,7546335,0.0,0.0,8,,,9.0,17.0,From 5 to 9
-oecd,business_survival,enterprise_age,VARCHAR,7546335,0.0,0.0,5,,,2.0,2.0,Y1
-oecd,business_survival,enterprise_age_label,VARCHAR,7546335,0.0,0.0,5,,,7.0,7.0,1 years
+oecd,business_survival,economic_activity,VARCHAR,7546335,0.0,0.0,826,,,1.0,9.0,C275
+oecd,business_survival,economic_activity_label,VARCHAR,7546335,0.0,0.0,614,,,7.0,213.0,Manufacture of domestic appliances
+oecd,business_survival,size_class,VARCHAR,7546335,0.0,0.0,8,,,2.0,6.0,S_GE5
+oecd,business_survival,size_class_label,VARCHAR,7546335,0.0,0.0,8,,,9.0,17.0,5 or more
+oecd,business_survival,enterprise_age,VARCHAR,7546335,0.0,0.0,5,,,2.0,2.0,Y5
+oecd,business_survival,enterprise_age_label,VARCHAR,7546335,0.0,0.0,5,,,7.0,7.0,5 years
 oecd,business_survival,enterprise_type,VARCHAR,7546335,0.0,0.0,1,,,7.0,7.0,ENT_EMP
 oecd,business_survival,enterprise_type_label,VARCHAR,7546335,0.0,0.0,1,,,20.0,20.0,Employer enterprises
 oecd,business_survival,business_stage,VARCHAR,7546335,0.0,0.0,1,,,6.0,6.0,ACTIVE
 oecd,business_survival,business_stage_label,VARCHAR,7546335,0.0,0.0,1,,,18.0,18.0,Active enterprises
-oecd,business_survival,unit_of_measure,VARCHAR,7546335,0.0,0.0,5,,,2.0,9.0,PT_ENT_EM
-oecd,business_survival,unit_of_measure_label,VARCHAR,7546335,0.0,0.0,5,,,7.0,34.0,Percentage of employer enterprises
-oecd,business_survival,time_period,VARCHAR,7546335,0.0,0.0,26,,,4.0,4.0,2013
+oecd,business_survival,unit_of_measure,VARCHAR,7546335,0.0,0.0,5,,,2.0,9.0,ENT_EM
+oecd,business_survival,unit_of_measure_label,VARCHAR,7546335,0.0,0.0,5,,,7.0,34.0,Employer enterprises
+oecd,business_survival,time_period,VARCHAR,7546335,0.0,0.0,26,,,4.0,4.0,2014
 oecd,business_survival,time_period_label,VARCHAR,7546335,1.0,0.0,0,,,,,
-oecd,business_survival,decimals,VARCHAR,7546335,0.0,0.0,2,,,1.0,1.0,2
-oecd,business_survival,decimals_label,VARCHAR,7546335,0.0,0.0,2,,,3.0,4.0,Two
+oecd,business_survival,decimals,VARCHAR,7546335,0.0,0.0,2,,,1.0,1.0,0
+oecd,business_survival,decimals_label,VARCHAR,7546335,0.0,0.0,2,,,3.0,4.0,Zero
 oecd,business_survival,observation_status,VARCHAR,7546335,0.0,0.0,8,,,1.0,1.0,A
 oecd,business_survival,observation_status_label,VARCHAR,7546335,0.0,0.0,8,,,12.0,35.0,Normal value
 oecd,business_survival,unit_multiplier,VARCHAR,7546335,0.0,0.0,1,,,1.0,1.0,0
 oecd,business_survival,unit_multiplier_label,VARCHAR,7546335,0.0,0.0,1,,,5.0,5.0,Units
-oecd,business_survival,variable,VARCHAR,7546335,0.0,0.0,29,,,4.0,11.0,YS1_SH 
-oecd,business_survival,variable_label,VARCHAR,7546335,0.0,0.0,6,,,14.0,58.0,share of surviving enterprises in the bu
+oecd,business_survival,variable,VARCHAR,7546335,0.0,0.0,29,,,4.0,11.0,YS5 
+oecd,business_survival,variable_label,VARCHAR,7546335,0.0,0.0,6,,,14.0,58.0,Surviving enterprises
 oecd,business_survival,value,DOUBLE,7546335,0.0,,1245552,0.0,2143291.0,,,0.0
 oecd,child_wellbeing,flow,VARCHAR,15297,0.0,0.0,1,,,28.0,28.0,"OECD.WISE.CWB,DSD_CWB@DF_CWB"
 oecd,child_wellbeing,reference_area,VARCHAR,15297,0.0,0.0,48,,,3.0,3.0,AUS
@@ -7290,7 +7442,8 @@ oecd,ip_tax_regimes,regime,VARCHAR,2639,0.0,0.0,4,,,7.0,7.0,REGIME1
 oecd,ip_tax_regimes,regime_label,VARCHAR,2639,0.0,0.0,4,,,8.0,8.0,Regime 1
 oecd,ip_tax_regimes,time_period,VARCHAR,2639,0.0,0.0,8,,,4.0,4.0,2018
 oecd,ip_tax_regimes,time_period_label,VARCHAR,2639,1.0,0.0,0,,,,,
-oecd,ip_tax_regimes,value,DOUBLE,2639,1.0,,0,,,,,
+oecd,ip_tax_regimes,value,DOUBLE,2639,0.6821,,49,0.0,35.0,,,0.0
+oecd,ip_tax_regimes,value_text,VARCHAR,2639,0.0,0.0,235,,,5.0,4390.0,0.00%
 oecd,msti,flow,VARCHAR,210477,0.0,0.0,1,,,29.0,29.0,"OECD.STI.STP,DSD_MSTI@DF_MSTI"
 oecd,msti,reference_area,VARCHAR,210477,0.0,0.0,49,,,3.0,9.0,ESP
 oecd,msti,reference_area_label,VARCHAR,210477,0.0,0.0,50,,,4.0,45.0,Spain
@@ -7364,12 +7517,12 @@ oecd,patents_domestic_ownership_abroad,measure,VARCHAR,6824320,0.0,0.0,1,,,2.0,2
 oecd,patents_domestic_ownership_abroad,measure_label,VARCHAR,6824320,0.0,0.0,1,,,19.0,19.0,Patent applications
 oecd,patents_domestic_ownership_abroad,unit_of_measure,VARCHAR,6824320,0.0,0.0,2,,,4.0,7.0,PT_PATN
 oecd,patents_domestic_ownership_abroad,unit_of_measure_label,VARCHAR,6824320,0.0,0.0,2,,,7.0,21.0,Percentage of patents
-oecd,patents_domestic_ownership_abroad,reference_date_type,VARCHAR,6824320,0.0,0.0,3,,,5.0,11.0,APPLICATION
-oecd,patents_domestic_ownership_abroad,reference_date_type_label,VARCHAR,6824320,0.0,0.0,3,,,10.0,16.0,Application date
-oecd,patents_domestic_ownership_abroad,reference_area,VARCHAR,6824320,0.0,0.0,104,,,1.0,9.0,HUN
-oecd,patents_domestic_ownership_abroad,reference_area_label,VARCHAR,6824320,0.0,0.0,103,,,4.0,45.0,Hungary
-oecd,patents_domestic_ownership_abroad,counterpart_area,VARCHAR,6824320,0.0,0.0,105,,,1.0,9.0,HRV
-oecd,patents_domestic_ownership_abroad,counterpart_area_label,VARCHAR,6824320,0.0,0.0,104,,,4.0,45.0,Croatia
+oecd,patents_domestic_ownership_abroad,reference_date_type,VARCHAR,6824320,0.0,0.0,3,,,5.0,11.0,PRIORITY
+oecd,patents_domestic_ownership_abroad,reference_date_type_label,VARCHAR,6824320,0.0,0.0,3,,,10.0,16.0,Priority date
+oecd,patents_domestic_ownership_abroad,reference_area,VARCHAR,6824320,0.0,0.0,104,,,1.0,9.0,OECD
+oecd,patents_domestic_ownership_abroad,reference_area_label,VARCHAR,6824320,0.0,0.0,103,,,4.0,45.0,OECD
+oecd,patents_domestic_ownership_abroad,counterpart_area,VARCHAR,6824320,0.0,0.0,105,,,1.0,9.0,EU27_2020
+oecd,patents_domestic_ownership_abroad,counterpart_area_label,VARCHAR,6824320,0.0,0.0,104,,,4.0,45.0,European Union (27 countries from 01/02/
 oecd,patents_domestic_ownership_abroad,agent_role,VARCHAR,6824320,0.0,0.0,1,,,2.0,2.0,_Z
 oecd,patents_domestic_ownership_abroad,agent_role_label,VARCHAR,6824320,0.0,0.0,1,,,14.0,14.0,Not applicable
 oecd,patents_domestic_ownership_abroad,cooperation_type,VARCHAR,6824320,0.0,0.0,1,,,2.0,2.0,DO
@@ -7378,7 +7531,7 @@ oecd,patents_domestic_ownership_abroad,world_intellectual_property_organization_
 oecd,patents_domestic_ownership_abroad,world_intellectual_property_organization_domains_label,VARCHAR,6824320,0.0,0.0,1,,,14.0,14.0,Not applicable
 oecd,patents_domestic_ownership_abroad,selected_oecd_technology_domains,VARCHAR,6824320,0.0,0.0,1,,,2.0,2.0,_Z
 oecd,patents_domestic_ownership_abroad,selected_oecd_technology_domains_label,VARCHAR,6824320,0.0,0.0,1,,,14.0,14.0,Not applicable
-oecd,patents_domestic_ownership_abroad,time_period,VARCHAR,6824320,0.0,0.0,45,,,4.0,4.0,2023
+oecd,patents_domestic_ownership_abroad,time_period,VARCHAR,6824320,0.0,0.0,45,,,4.0,4.0,2022
 oecd,patents_domestic_ownership_abroad,time_period_label,VARCHAR,6824320,1.0,0.0,0,,,,,
 oecd,patents_domestic_ownership_abroad,observation_status,VARCHAR,6824320,0.0,0.0,1,,,1.0,1.0,A
 oecd,patents_domestic_ownership_abroad,observation_status_label,VARCHAR,6824320,0.0,0.0,1,,,12.0,12.0,Normal value
@@ -7398,19 +7551,19 @@ oecd,patents_environment,unit_of_measure,VARCHAR,1751776,0.0,0.0,2,,,4.0,7.0,PAT
 oecd,patents_environment,unit_of_measure_label,VARCHAR,1751776,0.0,0.0,2,,,7.0,15.0,Patents
 oecd,patents_environment,reference_date_type,VARCHAR,1751776,0.0,0.0,3,,,5.0,11.0,GRANT
 oecd,patents_environment,reference_date_type_label,VARCHAR,1751776,0.0,0.0,3,,,10.0,16.0,Grant date
-oecd,patents_environment,reference_area,VARCHAR,1751776,0.0,0.0,104,,,1.0,9.0,NGA
-oecd,patents_environment,reference_area_label,VARCHAR,1751776,0.0,0.0,103,,,4.0,45.0,Nigeria
+oecd,patents_environment,reference_area,VARCHAR,1751776,0.0,0.0,104,,,1.0,9.0,LVA
+oecd,patents_environment,reference_area_label,VARCHAR,1751776,0.0,0.0,103,,,4.0,45.0,Latvia
 oecd,patents_environment,counterpart_area,VARCHAR,1751776,0.0,0.0,1,,,2.0,2.0,_Z
 oecd,patents_environment,counterpart_area_label,VARCHAR,1751776,0.0,0.0,1,,,14.0,14.0,Not applicable
-oecd,patents_environment,agent_role,VARCHAR,1751776,0.0,0.0,2,,,8.0,9.0,INVENTOR
-oecd,patents_environment,agent_role_label,VARCHAR,1751776,0.0,0.0,2,,,8.0,9.0,Inventor
+oecd,patents_environment,agent_role,VARCHAR,1751776,0.0,0.0,2,,,8.0,9.0,APPLICANT
+oecd,patents_environment,agent_role_label,VARCHAR,1751776,0.0,0.0,2,,,8.0,9.0,Applicant
 oecd,patents_environment,cooperation_type,VARCHAR,1751776,0.0,0.0,1,,,2.0,2.0,_Z
 oecd,patents_environment,cooperation_type_label,VARCHAR,1751776,0.0,0.0,1,,,14.0,14.0,Not applicable
 oecd,patents_environment,world_intellectual_property_organization_domains,VARCHAR,1751776,0.0,0.0,1,,,2.0,2.0,_Z
 oecd,patents_environment,world_intellectual_property_organization_domains_label,VARCHAR,1751776,0.0,0.0,1,,,14.0,14.0,Not applicable
-oecd,patents_environment,selected_oecd_technology_domains,VARCHAR,1751776,0.0,0.0,13,,,2.0,9.0,ENV_PAT
-oecd,patents_environment,selected_oecd_technology_domains_label,VARCHAR,1751776,0.0,0.0,14,,,11.0,97.0,Environment-related technologies
-oecd,patents_environment,time_period,VARCHAR,1751776,0.0,0.0,47,,,4.0,4.0,2003
+oecd,patents_environment,selected_oecd_technology_domains,VARCHAR,1751776,0.0,0.0,13,,,2.0,9.0,GHG
+oecd,patents_environment,selected_oecd_technology_domains_label,VARCHAR,1751776,0.0,0.0,14,,,11.0,97.0,"Capture, storage, sequestration or dispo"
+oecd,patents_environment,time_period,VARCHAR,1751776,0.0,0.0,47,,,4.0,4.0,1993
 oecd,patents_environment,time_period_label,VARCHAR,1751776,1.0,0.0,0,,,,,
 oecd,patents_environment,observation_status,VARCHAR,1751776,0.0,0.0,1,,,1.0,1.0,A
 oecd,patents_environment,observation_status_label,VARCHAR,1751776,0.0,0.0,1,,,12.0,12.0,Normal value
@@ -7426,14 +7579,14 @@ oecd,patents_foreign_ownership,frequency_of_observation,VARCHAR,6824320,0.0,0.0,
 oecd,patents_foreign_ownership,frequency_of_observation_label,VARCHAR,6824320,0.0,0.0,1,,,6.0,6.0,Annual
 oecd,patents_foreign_ownership,measure,VARCHAR,6824320,0.0,0.0,1,,,2.0,2.0,AP
 oecd,patents_foreign_ownership,measure_label,VARCHAR,6824320,0.0,0.0,1,,,19.0,19.0,Patent applications
-oecd,patents_foreign_ownership,unit_of_measure,VARCHAR,6824320,0.0,0.0,2,,,4.0,7.0,PATN
-oecd,patents_foreign_ownership,unit_of_measure_label,VARCHAR,6824320,0.0,0.0,2,,,7.0,21.0,Patents
-oecd,patents_foreign_ownership,reference_date_type,VARCHAR,6824320,0.0,0.0,3,,,5.0,11.0,GRANT
-oecd,patents_foreign_ownership,reference_date_type_label,VARCHAR,6824320,0.0,0.0,3,,,10.0,16.0,Grant date
-oecd,patents_foreign_ownership,reference_area,VARCHAR,6824320,0.0,0.0,104,,,1.0,9.0,MAR
-oecd,patents_foreign_ownership,reference_area_label,VARCHAR,6824320,0.0,0.0,103,,,4.0,45.0,Morocco
-oecd,patents_foreign_ownership,counterpart_area,VARCHAR,6824320,0.0,0.0,105,,,1.0,9.0,BMU
-oecd,patents_foreign_ownership,counterpart_area_label,VARCHAR,6824320,0.0,0.0,104,,,4.0,45.0,Bermuda
+oecd,patents_foreign_ownership,unit_of_measure,VARCHAR,6824320,0.0,0.0,2,,,4.0,7.0,PT_PATN
+oecd,patents_foreign_ownership,unit_of_measure_label,VARCHAR,6824320,0.0,0.0,2,,,7.0,21.0,Percentage of patents
+oecd,patents_foreign_ownership,reference_date_type,VARCHAR,6824320,0.0,0.0,3,,,5.0,11.0,APPLICATION
+oecd,patents_foreign_ownership,reference_date_type_label,VARCHAR,6824320,0.0,0.0,3,,,10.0,16.0,Application date
+oecd,patents_foreign_ownership,reference_area,VARCHAR,6824320,0.0,0.0,104,,,1.0,9.0,HUN
+oecd,patents_foreign_ownership,reference_area_label,VARCHAR,6824320,0.0,0.0,103,,,4.0,45.0,Hungary
+oecd,patents_foreign_ownership,counterpart_area,VARCHAR,6824320,0.0,0.0,105,,,1.0,9.0,CYP
+oecd,patents_foreign_ownership,counterpart_area_label,VARCHAR,6824320,0.0,0.0,104,,,4.0,45.0,Cyprus
 oecd,patents_foreign_ownership,agent_role,VARCHAR,6824320,0.0,0.0,1,,,2.0,2.0,_Z
 oecd,patents_foreign_ownership,agent_role_label,VARCHAR,6824320,0.0,0.0,1,,,14.0,14.0,Not applicable
 oecd,patents_foreign_ownership,cooperation_type,VARCHAR,6824320,0.0,0.0,1,,,2.0,2.0,FO
@@ -7442,7 +7595,7 @@ oecd,patents_foreign_ownership,world_intellectual_property_organization_domains,
 oecd,patents_foreign_ownership,world_intellectual_property_organization_domains_label,VARCHAR,6824320,0.0,0.0,1,,,14.0,14.0,Not applicable
 oecd,patents_foreign_ownership,selected_oecd_technology_domains,VARCHAR,6824320,0.0,0.0,1,,,2.0,2.0,_Z
 oecd,patents_foreign_ownership,selected_oecd_technology_domains_label,VARCHAR,6824320,0.0,0.0,1,,,14.0,14.0,Not applicable
-oecd,patents_foreign_ownership,time_period,VARCHAR,6824320,0.0,0.0,45,,,4.0,4.0,2020
+oecd,patents_foreign_ownership,time_period,VARCHAR,6824320,0.0,0.0,45,,,4.0,4.0,2022
 oecd,patents_foreign_ownership,time_period_label,VARCHAR,6824320,1.0,0.0,0,,,,,
 oecd,patents_foreign_ownership,observation_status,VARCHAR,6824320,0.0,0.0,1,,,1.0,1.0,A
 oecd,patents_foreign_ownership,observation_status_label,VARCHAR,6824320,0.0,0.0,1,,,12.0,12.0,Normal value
@@ -7456,20 +7609,20 @@ oecd,patents_regions,frequency_of_observation,VARCHAR,796814,0.0,0.0,1,,,1.0,1.0
 oecd,patents_regions,frequency_of_observation_label,VARCHAR,796814,0.0,0.0,1,,,6.0,6.0,Annual
 oecd,patents_regions,territorial_level,VARCHAR,796814,0.0,0.0,3,,,3.0,4.0,TL3
 oecd,patents_regions,territorial_level_label,VARCHAR,796814,0.0,0.0,3,,,3.0,7.0,TL3
-oecd,patents_regions,reference_area,VARCHAR,796814,0.0,0.0,3005,,,3.0,7.0,NO072
-oecd,patents_regions,reference_area_label,VARCHAR,796814,0.0,0.0,2649,,,3.0,51.0,Troms
+oecd,patents_regions,reference_area,VARCHAR,796814,0.0,0.0,3005,,,3.0,7.0,SK022
+oecd,patents_regions,reference_area_label,VARCHAR,796814,0.0,0.0,2649,,,3.0,51.0,Trencín Region
 oecd,patents_regions,territorial_typology,VARCHAR,796814,0.0,0.0,1,,,2.0,2.0,_Z
 oecd,patents_regions,territorial_typology_label,VARCHAR,796814,0.0,0.0,1,,,14.0,14.0,Not applicable
 oecd,patents_regions,patent_authorities,VARCHAR,796814,0.0,0.0,1,,,6.0,6.0,9P50_1
 oecd,patents_regions,patent_authorities_label,VARCHAR,796814,0.0,0.0,1,,,40.0,40.0,World Intellectual Property Organization
-oecd,patents_regions,reference_date_type,VARCHAR,796814,0.0,0.0,2,,,8.0,11.0,APPLICATION
-oecd,patents_regions,reference_date_type_label,VARCHAR,796814,0.0,0.0,2,,,13.0,16.0,Application date
+oecd,patents_regions,reference_date_type,VARCHAR,796814,0.0,0.0,2,,,8.0,11.0,PRIORITY
+oecd,patents_regions,reference_date_type_label,VARCHAR,796814,0.0,0.0,2,,,13.0,16.0,Priority date
 oecd,patents_regions,measure,VARCHAR,796814,0.0,0.0,1,,,7.0,7.0,PCT_PAT
 oecd,patents_regions,measure_label,VARCHAR,796814,0.0,0.0,1,,,41.0,41.0,"PCT Patent applications, fractional coun"
 oecd,patents_regions,agent_role,VARCHAR,796814,0.0,0.0,1,,,8.0,8.0,INVENTOR
 oecd,patents_regions,agent_role_label,VARCHAR,796814,0.0,0.0,1,,,8.0,8.0,Inventor
-oecd,patents_regions,selected_oecd_technologies_domains,VARCHAR,796814,0.0,0.0,8,,,2.0,8.0,_T
-oecd,patents_regions,selected_oecd_technologies_domains_label,VARCHAR,796814,0.0,0.0,8,,,3.0,47.0,Total patents
+oecd,patents_regions,selected_oecd_technologies_domains,VARCHAR,796814,0.0,0.0,8,,,2.0,8.0,ENV_TECH
+oecd,patents_regions,selected_oecd_technologies_domains_label,VARCHAR,796814,0.0,0.0,8,,,3.0,47.0,Environment
 oecd,patents_regions,sector_of_performance,VARCHAR,796814,0.0,0.0,1,,,2.0,2.0,_Z
 oecd,patents_regions,sector_of_performance_label,VARCHAR,796814,0.0,0.0,1,,,14.0,14.0,Not applicable
 oecd,patents_regions,price_base,VARCHAR,796814,0.0,0.0,1,,,2.0,2.0,_Z
@@ -7478,10 +7631,10 @@ oecd,patents_regions,sex,VARCHAR,796814,0.0,0.0,1,,,2.0,2.0,_Z
 oecd,patents_regions,sex_label,VARCHAR,796814,0.0,0.0,1,,,14.0,14.0,Not applicable
 oecd,patents_regions,unit_of_measure,VARCHAR,796814,0.0,0.0,2,,,4.0,6.0,PATN
 oecd,patents_regions,unit_of_measure_label,VARCHAR,796814,0.0,0.0,2,,,7.0,25.0,Patents
-oecd,patents_regions,time_period,VARCHAR,796814,0.0,0.0,30,,,4.0,4.0,2007
+oecd,patents_regions,time_period,VARCHAR,796814,0.0,0.0,30,,,4.0,4.0,2005
 oecd,patents_regions,time_period_label,VARCHAR,796814,1.0,0.0,0,,,,,
-oecd,patents_regions,country,VARCHAR,796814,0.0,0.0,59,,,3.0,3.0,NOR
-oecd,patents_regions,country_label,VARCHAR,796814,0.0,0.0,59,,,4.0,28.0,Norway
+oecd,patents_regions,country,VARCHAR,796814,0.0,0.0,59,,,3.0,3.0,SVK
+oecd,patents_regions,country_label,VARCHAR,796814,0.0,0.0,59,,,4.0,28.0,Slovak Republic
 oecd,patents_regions,observation_status,VARCHAR,796814,0.0,0.0,1,,,1.0,1.0,A
 oecd,patents_regions,observation_status_label,VARCHAR,796814,0.0,0.0,1,,,12.0,12.0,Normal value
 oecd,patents_regions,price_reference_year,VARCHAR,796814,0.0,0.0,1,,,2.0,2.0,_Z
@@ -7492,7 +7645,7 @@ oecd,patents_regions,decimals,VARCHAR,796814,0.0,0.0,1,,,1.0,1.0,1
 oecd,patents_regions,decimals_label,VARCHAR,796814,0.0,0.0,1,,,3.0,3.0,One
 oecd,patents_regions,currency,VARCHAR,796814,0.494,0.0,1,,,2.0,2.0,_Z
 oecd,patents_regions,currency_label,VARCHAR,796814,0.494,0.0,1,,,14.0,14.0,Not applicable
-oecd,patents_regions,value,DOUBLE,796814,0.0,,177863,0.0,68528.84052,,,6.392857143
+oecd,patents_regions,value,DOUBLE,796814,0.0,,177863,0.0,68528.84052,,,0.142857143
 oecd,patents_wipo_fields,flow,VARCHAR,4504032,0.0,0.0,1,,,40.0,40.0,"OECD.STI.PIE,DSD_PATENTS@DF_PATENTS_WIPO"
 oecd,patents_wipo_fields,patent_authorities,VARCHAR,4504032,0.0,0.0,5,,,3.0,6.0,9P50_1
 oecd,patents_wipo_fields,patent_authorities_label,VARCHAR,4504032,0.0,0.0,4,,,17.0,41.0,World Intellectual Property Organization
@@ -7888,34 +8041,41 @@ pbs,item_month,prescriptions,DOUBLE,279371,0.0,,33815,1.0,565701.0,,,1711.0
 pbs,item_month,patient_contribution,DOUBLE,279371,0.0,,193112,0.0,5809994.88,,,6227.0
 pbs,item_month,government_contribution,DOUBLE,279371,0.0,,266421,0.0,123275658.79,,,59068.8
 pbs,item_month,total_cost,DOUBLE,279371,0.0,,256245,0.0,124681470.39000002,,,65295.8
-pbs,supply,MONTH_OF_SUPPLY,VARCHAR,2146679,0.0,0.0,69,,,6.0,6.0,202104
-pbs,supply,ITEM_CODE,VARCHAR,2146679,0.0,0.0,5842,,,6.0,6.0,02257T
+pbs,supply,MONTH_OF_SUPPLY,VARCHAR,2146679,0.0,0.0,69,,,6.0,6.0,202108
+pbs,supply,ITEM_CODE,VARCHAR,2146679,0.0,0.0,5842,,,6.0,6.0,08805K
 pbs,supply,DRUG_TYPE,VARCHAR,2146679,0.0,0.0,9,,,2.0,2.0,GE
-pbs,supply,PATIENT_CAT,VARCHAR,2146679,0.0,0.0,7,,,2.0,2.0,R1
+pbs,supply,PATIENT_CAT,VARCHAR,2146679,0.0,0.0,7,,,2.0,2.0,C0
 pbs,supply,PHRMCY_TYPE,VARCHAR,2146679,0.0,0.0,4,,,3.0,7.0,S90
 pbs,supply,SCRIPT_TYPE,VARCHAR,2146679,0.0,0.0,2,,,16.0,16.0,ABOVE CO-PAYMENT
-pbs,supply,PRESCRIPTIONS,BIGINT,2146679,0.0,,35369,1,305313,,,2
-pbs,supply,PATIENT_CONTRIB,DOUBLE,2146679,0.0,,249840,0.0,3879520.66,,,13.2
-pbs,supply,GOVT_CONTRIB,DOUBLE,2146679,0.0,,700211,0.0,51776293.63,,,85.54
-pbs,supply,TOTAL_COST,DOUBLE,2146679,0.0,,769924,0.0,51776293.63,,,98.74
-pbs,supply,RETAIL_MARKUP,DOUBLE,2146679,0.0,,349379,0.0,2417607.32,,,8.56
-pbs,supply,PATIENT_NET_CONTRIB,DOUBLE,2146679,0.0,,401967,0.0,2786885.88,,,13.2
-phidu,indicators,workbook,VARCHAR,4951275,0.0,0.0,4,,,9.0,24.0,pha_demographic_social
-phidu,indicators,sheet,VARCHAR,4951275,0.0,0.0,100,,,4.0,31.0,Age_distribution_Males
-phidu,indicators,area_code,VARCHAR,4951275,0.0848,0.0,1521,,,3.0,5.0,10283
-phidu,indicators,area_name,VARCHAR,4951275,0.0,185.0,1618,,,0.0,106.0,Adamstown - Kotara
-phidu,indicators,quintile,VARCHAR,4951275,0.9356,0.0,40,,,8.0,65.0,Quintile 1: Least disadvantaged
-phidu,indicators,indicator,VARCHAR,4951275,0.0,0.0,741,,,8.0,304.0,"Males, 0-4 years"
-phidu,indicators,period,VARCHAR,4951275,0.0,0.0,23,,,4.0,13.0,2024 ERP
-phidu,indicators,measure,VARCHAR,4951275,0.0,0.0,418,,,1.0,161.0,Number
-phidu,indicators,value,DOUBLE,4951275,0.0,,2905338,-3894.0,815326464.0,,,527.0
-policy_events,events,id,VARCHAR,13,0.0,0.0,13,,,12.0,28.0,pct-accession
-policy_events,events,date,DATE,13,0.0,,13,1980-03-31,2022-03-10,,,1980-03-31
-policy_events,events,rights,VARCHAR,13,0.0,0.0,6,,,3.0,28.0,patent
-policy_events,events,lever,VARCHAR,13,0.0,0.0,6,,,4.0,35.0,international filing route
-policy_events,events,event,VARCHAR,13,0.0,0.0,13,,,30.0,132.0,Australia joins the Patent Cooperation T
-policy_events,events,source,VARCHAR,13,0.0,0.0,5,,,31.0,95.0,https://www.wipo.int/pct/en/pct_contract
-policy_events,events,verify,BOOLEAN,13,0.0,,2,,,,,false
+pbs,supply,PRESCRIPTIONS,BIGINT,2146679,0.0,,35369,1,305313,,,58
+pbs,supply,PATIENT_CONTRIB,DOUBLE,2146679,0.0,,249840,0.0,3879520.66,,,0.0
+pbs,supply,GOVT_CONTRIB,DOUBLE,2146679,0.0,,700211,0.0,51776293.63,,,50205.96
+pbs,supply,TOTAL_COST,DOUBLE,2146679,0.0,,769924,0.0,51776293.63,,,50205.96
+pbs,supply,RETAIL_MARKUP,DOUBLE,2146679,0.0,,349379,0.0,2417607.32,,,2330.44
+pbs,supply,PATIENT_NET_CONTRIB,DOUBLE,2146679,0.0,,401967,0.0,2786885.88,,,0.0
+phidu,indicators,workbook,VARCHAR,4951090,0.0,0.0,4,,,9.0,24.0,pha_health_status
+phidu,indicators,sheet,VARCHAR,4951090,0.0,0.0,100,,,4.0,31.0,Years_life_lost_by_cause
+phidu,indicators,area_type,VARCHAR,4951090,0.0,0.0,5,,,3.0,8.0,sa3
+phidu,indicators,area_code,VARCHAR,4951090,0.0847,0.0,1521,,,3.0,5.0,21005
+phidu,indicators,area_name,VARCHAR,4951090,0.0,0.0,1618,,,3.0,106.0,Tullamarine - Broadmeadows
+phidu,indicators,quintile,VARCHAR,4951090,0.9356,0.0,40,,,8.0,65.0,Quintile 1: Least disadvantaged
+phidu,indicators,indicator,VARCHAR,4951090,0.0,0.0,773,,,8.0,181.0,- Potential years of life lost from brea
+phidu,indicators,sub_indicator,VARCHAR,4951090,0.8731,0.0,59,,,13.0,137.0,"Schizophrenia, schizotypal and delusiona"
+phidu,indicators,period,VARCHAR,4951090,0.0,0.0,23,,,4.0,13.0,2019 to 2023
+phidu,indicators,measure,VARCHAR,4951090,0.0,0.0,418,,,1.0,161.0,SR - lower 95% C.I.
+phidu,indicators,note,VARCHAR,4951090,0.9027,0.0,2,,,269.0,304.0,The cancer incidence data presented for 
+phidu,indicators,value,DOUBLE,4951090,0.0,,2905338,-3894.0,815326464.0,,,100.29842218302724
+phidu,pha_sa2,pha_code,VARCHAR,2450,0.0,0.0,1144,,,5.0,5.0,10063
+phidu,pha_sa2,pha_name,VARCHAR,2450,0.0,0.0,1136,,,3.0,51.0,Arncliffe - Bardwell Valley/ Rockdale - 
+phidu,pha_sa2,sa2_code,VARCHAR,2450,0.0,0.0,2500,,,9.0,9.0,119041668
+phidu,pha_sa2,section,VARCHAR,2450,0.0,0.0,15,,,3.0,23.0,NSW - Greater Sydney
+policy_events,events,id,VARCHAR,16,0.0,0.0,16,,,12.0,35.0,pct-accession
+policy_events,events,date,DATE,16,0.0,,16,1980-03-31,2022-03-10,,,1980-03-31
+policy_events,events,rights,VARCHAR,16,0.0,0.0,7,,,3.0,28.0,patent
+policy_events,events,lever,VARCHAR,16,0.0,0.0,8,,,4.0,47.0,international filing route
+policy_events,events,event,VARCHAR,16,0.0,0.0,16,,,30.0,287.0,Australia joins the Patent Cooperation T
+policy_events,events,source,VARCHAR,16,0.0,0.0,16,,,39.0,149.0,https://www.wipo.int/pct/en/pct_contract
+policy_events,events,verify,BOOLEAN,16,0.0,,1,,,,,false
 policy_events,policy_register,policy_id,BIGINT,155,0.0,,155,1,156,,,1
 policy_events,policy_register,title,VARCHAR,155,0.0,0.0,155,,,16.0,215.0,Crown use - lack of clarity around 'serv
 policy_events,policy_register,status,VARCHAR,155,0.0,0.0,6,,,6.0,21.0,Completed
@@ -7930,8 +8090,9 @@ rdti,entities,income_year,VARCHAR,38512,0.0,0.0,3,,,7.0,7.0,2023-24
 rdti,entities,report,VARCHAR,38512,0.0,0.0,3,,,7.0,7.0,2023-24
 rdti,entities,sheet,VARCHAR,38512,0.0,0.0,3,,,14.0,19.0,2023-24 Report
 rdti,entities,name,VARCHAR,38512,0.0,0.0,19437,,,6.0,70.0,(UI!) THE URBAN INSTITUTE PTY LTD
-rdti,entities,abn,VARCHAR,38512,0.0143,0.0,17936,,,11.0,11.0,95608464535
+rdti,entities,abn,VARCHAR,38512,0.0008,0.0,18075,,,11.0,11.0,95608464535
 rdti,entities,acn,VARCHAR,38512,0.9861,0.0,456,,,9.0,9.0,609760492
+rdti,entities,abn_from,VARCHAR,38512,0.0008,0.0,2,,,3.0,6.0,report
 reliance_on_science,citations_au,patent,VARCHAR,620364,0.0,0.0,30587,,,9.0,16.0,us-12090247-b2
 reliance_on_science,citations_au,family_id,VARCHAR,620364,0.0,0.0,17670,,,7.0,9.0,101113910
 reliance_on_science,citations_au,oaid,VARCHAR,620364,0.0,0.0,180407,,,6.0,10.0,2937271713
@@ -7941,14 +8102,14 @@ reliance_on_science,citations_au,wherefound,VARCHAR,620364,0.0,0.0,3,,,4.0,9.0,f
 reliance_on_science,ppp,magid,VARCHAR,59202,0.0,0.0,56651,,,6.0,10.0,2921335798
 reliance_on_science,ppp,patent_id,VARCHAR,59202,0.0,0.0,50701,,,6.0,8.0,9994524
 reliance_on_science,ppp,confidence_level,VARCHAR,59202,0.0,0.0,2,,,3.0,4.0,high
-tga,artg,artg_id,BIGINT,98147,0.0,,101041,9978,532652,,,9978
-tga,artg,product_name,VARCHAR,98147,0.0,0.0,51785,,,2.0,2010.0,ZOFRAN ondansetron (as hydrochloride dih
-tga,artg,sponsor_name,VARCHAR,98147,0.0,0.0,4708,,,3.0,145.0,Aspen Pharmacare Australia Pty Ltd
-tga,artg,device_manufacturer,VARCHAR,98147,0.3617,0.0,10641,,,2.0,150.0,Sarstedt Australia Pty Ltd
-tga,artg,active_ingredients,VARCHAR,98147,0.6422,0.0,17858,,,10.0,5568.0,"ondansetron hydrochloride dihydrate, Qua"
-tga,artg,kind,VARCHAR,98147,0.0,0.0,3,,,5.0,8.0,medicine
-tga,artg_ingredients,artg_id,BIGINT,99864,0.0,,34818,9978,532627,,,9978
-tga,artg_ingredients,ingredient,VARCHAR,99864,0.0,0.0,3322,,,3.0,132.0,ondansetron hydrochloride dihydrate
+tga,artg,artg_id,BIGINT,98127,0.0,,101041,9978,532652,,,9978
+tga,artg,product_name,VARCHAR,98127,0.0,0.0,51785,,,2.0,2010.0,ZOFRAN ondansetron (as hydrochloride dih
+tga,artg,sponsor_name,VARCHAR,98127,0.0,0.0,4708,,,3.0,145.0,Aspen Pharmacare Australia Pty Ltd
+tga,artg,device_manufacturer,VARCHAR,98127,0.3616,0.0,10641,,,2.0,150.0,Sarstedt Australia Pty Ltd
+tga,artg,active_ingredients,VARCHAR,98127,0.6424,0.0,17858,,,10.0,5568.0,"ondansetron hydrochloride dihydrate, Qua"
+tga,artg,kind,VARCHAR,98127,0.0,0.0,3,,,5.0,8.0,medicine
+tga,artg_ingredients,artg_id,BIGINT,99283,0.0,,34818,9978,532627,,,9978
+tga,artg_ingredients,ingredient,VARCHAR,99283,0.0,0.0,3322,,,3.0,132.0,ondansetron hydrochloride dihydrate
 tmlink,application,ip_office,VARCHAR,17366599,0.0,0.0,6,,,2.0,2.0,au
 tmlink,application,application_number,VARCHAR,17366599,0.0,0.0,15107246,,,1.0,16.0,838842
 tmlink,application,trade_mark_type,VARCHAR,17366599,0.7288,0.0,10,,,4.0,24.0,trade_mark
@@ -7957,7 +8118,7 @@ tmlink,application,application_date,VARCHAR,17366599,0.0775,0.0,40367,,,10.0,10.
 tmlink,application,priority_date,VARCHAR,17366599,0.3352,0.0,35377,,,10.0,10.0,2000-06-15
 tmlink,application,registration_date,VARCHAR,17366599,0.5173,0.0,32914,,,10.0,10.0,2001-08-09
 tmlink,classification,ip_office,VARCHAR,14829000,0.0,0.0,6,,,2.0,2.0,au
-tmlink,classification,application_number,VARCHAR,14829000,0.0,0.0,12482501,,,1.0,16.0,418094
+tmlink,classification,application_number,VARCHAR,14829000,0.0,0.0,12482501,,,1.0,16.0,497337
 tmlink,classification,nice_class_1,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
 tmlink,classification,nice_class_2,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
 tmlink,classification,nice_class_3,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
@@ -7966,10 +8127,10 @@ tmlink,classification,nice_class_5,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
 tmlink,classification,nice_class_6,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
 tmlink,classification,nice_class_7,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
 tmlink,classification,nice_class_8,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
-tmlink,classification,nice_class_9,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
+tmlink,classification,nice_class_9,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,1
 tmlink,classification,nice_class_10,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
 tmlink,classification,nice_class_11,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
-tmlink,classification,nice_class_12,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,1
+tmlink,classification,nice_class_12,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
 tmlink,classification,nice_class_13,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
 tmlink,classification,nice_class_14,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
 tmlink,classification,nice_class_15,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
@@ -8003,39 +8164,39 @@ tmlink,classification,nice_class_42,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
 tmlink,classification,nice_class_43,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
 tmlink,classification,nice_class_44,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
 tmlink,classification,nice_class_45,VARCHAR,14829000,0.0,0.0,2,,,1.0,1.0,0
-tmlink,madrid,ip_office,VARCHAR,690919,0.0,0.0,6,,,2.0,2.0,us
-tmlink,madrid,application_number,VARCHAR,690919,0.0,0.0,658425,,,3.0,16.0,77003553
-tmlink,madrid,link_type,VARCHAR,690919,0.0,0.0,2,,,13.0,13.0,madrid_export
-tmlink,madrid,ir_number,VARCHAR,690919,0.0,0.0,535089,,,4.0,8.0,0902331
+tmlink,madrid,ip_office,VARCHAR,690919,0.0,0.0,6,,,2.0,2.0,au
+tmlink,madrid,application_number,VARCHAR,690919,0.0,0.0,658425,,,3.0,16.0,1712429
+tmlink,madrid,link_type,VARCHAR,690919,0.0,0.0,2,,,13.0,13.0,madrid_import
+tmlink,madrid,ir_number,VARCHAR,690919,0.0,0.0,535089,,,4.0,8.0,1259605
 tmlink,owner,ip_office,VARCHAR,18698857,0.0,0.0,6,,,2.0,2.0,au
-tmlink,owner,application_number,VARCHAR,18698857,0.0,0.0,14575081,,,1.0,16.0,1619953
-tmlink,owner,owner_type,VARCHAR,18698857,0.7882,0.0,27034,,,1.0,672.0,organisation
-tmlink,owner,ip_office_owner_identifier,VARCHAR,18698857,0.9148,0.0,570744,,,1.0,14.0,48 845 491 168
-tmlink,owner,owner_country_code,VARCHAR,18698857,0.4643,0.0,274,,,2.0,2.0,us
-tmlink,owner,owner_name,VARCHAR,18698857,0.0602,0.0,5710531,,,1.0,1455.0,adobe inc.
+tmlink,owner,application_number,VARCHAR,18698857,0.0,0.0,14575081,,,1.0,16.0,988548
+tmlink,owner,owner_type,VARCHAR,18698857,0.7882,0.0,27034,,,1.0,672.0,individual
+tmlink,owner,ip_office_owner_identifier,VARCHAR,18698857,0.9148,0.0,570744,,,1.0,14.0,22 001 660 715
+tmlink,owner,owner_country_code,VARCHAR,18698857,0.4643,0.0,274,,,2.0,2.0,au
+tmlink,owner,owner_name,VARCHAR,18698857,0.0602,0.0,5710531,,,1.0,1455.0,individual
 tmlink,property,ip_office,VARCHAR,16767243,0.0,0.0,4,,,2.0,2.0,au
 tmlink,property,application_number,VARCHAR,16767243,0.0,0.0,13400217,,,1.0,16.0,1429166
 tmlink,property,property_type,VARCHAR,16767243,0.0128,0.0,29,,,2.0,26.0,figurative
 tmlink,tm_link,ip_office,VARCHAR,10651467,0.0,0.0,5,,,2.0,2.0,au
-tmlink,tm_link,application_number,VARCHAR,10651467,0.0,0.0,9204077,,,1.0,9.0,1215069
-tmlink,tm_link,uid_trademark,VARCHAR,10651467,0.0,0.0,7881056,,,1.0,7.0,561114
-tmlink,tm_link,uid_trademark_similar_owners,VARCHAR,10651467,0.0,0.0,8650450,,,1.0,7.0,5656090
+tmlink,tm_link,application_number,VARCHAR,10651467,0.0,0.0,9204077,,,1.0,9.0,1
+tmlink,tm_link,uid_trademark,VARCHAR,10651467,0.0,0.0,7881056,,,1.0,7.0,67728
+tmlink,tm_link,uid_trademark_similar_owners,VARCHAR,10651467,0.0,0.0,8650450,,,1.0,7.0,7042017
 wdi,countries,iso3,VARCHAR,296,0.0,0.0,304,,,3.0,3.0,ABW
 wdi,countries,name,VARCHAR,296,0.0,0.0,301,,,4.0,80.0,Aruba
 wdi,countries,region,VARCHAR,296,0.0,0.0,8,,,10.0,49.0,Latin America & Caribbean 
 wdi,countries,income,VARCHAR,296,0.0,0.0,5,,,10.0,19.0,High income
 wdi,countries,aggregate,BOOLEAN,296,0.0,,2,,,,,false
-wdi,panel,iso3,VARCHAR,136371,0.0212,0.0,267,,,3.0,3.0,EAS
-wdi,panel,country,VARCHAR,136371,0.0,0.0,268,,,4.0,73.0,East Asia & Pacific
-wdi,panel,indicator,VARCHAR,136371,0.0,0.0,22,,,11.0,20.0,IP.PAT.RESD
-wdi,panel,indicator_name,VARCHAR,136371,0.0,0.0,22,,,17.0,95.0,"Patent applications, residents"
-wdi,panel,year,BIGINT,136371,0.0,,67,1960,2025,,,2024
-wdi,panel,value,DOUBLE,136371,0.0,,116526,-13920000.0,180028791385506.0,,,2123010.0
+wdi,panel,iso3,VARCHAR,141552,0.0216,0.0,267,,,3.0,3.0,EAS
+wdi,panel,country,VARCHAR,141552,0.0,0.0,268,,,4.0,73.0,East Asia & Pacific
+wdi,panel,indicator,VARCHAR,141552,0.0,0.0,24,,,11.0,20.0,IP.PAT.RESD
+wdi,panel,indicator_name,VARCHAR,141552,0.0,0.0,24,,,17.0,95.0,"Patent applications, residents"
+wdi,panel,year,BIGINT,141552,0.0,,67,1960,2025,,,2024
+wdi,panel,value,DOUBLE,141552,0.0,,119198,-13920000.0,180028791385506.0,,,2123010.0
 wgnd,name_gender,name,VARCHAR,3491141,0.0,0.0,3337964,,,1.0,33.0,有旋
 wgnd,name_gender,gender,VARCHAR,3491141,0.0,0.0,2,,,1.0,1.0,M
-wgnd,name_gender_code,name,VARCHAR,4970296,0.0,0.0,3954614,,,1.0,33.0,gamgyadi
+wgnd,name_gender_code,name,VARCHAR,4970296,0.0,0.0,3954614,,,1.0,33.0,meredigomma
 wgnd,name_gender_code,code,VARCHAR,4970296,0.0,0.0,192,,,2.0,2.0,IN
-wgnd,name_gender_code,gender,VARCHAR,4970296,0.0,0.0,3,,,1.0,1.0,M
+wgnd,name_gender_code,gender,VARCHAR,4970296,0.0,0.0,3,,,1.0,1.0,F
 wgnd,name_gender_code,wgt,DOUBLE,4970296,0.0,,60655,1.2037963e-08,1.0,,,1.0
 wine_gi,australian_gis,state_zone,VARCHAR,89,0.5843,0.0,38,,,7.0,72.0,Australia
 wine_gi,australian_gis,region,VARCHAR,89,0.0787,0.0,81,,,4.0,72.0,Australia
@@ -8049,16 +8210,16 @@ wipo_ipstats,office,breakdown,VARCHAR,8401,0.8403,0.0,3,,,27.0,34.0,From filing 
 wipo_ipstats,office,year,BIGINT,8401,0.0,,46,1980,2024,,,2019
 wipo_ipstats,office,value,DOUBLE,8401,0.0,,3884,1.0,49776654.0,,,4.0
 wipo_ipstats,office,last_updated,VARCHAR,8401,0.0,0.0,1,,,8.0,8.0,May 2026
-wipo_ipstats,office_origin,right,VARCHAR,4939588,0.0,0.0,4,,,6.0,10.0,trademark
-wipo_ipstats,office_origin,indicator_id,BIGINT,4939588,0.0,,14,10,92,,,90
-wipo_ipstats,office_origin,indicator,VARCHAR,4939588,0.0,0.0,14,,,20.0,76.0,3 - Total applications by class (direct 
-wipo_ipstats,office_origin,office_code,VARCHAR,4939588,0.0,0.0,198,,,2.0,2.0,BH
-wipo_ipstats,office_origin,office,VARCHAR,4939588,0.0,0.0,199,,,4.0,72.0,Bahrain
-wipo_ipstats,office_origin,origin,VARCHAR,4939588,0.0,0.0,208,,,4.0,37.0,France
-wipo_ipstats,office_origin,origin_code,VARCHAR,4939588,0.0,0.0,205,,,2.0,2.0,FR
-wipo_ipstats,office_origin,breakdown,VARCHAR,4939588,0.1758,0.0,90,,,5.0,43.0,Class 10
-wipo_ipstats,office_origin,year,BIGINT,4939588,0.0,,46,1980,2024,,,2015
-wipo_ipstats,office_origin,value,DOUBLE,4939588,0.0,,17496,1.0,9192753.0,,,6.0
+wipo_ipstats,office_origin,right,VARCHAR,4939588,0.0,0.0,4,,,6.0,10.0,patent
+wipo_ipstats,office_origin,indicator_id,BIGINT,4939588,0.0,,14,10,92,,,10
+wipo_ipstats,office_origin,indicator,VARCHAR,4939588,0.0,0.0,14,,,20.0,76.0,1 - Total patent applications (direct an
+wipo_ipstats,office_origin,office_code,VARCHAR,4939588,0.0,0.0,198,,,2.0,2.0,OA
+wipo_ipstats,office_origin,office,VARCHAR,4939588,0.0,0.0,199,,,4.0,72.0,African Intellectual Property Organizati
+wipo_ipstats,office_origin,origin,VARCHAR,4939588,0.0,0.0,208,,,4.0,37.0,Unknown
+wipo_ipstats,office_origin,origin_code,VARCHAR,4939588,0.0,0.0,205,,,2.0,2.0,**
+wipo_ipstats,office_origin,breakdown,VARCHAR,4939588,0.1758,0.0,90,,,5.0,43.0,"1 - Electrical machinery, apparatus, ene"
+wipo_ipstats,office_origin,year,BIGINT,4939588,0.0,,46,1980,2024,,,1980
+wipo_ipstats,office_origin,value,DOUBLE,4939588,0.0,,17496,1.0,9192753.0,,,304.0
 wipo_ipstats,office_origin,last_updated,VARCHAR,4939588,0.0,0.0,1,,,8.0,8.0,May 2026
 wipo_ipstats,pmh,system,VARCHAR,8440,0.0,0.0,3,,,3.0,6.0,pct
 wipo_ipstats,pmh,indicator_id,BIGINT,8440,0.0,,3,1001,3001,,,1001
