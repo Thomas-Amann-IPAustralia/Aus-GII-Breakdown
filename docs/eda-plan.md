@@ -4,9 +4,10 @@
 (`docs/Aus-GII-Independent-Review-and-Action-Plan.md`, whose finding IDs are used below), and the last check before
 Stage 1 has repaired the lenses (ADR 0010) and the corpus (ADR 0011). The owner has decided that every dataset goes
 through all three stages (ADR 0007). Stage 1 has begun: every core variable of the `rights` lens is profiled
-(observations U1 to U16), after five more repairs found on the way (ADR 0012). This plan says what the exploratory
+(observations U1 to U16), after five more repairs found on the way (ADR 0012), and so is its first attachment, the
+parties (U17 to U21, ADR 0013). This plan says what the exploratory
 data analysis (EDA) covers, where each dataset fits, what each part needs before it starts, and which gaps are worth
-filling. Decisions are in `docs/adr/` (0002 to 0012); terms are in `GLOSSARY.md`.
+filling. Decisions are in `docs/adr/` (0002 to 0013); terms are in `GLOSSARY.md`.
 
 ## Why an EDA first
 
@@ -62,7 +63,7 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 |---|---|---|---|
 | `iprapid` `*_rights`, `application` | rights | The base: one row per right | Done (ADR 0009): A2 (origin), A4 (patent types), raw applicant location; (ADR 0012) attorney use, technology area, placeholder dates, the state. Stage 1 profile done (U1 to U16) |
 | `iprapid/events` | rights, timeline | **Per right:** the dates of the examination request, acceptance, grant, opposition, assignments, licences and extension of term, and of the lapse, cessation or expiry, giving each right's lifetime. **Per month:** counts (already built). | Done (ADR 0010): A3 (coverage starts and ends), events labelled as events and counted once (F38), trade mark registrations by the date entered. Left: B5 (lifetimes) |
-| `iprapid/party` | rights, firms | Applicants by country, all of them rather than only the first; founding filer against current holder; the attorney firm. Individuals are pseudonymised codes in IP RAPID, so their gender cannot be estimated. | B1 |
+| `iprapid/party` | rights, firms | Applicants by country, all of them rather than only the first; founding filer against current holder; the attorney firm. Individuals are pseudonymised codes in IP RAPID, so their gender cannot be estimated. | Done for `rights` (ADR 0013, U17 to U21): founding applicant, holder changed (not before FY2003 for patents), agent, representation. Left: `firms` and `regions` count by the filer |
 | `iprapid/links` | rights | The route into Australia: foreign priority claimed, PCT entry, divisional | — |
 | `iprapid/classification`, `concordances` | rights, industries | Technology fields and the green-technology flag per right; industry shares for `industries` | B6 (new IPC subclasses) |
 | `iprapid/applicant_year`, `iplord` | firms | Filing histories per ABN. IPLORD is used only to check `applicant_year` before 2020, never added to it. | — |
@@ -100,15 +101,16 @@ it is built. Each lens's repairs come first.
 
 1. **`rights`** (repairs done, ADR 0009, 0010 and 0012: A2, A4, the raw applicant location, the earliest filing date,
    attorney use unknown for provisionals and excluding the applicant itself, the technology area for patents only,
-   placeholder dates, the state from the postcode). **Core variables profiled (U1 to U16).** Then come the
-   attachments: events per right, the parties' countries and founding applicants (B1), links, Google Patents (B4) and
-   the inventors (with their estimated gender).
+   placeholder dates, the state from the postcode). **Core variables profiled (U1 to U16); the parties attached and
+   profiled (B1, ADR 0013, U17 to U21).** Then come the other attachments: events per right, links, Google Patents
+   (B4) and the inventors (with their estimated gender).
 2. **`timeline`** (repairs done, ADR 0010: A3 at both ends, events counted once, trade mark registrations by the date
    entered, the policy dates (B7), the quarterly CPI). Later: wages and the Labour Force Survey, PBS (B9), CER,
    judgments, contracts, and fees once the fee history exists (R3).
-3. **`firms`** (repairs done, ADR 0010 and 0011: A1, A5, A6, B2). Then B1.
-4. **`regions`**: the rules (A4 is done) for small areas (N03: a minimum denominator or pooling, intervals, a per-person
-   rate); the postcode check (S6). Then the Census, CABEE, PHIDU (its concordance is built) and CER attachments.
+3. **`firms`** (repairs done, ADR 0010 and 0011: A1, A5, A6, B2). First, count applications by the filer's ABN
+   (`founder_abn`, B1, ADR 0013).
+4. **`regions`**: count applications by the filer's postcode (`founder_postcode`, ADR 0013); the rules (A4 is done)
+   for small areas (N03: a minimum denominator or pooling, intervals, a per-person rate); the postcode check (S6). Then the Census, CABEE, PHIDU (its concordance is built) and CER attachments.
 5. **`national`** (A8 done, ADR 0010): GII, the OECD flows (the tax regimes' values are kept), and WIPO by origin.
 6. **`industries`**: built new. Needs the IPC map (B6); the workbook parser (B10) is done.
 7. **`institutions`**: built new. Needs a reviewed link from research institutions to ROR identifiers and ABNs, for

@@ -102,6 +102,11 @@ From the `rights` section of `01_univariate.ipynb`. The lens is repaired; the co
   dates are (ADR 0010).
 - **`applicant_state` is left out** for about a third of Australian standard patents filed from FY2024, though the
   postcode is there; for overseas applicants it holds their own states ("wa" can be Washington).
+- **Patents filed before FY2003 have one set of applicants** in `iprapid/party`, first recorded about 16 to 20 years
+  after filing (when records moved between systems), so a change of holder before then is not kept (ADR 0013).
+- **A party keeps its id through changes of address**, with a new row for each: compare founding and current
+  applicants by party id, not by row (most founding trade mark rows are no longer current, though the holder
+  changed for 15.3%).
 - **Times to registration** cluster sharply at about 222 days for trade marks filed since FY2020: a lead, perhaps the
   shortest path through examination and opposition.
 
