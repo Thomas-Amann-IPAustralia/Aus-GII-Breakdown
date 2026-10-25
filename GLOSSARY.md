@@ -10,9 +10,10 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Patent** | Protection for an invention: up to 20 years (25 for some medicines), in return for publishing how it works. |
 | **Standard patent** | The usual patent, examined in full before it is granted. |
 | **Provisional application** | A cheap placeholder that secures a filing date for 12 months. It is never granted itself; the applicant must follow it with a full application. |
-| **Innovation patent** | A cheaper, shorter (8-year) patent for smaller steps. It was phased out: no new ones could be filed after 25 August 2021. |
-| **Petty patent** | The innovation patent's predecessor, a short-term patent for minor inventions, available until 2001. |
-| **Second-tier patent** | A petty or innovation patent: cheaper and shorter than a standard patent, for smaller steps. The lenses count them apart from standard and provisional patents. |
+| **Innovation patent** | A cheaper, shorter (8-year) patent for smaller steps, available from 24 May 2001. It needed an *innovative step*, a lower bar than a standard patent's inventive step, and could have up to five claims. It was granted after a check of its formalities only, without examination of the invention, and could be enforced only once examined and *certified*. So an innovation patent's grant is not comparable with a standard patent's: its grant rate and time to grant say nothing about examination. It was phased out: no new ones could be filed after 25 August 2021, though divisionals and conversions of earlier applications were still allowed, and existing ones run to the end of their terms. |
+| **Certification (of an innovation patent)** | Examination after grant, which an innovation patent needed before its owner could enforce it. Most were never certified. IP RAPID's status "certified" marks the certified ones still in force (512 patents in October 2026). |
+| **Petty patent** | The innovation patent's predecessor: a short-term patent (up to six years) for minor inventions, available from 1979 until the innovation patent replaced it in 2001. |
+| **Second-tier patent** | A petty or innovation patent: cheaper and shorter than a standard patent, for smaller steps. The lenses count them apart from standard and provisional patents. The group spans two regimes with different rules, so a series of it over time breaks in 2001, and an innovation patent's grant is not an examination (see *Innovation patent*). |
 | **Trade mark** | Protection for a brand (a name, logo, sound and so on) used for particular goods or services. It can be renewed indefinitely. |
 | **Design** | Protection for how a product looks (its shape, pattern or ornamentation), for up to 10 years. |
 | **Plant breeder's right (PBR)** | Protection for a new plant variety. |
@@ -26,7 +27,14 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Assignment** | A transfer of ownership of a right, for example when a business sells its patents. |
 | **Extension of term** | Up to five extra years on a patent for a pharmaceutical substance, to make up for time lost waiting for regulatory approval. |
 | **Ceased** | A *granted or registered* right ends early, usually because the owner stopped paying renewal fees (or, for a trade mark, did not renew it). It signals that the owner judged the right no longer worth its cost. In IP RAPID, 99.9% of ceased patents and all ceased trade marks had been granted or registered. |
-| **Attorney or agent** | A professional who files for the applicant. Applicants who file without one are *self-filers*. |
+| **Attorney or agent** | A professional who files for the applicant. Applicants who file without one are *self-filers*. In the `rights` lens, `has_agent` counts only an agent who is not one of the applicants, because IP RAPID's "agent" is the address for service (ADR 0012). |
+| **Founding applicant and current holder** | The founding applicant filed the right; the current holder owns it now, after any sale or transfer. In the `rights` lens, the `founder_*` columns describe who filed and the `applicant_*` columns who holds. |
+| **Representation** | Who deals with IP Australia for the applicant: an *attorney* (in the lens, an agent acting for five or more applicants), *another agent* (often a related company or an in-house department), or no one (*self-filed*). |
+| **Address for service** | The address IP Australia sends a right's papers to. IP RAPID lists it as the right's "agent", but it is often the applicant's own address, so an agent there is not always an attorney. |
+| **Divisional application** | A new application split from an earlier one, for example to pursue part of the invention separately. It keeps the earlier application's filing date. |
+| **Certification, collective and defensive trade marks** | Special kinds of trade mark. A *certification* mark shows that goods or services meet a standard; a *collective* mark is used by the members of an association; a *defensive* mark protects a very well-known mark for goods or services its owner does not trade in. |
+| **Raising the Bar** | The Intellectual Property Laws Amendment (Raising the Bar) Act 2012, which tightened the standards for granting patents. Its main provisions took effect on 15 April 2013, and applicants rushed to file before then. |
+| **Stage of a right** | IP RAPID's 27 statuses grouped into six: *pending* (filed, published, accepted), *in force* (granted, registered, protected, certified), *ended before grant* (lapsed, withdrawn, refused), *ended after grant* (ceased, expired, revoked, cancelled, removed), *other* (converted, linked) and *unknown* (old patents whose outcome was never recorded). |
 | **IPC class** | The International Patent Classification: a code for the technology a patent covers (for example `A61K`, medical preparations). |
 | **WIPO technology field** | One of 35 broad technology areas that WIPO builds from IPC classes. |
 | **Nice class** | One of the 45 classes of goods and services a trade mark is registered for (for example class 35, advertising and business services). |
@@ -87,6 +95,8 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Skew** | Lopsidedness. *Right-skewed* data has a long tail of large values, as with most counts of IP filings, where a few firms file thousands of applications and most file one. |
 | **Outlier** | A value far from the rest. Here this follows the box-plot rule: more than 1.5 times the middle half's width beyond the middle half. An outlier is not necessarily an error. |
 | **Box plot** | A chart of the middle half of the values (the box), the median (the line inside it) and the outliers (the dots). |
+| **Middle half (interquartile range, IQR)** | The range from the 25th to the 75th percentile, which holds the middle 50% of the values. A box plot draws it as the box. |
+| **Bin** | One bar of a histogram: the values within a range (say, 100 to 200 days) counted together. |
 | **KDE** | A smoothed outline of a histogram. |
 | **Log scale** | An axis where each step is ten times the last, so very small and very large values fit on one chart. |
 | **Binning artefact** | A peak or gap that appears only because of how a histogram's bars were drawn. It is checked by redrawing with different bar widths. |
@@ -116,4 +126,6 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Natural experiment** | A change (a new fee or rule, say) that affects some people and not others, for reasons unrelated to their outcomes. Comparing the two groups comes close to an experiment. |
 | **Estimated gender** | The probability that a person is a woman, worked out from their first name and country with a name-gender dictionary (WGND). It is not anyone's stated gender. Added up over many people, it gives an *expected count* of women and men, which is reliable for large groups but not for any one person. |
 | **Lower bound** | A count that is at least this large; the true figure may be higher. |
+| **Placeholder date** | A made-up date standing in for an unknown one, such as 1 January 1970 (the zero of many computer systems) or 1 January 1800. Placeholder dates are emptied, not counted. |
+| **Decided (applications)** | Applications whose outcome is known: granted or registered, or ended. Rates and times are compared only for years in which nearly all applications are decided, because the ones still pending would otherwise be missed. |
 | **Left-truncated (age)** | An age measured from a date that cannot be earlier than some cut-off, so older units all look as young as the cut-off allows. A business first seen through its ABN or GST date in 1999 or 2000 may be much older: ABNs and GST began then. |

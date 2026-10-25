@@ -9,19 +9,19 @@ rights:
   application_number: {label: Application number, kind: id}
   ip_right_type: {label: Type of right, kind: category, note: "patent, trade_mark, design or pbr (plant breeder's right)"}
   ip_right_sub_type: {label: Sub-type of right, kind: category, note: "e.g. standard or innovation patent"}
-  patent_type: {label: Type of patent, kind: category, note: "standard (complete), provisional, or second_tier (innovation and petty); empty for other rights. Count standard patents for headline figures: a provisional is usually followed by a standard application for the same invention"}
+  patent_type: {label: Type of patent, kind: category, note: "standard (complete), provisional, or second_tier (innovation and petty); empty for other rights. Count standard patents for headline figures: a provisional is usually followed by a standard application for the same invention. Second-tier patents span two regimes (petty to 2001, innovation from 24 May 2001 to 25 August 2021), so their series breaks in 2001"}
   status: {label: Current status, kind: category, note: "as IP RAPID records it today; 'unknown' is common for old rights"}
   application_date: {label: Application date, kind: date, note: "the date of filing in Australia; for a PCT application (614,951 standard patents), the date it entered the national phase, a median 909 days after its priority date (ADR 0010)"}
   earliest_filed_date: {label: Earliest filing date, kind: date, note: "as IP RAPID gives it: for a PCT application, the international filing date; for a Madrid trade mark, the international registration's; for a divisional, often the parent's; otherwise the application date. It is later than the application date for 125 rights (120 of them trade marks), a quirk of the register"}
   filing_fy: {label: Financial year of application, kind: year, note: "year ending 30 June, from application_date"}
   priority_date: {label: Priority date, kind: date, note: "the earliest claimed filing anywhere"}
-  registered_date: {label: Date registered or granted, kind: date, note: "empty if never registered"}
-  days_to_registration: {label: Days from application to registration, kind: numeric, unit: days}
-  retired_date: {label: Date the right ended, kind: date, note: "lapsed, expired, ceased, withdrawn or refused"}
+  registered_date: {label: Date registered or granted, kind: date, note: "empty if never registered. For a trade mark registered before 1986 it is the filing date: IP RAPID holds no date entered before then (ADR 0010). One placeholder (1 January 1901) is emptied (ADR 0012). For an innovation patent it is the grant after a check of formalities only, not after examination: examination came later, as certification, and is not this date"}
+  days_to_registration: {label: Days from application to registration, kind: numeric, unit: days, note: "empty for trade marks registered before 1986, whose registration date is their filing date (ADR 0012). Negative for 57 rights, 53 of them trade marks registered after their earliest filing date but before the later date IP RAPID gives as their application date. Recent cohorts are still being examined, so their typical times are understated. For innovation patents it is the time to a grant without examination, so it is not comparable with standard patents' times"}
+  retired_date: {label: Date the right ended, kind: date, note: "lapsed, expired, ceased, withdrawn or refused. The placeholder 1 January 1970 (1,282 rights, all filed from 2013) is emptied (ADR 0012); 14 ceased designs carry a date in 2028 or 2029, apparently the date their term would have ended"}
   applicant_count: {label: Number of applicants, kind: count}
   applicant_type: {label: Applicant type, kind: category, note: "organisation or individual (first applicant)"}
   applicant_country: {label: Applicant country, kind: category, note: "two-letter code (first applicant), as recorded"}
-  applicant_state: {label: Applicant state, kind: category, note: "first applicant, as recorded"}
+  applicant_state: {label: Applicant state, kind: category, note: "first applicant, as recorded; for an Australian applicant with no state recorded, the state of the postcode's postal area (ADR 0012). Overseas applicants' states are kept as recorded, so 'wa' can be Washington"}
   applicant_postcode: {label: Applicant postcode, kind: category, note: "Australian applicants only; cleaned to 4 digits"}
   applicant_postcode_raw: {label: Applicant postcode as recorded, kind: category, note: "first applicant, any country, uncleaned; overseas codes are not located yet"}
   applicant_countries: {label: Countries of all applicants, kind: category, note: "two-letter codes of every current applicant, space-separated; each applicant's address is in iprapid/party, by application number"}
@@ -31,10 +31,22 @@ rights:
   applicant_abn: {label: Applicant ABN, kind: id, note: "the first applicant with an ABN"}
   has_abn: {label: An applicant has an ABN, kind: binary}
   australian_applicant: {label: An applicant is in Australia, kind: binary, note: "true if any current applicant is in Australia; false if at least one has a known country and none is; empty (origin unknown) if no applicant has a country, which is most patents filed before 1980 (ADR 0009)"}
-  has_agent: {label: Filed through an attorney or agent, kind: binary, note: "empty (unknown) for provisional applications: IP RAPID publishes no agents for them (ADR 0010)"}
-  main_class: {label: Main class, kind: category, note: "IPC subclass for patents, Nice class for trade marks, Locarno for designs"}
-  main_area: {label: Technology area, kind: category, note: "WIPO's 35 technology fields (patents)"}
+  has_agent: {label: An attorney or agent acts, kind: binary, note: "an agent who is not one of the right's applicants or owners (by party id, or by name with case and punctuation removed) is on the record at any time. IP RAPID's agent is the address for service, which is often the applicant itself, so its own flag overstated attorney use (ADR 0012). Empty (unknown) for provisional applications: IP RAPID publishes no agents for them (ADR 0010)"}
+  main_class: {label: Main class, kind: category, note: "IPC subclass for patents, Nice class for trade marks, Locarno class for designs, the plant genus or species for plant breeder's rights"}
+  main_area: {label: Technology area, kind: category, note: "WIPO's 35 technology fields, patents only (IP RAPID repeats the Nice or Locarno class here for trade marks and designs, so those are emptied; so is WIPO's '99_unknown', ADR 0012)"}
   class_count: {label: Number of classes, kind: count}
+  founder_count: {label: Number of founding applicants, kind: count, note: "applicants or owners IP RAPID marks as founding (who filed the right); 0 if none is marked (76,382 standard patents and 15,146 designs, almost all old records with no applicant at all, and 952 trade marks). The applicant columns above describe the current holder (ADR 0013)"}
+  founder_type: {label: Founding applicant type, kind: category, note: "organisation or individual: the first founding applicant, as first recorded"}
+  founder_country: {label: Founding applicant country, kind: category, note: "two-letter code of the first founding applicant, as first recorded"}
+  founding_australian: {label: A founding applicant was in Australia, kind: binary, note: "three-valued like australian_applicant, but over the founding applicants, each as first recorded: who filed, not who holds"}
+  founder_postcode: {label: Founding applicant postcode, kind: category, note: "the first founding applicant in Australia, cleaned to 4 digits; for a right filed jointly with an overseas applicant it is still the Australian one's"}
+  founder_state: {label: Founding applicant state, kind: category, note: "the same applicant's state, or its postcode's postal area's where none (or no valid one) is recorded (as for applicant_state, ADR 0012)"}
+  founder_abn: {label: Founding applicant ABN, kind: id, note: "the first founding applicant with an ABN"}
+  holder_changed: {label: Holder differs from the filer, kind: binary, note: "the current applicants or owners are not the founding ones (compared by party id, which IP RAPID keeps through changes of address); empty if either is missing, and for patents filed before FY2003, for which IP RAPID keeps one set of applicants, entered when records moved between systems (a median 21 years after filing), so the founding columns may describe a later holder. A change of name can count as a change"}
+  agent_id: {label: Agent, kind: id, note: "the right's agent who is not one of its applicants and who acts for the most applicants across the register (an IP RAPID party id; individuals are pseudonymised)"}
+  agent_name: {label: Agent name, kind: category, note: "the agent's name if it is an organisation, usually the attorney firm; empty for individuals"}
+  agent_clients: {label: Applicants the agent acts for, kind: count, note: "distinct applicants or owners the agent acts for across the whole register, all years: a firm of attorneys acts for many"}
+  representation: {label: Who represents the applicant, kind: category, note: "attorney (an agent of 5 or more applicants), other_agent (an agent who is not the applicant but acts for fewer: often a related company or in-house), or self (no agent but the applicant). Empty for provisional applications (ADR 0013)"}
 
 firms:
   abn: {label: ABN, kind: id}

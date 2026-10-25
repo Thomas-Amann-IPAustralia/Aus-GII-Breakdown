@@ -227,6 +227,38 @@ def test_rights_origin_is_three_valued_and_patents_are_typed():
             count(*) FILTER (applicants_au + applicants_overseas + applicants_country_unknown <> applicant_count)
                 AS applicants,
             count(*) FILTER ((ip_right_type = 'patent') <> (patent_type IS NOT NULL)) AS patent_type,
-            count(*) FILTER (patent_type = 'provisional' AND has_agent IS NOT NULL) AS provisional_agents
+            count(*) FILTER (patent_type = 'provisional' AND has_agent IS NOT NULL) AS provisional_agents,
+            count(*) FILTER (main_area IS NOT NULL AND ip_right_type <> 'patent') AS main_area,
+            count(*) FILTER (retired_date = DATE '1970-01-01' OR year(registered_date) < 1904) AS placeholders,
+            count(*) FILTER (ip_right_type = 'trade_mark' AND registered_date < DATE '1986-01-01'
+                             AND days_to_registration IS NOT NULL) AS registered_at_filing,
+            count(*) FILTER (applicant_country = 'au' AND applicant_state NOT IN
+                             ('nsw', 'vic', 'qld', 'sa', 'wa', 'tas', 'nt', 'act')) AS australian_states,
+            count(*) FILTER (founder_state NOT IN ('nsw', 'vic', 'qld', 'sa', 'wa', 'tas', 'nt', 'act'))
+                AS founder_states,
+            count(*) FILTER ((patent_type = 'provisional') <> (representation IS NULL)) AS representation,
+            count(*) FILTER ((representation = 'self') <> (has_agent IS NOT DISTINCT FROM false)) AS self_filed,
+            count(*) FILTER (representation = 'attorney' AND agent_clients < 5) AS attorneys,
+            count(*) FILTER (founder_count = 0 AND (holder_changed IS NOT NULL OR founding_australian IS NOT NULL))
+                AS no_founder,
+            count(*) FILTER (founder_postcode IS NOT NULL AND NOT founding_australian) AS founder_postcode,
+            count(*) FILTER (ip_right_type = 'patent' AND filing_fy < 2003 AND holder_changed IS NOT NULL)
+                AS old_patent_holders
         FROM read_parquet('{p}')""").iloc[0]
-    assert bad.to_dict() == {"origin": 0, "applicants": 0, "patent_type": 0, "provisional_agents": 0}
+    assert bad.to_dict() == {
+        "origin": 0,
+        "applicants": 0,
+        "patent_type": 0,
+        "provisional_agents": 0,
+        "main_area": 0,
+        "placeholders": 0,
+        "registered_at_filing": 0,
+        "australian_states": 0,
+        "founder_states": 0,
+        "representation": 0,
+        "self_filed": 0,
+        "attorneys": 0,
+        "no_founder": 0,
+        "founder_postcode": 0,
+        "old_patent_holders": 0,
+    }
