@@ -292,6 +292,15 @@ sources:
     url: https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data
     licence: CC BY 4.0
 
+  - id: google_patents_inventors
+    title: Google Patents Public Data, the inventors of the patent families touching Australia, with estimated gender
+    publisher: Google (BigQuery public dataset patents-public-data); gender estimated with WIPO's World Gender-Name Dictionary
+    tier: 3
+    questions: [1, 2]
+    url: https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data
+    licence: CC BY 4.0
+    coverage: The inventors of the same families as google_patents; names stay in R2, and the repo holds counts per family
+
   - id: reliance_on_science
     title: Reliance on Science, US patents' citations to scientific papers (OpenAlex)
     publisher: Matt Marx and Aaron Fuegi

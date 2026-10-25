@@ -311,9 +311,9 @@ def individual_abns() -> set[str]:
 
 def gcp_credentials() -> Path:
     """The Google Cloud service account key, from `GCP_SERVICE_ACCOUNT_JSON` (the key file's whole contents, as set in
-    the environment's settings), written to a private file outside the repo and named in
-    GOOGLE_APPLICATION_CREDENTIALS for the BigQuery client. The key never goes in the repo."""
-    raw = os.environ.get("GCP_SERVICE_ACCOUNT_JSON")
+    the environment's settings; `GCP_SA_KEY_B64` is accepted too), written to a private file outside the repo and named
+    in GOOGLE_APPLICATION_CREDENTIALS for the BigQuery client. The key never goes in the repo."""
+    raw = os.environ.get("GCP_SERVICE_ACCOUNT_JSON") or os.environ.get("GCP_SA_KEY_B64")
     if not raw:
         raise CorpusError("BigQuery needs GCP_SERVICE_ACCOUNT_JSON (the key file's contents) in the environment")
     if not raw.lstrip().startswith("{"):  # also accept it base64-encoded
