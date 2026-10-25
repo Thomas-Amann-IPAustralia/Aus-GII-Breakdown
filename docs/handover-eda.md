@@ -159,7 +159,7 @@ and BLADE stays ruled out.
 - **Corrected this session (the timeline):** the policy register's note that the Patents Act 1990 brought in 20-year
   patents (it was 16 years until 1 July 1995); and section 1's U5 and U10, whose charts showed survivors' counts and
   registration rates for the years before 1983 (trade marks) and 1986 (designs) without saying so.
-- **Tests (events attachment):** 63 pass; new: the events columns' dates, types and lifetimes, and the survival
+- **Tests (events attachment):** 62 pass; new: the events columns' dates, types and lifetimes, and the survival
   helper against a hand count.
 - **Tests (before):** 60 pass (the lens tests skip unless the lenses are built); lint is clean. New: each hand-set timeline
   start, no batch gaps inside a series, and the new policy event's date.
