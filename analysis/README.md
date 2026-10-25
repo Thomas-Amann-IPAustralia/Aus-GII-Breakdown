@@ -89,6 +89,22 @@ only the result into pandas. The machine has about 15 GB of memory and 4 cores.
   priorities labelled `au`, 5,603 are PCT numbers and 9,965 have other offices' formats (mostly 11 to 15 digits).
   Tell an Australian priority by its number (year first, ten digits), as the N01 check did. No lens reads the column.
 
+## Found in Stage 1 (2026-10-25, ADR 0012)
+
+From the `rights` section of `01_univariate.ipynb`. The lens is repaired; the corpus tables are as published.
+- **IP RAPID's "agent" is the address for service.** `party_role_category = 'applicant_agent'` names an agent for every
+  trade mark, but for Australian applicants it is often the applicant itself (same party id or name). Count an agent
+  as an attorney only if it is not one of the right's applicants.
+- **`main_area` repeats the class.** For trade marks and designs it equals `main_class` (Nice or Locarno), not a WIPO
+  technology field.
+- **`deemed_retired_date` of 1 January 1970** is a placeholder (1,282 rights, all filed from 2013).
+- **Trade mark registration dates before 1986 are filing dates** (98.6% on the day filed), as the events' effective
+  dates are (ADR 0010).
+- **`applicant_state` is left out** for about a third of Australian standard patents filed from FY2024, though the
+  postcode is there; for overseas applicants it holds their own states ("wa" can be Washington).
+- **Times to registration** cluster sharply at about 222 days for trade marks filed since FY2020: a lead, perhaps the
+  shortest path through examination and opposition.
+
 ## Not yet checked
 
 - Whether values mean the same thing across sources (for example, what counts as a "state" or an entity type).

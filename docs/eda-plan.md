@@ -3,9 +3,10 @@
 **Status (2026-10-25):** the groundwork is built, an independent review of the data has been done
 (`docs/Aus-GII-Independent-Review-and-Action-Plan.md`, whose finding IDs are used below), and the last check before
 Stage 1 has repaired the lenses (ADR 0010) and the corpus (ADR 0011). The owner has decided that every dataset goes
-through all three stages (ADR 0007). This plan says what the exploratory data analysis (EDA) covers, where each
-dataset fits, what each part needs before it starts, and which gaps are worth filling. Decisions are in `docs/adr/`
-(0002 to 0011); terms are in `GLOSSARY.md`.
+through all three stages (ADR 0007). Stage 1 has begun: every core variable of the `rights` lens is profiled
+(observations U1 to U16), after five more repairs found on the way (ADR 0012). This plan says what the exploratory
+data analysis (EDA) covers, where each dataset fits, what each part needs before it starts, and which gaps are worth
+filling. Decisions are in `docs/adr/` (0002 to 0012); terms are in `GLOSSARY.md`.
 
 ## Why an EDA first
 
@@ -59,7 +60,7 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 
 | Source (tables) | Lens | What it adds | First |
 |---|---|---|---|
-| `iprapid` `*_rights`, `application` | rights | The base: one row per right | Done (ADR 0009): A2 (origin), A4 (patent types), raw applicant location |
+| `iprapid` `*_rights`, `application` | rights | The base: one row per right | Done (ADR 0009): A2 (origin), A4 (patent types), raw applicant location; (ADR 0012) attorney use, technology area, placeholder dates, the state. Stage 1 profile done (U1 to U16) |
 | `iprapid/events` | rights, timeline | **Per right:** the dates of the examination request, acceptance, grant, opposition, assignments, licences and extension of term, and of the lapse, cessation or expiry, giving each right's lifetime. **Per month:** counts (already built). | Done (ADR 0010): A3 (coverage starts and ends), events labelled as events and counted once (F38), trade mark registrations by the date entered. Left: B5 (lifetimes) |
 | `iprapid/party` | rights, firms | Applicants by country, all of them rather than only the first; founding filer against current holder; the attorney firm. Individuals are pseudonymised codes in IP RAPID, so their gender cannot be estimated. | B1 |
 | `iprapid/links` | rights | The route into Australia: foreign priority claimed, PCT entry, divisional | — |
@@ -97,9 +98,11 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 Stage 1 goes lens by lens. A lens's section can start with its core variables; each attachment adds a sub-section when
 it is built. Each lens's repairs come first.
 
-1. **`rights`** (repairs done, ADR 0009 and 0010: A2, A4, the raw applicant location, the earliest filing date, attorney
-   use unknown for provisionals). Then come the attachments: events per right, the parties' countries and founding
-   applicants (B1), links, Google Patents (B4) and the inventors (with their estimated gender).
+1. **`rights`** (repairs done, ADR 0009, 0010 and 0012: A2, A4, the raw applicant location, the earliest filing date,
+   attorney use unknown for provisionals and excluding the applicant itself, the technology area for patents only,
+   placeholder dates, the state from the postcode). **Core variables profiled (U1 to U16).** Then come the
+   attachments: events per right, the parties' countries and founding applicants (B1), links, Google Patents (B4) and
+   the inventors (with their estimated gender).
 2. **`timeline`** (repairs done, ADR 0010: A3 at both ends, events counted once, trade mark registrations by the date
    entered, the policy dates (B7), the quarterly CPI). Later: wages and the Labour Force Survey, PBS (B9), CER,
    judgments, contracts, and fees once the fee history exists (R3).
@@ -211,13 +214,16 @@ bury the findings. If a notebook passes about 25 MB, it is split by lens (ADR 00
 
 ## Leads already found (to confirm in Stage 1)
 
-Found while building the lenses or in the review; not yet findings.
+Found while building the lenses or in the review. Those confirmed in Stage 1 name their observation in
+`01_univariate.ipynb`.
 
 - 264,024 patent rows are provisional applications, which are never granted. They make up 60% of the Australian patent
   records in the regional counts (FY2017–26). FY2026 has 10,069 of them, against 4,143–5,047 a year in FY2022–FY2025.
   The register does not drop a provisional once a full application claims it (N01, refuted in ADR 0010: 99.9% to 100%
   of claimed provisionals are present in every year from 2000); the jump is real, from more applicants (5,165 against
-  3,361) and above all individuals (5,399 provisionals against 1,926). Why is the lead.
+  3,361) and above all individuals (5,399 provisionals against 1,926). Why is the lead. **Confirmed in Stage 1 (U8):**
+  it starts in early 2025, peaks in March and April 2026 and eases by September 2026; distinct ABNs are flat, and it
+  is both broad (single-filing individuals 1,538 to 2,507) and concentrated (54 individuals filed 10 or more each).
 - 79.9% of patent rights have no Australian postcode:
   - 50.3% have an overseas first applicant;
   - 29.5% have no recorded country, almost all filed before 1990;
@@ -225,16 +231,18 @@ Found while building the lenses or in the review; not yet findings.
 
   Fixed (ADR 0009): the unknowns are now "origin unknown" in every lens, not overseas (F04).
 - 50,711 patents and 11,143 designs have no application date, so the timeline cannot place them. Almost all are of
-  unknown origin (50,444 and 11,126), and only 203 and 15 were ever registered.
+  unknown origin (50,444 and 11,126), and only 203 and 15 were ever registered. **Confirmed (U3).**
 - "Lapsed" and "ceased" are different. Lapsed rights were never granted or registered: 0.0% of lapsed patents, trade
   marks and designs. Ceased rights were: 99.9% of patents, 100% of trade marks and 92.1% of designs. A lapse is an
-  application abandoned; a cessation is a granted right let go.
+  application abandoned; a cessation is a granted right let go. **Confirmed (U9).**
 - Registration dates as early as 1901-01-01, and 1,497 rights (1,493 of them trade marks) registered before they were
-  applied for: likely placeholder dates.
+  applied for: likely placeholder dates. **Fixed (ADR 0012, U2 and U11):** the 1901 date is emptied; most of the 1,497
+  were trade marks registered before 1986, whose registration date is their filing date, and 57 negative times
+  remain.
 - Patent applications per year show no drop-off in the latest years (FY2025: 35,065; FY2026: 41,257), and the counts
   match IP Australia's published 2025 figures. That is because, for a PCT filing, `application_date` is the date it
   entered Australia's national phase, about 30 months after priority (N06, answered in ADR 0010);
-  `earliest_filed_date` is the international filing date.
+  `earliest_filed_date` is the international filing date. **Confirmed (U6)** for every type of right.
 - Fixed (ADR 0010): several timeline series showed decades of zeros between a stray early record and the start of
   continuous records (trade mark oppositions read 0 for 777 months, to October 1973; F38), and some ended on a cliff
   because the register records them late (trade mark cessations, 0 from May 2026). Trade mark registrations were

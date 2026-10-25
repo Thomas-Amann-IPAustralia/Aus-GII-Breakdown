@@ -2,20 +2,37 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**Status (2026-10-25):** the last check before Stage 1 is done, and Stage 1 can start. The owner asked for an in-depth
-review of the repository: every gap that can be easily filled filled, and every transformation, consolidation and
-synthesis explainable, defensible and technically sound. It is recorded in two ADRs:
-- ADR 0010, the lenses (version 2): the review's A1, A3, A5 to A8 and the lens half of B2, N01 and N06 settled, and
-  the problems this check found;
-- ADR 0011, the corpus: `corpus reprocess`, and repairs to 11 loaders (B2, B7, B10 to B12, the corpus half of A1, F02).
+**Status (2026-10-25, later):** Stage 1 has begun. The `rights` section of `01_univariate.ipynb` profiles every
+core variable of the lens, with observations U1 to U16 and a summary table (1.9). Profiling found five more problems,
+repaired in the lens before the profiles (ADR 0012): IP RAPID's "agent" is the address for service, often the
+applicant itself, so attorney use was overstated (Australian trade marks 57.02%, not 100%); `main_area` repeated the
+Nice or Locarno class for trade marks and designs; a 1 January 1970 retirement placeholder (1,282 rights) and a
+registration before 1904; trade marks registered before 1986 are dated at filing, so their time to registration
+measured nothing; and IP RAPID left out the state for about a third of Australian standard patents filed from FY2024,
+now taken from the postcode.
 
-Earlier in the same week: the independent review (`docs/Aus-GII-Independent-Review-and-Action-Plan.md`, whose IDs A1–A8,
-B1–B12, F01–F42 and N01–N07 are used throughout), the owner's decision that every dataset goes through all three stages
-(ADR 0007), `abs_prices` and `abs_labour`, the inventors (ADR 0008) and the `rights` repairs (ADR 0009). TableBuilder is
-on hold, and BLADE stays ruled out.
+Earlier the same day: the last check before Stage 1 (ADR 0010, the lenses; ADR 0011, the corpus), after the
+independent review (`docs/Aus-GII-Independent-Review-and-Action-Plan.md`, whose IDs A1–A8, B1–B12, F01–F42 and
+N01–N07 are used throughout), the owner's decision that every dataset goes through all three stages (ADR 0007),
+`abs_prices` and `abs_labour`, the inventors (ADR 0008) and the `rights` repairs (ADR 0009). TableBuilder is on hold,
+and BLADE stays ruled out.
 
 ## Where things stand
 
+- **Stage 1, `rights` (done for its core variables).** What it found (all descriptive):
+  - about nine in ten standard patents come from overseas (91.3% in FY2017 to FY2026; 7.9% to 12.4% Australian in
+    the years shown since FY1990); the United States alone files 43.5%;
+  - provisional applications doubled in FY2026 (10,069), from individuals without ABNs: distinct ABNs stayed flat at
+    1,361, single-filing individuals rose from 1,538 to 2,507, and 54 individuals filed 10 or more each (one filed
+    375). Monthly filings peaked in March and April 2026 and eased by September 2026;
+  - Australians file without an attorney far more often than overseas applicants (trade marks 57.02% with one,
+    against 96.27%); 12% to 22% of Australian organisations' rights carry no ABN;
+  - registration takes a median 980 days for standard patents and 223 for trade marks (filed FY2010 to FY2019), with
+    a sharp peak at about 222 days for trade marks: a lead;
+  - the standard patent grant rate fell from 75.5% (FY2000) to 54.4% (FY2008) and recovered to 65% to 69%;
+  - "unknown" status is 408,957 old patents (FY1904 to FY1999) whose outcome was never recorded; only 68.9% of
+    expired patents have a grant date;
+  - design origin is often unrecorded (4.0% to 6.3% unknown since FY2018, and rising), so design shares need care.
 - **Five lenses are built** (`analysis/eda/build.py`), in under a minute:
   - `rights`: 4,368,006 rows, 29 columns;
   - `firms`: 398,450 rows, 37 columns;
@@ -64,40 +81,44 @@ on hold, and BLADE stays ruled out.
 
 ## Next, in order
 
-1. **Start the `rights` section of Stage 1** in `01_univariate.ipynb`. Its checklists name the repaired columns. Lead
-   with standard patents; show provisional and second-tier patents separately; give Australian shares only among
-   rights of known origin, and only from the 1990s for patents. Add its attachments (events per right, parties,
-   links, Google Patents (B4), the inventors) as sub-sections as each is built.
+1. **The `rights` attachments, as sub-sections of 1.8,** each built into the lens first: the events per right
+   (lifetimes, B5), the parties (every applicant's country, founding against current holder, the attorney firm: B1),
+   the links (with the PCT country check), Google Patents (B4) and the inventors (gender estimates checked country by
+   country against WIPO's published shares, above all China and Korea).
 2. **The `timeline` section:** each series from the first month the lens gives it; the CPI at quarterly resolution;
-   the 16 policy events one at a time (descriptive only: Stage 2 compares before and after).
+   the 16 policy events one at a time (descriptive only: Stage 2 compares before and after). The rushes before
+   Raising the Bar (1,856 applications on 12 April 2013) and the innovation patent's closure belong here.
 3. **`firms`, then `regions` (the B3 rules for small areas first: a minimum denominator or pooling, intervals, a
    per-person rate), then `national`,** in the order the plan gives.
-4. **The inventors, when `google_patents` attaches to `rights` (B4):** check the gender estimates country by country
-   against WIPO's published shares of women inventors, above all China and Korea.
-5. **The plan's "high value, little work" additions, with the lens each serves:** the RBA's cash rate and exchange
+4. **The plan's "high value, little work" additions, with the lens each serves:** the RBA's cash rate and exchange
    rates and the ABS national accounts (timeline), the ATO's statistics by postcode (regions), and IP Australia's own
-   published figures as a benchmark.
+   published figures as a benchmark (which would also test the provisional rise, U8).
 
 ## Open items
 
 1. Check in Stage 1:
-   - placeholder dates (1800, 1901 and 1970);
-   - the 50,711 patents and 11,143 designs with no application date (almost all of unknown origin; only 203 and 15
-     were ever registered);
-   - why provisional applications jumped in FY2026 (more applicants, above all individuals);
-   - IP RAPID's `links.linked_application_country`, which labels every PCT number `au` (`analysis/README.md`).
-2. AusTender: amendments after August 2019 to bulk-file contracts that had ended by then are not in the corpus. A
+   - the 1800-01-01 placeholder in IP RAPID's events, links and parties (the 1901 and 1970 dates in `rights` are
+     repaired, ADR 0012);
+   - IP RAPID's `links.linked_application_country`, which labels every PCT number `au` (`analysis/README.md`), with
+     the links attachment;
+   - the 222-day peak in trade mark registration times (U11), against IP Australia's published process times.
+2. The attorney flag (ADR 0012) may still count some agents who are not attorneys: counting only agents of five or
+   more applicants gives 49.52% for Australian trade marks against 57.02%. The parties attachment (B1) can name the
+   attorney firms and settle it.
+3. AusTender: amendments after August 2019 to bulk-file contracts that had ended by then are not in the corpus. A
    sample suggests they are under 1% of the contracts' value; `austender._harvest_by_id` can fetch them in about a day.
-3. Fee history (R3) and the PBS monthly report with Section 100 (B9) are the biggest data gaps for the later stages.
-4. The `coalesce` in `iprapid.py` that caused the origin problem (ADR 0009) is left until IP RAPID is next rebuilt; no
+4. Fee history (R3) and the PBS monthly report with Section 100 (B9) are the biggest data gaps for the later stages.
+5. The `coalesce` in `iprapid.py` that caused the origin problem (ADR 0009) is left until IP RAPID is next rebuilt; no
    lens reads that column.
 
 ## For the owner
 
-Nothing blocks Stage 1. Only you can do these:
+Nothing blocks the rest of Stage 1. Only you can do these:
 1. **Confirm N01 and N06 as settled** (ADR 0010): both are descriptive facts about the register, not research
    findings, but they close two of the review's open questions.
-2. **TableBuilder, only if a question needs owner-managers by sex or Indigenous status for each postal area:** register
+2. **The provisional rise (U8), if you can ask IP Australia:** whether a change in filing (a new channel, a fee, or
+   drafting tools) explains individuals' provisionals doubling in FY2026. The data show when and who, not why.
+3. **TableBuilder, only if a question needs owner-managers by sex or Indigenous status for each postal area:** register
    as a private user, and check that the free Basic version has the variables (`docs/tablebuilder-owner-managers.md`).
 
 ## Conventions to keep
@@ -106,4 +127,6 @@ Nothing blocks Stage 1. Only you can do these:
 - Never print raw rows. Aggregate in DuckDB.
 - After a parser fix, `corpus reprocess <source>` rebuilds its tables from the raw files it holds, keeping the data's
   vintage (ADR 0011).
-- Next free ADR: 0012.
+- The `rights` section's cells are long; keep each new sub-section to a few cells, and the notebook under about
+  25 MB (it is 4.0 MB now; ADR 0002 says when to split it).
+- Next free ADR: 0013.
