@@ -110,6 +110,26 @@ From the `rights` section of `01_univariate.ipynb`. The lens is repaired; the co
 - **Times to registration** cluster sharply at about 222 days for trade marks filed since FY2020: a lead, perhaps the
   shortest path through examination and opposition.
 
+## Found in the timeline's Stage 1 profile (2026-10-25, ADR 0014)
+
+From section 5 of `01_univariate.ipynb`. The timeline lens is repaired; the corpus tables are as published.
+- **Old records are survivors.** IP RAPID holds only the trade marks filed before 1983, designs filed before 1986 and
+  provisional applications filed before September 1985 that were still on the register when its records were
+  computerised: 2% to 5% of trade marks filed in 1981 were never registered, against 51% to 59% from 1983. Counts of
+  those rights by year of filing understate filings; the rows themselves are real.
+- **Patent outcomes start with patents filed in 1979.** 68.5% of standard patents filed in 1979 have a grant date,
+  against 1.0% to 1.9% of those filed in 1976 to 1978.
+- **Some events are dated in batches.** In `iprapid/events`, patent cessations are dated on 0 to 3 days a month to
+  March 1995 (29.8% of months from September 1986 empty), expiries to December 1994, patent lapses to 1988 and design
+  lapses to 1993. Weekly or daily since.
+- **Pauses and backlogs inside complete records:** trade mark registrations (0 in January 1996, 4,021 in March, when
+  the Trade Marks Act 1995 commenced), patent grants (113 in June 1991; 248 then 3,373 in October and November 1998)
+  and patent cessations (82 in December 2006; 7 in February 2020, 2,468 in March).
+- **The 1995 term change shows in the expiries:** almost none from July 1995 to June 1999, when the standard patent
+  term rose from 16 to 20 years for patents still in force. The policy register now holds it.
+- **The CPI's base** is the month of September 2025 (= 100); the quarterly index averages its three months, so the
+  September quarter 2025 is 99.73.
+
 ## Not yet checked
 
 - Whether values mean the same thing across sources (for example, what counts as a "state" or an entity type).

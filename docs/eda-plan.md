@@ -5,9 +5,10 @@
 Stage 1 has repaired the lenses (ADR 0010) and the corpus (ADR 0011). The owner has decided that every dataset goes
 through all three stages (ADR 0007). Stage 1 has begun: every core variable of the `rights` lens is profiled
 (observations U1 to U16), after five more repairs found on the way (ADR 0012), and so is its first attachment, the
-parties (U17 to U21, ADR 0013). This plan says what the exploratory
+parties (U17 to U21, ADR 0013). Every column of the `timeline` lens is profiled too (U22 to U30), after one more repair
+(ADR 0014). This plan says what the exploratory
 data analysis (EDA) covers, where each dataset fits, what each part needs before it starts, and which gaps are worth
-filling. Decisions are in `docs/adr/` (0002 to 0013); terms are in `GLOSSARY.md`.
+filling. Decisions are in `docs/adr/` (0002 to 0014); terms are in `GLOSSARY.md`.
 
 ## Why an EDA first
 
@@ -62,7 +63,7 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 | Source (tables) | Lens | What it adds | First |
 |---|---|---|---|
 | `iprapid` `*_rights`, `application` | rights | The base: one row per right | Done (ADR 0009): A2 (origin), A4 (patent types), raw applicant location; (ADR 0012) attorney use, technology area, placeholder dates, the state. Stage 1 profile done (U1 to U16) |
-| `iprapid/events` | rights, timeline | **Per right:** the dates of the examination request, acceptance, grant, opposition, assignments, licences and extension of term, and of the lapse, cessation or expiry, giving each right's lifetime. **Per month:** counts (already built). | Done (ADR 0010): A3 (coverage starts and ends), events labelled as events and counted once (F38), trade mark registrations by the date entered. Left: B5 (lifetimes) |
+| `iprapid/events` | rights, timeline | **Per right:** the dates of the examination request, acceptance, grant, opposition, assignments, licences and extension of term, and of the lapse, cessation or expiry, giving each right's lifetime. **Per month:** counts (already built). | Done (ADR 0010): A3 (coverage starts and ends), events labelled as events and counted once (F38), trade mark registrations by the date entered; (ADR 0014) starts past partial and batch-dated records. Timeline profile done (U22 to U30). Left: B5 (lifetimes) |
 | `iprapid/party` | rights, firms | Applicants by country, all of them rather than only the first; founding filer against current holder; the attorney firm. Individuals are pseudonymised codes in IP RAPID, so their gender cannot be estimated. | Done for `rights` (ADR 0013, U17 to U21): founding applicant, holder changed (not before FY2003 for patents), agent, representation. Left: `firms` and `regions` count by the filer |
 | `iprapid/links` | rights | The route into Australia: foreign priority claimed, PCT entry, divisional | — |
 | `iprapid/classification`, `concordances` | rights, industries | Technology fields and the green-technology flag per right; industry shares for `industries` | B6 (new IPC subclasses) |
@@ -89,7 +90,7 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 | `google_patents`, `google_patents_inventors` | rights, firms, institutions | Per Australian application: family size, offices, US grant, forward citations (with a follow-up flag); inventors by country and their estimated gender (expected counts, from `wgnd`) | B4 |
 | `openalex`, `openalex_works`, `reliance_on_science` | institutions, rights | Output, citations and patent-cited works per institution; science cited by Australian-linked patent families | F37 test |
 | `arc_grants`, `nhmrc_grants` | institutions, timeline | Grants and funding per institution and year (ARC names matched to ROR) | Label round years (F41) |
-| `policy_events` | timeline | Policy changes per month; the policy register is reference | Done (ADR 0011): B7 (every date checked against the Federal Register; 16 events) |
+| `policy_events` | timeline | Policy changes per month; the policy register is reference | Done (ADR 0011): B7 (every date checked against the Federal Register); (ADR 0014) the 1995 term change added: 17 events. Profiled one at a time (U28) |
 | `ipa_fees` | timeline, rights | The fee in force each month, and fees per right, once the fee history exists | R3 |
 | `wgnd` | reference | The name-gender dictionary behind `google_patents_inventors` | — |
 | `evidence`, `wine_gi` | reference | The literature register; the GI list (for certification marks) | — |
@@ -105,8 +106,9 @@ it is built. Each lens's repairs come first.
    profiled (B1, ADR 0013, U17 to U21).** Then come the other attachments: events per right, links, Google Patents
    (B4) and the inventors (with their estimated gender).
 2. **`timeline`** (repairs done, ADR 0010: A3 at both ends, events counted once, trade mark registrations by the date
-   entered, the policy dates (B7), the quarterly CPI). Later: wages and the Labour Force Survey, PBS (B9), CER,
-   judgments, contracts, and fees once the fee history exists (R3).
+   entered, the policy dates (B7), the quarterly CPI; ADR 0014: 15 series start where their records are complete, and
+   the 1995 term change). **Every column profiled (U22 to U30).** Later attachments, each a sub-section of section 5:
+   wages and the Labour Force Survey, PBS (B9), CER, judgments, contracts, and fees once the fee history exists (R3).
 3. **`firms`** (repairs done, ADR 0010 and 0011: A1, A5, A6, B2). First, count applications by the filer's ABN
    (`founder_abn`, B1, ADR 0013).
 4. **`regions`**: count applications by the filer's postcode (`founder_postcode`, ADR 0013); the rules (A4 is done)
@@ -263,8 +265,13 @@ Found while building the lenses or in the review. Those confirmed in Stage 1 nam
   - the busiest month for standard patent applications is April 2013 (1,018 from Australian applicants, 5,407 from
     overseas), when the Raising the Bar reforms took effect;
   - second-tier patent applications peak at 2,789 in August 2021, the month innovation patents closed.
+
+  **Confirmed in Stage 1 (U28):** 4.39 and 2.66 times the year before's average month, and 4.31 times; with steps (the
+  1995 term change, the 1999 extension regime, the innovation patent's introduction, the Designs Act 2003) and pauses
+  at commencement (the Patents Act 1990 and the Trade Marks Act 1995) as the other candidates for Stage 2.
 - Three design registrations are dated 1 January 1970, a placeholder date. The series now starts in June 1973, where
-  its records become continuous (ADR 0010).
+  its records become continuous (ADR 0010). **Superseded (ADR 0014, U23):** design registrations start in January
+  1988, and trade mark, design and provisional applications where IP RAPID stops holding only survivors.
 
 ## After Stage 3
 
