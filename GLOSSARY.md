@@ -19,6 +19,9 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Application, registration, grant** | A right starts as an application. If it passes examination it is *registered* (trade marks, designs) or *granted* (patents). |
 | **Lapse** | An *application* ends before it is granted or registered, for example because the applicant stopped paying the fees to keep it going or did not respond to examination. In IP RAPID, no lapsed right was ever granted or registered. |
 | **Priority date** | The earliest filing date the application can claim, which may be from an earlier filing overseas. |
+| **PCT national phase** | The step at which an international (PCT) patent application enters a country, usually about 30 months after its priority date. In IP RAPID, a PCT application's *application date* is the date it entered Australia's national phase, and its *earliest filing date* is the international filing date. |
+| **Registration date of a trade mark** | A trade mark is registered "as from" its filing date, so IP RAPID's effective date for a registration is the filing date. The date the registration was actually entered is its *declared date*, which the timeline uses to count registrations by month. IP RAPID records it from 1986, so that series starts then. |
+| **Grace period** | Extra time after a renewal fee falls due during which the owner can still pay (six months for trade marks and designs). A right ceases on the record only after its grace period ends, so the latest months' cessations are not yet recorded. |
 | **Opposition** | A formal challenge by a third party to an application (or, for trade marks, a request to remove a mark that is not being used). |
 | **Assignment** | A transfer of ownership of a right, for example when a business sells its patents. |
 | **Extension of term** | Up to five extra years on a patent for a pharmaceutical substance, to make up for time lost waiting for regulatory approval. |
@@ -46,9 +49,13 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **GST-registered** | Registered for the Goods and Services Tax. This is compulsory at a turnover of $75,000 or more, so it is used as a rough marker of an actively trading business. |
 | **R&D Tax Incentive (RDTI)** | A tax offset for research and development. The ATO publishes who claimed it and how much they spent. |
 | **AusTender** | The register of Australian Government contracts. |
+| **Contract notice and amendment** | AusTender publishes a notice for each contract, and another each time it is amended (CN123-A1, CN123-A2 and so on). An amendment's value is the contract's new total, not the change, so a contract's value is that of its latest notice; adding up every notice counts a contract once per amendment. |
+| **ACN** | Australian Company Number: the identifier ASIC gives a company. The ABR records each company's ACN beside its ABN, which links the two. |
 | **Tax transparency reports** | The ATO's published income and tax of large entities: total income of $100m or more ($200m for Australian-owned private companies until 2021-22). |
 | **Postal area (POA)** | The ABS's version of a postcode area, which can be matched to Census and other data. In the `regions` lens, one row is one postal area. |
 | **SA2** | Statistical Area Level 2: an ABS area of roughly 3,000 to 25,000 people. |
+| **SA3, SA4** | Larger ABS areas built from SA2s: SA3s have roughly 30,000 to 130,000 people, and SA4s are larger regions (for example, Central Coast). |
+| **Population Health Area (PHA)** | PHIDU's area for health statistics: one SA2, or a group of small SA2s, so that counts are large enough to publish. The `phidu/pha_sa2` table lists each PHA's SA2s. |
 | **Remoteness area** | The ABS's five classes of remoteness, from Major Cities to Very Remote. |
 | **SEIFA** | The ABS's Socio-Economic Indexes for Areas, built from the Census. There are four indexes:<br>- **IRSAD**: advantage and disadvantage combined.<br>- **IRSD**: disadvantage only.<br>- **IER**: economic resources.<br>- **IEO**: education and occupation.<br>A *decile* of 1 is the most disadvantaged tenth of areas, and 10 the most advantaged. |
 | **Financial year (FY)** | July to June, named by the year it ends: FY2026 is July 2025 to June 2026. |
@@ -68,6 +75,10 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Corpus** | All the data collected for this project (`docs/catalogue.md`). |
 | **Lens** | One analysis-ready table with one row per thing being studied: a right, a firm, a place, an industry in a year, a research institution in a year, a country in a year, or a month in Australia's history (the *timeline*). Every dataset is attached to at least one lens, so that it can be compared with the others. The EDA works one lens at a time. |
 | **Attachment** | Bringing a dataset into a lens, by joining it on the lens's key or by summing or averaging it up to the lens's unit (for example, Census counts by postal area into `regions`). |
+| **Coverage (of a series)** | The months for which a timeline series is fully recorded. Before a series' records become continuous, and in final months the register is still recording, the series is left empty rather than shown as 0, so that "not recorded" is not read as "none happened". |
+| **Event count** | A count of things the register records happening (grants, lapses, oppositions and so on), each counted once. A right can have more than one event of a kind (several oppositions, say), so event counts are not counts of rights. |
+| **Observation status** | A publisher's flag on a single value: *estimated*, *provisional* (likely to be revised), *definition differs* (from the standard one) or a *time series break* (a change of method, so values either side are not directly comparable). The national lens keeps the OECD's in `status`. |
+| **Reprocessing** | Rebuilding a corpus table from the raw files already stored, without fetching anything new, so that a parser fix changes the table but not the date of the data (`corpus reprocess`). |
 | **Unit of analysis** | What one row stands for. Counting or averaging only makes sense once this is clear. |
 | **EDA** | Exploratory data analysis: getting to know the data before trying to answer questions with it. |
 | **Univariate, bivariate, multivariate** | Looking at one variable at a time, at two together, or at several together. These are the EDA's three stages. |
@@ -105,3 +116,4 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Natural experiment** | A change (a new fee or rule, say) that affects some people and not others, for reasons unrelated to their outcomes. Comparing the two groups comes close to an experiment. |
 | **Estimated gender** | The probability that a person is a woman, worked out from their first name and country with a name-gender dictionary (WGND). It is not anyone's stated gender. Added up over many people, it gives an *expected count* of women and men, which is reliable for large groups but not for any one person. |
 | **Lower bound** | A count that is at least this large; the true figure may be higher. |
+| **Left-truncated (age)** | An age measured from a date that cannot be earlier than some cut-off, so older units all look as young as the cut-off allows. A business first seen through its ABN or GST date in 1999 or 2000 may be much older: ABNs and GST began then. |

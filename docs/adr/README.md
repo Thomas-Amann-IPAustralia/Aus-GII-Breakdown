@@ -15,5 +15,7 @@ the owner's, or Claude's, which the owner can overturn.
 | [0007](0007-every-dataset-through-every-stage.md) | Every dataset goes through all three stages: each table attached to a lens, two new lenses (industries, institutions), repairs before each table's Stage 1 section | 2026-10-25 | Owner (the principle and the two lenses), Claude (how) |
 | [0008](0008-inventors-from-one-publication-per-family.md) | Count a patent family's inventors from one representative publication, borrowing countries from the rest of the family, because counting every name nearly doubled them | 2026-10-25 | Claude |
 | [0009](0009-rights-lens-repairs.md) | Repair the rights lens: applicant origin has three values (unknown is not overseas), patents are split into standard, provisional and second-tier everywhere, and raw applicant locations are kept | 2026-10-25 | Claude (owner asked for the repairs) |
+| [0010](0010-lens-definitions-v2.md) | Lens definitions, version 2: contracts counted once, R&D from the latest report, age labelled honestly, census zeros empty, OECD R&D beside the World Bank's, and a timeline without false zeros at either end, with trade mark registrations by the date entered | 2026-10-25 | Claude (owner asked for the last check before Stage 1) |
+| [0011](0011-corpus-repairs-and-reprocessing.md) | Corpus repairs: every published value kept, one row per key, AusTender's amendments in order, every policy date checked against the Federal Register, and `corpus reprocess` to rebuild from stored raw files | 2026-10-25 | Claude (owner asked for the last check before Stage 1) |
 
-Next free number: 0010.
+Next free number: 0012.

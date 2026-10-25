@@ -1,10 +1,11 @@
 # EDA plan: getting to know the data before answering the questions
 
-**Status (2026-10-25):** the groundwork is built, and an independent review of the data has been done
-(`docs/Aus-GII-Independent-Review-and-Action-Plan.md`, whose finding IDs are used below). The owner has decided that
-every dataset goes through all three stages (ADR 0007). This plan says what the exploratory data analysis (EDA) covers,
-where each dataset fits, what each part needs before it starts, and which gaps are worth filling. Decisions are in
-`docs/adr/` (0002 to 0007); terms are in `GLOSSARY.md`.
+**Status (2026-10-25):** the groundwork is built, an independent review of the data has been done
+(`docs/Aus-GII-Independent-Review-and-Action-Plan.md`, whose finding IDs are used below), and the last check before
+Stage 1 has repaired the lenses (ADR 0010) and the corpus (ADR 0011). The owner has decided that every dataset goes
+through all three stages (ADR 0007). This plan says what the exploratory data analysis (EDA) covers, where each
+dataset fits, what each part needs before it starts, and which gaps are worth filling. Decisions are in `docs/adr/`
+(0002 to 0011); terms are in `GLOSSARY.md`.
 
 ## Why an EDA first
 
@@ -37,9 +38,9 @@ All lenses are built by `uv run python -m eda.build`, and every column is descri
 | Lens | One row per | Status | Main questions |
 |---|---|---|---|
 | `rights` | IP right | Built: 4,368,006 rows | Q1, Q2 |
-| `firms` | ABN in any IP, R&D, procurement or tax source | Built: 391,983 | Q2, Q3, Q4 |
+| `firms` | ABN in any IP, R&D, procurement or tax source | Built: 398,450 | Q2, Q3, Q4 |
 | `regions` | Postal area | Built: 2,641 | Q2, Q4 |
-| `national` | Country, year and indicator | Built: 127,309 | Q1, Q4 (context) |
+| `national` | Country, year and indicator | Built: 135,140 | Q1, Q4 (context) |
 | `timeline` | Month, for Australia (Jan 1904 to Sep 2026) | Built: 1,473 | Q1, Q4, Q5 |
 | `industries` | ANZSIC division and financial year | Planned (ADR 0007; confirmed by the owner) | Q2, Q3, Q4 |
 | `institutions` | Australian research institution (ROR) and year | Planned (ADR 0007; confirmed by the owner) | Q1, Q2, Q3 |
@@ -59,34 +60,34 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 | Source (tables) | Lens | What it adds | First |
 |---|---|---|---|
 | `iprapid` `*_rights`, `application` | rights | The base: one row per right | Done (ADR 0009): A2 (origin), A4 (patent types), raw applicant location |
-| `iprapid/events` | rights, timeline | **Per right:** the dates of the examination request, acceptance, grant, opposition, assignments, licences and extension of term, and of the lapse, cessation or expiry, giving each right's lifetime. **Per month:** counts (already built). | A3 (coverage starts); label events as events (F38); B5 (lifetimes) |
+| `iprapid/events` | rights, timeline | **Per right:** the dates of the examination request, acceptance, grant, opposition, assignments, licences and extension of term, and of the lapse, cessation or expiry, giving each right's lifetime. **Per month:** counts (already built). | Done (ADR 0010): A3 (coverage starts and ends), events labelled as events and counted once (F38), trade mark registrations by the date entered. Left: B5 (lifetimes) |
 | `iprapid/party` | rights, firms | Applicants by country, all of them rather than only the first; founding filer against current holder; the attorney firm. Individuals are pseudonymised codes in IP RAPID, so their gender cannot be estimated. | B1 |
 | `iprapid/links` | rights | The route into Australia: foreign priority claimed, PCT entry, divisional | — |
 | `iprapid/classification`, `concordances` | rights, industries | Technology fields and the green-technology flag per right; industry shares for `industries` | B6 (new IPC subclasses) |
 | `iprapid/applicant_year`, `iplord` | firms | Filing histories per ABN. IPLORD is used only to check `applicant_year` before 2020, never added to it. | — |
 | `iprapid/description` | text | Titles and goods and services descriptions; variables derived only if wanted | — |
-| `linkage/abn_spine`, `abr`, `asic` | firms, regions | Firm attributes; business counts by postal area and entity type | A6 (age); B2 (missing ABNs) |
-| `rdti` | firms, regions | R&D claims per ABN and year | A5 |
-| `ato_ctt` | firms | Income and tax of large entities | — |
-| `austender` | firms, regions, timeline | Contracts and their value per ABN (one row per contract), per supplier postal area, per month | A1 |
+| `linkage/abn_spine`, `abr`, `asic` | firms, regions | Firm attributes; business counts by postal area and entity type | Done (ADR 0010, 0011): A6 (age basis and truncation); B2 (every applicant's ABN) |
+| `rdti` | firms, regions | R&D claims per ABN and year | Done: A5 (latest report, amended); ABNs from ACNs (ADR 0011) |
+| `ato_ctt` | firms | Income and tax of large entities | Done: latest report per year |
+| `austender` | firms, regions, timeline | Contracts and their value per ABN (one row per contract), per supplier postal area, per month | Done (ADR 0011): A1, with amendments in order. Limit: amendments from September 2019 to April 2023 to contracts published before July 2019 are missing |
 | `abs_census` (14 tables) | regions | Every table, as shares of its total: education, occupation, industry, labour force, health, care, volunteering, mobility | Totals or parts, not both |
 | `abs_regions` (Data by Region, SEIFA, geography) | regions | Regional indicators through SA2-to-postal-area population weights; SEIFA (built); geography as reference | — |
-| `abs_cabee` | regions, industries, national | Businesses by employment and turnover size; entries, exits and survival | Weights from `poa_sa2` |
-| `phidu` | regions | Health and social indicators through a concordance from PHIDU's areas (PHAs) to SA2s and postal areas | B12 |
-| `cer` | regions, timeline | Solar, battery and other small-scale installations per postal area, and nationally per month | B11 |
+| `abs_cabee` | regions, industries, national | Businesses by employment and turnover size; entries, exits and survival | Survival rates by size repaired (ADR 0011); weights from `poa_sa2` |
+| `phidu` | regions | Health and social indicators through a concordance from PHIDU's areas (PHAs) to SA2s and postal areas | Done (ADR 0011): B12 (`phidu/pha_sa2`), sub-indicators and area types |
+| `cer` | regions, timeline | Solar, battery and other small-scale installations per postal area, and nationally per month | Done (ADR 0011): B11 (one format, one row per key) |
 | `abs_bcs` | industries | Innovation, barriers, finance and IP methods by industry and firm size (aggregate) | Status flags (S5) |
-| `abs_rd_vc` | industries, national | Business R&D by industry; R&D by sector; venture capital to 2019 | B10 (workbook parser) |
+| `abs_rd_vc` | industries, national | Business R&D by industry; R&D by sector; venture capital to 2019 | Done (ADR 0011): B10 (every cell, units, sheet rows) |
 | `bcarr_creative` | industries, national | Cultural and creative activity by industry and domain | — |
 | `abs_labour` (added 2026-10-25) | timeline, national | The Labour Force Survey: employment, unemployment and participation by sex and state, monthly from 1978; owner-managers and employees by sex, monthly from 1991 (the denominator for who runs businesses) | — |
-| `abs_prices` (added 2026-10-25) | timeline, industries | CPI (quarterly from 1948), living costs by household type, wages (also by industry) and property prices: background, and the deflator for every money series (fees, R&D, contracts, medicine costs) | — |
-| `wdi`, `wipo_ipstats`, `gii`, `oecd`, `mwm`, `ctg` | national | Country-year indicators: every OECD flow (one indicator per named breakdown); GII 2026; WIPO's filings at IP Australia by origin country, 1980–2024 (an independent view of which nations use the system); Australian annual series (Measuring What Matters, Closing the Gap) | F02 and F15 (A8); F01 (B10) |
+| `abs_prices` (added 2026-10-25) | timeline, industries | CPI (quarterly from 1948), living costs by household type, wages (also by industry) and property prices: background, and the deflator for every money series (fees, R&D, contracts, medicine costs) | Quarterly CPI attached to the timeline (ADR 0010) |
+| `wdi`, `wipo_ipstats`, `gii`, `oecd`, `mwm`, `ctg` | national | Country-year indicators: every OECD flow (one indicator per named breakdown); GII 2026; WIPO's filings at IP Australia by origin country, 1980–2024 (an independent view of which nations use the system); Australian annual series (Measuring What Matters, Closing the Gap) | Done (ADR 0010, 0011): F02 and F15 (A8: trade marks, OECD R&D); F01 (B10: IP tax regimes' values) |
 | `pbs` | timeline; medicines | Prescriptions, and government and patient costs, per month. Items are linked to ingredients for the medicine strand. | B9 (Section 100) |
 | `tga` | own unit | ARTG entries; sponsors per ingredient (competition); joins PBS and extension-of-term patents by ingredient | — |
 | `fedcourt` | timeline; text | IP judgments per month by right; variables derived from the text later | — |
 | `google_patents`, `google_patents_inventors` | rights, firms, institutions | Per Australian application: family size, offices, US grant, forward citations (with a follow-up flag); inventors by country and their estimated gender (expected counts, from `wgnd`) | B4 |
 | `openalex`, `openalex_works`, `reliance_on_science` | institutions, rights | Output, citations and patent-cited works per institution; science cited by Australian-linked patent families | F37 test |
 | `arc_grants`, `nhmrc_grants` | institutions, timeline | Grants and funding per institution and year (ARC names matched to ROR) | Label round years (F41) |
-| `policy_events` | timeline | Policy changes per month; the policy register is reference | B7 |
+| `policy_events` | timeline | Policy changes per month; the policy register is reference | Done (ADR 0011): B7 (every date checked against the Federal Register; 16 events) |
 | `ipa_fees` | timeline, rights | The fee in force each month, and fees per right, once the fee history exists | R3 |
 | `wgnd` | reference | The name-gender dictionary behind `google_patents_inventors` | — |
 | `evidence`, `wine_gi` | reference | The literature register; the GI list (for certification marks) | — |
@@ -96,16 +97,17 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 Stage 1 goes lens by lens. A lens's section can start with its core variables; each attachment adds a sub-section when
 it is built. Each lens's repairs come first.
 
-1. **`rights`** (repairs done, ADR 0009: A2, A4, and the raw applicant location). Then come the
-   attachments: events per right, the parties' countries and founding applicants (B1), links, Google Patents (B4) and
-   the inventors (with their estimated gender).
-2. **`timeline`**: A3 (A2 is done), the policy dates (B7), and quarterly prices and wages (now in the corpus). Later: PBS (B9),
-   CER (B11), judgments, contracts, and fees once the fee history exists (R3).
-3. **`firms`**: A1, A5 and A6, then B1 and B2.
-4. **`regions`**: the rules (A4 is done) for small areas (N03: a minimum denominator or pooling, intervals, a per-person rate);
-   the postcode check (S6). Then the Census, CABEE, PHIDU (B12) and CER (B11) attachments.
-5. **`national`**: A8 (World Bank trade marks, OECD R&D), GII, the OECD flows (B10 for tax regimes), and WIPO by origin.
-6. **`industries`**: built new. Needs the IPC map (B6) and the workbook parser (B10).
+1. **`rights`** (repairs done, ADR 0009 and 0010: A2, A4, the raw applicant location, the earliest filing date, attorney
+   use unknown for provisionals). Then come the attachments: events per right, the parties' countries and founding
+   applicants (B1), links, Google Patents (B4) and the inventors (with their estimated gender).
+2. **`timeline`** (repairs done, ADR 0010: A3 at both ends, events counted once, trade mark registrations by the date
+   entered, the policy dates (B7), the quarterly CPI). Later: wages and the Labour Force Survey, PBS (B9), CER,
+   judgments, contracts, and fees once the fee history exists (R3).
+3. **`firms`** (repairs done, ADR 0010 and 0011: A1, A5, A6, B2). Then B1.
+4. **`regions`**: the rules (A4 is done) for small areas (N03: a minimum denominator or pooling, intervals, a per-person
+   rate); the postcode check (S6). Then the Census, CABEE, PHIDU (its concordance is built) and CER attachments.
+5. **`national`** (A8 done, ADR 0010): GII, the OECD flows (the tax regimes' values are kept), and WIPO by origin.
+6. **`industries`**: built new. Needs the IPC map (B6); the workbook parser (B10) is done.
 7. **`institutions`**: built new. Needs a reviewed link from research institutions to ROR identifiers and ABNs, for
    about 60 universities, CSIRO and the medical research institutes.
 
@@ -212,8 +214,10 @@ bury the findings. If a notebook passes about 25 MB, it is split by lens (ADR 00
 Found while building the lenses or in the review; not yet findings.
 
 - 264,024 patent rows are provisional applications, which are never granted. They make up 60% of the Australian patent
-  records in the regional counts (FY2017–26). FY2026 has 10,069 of them, against 4,143–5,388 a year before. The register
-  seems to drop a provisional once a full application supersedes it (N01).
+  records in the regional counts (FY2017–26). FY2026 has 10,069 of them, against 4,143–5,047 a year in FY2022–FY2025.
+  The register does not drop a provisional once a full application claims it (N01, refuted in ADR 0010: 99.9% to 100%
+  of claimed provisionals are present in every year from 2000); the jump is real, from more applicants (5,165 against
+  3,361) and above all individuals (5,399 provisionals against 1,926). Why is the lead.
 - 79.9% of patent rights have no Australian postcode:
   - 50.3% have an overseas first applicant;
   - 29.5% have no recorded country, almost all filed before 1990;
@@ -228,20 +232,29 @@ Found while building the lenses or in the review; not yet findings.
 - Registration dates as early as 1901-01-01, and 1,497 rights (1,493 of them trade marks) registered before they were
   applied for: likely placeholder dates.
 - Patent applications per year show no drop-off in the latest years (FY2025: 35,065; FY2026: 41,257), and the counts
-  match IP Australia's published 2025 figures. What `application_date` means for PCT filings is still to confirm (N06).
-- Several timeline series show decades of zeros between a stray early record and the start of continuous records. For
-  example, trade mark oppositions are zero for 777 months, to October 1973 (F38).
-- AusTender contract values are added up over every amendment. Summing every notice gives $3.85 trillion, against $0.92
-  trillion with one row per contract at its latest value (F33).
+  match IP Australia's published 2025 figures. That is because, for a PCT filing, `application_date` is the date it
+  entered Australia's national phase, about 30 months after priority (N06, answered in ADR 0010);
+  `earliest_filed_date` is the international filing date.
+- Fixed (ADR 0010): several timeline series showed decades of zeros between a stray early record and the start of
+  continuous records (trade mark oppositions read 0 for 777 months, to October 1973; F38), and some ended on a cliff
+  because the register records them late (trade mark cessations, 0 from May 2026). Trade mark registrations were
+  counted at their filing date, which is their legal registration date; they are now counted by the date each was
+  entered, from January 1986, when IP RAPID starts recording it.
+- Fixed (ADR 0011): AusTender contract values were added up over every amendment. Summing every notice gives $7.59
+  trillion, against $1.26 trillion with one row per contract at its latest value (F33). The bulk file's contracts
+  still running when it closed now have their later amendments (asked for by id), and 70 values that look keyed in
+  the wrong units are flagged (`value_jump`).
 - Some postal areas have no residents (population, median age and income of 0), and 295 have fewer than 50 active
   businesses (N03).
-- Australia's R&D spending as a share of GDP: the World Bank series ends in 2021 (1.86%); the OECD series, already in
-  the corpus, runs to 2023 (1.68%) and differs where they overlap. Researchers end in 2010 (F15, F16).
+- Australia's R&D spending as a share of GDP: the World Bank series ends in 2021 (1.86%); the OECD series, now in the
+  national lens beside it, runs to 2023 (1.68%) and differs where they overlap (2021: 1.66%). Researchers end in 2010
+  (F15, F16).
 - Rushes before rule changes:
   - the busiest month for standard patent applications is April 2013 (1,018 from Australian applicants, 5,407 from
     overseas), when the Raising the Bar reforms took effect;
   - second-tier patent applications peak at 2,789 in August 2021, the month innovation patents closed.
-- Designs registered begin in January 1970, which looks like a placeholder date.
+- Three design registrations are dated 1 January 1970, a placeholder date. The series now starts in June 1973, where
+  its records become continuous (ADR 0010).
 
 ## After Stage 3
 

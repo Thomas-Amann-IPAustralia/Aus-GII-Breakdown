@@ -43,10 +43,10 @@ Everything is read with DuckDB straight off the Parquet files, so the 49-million
 `abr/abns` are never loaded whole into memory. Do the same in analysis code: filter and aggregate in DuckDB, and bring
 only the result into pandas. The machine has about 15 GB of memory and 4 cores.
 
-## What the profile found (corpus as of the 2026-10-22 builds)
+## What the profile found (corpus as of 2026-10-25)
 
-- **Access.** All 152 processed tables (130 in the repo, 22 in R2) open; every row count and column list matches
-  `data/manifest.json`. 314.7 million rows and 8,067 columns in all.
+- **Access.** All 162 processed tables (139 in the repo, 23 in R2) open; every row count and column list matches
+  `data/manifest.json`. 317.8 million rows and 8,227 columns in all.
 - **ABNs join cleanly.** Every ABN in IP RAPID, IPLORD, AusTender, the RDTI, the ATO tax-transparency data and the
   linkage spine is in the ABR (99.7 to 100% of rows). Counts of distinct entities are therefore safe to compare.
 - **ASIC's `abn` is `'0'` for 40.6% of companies** (1.63 million of 4.02 million) that have no ABN. Treat `'0'` as
@@ -55,25 +55,42 @@ only the result into pandas. The machine has about 15 GB of memory and 4 cores.
 - **Postcodes need cleaning before they join to ABS geography.** Many postcodes are foreign or free text (for example
   `250-0123`). By rows, 99.6% of ABR, 98.9% of linkage-spine and 88.2% of trade-mark applicant postcodes match an ABS
   POA, but only 44.7% of patent applicants do (most patent applicants are overseas). Count distinct postcodes with
-  care: ABR has 15,276 distinct postcodes against about 2,600 real ones.
-- **Google Patents joins to IP RAPID only for modern filings.** IP RAPID uses a 10-digit year-first application
-  number for every patent. Google Patents keeps the original schemes before the 2000s (`AU-PP379798-A`,
-  `AU-4782101-A`, `AU-198303605-F`). After stripping the `AU-` prefix and suffix the match is 100% for filings from
-  2010 on, about 65% for the 2000s and 0% before 2000. Pre-2000 matching needs a number map the corpus does not hold.
+  care: ABR has 15,276 distinct postcodes against about 2,640 ABS postal areas.
+- **Google Patents joins to IP RAPID through `au_application`.** IP RAPID uses a 10-digit year-first application
+  number for every patent; Google Patents keeps the original schemes before the 2000s (`AU-PP379798-A`,
+  `AU-4782101-A`, `AU-198303605-F`). The profile's join (by digits only) understates the match: the review measured it
+  on `google_patents/members.au_application`, which converts the old numbers, at 79.9% before 1990, 41.9% in the 1990s,
+  44.0% in the 2000s and 84.9% from 2010 (the latter including 57,769 design numbers, kind S, which are not patents).
+  The rest are mostly the 1990s' letter-series provisionals and unmatched 7-digit numbers (review item B4).
 - **Trade marks, SA2s and IPC link fully.** TM-Link, IP RAPID and the Nice-class tables share application numbers
   (TM-Link's `tm_link` table covers 93.9%). SA2 codes agree across ABS Census, SEIFA, CABEE and the region tables.
   IP RAPID's IPC classifications match the IPC-to-industry concordance for 93.9% of distinct subclasses.
-- **Empty and placeholder columns.** 88 columns are entirely null (40 in OECD, 22 in IPLORD, 13 in ABS BCS, 8 in
-  ABS regions, 4 in IP RAPID, 1 in the ATO data) and 481 are constant. IP RAPID `pbr_rights` has no ABNs at all, and
+- **Empty and placeholder columns.** 94 columns are entirely null (39 in OECD, 22 in IPLORD, 13 in ABS BCS, 8 in
+  ABS regions, 6 in ABS prices, 4 in IP RAPID, and 1 each in ABS labour and the ATO data) and 522 are constant. IP RAPID `pbr_rights` has no ABNs at all, and
   `patent_rights.enforceable_from_date` is empty. `google_patents/members` stores empty strings, not nulls, in
   `entity_status` (97.6%), `au_assignee_names` (87.5%) and `inventor_countries` (83.7%).
 - **Dates.** `1800-01-01` is the earliest value in IP RAPID `events`, `links` and `party`; it looks like a
   placeholder, not a real date, so exclude it from any timeline. IP RAPID `events.event_effective_date` runs to
   2033 and `deemed_retired_date` to 2029, which are scheduled dates; ABR status dates also run into 2027.
 
+## Checked since (2026-10-25, ADR 0010 and 0011)
+
+- **Duplicate rows.** Every table was scanned for exact duplicates. Those that came from parsers (CABEE, PHIDU, CER,
+  the ABS R&D cubes, the ARTG, AusTender) are repaired, and each repaired table is tested for one row per key. Those in
+  the source files remain (IP RAPID's party, description, links and classification tables, TM-Link, ASIC's names):
+  every lens counts distinct rights or parties, so they change no figure.
+- **Values kept.** Every non-empty value in every SDMX flow (OECD and ABS) survives into its table; the OECD's IP tax
+  regimes, which are mostly text, keep it in `value_text`.
+- **IP RAPID's event dates.** A trade mark's registration has its filing date as its effective date (85%); the date it
+  was entered is the declared date, recorded from 1986 (ADR 0010). Every other event the timeline counts has its own
+  effective date. `event_category` is empty for 25,819 patent `new` events and one PBR event; no lens uses them.
+- **IP RAPID's link countries.** For patents, `links.linked_application_country` is not the linked application's
+  office: all 577,317 PCT application numbers are labelled `au` (37,656 more `wo`), and of the 85,067 convention
+  priorities labelled `au`, 5,603 are PCT numbers and 9,965 have other offices' formats (mostly 11 to 15 digits).
+  Tell an Australian priority by its number (year first, ten digits), as the N01 check did. No lens reads the column.
+
 ## Not yet checked
 
-- Duplicate rows and whether each table's natural key is unique.
 - Whether values mean the same thing across sources (for example, what counts as a "state" or an entity type).
 - The raw files in R2 (not needed for analysis; large).
 - The `google_patents` rebuild credentials: only reading is verified, not re-running the BigQuery query.

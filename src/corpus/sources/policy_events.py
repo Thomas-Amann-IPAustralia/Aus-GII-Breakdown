@@ -41,13 +41,24 @@ def _section(lines: list[str], start: str, stops: tuple[str, ...]) -> str | None
     return " ".join(out) or None
 
 
-def run(ctx: Ctx) -> None:
+def _events(ctx: Ctx) -> None:
     ev = ctx.raw / "events.yaml"
     ctx.keep_raw(ev)
     events = pd.DataFrame(yaml.safe_load(ev.read_text("utf-8"))["events"])
+    if events["id"].duplicated().any():
+        raise CorpusError("policy_events: an event id is used twice in events.yaml")
     events["date"] = pd.to_datetime(events["date"]).dt.date
     events["rights"] = events["rights"].map(lambda r: ",".join(r))
-    ctx.table(events, "events", describe="Dated changes to the IP system, compiled")
+    ctx.table(events.sort_values("date").reset_index(drop=True), "events", describe="Dated changes to the IP system")
+
+
+def reprocess(ctx: Ctx, tables: list[str] | None = None) -> None:
+    """`events` again from events.yaml; the policy register (scraped) is left as it is."""
+    _events(ctx)
+
+
+def run(ctx: Ctx) -> None:
+    _events(ctx)
 
     urls = sorted(set(re.findall(r"<loc>([^<]*/policy-register/[^<]+)</loc>", http_get(SITEMAP).text)))
     if len(urls) < 50:

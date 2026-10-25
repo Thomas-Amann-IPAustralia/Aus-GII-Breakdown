@@ -2,6 +2,8 @@
 
 corpus run iprapid rdti     fetch and process these sources (writes data/, uploads to R2, updates the manifest)
 corpus run all              every source in config/sources.yaml with a module
+corpus reprocess cer        process a source again from the raw files it already holds, fetching nothing new (for a
+                            parser fix that should not change the data's vintage); `oecd:ip_tax_regimes` names tables
 corpus list                 the sources, their tier and what the manifest holds for each
 corpus verify [--r2]        repo files against the manifest's SHA-256 (and, with --r2, that R2 holds the rest)
 """
@@ -44,6 +46,29 @@ def run(ids: list[str]) -> int:
     if failed:
         print(f"corpus run: failed: {', '.join(failed)}", file=sys.stderr)
         return 2
+    return 0
+
+
+def reprocess(specs: list[str]) -> int:
+    """`source` or `source:table,table`: the module's `reprocess(ctx, tables)` rebuilds its tables from the raw files
+    the manifest already records, and the manifest entry is merged rather than replaced (`Ctx.save(merge=True)`)."""
+    known = [s["id"] for s in register()]
+    for spec in specs:
+        sid, _, names = spec.partition(":")
+        if sid not in known:
+            print(f"corpus: {sid} is not in config/sources.yaml", file=sys.stderr)
+            return 2
+        module = importlib.import_module(f"corpus.sources.{sid}")
+        if not hasattr(module, "reprocess"):
+            print(f"corpus: {sid} cannot be reprocessed (no reprocess function); use corpus run", file=sys.stderr)
+            return 2
+        ctx = Ctx(sid)
+        try:
+            module.reprocess(ctx, [n for n in names.split(",") if n] or None)
+        except CorpusError as e:
+            print(f"[{sid}] FAILED: {e}", file=sys.stderr)
+            return 2
+        ctx.save(merge=True)
     return 0
 
 
@@ -139,6 +164,8 @@ def main(argv: list[str] | None = None) -> int:
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("run")
     r.add_argument("ids", nargs="+")
+    rp = sub.add_parser("reprocess")
+    rp.add_argument("specs", nargs="+")
     v = sub.add_parser("verify")
     v.add_argument("--r2", action="store_true")
     sub.add_parser("list")
@@ -146,6 +173,8 @@ def main(argv: list[str] | None = None) -> int:
     a = ap.parse_args(argv)
     if a.cmd == "run":
         return run(a.ids)
+    if a.cmd == "reprocess":
+        return reprocess(a.specs)
     if a.cmd == "verify":
         return verify(a.r2)
     if a.cmd == "catalogue":

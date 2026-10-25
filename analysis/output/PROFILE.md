@@ -5,8 +5,8 @@ the repo and R2. Regenerate it after any corpus rebuild. Reading notes are in `a
 
 ## Does it open
 
-- 152 processed tables; 152 open; 0 row-count and 0 column-list mismatches against `data/manifest.json`.
-- 314,742,745 rows and 8,067 columns in all; 22 tables in R2, 130 in the repo.
+- 162 processed tables; 162 open; 0 row-count and 0 column-list mismatches against `data/manifest.json`.
+- 317,792,796 rows and 8,227 columns in all; 23 tables in R2, 139 in the repo.
 
 ## Tables by source
 
@@ -16,37 +16,40 @@ the repo and R2. Regenerate it after any corpus rebuild. Reading notes are in `a
 | abs_bcs | 13 | 115,681 | 0.7 | 0 |
 | abs_cabee | 2 | 3,173,083 | 4.3 | 0 |
 | abs_census | 29 | 88,594 | 22.5 | 0 |
-| abs_rd_vc | 1 | 6,564 | 0.0 | 0 |
+| abs_labour | 2 | 461,523 | 3.9 | 0 |
+| abs_prices | 4 | 423,784 | 0.9 | 0 |
+| abs_rd_vc | 1 | 6,592 | 0.0 | 0 |
 | abs_regions | 8 | 8,297,946 | 55.0 | 0 |
 | arc_grants | 1 | 34,977 | 11.4 | 0 |
 | asic | 2 | 8,470,485 | 139.8 | 2 |
 | ato_ctt | 1 | 33,098 | 0.7 | 0 |
-| austender | 1 | 1,548,989 | 42.5 | 0 |
+| austender | 1 | 1,577,643 | 47.6 | 0 |
 | bcarr_creative | 1 | 3,209 | 0.0 | 0 |
-| cer | 1 | 7,051,130 | 7.7 | 0 |
+| cer | 2 | 3,494,592 | 2.8 | 0 |
 | concordances | 8 | 1,923,807 | 5.9 | 0 |
 | ctg | 1 | 11,264 | 0.1 | 0 |
 | evidence | 1 | 20 | 0.0 | 0 |
 | fedcourt | 2 | 5,332 | 47.9 | 2 |
 | gii | 3 | 15,539 | 0.3 | 0 |
 | google_patents | 3 | 6,830,429 | 189.9 | 2 |
+| google_patents_inventors | 2 | 5,679,285 | 70.5 | 1 |
 | ipa_fees | 1 | 173 | 0.0 | 0 |
 | iplord | 2 | 9,392,762 | 73.8 | 1 |
 | iprapid | 11 | 100,324,501 | 1130.0 | 7 |
-| linkage | 1 | 391,983 | 12.7 | 0 |
+| linkage | 1 | 398,450 | 12.9 | 0 |
 | mwm | 2 | 5,393 | 0.0 | 0 |
 | nhmrc_grants | 1 | 12,224 | 2.1 | 0 |
-| oecd | 24 | 42,264,899 | 175.3 | 0 |
+| oecd | 24 | 42,264,899 | 175.4 | 0 |
 | openalex | 3 | 21,144 | 0.2 | 0 |
 | openalex_works | 3 | 3,242,674 | 20.8 | 0 |
 | pbs | 3 | 2,438,237 | 44.2 | 1 |
-| phidu | 1 | 4,951,275 | 34.0 | 0 |
-| policy_events | 2 | 168 | 0.1 | 0 |
+| phidu | 2 | 4,953,540 | 34.2 | 0 |
+| policy_events | 2 | 171 | 0.1 | 0 |
 | rdti | 1 | 38,512 | 0.6 | 0 |
 | reliance_on_science | 2 | 679,566 | 3.1 | 0 |
-| tga | 2 | 198,011 | 2.7 | 0 |
+| tga | 2 | 197,410 | 2.7 | 0 |
 | tmlink | 6 | 79,004,085 | 372.4 | 6 |
-| wdi | 2 | 136,667 | 1.1 | 0 |
+| wdi | 2 | 141,848 | 1.1 | 0 |
 | wgnd | 2 | 8,461,437 | 30.9 | 0 |
 | wine_gi | 1 | 89 | 0.0 | 0 |
 | wipo_ipstats | 3 | 4,956,429 | 7.2 | 0 |
@@ -62,13 +65,13 @@ concordance for SA2, the ALP IPC concordance for IPC, IP RAPID for application n
 
 | column | filter | rows_with_key | distinct_keys | % valid | % rows linked | most_common_key | % rows with it |
 |---|---|---|---|---|---|---|---|
-| abr/abns.abn |  | 20,612,369 | 20,612,369 | 100.0 | 100.0 | 98357309495 | 0.0 |
-| linkage/abn_spine.abn |  | 391,983 | 391,983 | 100.0 | 100.0 | 94338346373 | 0.0 |
+| abr/abns.abn |  | 20,612,369 | 20,612,369 | 100.0 | 100.0 | 83307352499 | 0.0 |
+| linkage/abn_spine.abn |  | 398,450 | 398,450 | 100.0 | 100.0 | 32092552577 | 0.0 |
 | asic/companies.abn |  | 4,018,291 | 2,386,785 | 100.0 | 59.4 | 0 | 40.6 |
 | asic/company_names.abn |  | 4,452,194 | 2,387,060 | 100.0 | 61.6 | 0 | 38.4 |
-| ato_ctt/entities.abn |  | 32,818 | 6,602 | 100.0 | 100.0 | 49004028077 | 0.0 |
-| rdti/entities.abn |  | 37,961 | 18,487 | 100.0 | 100.0 | 71641658611 | 0.0 |
-| austender/contracts.supplier_abn |  | 1,462,922 | 72,159 | 100.0 | 100.0 | 47001407281 | 2.4 |
+| ato_ctt/entities.abn |  | 32,818 | 6,602 | 100.0 | 100.0 | 84008702761 | 0.0 |
+| rdti/entities.abn |  | 38,482 | 18,718 | 100.0 | 100.0 | 12134922777 | 0.0 |
+| austender/contracts.supplier_abn |  | 1,490,192 | 72,194 | 100.0 | 100.0 | 47001407281 | 2.4 |
 | iprapid/party.abn |  | 5,112,940 | 295,321 | 100.0 | 100.0 | 84362252431 | 9.9 |
 | iprapid/patent_rights.applicant_abn |  | 280,975 | 38,164 | 100.0 | 99.7 | 41687119230 | 2.4 |
 | iprapid/patent_rights.any_applicant_abn |  | 287,562 | 39,165 | 100.0 | 99.7 | 41687119230 | 2.4 |
@@ -82,8 +85,8 @@ concordance for SA2, the ALP IPC concordance for IPC, IP RAPID for application n
 | column | filter | rows_with_key | distinct_keys | % valid | % rows linked | most_common_key | % rows with it |
 |---|---|---|---|---|---|---|---|
 | abr/abns.acn |  | 4,151,151 | 4,151,137 | 100.0 | 100.0 | 005474733 | 0.0 |
-| linkage/abn_spine.acn |  | 305,616 | 305,612 | 100.0 | 100.0 | 140232873 | 0.0 |
-| asic/companies.acn |  | 4,018,291 | 4,018,291 | 100.0 | 59.5 | 681556016 | 0.0 |
+| linkage/abn_spine.acn |  | 311,391 | 311,387 | 100.0 | 100.0 | 140232873 | 0.0 |
+| asic/companies.acn |  | 4,018,291 | 4,018,291 | 100.0 | 59.5 | 619704835 | 0.0 |
 | ato_ctt/entities.acn |  | 0 | 0 |  |  |  |  |
 | rdti/entities.acn |  | 534 | 478 | 100.0 | 97.6 | 638105012 | 0.6 |
 
@@ -92,9 +95,9 @@ concordance for SA2, the ALP IPC concordance for IPC, IP RAPID for application n
 | column | filter | rows_with_key | distinct_keys | % valid | % rows linked | most_common_key | % rows with it |
 |---|---|---|---|---|---|---|---|
 | abr/abns.postcode |  | 20,612,369 | 15,276 | 31.3 | 99.6 | 2000 | 1.4 |
-| linkage/abn_spine.postcode |  | 391,920 | 3,545 | 78.9 | 98.9 | 2000 | 4.5 |
-| cer/installations.postcode |  | 7,051,130 | 3,094 | 98.3 | 92.8 | 2484 | 0.0 |
-| austender/contracts.supplier_postcode |  | 1,540,460 | 13,261 | 25.3 | 81.3 | 2000 | 6.6 |
+| linkage/abn_spine.postcode |  | 398,387 | 3,581 | 78.2 | 98.9 | 2000 | 4.5 |
+| cer/installations.postcode |  | 3,494,496 | 3,041 | 100.0 | 93.2 | 2484 | 0.0 |
+| austender/contracts.supplier_postcode |  | 1,569,087 | 13,273 | 25.3 | 81.3 | 2000 | 6.6 |
 | iplord/iplord.post_code |  | 4,464,910 | 16,812 | 21.0 | 87.6 | 2000 | 3.6 |
 | iprapid/party.post_code |  | 8,892,720 | 69,090 | 7.1 | 69.1 | 3000 | 11.3 |
 | iprapid/applicant_year.post_code |  | 2,167,721 | 54,891 | 8.1 | 72.1 | 2000 | 2.3 |
@@ -109,9 +112,9 @@ concordance for SA2, the ALP IPC concordance for IPC, IP RAPID for application n
 |---|---|---|---|---|---|---|---|
 | abs_regions/poa.sa2_code |  | 2,644 | 1,496 | 99.9 | 100.0 | 509021242 | 0.6 |
 | abs_regions/mesh_blocks.sa2_code |  | 368,286 | 2,473 | 100.0 | 100.0 | 510011265 | 0.3 |
-| abs_regions/seifa_sa2.statistical_area_level_2_sa2 |  | 108,768 | 2,472 | 100.0 | 100.0 | 101021610 | 0.0 |
-| abs_cabee/cubes.sa2_code |  | 1,919,508 | 2,461 | 100.0 | 100.0 | 101021009 | 0.0 |
-| abs_census/sa2_g01.SA2_CODE_2021 |  | 2,472 | 2,472 | 100.0 | 100.0 | 101021009 | 0.0 |
+| abs_regions/seifa_sa2.statistical_area_level_2_sa2 |  | 108,768 | 2,472 | 100.0 | 100.0 | 102021050 | 0.0 |
+| abs_cabee/cubes.sa2_code |  | 1,919,508 | 2,461 | 100.0 | 100.0 | 101021008 | 0.0 |
+| abs_census/sa2_g01.SA2_CODE_2021 |  | 2,472 | 2,472 | 100.0 | 100.0 | 101021008 | 0.0 |
 
 ### ipc4 (reference: `concordances/ipc4_anzsic.ipc4`)
 
@@ -127,7 +130,7 @@ concordance for SA2, the ALP IPC concordance for IPC, IP RAPID for application n
 
 | column | filter | rows_with_key | distinct_keys | % valid | % rows linked | most_common_key | % rows with it |
 |---|---|---|---|---|---|---|---|
-| iprapid/patent_rights.application_number |  | 1,752,428 | 1,752,428 |  | 100.0 | 2024439668 | 0.0 |
+| iprapid/patent_rights.application_number |  | 1,752,428 | 1,752,428 |  | 100.0 | 2015301843 | 0.0 |
 | iprapid/events.application_number | ip_right_type = 'patent' | 15,234,389 | 1,706,181 |  | 100.0 | 2012389957 | 0.0 |
 | iprapid/classification.application_number | ip_right_type = 'patent' | 11,086,510 | 1,341,822 |  | 100.0 | 2021106804 | 0.0 |
 | iprapid/party.application_number | ip_right_type = 'patent' | 4,065,363 | 1,676,242 |  | 100.0 | 2003100347 | 0.0 |
@@ -138,17 +141,17 @@ concordance for SA2, the ALP IPC concordance for IPC, IP RAPID for application n
 
 | column | filter | rows_with_key | distinct_keys | % valid | % rows linked | most_common_key | % rows with it |
 |---|---|---|---|---|---|---|---|
-| iprapid/trade_mark_rights.application_number |  | 2,335,064 | 2,335,064 |  | 100.0 | 379137 | 0.0 |
+| iprapid/trade_mark_rights.application_number |  | 2,335,064 | 2,335,064 |  | 100.0 | 1890345 | 0.0 |
 | iprapid/classification.application_number | ip_right_type = 'trade_mark' | 3,804,074 | 2,335,058 |  | 100.0 | 2045867 | 0.0 |
-| tmlink/application.application_number | ip_office = 'au' | 1,744,012 | 1,744,012 |  | 100.0 | 1501062 | 0.0 |
-| tmlink/tm_link.application_number | ip_office = 'au' | 1,437,110 | 1,437,110 |  | 93.9 | 538896 | 0.0 |
+| tmlink/application.application_number | ip_office = 'au' | 1,744,012 | 1,744,012 |  | 100.0 | 1398101 | 0.0 |
+| tmlink/tm_link.application_number | ip_office = 'au' | 1,437,110 | 1,437,110 |  | 93.9 | 1072996 | 0.0 |
 | tmlink/owner.application_number | ip_office = 'au' | 1,778,815 | 1,738,703 |  | 100.0 | 838080 | 0.0 |
 
 ## Column flags
 
-- **All null** (88 columns): abs_bcs (13); abs_regions (8); ato_ctt (1); iplord (22); iprapid (4); oecd (40). Listed in `analysis/output/columns.csv`.
-- **Constant** (one distinct value, not null): 481 columns.
-- **Over 90% null, not all null**: 82 columns.
+- **All null** (94 columns): abs_bcs (13); abs_labour (1); abs_prices (6); abs_regions (8); ato_ctt (1); iplord (22); iprapid (4); oecd (39). Listed in `analysis/output/columns.csv`.
+- **Constant** (one distinct value, not null): 522 columns.
+- **Over 90% null, not all null**: 98 columns.
 
 ### Text columns holding empty strings (not NULL)
 
@@ -163,14 +166,13 @@ concordance for SA2, the ALP IPC concordance for IPC, IP RAPID for application n
 | abr | abns | state | 20612369 | 59476 | 0.3 |
 | arc_grants | grants | lief_register | 34977 | 34784 | 99.4 |
 | abr | abns | postcode | 20612369 | 21489 | 0.1 |
-| linkage | abn_spine | state | 391983 | 3848 | 1.0 |
-| austender | contracts | supplier_postcode | 1548989 | 3672 | 0.2 |
-| linkage | abn_spine | postcode | 391983 | 1848 | 0.5 |
+| linkage | abn_spine | state | 398450 | 3977 | 1.0 |
+| austender | contracts | supplier_postcode | 1577643 | 3705 | 0.2 |
+| linkage | abn_spine | postcode | 398450 | 1904 | 0.5 |
 | nhmrc_grants | grants | keywords | 12224 | 318 | 2.6 |
-| phidu | indicators | area_name | 4951275 | 185 | 0.0 |
 | gii | data | num | 15290 | 139 | 0.9 |
-| arc_grants | grants | anticipated_end_date | 34977 | 72 | 0.2 |
 | arc_grants | grants | investigators | 34977 | 72 | 0.2 |
+| arc_grants | grants | anticipated_end_date | 34977 | 72 | 0.2 |
 | pbs | item_drug_map | form_strength | 12187 | 12 | 0.1 |
 | gii | structure | num | 110 | 1 | 0.9 |
 

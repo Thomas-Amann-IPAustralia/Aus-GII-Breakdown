@@ -118,11 +118,16 @@ R&D Tax Incentive transparency reports: every company's R&D expenditure as claim
 
 Raw: each year's xlsx (repo). Processed: `entities`, one row per company per report: name, ABN (or ACN where the
 report gives one), total R&D expenditure, any amended total, income year, and the report it came from. A report can
-restate earlier years (late lodgements and amendments); keep the latest report's row for a company and year.
+restate earlier years (late lodgements and amendments); keep the latest report's row for a company and year, with
+its amended total where there is one.
+
+Where a report gives only an ACN, the ABN is taken from the ABR when exactly one ABN has that ACN (`abn_from` is
+`acn`; otherwise `report`): 521 of the 551 rows without an ABN, $228 million of R&D, which would otherwise drop
+out of every join on ABN. The other 30 ($16 million) have no usable identifier.
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `entities` | 38,512 | repo (0.6 MB) | `rd_expenditure`, `rd_expenditure_amended`, `income_year`, `report`, `sheet`, `name`, `abn`, `acn` |
+| `entities` | 38,512 | repo (0.6 MB) | `rd_expenditure`, `rd_expenditure_amended`, `income_year`, `report`, `sheet`, `name`, `abn`, `acn`, `abn_from` |
 
 ## Business Characteristics Survey and characteristics of Australian business (innovation, barriers, finance) (`abs_bcs`)
 
@@ -296,18 +301,47 @@ Department of Finance. Tier 2; questions 3. Licence: CC BY 3.0 AU. Source: https
 
 AusTender contract notices: Australian Government contracts by supplier (with ABN), value, category and agency.
 
-Two parts, because the OCDS API pages 100 notices at a time (about three seconds a page): the Department of Finance's
-cumulative file of notices published to 30 August 2019 (from July 2007), and the API for notices published from
-1 July 2019 (weekly windows, fetched four at a time and cached as each finishes, so a rerun resumes). Raw: the bulk
-file and the API's responses as gzipped JSON lines (R2). Processed: `contracts`, one row per notice (parent or
-amendment) with: `cn_id`, `published`, `signed`, `start`, `end`, `value` (AUD), `description`, `unspsc`, `agency`,
-`supplier_name`, `supplier_abn`, `supplier_postcode`, `supplier_state`, `supplier_country`, `procurement_method`,
-`source` (bulk or api). Where both parts hold a notice, the API's row is kept. `supplier_name` is blank where
-the ABR records the supplier's ABN as an individual (a sole trader).
+Three parts. The Department of Finance's cumulative file of notices published to 30 August 2019 (from July 2007). The
+OCDS API's notices by the date they were published, from 1 July 2019 (weekly windows of 100-notice pages, about three
+seconds a page, fetched four at a time and cached as each finishes, so a rerun resumes). And, because that query
+returns amendments only for contracts published from July 2019, every release the API holds for each contract in the
+bulk file still running on its last day (its latest end date on or after 30 August 2019), asked by id: their later
+amendments are nowhere else. That is 44,461 contracts, of which 10,800 were published in July and August 2019 and so
+come from the other query too. Raw: the bulk file and the API's responses as gzipped JSON lines, one file per
+query (R2). Processed: `contracts`, one row per notice (parent or amendment) with: `cn_id` (the notice's own id: the
+contract's, such as CN123, or an amendment's, such as CN123-A2), `parent_cn_id`, `amendment` (0 for the contract's
+first notice, n for its nth amendment), `published`, `published_batch`, `signed`, `start`, `end`, `value` (AUD),
+`value_jump`, `description`, `unspsc`, `agency`, `supplier_name`, `supplier_abn`, `supplier_postcode`,
+`supplier_state`, `supplier_country`, `procurement_method`, `source` (bulk or api). Where both parts hold a notice, the
+API's row is kept; a release the API returned twice is kept once. `supplier_name` is blank where the ABR records the
+supplier's ABN as an individual (a sole trader).
+
+An amendment's `value` is the contract's new total, not the change (in the bulk file each amendment's value is the
+parent's plus every change so far). So a contract's value is that of its latest notice (the highest `amendment`), and
+summing every notice counts a contract once per amendment (about six times the true total; ADR 0011). The API gives
+the amendment number in each release's `contracts[0].amendments`; releases share timestamps, so the number, not the
+date, orders them.
+
+`published` is the earliest date any part gives the notice. In the bulk file that is the notice's own date (an
+amendment's `Publish Date` repeats its parent's; its own is `Applicable Publish Date`). The API dates a release when it
+was released, and it re-released many notices in batches (every amendment of one 2018 contract carries 22 September
+2025), so an amendment only the API holds can be dated later than it was made; the order is still its number.
+`published_batch` marks those dates: the notice's first release shared its second with another notice of the same
+contract.
+
+`value_jump` flags a value at least 100 times the contract's previous notice's and of $100 million or more: most
+likely keyed in the wrong units (a data-capture service whose amendments run from $0.7 million to $6.6 million, then
+$9,626 million). Values are left as published; the flag lets an analysis set them aside.
+
+Quirks of the sources: eight API releases are contracts under an amendment's id (CN123-A3), and are read as that
+amendment; four notice ids appear twice in the bulk file with different values, and each is kept once, at its later
+version; four bulk notices have malformed ids (CN221277-A1-A) and no parent notice, so their `amendment` is empty.
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `contracts` | 1,548,989 | repo (42.5 MB) | `cn_id`, `published`, `signed`, `start`, `end`, `value`, `description`, `unspsc`, `agency`, `supplier_name`, `supplier_abn`, `supplier_postcode`, `supplier_state`, `supplier_country` … |
+| `contracts` | 1,577,643 | repo (47.6 MB) | `cn_id`, `parent_cn_id`, `amendment`, `published`, `published_batch`, `signed`, `start`, `end`, `value`, `value_jump`, `description`, `unspsc`, `agency`, `supplier_name` … |
+
+- Note: findById releases (raw/austender-api-by-id-releases.jsonl.gz) fetched 2026-10-25, after the rest
 
 ## ARC National Competitive Grants Program, grants (`arc_grants`)
 
@@ -374,7 +408,7 @@ table's `_label` columns for units and breakdowns before comparing.
 | `business_survival` | 7,546,335 | repo (42.7 MB) | `flow`, `frequency_of_observation`, `frequency_of_observation_label`, `reference_area`, `reference_area_label`, `measure`, `measure_label`, `economic_activity`, `economic_activity_label`, `size_class`, `size_class_label`, `enterprise_age`, `enterprise_age_label`, `enterprise_type` … |
 | `child_wellbeing` | 15,297 | repo (0.1 MB) | `flow`, `reference_area`, `reference_area_label`, `measure`, `measure_label`, `domain`, `domain_label`, `time_period`, `time_period_label`, `observation_status`, `observation_status_label`, `unit_multiplier`, `unit_multiplier_label`, `unit_of_measure` … |
 | `innovation_ip_methods` | 1,564 | repo (0.0 MB) | `flow`, `reference_area`, `reference_area_label`, `measure`, `measure_label`, `unit_of_measure`, `unit_of_measure_label`, `economic_activity`, `economic_activity_label`, `enterprise_size_class`, `enterprise_size_class_label`, `r_d_active_status`, `r_d_active_status_label`, `type_of_innovation` … |
-| `ip_tax_regimes` | 2,639 | repo (0.0 MB) | `flow`, `reference_area`, `reference_area_label`, `frequency_of_observation`, `frequency_of_observation_label`, `measure`, `measure_label`, `regime`, `regime_label`, `time_period`, `time_period_label`, `value` |
+| `ip_tax_regimes` | 2,639 | repo (0.0 MB) | `flow`, `reference_area`, `reference_area_label`, `frequency_of_observation`, `frequency_of_observation_label`, `measure`, `measure_label`, `regime`, `regime_label`, `time_period`, `time_period_label`, `value`, `value_text` |
 | `msti` | 210,477 | repo (1.6 MB) | `flow`, `reference_area`, `reference_area_label`, `frequency_of_observation`, `frequency_of_observation_label`, `measure`, `measure_label`, `unit_of_measure`, `unit_of_measure_label`, `price_base`, `price_base_label`, `transformation`, `transformation_label`, `time_period` … |
 | `patents_coinventors` | 6,824,320 | repo (20.0 MB) | `flow`, `patent_authorities`, `patent_authorities_label`, `frequency_of_observation`, `frequency_of_observation_label`, `measure`, `measure_label`, `unit_of_measure`, `unit_of_measure_label`, `reference_date_type`, `reference_date_type_label`, `reference_area`, `reference_area_label`, `counterpart_area` … |
 | `patents_domestic_ownership_abroad` | 6,824,320 | repo (22.3 MB) | `flow`, `patent_authorities`, `patent_authorities_label`, `frequency_of_observation`, `frequency_of_observation_label`, `measure`, `measure_label`, `unit_of_measure`, `unit_of_measure_label`, `reference_date_type`, `reference_date_type_label`, `reference_area`, `reference_area_label`, `counterpart_area` … |
@@ -408,11 +442,7 @@ country).
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
 | `countries` | 296 | repo (0.0 MB) | `iso3`, `name`, `region`, `income`, `aggregate` |
-| `panel` | 136,371 | repo (1.1 MB) | `iso3`, `country`, `indicator`, `indicator_name`, `year`, `value` |
-
-- Note: wdi: IP.TMK.RESD is no longer in the API (The indicator was not found. It may have been deleted or archived.)
-- Note: wdi: IP.TMK.NRES is no longer in the API (The indicator was not found. It may have been deleted or archived.)
-- Note: wdi: IP.TMK.TOTL is no longer in the API (The indicator was not found. It may have been deleted or archived.)
+| `panel` | 141,552 | repo (1.1 MB) | `iso3`, `country`, `indicator`, `indicator_name`, `year`, `value` |
 
 ## WIPO IP statistics, filings by origin and office (`wipo_ipstats`)
 
@@ -512,14 +542,15 @@ competition), and which medicines and devices reach Australia. The TGA site does
 the ARTG search export was downloaded by hand (https://www.tga.gov.au/resources/artg, all entries, exported to xlsx)
 into data/raw/tga/ (repo). The export is a snapshot of the current register: it has no start or cancellation dates.
 
-Processed: `artg`, one row per ARTG entry (`kind` is medicine where there are active ingredients, device where there
-is a device manufacturer); `artg_ingredients`, one row per entry and active ingredient (name in lower case, without
+Processed: `artg`, one row per ARTG entry and product (an entry can list several products, as 429 entries do; the
+export's exact repeats are dropped), with `kind` medicine where there are active ingredients and device where there
+is a device manufacturer; `artg_ingredients`, one row per entry and active ingredient (name in lower case, without
 quantities), to join to PBS drugs and to patents' extension of term records by ingredient name.
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `artg` | 98,147 | repo (2.4 MB) | `artg_id`, `product_name`, `sponsor_name`, `device_manufacturer`, `active_ingredients`, `kind` |
-| `artg_ingredients` | 99,864 | repo (0.3 MB) | `artg_id`, `ingredient` |
+| `artg` | 98,127 | repo (2.4 MB) | `artg_id`, `product_name`, `sponsor_name`, `device_manufacturer`, `active_ingredients`, `kind` |
+| `artg_ingredients` | 99,283 | repo (0.3 MB) | `artg_id`, `ingredient` |
 
 ## ABS research and experimental development, and venture capital (`abs_rd_vc`)
 
@@ -529,12 +560,12 @@ ABS research and experimental development (businesses, 8104.0; government and pr
 higher education, 8111.0) and venture capital and later stage private equity (5678.0, discontinued after 2018-19).
 
 Who does R&D in Australia, in which industries and fields, and how much, beside who uses the IP system. Raw: each
-release's data cubes (repo). Processed: `cubes`, every table long (see `_abs_cube.read_cube`), with `release` and
-`cube`.
+release's data cubes (repo). Processed: `cubes`, every table long (see `_abs_cube.read_cube`: every published cell,
+with its unit where a row states one, and its row in the sheet), with `release`, `cube` and `period`.
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `cubes` | 6,564 | repo (0.0 MB) | `sheet`, `title`, `section`, `row`, `column`, `value`, `release`, `cube`, `period` |
+| `cubes` | 6,592 | repo (0.0 MB) | `sheet`, `title`, `section`, `row`, `column`, `unit`, `value`, `value_text`, `sheet_row`, `release`, `cube`, `period` |
 
 ## Prices, wages and living costs (Consumer Price Index, Selected Living Cost Indexes, Wage Price Index, Residential Property Price Index) (`abs_prices`)
 
@@ -739,32 +770,52 @@ https://phidu.torrens.edu.au/social-health-atlases/data and put in R2 under `raw
 upload): Population Health Areas (demographic and social; health status; use and provision of health services) and
 the socioeconomic quintiles. To update, replace them there and run `corpus run phidu`.
 
-Population Health Areas are SA2s or groups of SA2s (2021 ASGS); each workbook's `PHAs` sheet lists them.
+Population Health Areas (PHAs) are SA2s or groups of SA2s (2021 ASGS); each workbook's `PHAs` sheet lists them.
 
-Processed: `indicators`, one row per workbook, sheet, area, indicator, period and measure (long). `area_code` is the
-PHA code (empty for state and national totals, whose names are in `area_name`); for the quintiles workbook,
-`area_name` is the area type (capital cities, rest of state) and `quintile` the socioeconomic quintile.
+Processed:
+- `indicators`, one row per workbook, sheet, area, indicator, sub-indicator, period and measure (long). Each sheet's
+  columns sit under up to three label rows: `indicator` (the top one), `sub_indicator` (the rows below it, such as
+  the cancer type or the developmental domain, joined with " | ") and `period`; a top row that is a caveat (a
+  sentence, as on the cancer sheets) is kept as `note` instead. `area_type` is `pha`, `sa3` or `sa4` (each sheet lists
+  the PHAs, then SA4 and SA3 totals, whose 5-digit SA3 codes look like PHA codes), `total` (state and national totals,
+  named in `area_name`, with no code) or `quintile`; `area_code` is the area's code. For the quintiles workbook,
+  `area_name` is the area type (capital cities, rest of state) and `quintile` the socioeconomic quintile. Every row's
+  key is unique (ADR 0011: before, the sub-indicator was dropped, so 62,893 keys on the health sheets held several
+  different values).
+- `pha_sa2`: each PHA's SA2s (2021), from the `PHAs` sheet, with the section it is listed under (for example
+  "NSW - Greater Sydney"). With `abs_regions/poa_sa2` it places the indicators in postal areas.
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `indicators` | 4,951,275 | repo (34.0 MB) | `workbook`, `sheet`, `area_code`, `area_name`, `quintile`, `indicator`, `period`, `measure`, `value` |
+| `indicators` | 4,951,090 | repo (34.1 MB) | `workbook`, `sheet`, `area_type`, `area_code`, `area_name`, `quintile`, `indicator`, `sub_indicator`, `period`, `measure`, `note`, `value` |
+| `pha_sa2` | 2,450 | repo (0.0 MB) | `pha_code`, `pha_name`, `sa2_code`, `section` |
 
 ## Small-scale renewable installations by postcode (`cer`)
 
 Clean Energy Regulator. Tier 2; questions 1. Licence: CC BY 4.0. Source: https://cer.gov.au/markets/reports-and-data/small-scale-installation-postcode-data
 
 Small-scale renewable installations by postcode (Clean Energy Regulator): solar panels, solar water heaters, heat
-pumps, batteries, wind and hydro, monthly from 2011 (with 2001 to 2010 totals), as installations and capacity.
+pumps, batteries, wind and hydro, monthly from 2001, as installations, capacity and (for batteries) certificates.
 
 For the environmental pathway (section 2 of docs/data-plan.md): how fast green technologies spread, by place, beside
-green patenting. Raw: each published file (repo; most are CSV, a few are Excel workbooks). Processed:
-`installations`, long: `dataset` (the file's name, and the sheet's for a workbook),
-`postcode`, `period` (YYYY-MM, or the historic total's label), `measure` (the column's measure, for example
-"Installation Quantity" or "Rated Output In kW") and `value`.
+green patenting. Raw: each published file (repo; CSV files, and Excel workbooks that repeat them). Processed:
+
+- `installations`, long, one row per technology, series, postcode and month: `technology` (solar_pv, wind, hydro,
+  battery, solar_water_heater, heat_pump_water_heater), `series` (installations, capacity_kw, usable_capacity_kwh or
+  stcs, the certificates created), `postcode` (as published), `month` (YYYY-MM), `measure` (the column as published,
+  such as "SGU Rated Output In kW") and `value`, with the `dataset` (file) it came from.
+- `battery_states`: the CER's historical voluntary count of battery installations by state and year, 2014 to
+  2025 (the file's total over states is left out).
+
+Each series is read from its CSV file only: every workbook sheet repeats a CSV exactly, so reading both counted every
+value twice (ADR 0011). The files' total columns ("Historic Total ... (2001 - 2010)" and "Total ...") are left out:
+they are sums of the monthly values (checked to the unit for solar, wind and water heaters), and keeping them beside
+the months would invite adding a total to its parts.
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `installations` | 7,051,130 | repo (7.7 MB) | `dataset`, `postcode`, `value`, `period`, `measure` |
+| `battery_states` | 96 | repo (0.0 MB) | `year`, `state`, `installations` |
+| `installations` | 3,494,496 | repo (2.8 MB) | `dataset`, `technology`, `series`, `postcode`, `month`, `measure`, `value` |
 
 ## Register of protected geographical indications and other terms (`wine_gi`)
 
@@ -963,7 +1014,7 @@ id, title, status, priority, tags, issue summary, comments and URL, as IP Austra
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `events` | 13 | repo (0.0 MB) | `id`, `date`, `rights`, `lever`, `event`, `source`, `verify` |
+| `events` | 16 | repo (0.0 MB) | `id`, `date`, `rights`, `lever`, `event`, `source`, `verify` |
 | `policy_register` | 155 | repo (0.1 MB) | `policy_id`, `title`, `status`, `priority`, `tags`, `issue_summary`, `comments`, `url` |
 
 ## The ABN spine (every ABN in the corpus, with ABR and ASIC attributes and source flags) (`linkage`)
@@ -973,19 +1024,24 @@ built here from abr, asic, iprapid, iplord, rdti, austender and ato_ctt. Tier 1;
 The ABN spine: one row per ABN that appears anywhere in the corpus, with what the business registers say about it.
 
 Built from the other sources (run it after them). Processed: `abn_spine` (repo), one row per ABN seen in IP RAPID's
-parties, IPLORD, the R&D Tax Incentive reports, AusTender suppliers or the corporate tax transparency reports, with:
+parties (an applicant or owner of any right, founding or current), IPLORD, the R&D Tax Incentive reports, AusTender
+suppliers or the corporate tax transparency reports, with:
 
 - from the ABR: entity type, ABN status and the date it took effect, GST status and date, state, postcode, ACN, and
   whether the business is a deductible gift recipient;
 - from ASIC (through the ACN): company registration and deregistration dates, type, class and status;
 - `first_seen`, the earliest of the ABN status date (for an active ABN), GST registration and ASIC registration: a
   lower bound on the business's start, since the public ABR gives only the date of the current status;
-- flags for each source it appears in (`in_iprapid_patent` and so on, `in_rdti`, `in_austender`, `in_ato_ctt`), and its
-  first and last filing financial years by right type from `iprapid/applicant_year`.
+- flags for each source it appears in (`in_iprapid_patent` and so on: an applicant or owner of that right, founding or
+  current; `in_rdti`, `in_austender`, `in_ato_ctt`), and its first and last filing financial years by right type, as a
+  founding applicant, from `iprapid/applicant_year`;
+- `austender_contracts` and `austender_value`: the contracts it supplies, each counted once at its latest notice (the
+  highest amendment, whose value is the contract's total), and credited to that notice's supplier. Summing every
+  notice would count a contract once per amendment (ADR 0011).
 
 `abn_spine` is how the analysis joins IP use to R&D, procurement, size and survival. ABNs in IP RAPID cover Australian
 applicants that IP Australia matched to the ABR; foreign applicants and many individuals have none.
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `abn_spine` | 391,983 | repo (12.7 MB) | `abn`, `entity_type`, `entity_type_text`, `abn_status`, `abn_status_from`, `gst_status`, `gst_status_from`, `state`, `postcode`, `acn`, `dgr`, `name`, `asic_registered`, `asic_deregistered` … |
+| `abn_spine` | 398,450 | repo (12.9 MB) | `abn`, `entity_type`, `entity_type_text`, `abn_status`, `abn_status_from`, `gst_status`, `gst_status_from`, `state`, `postcode`, `acn`, `dgr`, `name`, `asic_registered`, `asic_deregistered` … |
