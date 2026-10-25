@@ -5,10 +5,11 @@
 Stage 1 has repaired the lenses (ADR 0010) and the corpus (ADR 0011). The owner has decided that every dataset goes
 through all three stages (ADR 0007). Stage 1 has begun: every core variable of the `rights` lens is profiled
 (observations U1 to U16), after five more repairs found on the way (ADR 0012), and so is its first attachment, the
-parties (U17 to U21, ADR 0013). Every column of the `timeline` lens is profiled too (U22 to U30), after one more repair
-(ADR 0014). This plan says what the exploratory
+parties (U17 to U21, ADR 0013), and its second, the events: each right's milestones and lifetime (U31 to U40, ADR
+0015). Every column of the `timeline` lens is profiled too (U22 to U30), after one more repair (ADR 0014), and every
+column of the `firms` lens (U41 to U47), after it switched to counting applications by the filer (ADR 0016). This plan says what the exploratory
 data analysis (EDA) covers, where each dataset fits, what each part needs before it starts, and which gaps are worth
-filling. Decisions are in `docs/adr/` (0002 to 0014); terms are in `GLOSSARY.md`.
+filling. Decisions are in `docs/adr/` (0002 to 0016); terms are in `GLOSSARY.md`.
 
 ## Why an EDA first
 
@@ -40,8 +41,8 @@ All lenses are built by `uv run python -m eda.build`, and every column is descri
 
 | Lens | One row per | Status | Main questions |
 |---|---|---|---|
-| `rights` | IP right | Built: 4,368,006 rows | Q1, Q2 |
-| `firms` | ABN in any IP, R&D, procurement or tax source | Built: 398,450 | Q2, Q3, Q4 |
+| `rights` | IP right | Built: 4,368,006 rows, 52 columns | Q1, Q2 |
+| `firms` | ABN in any IP, R&D, procurement or tax source | Built: 398,450 rows, 40 columns | Q2, Q3, Q4 |
 | `regions` | Postal area | Built: 2,641 | Q2, Q4 |
 | `national` | Country, year and indicator | Built: 135,140 | Q1, Q4 (context) |
 | `timeline` | Month, for Australia (Jan 1904 to Sep 2026) | Built: 1,473 | Q1, Q4, Q5 |
@@ -63,11 +64,11 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 | Source (tables) | Lens | What it adds | First |
 |---|---|---|---|
 | `iprapid` `*_rights`, `application` | rights | The base: one row per right | Done (ADR 0009): A2 (origin), A4 (patent types), raw applicant location; (ADR 0012) attorney use, technology area, placeholder dates, the state. Stage 1 profile done (U1 to U16) |
-| `iprapid/events` | rights, timeline | **Per right:** the dates of the examination request, acceptance, grant, opposition, assignments, licences and extension of term, and of the lapse, cessation or expiry, giving each right's lifetime. **Per month:** counts (already built). | Done (ADR 0010): A3 (coverage starts and ends), events labelled as events and counted once (F38), trade mark registrations by the date entered; (ADR 0014) starts past partial and batch-dated records. Timeline profile done (U22 to U30). Left: B5 (lifetimes) |
+| `iprapid/events` | rights, timeline | **Per right:** the dates of the examination request, acceptance, grant, opposition, assignments, licences and extension of term, and of the lapse, cessation or expiry, giving each right's lifetime. **Per month:** counts (already built). | Done (ADR 0010): A3 (coverage starts and ends), events labelled as events and counted once (F38), trade mark registrations by the date entered; (ADR 0014) starts past partial and batch-dated records. Timeline profile done (U22 to U30). Done for `rights` (ADR 0015, U31 to U40): B5, milestones and lifetimes, with rights still in force counted as unfinished |
 | `iprapid/party` | rights, firms | Applicants by country, all of them rather than only the first; founding filer against current holder; the attorney firm. Individuals are pseudonymised codes in IP RAPID, so their gender cannot be estimated. | Done for `rights` (ADR 0013, U17 to U21): founding applicant, holder changed (not before FY2003 for patents), agent, representation. Left: `firms` and `regions` count by the filer |
 | `iprapid/links` | rights | The route into Australia: foreign priority claimed, PCT entry, divisional | — |
 | `iprapid/classification`, `concordances` | rights, industries | Technology fields and the green-technology flag per right; industry shares for `industries` | B6 (new IPC subclasses) |
-| `iprapid/applicant_year`, `iplord` | firms | Filing histories per ABN. IPLORD is used only to check `applicant_year` before 2020, never added to it. | — |
+| `iprapid/applicant_year`, `iplord` | firms | Filing histories per ABN. IPLORD is used only to check `applicant_year` before 2020, never added to it. | Checked (U41, ADR 0016): IPLORD's counts differ (81.02% of shared ABNs agree); `in_iplord` flags the 50,790 ABNs only it links to IP |
 | `iprapid/description` | text | Titles and goods and services descriptions; variables derived only if wanted | — |
 | `linkage/abn_spine`, `abr`, `asic` | firms, regions | Firm attributes; business counts by postal area and entity type | Done (ADR 0010, 0011): A6 (age basis and truncation); B2 (every applicant's ABN) |
 | `rdti` | firms, regions | R&D claims per ABN and year | Done: A5 (latest report, amended); ABNs from ACNs (ADR 0011) |
@@ -103,15 +104,16 @@ it is built. Each lens's repairs come first.
 1. **`rights`** (repairs done, ADR 0009, 0010 and 0012: A2, A4, the raw applicant location, the earliest filing date,
    attorney use unknown for provisionals and excluding the applicant itself, the technology area for patents only,
    placeholder dates, the state from the postcode). **Core variables profiled (U1 to U16); the parties attached and
-   profiled (B1, ADR 0013, U17 to U21).** Then come the other attachments: events per right, links, Google Patents
-   (B4) and the inventors (with their estimated gender). The owner agreed (2026-10-25) to do the events attachment
-   next, then `firms`.
+   profiled (B1, ADR 0013, U17 to U21); the events attached and profiled (B5, ADR 0015, U31 to U40).** Then come the
+   other attachments, when the owner says: links, Google Patents (B4) and the inventors (with their estimated
+   gender). The owner's order (2026-10-25) is events, then `firms`.
 2. **`timeline`** (repairs done, ADR 0010: A3 at both ends, events counted once, trade mark registrations by the date
    entered, the policy dates (B7), the quarterly CPI; ADR 0014: 15 series start where their records are complete, and
    the 1995 term change). **Every column profiled (U22 to U30).** Later attachments, each a sub-section of section 5:
    wages and the Labour Force Survey, PBS (B9), CER, judgments, contracts, and fees once the fee history exists (R3).
-3. **`firms`** (repairs done, ADR 0010 and 0011: A1, A5, A6, B2). First, count applications by the filer's ABN
-   (`founder_abn`, B1, ADR 0013).
+3. **`firms`** (repairs done, ADR 0010 and 0011: A1, A5, A6, B2; ADR 0016: applications by the filer's ABN, holdings,
+   the IPLORD flag, blank states). **Every column profiled (U41 to U47).** Its attachments (filing histories by year
+   from `applicant_year`, firms' rights' lifetimes) come as sub-sections when built.
 4. **`regions`**: count applications by the filer's postcode (`founder_postcode`, ADR 0013); the rules (A4 is done)
    for small areas (N03: a minimum denominator or pooling, intervals, a per-person rate); the postcode check (S6). Then the Census, CABEE, PHIDU (its concordance is built) and CER attachments.
 5. **`national`** (A8 done, ADR 0010): GII, the OECD flows (the tax regimes' values are kept), and WIPO by origin.

@@ -60,6 +60,7 @@ uv run pytest -q
 ## Sessions
 
 - **At the start:** read this file, `docs/handover-eda.md` and the latest ADRs, then check `git log`.
+- **Questions for the owner** go in `docs/owner-questions.md`, and answers move to its "Answered" table.
 - **At the end:** update the handover, commit, and push to the session's branch.
 
 The working agreement is adapted from `docs/sop-agent-construction-v2 (2).md`, which describes a different project; take

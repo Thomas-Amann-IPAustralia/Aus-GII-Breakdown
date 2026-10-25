@@ -47,6 +47,17 @@ rights:
   agent_name: {label: Agent name, kind: category, note: "the agent's name if it is an organisation, usually the attorney firm; empty for individuals"}
   agent_clients: {label: Applicants the agent acts for, kind: count, note: "distinct applicants or owners the agent acts for across the whole register, all years: a firm of attorneys acts for many"}
   representation: {label: Who represents the applicant, kind: category, note: "attorney (an agent of 5 or more applicants), other_agent (an agent who is not the applicant but acts for fewer: often a related company or in-house), or self (no agent but the applicant). Empty for provisional applications (ADR 0013)"}
+  date_of_patent: {label: Date of patent, kind: date, note: "patents only: the date a patent's term runs from (IP RAPID's date_of_patent event), the filing date of the complete application; for a PCT application the international filing date, for a divisional often the parent's. Every milestone below is the first standing event of its kind (a reversed lapse or a withdrawn acceptance is not standing), dated 1904 to 22 October 2026 and not before the right's earliest filing (171 events are), leaving out the placeholder 1 January 1970 (ADR 0015)"}
+  exam_requested_date: {label: Date examination was requested, kind: date, note: "patents and designs: the first request for examination, expedited or not, re-examination left out. A trade mark is examined without a request, so it is empty for them. For a PCT application it can fall shortly before the application date (the national phase entry)"}
+  exam_expedited: {label: Expedited examination asked for, kind: binary, note: "true if the applicant asked for examination to be expedited; false for every other trade mark and every other patent or design with an examination request; empty otherwise"}
+  accepted_date: {label: Date accepted, kind: date, note: "patents (standard and petty), trade marks and plant breeder's rights: the first acceptance, the decision that the application meets the requirements (for a plant breeder's right, the acceptance of the application for examination). Innovation patents and designs are not accepted"}
+  certified_date: {label: Date certified, kind: date, note: "innovation patents and designs: the first certification, the examination after grant or registration that a right needs before it can be enforced"}
+  opposed_date: {label: Date first opposed, kind: date, note: "patents and trade marks: the first opposition lodged to the grant or registration. Recorded for patents from April 2003 only; a trade mark's application for removal for non-use is not counted (the timeline's trade mark oppositions count both)"}
+  assignment_count: {label: Assignments recorded, kind: count, note: "patents, trade marks and designs: recorded transfers of ownership, each counted once a day (patents: IP RAPID's published assignments, also published as party changes; trade marks and designs: ownership publications). Recorded from 1979 for patents, 1987 for trade marks and 1990 for designs (ADR 0014 for their earliest months); empty for plant breeder's rights, which have none in IP RAPID"}
+  first_assigned_date: {label: Date first assigned, kind: date, note: "the date of the first recorded assignment (see assignment_count)"}
+  term_extended_date: {label: Date the term was extended, kind: date, note: "standard patents: the date an extension of term was granted (pharmaceutical substances, up to five years)"}
+  in_force: {label: Still in force, kind: binary, note: "for rights that were granted or registered: true if not ended by the date the register's record of ends is complete (31 March 2026 for trade marks and designs, whose ends are recorded only after a six-month grace period; 22 October 2026 for patents and plant breeder's rights). Empty for rights never granted, for 6,621 whose status ended them but has no end date, and for 26 dated to end before their term began (ADR 0015)"}
+  years_in_force: {label: Years in force, kind: numeric, unit: years, note: "from the date the term runs from (the date of patent; a trade mark's or design's earliest filing date, the international registration's for a Madrid mark; a plant breeder's right's grant) to its end (retired_date), or to the date in in_force if it is still in force, when it is unfinished (censored). A patent's recorded cessation falls 6 to 7 months after an anniversary of its date of patent, at the end of the grace period. Rights filed before IP RAPID's records are complete are survivors (trade marks before 1983, designs before 1986), and patents' outcomes start with those filed in 1979 (ADR 0014), so lifetimes are compared from those cohorts. 104 rights exceed their type's longest term, a quirk of their dates"}
 
 firms:
   abn: {label: ABN, kind: id}
@@ -54,9 +65,9 @@ firms:
   entity_group: {label: Entity group, kind: category, note: "entity_type grouped into eight kinds (APRA-regulated funds are super funds); see build.py"}
   abn_active: {label: ABN is active, kind: binary}
   gst_registered: {label: Registered for GST, kind: binary, note: "a rough marker of turnover of $75,000 or more"}
-  state: {label: State, kind: category}
+  state: {label: State, kind: category, note: "the ABR's state of the main business address; the ABR leaves it blank for 3,977 ABNs, of which 165 are filled from the postcode's postal area (ADR 0016)"}
   postcode: {label: Postcode, kind: category}
-  remoteness: {label: Remoteness of postcode, kind: category, note: "ABS Remoteness Area of the postal area"}
+  remoteness: {label: Remoteness of postcode, kind: category, note: "ABS Remoteness Area of the postal area; empty for an area of people with no usual address"}
   irsad_decile: {label: Advantage of postcode (IRSAD decile), kind: numeric, note: "1 = most disadvantaged tenth of areas, 10 = most advantaged"}
   asic_type: {label: ASIC company type, kind: category}
   first_seen: {label: First seen (earliest public registration), kind: date, note: "the earliest of the ABN status date (active ABNs), GST registration and ASIC registration: the public registers give only current statuses, so a lower bound on the business's start"}
@@ -66,6 +77,7 @@ firms:
   in_iprapid_patent: {label: Applicant or owner of a patent (IP RAPID), kind: binary, note: "founding or current"}
   in_iprapid_trade_mark: {label: Applicant or owner of a trade mark (IP RAPID), kind: binary, note: "founding or current"}
   in_iprapid_design: {label: Applicant or owner of a design (IP RAPID), kind: binary, note: "founding or current"}
+  in_iplord: {label: Linked to IP by IPLORD (to FY2020), kind: binary, note: "IP Australia's IPLORD panel links this ABN to trade marks, designs or plant breeder's rights filed to FY2020. 50,790 ABNs are in the lens only through IPLORD: IP RAPID gives none of their rights an ABN, so their IP counts here are 0, a lower bound (ADR 0016). IPLORD's own counts are built differently and are not used"}
   in_rdti: {label: Claimed the R&D Tax Incentive (2021-22 to 2023-24), kind: binary}
   in_austender: {label: Has a government contract (AusTender), kind: binary}
   in_ato_ctt: {label: In the ATO tax transparency reports, kind: binary, note: "large entities only: total income of $100m or more (Australian-owned private companies: $200m until 2021-22)"}
@@ -74,11 +86,13 @@ firms:
   design_first_fy: {label: Financial year of first design application, kind: year}
   ip_filed_total: {label: IP applications as a founding applicant, kind: count, note: "every right and patent sub-type (provisionals included), from IP RAPID's applicant panel; a right with two founding applicants counts once for each"}
   ip_filed_weighted: {label: IP applications as a founding applicant (shared ones split), kind: numeric, note: "as ip_filed_total, but a right with two founding applicants counts 0.5 for each, so the sum over firms is the number of rights (IPLORD's weighting)"}
-  n_patents_standard: {label: Standard patent applications, kind: count, note: "where this ABN is the first applicant with an ABN"}
+  n_patents_standard: {label: Standard patent applications, kind: count, note: "filed by this ABN: where it is the first founding applicant with an ABN (`founder_abn` in the rights lens), not the current holder (ADR 0016). For patents filed before FY2003 the founding applicant may be a later holder (ADR 0013)"}
   n_patents_provisional: {label: Provisional patent applications, kind: count, note: "as n_patents_standard; not added to it, since a provisional is usually followed by a standard application"}
   n_patents_second_tier: {label: Innovation and petty patent applications, kind: count, note: "as n_patents_standard"}
   n_trade_marks: {label: Trade mark applications, kind: count, note: "as n_patents_standard"}
   n_designs: {label: Design applications, kind: count, note: "as n_patents_standard"}
+  n_held: {label: Rights held now, kind: count, note: "rights of every type and status whose first current applicant or owner with an ABN is this ABN (`applicant_abn` in the rights lens): who holds, beside who filed (ADR 0016)"}
+  n_held_in_force: {label: Rights held now and in force, kind: count, note: "as n_held, only rights in force (`in_force` in the rights lens): trade marks and designs as at 31 March 2026, the rest at 22 October 2026 (ADR 0015)"}
   rdti_years: {label: Years claiming the R&D Tax Incentive, kind: count, note: "0 to 3"}
   rd_expenditure_mean: {label: Average R&D spend claimed, kind: money, unit: AUD a year, note: "each year's claim as the latest report gives it, amended where it was (ADR 0010); nominal dollars"}
   rd_latest: {label: R&D spend claimed (latest year), kind: money, unit: AUD, note: "as rd_expenditure_mean"}

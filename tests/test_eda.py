@@ -10,7 +10,7 @@ import pandas as pd  # noqa: E402
 import pyarrow.parquet as pq  # noqa: E402
 import pytest  # noqa: E402
 from eda import bivariate as bi  # noqa: E402
-from eda import data, style  # noqa: E402
+from eda import build, data, style  # noqa: E402
 from eda import multivariate as multi  # noqa: E402
 from eda import univariate as uni  # noqa: E402
 
@@ -299,3 +299,57 @@ def test_rights_origin_is_three_valued_and_patents_are_typed():
         "founder_postcode": 0,
         "old_patent_holders": 0,
     }
+
+
+def test_rights_events_attachment_is_consistent():
+    p = _built("rights")
+    dates = ["date_of_patent", "exam_requested_date", "accepted_date", "certified_date", "opposed_date"]
+    dates += ["first_assigned_date", "term_extended_date"]
+    out_of_range = " OR ".join(
+        f"{d} < DATE '1904-01-01' OR {d} > DATE '{build.TODAY}' OR {d} = DATE '1970-01-01'" for d in dates
+    )
+    before_filing = " OR ".join(f"{d} < earliest_filed_date" for d in dates[1:])
+    bad = data.sql(f"""
+        SELECT
+            count(*) FILTER ({out_of_range}) AS placeholder_dates,
+            count(*) FILTER ({before_filing}) AS before_filing,
+            count(*) FILTER (date_of_patent IS NOT NULL AND ip_right_type <> 'patent') AS date_of_patent,
+            count(*) FILTER (exam_requested_date IS NOT NULL AND ip_right_type NOT IN ('patent', 'design')) AS exam,
+            count(*) FILTER ((ip_right_type = 'trade_mark') AND exam_expedited IS NULL) AS trade_mark_expedited,
+            count(*) FILTER (certified_date IS NOT NULL AND ip_right_type NOT IN ('patent', 'design')) AS certified,
+            count(*) FILTER (term_extended_date IS NOT NULL AND patent_type IS DISTINCT FROM 'standard') AS extended,
+            count(*) FILTER ((ip_right_type = 'pbr') <> (assignment_count IS NULL)) AS assignments,
+            count(*) FILTER ((assignment_count > 0) <> (first_assigned_date IS NOT NULL)) AS first_assigned,
+            count(*) FILTER ((in_force IS NULL) <> (years_in_force IS NULL)) AS lifetime_pairs,
+            count(*) FILTER (in_force IS NOT NULL AND registered_date IS NULL) AS lifetime_unregistered,
+            count(*) FILTER (years_in_force < 0) AS negative_lifetime,
+            count(*) FILTER (NOT in_force AND retired_date IS NULL) AS ended_without_date
+        FROM read_parquet('{p}')""").iloc[0]
+    assert bad.to_dict() == dict.fromkeys(bad.index, 0)
+
+
+def test_kaplan_meier_matches_a_hand_count():
+    # 10 at risk: 2 end at t=1, 1 is unfinished at t=1, then 3 end at t=2 of the 7 left, and 4 are unfinished then
+    counts = pd.DataFrame({"t": [1, 2], "ended": [2, 3], "unfinished": [1, 4]})
+    km = uni.kaplan_meier(counts)
+    assert km.at_risk.tolist() == [10, 7]
+    assert np.allclose(km.survival, [0.8, 0.8 * 4 / 7])
+    assert (km.lower <= km.survival).all() and (km.survival <= km.upper).all()
+    at = uni.survival_at(km.assign(g="a"), [0, 1.5, 2, 5], by="g", min_at_risk=1)
+    assert np.allclose(at.loc["a"].tolist()[:3], [1.0, 0.8, 0.8 * 4 / 7])
+    assert np.isnan(at.loc["a", 5])  # beyond the curve
+
+
+def test_firms_count_by_the_filer_and_name_their_state():
+    p = _built("firms")
+    rights = _built("rights")
+    bad = data.sql(f"""
+        SELECT
+            count(*) FILTER (state NOT IN ('NSW', 'VIC', 'QLD', 'SA', 'WA', 'TAS', 'NT', 'ACT')) AS states,
+            count(*) FILTER (n_held_in_force > n_held) AS held,
+            count(*) FILTER (remoteness LIKE 'No usual address%') AS remoteness,
+            (SELECT count(*) FROM read_parquet('{rights}') WHERE founder_abn IS NOT NULL AND ip_right_type <> 'pbr')
+              - sum(n_patents_standard + n_patents_provisional + n_patents_second_tier + n_trade_marks + n_designs)
+              AS filed
+        FROM read_parquet('{p}')""").iloc[0]
+    assert bad.to_dict() == dict.fromkeys(bad.index, 0)

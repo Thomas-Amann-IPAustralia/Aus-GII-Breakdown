@@ -130,6 +130,41 @@ From section 5 of `01_univariate.ipynb`. The timeline lens is repaired; the corp
 - **The CPI's base** is the month of September 2025 (= 100); the quarterly index averages its three months, so the
   September quarter 2025 is 99.73.
 
+## Found in the events attachment (2026-10-25, ADR 0015)
+
+From section 1.8.2 of `01_univariate.ipynb`. The `rights` lens gains each right's milestones and lifetime; the
+corpus tables are as published.
+- **`is_standing` marks events later reversed.** 4.76% of patent lapse events are not standing, and most of those
+  patents went on to be granted. Take a right's milestones from standing events.
+- **Patent assignments are published twice,** as `published_assignments_*` and as `published_ip_right_assignment`
+  (99.78% of assigned patents have both). Count one.
+- **A trade mark's term runs from its earliest filing date,** which for a Madrid mark is the international
+  registration's, not the application date IP RAPID gives.
+- **A patent's cessation is dated at the end of its grace period,** 6 to 7 months after an anniversary of its date
+  of patent (84.59% of those ceased since 1996).
+- **Milestones are recorded from different dates:** patents' examination requests from the early 1980s' filings,
+  trade marks' acceptances from the mid-1980s', designs' examination requests from 2013. Petty patents filed FY1986
+  to FY1988 mostly lack an acceptance.
+- **Trade mark requests for expedited examination fall** from about 1,400 a month to about 230 in November 2018, when
+  the trade mark records moved between systems: recording or practice, not yet known.
+- **171 events are dated before the right's earliest filing,** including 26 trade mark oppositions dated 1909.
+- **Placeholders** (1 January 1800, 1900, 1970): 3,162 of 49.35 million events, 34 links and 105 party start dates.
+
+## Found in the firms lens's Stage 1 profile (2026-10-25, ADR 0016)
+
+From section 2 of `01_univariate.ipynb`.
+- **IPLORD links ABNs that IP RAPID does not.** 52,949 of the spine's ABNs are linked to trade marks, designs or plant
+  breeder's rights by IPLORD (to FY2020) but are on no IP RAPID right; 50,790 are in the spine for that reason alone.
+- **IPLORD's counts differ from IP RAPID's applicant panel,** built to the same design: for ABNs with trade marks in
+  both, 81.02% agree, but the largest filers run up to 7 times higher in IPLORD (total 1.84 times), while IPLORD's
+  weighted total is 0.42 times IP RAPID's. Do not add or splice them.
+- **IPLORD has no patents:** its columns cover trade marks, designs and plant breeder's rights only.
+- **The ABR leaves `state` blank** (an empty string) for 3,977 of the spine's ABNs.
+- **Recent filers are less often linked to an ABN:** Australian organisations' trade marks with a filer's ABN fall from
+  84.1% (FY2024) to 59.9% (FY2026).
+- **The tax transparency reports' first years** (2013-14 to 2015-16) hold 29 rows under $100 million, and the
+  2013-14 December sheet lists two ABNs twice.
+
 ## Not yet checked
 
 - Whether values mean the same thing across sources (for example, what counts as a "state" or an entity type).
