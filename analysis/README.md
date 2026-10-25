@@ -130,6 +130,26 @@ From section 5 of `01_univariate.ipynb`. The timeline lens is repaired; the corp
 - **The CPI's base** is the month of September 2025 (= 100); the quarterly index averages its three months, so the
   September quarter 2025 is 99.73.
 
+## Found in the events attachment (2026-10-25, ADR 0015)
+
+From section 1.8.2 of `01_univariate.ipynb`. The `rights` lens gains each right's milestones and lifetime; the
+corpus tables are as published.
+- **`is_standing` marks events later reversed.** 4.76% of patent lapse events are not standing, and most of those
+  patents went on to be granted. Take a right's milestones from standing events.
+- **Patent assignments are published twice,** as `published_assignments_*` and as `published_ip_right_assignment`
+  (99.78% of assigned patents have both). Count one.
+- **A trade mark's term runs from its earliest filing date,** which for a Madrid mark is the international
+  registration's, not the application date IP RAPID gives.
+- **A patent's cessation is dated at the end of its grace period,** 6 to 7 months after an anniversary of its date
+  of patent (84.59% of those ceased since 1996).
+- **Milestones are recorded from different dates:** patents' examination requests from the early 1980s' filings,
+  trade marks' acceptances from the mid-1980s', designs' examination requests from 2013. Petty patents filed FY1986
+  to FY1988 mostly lack an acceptance.
+- **Trade mark requests for expedited examination fall** from about 1,400 a month to about 230 in November 2018, when
+  the trade mark records moved between systems: recording or practice, not yet known.
+- **171 events are dated before the right's earliest filing,** including 26 trade mark oppositions dated 1909.
+- **Placeholders** (1 January 1800, 1900, 1970): 3,162 of 49.35 million events, 34 links and 105 party start dates.
+
 ## Not yet checked
 
 - Whether values mean the same thing across sources (for example, what counts as a "state" or an entity type).

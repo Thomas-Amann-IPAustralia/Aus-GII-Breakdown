@@ -19,7 +19,7 @@ the owner's, or Claude's, which the owner can overturn.
 | [0011](0011-corpus-repairs-and-reprocessing.md) | Corpus repairs: every published value kept, one row per key, AusTender's amendments in order, every policy date checked against the Federal Register, and `corpus reprocess` to rebuild from stored raw files | 2026-10-25 | Claude (owner asked for the last check before Stage 1) |
 | [0012](0012-rights-lens-stage-1-repairs.md) | Five repairs to the rights lens from its Stage 1 profile: attorney use excludes the applicant itself, the technology area is for patents only, two placeholder dates emptied, no time to registration for trade marks dated at filing, and a missing Australian state taken from the postcode | 2026-10-25 | Claude (owner asked for Stage 1 to begin) |
 | [0013](0013-rights-parties-attachment.md) | The parties attachment: the founding applicant beside the current holder, whether the holder changed (not knowable for patents filed before FY2003), the main agent, and representation as attorney, other agent or self | 2026-10-25 | Claude (owner asked for the rights attachments, parties first) |
-
 | [0014](0014-timeline-stage-1-repairs.md) | The timeline's series start where their records are complete (15 hand-set starts, past survivors, partial records and batch dates), and the 1995 rise of the patent term to 20 years is the 17th policy event | 2026-10-25 | Claude (owner asked for the next lens's Stage 1) |
+| [0015](0015-rights-events-attachment.md) | The events attachment: each right's milestones (examination, acceptance, certification, opposition, assignment, extension of term) and its lifetime, with rights still in force counted as unfinished and trade marks and designs observed to March 2026 | 2026-10-25 | Claude (owner agreed to the events attachment next) |
 
-Next free number: 0015.
+Next free number: 0016.

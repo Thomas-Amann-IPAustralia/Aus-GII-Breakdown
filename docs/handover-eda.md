@@ -5,7 +5,15 @@ For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md
 **The owner's decisions (2026-10-25, end of session):** do the events attachment (B5) next, then `firms`; N01 and
 N06 are confirmed as settled (ADR 0010).
 
-**Status (2026-10-25, latest):** Stage 1 is under way. The `timeline` section (5) of `01_univariate.ipynb` now
+**Status (2026-10-25, latest):** the events attachment (B5) is built and profiled, as section 1.8.2 of
+`01_univariate.ipynb` (U31 to U40, ADR 0015). Eleven columns join `rights` from `iprapid/events`: the date of patent,
+the examination request (and whether expedited), acceptance, certification, first opposition, assignments (count and
+first date), extension of term, and each right's lifetime (`in_force`, `years_in_force`), with rights still in force
+counted as unfinished and compared by survival curves (`uni.kaplan_meier`). Trade marks and designs are observed to
+31 March 2026, because their ends are recorded only after the six-month grace period. The profile also resolved two
+timeline leads (U27, U29) and the placeholder-date check. **Next is `firms` (the owner's order).**
+
+Before that, the same day: the `timeline` section (5) of `01_univariate.ipynb` now
 profiles every column of that lens (U22 to U30), after one more repair (ADR 0014): 15 monthly series started too
 early, on records where IP RAPID holds only the rights that survived until it was computerised (trade marks before
 1983, designs before 1986, provisionals before September 1985), outcomes for some rights only, or events dated in
@@ -28,6 +36,36 @@ and BLADE stays ruled out.
 
 ## Where things stand
 
+- **Stage 1, `rights`, events (1.8.2).** What it found (all descriptive):
+  - the checks (U31): the grant event is `registered_date` (99.99%); patent assignments are published twice (99.78%),
+    counted once; 4.76% of patent lapse events were later reversed (not standing); a trade mark's term runs from its
+    earliest filing date (92.19% of ceased Madrid-type marks end on a whole year from it); a patent's cessation falls
+    6 to 7 months after an anniversary (84.59%), so its years in force include the grace period; 3,154 placeholder
+    and 171 pre-filing events left out;
+  - each milestone is recorded from a different date (U32): patents' examination requests from the early 1980s'
+    filings, trade marks' acceptances from the mid-1980s' (30.88% of the 1980s', 75.88% to 79.05% since 2000), designs'
+    examination requests only from 2013;
+  - times (U33): a standard patent's examination request to acceptance took up to 755 days (FY2006), 422 to 516 since
+    FY2014; FY2013's applicants asked for examination 44 days after filing (Raising the Bar); trade marks are accepted
+    52 to 184 days after filing (FY2005 to FY2021);
+  - expedited examination (U34): standard patents 1.87% (FY2005) to 10.31% (FY2026); trade marks 16.67% to 19.69% to
+    FY2018, then 3.08% to 3.97%, the fall in November 2018 (about 1,400 requests a month to about 230), when the trade
+    mark records moved between systems: a lead. Oppositions: 1.98% to 2.93% of accepted trade marks; 0.14% to 0.38%
+    of standard patents since FY2015;
+  - assignments (U35): 15.1% of standard patents and 18.1% of trade marks filed in the 2000s; from FY2003, 64.68% to
+    74.66% of patents whose holder changed have one, and the assigned share runs on smoothly across FY2003 (15.4%,
+    16.41%), so `assignment_count` measures a change of owner for patents filed before then;
+  - lifetimes (U36): standard patents' median years in force rose from 10.7 (1980s) to 13.5 (2000s and 2010s); 21.3%
+    of the 2000s' were kept to their 20-year end. 46.9% to 56.4% of trade marks were in force after 10 years (1990s to
+    2010s), against 67.3% of the 1983 to 1989 marks (a 7-year first term). Designs renewed at 5 years: 64.8% (2000s),
+    58.0% (2010s). Innovation patents: median 3.5 years;
+  - extensions of term (U37): 1,450 standard patents (0.24% of those granted), 108 and 114 in 1999 and 2000;
+  - the 2002 trade mark lead (U38): cessations at 7 years (the 1955 Act's first term) stop in 2002 (14) before those
+    at 10 years (the 1995 Act's) build up (1,167 in 2003); 10,247 of 2002's lapses are of marks filed in 2000, the
+    filing peak (42,907);
+  - the April design lapses (U39): 101 lapses on 32 days in April against 365 to 671 on 56 to 91 days in other months,
+    with filings and lapse shares (18.1% to 21.6% per filing month) even: how lapses were dated;
+  - placeholders (U40): 3,162 of 49.35 million events, 34 links, 105 party start dates. Closed.
 - **Stage 1, `timeline` (section 5, every column).** What it found (all descriptive):
   - the repair (U23): never registered, 2.0% of trade marks filed in early 1981 against 52.0% from 1983; patent
     cessations dated in batches to April 1995 (29.8% of months empty); grants recorded only for patents filed from
@@ -75,7 +113,7 @@ and BLADE stays ruled out.
     expired patents have a grant date;
   - design origin is often unrecorded (4.0% to 6.3% unknown since FY2018, and rising), so design shares need care.
 - **Five lenses are built** (`analysis/eda/build.py`), in under a minute:
-  - `rights`: 4,368,006 rows, 41 columns (29 core, 12 from the parties);
+  - `rights`: 4,368,006 rows, 52 columns (29 core, 12 from the parties, 11 from the events);
   - `firms`: 398,450 rows, 37 columns;
   - `regions`: 2,641 rows, 31 columns;
   - `national`: 135,140 rows, 10 columns;
@@ -121,46 +159,45 @@ and BLADE stays ruled out.
 - **Corrected this session (the timeline):** the policy register's note that the Patents Act 1990 brought in 20-year
   patents (it was 16 years until 1 July 1995); and section 1's U5 and U10, whose charts showed survivors' counts and
   registration rates for the years before 1983 (trade marks) and 1986 (designs) without saying so.
-- **Tests:** 60 pass (the lens tests skip unless the lenses are built); lint is clean. New: each hand-set timeline
+- **Tests (events attachment):** 63 pass; new: the events columns' dates, types and lifetimes, and the survival
+  helper against a hand count.
+- **Tests (before):** 60 pass (the lens tests skip unless the lenses are built); lint is clean. New: each hand-set timeline
   start, no batch gaps inside a series, and the new policy event's date.
 
 ## Next, in order
 
-1. **The events attachment (B5), as 1.8.2 (the owner agreed, 2026-10-25).** Stage 1 work: new columns on `rights`,
-   built into the lens first (an ADR), each then profiled on its own. The columns: the dates of examination request,
-   acceptance, grant, opposition, assignment, extension of term and the end of each right, giving lifetimes. Add
-   innovation patents' certification: their grant follows a check of formalities only, so certification is their
-   examination (glossary; U10 and U11). Read the event dates with ADR 0014 in mind: before 1995 some are dated in
-   batches, and before 1979 patents have no outcomes. On the way, describe (not explain):
-   - whether assignment events fill the gap in `holder_changed` for patents filed before FY2003 (U17);
-   - at what age of mark the 2002 fall in trade mark cessations, and rise in lapses, happen (U27);
-   - whether the April lows in design lapses, 1996 to 2002, come from how lapses are recorded (U29).
-2. **`firms`, then `regions` (the B3 rules for small areas first: a minimum denominator or pooling, intervals, a
-   per-person rate), then `national`,** in the order the plan gives. Before their profiles, `firms` and `regions`
-   switch their application counts from the current holder to the filer (`founder_abn`, `founder_postcode`; ADR 0013).
-3. **The rest of the `rights` attachments, as sub-sections of 1.8, when the owner says** (the plan had them before the
-   timeline; the owner's order is events, then `firms`):
+1. **`firms` (the owner's order, 2026-10-25),** section 2 of `01_univariate.ipynb`. First, count applications by the
+   filer's ABN (`founder_abn`, ADR 0013) rather than the current holder's: an ADR, then the build, then the profile of
+   every column, as the `rights` section did. The events columns can now give each firm its rights' lifetimes and
+   assignments, if the profile wants them (a new ADR would say so).
+2. **`regions`, then `national`,** in the order the plan gives. `regions` first switches its application counts to the
+   filer's postcode (`founder_postcode`) and sets the B3 rules for small areas (a minimum denominator or pooling,
+   intervals, a per-person rate).
+3. **The rest of the `rights` attachments, as sub-sections of 1.8, when the owner says:**
    - the links, with the PCT country check;
    - Google Patents (B4);
    - the inventors (gender estimates checked country by country against WIPO's published shares, above all China and
      Korea).
-4. **Done: the `timeline` section (U22 to U30, ADR 0014).** Its later attachments (Labour Force, wages, PBS, CER,
-   judgments, contracts, fees) become sub-sections of section 5 as each is built.
+4. **Done: the `timeline` section (U22 to U30, ADR 0014)** and **the events attachment (U31 to U40, ADR 0015).** The
+   timeline's later attachments (Labour Force, wages, PBS, CER, judgments, contracts, fees) become sub-sections of
+   section 5 as each is built.
 5. **The plan's "high value, little work" additions, with the lens each serves:** the RBA's cash rate and exchange
    rates and the ABS national accounts (timeline), the ATO's statistics by postcode (regions), and IP Australia's own
-   published figures as a benchmark (which would also test the provisional rise, U8).
+   published figures as a benchmark (which would also test the provisional rise, U8, and the trade mark expedite fall,
+   U34).
 
 ## Open items
 
-1. Leads from the timeline (U27, U29), each for the events attachment (B5) or Stage 2:
-   - trade mark cessations fell to 3,773 in 2002 while lapses rose to 16,718 and registrations to 29,902: the Trade
-     Marks Act 1995's renewal terms, or processing?
-   - design lapses fall to 0 to 16 in April in six of the seven years from 1996 to 2002;
+1. Leads for Stage 2:
+   - trade mark requests for expedited examination fell from about 1,400 a month to about 230 in November 2018, when
+     the trade mark records moved between systems (U34): recording or practice? IP Australia's published figures
+     could tell;
+   - petty patents filed FY1986 to FY1988 mostly lack an acceptance, though many were registered (U32);
+   - resolved (U38, U39): the 2002 trade mark trough (the change from 7-year to 10-year first terms, and the 2000 filing
+     peak) and the April design lapses (how lapses were dated);
    - trade mark oppositions rise from 0 to 16 a month (1983 to 1987) to 20 to 40 (1988): left as recorded (ADR 0014);
    - the months before June 1904 are a start-up (applications lodged before the Patents Act 1903 took effect).
-2. Check in Stage 1:
-   - the 1800-01-01 placeholder in IP RAPID's events, links and parties (the 1901 and 1970 dates in `rights` are
-     repaired, ADR 0012);
+2. Check in Stage 1 (the placeholder dates are done, U40):
    - IP RAPID's `links.linked_application_country`, which labels every PCT number `au` (`analysis/README.md`), with
      the links attachment;
    - the 222-day peak in trade mark registration times (U11), against IP Australia's published process times.
@@ -183,6 +220,9 @@ Nothing blocks the rest of Stage 1. Only you can do these:
 2. **TableBuilder, only if a question needs owner-managers by sex or Indigenous status for each postal area:** register
    as a private user, and check that the free Basic version has the variables (`docs/tablebuilder-owner-managers.md`).
 3. **When to do the other `rights` attachments** (links, Google Patents, inventors): after `firms`, or later.
+4. **Whether to adopt U36 as a working measure:** years in force (with unfinished rights kept) as Stage 2's measure of
+   how long owners keep their rights, the closest the data come to private value (Q1). It is descriptive, and
+   lifetime is not value; Stage 2 would use it alongside other signals.
 
 ## Conventions to keep
 
@@ -191,5 +231,5 @@ Nothing blocks the rest of Stage 1. Only you can do these:
 - After a parser fix, `corpus reprocess <source>` rebuilds its tables from the raw files it holds, keeping the data's
   vintage (ADR 0011).
 - The `rights` section's cells are long; keep each new sub-section to a few cells, and the notebook under about
-  25 MB (it is 4.6 MB now; ADR 0002 says when to split it).
-- Next free ADR: 0015.
+  25 MB (ADR 0002 says when to split it).
+- Next free ADR: 0016.
