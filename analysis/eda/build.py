@@ -135,7 +135,16 @@ def rights_sql() -> str:
     """One row per right. Origin comes from every current applicant (ADR 0009): Australian if any is in Australia,
     overseas if at least one has a known country and none is in Australia, else unknown (NULL). IP RAPID's own
     `any_applicant_in_australia` turns unknown into false, so it is not used. IP RAPID publishes no agents for
-    provisional applications, so `has_agent` is empty (unknown) for them rather than false (ADR 0010)."""
+    provisional applications, so `has_agent` is empty (unknown) for them rather than false (ADR 0010).
+
+    Repairs from the Stage 1 section (ADR 0012): IP RAPID's "agent" is the address for service, which is often the
+    applicant itself, so `has_agent` counts only an agent who is not one of the right's applicants or owners (by
+    party id, or by name with case and punctuation removed); `main_area` is kept for patents only (IP RAPID repeats
+    the Nice or Locarno class there for trade marks and designs); two placeholder dates are emptied (a retirement on
+    1 January 1970, for 1,282 rights filed from 2013, and a registration before 1904); and a trade mark's days to
+    registration are empty before 1986, when its registration date is its filing date. An Australian applicant's
+    missing state is taken from the postcode's postal area (IP RAPID leaves it out for many Australian standard
+    patents filed from FY2023; where both exist they agree for 99.9% of rights)."""
     parts = []
     for kind in ("patent", "trade_mark", "design", "pbr"):
         parts.append(f"""
@@ -151,6 +160,36 @@ def rights_sql() -> str:
         FROM {{iprapid/party}}
         WHERE party_role_category IN ('applicant', 'owner') AND is_current IS NOT false
         GROUP BY 1, 2
+    ),
+    party AS (
+        SELECT ip_right_type, application_number, party_id, party_role_category,
+               regexp_replace(lower(party_name), '[^a-z0-9]', '', 'g') AS name
+        FROM {{iprapid/party}}
+        WHERE party_role_category IN ('applicant', 'owner', 'applicant_agent')
+    ),
+    agents AS (  -- an agent who is not one of the right's applicants or owners, at any time
+        SELECT DISTINCT ag.ip_right_type, ag.application_number
+        FROM party ag
+        ANTI JOIN party ap
+            ON ap.ip_right_type = ag.ip_right_type AND ap.application_number = ag.application_number
+           AND ap.party_role_category IN ('applicant', 'owner')
+           AND (ap.party_id = ag.party_id OR ap.name = ag.name)
+        WHERE ag.party_role_category = 'applicant_agent'
+    ),
+    poa_state AS (  -- each postal area's state (ASGS 2021), for an Australian applicant whose state is missing
+        SELECT poa_code,
+               CASE state_name WHEN 'New South Wales' THEN 'nsw' WHEN 'Victoria' THEN 'vic' WHEN 'Queensland' THEN 'qld'
+                   WHEN 'South Australia' THEN 'sa' WHEN 'Western Australia' THEN 'wa' WHEN 'Tasmania' THEN 'tas'
+                   WHEN 'Northern Territory' THEN 'nt' WHEN 'Australian Capital Territory' THEN 'act' END AS state
+        FROM {{abs_regions/poa}}
+    ),
+    dated AS (
+        SELECT *,
+               CASE WHEN applicant_country = 'au' THEN {_postcode("applicant_postcode")} END AS postcode_au,
+               CASE WHEN year(gained_registration_status_date) >= 1904 THEN gained_registration_status_date END
+                   AS registered,  -- one trade mark is dated 1 January 1901
+               nullif(deemed_retired_date, DATE '1970-01-01') AS retired  -- all 1,282 were filed from 2013
+        FROM r
     )
     SELECT
         r.application_number,
@@ -166,14 +205,17 @@ def rights_sql() -> str:
         r.earliest_filed_date,
         {_fy("r.application_date")} AS filing_fy,
         r.priority_date,
-        r.gained_registration_status_date AS registered_date,
-        date_diff('day', r.application_date, r.gained_registration_status_date) AS days_to_registration,
-        r.deemed_retired_date AS retired_date,
+        r.registered AS registered_date,
+        CASE WHEN NOT (r.ip_right_type = 'trade_mark' AND r.registered < DATE '1986-01-01')
+             THEN date_diff('day', r.application_date, r.registered) END AS days_to_registration,
+        r.retired AS retired_date,
         r.applicant_count,
         r.applicant_type,
         r.applicant_country,
-        r.applicant_state,
-        CASE WHEN r.applicant_country = 'au' THEN {_postcode("r.applicant_postcode")} END AS applicant_postcode,
+        CASE WHEN r.applicant_country = 'au'
+             THEN coalesce(CASE r.applicant_state WHEN 'queensland' THEN 'qld' ELSE r.applicant_state END, ps.state)
+             ELSE r.applicant_state END AS applicant_state,
+        r.postcode_au AS applicant_postcode,
         nullif(trim(r.applicant_postcode), '') AS applicant_postcode_raw,
         a.applicant_countries,
         coalesce(a.applicants_au, 0) AS applicants_au,
@@ -182,11 +224,15 @@ def rights_sql() -> str:
         r.any_applicant_abn AS applicant_abn,
         r.any_applicant_abn IS NOT NULL AS has_abn,
         CASE WHEN a.applicants_au > 0 THEN true WHEN a.applicants_overseas > 0 THEN false END AS australian_applicant,
-        CASE WHEN r.ip_right_sub_type <> 'provisional' THEN r.has_agent END AS has_agent,  -- no agents are published
+        CASE WHEN r.ip_right_sub_type <> 'provisional'  -- no agents are published for provisionals
+             THEN g.application_number IS NOT NULL END AS has_agent,
         r.main_class,
-        r.main_area,
+        CASE WHEN r.ip_right_type = 'patent' AND r.main_area <> '99_unknown' THEN r.main_area END AS main_area,
         r.class_count
-    FROM r LEFT JOIN applicants a USING (ip_right_type, application_number)
+    FROM dated r
+    LEFT JOIN applicants a USING (ip_right_type, application_number)
+    LEFT JOIN agents g USING (ip_right_type, application_number)
+    LEFT JOIN poa_state ps ON ps.poa_code = r.postcode_au
     """
 
 

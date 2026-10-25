@@ -227,6 +227,21 @@ def test_rights_origin_is_three_valued_and_patents_are_typed():
             count(*) FILTER (applicants_au + applicants_overseas + applicants_country_unknown <> applicant_count)
                 AS applicants,
             count(*) FILTER ((ip_right_type = 'patent') <> (patent_type IS NOT NULL)) AS patent_type,
-            count(*) FILTER (patent_type = 'provisional' AND has_agent IS NOT NULL) AS provisional_agents
+            count(*) FILTER (patent_type = 'provisional' AND has_agent IS NOT NULL) AS provisional_agents,
+            count(*) FILTER (main_area IS NOT NULL AND ip_right_type <> 'patent') AS main_area,
+            count(*) FILTER (retired_date = DATE '1970-01-01' OR year(registered_date) < 1904) AS placeholders,
+            count(*) FILTER (ip_right_type = 'trade_mark' AND registered_date < DATE '1986-01-01'
+                             AND days_to_registration IS NOT NULL) AS registered_at_filing,
+            count(*) FILTER (applicant_country = 'au' AND applicant_state NOT IN
+                             ('nsw', 'vic', 'qld', 'sa', 'wa', 'tas', 'nt', 'act')) AS australian_states
         FROM read_parquet('{p}')""").iloc[0]
-    assert bad.to_dict() == {"origin": 0, "applicants": 0, "patent_type": 0, "provisional_agents": 0}
+    assert bad.to_dict() == {
+        "origin": 0,
+        "applicants": 0,
+        "patent_type": 0,
+        "provisional_agents": 0,
+        "main_area": 0,
+        "placeholders": 0,
+        "registered_at_filing": 0,
+        "australian_states": 0,
+    }
