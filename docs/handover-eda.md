@@ -10,6 +10,8 @@ For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md
   owner-managers by sex, monthly from 1991;
 - the inventors are loaded (`google_patents_inventors`), now that BigQuery access works. The first run nearly doubled
   the inventors, so each family's are now taken from one publication (ADR 0008);
+- the `rights` lens's repairs are done (ADR 0009): origin has three values, patents are typed, and raw applicant
+  locations are kept. `firms`, `regions` and `timeline` follow the new definitions;
 - TableBuilder is on hold until a question needs postal-area detail. The owner pursues this exploration in a personal
   capacity and would register as a private user (`docs/tablebuilder-owner-managers.md`);
 - BLADE stays ruled out (the owner confirmed it). Small-firm outcomes are a stated limit of the research.
@@ -17,13 +19,27 @@ For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md
 ## Where things stand
 
 - **Five lenses are built** (`analysis/eda/build.py`), in under a minute:
-  - `rights`: 4,368,006 rows;
-  - `firms`: 391,983;
-  - `regions`: 2,641;
-  - `national`: 127,309;
-  - `timeline`: 1,473 months.
+  - `rights`: 4,368,006 rows, 28 columns;
+  - `firms`: 391,983 rows, 34 columns;
+  - `regions`: 2,641 rows, 31 columns;
+  - `national`: 127,309 rows, 9 columns;
+  - `timeline`: 1,473 months, 34 columns.
 
   Two more, `industries` and `institutions`, are planned (ADR 0007).
+- **The `rights` repairs (ADR 0009):**
+  - `australian_applicant` comes from every current applicant in `iprapid/party`, and is empty (origin unknown) when no
+    applicant has a country: 517,145 patents, 40,726 designs, 37,656 trade marks and 40 plant breeder's rights moved
+    from "overseas" to unknown, and nothing else changed. Standard patents of unknown origin: 96.6% to 100% of each
+    decade before 1980, 51.9% in the 1980s, 0.3% or less from the 1990s. The timeline has three origin series per
+    right, and its totals are unchanged;
+  - `patent_type` (standard, provisional, second-tier). `firms` and `regions` count each separately, and the regional
+    rate uses standard patents only: the median postal area's rate falls from 8.29 to 1.34 per 1,000 GST-registered
+    businesses, because 46,390 of the 77,911 regional patent records were provisionals;
+  - `applicant_postcode_raw` (first applicant, any country, as recorded), `applicant_countries`, and the numbers of
+    applicants in Australia, overseas and of unknown country. Each applicant's address stays in `iprapid/party`.
+
+  The `coalesce` in `iprapid.py` that caused the origin problem is left until IP RAPID is next rebuilt; the lens no
+  longer reads that column.
 - **Every table now has a lens** to attach to; the map is in `docs/eda-plan.md`.
 - **New source `abs_prices`:**
   - CPI, quarterly from 1948 and monthly from 2017, on one base (September 2025 = 100);
@@ -51,18 +67,16 @@ For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md
   - the glossary had "lapse" and "ceased" the wrong way round. Lapsed rights were never granted, ceased ones were;
   - the data plan's IPLORD, WDI and PBS rows;
   - the plan, data plan, README and review, which said gender could be estimated from IP RAPID's names;
-  - the inventor loader, whose first run counted each inventor about twice (ADR 0008).
-- **Tests:** 27 pass and 5 skip; lint is clean.
+  - the inventor loader, whose first run counted each inventor about twice (ADR 0008);
+  - the timeline's notes for lapsed and ceased patents in `variables.yaml`, which still had the old meanings.
+- **Tests:** 33 pass (the lens tests skip unless the lenses are built); lint is clean.
 
 ## Next, in order
 
-1. **The `rights` lens's repairs:**
-   - A2: a third "origin unknown" category;
-   - A4: patents split into standard, provisional and second-tier;
-   - keep every applicant's raw postcode, state and country.
-
-   Record them, together with the other lens repairs, in one ADR (0009), then start the `rights` section of Stage 1.
-   Add its attachments (events per right, parties, links, Google Patents, inventors) as sub-sections as each is built.
+1. **Start the `rights` section of Stage 1** in `01_univariate.ipynb`. Its checklists already name the repaired
+   columns. Lead with standard patents; show provisional and second-tier patents separately; give Australian shares
+   only among rights of known origin, and only from the 1990s for patents. Add its attachments (events per right,
+   parties, links, Google Patents, inventors) as sub-sections as each is built.
 2. **The `timeline` lens's repairs:**
    - A3: coverage starts for each series;
    - B7: verify the four policy dates flagged `verify = true`;
@@ -82,7 +96,9 @@ For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md
 1. Check in Stage 1:
    - whether the register drops provisional applications once a full application supersedes them (N01);
    - what `application_date` means for PCT filings (N06);
-   - placeholder dates (1800, 1901 and 1970).
+   - placeholder dates (1800, 1901 and 1970);
+   - the 50,711 patents and 11,143 designs with no application date (almost all of unknown origin; only 203 and 15
+     were ever registered).
 2. For the national lens, Australia's R&D series: use the OECD's (to 2023) beside the World Bank's, labelled; never
    splice them.
 3. Fee history (R3) is the biggest data gap for Stage 3.
@@ -97,4 +113,4 @@ Nothing blocks Stage 1. Only you can do these:
 
 - Commit the code, run the notebook, then commit the notebook with its outputs.
 - Never print raw rows. Aggregate in DuckDB.
-- Next free ADR: 0009.
+- Next free ADR: 0010.

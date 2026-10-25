@@ -58,7 +58,7 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 
 | Source (tables) | Lens | What it adds | First |
 |---|---|---|---|
-| `iprapid` `*_rights`, `application` | rights | The base: one row per right | A2 (origin); keep every applicant's raw postcode, state and country |
+| `iprapid` `*_rights`, `application` | rights | The base: one row per right | Done (ADR 0009): A2 (origin), A4 (patent types), raw applicant location |
 | `iprapid/events` | rights, timeline | **Per right:** the dates of the examination request, acceptance, grant, opposition, assignments, licences and extension of term, and of the lapse, cessation or expiry, giving each right's lifetime. **Per month:** counts (already built). | A3 (coverage starts); label events as events (F38); B5 (lifetimes) |
 | `iprapid/party` | rights, firms | Applicants by country, all of them rather than only the first; founding filer against current holder; the attorney firm. Individuals are pseudonymised codes in IP RAPID, so their gender cannot be estimated. | B1 |
 | `iprapid/links` | rights | The route into Australia: foreign priority claimed, PCT entry, divisional | — |
@@ -96,13 +96,13 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 Stage 1 goes lens by lens. A lens's section can start with its core variables; each attachment adds a sub-section when
 it is built. Each lens's repairs come first.
 
-1. **`rights`** (about half a day before it starts): A2, A4, and keeping the raw applicant location. Then come the
+1. **`rights`** (repairs done, ADR 0009: A2, A4, and the raw applicant location). Then come the
    attachments: events per right, the parties' countries and founding applicants (B1), links, Google Patents (B4) and
    the inventors (with their estimated gender).
-2. **`timeline`**: A2 and A3, the policy dates (B7), and quarterly prices and wages (now in the corpus). Later: PBS (B9),
+2. **`timeline`**: A3 (A2 is done), the policy dates (B7), and quarterly prices and wages (now in the corpus). Later: PBS (B9),
    CER (B11), judgments, contracts, and fees once the fee history exists (R3).
 3. **`firms`**: A1, A5 and A6, then B1 and B2.
-4. **`regions`**: A4; the rules for small areas (N03: a minimum denominator or pooling, intervals, a per-person rate);
+4. **`regions`**: the rules (A4 is done) for small areas (N03: a minimum denominator or pooling, intervals, a per-person rate);
    the postcode check (S6). Then the Census, CABEE, PHIDU (B12) and CER (B11) attachments.
 5. **`national`**: A8 (World Bank trade marks, OECD R&D), GII, the OECD flows (B10 for tax regimes), and WIPO by origin.
 6. **`industries`**: built new. Needs the IPC map (B6) and the workbook parser (B10).
@@ -219,7 +219,9 @@ Found while building the lenses or in the review; not yet findings.
   - 29.5% have no recorded country, almost all filed before 1990;
   - 0.1% are Australian without a postcode.
 
-  Before 1980, "overseas" in the timeline wrongly includes those unknowns (F04).
+  Fixed (ADR 0009): the unknowns are now "origin unknown" in every lens, not overseas (F04).
+- 50,711 patents and 11,143 designs have no application date, so the timeline cannot place them. Almost all are of
+  unknown origin (50,444 and 11,126), and only 203 and 15 were ever registered.
 - "Lapsed" and "ceased" are different. Lapsed rights were never granted or registered: 0.0% of lapsed patents, trade
   marks and designs. Ceased rights were: 99.9% of patents, 100% of trade marks and 92.1% of designs. A lapse is an
   application abandoned; a cessation is a granted right let go.
