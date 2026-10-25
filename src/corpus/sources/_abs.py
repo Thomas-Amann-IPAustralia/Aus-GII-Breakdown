@@ -2,6 +2,9 @@
 
 Each flow's CSV (with labels) is kept gzipped in data/raw/<source>/. The tidy table has, for every dimension, a code
 column and a `_label` column (the API's "CODE: Label" split), then `value`, the unit and the observation status.
+`value` is the number; a percentage written with its sign ("12.5%") is read as 12.5. Where a flow has cells that are
+not plain numbers (text such as "Not harmful", or "12.5%"), `value_text` keeps each such cell as published, so no
+non-empty value is lost (the OECD's IP tax regimes are mostly text).
 """
 
 from __future__ import annotations
@@ -58,7 +61,13 @@ def tidy(raw: pd.DataFrame, flow: str) -> pd.DataFrame:
             out[f"{name}_label"] = parts[1]
     df = pd.DataFrame(out)
     df.insert(0, "flow", flow)
-    df["value"] = pd.to_numeric(raw["OBS_VALUE"], errors="coerce")
+    cell = raw["OBS_VALUE"].str.strip()
+    number = pd.to_numeric(cell, errors="coerce")
+    percent = pd.to_numeric(cell.str.extract(r"^(-?[\d.]+)%$", expand=False), errors="coerce")
+    df["value"] = number.fillna(percent)
+    text = cell.where(number.isna() & cell.ne(""))
+    if text.notna().any():
+        df["value_text"] = text
     return df
 
 
@@ -84,7 +93,13 @@ def tidy_file(csv_path, out_parquet, flow: str) -> tuple[int, list[str]]:
             f"nullif(CASE WHEN strpos({q}, ': ') > 0 THEN substr({q}, strpos({q}, ': ') + 2) END, '') AS {name}_label"
         )
         names += [name, f"{name}_label"]
-    sel.append("try_cast(OBS_VALUE AS DOUBLE) AS value")
+    cell, number = "trim(OBS_VALUE)", "try_cast(trim(OBS_VALUE) AS DOUBLE)"
+    percent = f"try_cast(regexp_extract({cell}, '^(-?[0-9.]+)%$', 1) AS DOUBLE)"
+    sel.append(f"coalesce({number}, {percent}) AS value")
     names.append("value")
+    has_text = con.execute(f"SELECT count(*) FROM {src} WHERE {number} IS NULL AND {cell} <> ''").fetchone()[0]
+    if has_text:
+        sel.append(f"CASE WHEN {number} IS NULL THEN nullif({cell}, '') END AS value_text")
+        names.append("value_text")
     con.execute(f"COPY (SELECT {', '.join(sel)} FROM {src}) TO '{out_parquet}' (FORMAT parquet, COMPRESSION zstd)")
     return con.execute(f"SELECT count(*) FROM '{out_parquet}'").fetchone()[0], names

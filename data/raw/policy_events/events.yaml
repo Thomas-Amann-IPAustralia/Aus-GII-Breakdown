@@ -1,6 +1,8 @@
 # Dated changes to Australia's IP system, for natural experiments on IP Australia's levers (Q4, Q5). Compiled here.
 # `verify: true` marks a date or detail to confirm against the Federal Register of Legislation
 # (https://www.legislation.gov.au/) before an analysis relies on it. Add events freely.
+# Checked 2026-10-25 against the Register's legislation histories (the endnotes of each Act's latest compilation) and,
+# for the 2018 Act, its commencement table (ADR 0011). `source` names the Register's id for the Act checked.
 
 events:
   - id: pct-accession
@@ -11,39 +13,39 @@ events:
     source: https://www.wipo.int/pct/en/pct_contracting_states.html
     verify: false
   - id: patents-act-1990
-    date: 1991-05-01
+    date: 1991-04-30
     rights: [patent]
     lever: legislation
     event: Patents Act 1990 commences (20-year standard patents; petty patents)
-    source: https://www.legislation.gov.au/
+    source: https://www.legislation.gov.au/C2004A04014 (legislation history, 30 Apr 1991, s 2(2))
     verify: false
   - id: pbr-act-1994
     date: 1994-11-10
     rights: [pbr]
     lever: legislation
     event: Plant Breeder's Rights Act 1994 commences
-    source: https://www.legislation.gov.au/
-    verify: true
+    source: https://www.legislation.gov.au/C2004A04783 (legislation history, 10 Nov 1994, s 2(1) and gaz 1994 No S392)
+    verify: false
   - id: trade-marks-act-1995
     date: 1996-01-01
     rights: [trade_mark]
     lever: legislation
     event: Trade Marks Act 1995 commences
-    source: https://www.legislation.gov.au/
+    source: https://www.legislation.gov.au/C2004A04969 (legislation history, 1 Jan 1996, s 2(2))
     verify: false
   - id: pharma-extension-of-term
     date: 1999-01-27
     rights: [patent]
     lever: term
     event: Extensions of term for pharmaceutical substance patents (up to five years) take their current form
-    source: https://www.legislation.gov.au/
-    verify: true
+    source: https://www.legislation.gov.au/C2004A00356 (Intellectual Property Laws Amendment Act 1998, sch 1 and 2, 27 Jan 1999)
+    verify: false
   - id: innovation-patent-introduced
     date: 2001-05-24
     rights: [patent]
     lever: second-tier right
     event: Innovation patent (eight-year second-tier patent) replaces the petty patent
-    source: https://www.legislation.gov.au/
+    source: https://www.legislation.gov.au/C2004A00733 (Patents Amendment (Innovation Patents) Act 2000, sch 1 and 2, 24 May 2001)
     verify: false
   - id: madrid-protocol
     date: 2001-07-11
@@ -57,40 +59,61 @@ events:
     rights: [design]
     lever: legislation
     event: Designs Act 2003 commences (registration and certification by examination)
-    source: https://www.legislation.gov.au/
+    source: https://www.legislation.gov.au/C2004A01232 (legislation history, s 3 to 161, 17 June 2004)
+    verify: false
+  - id: raising-the-bar-enacted
+    date: 2012-04-15
+    rights: [patent, trade_mark, design, pbr]
+    lever: legislation (enacted; takes effect later)
+    event: Raising the Bar Act receives Royal Assent; its main provisions take effect 12 months later
+    source: https://www.legislation.gov.au/C2012A00035 (assent, 15 Apr 2012)
     verify: false
   - id: tobacco-plain-packaging
     date: 2012-12-01
     rights: [trade_mark]
     lever: use of marks (outside IP Australia)
     event: Tobacco plain packaging applies at retail, restricting the use of trade marks on tobacco packaging
-    source: https://www.legislation.gov.au/
+    source: https://www.legislation.gov.au/C2011A00148 (Tobacco Plain Packaging Act 2011, the retail provisions, 1 Dec 2012)
     verify: false
   - id: raising-the-bar
     date: 2013-04-15
     rights: [patent, trade_mark, design, pbr]
     lever: examination standards
     event: Raising the Bar Act's main provisions commence (higher thresholds for patent inventive step, utility and support; other changes)
-    source: https://www.legislation.gov.au/
+    source: https://www.legislation.gov.au/C2012A00035 (sch 1, 3, 4 and 6 in part, 15 Apr 2013)
+    verify: false
+  - id: pc-response-parallel-importation
+    date: 2018-08-25
+    rights: [trade_mark, patent]
+    lever: legislation
+    event: Productivity Commission response Part 1, Schedule 1 Parts 1 and 4, commence (a defence for parallel importation of genuine trade-marked goods; notice of pharmaceutical extensions of term)
+    source: https://www.legislation.gov.au/C2018A00077 (s 2 table, items 2 and 4, 25 Aug 2018)
     verify: false
   - id: pc-response-part-1
     date: 2019-02-24
     rights: [trade_mark, patent, pbr]
     lever: legislation
-    event: Productivity Commission response Part 1 commences (including changes to trade mark non-use and parallel importation)
-    source: https://www.legislation.gov.au/
-    verify: true
+    event: Productivity Commission response Part 1, Schedule 1 Parts 2 and 3, and most of Schedule 2, commence (plant breeder's rights in essentially derived varieties; the period after which a trade mark can be removed for non-use; trade mark oppositions, filing requirements and other procedures)
+    source: https://www.legislation.gov.au/C2018A00077 (s 2 table, items 3, 6 and 8, 24 Feb 2019)
+    verify: false
+  - id: innovation-patent-phase-out-enacted
+    date: 2020-02-26
+    rights: [patent]
+    lever: second-tier right (enacted; takes effect later)
+    event: The innovation patent's phase-out receives Royal Assent (Productivity Commission response Part 2); no new applications from 26 August 2021
+    source: https://www.legislation.gov.au/C2020A00009 (assent, 26 Feb 2020)
+    verify: false
   - id: innovation-patent-closed
     date: 2021-08-26
     rights: [patent]
     lever: second-tier right
     event: No new innovation patent applications accepted (filings before this date continue to their eight-year term, the last ending in 2029)
-    source: https://www.ipaustralia.gov.au/patents/understanding-patents/types-of-patents/innovation-patent
+    source: https://www.legislation.gov.au/C2020A00009 (sch 1 items 2 to 9, 26 Aug 2021)
     verify: false
   - id: designs-grace-period
     date: 2022-03-10
     rights: [design]
     lever: legislation
     event: Twelve-month grace period for filing designs after publication, and an exclusive licensee infringement right
-    source: https://www.ipaustralia.gov.au/design-rights/timeframes-and-fees/grace-period
-    verify: true
+    source: https://www.legislation.gov.au/C2004A01232 (Designs Amendment (Advisory Council on Intellectual Property Response) Act 2021, sch 1 to 6, 10 Mar 2022)
+    verify: false

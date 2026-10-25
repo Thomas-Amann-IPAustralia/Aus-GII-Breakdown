@@ -245,17 +245,24 @@ class Ctx:
         self.log(f"{name}: {rows:,} rows, {size / 1e6:.1f} MB -> {entry['location']}")
         return dest
 
-    def save(self) -> None:
+    def save(self, merge: bool = False) -> None:
+        """Record this run's files in the manifest. A run replaces the source's entry; `merge` (for `reprocess`)
+        keeps the entry's other files, its notes and its `run` date (the date the data was fetched), and adds the
+        date it was reprocessed."""
         import fcntl
 
         with open(MANIFEST.with_suffix(".lock"), "w") as lock:  # sources may run in parallel
             fcntl.flock(lock, fcntl.LOCK_EX)
             m = read_manifest()
             m["bucket"] = BUCKET
+            old = m["sources"].get(self.source, {}) if merge else {}
+            files = {**old.get("files", {}), **self.files}
+            notes = list(dict.fromkeys([*old.get("notes", []), *self.notes]))
             m["sources"][self.source] = {
-                "run": dt.date.today().isoformat(),
-                "files": dict(sorted(self.files.items())),
-                **({"notes": self.notes} if self.notes else {}),
+                "run": old.get("run", dt.date.today().isoformat()),
+                **({"reprocessed": dt.date.today().isoformat()} if merge else {}),
+                "files": dict(sorted(files.items())),
+                **({"notes": notes} if notes else {}),
             }
             write_manifest(m)
 

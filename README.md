@@ -49,6 +49,8 @@ uv sync --group dev
 uv run corpus list                  # the sources and what the manifest holds for each
 uv run corpus run rdti abs_bcs      # fetch and process sources (writes data/, uploads to R2, updates the manifest)
 uv run corpus run all               # everything (hours: IP RAPID, the ABR, AusTender and the legal corpus are large)
+uv run corpus reprocess cer         # rebuild a source's tables from the raw files it holds, fetching nothing new
+                                    # (after a parser fix; `oecd:ip_tax_regimes` names the tables)
 uv run corpus verify --r2           # repo files against the manifest, and R2 holding the rest
 uv run corpus catalogue             # regenerate docs/catalogue.md
 uv run pytest -q                    # the rules, and the committed data against the manifest

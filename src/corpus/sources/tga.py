@@ -5,8 +5,9 @@ competition), and which medicines and devices reach Australia. The TGA site does
 the ARTG search export was downloaded by hand (https://www.tga.gov.au/resources/artg, all entries, exported to xlsx)
 into data/raw/tga/ (repo). The export is a snapshot of the current register: it has no start or cancellation dates.
 
-Processed: `artg`, one row per ARTG entry (`kind` is medicine where there are active ingredients, device where there
-is a device manufacturer); `artg_ingredients`, one row per entry and active ingredient (name in lower case, without
+Processed: `artg`, one row per ARTG entry and product (an entry can list several products, as 429 entries do; the
+export's exact repeats are dropped), with `kind` medicine where there are active ingredients and device where there
+is a device manufacturer; `artg_ingredients`, one row per entry and active ingredient (name in lower case, without
 quantities), to join to PBS drugs and to patents' extension of term records by ingredient name.
 """
 
@@ -54,9 +55,9 @@ def run(ctx: Ctx) -> None:
     df["kind"] = "other"
     df.loc[df["device_manufacturer"].notna(), "kind"] = "device"
     df.loc[df["active_ingredients"].notna(), "kind"] = "medicine"
-    df = df.sort_values("artg_id").reset_index(drop=True)
+    df = df.drop_duplicates().sort_values("artg_id").reset_index(drop=True)
     ctx.table(df, "artg", describe=f"ARTG entries ({p.name}); no dates in the export")
     ing = df[["artg_id", "active_ingredients"]].dropna()
     ing = ing.assign(ingredient=ing["active_ingredients"].map(ingredients)).explode("ingredient")
-    ing = ing.dropna(subset=["ingredient"])[["artg_id", "ingredient"]]
+    ing = ing.dropna(subset=["ingredient"])[["artg_id", "ingredient"]].drop_duplicates()
     ctx.table(ing, "artg_ingredients", describe="ARTG entry by active ingredient (lower case, no quantities)")

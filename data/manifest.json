@@ -568,7 +568,7 @@
   "abs_cabee": {
    "files": {
     "processed/cubes": {
-     "bytes": 4233545,
+     "bytes": 4233475,
      "columns": [
       "cube",
       "table",
@@ -595,10 +595,10 @@
      "location": "repo",
      "path": "data/processed/abs_cabee/cubes.parquet",
      "rows": 3169744,
-     "sha256": "9fbe97baa5b2e964c4a3d8ec7ee23907e038920faf7eb1913b1951ae00598951"
+     "sha256": "b8af5bfc05db29dfe93de8607109ada5be701c7e616f8cb09ffe017210bcceb3"
     },
     "processed/national": {
-     "bytes": 18881,
+     "bytes": 19016,
      "columns": [
       "table",
       "table_title",
@@ -612,7 +612,7 @@
      "location": "repo",
      "path": "data/processed/abs_cabee/national.parquet",
      "rows": 3339,
-     "sha256": "64fbdc9095b56813a0e3c1468a9be0fc9478229ab7472fb7dbbdcd90527efa79"
+     "sha256": "a38fd878097c0d67fd7f474c6252cd4290e4657baf2e4d3d61206b51f7262d7f"
     },
     "raw/jul2021-jun2025-8165DC02.xlsx": {
      "bytes": 2149586,
@@ -692,6 +692,7 @@
      "url": "https://www.abs.gov.au/statistics/economy/business-indicators/counts-australian-businesses-including-entries-and-exits/jul2022-jun2026/8165DC01.xlsx"
     }
    },
+   "reprocessed": "2026-10-25",
    "run": "2026-10-22"
   },
   "abs_census": {
@@ -7260,14 +7261,17 @@
   "abs_rd_vc": {
    "files": {
     "processed/cubes": {
-     "bytes": 39408,
+     "bytes": 44051,
      "columns": [
       "sheet",
       "title",
       "section",
       "row",
       "column",
+      "unit",
       "value",
+      "value_text",
+      "sheet_row",
       "release",
       "cube",
       "period"
@@ -7275,8 +7279,8 @@
      "describe": "ABS R&D and venture capital cubes, long",
      "location": "repo",
      "path": "data/processed/abs_rd_vc/cubes.parquet",
-     "rows": 6564,
-     "sha256": "550c118a109a2f225398082f2ee195da7b71ec80abd595277d2e3df2ad37650b"
+     "rows": 6592,
+     "sha256": "a685ccccfb13bc23109f60ba19bd79228f41c167fe2f819590b9f72a066e267a"
     },
     "raw/berd-81040DO001_202324.xlsx": {
      "bytes": 27697,
@@ -7489,6 +7493,7 @@
      "url": "https://www.abs.gov.au/statistics/economy/finance/venture-capital-and-later-stage-private-equity-australia/2018-19/5678do001_201819.xls"
     }
    },
+   "reprocessed": "2026-10-25",
    "run": "2026-10-22"
   },
   "abs_regions": {
@@ -7972,14 +7977,18 @@
   "austender": {
    "files": {
     "processed/contracts": {
-     "bytes": 42524813,
+     "bytes": 47638696,
      "columns": [
       "cn_id",
+      "parent_cn_id",
+      "amendment",
       "published",
+      "published_batch",
       "signed",
       "start",
       "end",
       "value",
+      "value_jump",
       "description",
       "unspsc",
       "agency",
@@ -7994,8 +8003,15 @@
      "describe": "Contract notices 2007 onward, one row per notice, with supplier ABN",
      "location": "repo",
      "path": "data/processed/austender/contracts.parquet",
-     "rows": 1548989,
-     "sha256": "c227d2772a7b03262e6d7d871930f4102351b8c243bcbbc59fa560cb2245cef9"
+     "rows": 1577643,
+     "sha256": "d9ac5efd30ff393931f166362eed8a7e46ff0bff89a8735b4f5734bd2ee73e69"
+    },
+    "raw/austender-api-by-id-releases.jsonl.gz": {
+     "bytes": 15379586,
+     "key": "raw/austender/austender-api-by-id-releases.jsonl.gz",
+     "location": "r2",
+     "sha256": "14484453ff072256f362ff2270a370bec123a5eb24599f38dfc34cd5cdbb3782",
+     "url": "https://api.tenders.gov.au/ocds/findById"
     },
     "raw/austender-api-releases.jsonl.gz": {
      "bytes": 119404727,
@@ -8012,6 +8028,10 @@
      "url": "https://data.gov.au/data/dataset/5c7fa69b-b0e9-4553-b8df-2a022dd2e982/resource/ec0ac429-a813-4325-bc8c-a8e37401ffc0/download/cn-parent-and-amendments-30092019-ltr.xlsx"
     }
    },
+   "notes": [
+    "findById releases (raw/austender-api-by-id-releases.jsonl.gz) fetched 2026-10-25, after the rest"
+   ],
+   "reprocessed": "2026-10-25",
    "run": "2026-10-22"
   },
   "bcarr_creative": {
@@ -8051,20 +8071,35 @@
   },
   "cer": {
    "files": {
+    "processed/battery_states": {
+     "bytes": 2703,
+     "columns": [
+      "year",
+      "state",
+      "installations"
+     ],
+     "describe": "Battery installations by state and year",
+     "location": "repo",
+     "path": "data/processed/cer/battery_states.parquet",
+     "rows": 96,
+     "sha256": "2fb4f046cda0432ec337c1658bb8f74da409f026d0e627bd4c8935460891078c"
+    },
     "processed/installations": {
-     "bytes": 7738329,
+     "bytes": 2817272,
      "columns": [
       "dataset",
+      "technology",
+      "series",
       "postcode",
-      "value",
-      "period",
-      "measure"
+      "month",
+      "measure",
+      "value"
      ],
-     "describe": "Small-scale installations by postcode",
+     "describe": "Small-scale installations by postcode and month",
      "location": "repo",
      "path": "data/processed/cer/installations.parquet",
-     "rows": 7051130,
-     "sha256": "5eca7d21b9840b7f3230ceb4788b8971efb09cfbeaba41e2d1d58309dd0a4718"
+     "rows": 3494496,
+     "sha256": "0c408d2968bd6cb99bedbce6170ad4787481fcf86b97f1f0af2a6191984c8167"
     },
     "raw/historical-voluntary-state-data-battery-installation-small-scale-systems-0.xlsx": {
      "bytes": 12907,
@@ -8249,6 +8284,7 @@
      "url": "https://cer.gov.au/document/swh-solar-installations-2011-to-present-and-totals"
     }
    },
+   "reprocessed": "2026-10-25",
    "run": "2026-10-22"
   },
   "concordances": {
@@ -9343,7 +9379,7 @@
   "linkage": {
    "files": {
     "processed/abn_spine": {
-     "bytes": 12709123,
+     "bytes": 12892045,
      "columns": [
       "abn",
       "entity_type",
@@ -9385,11 +9421,11 @@
      "describe": "One row per ABN in the corpus, with ABR and ASIC attributes",
      "location": "repo",
      "path": "data/processed/linkage/abn_spine.parquet",
-     "rows": 391983,
-     "sha256": "8481b8baea171e7604d695644a96477717848cd055314ba21b71fcd84b5a2a95"
+     "rows": 398450,
+     "sha256": "095f326f6de71d61836e1624aa4dcd9d6152d2f7b75cd41318cb7bda01be9f23"
     }
    },
-   "run": "2026-10-22"
+   "run": "2026-10-25"
   },
   "mwm": {
    "files": {
@@ -10056,7 +10092,7 @@
      "sha256": "4ff20176c7dd1b9a54f9ba969709dad3dbfd65110c3fedbf1052948bbbc1412c"
     },
     "processed/ip_tax_regimes": {
-     "bytes": 7614,
+     "bytes": 19550,
      "columns": [
       "flow",
       "reference_area",
@@ -10069,13 +10105,14 @@
       "regime_label",
       "time_period",
       "time_period_label",
-      "value"
+      "value",
+      "value_text"
      ],
      "describe": "OECD.CTP.TPS,DSD_QDD_IPR@DF_QDD_IPR",
      "location": "repo",
      "path": "data/processed/oecd/ip_tax_regimes.parquet",
      "rows": 2639,
-     "sha256": "3b361f14648eb2ac95ee402d177d95dfa669aab5a115cd06c1a626c82eda1f40"
+     "sha256": "61b58a1f443a481480273a19e5d71f9780af48f949fb0ed32468e82622fd9bc5"
     },
     "processed/msti": {
      "bytes": 1563265,
@@ -10982,6 +11019,7 @@
      "url": "https://sdmx.oecd.org/public/rest/data/OECD.WISE.WDP,DSD_HSL@DF_HSL_CWB_INEQ/all"
     }
    },
+   "reprocessed": "2026-10-25",
    "run": "2026-10-23"
   },
   "openalex": {
@@ -12290,23 +12328,40 @@
   "phidu": {
    "files": {
     "processed/indicators": {
-     "bytes": 34040786,
+     "bytes": 34117667,
      "columns": [
       "workbook",
       "sheet",
+      "area_type",
       "area_code",
       "area_name",
       "quintile",
       "indicator",
+      "sub_indicator",
       "period",
       "measure",
+      "note",
       "value"
      ],
      "describe": "PHIDU Social Health Atlas indicators by PHA and quintile, long",
      "location": "repo",
      "path": "data/processed/phidu/indicators.parquet",
-     "rows": 4951275,
-     "sha256": "9ab53ce2f203150fe87b815d03feb0914f6ee8caa5787cbaf175cf26bef042bf"
+     "rows": 4951090,
+     "sha256": "11fd0be442a8eae0aac924a903fa2a261e54369d3e491c5ceefe1ec287f3b99f"
+    },
+    "processed/pha_sa2": {
+     "bytes": 35923,
+     "columns": [
+      "pha_code",
+      "pha_name",
+      "sa2_code",
+      "section"
+     ],
+     "describe": "PHIDU Population Health Areas and their SA2s (2021)",
+     "location": "repo",
+     "path": "data/processed/phidu/pha_sa2.parquet",
+     "rows": 2450,
+     "sha256": "5a641d69bd0afb884db3515395b3be2edea97d4c94afdf6f62a2ed8da0740c7b"
     },
     "raw/phidu_data_pha_demographic_social_aust.xlsx": {
      "bytes": 14816377,
@@ -12333,12 +12388,13 @@
      "sha256": "7ccdffa5df0fc5779bed8e16b0e6e663618aa700577a8c058a0359a78aa662a3"
     }
    },
+   "reprocessed": "2026-10-25",
    "run": "2026-10-22"
   },
   "policy_events": {
    "files": {
     "processed/events": {
-     "bytes": 6071,
+     "bytes": 6834,
      "columns": [
       "id",
       "date",
@@ -12348,11 +12404,11 @@
       "source",
       "verify"
      ],
-     "describe": "Dated changes to the IP system, compiled",
+     "describe": "Dated changes to the IP system",
      "location": "repo",
      "path": "data/processed/policy_events/events.parquet",
-     "rows": 13,
-     "sha256": "08d1b30cb5b766b806b130d025334639f3b3ea932dfdb6b13dd23b225ca254a0"
+     "rows": 16,
+     "sha256": "12f71d054fb9f5587a0ebaca1cdb23f1ed878ae24acf7966639efe81da225300"
     },
     "processed/policy_register": {
      "bytes": 72513,
@@ -12373,10 +12429,10 @@
      "sha256": "ad9dea061f39511b27e5db6d5345dac8fe6fcbdfbcd95a9424a907bad1e3060e"
     },
     "raw/events.yaml": {
-     "bytes": 3824,
+     "bytes": 6049,
      "location": "repo",
      "path": "data/raw/policy_events/events.yaml",
-     "sha256": "4937bd53a763cbde517b3a80ca1afd69a2c4fd36a068684bc31a235ec1202e15"
+     "sha256": "7f20f33e03eaf7f87ba7f2824ce6405a461a8f8d6074b7bb713ba4d75649032a"
     },
     "raw/policy-register-pages.html.gz": {
      "bytes": 13789546,
@@ -12386,12 +12442,13 @@
      "url": "https://www.ipaustralia.gov.au/sitemap.xml"
     }
    },
+   "reprocessed": "2026-10-25",
    "run": "2026-10-22"
   },
   "rdti": {
    "files": {
     "processed/entities": {
-     "bytes": 605034,
+     "bytes": 608660,
      "columns": [
       "rd_expenditure",
       "rd_expenditure_amended",
@@ -12400,13 +12457,14 @@
       "sheet",
       "name",
       "abn",
-      "acn"
+      "acn",
+      "abn_from"
      ],
      "describe": "R&D Tax Incentive claimants by income year, with ABN or ACN",
      "location": "repo",
      "path": "data/processed/rdti/entities.parquet",
      "rows": 38512,
-     "sha256": "6acf989a161aef4b9c8c65d2e56ca611671b4fdf9b82817ad4c7840a2749753f"
+     "sha256": "a11f827868344d98928ff6fa04abcd6a2e1b091ee9e6972375cf7a46434f3dc2"
     },
     "raw/2021-22.xlsx": {
      "bytes": 588023,
@@ -12430,7 +12488,7 @@
      "url": "https://data.gov.au/data/dataset/7c356598-b048-4c1e-862f-c936041e3d81/resource/5f7d5cac-cfa8-4500-8468-1c396f3a08d1/download/report-of-information-about-research-and-development-tax-incentive-entities-2023-24.xlsx"
     }
    },
-   "run": "2026-10-22"
+   "run": "2026-10-25"
   },
   "reliance_on_science": {
    "files": {
@@ -12483,7 +12541,7 @@
   "tga": {
    "files": {
     "processed/artg": {
-     "bytes": 2402618,
+     "bytes": 2402567,
      "columns": [
       "artg_id",
       "product_name",
@@ -12495,11 +12553,11 @@
      "describe": "ARTG entries (Search Result_22-Oct-2026_235148.xlsx); no dates in the export",
      "location": "repo",
      "path": "data/processed/tga/artg.parquet",
-     "rows": 98147,
-     "sha256": "bd6cd8c3fb9efe80e6b34f1f9769bf0f65d9cb1c051238407be0919319cce1d9"
+     "rows": 98127,
+     "sha256": "d1977ef34505e4d16652abdfc610b2fd46c643ad1b46b123bbc929de1fe16032"
     },
     "processed/artg_ingredients": {
-     "bytes": 308132,
+     "bytes": 307340,
      "columns": [
       "artg_id",
       "ingredient"
@@ -12507,8 +12565,8 @@
      "describe": "ARTG entry by active ingredient (lower case, no quantities)",
      "location": "repo",
      "path": "data/processed/tga/artg_ingredients.parquet",
-     "rows": 99864,
-     "sha256": "48a8b1e04db18586984235e69da02a4ec8b9d3c442fada1f522f8aaa56d50ae1"
+     "rows": 99283,
+     "sha256": "988f84252d9cc8dd8d35094d0a80112da488059604cb77593dd85e8364e1f595"
     },
     "raw/Search Result_22-Oct-2026_235148.xlsx": {
      "bytes": 5376511,
@@ -12517,7 +12575,7 @@
      "sha256": "faccf3b3c612e0a7d3865cea88ce96019fb212f31fd50abf6a3dd7c7b6e2221d"
     }
    },
-   "run": "2026-10-22"
+   "run": "2026-10-25"
   },
   "tmlink": {
    "files": {
@@ -12718,7 +12776,7 @@
      "sha256": "81d344a9f4e893c051dbcef4ffdad8eba147caf9ff1c342586979e3b11f5d20e"
     },
     "processed/panel": {
-     "bytes": 1058370,
+     "bytes": 1080836,
      "columns": [
       "iso3",
       "country",
@@ -12730,8 +12788,8 @@
      "describe": "WDI indicators bearing on IP, every country and year",
      "location": "repo",
      "path": "data/processed/wdi/panel.parquet",
-     "rows": 136371,
-     "sha256": "6ede81739fb72f24e0b05fe1608ffa4db7a3ed526729b088417c0011acbfad6b"
+     "rows": 141552,
+     "sha256": "eec9494d942a71623c389f56bee8f77088c7489aa73040fd4eafda80276b5cdb"
     },
     "raw/BM.GSR.ROYL.CD.json.gz": {
      "bytes": 141565,
@@ -12809,6 +12867,20 @@
      "path": "data/raw/wdi/IP.PAT.RESD.json.gz",
      "sha256": "faa7cf988fa88fbf2e77f7abb678de4a4819ebff8e969ac5e59c4e6c1db86c50",
      "url": "https://api.worldbank.org/v2/country/all/indicator/IP.PAT.RESD"
+    },
+    "raw/IP.TMK.NRCT.json.gz": {
+     "bytes": 69916,
+     "location": "repo",
+     "path": "data/raw/wdi/IP.TMK.NRCT.json.gz",
+     "sha256": "2baab2457ce47353403a9c4bb2da393dd9656b1356a63092e4f3d697e6558b75",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/IP.TMK.NRCT"
+    },
+    "raw/IP.TMK.RSCT.json.gz": {
+     "bytes": 68924,
+     "location": "repo",
+     "path": "data/raw/wdi/IP.TMK.RSCT.json.gz",
+     "sha256": "00d11c45ef67c1df2403a36810269f07f6f29a35f53215155131eae5b1880d60",
+     "url": "https://api.worldbank.org/v2/country/all/indicator/IP.TMK.RSCT"
     },
     "raw/NE.EXP.GNFS.ZS.json.gz": {
      "bytes": 180183,
@@ -12888,12 +12960,7 @@
      "url": "https://api.worldbank.org/v2/country/all/indicator/TX.VAL.TECH.MF.ZS"
     }
    },
-   "notes": [
-    "wdi: IP.TMK.RESD is no longer in the API (The indicator was not found. It may have been deleted or archived.)",
-    "wdi: IP.TMK.NRES is no longer in the API (The indicator was not found. It may have been deleted or archived.)",
-    "wdi: IP.TMK.TOTL is no longer in the API (The indicator was not found. It may have been deleted or archived.)"
-   ],
-   "run": "2026-10-22"
+   "run": "2026-10-25"
   },
   "wgnd": {
    "files": {

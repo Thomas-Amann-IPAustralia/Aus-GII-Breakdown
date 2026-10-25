@@ -16,7 +16,7 @@ import re
 
 import pandas as pd
 
-from ..core import CorpusError, Ctx, http_get
+from ..core import CorpusError, Ctx, http_get, raw_path, read_manifest
 
 BASE = "https://www.abs.gov.au/statistics/economy/business-indicators/counts-australian-businesses-including-entries-and-exits"
 
@@ -58,7 +58,10 @@ def parse_cube(df: pd.DataFrame, cube: str, table: str) -> pd.DataFrame | None:
         elif u == "no." or u == "%":
             g = group.iat[j]
             g = None if pd.isna(g) or str(g) == "nan" else str(g).strip().replace("Suriving", "Surviving")  # ABS typo
-            val_cols.append((j, g, head.iat[j].strip(), u))
+            size = head.iat[j].strip()
+            if u == "%" and size.lower().startswith("survival rate") and val_cols:
+                size = val_cols[-1][2]  # a survival rate sits beside the count of its size range
+            val_cols.append((j, g, size, u))
     body = df.iloc[units + 1 :]
     body = body[body.iloc[:, id_cols[0][0]].notna()] if id_cols else body
     frames = []
@@ -81,44 +84,79 @@ def parse_national(df: pd.DataFrame, table: str) -> pd.DataFrame | None:
         return None
     title = next((str(df.iat[i, 0]) for i in range(units) if str(df.iat[i, 0]).startswith("Table")), table)
     cols = df.iloc[units - 1].astype(str).str.replace(r"\s+", " ", regex=True).str.strip()
-    rows, period = [], None
+    for j in range(2, len(cols)):  # "Survived to June 2023" then "Survival rate": the rate belongs to the count before
+        if cols.iat[j].lower().startswith("survival rate"):
+            cols.iat[j] = f"{cols.iat[j - 1]} - survival rate"
+    rows, period, years = [], None, []
     for i in range(units + 1, len(df)):
         label = df.iat[i, 0]
         vals = _num(df.iloc[i, 1:])
         if pd.isna(label):
             continue
         if vals.isna().all():
-            if re.fullmatch(r"\d{4}-\d{2}", str(label).strip()):
-                period = str(label).strip()
+            text = str(label).strip()
+            june = re.search(r"AT JUNE (\d{4})", text, re.I)
+            if re.fullmatch(r"\d{4}-\d{2}", text):
+                period = text
+            elif june:  # Table 14's blocks: "CHANGED ... AT JUNE 2023", then "... AT JUNE 2022"
+                years.append(int(june.group(1)))
+                period = f"June {min(years)} to June {max(years)}" if len(years) > 1 else f"June {years[0]}"
             continue
+        years = []
         for j, v in vals.items():
             if pd.notna(v):
                 rows.append((table, title, period, str(label).strip(), cols.iat[j], v))
     return pd.DataFrame(rows, columns=["table", "table_title", "period", "row", "column", "value"])
 
 
+def _build(ctx: Ctx, files: list[tuple[str, str, object]]) -> None:
+    """Every table of the cubes (release, cube, path), long."""
+    national, cubes = [], []
+    for release, n, f in files:
+        for sheet, df in pd.read_excel(f, sheet_name=None, engine="calamine", header=None, dtype=str).items():
+            if not sheet.strip().startswith("Table"):
+                continue
+            if n == "8165DC01":
+                t = parse_national(df, sheet)
+                if t is not None:
+                    national.append(t.assign(release=release))
+            else:
+                t = parse_cube(df, n, sheet)
+                if t is not None:
+                    cubes.append(t.assign(release=release))
+    national, cubes = pd.concat(national, ignore_index=True), pd.concat(cubes, ignore_index=True)
+    for name, t in (("national", national), ("cubes", cubes)):
+        key = [  # every id column, except a label beside its own code
+            c
+            for c in t.columns
+            if c not in ("value", "table_title") and not (c.endswith("_label") and c[:-6] + "_code" in t.columns)
+        ]
+        dupes = t.duplicated(key).sum()
+        if dupes:
+            raise CorpusError(f"abs_cabee: {dupes} rows of {name} repeat a key ({', '.join(key)})")
+    ctx.table(national, "national", describe="Cube 1: national tables, long")
+    ctx.table(cubes, "cubes", describe="Cubes 2 to 11, long")
+
+
 def run(ctx: Ctx) -> None:
     latest, prev = _releases()
-    national, cubes = [], []
+    files = []
     for release in (latest, prev):
         names = _cube_links(release)
         want = ["8165DC01"] if release == latest else [n for n in names if n != "8165DC01"]
         if release == prev and not want:
             raise CorpusError(f"abs_cabee: {prev} has no cubes 2 to 11")
         for n in want:
-            if n not in names:
-                continue
-            f = ctx.fetch(f"{BASE}/{release}/{n}.xlsx", f"{release}-{n}.xlsx", keep="repo")
-            for sheet, df in pd.read_excel(f, sheet_name=None, engine="calamine", header=None, dtype=str).items():
-                if not sheet.strip().startswith("Table"):
-                    continue
-                if n == "8165DC01":
-                    t = parse_national(df, sheet)
-                    if t is not None:
-                        national.append(t.assign(release=release))
-                else:
-                    t = parse_cube(df, n, sheet)
-                    if t is not None:
-                        cubes.append(t.assign(release=release))
-    ctx.table(pd.concat(national, ignore_index=True), "national", describe="Cube 1: national tables, long")
-    ctx.table(pd.concat(cubes, ignore_index=True), "cubes", describe="Cubes 2 to 11, long")
+            if n in names:
+                files.append((release, n, ctx.fetch(f"{BASE}/{release}/{n}.xlsx", f"{release}-{n}.xlsx", keep="repo")))
+    _build(ctx, files)
+
+
+def reprocess(ctx: Ctx, tables: list[str] | None = None) -> None:
+    """The tables again from the cubes the manifest records (in the repo), fetching nothing."""
+    files = []
+    for k in read_manifest()["sources"]["abs_cabee"]["files"]:
+        m = re.fullmatch(r"raw/(jul\d{4}-jun\d{4})-(8165DC\d\d)\.xlsx", k)
+        if m:
+            files.append((m.group(1), m.group(2), raw_path("abs_cabee", k.split("/", 1)[1])))
+    _build(ctx, sorted(files))

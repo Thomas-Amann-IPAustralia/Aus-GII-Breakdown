@@ -19,9 +19,8 @@ API = "https://api.worldbank.org/v2"
 INDICATORS = [
     "IP.PAT.RESD",  # patent applications, residents
     "IP.PAT.NRES",  # patent applications, non-residents
-    "IP.TMK.RESD",  # trade mark applications, direct resident
-    "IP.TMK.NRES",
-    "IP.TMK.TOTL",
+    "IP.TMK.RSCT",  # trade mark applications, resident, by count (replaced IP.TMK.RESD, NRES and TOTL, withdrawn)
+    "IP.TMK.NRCT",  # trade mark applications, nonresident, by count
     "IP.IDS.RSCT",  # industrial design applications, resident, by count
     "IP.IDS.NRCT",
     "IP.JRN.ARTC.SC",  # scientific and technical journal articles

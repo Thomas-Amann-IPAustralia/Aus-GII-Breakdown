@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import gzip
 
-from ..core import REPO_LIMIT, CorpusError, Ctx, http_get
+from ..core import REPO_LIMIT, CorpusError, Ctx, http_get, raw_path
 from ._abs import tidy_file
 
 API = "https://sdmx.oecd.org/public/rest/data"
@@ -79,3 +79,14 @@ def run(ctx: Ctx) -> None:
         ctx.keep_table(out, name, rows, cols, describe=flow)
     if len(failed) == len(FLOWS):
         raise CorpusError("oecd: no flow could be fetched")
+
+
+def reprocess(ctx: Ctx, tables: list[str] | None = None) -> None:
+    """The named flows' tables (every flow if none is named) again from their stored raw CSVs, fetching nothing."""
+    for name in tables or list(FLOWS):
+        if name not in FLOWS:
+            raise CorpusError(f"oecd: no flow named {name}")
+        out = ctx.cache / "processed" / f"{name}.parquet"
+        out.parent.mkdir(parents=True, exist_ok=True)
+        rows, cols = tidy_file(raw_path("oecd", f"{name}.csv.gz"), out, FLOWS[name])
+        ctx.keep_table(out, name, rows, cols, describe=FLOWS[name])

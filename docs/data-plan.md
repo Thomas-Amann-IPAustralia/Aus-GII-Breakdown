@@ -219,7 +219,7 @@ GitHub refuses files over 100 MB and slows beyond a few GB, so:
 - **R2 (bucket `ipholmes`) holds the large files**: raw files under `raw/<source>/` (IP RAPID, IPLORD, the ABR, ASIC,
   TM-Link, AusTender, PBS, the ASGS allocation files) and large Parquet tables under `processed/<source>/`.
 - **The repo holds small raw files and every table under 50 MB**, including analysis-ready summaries of the large
-  sources (`ipgod/*_rights`, `ipgod/applicant_year`, `iplord/iplord_abn`, `linkage/abn_spine`).
+  sources (`iprapid/*_rights`, `iprapid/applicant_year`, `iplord/iplord_abn`, `linkage/abn_spine`).
 - `data/manifest.json` records every file's SHA-256, size, rows, columns and location; `corpus verify --r2` checks it.
 
 ## 7. Repository
@@ -237,20 +237,20 @@ columns. In short:
 | 2 | IPLORD 2020 (`iplord`) | Ingested | The full panel (R2) and its ABN rows (repo). The public release has no patent columns (confirmed in all seven CSVs of the raw zip, 2026-10-25); `iprapid/applicant_year` covers patents to the current week |
 | 3 | ABN Bulk Extract (`abr`) | Ingested | 20.6 million ABNs, current and cancelled (R2), without individuals' names |
 | 4 | ASIC companies (`asic`) | Ingested | 4.0 million companies (R2) |
-| 5 | R&D Tax Incentive (`rdti`) | Ingested | 38,512 claims, 2021-22 to 2023-24 |
+| 5 | R&D Tax Incentive (`rdti`) | Ingested | 38,512 claims, 2021-22 to 2023-24; 521 that give only an ACN take their ABN from the ABR (ADR 0011) |
 | 6 | ABS business characteristics (`abs_bcs`) | Ingested | 13 flows, including licensing of IP and "inability to protect IP" as a limit on commercialisation |
 | 7 | Counts of businesses (`abs_cabee`) | Ingested | National tables to June 2026; state, industry, survival, SA2 and LGA cubes to June 2025 |
 | 8 | Places (`abs_regions`) | Ingested | ASGS 2021 mesh blocks, postal area to SA2 and remoteness, SEIFA 2021, Data by Region |
 | 9 | Concordances (`concordances`) | Ingested | WIPO's 35 technology fields (and each IP RAPID patent's fields), ALP IPC and Nice to ISIC and ANZSIC, the IPC Green Inventory |
 | 10 | Gender-name dictionary (`wgnd`) | Ingested | WGND 2.0 (CC0, not CC BY as first listed) |
-| — | Linkage (`linkage`) | Built | `abn_spine`: 391,983 ABNs (all found in the ABR) with ABR and ASIC attributes, source flags and first and last filing years |
+| — | Linkage (`linkage`) | Built | `abn_spine`: 398,450 ABNs (all found in the ABR): every IP applicant or owner, R&D claimant, contract supplier and tax-transparency entity, with ABR and ASIC attributes, source flags, first and last filing years, and contracts counted once each (ADR 0011) |
 | — | GII 2026 (`gii`), Closing the Gap (`ctg`) | Ingested | Kept from the earlier corpus as context |
-| 11 | AusTender (`austender`) | Ingested | 1.55 million contract notices, July 2007 to October 2026, 94.5% with a supplier ABN |
+| 11 | AusTender (`austender`) | Ingested | 1.58 million contract notices for 1.27 million contracts, July 2007 to October 2026, 94.5% with a supplier ABN. Each notice keeps its amendment number, and the bulk file's long-running contracts have their later amendments (ADR 0011) |
 | 12 | ARC grants (`arc_grants`) | Ingested | 34,977 grants |
 | 12 | NHMRC grants (`nhmrc_grants`) | Ingested (your download) | 12,224 grants, application rounds 2013 to 2026, harmonised into one table; investigators' names left out |
 | 13 | Corporate tax transparency (`ato_ctt`) | Ingested | 2013-14 to 2024-25 |
 | 14, 26 | OECD panel (`oecd`) | Ingested | 24 flows: MSTI, methods used to protect IP, patents (WIPO fields, environment, ownership, co-invention, regions), business demography, venture capital, IP tax regimes, How's Life? (current and future well-being, including trust in government, others and the police; by sex, age and education; child well-being), and distance to the Sustainable Development Goals 1, 2, 9 and 13 |
-| 15 | WDI panel (`wdi`) | Ingested | 22 indicators, every country. The trade mark series moved to new codes (`IP.TMK.RSCT`, `IP.TMK.NRCT`, 2004–2024), which are not yet loaded; the old ones are archived |
+| 15 | WDI panel (`wdi`) | Ingested | 24 indicators, every country, including trade marks under the World Bank's current codes (`IP.TMK.RSCT`, `IP.TMK.NRCT`, 2004–2024; ADR 0011) |
 | 16 | WIPO IP statistics (`wipo_ipstats`) | Ingested | From the public API behind WIPO's data centre: every office by every origin, 1980 to 2024 (4.9 million values: patents, utility models, trade marks, designs; applications, grants, in force, by field or class), office workloads, and PCT, Madrid and Hague by origin |
 | 17 | TM-Link (`tmlink`) | Ingested | Links, applications, owners, classes, Madrid and property tables (R2); free-text tables left out |
 | 18 | IP Australia fees (`ipa_fees`) | Ingested (current only) | Application, examination, renewal, opposition fees; historical schedules need the Wayback Machine, which this environment cannot reach |
@@ -262,17 +262,17 @@ columns. In short:
 | 22 | Evidence register (`evidence`) | Ingested | 20 items, journal items checked against Crossref (one flagged: its only Crossref record is a later SSRN version) |
 | 23 | Cultural and creative activity (`bcarr_creative`) | Ingested (your download) | Both releases (2008-09 to 2022-23, 2015-16 to 2024-25) as one long table |
 | 24 | Measuring What Matters (`mwm`) | Ingested | 50 indicator pages and their data |
-| 25 | 2021 Census (`abs_census`), in place of NATSEM | Ingested | 14 General Community Profile tables by SA2 and postal area: volunteering, unpaid care, health conditions, mobility, labour force, qualifications, industry, occupation; and PHIDU's Social Health Atlas (`phidu`, your download, in R2): 4.95 million values by Population Health Area and socioeconomic quintile, including modelled estimates of psychological distress, self-assessed health and risk factors (non-commercial licence) |
-| 27 | Small-scale renewables (`cer`) | Ingested | Every postcode file, 2001 to 2026 |
+| 25 | 2021 Census (`abs_census`), in place of NATSEM | Ingested | 14 General Community Profile tables by SA2 and postal area: volunteering, unpaid care, health conditions, mobility, labour force, qualifications, industry, occupation; and PHIDU's Social Health Atlas (`phidu`, your download, in R2): 4.95 million values by Population Health Area (and SA3, SA4 and socioeconomic quintile), each with its sub-indicator, and a PHA-to-SA2 table (ADR 0011), including modelled estimates of psychological distress, self-assessed health and risk factors (non-commercial licence) |
+| 27 | Small-scale renewables (`cer`) | Ingested | Every postcode file, 2001 to 2026: one value per technology, series, postcode and month (ADR 0011) |
 | 28 | Wine GIs (`wine_gi`) | Ingested | The Australian GI register and the other registers' PDFs |
 | 29 | Border enforcement | Dropped | The Home Affairs annual reports (2016-17 to 2024-25) do not report IP seizures separately |
 | 30 | Closing the Gap 8, 15, 16 (`ctg`) | Ingested | |
 | 31 | IP judgments (`fedcourt`) | Ingested | 2,666 decisions (Federal Court 2,097, Full Court 326, High Court 146, Copyright Tribunal 80) to 10 March 2025, from the Open Australian Legal Corpus: cover-page fields (practice area and sub-area, catchwords, legislation, hearing and judgment dates, solicitors), rights and Acts cited, full texts (R2) |
-| J | TGA register (`tga`) | Ingested (your download) | 98,147 ARTG entries (35,113 medicines, 62,647 devices) and their active ingredients; no dates |
+| J | TGA register (`tga`) | Ingested (your download) | 97,557 ARTG entries (34,525 medicines, 62,646 devices, 387 other), one row per entry and product, and their active ingredients; no dates |
 | E | Google Patents (`google_patents`) | Ingested | 1.75 million families with an Australian publication, applicant or inventor (offices, grants, forward citations, titles); 3.2 million publications, with Australian application numbers that join to IP RAPID; 1.85 million citation pairs |
 | F | Reliance on Science (`reliance_on_science`) | Ingested | 620,364 citations to 175,607 papers (OpenAlex ids) by US patents in 18,254 families with Australian applicants or inventors; 59,202 patent-paper pairs |
 | F | Australian research cited by patents (`openalex_works`) | Ingested | 2.46 million cited works with an Australian institution (OpenAlex); 103,644 of them are cited by 287,416 US patents (614,148 citations, 6% from patent families with Australian applicants or inventors), with their Australian institutions. Most cited: Melbourne, CSIRO, Sydney, Monash, Queensland |
-| 32 | Policy events (`policy_events`) | Ingested | 13 dated changes (four marked to verify) and IP Australia's policy register (155 proposals and their status) |
+| 32 | Policy events (`policy_events`) | Ingested | 16 dated changes, each checked against the Federal Register (ADR 0011), and IP Australia's policy register (155 proposals and their status) |
 
 ### What needs you
 
