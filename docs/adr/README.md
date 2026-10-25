@@ -13,5 +13,6 @@ the owner's, or Claude's, which the owner can overturn.
 | [0005](0005-lens-definitions-v1.md) | How the four lenses are defined, and their known limits | 2026-10-23 | Claude |
 | [0006](0006-timeline-lens.md) | Add a fifth lens: Australia over time, one row per month | 2026-10-23 | Owner (the lens), Claude (its contents) |
 | [0007](0007-every-dataset-through-every-stage.md) | Every dataset goes through all three stages: each table attached to a lens, two new lenses (industries, institutions), repairs before each table's Stage 1 section | 2026-10-25 | Owner (the principle and the two lenses), Claude (how) |
+| [0008](0008-inventors-from-one-publication-per-family.md) | Count a patent family's inventors from one representative publication, borrowing countries from the rest of the family, because counting every name nearly doubled them | 2026-10-25 | Claude |
 
-Next free number: 0008.
+Next free number: 0009.

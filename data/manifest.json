@@ -8727,6 +8727,51 @@
    },
    "run": "2026-10-22"
   },
+  "google_patents_inventors": {
+   "files": {
+    "processed/family_inventors": {
+     "bytes": 15963776,
+     "columns": [
+      "family_id",
+      "inventors",
+      "inventors_au",
+      "inventors_abroad",
+      "inventors_country_unknown",
+      "countries",
+      "women_expected",
+      "men_expected",
+      "gender_unknown"
+     ],
+     "describe": "Per family: inventors by country, expected gender",
+     "location": "repo",
+     "path": "data/processed/google_patents_inventors/family_inventors.parquet",
+     "rows": 1548276,
+     "sha256": "c9ab4b3bf74f7f9d6ebc28a6ba34c9f6f6b9981b92755afa79ebae5454b6f5d2"
+    },
+    "processed/inventors": {
+     "bytes": 54576457,
+     "columns": [
+      "family_id",
+      "name",
+      "country_code",
+      "country_basis",
+      "publications",
+      "given_name",
+      "p_female",
+      "p_female_basis"
+     ],
+     "describe": "Inventors per family, with estimated gender",
+     "key": "processed/google_patents_inventors/inventors.parquet",
+     "location": "r2",
+     "rows": 4131009,
+     "sha256": "90630ae32fe4be68459ece6cb41c89e327b14b575f9f95b21f1890b12a3339f9"
+    }
+   },
+   "notes": [
+    "google_patents_inventors: given name taken as word 2 of Google's harmonised names"
+   ],
+   "run": "2026-10-25"
+  },
   "ipa_fees": {
    "files": {
     "processed/fees": {

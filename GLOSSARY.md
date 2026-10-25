@@ -29,6 +29,9 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **PCT, Madrid, Hague** | International filing routes, for patents, trade marks and designs respectively. |
 | **IP RAPID** | IP Australia's open data on every Australian IP right, updated weekly. The `rights` lens is built from it. |
 | **IPLORD** | IP Australia's longitudinal research dataset, which links IP applicants to businesses. |
+| **Patent family** | All the filings for one invention, in every country, that share the same priority filing. One invention filed in Australia, the US and Europe is one family with several publications. |
+| **Inventor** | The person who made the invention, named on the patent. The inventor can differ from the applicant (the owner), such as an employee inventing for a firm. IP RAPID does not record inventors; Google Patents does. |
+| **Harmonised name** | A name tidied by Google Patents so the same person reads the same way across records. It is imperfect: the same inventor can still appear as "SMITH JOHN" on one publication and "SMITH JOHN A" on another. |
 
 ## Businesses and places
 
@@ -97,3 +100,5 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Strength of evidence** | Every observation is labelled with one of four strengths, from the research goal:<br>- **descriptive**: what the data shows;<br>- **observational**: a link that may have other explanations;<br>- **causal**: an effect, shown by a suitable design;<br>- **projected**: an estimate of the future. |
 | **Additionality** | What happens *because of* a right or an intervention, compared with what would have happened anyway. It is the research goal's central test. |
 | **Natural experiment** | A change (a new fee or rule, say) that affects some people and not others, for reasons unrelated to their outcomes. Comparing the two groups comes close to an experiment. |
+| **Estimated gender** | The probability that a person is a woman, worked out from their first name and country with a name-gender dictionary (WGND). It is not anyone's stated gender. Added up over many people, it gives an *expected count* of women and men, which is reliable for large groups but not for any one person. |
+| **Lower bound** | A count that is at least this large; the true figure may be higher. |

@@ -83,7 +83,7 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 | `pbs` | timeline; medicines | Prescriptions, and government and patient costs, per month. Items are linked to ingredients for the medicine strand. | B9 (Section 100) |
 | `tga` | own unit | ARTG entries; sponsors per ingredient (competition); joins PBS and extension-of-term patents by ingredient | — |
 | `fedcourt` | timeline; text | IP judgments per month by right; variables derived from the text later | — |
-| `google_patents`, `google_patents_inventors` | rights, firms, institutions | Per Australian application: family size, offices, US grant, forward citations (with a follow-up flag); inventors by country and their estimated gender (expected counts, from `wgnd`) | B4; BigQuery access for the inventors |
+| `google_patents`, `google_patents_inventors` | rights, firms, institutions | Per Australian application: family size, offices, US grant, forward citations (with a follow-up flag); inventors by country and their estimated gender (expected counts, from `wgnd`) | B4 |
 | `openalex`, `openalex_works`, `reliance_on_science` | institutions, rights | Output, citations and patent-cited works per institution; science cited by Australian-linked patent families | F37 test |
 | `arc_grants`, `nhmrc_grants` | institutions, timeline | Grants and funding per institution and year (ARC names matched to ROR) | Label round years (F41) |
 | `policy_events` | timeline | Policy changes per month; the policy register is reference | B7 |
@@ -146,8 +146,8 @@ Re-checked on 2026-10-25 with the owner's steer to go broad. Every source here i
    terms.
 6. **PBS monthly report with Section 100 (B9).** The raw file is already in R2.
 7. **ABS business characteristics releases for 2023-24 and 2024-25,** from the data cubes. The API stops at 2023.
-8. **Inventors, from Google Patents (approved 2026-10-25; the loader `google_patents_inventors` is written and tested,
-   and waits on BigQuery access).** IP RAPID records no inventors, and gives individual applicants as pseudonymised
+8. **Inventors, from Google Patents (approved 2026-10-25; loaded 2026-10-25, one publication per family, ADR
+   0008).** IP RAPID records no inventors, and gives individual applicants as pseudonymised
    codes, so this is the only route to inventors' countries and to gender. It shows where inventions are made against
    who owns them, and the expected numbers of women and men among inventors (with WGND).
 9. **Research commercialisation:** NSRC unit records, 2000–2015 (licences, spin-outs, patents and income by

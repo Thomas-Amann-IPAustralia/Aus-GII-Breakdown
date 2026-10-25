@@ -17,19 +17,25 @@ gives "hiroshi" in Japan a 17% chance of being a woman), so Stage 1 checks the e
 name is the word after a comma ("SMITH, JOHN"), else the first or second word, whichever matches the dictionary more
 often (logged at each run).
 
-Harmonised names can still differ across a family's publications (a middle initial, say), so a few inventors are
-counted twice; the counts per family are upper bounds.
+Harmonised names differ across a family's publications (a middle initial, a transliteration), so counting the distinct
+names in a family roughly doubles its inventors (ADR 0008). Each family's inventors are therefore those of one
+publication: the one naming the most inventors (then the most with a country). An inventor that publication gives no
+country takes the most common one given to the same name elsewhere in the family, else to the same first two words. A
+family member that adds an inventor (a divisional, say) is missed, so the counts per family are lower bounds.
 
 Processed:
-- `inventors` (R2, because it holds names as published): one row per family and inventor (Google's harmonised name),
-  with the inventor's country (the most common one across the family's publications; empty if none is given), the
-  publications naming them, the given name used, `p_female`, and its basis (`country` or `name`).
+- `inventors` (R2, because it holds names as published): one row per family and inventor (Google's harmonised name,
+  as the representative publication gives it), with the inventor's country and where it came from (`country_basis`:
+  `publication`, `name` or `name_key`; empty if none is given), the family's publications naming them, the given name
+  used, `p_female`, and its basis (`country` or `name`).
 - `family_inventors` (repo if it fits): one row per family: inventors; inventors in Australia, abroad and of unknown
   country; their countries; the expected numbers of women and men among the inventors with an estimate; and how many
   have none. No names.
 """
 
 from __future__ import annotations
+
+import hashlib
 
 import duckdb
 
@@ -38,17 +44,48 @@ from .google_patents import FAM, P, _query
 
 MAX_GB = 250
 
+
+def name_key(col: str) -> str:
+    """BigQuery SQL for the first two words of a harmonised name ('SMITH JOHN A' -> 'SMITH JOHN')."""
+    return f"regexp_extract({col}, r'^\\S+(?:\\s+\\S+)?')"
+
+
 INVENTORS = f"""
 with {FAM},
 inv as (
-  select p.family_id, upper(trim(i.name)) as name, nullif(i.country_code, '') as country_code
+  select p.family_id, p.publication_number, upper(trim(i.name)) as name, nullif(i.country_code, '') as country_code
   from {P} p, unnest(p.inventor_harmonized) i
   where p.family_id in (select family_id from fam) and trim(i.name) != ''),
-g as (select family_id, name, country_code, count(*) as n from inv group by 1, 2, 3)
-select family_id, name,
-  array_agg(country_code ignore nulls order by n desc limit 1)[safe_offset(0)] as country_code,
-  sum(n) as publications
-from g group by 1, 2
+pub as (
+  select family_id, publication_number, count(distinct name) as n,
+    count(distinct if(country_code is not null, name, null)) as n_country
+  from inv group by 1, 2),
+rep as (
+  select family_id,
+    array_agg(publication_number order by n desc, n_country desc, publication_number limit 1)[offset(0)]
+      as publication_number
+  from pub group by 1),
+r as (
+  select family_id, name, max(country_code) as country_code
+  from inv join rep using (family_id, publication_number) group by 1, 2),
+g as (select family_id, name, country_code, count(*) as n from inv group by 1, 2, 3),
+by_name as (
+  select family_id, name, sum(n) as publications,
+    array_agg(country_code ignore nulls order by n desc, country_code limit 1)[safe_offset(0)] as country_code
+  from g group by 1, 2),
+k as (
+  select family_id, {name_key("name")} as name_key, country_code, sum(n) as n
+  from g where country_code is not null group by 1, 2, 3),
+by_key as (
+  select family_id, name_key, array_agg(country_code order by n desc, country_code limit 1)[offset(0)] as country_code
+  from k group by 1, 2)
+select r.family_id, r.name, coalesce(r.country_code, b.country_code, k.country_code) as country_code,
+  case when r.country_code is not null then 'publication' when b.country_code is not null then 'name'
+       when k.country_code is not null then 'name_key' end as country_basis,
+  b.publications
+from r
+join by_name b using (family_id, name)
+left join by_key k on k.family_id = r.family_id and k.name_key = {name_key("r.name")}
 """
 
 
@@ -91,7 +128,8 @@ def _dry_run_gb(client, sql: str) -> float:
 
 
 def run(ctx: Ctx) -> None:
-    raw = ctx.cache / "inventors_raw.parquet"
+    # named after the query, so a changed query is run again rather than read from an old cache
+    raw = ctx.cache / f"inventors_raw_{hashlib.sha256(INVENTORS.encode()).hexdigest()[:8]}.parquet"
     if not raw.exists():
         client = bigquery()
         gb = _dry_run_gb(client, INVENTORS)
