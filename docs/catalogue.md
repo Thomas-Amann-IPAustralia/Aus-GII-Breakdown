@@ -565,6 +565,33 @@ Processed: one table per flow, named after the flow in lower case.
 | `rppi` | 6,372 | repo (0.0 MB) | `flow`, `measure`, `measure_label`, `property_type`, `property_type_label`, `region`, `region_label`, `frequency`, `frequency_label`, `time_period`, `unit_of_measure`, `unit_of_measure_label`, `observation_status`, `observation_status_label` … |
 | `wpi` | 45,936 | repo (0.1 MB) | `flow`, `measure`, `measure_label`, `index`, `index_label`, `sector`, `sector_label`, `industry`, `industry_label`, `adjustment_type`, `adjustment_type_label`, `region`, `region_label`, `frequency` … |
 
+## Labour Force Survey (headline series, and status in employment, including owner-managers) (`abs_labour`)
+
+Australian Bureau of Statistics. Tier 2; questions 2, 4, 5. Licence: CC BY 4.0. Source: https://data.api.abs.gov.au/
+
+The Labour Force Survey (ABS Data API): employment and unemployment, and how many people run their own business.
+
+Background for the timeline and national lenses (Q2, Q4, Q5): the labour market around each policy change, and the
+open count of owner-managers, the denominator for who runs businesses (TableBuilder's Census counts, by postal area,
+need an account; `docs/tablebuilder-owner-managers.md`). Monthly, Australia, and the states for `LF`:
+
+- `LF`: the headline series: labour force, employed (full-time and part-time), unemployed, unemployment and
+  participation rates, and the employment-to-population ratio, by sex and state, from 1978, each as original,
+  seasonally adjusted and trend. An analysis uses one adjustment type, never several.
+- `LF_STAT_EMP`: employed persons by status in employment of their main job: employees; owner-managers of
+  incorporated and of unincorporated enterprises, each with or without employees; contributing family workers. By sex,
+  for Australia, from 1991, in thousands (original, not seasonally adjusted). Owner-managers are people, not
+  businesses, counted by their main job.
+
+Each flow is in the raw tidy form of the ABS sources (a code and a label for every dimension, then `value`, the unit,
+the multiplier and the observation status). Raw: each flow's CSV (repo, gzipped). Processed: one table per flow, named
+after the flow in lower case.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `lf` | 434,496 | repo (3.6 MB) | `flow`, `measure`, `measure_label`, `sex`, `sex_label`, `age`, `age_label`, `adjustment_type`, `adjustment_type_label`, `region`, `region_label`, `frequency`, `frequency_label`, `time_period` … |
+| `lf_stat_emp` | 27,027 | repo (0.3 MB) | `flow`, `measure`, `measure_label`, `sex`, `sex_label`, `status_in_employment_of_main_job`, `status_in_employment_of_main_job_label`, `frequency`, `frequency_label`, `time_period`, `unit_of_measure`, `unit_of_measure_label`, `unit_of_multiplier`, `unit_of_multiplier_label` … |
+
 ## OpenAlex, research output of Australian institutions (`openalex`)
 
 OurResearch. Tier 2; questions 2, 4. Licence: CC0. Source: https://openalex.org/

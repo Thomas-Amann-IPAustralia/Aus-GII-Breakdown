@@ -7023,6 +7023,89 @@
    },
    "run": "2026-10-22"
   },
+  "abs_labour": {
+   "files": {
+    "processed/lf": {
+     "bytes": 3611134,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "sex",
+      "sex_label",
+      "age",
+      "age_label",
+      "adjustment_type",
+      "adjustment_type_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "unit_of_multiplier",
+      "unit_of_multiplier_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "decimals",
+      "decimals_label",
+      "value"
+     ],
+     "describe": "Labour Force",
+     "location": "repo",
+     "path": "data/processed/abs_labour/lf.parquet",
+     "rows": 434496,
+     "sha256": "4dbe4a0d7ad20bb4f95bc6bb4741bc13deecc010a72a499db75be22c5d056e3c"
+    },
+    "processed/lf_stat_emp": {
+     "bytes": 277045,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "sex",
+      "sex_label",
+      "status_in_employment_of_main_job",
+      "status_in_employment_of_main_job_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "unit_of_multiplier",
+      "unit_of_multiplier_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "decimals",
+      "decimals_label",
+      "value"
+     ],
+     "describe": "Labour Force: Status in employment of main job and Sex",
+     "location": "repo",
+     "path": "data/processed/abs_labour/lf_stat_emp.parquet",
+     "rows": 27027,
+     "sha256": "c36fc2752d5bb589a17b76a273b80a51e9ca5b25e148e22fc94d6e2506469801"
+    },
+    "raw/LF.csv.gz": {
+     "bytes": 4256027,
+     "location": "repo",
+     "path": "data/raw/abs_labour/LF.csv.gz",
+     "sha256": "cfba2377b765f25a38ccc115fde08f0415148e38fac55b19afce51f5088a3108",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,LF/all"
+    },
+    "raw/LF_STAT_EMP.csv.gz": {
+     "bytes": 271614,
+     "location": "repo",
+     "path": "data/raw/abs_labour/LF_STAT_EMP.csv.gz",
+     "sha256": "913bbb813eacb0dd48802070b65c1c79fd35cec1567f3efebc3230ca9a107eaf",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,LF_STAT_EMP/all"
+    }
+   },
+   "run": "2026-10-25"
+  },
   "abs_prices": {
    "files": {
     "processed/cpi": {

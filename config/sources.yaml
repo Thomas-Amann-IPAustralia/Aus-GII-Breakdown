@@ -212,6 +212,15 @@ sources:
     licence: CC BY 4.0
     coverage: Australia and the state capitals, quarterly (CPI from 1948, monthly from 2017; living costs from 1998; wages from 1997; property prices 2002 to 2021, discontinued)
 
+  - id: abs_labour
+    title: Labour Force Survey (headline series, and status in employment, including owner-managers)
+    publisher: Australian Bureau of Statistics
+    tier: 2
+    questions: [2, 4, 5]
+    url: https://data.api.abs.gov.au/
+    licence: CC BY 4.0
+    coverage: Monthly; the headline series by sex and state from 1978; owner-managers and employees by sex, Australia, from 1991
+
   - id: openalex
     title: OpenAlex, research output of Australian institutions
     publisher: OurResearch
