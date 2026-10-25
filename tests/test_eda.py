@@ -338,3 +338,18 @@ def test_kaplan_meier_matches_a_hand_count():
     at = uni.survival_at(km.assign(g="a"), [0, 1.5, 2, 5], by="g", min_at_risk=1)
     assert np.allclose(at.loc["a"].tolist()[:3], [1.0, 0.8, 0.8 * 4 / 7])
     assert np.isnan(at.loc["a", 5])  # beyond the curve
+
+
+def test_firms_count_by_the_filer_and_name_their_state():
+    p = _built("firms")
+    rights = _built("rights")
+    bad = data.sql(f"""
+        SELECT
+            count(*) FILTER (state NOT IN ('NSW', 'VIC', 'QLD', 'SA', 'WA', 'TAS', 'NT', 'ACT')) AS states,
+            count(*) FILTER (n_held_in_force > n_held) AS held,
+            count(*) FILTER (remoteness LIKE 'No usual address%') AS remoteness,
+            (SELECT count(*) FROM read_parquet('{rights}') WHERE founder_abn IS NOT NULL AND ip_right_type <> 'pbr')
+              - sum(n_patents_standard + n_patents_provisional + n_patents_second_tier + n_trade_marks + n_designs)
+              AS filed
+        FROM read_parquet('{p}')""").iloc[0]
+    assert bad.to_dict() == dict.fromkeys(bad.index, 0)

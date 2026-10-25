@@ -448,13 +448,17 @@ def rights_sql() -> str:
 
 def firms_sql() -> str:
     return f"""
-    WITH ip AS (
-        SELECT applicant_abn AS abn,
+    WITH ip AS (  -- applications by the filer: the first founding applicant with an ABN (ADR 0013, 0016)
+        SELECT founder_abn AS abn,
                count(*) FILTER (patent_type = 'standard') AS n_patents_standard,
                count(*) FILTER (patent_type = 'provisional') AS n_patents_provisional,
                count(*) FILTER (patent_type = 'second_tier') AS n_patents_second_tier,
                count(*) FILTER (ip_right_type = 'trade_mark') AS n_trade_marks,
                count(*) FILTER (ip_right_type = 'design') AS n_designs
+        FROM {lens_table("rights")} WHERE founder_abn IS NOT NULL GROUP BY 1
+    ),
+    held AS (  -- rights held now: the first current applicant or owner with an ABN
+        SELECT applicant_abn AS abn, count(*) AS n_held, count(*) FILTER (in_force) AS n_held_in_force
         FROM {lens_table("rights")} WHERE applicant_abn IS NOT NULL GROUP BY 1
     ),
     rd_year AS (  -- one value per ABN and year: the latest report's, amended where it was (ADR 0010)
@@ -477,8 +481,13 @@ def firms_sql() -> str:
         SELECT applicant_id AS abn, sum(filed_weighted) AS ip_filed_weighted FROM {{iprapid/applicant_year}}
         WHERE applicant_id_type = 'abn' GROUP BY 1
     ),
-    place AS (
-        SELECT p.poa_code, p.ra_name, s.value AS irsad_decile
+    place AS (  -- the postal area's remoteness, advantage and state ('no usual address' areas are not places)
+        SELECT p.poa_code, CASE WHEN p.ra_name NOT LIKE 'No usual address%' THEN p.ra_name END AS ra_name,
+               s.value AS irsad_decile,
+               CASE p.state_name WHEN 'New South Wales' THEN 'NSW' WHEN 'Victoria' THEN 'VIC'
+                   WHEN 'Queensland' THEN 'QLD' WHEN 'South Australia' THEN 'SA' WHEN 'Western Australia' THEN 'WA'
+                   WHEN 'Tasmania' THEN 'TAS'
+                   WHEN 'Northern Territory' THEN 'NT' WHEN 'Australian Capital Territory' THEN 'ACT' END AS state
         FROM {{abs_regions/poa}} p
         LEFT JOIN {{abs_regions/seifa_poa}} s
           ON s.postal_area_code = p.poa_code AND s.index_type = 'IRSAD' AND s.measure = 'RWAD'
@@ -499,7 +508,7 @@ def firms_sql() -> str:
         END AS entity_group,
         s.abn_status = 'ACT' AS abn_active,
         s.gst_status = 'ACT' AS gst_registered,
-        s.state,
+        coalesce(nullif(s.state, ''), place.state) AS state,  -- the ABR leaves 3,977 blank; 165 filled (ADR 0016)
         {_postcode("s.postcode")} AS postcode,
         place.ra_name AS remoteness,
         place.irsad_decile,
@@ -513,6 +522,7 @@ def firms_sql() -> str:
         -- ABNs and GST began in 1999-2000: a business first seen then through them may be older
         s.first_seen < DATE '2001-01-01' AND s.first_seen IS DISTINCT FROM s.asic_registered AS age_truncated,
         s.in_iprapid_patent, s.in_iprapid_trade_mark, s.in_iprapid_design,
+        s.in_iplord,  -- IPLORD (to FY2020) links 50,790 ABNs to IP that IP RAPID gives no ABN for (ADR 0016)
         s.in_rdti, s.in_austender, s.in_ato_ctt,
         s.patent_first_fy, s.trade_mark_first_fy, s.design_first_fy,
         s.ip_filed_total,
@@ -522,6 +532,8 @@ def firms_sql() -> str:
         coalesce(ip.n_patents_second_tier, 0) AS n_patents_second_tier,
         coalesce(ip.n_trade_marks, 0) AS n_trade_marks,
         coalesce(ip.n_designs, 0) AS n_designs,
+        coalesce(held.n_held, 0) AS n_held,
+        coalesce(held.n_held_in_force, 0) AS n_held_in_force,
         coalesce(rd.rdti_years, 0) AS rdti_years,
         rd.rd_expenditure_mean,
         rd.rd_latest,
@@ -531,6 +543,7 @@ def firms_sql() -> str:
         s.austender_value
     FROM {{linkage/abn_spine}} s
     LEFT JOIN ip USING (abn)
+    LEFT JOIN held USING (abn)
     LEFT JOIN rd USING (abn)
     LEFT JOIN tax USING (abn)
     LEFT JOIN filed USING (abn)

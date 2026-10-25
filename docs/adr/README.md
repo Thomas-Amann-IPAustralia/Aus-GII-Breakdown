@@ -21,5 +21,6 @@ the owner's, or Claude's, which the owner can overturn.
 | [0013](0013-rights-parties-attachment.md) | The parties attachment: the founding applicant beside the current holder, whether the holder changed (not knowable for patents filed before FY2003), the main agent, and representation as attorney, other agent or self | 2026-10-25 | Claude (owner asked for the rights attachments, parties first) |
 | [0014](0014-timeline-stage-1-repairs.md) | The timeline's series start where their records are complete (15 hand-set starts, past survivors, partial records and batch dates), and the 1995 rise of the patent term to 20 years is the 17th policy event | 2026-10-25 | Claude (owner asked for the next lens's Stage 1) |
 | [0015](0015-rights-events-attachment.md) | The events attachment: each right's milestones (examination, acceptance, certification, opposition, assignment, extension of term) and its lifetime, with rights still in force counted as unfinished and trade marks and designs observed to March 2026 | 2026-10-25 | Claude (owner agreed to the events attachment next) |
+| [0016](0016-firms-lens-stage-1-repairs.md) | The firms lens counts applications by the filer, adds what each firm holds (and holds in force), flags the ABNs only IPLORD links to IP, and repairs blank states | 2026-10-25 | Claude (owner asked for the firms lens next) |
 
-Next free number: 0016.
+Next free number: 0017.
