@@ -2,7 +2,8 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**The owner's decisions (2026-10-26):** commence the `national` lens (done: core and attachments). **(2026-10-25):**
+**The owner's decisions (2026-10-26):** go on to the `industries` lens (done: core and attachments); before that,
+commence the `national` lens (done). **(2026-10-25):**
 after the `firms` lens, the owner asked for the `regions` lens to be
 completed (done: core and attachments). Before that, after the events attachment, the owner adopted years in force (U36, with
 unfinished rights kept) as a working measure for Stage 2, on condition that it is used alongside other signals, and
@@ -10,7 +11,18 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-26, latest):** the `national` lens is complete for Stage 1: section 4 of `01_univariate.ipynb`
+**Status (2026-10-26, latest):** the `industries` lens is built and complete for Stage 1: section 6 of
+`01_univariate.ipynb` profiles every column (U73 to U78) and every attachment (6.4, U79), ADR 0020. One row per ANZSIC
+division and financial year, FY1990 to FY2026 (703 rows): IP applications as expected counts through the ALP
+crosswalks (each right split over industries by probabilities), CABEE's businesses, entries and exits (FY2023 to
+FY2026), BERD (2023-24), the WPI and BCARR's creative value added. Every value the ABS and BCARR publish by industry is
+in a new long table, `industry_indicators` (1.4 million rows), and their Australia-wide tables went to
+`national_indicators`. B6 is done (26 IPC predecessors), and a corpus repair: `concordances` split each ISIC class over
+partial ANZSIC links, sending half of pharmaceuticals' weight to textiles and inorganic chemicals. Patents reach only
+goods-producing industries (the crosswalk excludes services: manufacturing 90.8%), a lead for Stage 2. **Next is
+`institutions`, the last planned lens, unless the owner says otherwise.**
+
+Before that, on 2026-10-26: the `national` lens is complete for Stage 1: section 4 of `01_univariate.ipynb`
 profiles every column (U63 to U67) after the repairs of ADR 0019, and every attachment (4.4, U68 to U72). WIPO's filings
 by residents of former states (the Soviet Union, East Germany and four more) and of unknown origin are kept (they were
 9.65% of patent applications by origin, and silently dropped), with a new column, `entity`. The attachments are a new
@@ -21,7 +33,7 @@ stacked tables (45 cells shared a key). Re-running the notebook also showed that
 arbitrarily (a founder's two same-day postcodes, an agent's several names), so a few figures in sections 1 and 3
 changed from build to build; the ties are now fixed (ADR 0019, decision 6), two builds agree row for row, and five
 quoted figures are corrected (U48, U49, U52, U53). **Next is `industries`, then `institutions` (the plan's order),
-unless the owner says otherwise.**
+unless the owner says otherwise.** (Done: `industries`, above.)
 
 Before that, on 2026-10-25: the `regions` lens is complete for Stage 1: section 3 of `01_univariate.ipynb`
 profiles every column (U48 to U54) after the repairs of ADR 0017, and every attachment (3.5, U55 to U62, ADR 0018).
@@ -71,6 +83,24 @@ and BLADE stays ruled out.
 
 ## Where things stand
 
+- **Stage 1, `industries` (section 6, every column and attachment).** What it found (all descriptive):
+  - coverage (U73): 19 divisions, FY1990 to FY2026; IP in every year, CABEE FY2023 to FY2026, BERD FY2024, the WPI
+    from FY1998 (no agriculture), creative value added FY2016 to FY2025 (10 divisions);
+  - the crosswalks (U74): 98.42% to 99.73% of standard patents carried and 99.8% of trade marks; B6 cuts unknown
+    subclass marks from 12,143 to 71; a patent's division is clear (median largest share 0.996), its subdivision less
+    so (0.727); a trade mark's division less clear (0.792);
+  - IP by industry (U75): manufacturing 90.78% of standard patents (machinery 31.18%, chemicals 30.17%), no service
+    division above 0.23%; trade marks manufacturing 55.65%, professional services 11.05%; trade marks break in
+    January 2002 (Nice 8th edition, classes 43 to 45);
+  - Australians (U76): 7.87% to 17.29% of a division's patents; 47% to 58% of goods divisions' trade marks, 67% to
+    80% of services';
+  - businesses (U77): construction 17.0%, professional services 13.0%, property 11.4%, manufacturing 3.2% (June
+    2026); health care +30.7% since FY2023, agriculture −2.9%;
+  - R&D and wages (U78): BERD $24.41 billion (2023-24), professional services 37.6%, manufacturing 20.7%; $142,100 per
+    mining business; wages +44.5% (property) to +56.8% (utilities) FY2010 to FY2025;
+  - attachments (U79): 1,409,875 values; 21.7% of businesses introduced a new good or service in 2023 (9.9%
+    agriculture to 31.9% information media); 61.9% of businesses survived June 2022 to June 2026; BCARR's releases
+    agree within 1.2%.
 - **Stage 1, `national` (section 4, every column and attachment).** What it found (all descriptive):
   - coverage (U63): 30 indicators, 229 places, 1960 to 2025; Australia's researchers end in 2010, technicians 2008,
     the World Bank's R&D spending 2021 (the OECD's 2023); tertiary enrolment starts in 2015;
@@ -217,7 +247,10 @@ and BLADE stays ruled out.
   - `regions`: 2,641 rows, 42 columns (ADR 0017, 0018);
   - `region_indicators`: 22,511,923 rows, 10 columns, 173 MB (the `regions` lens's attachments, long; ADR 0018);
   - `national`: 135,597 rows, 11 columns (ADR 0019: `entity`);
-  - `national_indicators`: 41,196,081 rows, 15 columns, 264 MB (the `national` lens's attachments, long; ADR 0019);
+  - `national_indicators`: 41,203,167 rows, 15 columns, 264 MB (the `national` lens's attachments, long; ADR 0019,
+    0020);
+  - `industries`: 703 rows, 17 columns (ADR 0020);
+  - `industry_indicators`: 1,409,875 rows, 12 columns, 8 MB (the `industries` lens's attachments, long; ADR 0020);
   - `timeline`: 1,473 months, 35 columns.
 
   Two more, `industries` and `institutions`, are planned (ADR 0007). Every table has a lens to attach to; the map is
@@ -250,6 +283,8 @@ and BLADE stays ruled out.
 - **Settled (descriptive, ADR 0010; confirmed by the owner, 2026-10-25):** the register does not drop provisional applications once a full application
   claims them (N01, refuted), so FY2026's jump to 10,069 provisionals is real; `application_date` for a PCT filing is
   the date it entered Australia's national phase (N06).
+- **Corrected on 2026-10-26** (ADR 0020): the corpus's ISIC-to-ANZSIC step, which split each ISIC class over its
+  partial links (textiles had 8.9% of patents, now 2.3%).
 - **Corrected on 2026-10-26** (ADR 0019): the `rights` build's arbitrary ties (founders' same-day postcodes, agents'
   names), which made five quoted figures in U48, U49, U52 and U53 differ from a fresh build; and the World Bank's
   trade mark series, which the register described as applications but which count classes (U67).
@@ -263,6 +298,8 @@ and BLADE stays ruled out.
 - **Corrected this session (the timeline):** the policy register's note that the Patents Act 1990 brought in 20-year
   patents (it was 16 years until 1 July 1995); and section 1's U5 and U10, whose charts showed survivors' counts and
   registration rates for the years before 1983 (trade marks) and 1986 (designs) without saying so.
+- **Tests (industries):** 79 pass; new: one row per key in both tables, the division of a class or subdivision code,
+  each right's shares summing to one, CABEE's divisions summing to its total, BERD's divisions to its total.
 - **Tests (national):** 73 pass; new: WIPO's applications by residents sum to the source's total, no aggregate is a
   place, the OECD's R&D intensity is held once, WIPO's filings at IP Australia sum to the office's total, Australia's
   GII rank is the source's, Closing the Gap keeps the Australian Government's values; one row per key in
@@ -278,10 +315,11 @@ and BLADE stays ruled out.
 
 ## Next, in order
 
-1. **The planned lenses, `industries` and `institutions`,** in the order the plan gives. `industries` also takes the
-   national tables of `abs_rd_vc`, `bcarr_creative` and CABEE (ADR 0019), and needs the IPC map (B6). `institutions`
-   will count the universities' patents that fall outside the postal areas (U49).
-2. **Done:** the `national` section with its attachments (U63 to U72, ADR 0019).
+1. **The last planned lens, `institutions`:** research institutions (ROR) by year. It needs a reviewed link from
+   institutions to ROR identifiers and ABNs (about 60 universities, CSIRO and the medical research institutes; OQ11),
+   and will count the universities' patents that fall outside the postal areas (U49).
+2. **Done:** the `national` section (U63 to U72, ADR 0019) and the `industries` section (U73 to U79, ADR 0020), each
+   with its attachments.
 3. **The rest of the `rights` attachments, as sub-sections of 1.8, when the owner says:** the links (with the PCT
    country check), Google Patents (B4), and the inventors (gender estimates checked country by country against WIPO's
    published shares, above all China and Korea).
@@ -319,6 +357,10 @@ and BLADE stays ruled out.
      (80.42% in 2008, 82.09% in 2015), a break the OECD median does not show (U65): use with care.
    - Australia ranks near the bottom of the OECD on business R&D, exports and manufacturing, and near the top on
      filings from abroad and new businesses (U66): Stage 2 compares them as ratios to people and GDP.
+   - patents reach only goods-producing industries because the corpus's ALP crosswalk excludes services (U75): ALP
+     publishes a version that includes services (free); whether to use it, beside or instead, is a Stage 2 choice;
+   - trade marks by industry break in January 2002 (the Nice 8th edition, U75): compare from FY2003;
+   - the BCS flags 36.2% of its values for sampling error and withholds 25% (U79): division comparisons need care.
 2. Check in Stage 1 (the placeholder dates are done, U40):
    - IP RAPID's `links.linked_application_country`, which labels every PCT number `au` (`analysis/README.md`), with
      the links attachment;
@@ -355,4 +397,5 @@ and every answer with its date. Nothing there blocks Stage 1. Add new questions 
 - `national_indicators` is 41 million rows: always filter by `source`, `dataset` and `indicator` in SQL.
 - Compare WIPO's series by country from 1995 only (U64), and filter `entity = 'country'` for comparisons between
   countries.
-- Next free ADR: 0020.
+- `industry_indicators`: filter by `source` and `indicator`; never add `TOTAL` to the divisions.
+- Next free ADR: 0021.

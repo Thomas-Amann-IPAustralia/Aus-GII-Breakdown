@@ -1315,11 +1315,11 @@ def _ip_by_division() -> str:
           AND coalesce(p.ipc_to, left(c.classification, 4)) IN (SELECT ipc4 FROM {{concordances/ipc4_anzsic}})
     ),
     ip_pat AS (
-        SELECT i.application_number, {_division_of("a.anzsic")} AS division,
-               sum(a.weight / i.n) AS share
+        SELECT i.application_number, left(lpad(a.anzsic, 4, '0'), 2) AS subdivision,
+               {_division_of("a.anzsic")} AS division, sum(a.weight / i.n) AS share
         FROM (SELECT *, count(*) OVER (PARTITION BY application_number) AS n FROM ipc) i
         JOIN {{concordances/ipc4_anzsic}} a USING (ipc4)
-        GROUP BY 1, 2
+        GROUP BY 1, 2, 3
     ),
     nice AS (
         SELECT DISTINCT application_number, lpad(trim(classification), 2, '0') AS nice
@@ -1327,10 +1327,11 @@ def _ip_by_division() -> str:
         WHERE ip_right_type = 'trade_mark' AND classification_system = 'nice' AND is_current
     ),
     ip_tm AS (
-        SELECT c.application_number, {_division_of("a.anzsic")} AS division, sum(a.weight / c.n) AS share
+        SELECT c.application_number, left(lpad(a.anzsic, 4, '0'), 2) AS subdivision,
+               {_division_of("a.anzsic")} AS division, sum(a.weight / c.n) AS share
         FROM (SELECT *, count(*) OVER (PARTITION BY application_number) AS n FROM nice) c
         JOIN {{concordances/nice_anzsic}} a USING (nice)
-        GROUP BY 1, 2
+        GROUP BY 1, 2, 3
     )"""
 
 
@@ -1459,6 +1460,7 @@ def industry_indicators_sql() -> str:
     period_fy = "CAST(left({p}, 4) AS INTEGER) + 1"
     return f"""
     WITH {_industry_names()},
+    {_ip_by_division()},
     cabee_national AS (  -- CABEE's national release, tables 1 to 3 (by division)
         SELECT n.division, 'cabee' AS source, 'national' AS dataset,
                'CABEE.' || replace(c."table", 'Table ', 'T') || '.' || {_slug('c."column"')} AS indicator,
@@ -1522,6 +1524,33 @@ def industry_indicators_sql() -> str:
           AND NOT (a.release = '2015-16 to 2024-25' AND a.table_title LIKE '%GVA by industry division'
                    AND n.division IN (SELECT division FROM divs))
     ),
+    r AS (
+        SELECT ip_right_type, application_number, patent_type, australian_applicant, filing_fy
+        FROM {lens_table("rights")} WHERE filing_fy BETWEEN {INDUSTRIES_FY[0]} AND {INDUSTRIES_FY[1]}
+    ),
+    ip_sub AS (  -- the core lens's IP counts by subdivision: the detail within a division (ADR 0020)
+        SELECT x.division, x.subdivision, x.kind, r.filing_fy AS fy, sum(x.share) AS value
+        FROM (SELECT application_number, 'patent' AS ip_right_type, subdivision, division, share, 'patents' AS kind
+              FROM ip_pat
+              UNION ALL SELECT application_number, 'trade_mark', subdivision, division, share, 'trade_marks'
+              FROM ip_tm) x
+        JOIN r ON r.ip_right_type = x.ip_right_type AND r.application_number = x.application_number
+        WHERE x.kind = 'trade_marks' OR r.patent_type = 'standard'
+        GROUP BY ALL
+    ),
+    ip AS (
+        SELECT division, 'ip' AS source, 'rights' AS dataset,
+               'IP.' || upper(kind) || '.' || subdivision AS indicator,
+               CASE kind WHEN 'patents' THEN 'Standard patent applications (expected)'
+                         ELSE 'Trade mark applications (expected)' END || ', ' || subdivision || ' '
+                 || coalesce(sub_name, '') AS label,
+               CAST(fy - 1 AS VARCHAR) || '-' || right(CAST(fy AS VARCHAR), 2) AS period, fy, value,
+               NULL::VARCHAR AS value_text, 'applications (expected)' AS unit, NULL::VARCHAR AS status
+        FROM ip_sub LEFT JOIN (SELECT DISTINCT lpad(anzsic_subdivision_code, 2, '0') AS subdivision,
+                                          anzsic_subdivision_label AS sub_name
+                               FROM {{abs_cabee/cubes}} WHERE cube = '8165DC04' AND anzsic_subdivision_code IS NOT NULL)
+          USING (subdivision)
+    ),
     wpi AS (  -- the Wage Price Index by industry, quarterly (a quarter is never spread over months or years)
         SELECT CASE industry WHEN 'TOT' THEN 'TOTAL' ELSE industry END AS division, 'wpi' AS source,
                'wpi' AS dataset, 'WPI.' || measure || '.' || index || '.' || sector || '.' || adjustment_type
@@ -1535,7 +1564,8 @@ def industry_indicators_sql() -> str:
     )
     SELECT u.*, d.division_name
     FROM (SELECT * FROM cabee_national UNION ALL SELECT * FROM cabee_cubes UNION ALL SELECT * FROM bcs
-          UNION ALL SELECT * FROM berd UNION ALL SELECT * FROM creative UNION ALL SELECT * FROM wpi) u
+          UNION ALL SELECT * FROM berd UNION ALL SELECT * FROM creative UNION ALL SELECT * FROM wpi
+          UNION ALL SELECT * FROM ip) u
     LEFT JOIN divs d USING (division)
     """
 

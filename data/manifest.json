@@ -8316,7 +8316,7 @@
      "sha256": "947469052d205a3e5901511c88d0f3eacd54d6b173dca86a0b8db17ad6528b96"
     },
     "processed/ipc4_anzsic": {
-     "bytes": 55134,
+     "bytes": 50625,
      "columns": [
       "ipc4",
       "anzsic",
@@ -8326,8 +8326,8 @@
      "describe": "ipc4 to ANZSIC 2006 class, ALP weights carried through ISIC Rev. 4",
      "location": "repo",
      "path": "data/processed/concordances/ipc4_anzsic.parquet",
-     "rows": 8384,
-     "sha256": "760e190f7f13aae3a3a67fb3fd89055881003b74d2b002d95d75af5951239c02"
+     "rows": 6883,
+     "sha256": "41b1437e674357e972024e8dc4b1f224f1fefc18f83c60206ac41695f9d8cd9f"
     },
     "processed/ipc_green_inventory": {
      "bytes": 14391,
@@ -8377,7 +8377,7 @@
      "sha256": "5fc8256bb7a5249a7e7a46e602cd0e8234bda4510504dc6d3c7ec3f9f36f38b9"
     },
     "processed/nice_anzsic": {
-     "bytes": 16248,
+     "bytes": 15197,
      "columns": [
       "nice",
       "anzsic",
@@ -8387,8 +8387,8 @@
      "describe": "nice to ANZSIC 2006 class, ALP weights carried through ISIC Rev. 4",
      "location": "repo",
      "path": "data/processed/concordances/nice_anzsic.parquet",
-     "rows": 826,
-     "sha256": "ea0daa4ea19a6a8e1b864677f5c13d78b729f5049435e9a999325582b3f9ab0a"
+     "rows": 700,
+     "sha256": "88d99cdd9cc50a9dc1c820cec80358375188f3125e5691703fa14c7cf3f6a0ba"
     },
     "processed/patent_fields": {
      "bytes": 5794058,
@@ -8441,6 +8441,7 @@
    "notes": [
     "concordances: nice_anzsic: 0.0% of ALP weight is on ISIC classes the ABS table lacks"
    ],
+   "reprocessed": "2026-10-26",
    "run": "2026-10-22"
   },
   "ctg": {

@@ -189,6 +189,23 @@ From section 4 of `01_univariate.ipynb`.
 - **IP RAPID's innovation patents filed in 2016 exceed WIPO's utility model count by a third** (2,469 against 1,855);
   other years are 0.958 to 1.072 of it.
 
+## Found in the industries lens's Stage 1 profile (2026-10-26, ADR 0020)
+
+From section 6 of `01_univariate.ipynb`.
+- **The corpus's ALP patent crosswalk excludes services,** so 90.8% of standard patents fall in manufacturing and no
+  service division receives more than 0.23%.
+- **IP RAPID stores Nice classes 1 to 9 without a leading zero;** the ALP crosswalk writes them '01' to '09'.
+- **The ISIC-to-ANZSIC step split weight over partial links** (pharmaceuticals sent half their weight to textile
+  finishing and inorganic chemicals); repaired in `concordances`, which now has a `reprocess`.
+- **ALP maps G21B (nuclear fusion) wholly to ISIC 1392 (made-up textiles).** Its own quirk, left as published; G21B
+  has few patents.
+- **Trade mark classes break in January 2002** (the Nice 8th edition: class 42 split into 42 to 45): classes 43 to 45
+  have 1 mark filed in FY2000 and 1,185 in FY2002.
+- **ABS cube headings can nest three deep** (the venture capital tables), but the cube reader records two, so 469
+  values share a section and row label; the lenses key ABS cube rows by their row on the sheet as well.
+- **BCARR's two releases overlap** (FY2016 to FY2023) and differ by up to 1.2%; the BCS flags 36.2% of its values and
+  withholds 25%.
+
 ## Not yet checked
 
 - Whether values mean the same thing across sources (for example, what counts as a "state" or an entity type).
