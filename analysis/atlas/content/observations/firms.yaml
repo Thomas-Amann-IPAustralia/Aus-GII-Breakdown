@@ -1,0 +1,368 @@
+# The firms lens (section 2 of the notebook): one row per ABN that appears in IP Australia's data, the R&D Tax
+# Incentive, AusTender or the ATO's tax transparency reports. Plain English for readers who are not data scientists.
+# Markup: **bold**, [[term]] or [[term|shown words]] for a glossary explainer, {U45} for another observation.
+# Every number in headline, statement, figures, points and a quoted chart must be on the notebook's page.
+
+- id: U41
+  lens: firms
+  about: data
+  headline: The firms table holds the businesses that used one of five schemes, not every business, and its IP counts are lower bounds
+  statement: >-
+    The table has 398,450 [[abn|ABNs]]. 63.68% appear only because they filed IP in IP RAPID, 13.69% only because they
+    hold a government contract, and 12.75% only because an older IP Australia dataset ([[iplord|IPLORD]]) links them to
+    IP. Anything measured across this table describes these firms, not Australian businesses in general.
+  figures:
+    - value: "398,450"
+      label: businesses (ABNs) in the firms table
+    - value: "50,790"
+      label: linked to IP only by IPLORD, so their IP counts read zero
+    - value: "47.02%"
+      label: of those IPLORD-only businesses still have an active ABN
+  points:
+    - "**Who is in it.** 253,719 ABNs are in IP RAPID alone, 54,552 in AusTender alone, 50,790 linked to IP by IPLORD
+      alone, 8,033 in the R&D Tax Incentive alone and 3,139 in the tax transparency reports alone; the rest appear in
+      two or more."
+    - "**Many have closed.** Active ABNs run from 47.02% of the IPLORD-only firms and 59.62% of the firms only in IP
+      RAPID, to 92.02% of R&D claimants and 95.35% of firms in both IP RAPID and the R&D Tax Incentive."
+    - "**Filer and holder.** Where both are known, the business that filed a right is not the one that holds it now for
+      2.17% of standard patents, 7.11% of trade marks and 5.25% of designs."
+    - "**IPLORD's own counts are not used.** For the 152,683 ABNs with trade marks in both datasets, 81.02% have the same
+      count, but IPLORD's total is 1.84 times IP RAPID's and its weighted total 0.42 times. They are built differently."
+    - "**Gaps.** 63 ABNs are not in the business register extract and 3,875 have no state."
+  questions:
+    - q: 2
+      how: Any comparison of who uses the IP system (Q2) must say it is among firms that used a scheme, and that their IP
+        counts are a floor, not the full picture.
+    - q: 3
+      how: The table joins IP to R&D claims, contracts and company records for the same business, which is what Q3
+        needs to ask what goes with IP producing value.
+  sources: [linkage, abr, asic, iprapid, iplord, rdti, austender, ato_ctt]
+  prep:
+    - what: One row per ABN, taken from the corpus's ABN spine, which lists every ABN found in IP RAPID, IPLORD, the R&D
+        Tax Incentive, AusTender or the tax transparency reports.
+      why: The ABN is the one identifier that links a business across these sources and to the business register.
+    - what: Each application is credited to the business that filed it (its first founding applicant with an ABN), not
+        the business that holds it today.
+      why: '"Who files" should not change when a right is later sold (ADR 0016).'
+    - what: A flag marks the ABNs that only IPLORD links to IP; IPLORD's own counts are kept out.
+      why: IPLORD counts applications differently from IP RAPID, so adding the two would mix two measures.
+  steps:
+    - Count the ABNs in the table, and for each, the sources it appears in.
+    - Group the ABNs by that combination of sources and count each group.
+    - For each group, work out the share whose ABN is still active in the business register.
+    - For rights where both the filer's and the holder's ABN are known, count how often they differ.
+    - Compare IPLORD's trade mark counts with IP RAPID's for the ABNs that appear in both.
+  assumptions:
+    - An ABN stands for one business. Related companies in the same group have different ABNs and are counted
+      separately.
+    - A right with no ABN recorded for its filer cannot be credited to any firm; such rights are left out of firms'
+      counts rather than guessed.
+  limits:
+    - The table is not a census of Australian businesses. A business that never used one of the five schemes is not in
+      it, so rates worked out on this table are rates among scheme users.
+    - Firms' IP counts are lower bounds, because rights with no ABN (and IPLORD-only links) add nothing to them.
+  next: >-
+    Stage 2 compares firms' IP with their R&D, contracts, age and type, always stating that the comparison is among
+    scheme users and that IP counts are a floor.
+  terms: [abn, iplord, lower-bound, lens]
+  related: [U44, U45, U54]
+
+- id: U42
+  lens: firms
+  about: system
+  headline: Private companies make up most firms in every scheme except government contracting
+  statement: >-
+    Private companies are 74.7% of all firms in the table, 82.2% of IP filers and 94.5% of R&D Tax Incentive
+    claimants, but only 55.3% of government suppliers, where sole traders (16.2%) and trusts (12.9%) are common.
+  figures:
+    - value: "74.7%"
+      label: of all firms are private companies
+    - value: "94.5%"
+      label: of R&D Tax Incentive claimants are private companies
+    - value: "55.3%"
+      label: of government suppliers are private companies
+  points:
+    - "The R&D Tax Incentive is open to companies only, so it has no trusts, partnerships or sole traders. That is its
+      rule, not a choice those businesses made."
+    - "**Status.** 62.4% of private companies' ABNs are still active, 71.8% of public companies' and 34.3% of
+      partnerships'."
+    - "Of active ABNs, 79.5% of private companies and 55.1% of sole traders are registered for GST (roughly, a turnover
+      of $75,000 or more)."
+  questions:
+    - q: 2
+      how: Shows which kinds of business reach each scheme, the starting point for asking who the IP system serves.
+  sources: [abr, linkage, iprapid, rdti, austender]
+  prep:
+    - what: Each ABN's entity type from the business register is grouped into eight broad groups (private company,
+        trust, sole trader and so on).
+      why: The register has 57 entity types; eight groups are enough to compare schemes and few enough to read.
+    - what: An "IP filer" is a firm credited with at least one IP application as a founding applicant.
+      why: Holding a right bought from someone else is not the same as filing for one.
+  steps:
+    - Group every firm by its entity group.
+    - Within all firms, IP filers, R&D claimants and government suppliers in turn, work out each group's share.
+    - For each entity group, work out the share of ABNs that are active, and of active ones, the share registered for
+      GST.
+  assumptions:
+    - The business register's entity type is taken as recorded; a business that changed form keeps its current type.
+  limits:
+    - Shares describe the firms that used each scheme; they do not say which kinds of business would benefit from
+      using it.
+  next: >-
+    Stage 2 compares firms within the same entity group, so that differences between schemes are not mistaken for
+    differences between kinds of business.
+  terms: [abn, gst]
+  related: [U41, U46]
+
+- id: U43
+  lens: firms
+  about: data
+  headline: Firms are a median 13.6 years old on the public record, with a spike where ABNs began
+  statement: >-
+    Measured from a firm's earliest public registration, the [[median]] firm is 13.6 years old. The most common start
+    date, 1 November 1999 (5,279 firms), is the day ABNs began, so many of those firms are older than the record shows.
+  figures:
+    - value: "13.6"
+      label: years, the median age on the record
+    - value: "5,279"
+      label: firms first seen on 1 November 1999, the ABN's start
+    - value: "29.6%"
+      label: of firms dated by their ABN are possibly older than shown
+  points:
+    - "The [[mean]] age is 16.32 years, higher than the median because of a long tail of old companies (the oldest was
+      registered in 1817)."
+    - "By the register that set the date: companies registered with ASIC are a median 14.6 years old, firms dated by
+      GST registration 11.3 and firms dated by their ABN 18.4."
+    - "27,403 firms have no date at all."
+  questions:
+    - q: 2
+      how: Age lets Stage 2 ask whether younger firms use the IP system differently from established ones.
+    - q: 3
+      how: Stage of business development is one of the conditions Q3 asks about.
+  sources: [abr, asic, linkage]
+  prep:
+    - what: A firm's age is the years since its earliest public registration (with ASIC, for an ABN, or for GST), up to
+        22 October 2026, the date the corpus was built.
+      why: The public registers give only current statuses, so the earliest registration is the best available start
+        date. Fixing the end date stops ages changing with the day the analysis is run.
+    - what: A flag marks firms first seen when ABNs or GST began (1999 to 2000), whose real age may be greater.
+      why: Their recorded start is the start of the register, not of the business (ADR 0010).
+  steps:
+    - Take each firm's earliest registration date and work out its age in years.
+    - Summarise the ages (median, mean, spread) and find the most common start dates.
+    - Repeat by the register that set each firm's date, and count how many are flagged as possibly older.
+  assumptions:
+    - A firm's earliest public registration is close to when it began. For companies this is usually true; for firms
+      dated by their ABN or GST it may not be, which is why they are flagged.
+  limits:
+    - Age on the record is a lower bound on a business's real age.
+  next: >-
+    Stage 2 uses age together with its "possibly older" flag, and looks at firms first seen from 2001 separately.
+  terms: [median, mean, lower-bound, abn]
+  related: [U41]
+
+- id: U44
+  lens: firms
+  about: system
+  featured: true
+  headline: A few firms file most of the patents that firms file
+  statement: >-
+    Of the 23,971 firms that filed standard patents, the top 1% filed 55.3% of them, while the typical ([[median]])
+    firm filed just one. Trade marks are less concentrated: the top 1% of filing firms filed 25.9%.
+  figures:
+    - value: "55.3%"
+      label: of firms' standard patents were filed by the top 1% of filing firms
+    - value: "1"
+      label: standard patent filed by the median filing firm
+    - value: "3,811"
+      label: standard patents filed by the busiest single firm
+  points:
+    - "**Standard patents.** 23,971 firms filed 183,989; the median firm filed 1 and the [[percentile|90th percentile]]
+      firm 7."
+    - "**Trade marks.** 241,576 firms filed 883,165; median 1, 90th percentile 6; the top 1% filed 25.9%."
+    - "**Designs.** 12,554 firms filed 74,697, and the top 1% filed 35.8%. Provisional applications: the top 1% of
+      24,905 firms filed 32.0%. Second-tier patents: the top 1% of 6,077 firms filed 12.2%."
+    - "**What firms hold now.** 116,240 firms hold 430,305 rights still in force; the top 1% of them hold 28.7%."
+    - "Plotted on [[log-scale|log scales]], the number of firms filing a given number of applications falls in a
+      near-straight line: a [[long-tail]]."
+  questions:
+    - q: 2
+      how: Use of the system is highly uneven, so national averages would mostly describe a handful of heavy filers.
+        Q2's interest in distribution over averages starts here.
+    - q: 3
+      how: The contrast between the few heavy filers and the many one-off filers is a natural place to look for what
+        distinguishes valuable use of IP.
+  sources: [iprapid, linkage, abr]
+  chart: U44
+  notebook_charts: [0]
+  prep:
+    - what: Each application is credited to the business that filed it (the first founding applicant with an ABN).
+      why: Crediting today's holder would move applications to whoever bought the rights later (ADR 0016).
+    - what: Standard patents, provisional applications, second-tier patents, trade marks and designs are counted apart.
+      why: They are different rights with different costs and purposes, and a combined count would mostly be trade
+        marks (U4).
+    - what: Only firms with at least one application of a type are counted for that type.
+      why: The question is how filing is spread among those who file, not how many firms never file.
+  steps:
+    - Start from every standard patent application whose filer has an ABN, credited to that filer.
+    - Count each firm's applications. 23,971 firms filed 183,989 standard patents.
+    - Line the firms up from most to fewest applications.
+    - Take the top 1% of firms in that line and add up their applications.
+    - Divide by all 183,989 applications. The result is 55.3%.
+    - Repeat for each type of right, and for the rights firms hold now.
+  assumptions:
+    - One ABN is one firm. Companies in the same corporate group are counted separately, so concentration by
+      corporate group would be at least as high as shown.
+    - Applications without a filer's ABN (individuals, and some organisations) are outside this count; the shares
+      describe firms with an ABN.
+  limits:
+    - A count of applications says nothing about their value. Heavy filers' patents may be worth more or less than
+      anyone else's.
+    - Firms' IP counts are lower bounds ({U41}), and filers after FY2024 are less often linked to an ABN ({U45}).
+  next: >-
+    Stage 2 relates firms' filing to their R&D, contracts, age and type, using medians, logs or ranks rather than
+    averages, because averages would be pulled up by the few heaviest filers.
+  terms: [median, percentile, long-tail, log-scale, abn]
+  related: [U41, U45, U52, U21]
+
+- id: U45
+  lens: firms
+  about: data
+  headline: Recent filers are less often linked to a business number, so part of an apparent fall in new filers is in the records
+  statement: >-
+    Firms filing their first trade mark fell from 11,318 in FY2024 to 7,384 in FY2026. But over the same years the share
+    of Australian organisations' trade marks that carry the filer's [[abn|ABN]] fell from 84.1% to 59.9%. At least part
+    of the fall is in linking applications to businesses, not in filing.
+  figures:
+    - value: "84.1% → 59.9%"
+      label: Australian organisations' trade marks with the filer's ABN, FY2024 to FY2026
+    - value: "11,318 → 7,384"
+      label: firms filing their first trade mark, FY2024 to FY2026
+  points:
+    - "Firms filing their first trade mark rose from 1,186 (FY1990) to 11,318 (FY2024), then fell to 8,741 (FY2025) and
+      7,384 (FY2026). Firms filing their first patent fell from 1,165 (FY2020) to 685 (FY2026)."
+    - "The share with a filer's ABN fell for trade marks from 84.1% (FY2024) to 71.4% (FY2025) and 59.9% (FY2026); for
+      designs from 88.4% to 76.3%; for standard patents from 88.7% to 83.9%."
+    - "ABNs may be attached to applications late, or collected less often. The data cannot say which."
+  questions:
+    - q: 2
+      how: Any trend in who is newly using the system depends on this linking; until it is explained, recent years
+        cannot be compared fairly.
+    - q: 4
+      how: Whether ABNs are collected at filing is something IP Australia controls, so the answer bears on how well it
+        can measure its own reach.
+  sources: [iprapid, linkage]
+  chart: U45
+  prep:
+    - what: Each firm's first application of each type is dated by financial year.
+      why: The year a firm first files is its entry into the system.
+    - what: The share with a filer's ABN is worked out among Australian organisations only.
+      why: Individuals usually have no ABN, so including them would mix a change in who files with a change in linking.
+  steps:
+    - Count, for each financial year, the firms whose first trade mark (or patent, or design) was filed that year.
+    - Separately, for Australian organisations' applications in each year, work out the share that carry the filer's
+      ABN.
+    - Compare the two over FY2024 to FY2026. The count of new filers falls while the share linked to an ABN also falls.
+  assumptions:
+    - Australian organisations would normally have an ABN; a falling share with one is read as a change in recording,
+      not a change in who files.
+  limits:
+    - The data cannot separate late linking from less collection, or say how much of the fall in new filers is real.
+  next: >-
+    Firm-level filing by year is compared only up to FY2024 until the cause is known. The question has gone to IP
+    Australia (OQ7).
+  terms: [abn]
+  related: [U41, U44]
+
+- id: U46
+  lens: firms
+  about: system
+  headline: R&D claims are spread across many firms; government contract value is concentrated in a few suppliers
+  statement: >-
+    The top 1% of R&D Tax Incentive claimants account for 28.1% of claims, but the top 1% of government suppliers hold
+    83.1% of contract value. The typical claimant's latest claim is $307,490; the typical supplier has 2 contracts
+    worth $110,000.
+  figures:
+    - value: "28.1%"
+      label: of R&D claims by the top 1% of claimants
+    - value: "83.1%"
+      label: of contract value held by the top 1% of suppliers
+    - value: "$307,490"
+      label: the median latest R&D claim
+  points:
+    - "**R&D Tax Incentive.** 18,718 firms (2021-22 to 2023-24). The median latest claim is $307,490, the 90th
+      percentile $1,996,666 and the largest $236,287,319. 195 firms claimed $0 in their latest year."
+    - "**Tax transparency reports.** 6,602 firms, with a median latest income of $201,600,950 (the reports cover
+      entities with $100 million or more)."
+    - "**AusTender.** 72,042 suppliers, a median 2 contracts and $110,000 in value; the top 1% hold 83.1% of the value
+      and 55.9% of the contracts."
+  questions:
+    - q: 3
+      how: R&D and procurement are two of the complementary activities Q3 asks about; knowing how they are spread
+        decides how they can be compared with IP.
+    - q: 4
+      how: Government procurement is a possible lever; its concentration matters for who such a lever would reach.
+  sources: [rdti, ato_ctt, austender, linkage]
+  chart: U46
+  prep:
+    - what: R&D uses each firm's latest report (as amended); contracts are counted once each, at their latest value.
+      why: Summing every amendment of a contract had counted the same contract many times (ADR 0010, 0011).
+    - what: Money is shown in nominal dollars here.
+      why: Stage 1 describes values as recorded; Stage 2 adjusts for inflation before comparing years ({U30}).
+  steps:
+    - For each source, take the firms with any value and summarise the spread (median, 90th percentile, largest).
+    - Line firms up from largest to smallest and work out the share held by the top 1%.
+  assumptions:
+    - A contract's value is the value published in its latest notice, over its whole life.
+  limits:
+    - Contract values are what was agreed, not what was paid; amendments to some older contracts are missing (OQ3).
+    - The tax reports cover only very large entities, so they say nothing about small firms' income.
+  next: >-
+    Stage 2 compares firms' IP with their R&D and contracts, in dollars adjusted for inflation.
+  terms: [median, percentile, nominal]
+  related: [U41, U62, U86]
+
+- id: U47
+  lens: firms
+  about: system
+  headline: IP filers and R&D claimants are more often in major cities and advantaged areas than firms in general
+  statement: >-
+    85.2% of all firms are registered in major cities, against 87.1% of IP filers and 89.9% of R&D claimants. 34.0% of
+    firms are in the most advantaged tenth of postcodes, against 39.3% of R&D claimants. Government suppliers are less
+    metropolitan (78.9%).
+  figures:
+    - value: "89.9%"
+      label: of R&D claimants are registered in major cities
+    - value: "39.3%"
+      label: of R&D claimants are in the most advantaged tenth of postcodes
+  points:
+    - "**State.** New South Wales has 35.9% of firms, 36.7% of IP filers and 36.3% of R&D claimants; Victoria 26.6%,
+      27.6% and 27.8%. The ACT has 2.7% of firms but 9.7% of government suppliers."
+    - "**Advantage.** 10.1% of firms are in the three least advantaged tenths of postcodes."
+    - "An address here is where the business is registered, often a head office or an accountant's, not necessarily
+      where its work is done."
+  questions:
+    - q: 2
+      how: A first sign of geographic and socio-economic unevenness in who uses IP and R&D support, which Q2 asks about
+        directly.
+  sources: [abr, abs_regions, linkage]
+  chart: U47
+  prep:
+    - what: Each firm is placed by the postcode of its main business address in the business register, then given that
+        postcode's remoteness and advantage ([[irsad|IRSAD]] tenth) from the ABS.
+      why: The register's address is the only location recorded for most firms.
+    - what: A blank state in the register is filled from the postcode where possible (165 firms).
+      why: The register left the state blank for 3,977 ABNs (ADR 0016).
+  steps:
+    - Place every firm in its postcode's state, remoteness class and advantage tenth.
+    - Work out the share of all firms, IP filers, R&D claimants and government suppliers in each class.
+    - Compare the shares across the four groups.
+  assumptions:
+    - A firm's registered address stands in for where it is. For many firms that is a head office or an adviser's
+      address.
+  limits:
+    - The shares say where firms are registered, not where research is done or where benefits fall.
+  next: >-
+    Stage 2 works at the level of places (the regions lens), comparing filing rates with advantage and remoteness.
+  terms: [irsad, remoteness]
+  related: [U51, U54, U62]

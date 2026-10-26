@@ -1,0 +1,560 @@
+# Terms used on the evidence pages, in plain English. Keyed by the name used in [[term]] markup. `short` is shown in
+# the explainer beside an observation and in the popover; `more` adds detail on the glossary page. Groups are named
+# in site.yaml (glossary_groups). Kept in step with the project's GLOSSARY.md, written for readers who are not data
+# scientists.
+
+# ------------------------------------------------------------------------------------------------- statistics
+median:
+  group: stats
+  title: Median
+  short: >-
+    The middle value: line everything up from smallest to largest, and the median is the one halfway along. Half are
+    below it and half above.
+  more: >-
+    Unlike the average (mean), the median is not dragged up by a few very large values, so it describes the typical
+    case when a handful of firms or places are far larger than the rest. That is why these pages use it so often.
+mean:
+  group: stats
+  title: Mean (average)
+  short: "The ordinary average: add everything up and divide by how many there are."
+  more: >-
+    When a few values are huge, the mean is pulled towards them and stops describing a typical case. Compare it with
+    the median.
+percentile:
+  group: stats
+  title: Percentile
+  short: >-
+    The value below which a given share of things fall. The 90th percentile is the value 90% of cases are below; the
+    99th, the value all but the top 1% are below.
+  more: The median is the 50th percentile. The "middle half" runs from the 25th to the 75th.
+middle-half:
+  group: stats
+  title: Middle half (interquartile range)
+  short: >-
+    The range that holds the middle 50% of values, from the 25th to the 75th percentile. A quarter of cases are
+    below it and a quarter above.
+long-tail:
+  group: stats
+  title: Long tail (skew)
+  short: >-
+    A spread where most cases are small and a few are very large. The few large ones stretch out a long "tail" to
+    the right of a chart.
+  more: >-
+    In a long-tailed spread, averages mislead and shares held by the top 1% or 10% are large. Skewness is a number
+    that measures how lopsided a spread is: 0 for a symmetric one, larger for a longer right-hand tail.
+log-scale:
+  group: stats
+  title: Log scale
+  short: >-
+    An axis where each step is ten times the last (1, 10, 100, 1,000) instead of adding the same amount. It lets very
+    small and very large values be seen on one chart.
+  more: >-
+    On a log scale, equal distances mean equal ratios. A spread that falls in a near-straight line on two log scales
+    is a sign of a long tail.
+concentration:
+  group: stats
+  title: Concentration curve
+  short: >-
+    A line that shows how much of a total the top x% hold. Line everyone up from largest to smallest; the curve rises
+    steeply if a few hold most of it, and follows the diagonal if everyone holds the same.
+  more: >-
+    Read it by picking a point on the horizontal axis (say, the top 1%) and reading up to the curve: that is the
+    share of the total they hold.
+lower-bound:
+  group: stats
+  title: Lower bound
+  short: >-
+    A number the true value is at least as large as. A firm's IP count is a lower bound because some of its rights
+    cannot be linked to it.
+nominal:
+  group: stats
+  title: Nominal and real dollars
+  short: >-
+    Nominal dollars are as recorded at the time. Real dollars are adjusted for inflation, so that amounts from
+    different years can be compared fairly.
+  more: Stage 1 shows money as recorded; Stage 2 adjusts it with the Consumer Price Index ({U30}).
+share-of-known:
+  group: stats
+  title: Share among known values
+  short: >-
+    A percentage worked out only over the cases where the answer is recorded, leaving out the unknowns. It is shown
+    only where unknowns are few, or with the unknown share beside it.
+survival-curve:
+  group: stats
+  title: Survival curve (Kaplan–Meier)
+  short: >-
+    A chart of the share of rights still in force after each number of years. It counts rights that are still in
+    force as "unfinished", rather than dropping them or treating them as ended.
+  more: >-
+    Simply averaging the lifetimes of rights that have ended would leave out every right still running, which are
+    often the longest-lived. The Kaplan–Meier method uses each right for as long as it has been observed, so recent
+    rights still count for the years they have lived.
+unfinished:
+  group: stats
+  title: Unfinished (censored) cases
+  short: >-
+    Cases whose end has not happened yet, such as a patent still in force. Their full length is unknown, but they are
+    known to be at least as long as they have run so far.
+cohort:
+  group: stats
+  title: Cohort
+  short: >-
+    A group that started at the same time, such as all patents filed in the 2000s. Comparing within a cohort is fair
+    because everyone has had the same time to change.
+funnel-plot:
+  group: stats
+  title: Funnel plot
+  short: >-
+    A chart of each area's rate against its size, with two curved lines showing how far from the national rate an
+    area could fall by chance alone. Small areas swing widely by chance, so the lines flare out like a funnel.
+  more: >-
+    If differences between areas were only chance, about 95% would sit inside the 95% lines. Many points outside the
+    lines mean the areas really do differ.
+chance-limits:
+  group: stats
+  title: 95% limits (range due to chance)
+  short: >-
+    The range a count or rate would fall in 95 times out of 100 if nothing but chance were at work. A value outside
+    it is unlikely to be chance alone.
+poisson:
+  group: stats
+  title: Poisson model
+  short: >-
+    A standard model of counts of rare, independent events (such as patent filings in an area). It assumes the
+    counts vary only by chance around one rate.
+negative-binomial:
+  group: stats
+  title: Negative binomial model
+  short: >-
+    A model of counts that allows more spread than chance alone would give. Used when areas differ far more than a
+    Poisson model expects, as they do here ({U53}).
+expected-count:
+  group: stats
+  title: Expected count
+  short: >-
+    A count made by adding up probabilities rather than whole items. If a patent is 70% likely to belong to one
+    industry and 30% to another, it adds 0.7 and 0.3 to their counts.
+correlation:
+  group: stats
+  title: Correlation
+  short: >-
+    How closely two measures move together, from −1 (one rises as the other falls) through 0 (no pattern) to +1
+    (they rise together). Spearman's version compares ranks rather than values.
+  more: A correlation is a pattern, not a cause. Stage 1 uses it only to check that two sources agree.
+ratio:
+  group: stats
+  title: Ratio (as a check)
+  short: >-
+    One count divided by another. A ratio of 1.000 between two sources' counts of the same thing means they agree
+    exactly; 1.05 means the first is 5% higher.
+rolling-total:
+  group: stats
+  title: 12-month total
+  short: >-
+    The sum of the last 12 months, recalculated each month. It smooths out the seasons, so a trend is easier to see.
+seasonal:
+  group: stats
+  title: Seasonal pattern
+  short: >-
+    A rise or fall that comes back at the same time each year, such as fewer filings in January. Shown as each month
+    against an ordinary month (100).
+variation:
+  group: stats
+  title: Variation (relative)
+  short: >-
+    How much a series moves from month to month, as a share of its average. 0.08 means a typical month is within
+    about 8% of the average; above 1 means the series is very uneven.
+outlier:
+  group: stats
+  title: Outlier
+  short: >-
+    A value far from the rest. Here, usually one more than one and a half times the middle half's width beyond it
+    (the "box-plot rule"), or a month at least three times, or under a third of, the months around it.
+effect-size:
+  group: stats
+  title: Effect size and interval
+  short: >-
+    How big a difference or link is (not just whether it exists), with a range showing how sure we can be. With
+    millions of records almost everything is "significant", so size and range matter more.
+multiple-testing:
+  group: stats
+  title: Correction for many tests
+  short: >-
+    When hundreds of pairs are tested, some will look linked by luck. A correction raises the bar so that chance
+    findings are not mistaken for real ones.
+placebo:
+  group: stats
+  title: Placebo date
+  short: >-
+    A date when nothing happened, tested as if a change had. If a "change" shows up there too, the real one may be
+    a trend or a season, not the policy.
+natural-experiment:
+  group: stats
+  title: Natural experiment
+  short: >-
+    A real event, such as a policy change, that affects some people and not others (or at one time and not another),
+    so that comparing them can show what the change itself did.
+additionality:
+  group: stats
+  title: Additionality
+  short: >-
+    The benefit that happens because of a right, policy or service, compared with what would have happened without
+    it. The research goal puts it ahead of simple attribution.
+descriptive:
+  group: stats
+  title: Descriptive evidence
+  short: >-
+    What the data show: how much, how often, for whom, since when. No claim about why. Every Stage 1 observation is
+    descriptive.
+growth-rate:
+  group: stats
+  title: Average yearly growth
+  short: >-
+    The steady yearly rise that would take a count from its starting value to its ending value over the years
+    between them (compound growth).
+
+# ------------------------------------------------------------------------------------------------- the IP system
+standard-patent:
+  group: ip
+  title: Standard patent
+  short: >-
+    The usual patent: examined in full before it is granted, and lasting up to 20 years (25 for some medicines).
+    Headline patent figures here are for standard patents.
+provisional:
+  group: ip
+  title: Provisional application
+  short: >-
+    A cheap placeholder that secures a filing date for 12 months while an invention is developed. It is never granted
+    itself; the applicant must follow it with a full application.
+second-tier:
+  group: ip
+  title: Second-tier patent
+  short: >-
+    A cheaper, shorter patent for smaller steps: the petty patent (1979 to 2001) and the innovation patent (2001 to
+    2021). They are counted apart from standard patents.
+  more: >-
+    An innovation patent was granted after a check of its formalities only, and examined only if "certified" later,
+    so its grant rate and time to grant say nothing about examination. No new ones could be filed after 25 August
+    2021.
+trade-mark:
+  group: ip
+  title: Trade mark
+  short: Protection for a brand (a name, logo, sound and so on) for particular goods or services. It can be renewed indefinitely, every 10 years.
+design:
+  group: ip
+  title: Registered design
+  short: "Protection for how a product looks: its shape, pattern or ornamentation. Up to 10 years."
+pbr:
+  group: ip
+  title: Plant breeder's right
+  short: Protection for a new plant variety.
+pct:
+  group: ip
+  title: PCT (international patent application)
+  short: >-
+    The Patent Cooperation Treaty lets an inventor file one international application and later enter the countries
+    they choose (the "national phase"), usually about 30 months after first filing.
+national-phase:
+  group: ip
+  title: National phase
+  short: >-
+    The step at which an international (PCT) application enters a country. In IP RAPID, a PCT application's date is
+    when it entered Australia.
+priority:
+  group: ip
+  title: Priority
+  short: >-
+    An earlier filing an application relies on for its date, often abroad within the past 12 months (6 for designs),
+    or an Australian provisional.
+madrid:
+  group: ip
+  title: Madrid system
+  short: >-
+    The international system for trade marks: one application, through WIPO, can cover many countries. Australia
+    joined in 2001.
+divisional:
+  group: ip
+  title: Divisional application
+  short: >-
+    A new application split off from an earlier one, keeping its date. It often protects a different part of the
+    same invention.
+patent-family:
+  group: ip
+  title: Patent family
+  short: >-
+    Every application for the same invention, in every country's office. How many offices a family reaches is a
+    common sign of how much its owner expects it to be worth.
+citations:
+  group: ip
+  title: Forward citations
+  short: >-
+    Later patents that cite a patent as earlier work. Being cited often is a common sign that later inventions build
+    on it; it is not a measure of value on its own.
+lapse:
+  group: ip
+  title: Lapse
+  short: An application that ended before it was granted or registered, for example because fees were not paid. No lapsed right was ever granted.
+cease:
+  group: ip
+  title: Cessation
+  short: A granted or registered right that its owner let go, usually by not renewing it.
+expiry:
+  group: ip
+  title: Expiry
+  short: A patent reaching the end of its full term (20 years for a standard patent filed since 1979).
+renewal:
+  group: ip
+  title: Renewal
+  short: >-
+    Paying to keep a granted right in force. A patent is renewed every year from its fourth anniversary; a trade mark
+    every 10 years; a design once, at 5 years.
+grace-period:
+  group: ip
+  title: Grace period
+  short: >-
+    Extra time after a renewal fee falls due during which the owner can still pay (six months for trade marks and
+    designs). A right ceases on the record only after its grace period, so the latest months are incomplete.
+examination:
+  group: ip
+  title: Examination
+  short: >-
+    IP Australia's check that an application meets the law (new, inventive, distinctive and so on). Patent applicants
+    must ask, and pay, for it.
+expedited:
+  group: ip
+  title: Expedited examination
+  short: Examination brought forward at the applicant's request, for example because an invention is being copied.
+acceptance:
+  group: ip
+  title: Acceptance
+  short: The decision that an application meets the requirements. It is advertised, and others may then oppose it before grant or registration.
+opposition:
+  group: ip
+  title: Opposition
+  short: A formal challenge by someone else to an application being granted or registered.
+assignment:
+  group: ip
+  title: Assignment
+  short: A recorded transfer of ownership of a right, for example when it is sold.
+extension-of-term:
+  group: ip
+  title: Extension of term
+  short: Up to five extra years for a standard patent on a pharmaceutical substance, to make up for time lost waiting for approval to sell it.
+attorney:
+  group: ip
+  title: Attorney (representation)
+  short: >-
+    A professional who files and manages applications for others. Here, an agent counts as an attorney if it acts for
+    five or more different applicants; an agent with fewer is "another agent", and no agent but the applicant is
+    "self".
+filer:
+  group: ip
+  title: Filer and holder
+  short: >-
+    The filer is the person or business that applied for a right (its "founding applicant"). The holder is whoever
+    owns it now. They differ when a right is sold.
+nice:
+  group: ip
+  title: Nice class
+  short: >-
+    One of 45 international classes of goods and services that trade marks are filed in (class 35, for example, is
+    advertising and business services).
+ipc:
+  group: ip
+  title: IPC and technology fields
+  short: >-
+    The International Patent Classification sorts patents by technology. WIPO groups its classes into 35 technology
+    fields, such as medical technology or computer technology.
+raising-the-bar:
+  group: ip
+  title: Raising the Bar
+  short: Reforms that tightened Australia's patent law from 15 April 2013. Applicants rushed to file and request examination under the old rules.
+grant-rate:
+  group: ip
+  title: Grant rate
+  short: The share of a year's applications that were eventually granted or registered. Recent years look low because many are still being examined.
+
+# ------------------------------------------------------------------------------------------------- data
+lens:
+  group: data
+  title: Lens
+  short: >-
+    An analysis-ready table with one row per thing being described: an IP right, a firm, a place, a country in a
+    year, a month, an industry in a year or a research institution in a year.
+corpus:
+  group: data
+  title: Corpus
+  short: All the public data the project has gathered, from 42 sources, before it is organised into lenses.
+attachment:
+  group: data
+  title: Attachment
+  short: Extra columns or a companion table joined to a lens from another source, such as each right's events or each area's Census values.
+iprapid:
+  group: data
+  title: IP RAPID
+  short: IP Australia's open data on every patent, trade mark, design and plant breeder's right since 1904, updated weekly.
+iplord:
+  group: data
+  title: IPLORD
+  short: An older IP Australia research dataset (to 2020) that links applicants to business numbers. Used here only as a check, because it counts differently.
+manifest:
+  group: data
+  title: Manifest
+  short: "The project's register of every file: its fingerprint, size, rows and where it is kept."
+fingerprint:
+  group: data
+  title: Fingerprint (SHA-256)
+  short: >-
+    A long code worked out from a file's contents. If one character of the file changes, the code changes, so it
+    proves a file is the one recorded.
+r2:
+  group: data
+  title: Cloud storage (R2)
+  short: A private storage bucket (Cloudflare R2) for tables too large to keep in GitHub. The manifest records them like any other file.
+placeholder-date:
+  group: data
+  title: Placeholder date
+  short: >-
+    A false date entered where the real one is unknown, such as 1 January 1970 (the "zero" of computer dates). Such
+    dates are found and emptied.
+survivors:
+  group: data
+  title: Survivors (in old records)
+  short: >-
+    When records were computerised, only the rights still on the register were entered. Before that point the data
+    hold the survivors, not every application, so they understate filings and failures.
+batch-dates:
+  group: data
+  title: Batch dating
+  short: Events recorded on a few days a year, in bulk, so that some months show none and others several months' worth.
+crosswalk:
+  group: data
+  title: Crosswalk (concordance)
+  short: >-
+    A published table that translates one classification into another, such as patent technology classes into
+    industries, often with a probability for each link.
+pseudonymised:
+  group: data
+  title: Pseudonymised
+  short: Names replaced by codes to protect privacy. IP RAPID does this for individual applicants.
+perturbation:
+  group: data
+  title: Perturbation (Census)
+  short: >-
+    Small random changes the ABS makes to small Census counts to protect privacy, so parts need not add exactly to
+    totals and counts of 1 or 2 are unreliable.
+gender-estimate:
+  group: data
+  title: Gender estimate
+  short: >-
+    A probability that a first name in a given country is a woman's, from WIPO's name dictionary. Summed over many
+    inventors it gives an expected number of women; it says nothing about any one person.
+adr:
+  group: data
+  title: Decision record (ADR)
+  short: A short, dated note of a decision and why it was made, kept in the repository (docs/adr). Every repair to the data has one.
+
+# ------------------------------------------------------------------------------------------------- places and businesses
+abn:
+  group: places
+  title: ABN (Australian Business Number)
+  short: >-
+    The number that identifies a business to government. It is how this project links IP to the business register,
+    R&D claims and government contracts.
+abr:
+  group: places
+  title: ABR (Australian Business Register)
+  short: The register of every ABN, with each business's type, status, state and postcode.
+gst:
+  group: places
+  title: GST registration
+  short: Registration for the goods and services tax, required once turnover reaches about $75,000 a year. A rough sign of an active, trading business.
+entity-group:
+  group: places
+  title: Entity group
+  short: "The kind of business: private company, public company, trust, sole trader, partnership, government body and so on."
+postal-area:
+  group: places
+  title: Postal area
+  short: >-
+    The ABS's version of a postcode, built from small Census areas. Post office boxes and postcodes with no residents
+    are not postal areas.
+sa3:
+  group: places
+  title: SA3
+  short: A larger ABS area (335 in Australia), used here to pool small postal areas so that every area's filings count somewhere.
+remoteness:
+  group: places
+  title: Remoteness
+  short: The ABS's five classes of how far a place is from services, from major cities to very remote.
+irsad:
+  group: places
+  title: Advantage (SEIFA, IRSAD)
+  short: >-
+    The ABS's index of relative socio-economic advantage and disadvantage. Areas are ranked and cut into tenths
+    (deciles): 1 is the most disadvantaged tenth of areas, 10 the most advantaged.
+  more: "A tenth of areas is not a tenth of people: small and large areas count the same."
+census:
+  group: places
+  title: Census
+  short: The ABS's count of every person in Australia, every five years. Here, the 2021 Census.
+cabee:
+  group: places
+  title: CABEE
+  short: The ABS's Counts of Australian Businesses, including Entries and Exits, by industry, size and area.
+rdti:
+  group: places
+  title: R&D Tax Incentive
+  short: The government's main support for business research, through tax offsets. The ATO publishes who claims and how much.
+austender:
+  group: places
+  title: AusTender
+  short: The Australian Government's register of contracts it awards, with each supplier's ABN and the contract's value.
+
+# ------------------------------------------------------------------------------------------------- research and economy
+gerd:
+  group: research
+  title: GERD and BERD
+  short: >-
+    Gross and business expenditure on research and development: all R&D spending in a country, and the part spent by
+    businesses, usually as a percentage of GDP.
+oecd-median:
+  group: research
+  title: OECD median
+  short: "The middle value among the 38 OECD member countries: half are above and half below."
+gii:
+  group: research
+  title: Global Innovation Index (GII)
+  short: WIPO's yearly ranking of economies on 79 indicators of innovation inputs and outputs. A rank reflects WIPO's choice of indicators and weights.
+wipo:
+  group: research
+  title: WIPO
+  short: The World Intellectual Property Organization, the UN agency that runs the PCT and Madrid systems and publishes IP statistics for every country.
+anzsic:
+  group: research
+  title: ANZSIC
+  short: The Australian and New Zealand Standard Industrial Classification, with 19 broad industry divisions such as manufacturing or construction.
+ror:
+  group: research
+  title: ROR
+  short: The Research Organization Registry, an open list that gives every research institution one identifier.
+openalex:
+  group: research
+  title: OpenAlex
+  short: An open database of research publications and their citations.
+go8:
+  group: research
+  title: Group of Eight
+  short: Australia's eight leading research-intensive universities (Melbourne, Sydney, Monash, UNSW, Queensland, ANU, Adelaide and Western Australia).
+commercialisation-company:
+  group: research
+  title: Commercialisation company
+  short: A company a university owns to manage its inventions, such as NewSouth Innovations (UNSW) or UniQuest (Queensland). Many patents are filed in its name.
+cpi:
+  group: research
+  title: Consumer Price Index (CPI)
+  short: The ABS's measure of how prices change over time, used to adjust dollar amounts from different years for inflation.
+bcs:
+  group: research
+  title: Business Characteristics Survey
+  short: An ABS survey of businesses' innovation, barriers and finance, published by industry and size.

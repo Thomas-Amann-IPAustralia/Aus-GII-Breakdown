@@ -1,0 +1,298 @@
+# The lenses: the analysis-ready tables every observation reads, one row per unit. Plain English; markup as in the
+# observations ([[term]], {U44}, **bold**). Sources are ids in config/sources.yaml. Repairs say what was done and why,
+# with the decision record (ADR) that holds the evidence.
+
+corpus:
+  name: The corpus
+  unit: Every table, from every source
+  rows: 162 tables
+  facts:
+    - value: "162"
+      label: tables in the corpus profile
+    - value: "41"
+      label: sources in the profile (42 in the register today)
+    - value: "317.8 million"
+      label: rows in all
+  description: >-
+    Before any lens, the project gathered public data from 42 sources into one place, its **corpus**: IP Australia's
+    registers, business registers, R&D and procurement records, the ABS, international panels and research
+    databases. Observation {U0} describes the corpus as a whole. Everything else is read through a lens.
+  sources: [iprapid, tmlink, oecd, abr, iplord]
+  questions: [1, 2, 3, 4, 5]
+  repairs: []
+  limits:
+    - The number of rows a source has measures how much it records, not how much it matters to the questions.
+
+rights:
+  name: IP rights
+  unit: One row per IP right
+  rows: 4,368,006 rights
+  facts:
+    - value: "4,368,006"
+      label: patents, trade marks, designs and plant breeder's rights
+    - value: "1904 to 2026"
+      label: the years the register covers
+    - value: "74"
+      label: columns, after five attachments
+  description: >-
+    Every patent, trade mark, design and plant breeder's right in IP Australia's open register, IP RAPID, from the
+    first application in February 1904 to October 2026. Each row says what the right is, who filed it and who holds
+    it now, where they are, how it reached Australia, what happened to it (examination, grant, opposition, sale,
+    lapse) and, for patents, how widely the invention was protected abroad, how often later inventions cite it and
+    where its inventors live.
+
+
+    Five **attachments** add those last groups of columns from other tables: the parties (who filed, who holds, who
+    represents them), the events (each milestone and the right's lifetime), the links (the route into Australia),
+    Google Patents (the worldwide family) and the inventors.
+  sources: [iprapid, google_patents, google_patents_inventors, wgnd, abs_regions]
+  questions: [1, 2]
+  repairs:
+    - what: Where a right's applicants have no country recorded, its origin is "unknown", not "overseas".
+      why: Counting the unknowns as overseas had added 517,145 old patents to the overseas side.
+      adr: "0009"
+    - what: Standard patents, provisional applications and second-tier (innovation and petty) patents are counted
+        apart everywhere, and headline figures use standard patents.
+      why: They are different rights. A provisional is a cheap placeholder that is never granted; a second-tier patent
+        is a cheaper, shorter right. Adding them together hides what each is doing.
+      adr: "0009"
+    - what: Two placeholder dates are emptied (an end date of 1 January 1970 on 1,282 rights, and one registration
+        before the register began).
+      why: 1 January 1970 is the "zero" of computer dates, standing in for an unknown date, not a real one.
+      adr: "0012"
+    - what: Trade marks registered before 1986 have no "days to registration".
+      why: The register holds only their filing date, so their recorded time to registration is almost always zero.
+      adr: "0012"
+    - what: The "technology area" is kept for patents only.
+      why: For every trade mark and design it simply repeated the class of goods, so it measured nothing new.
+      adr: "0012"
+    - what: An attorney counts only if the agent on record is not the applicant itself.
+      why: The register's "agent" is the address for service, which is often the applicant's own; counting it said
+        every trade mark had an attorney.
+      adr: "0012"
+    - what: A missing Australian state is taken from the applicant's postcode.
+      why: The register left out the state for 34.96% of recent Australian standard patents, though the postcode was
+        there, and postcode and state agree for over 99% of rights where both exist.
+      adr: "0012"
+    - what: The business or person who **filed** a right is kept beside the one who **holds** it now.
+      why: '"Who files, and from where" and "who holds it now" are different questions; rights are often sold.'
+      adr: "0013"
+    - what: Each right's milestones come only from events the register still holds as standing (not later reversed),
+        with placeholder and impossible dates left out.
+      why: A lapse that was later reversed did not end the right.
+      adr: "0015"
+    - what: A patent priority's office is read from the number itself, not from the register's country label.
+      why: The register labels 93.88% of international (PCT) numbers, and many other offices' numbers, as Australian.
+      adr: "0022"
+    - what: The two tie-breaks in the build (a filer with two same-day postcodes, an agent with several names) are
+        fixed.
+      why: Without them a few figures changed slightly every time the table was rebuilt.
+      adr: "0019"
+  limits:
+    - The register holds only the rights that survived until it was computerised for trade marks before 1983, designs
+      before 1986 and provisional applications before September 1985 ({U23}).
+    - Ownership history for patents starts with those filed in FY2003 ({U17}).
+    - Inventors' countries are known mostly for patents also filed abroad ({U95}).
+
+timeline:
+  name: Australia over time
+  unit: One row per month, January 1904 to September 2026
+  rows: 1,473 months
+  facts:
+    - value: "1,473"
+      label: months
+    - value: "28"
+      label: monthly series of applications and events
+    - value: "17"
+      label: dated policy changes
+  description: >-
+    IP Australia's whole register month by month: applications of each type from Australian, overseas and
+    unknown applicants; what happened to rights (grants, lapses, cessations, expiries, oppositions, sales,
+    extensions of term) as counts of events; the Consumer Price Index each quarter; and the month each of 17 IP
+    policy changes took effect.
+  sources: [iprapid, policy_events, abs_prices]
+  questions: [1, 4, 5]
+  repairs:
+    - what: Each series starts only where its records become continuous and complete; earlier months are empty, not
+        zero.
+      why: Before that, the register holds survivors, partial records or events dated in batches, so a month's count
+        is not what happened that month. Fifteen series were started by hand for this reason.
+      adr: "0014"
+    - what: The rise of the standard patent term from 16 to 20 years (1 July 1995) was added as the 17th policy
+        change.
+      why: Patent expiries all but stop for four years from that month; the change was missing from the policy list.
+      adr: "0014"
+    - what: Trade mark registrations are counted by the date they were entered, and each event is counted once.
+      why: A trade mark is registered "as from" its filing date, so counting by that date measured filings, not
+        registrations.
+      adr: "0010"
+  limits:
+    - Months before each series' start are empty on purpose; a long series is not complete back to 1904.
+    - Comparisons of months around a policy change do not yet allow for trends or seasons ({U28}).
+
+firms:
+  name: Firms
+  unit: One row per business number (ABN)
+  rows: 398,450 ABNs
+  facts:
+    - value: "398,450"
+      label: ABNs that used one of five schemes
+    - value: "40"
+      label: columns
+  description: >-
+    Every Australian Business Number that appears in IP Australia's data, the R&D Tax Incentive, AusTender (government
+    contracts) or the ATO's tax transparency reports, with what the business is, where it is registered, how old it
+    is on the record, the IP it filed and holds, its R&D claims, its large-company income and its contracts. It is the
+    businesses that used a scheme, not every business in Australia.
+  sources: [linkage, abr, asic, iprapid, iplord, rdti, austender, ato_ctt, abs_regions]
+  questions: [2, 3, 4]
+  repairs:
+    - what: Applications are credited to the business that filed them, not the one that holds them now.
+      why: Otherwise a firm's filing record would change whenever it bought or sold rights.
+      adr: "0016"
+    - what: The ABNs that only IPLORD links to IP are flagged, and IPLORD's own counts are kept out.
+      why: IPLORD counts differently from IP RAPID; adding the two would mix measures.
+      adr: "0016"
+    - what: Each contract counts once, at its latest value; R&D uses each firm's latest (amended) report.
+      why: Summing every amendment counted the same contract many times ($7,585.9 billion against $1,258.5 billion).
+      adr: "0010"
+    - what: Age is "years since the earliest public registration", with a flag where the record may start late.
+      why: ABNs and GST began in 1999-2000, so a business first seen then may be much older.
+      adr: "0010"
+  limits:
+    - IP counts are lower bounds ({U41}), and fewer recent filers are linked to an ABN ({U45}).
+    - "No firm has an industry: the business register extract holds none."
+    - Small firms' growth and survival are out of reach without the ABS's BLADE, which is ruled out.
+
+regions:
+  name: Places
+  unit: One row per postal area
+  rows: 2,641 postal areas
+  facts:
+    - value: "2,641"
+      label: postal areas
+    - value: "25,365,506"
+      label: people (2021 Census geography)
+    - value: "22.5 million"
+      label: attached values from five more sources
+  description: >-
+    Every Australian postal area (the ABS's version of a postcode) with its people, businesses, remoteness,
+    socio-economic indexes, Census medians, the IP filed from it over FY2017 to FY2026, its R&D claimants and its
+    government contracts. A long companion table holds every value of five more area sources: the Census, Data by
+    Region, business counts (CABEE), PHIDU's health and social atlas, and the Clean Energy Regulator.
+  sources: [abs_regions, abs_census, abr, iprapid, rdti, austender, abs_cabee, phidu, cer, linkage]
+  questions: [2, 4]
+  repairs:
+    - what: Applications are counted at the filer's postcode, not the current holder's.
+      why: A right sold to a firm elsewhere should stay where it was filed.
+      adr: "0017"
+    - what: A rate is shown only where 10 or more applications would be expected at the national rate.
+      why: A count of 10 has a 95% range of about 5 to 18 by chance alone; below that, an area's rate is mostly noise.
+      adr: "0017"
+    - what: Small areas can be pooled into 335 larger ones (SA3s).
+      why: So that every area's filings count somewhere, even where its own rate is too uncertain to show.
+      adr: "0017"
+    - what: Values published for other kinds of area are moved to postal areas by their 2021 residents.
+      why: A count can be split by where people live; a median or rate is averaged, weighted by the people shared.
+      adr: "0018"
+  limits:
+    - About one standard patent in eighteen comes from a postcode that is not a postal area, half of universities'
+      patents among them ({U49}, {U87}).
+    - An address is where a business is registered, not where it works.
+
+national:
+  name: Australia and other countries
+  unit: One row per country, year and indicator
+  rows: 135,597 values
+  facts:
+    - value: "30"
+      label: core indicators
+    - value: "229"
+      label: places
+    - value: "41.2 million"
+      label: attached values (GII, OECD, WIPO and more)
+  description: >-
+    Thirty indicators for every country, 1960 to 2025: IP filings, royalties, R&D, researchers, GDP and exports from
+    the World Bank; filings by residents of each country at every office from WIPO; and the OECD's R&D intensity. A
+    long companion table holds every value of the Global Innovation Index 2026, 24 OECD datasets, WIPO's other tables,
+    Measuring What Matters and Closing the Gap.
+  sources: [wdi, wipo_ipstats, oecd, gii, mwm, ctg]
+  questions: [1, 4]
+  repairs:
+    - what: WIPO's filings by residents of former states (such as the Soviet Union) and of unknown origin are kept,
+        with a column saying what each place is.
+      why: They had been dropped silently, losing 9.65% of WIPO's patent applications by origin.
+      adr: "0019"
+    - what: Two sources were reprocessed (Closing the Gap's Australian Government column, Measuring What Matters'
+        stacked tables).
+      why: 85 values sat in a side column, and 45 cells shared a key.
+      adr: "0019"
+  limits:
+    - Before 1995 WIPO cannot say where most applicants come from ({U64}).
+    - Counts grow with a country's size; fair comparisons need ratios to people or GDP (Stage 2).
+
+industries:
+  name: Industries
+  unit: One row per ANZSIC industry division and financial year
+  rows: 703 rows
+  facts:
+    - value: "19"
+      label: industry divisions
+    - value: "FY1990 to FY2026"
+      label: 37 financial years
+    - value: "1.4 million"
+      label: attached values from the ABS and BCARR
+  description: >-
+    The 19 divisions of the Australian and New Zealand industry classification: IP applications assigned to
+    industries through published crosswalks, businesses and their entries and exits, business R&D, wages and the
+    creative industries' value added. No firm in the corpus has an industry, so IP reaches industries only through
+    what it protects: a patent's technology classes and a trade mark's classes of goods and services.
+  sources: [iprapid, concordances, abs_cabee, abs_rd_vc, abs_prices, bcarr_creative, abs_bcs]
+  questions: [2, 3, 4]
+  repairs:
+    - what: Each right is split over industries by probabilities (an "expected count"), so a division's count is a sum
+        of shares.
+      why: A patent's technology can belong to several industries; the crosswalks give the chance of each.
+      adr: "0020"
+    - what: 26 patent classes the crosswalk did not know (new or retired ones) are mapped to their predecessors.
+      why: Otherwise 12,143 class marks fell out of every count.
+      adr: "0020"
+    - what: The step between two industry classifications no longer splits weight over partial links.
+      why: It had sent half of pharmaceuticals' patents to textile finishing and inorganic chemicals.
+      adr: "0020"
+  limits:
+    - The patent crosswalk in the corpus leaves out service industries, so patents reach only goods-producing ones
+      ({U75}).
+    - Business counts cover four recent years and business R&D one, so comparisons are of patterns, not models.
+
+institutions:
+  name: Research institutions
+  unit: One row per research institution and calendar year
+  rows: 4,810 rows
+  facts:
+    - value: "130"
+      label: institutions (44 universities, 46 medical research institutes)
+    - value: "1990 to 2026"
+      label: calendar years
+    - value: "31,528"
+      label: rights linked to an institution
+  description: >-
+    Australia's research institutions, each identified by its Research Organization Registry (ROR) record: their
+    research output and citations, the citations US patents make to their work, their ARC and NHMRC grants, the IP
+    they file in Australia, those patents' families abroad and their government contracts. The link from an
+    institution to its rights, grants and contracts is a reviewed list of names (including commercialisation
+    companies) and ABNs.
+  sources: [ror, openalex, openalex_works, reliance_on_science, arc_grants, nhmrc_grants, iprapid, google_patents, austender]
+  questions: [1, 2, 3]
+  repairs:
+    - what: Institutions are linked to rights, grants and contracts through a reviewed list of 116 extra names and 146
+        ABNs.
+      why: Universities file under former names, predecessors' names and their commercialisation companies' names.
+      adr: "0021"
+    - what: An institution's works and citations are its own, never added across institutions or from a child to its
+        parent.
+      why: A paper with authors at two institutions counts for both.
+      adr: "0021"
+  limits:
+    - Whether the reviewed list is complete has not yet been checked by someone in the sector (OQ11).
+    - Research output is available only from 2010.

@@ -1,0 +1,44 @@
+# Section 0 of the notebook: the corpus as a whole. Markup and rules as in firms.yaml.
+
+- id: U0
+  lens: corpus
+  about: data
+  headline: The corpus holds 162 tables from 41 sources, and three sources hold most of its rows
+  statement: >-
+    When the notebook was last run, the corpus held 162 tables from 41 sources, 317,792,796 rows in all. Three
+    sources hold 69.73% of the rows: IP RAPID (31.57%), TM-Link (24.86%) and the OECD's panels (13.3%).
+  figures:
+    - value: "162"
+      label: tables
+    - value: "41"
+      label: sources
+    - value: "317,792,796"
+      label: rows in all
+  points:
+    - "Row counts measure how much a source records, not how much it matters to the research questions. So the analysis
+      is organised by unit of analysis (rights, firms, places, countries), not by the size of a source."
+    - "**Corrected on 27 October 2026.** The observation's text had kept the first corpus profile (152 tables, 38
+      sources, 314,742,745 rows, three sources 70.4%), while the output above it had the later one. The text now
+      follows the output, as every observation must."
+  questions:
+    - q: 1
+      how: Sets out the raw material every later answer will rest on, and warns that size is not importance.
+  sources: [iprapid, tmlink, oecd, abr, iplord]
+  chart: U0
+  prep:
+    - what: A profile of the corpus lists every processed table with its source, rows, columns and where it is kept.
+      why: A single list makes it possible to check what the analysis can draw on.
+  steps:
+    - Read the corpus profile, one line per table.
+    - Count the tables and the distinct sources, and add up the rows.
+    - Rank the sources by rows and work out each one's share of all rows.
+  assumptions:
+    - The profile was made on 25 October 2026. Sources added later (the research institutions' register, ROR, and
+      two WIPO tables) are not in it.
+  limits:
+    - Rows are a poor guide to importance. The World Bank's few thousand values for Australia matter as much to some
+      questions as millions of trade mark records.
+  next: >-
+    Every later stage reads the corpus through the lenses. The profile is re-run whenever a source is added.
+  terms: [corpus, lens, r2]
+  related: [U1, U41, U48, U63]

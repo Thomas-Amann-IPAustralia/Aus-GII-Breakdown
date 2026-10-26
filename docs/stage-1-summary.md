@@ -18,7 +18,7 @@ done and the owner says so.
 
 ## 1. In brief
 
-**What Stage 1 did.** It took a corpus of 152 tables from 38 sources (314.7 million rows, U0), organised it into seven
+**What Stage 1 did.** It took a corpus of 162 tables from 41 sources (317.8 million rows, U0), organised it into seven
 analysis-ready tables called *lenses* (one row per IP right, firm, postal area, country-year, industry-year, research
 institution-year and month) with four long companion tables, and described every column on its own: how complete it
 is, its shape, its outliers and its quirks. That produced 99 numbered observations, a series of repairs to the data
@@ -112,8 +112,10 @@ make the later stages safe: to find the errors, gaps and artefacts that would ot
 
 ### 3.1 The corpus
 
-The corpus holds 152 tables from 38 sources, 314,742,745 rows in all; three sources hold 70.4% of the rows (IP RAPID
-31.88%, TM-Link 25.1% and the OECD panels 13.43%, U0). Row counts measure how much a source records, not how much it
+The corpus holds 162 tables from 41 sources, 317,792,796 rows in all; three sources hold 69.73% of the rows (IP RAPID
+31.57%, TM-Link 24.86% and the OECD panels 13.3%, U0; corrected on 27 October 2026 from the first profile's 152
+tables, 38 sources and 70.4%, which U0's text had kept). The profile dates from 25 October, so `ror` and the WIPO tables
+added on 26 October are not in it. Row counts measure how much a source records, not how much it
 matters, so the work is organised by unit of analysis, not by source. The sources run from IP Australia's own
 registers (IP RAPID, IPLORD, TM-Link) through business registers (ABR, ASIC), R&D and procurement (the R&D Tax
 Incentive, AusTender), the ABS (Census, business counts, prices, labour, surveys), international panels (World Bank,
@@ -206,8 +208,10 @@ mark series, described as applications but counting classes (U67); five figures 
 (U48, U49, U52, U53); and, found when the notebook was re-run with the last attachments, three more that depended on
 how ties were broken: the share of people in the top tenth of areas (29.0% became 29.2% for standard patents, 32.9%
 became 32.8% for trade marks, U52), and the universities' postcodes outside the postal areas, which counted joint
-filings twice and named an arbitrary institution (UNSW's 216 became 210, U87). Each is noted where it applies and in
-the handover.
+filings twice and named an arbitrary institution (UNSW's 216 became 210, U87). On 27 October, building the evidence
+pages found that U0's text still gave the first corpus profile (152 tables, 38 sources) when the output above it gave
+the later one (162 tables, 41 sources); the text now follows the output. Each is noted where it applies and in the
+handover.
 
 ---
 
@@ -571,7 +575,7 @@ All descriptive.
 
 | # | Lens | Observation |
 |---|---|---|
-| U0 | Corpus | 152 tables, 38 sources, 314.7 million rows; three sources hold 70.4% |
+| U0 | Corpus | 162 tables, 41 sources, 317.8 million rows; three sources hold 69.73% |
 | U1 | rights | One row per right (4,368,006), complete where it should be; origin known for 86.37% |
 | U2 | rights | Five repairs: a 1970 placeholder, a pre-1904 registration, trade marks registered at filing, a class as a technology area, attorney use |
 | U3 | rights | Rushes to file before two rule changes; 61,854 rights cannot be placed in time |
