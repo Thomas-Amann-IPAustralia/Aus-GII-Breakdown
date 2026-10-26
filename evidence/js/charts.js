@@ -94,7 +94,8 @@ function option(s) {
     const c = colourOf(d, i);
     if (s.type === "range") {
       series.push({ type: "bar", stack: "r", data: d.data.map((p) => (p ? p[0] : null)), itemStyle: { color: "transparent" }, silent: true, name: "_base", tooltip: { show: false }, barMaxWidth: 16 });
-      series.push({ type: "bar", stack: "r", name: d.name, data: d.data.map((p) => (p ? p[1] - p[0] : null)), itemStyle: { color: c, borderRadius: 4 }, barMaxWidth: 16, _starts: d.data });
+      const span = (ys.max ?? 2030) - (ys.min ?? 1900);
+      series.push({ type: "bar", stack: "r", name: d.name, data: d.data.map((p) => (p ? Math.max(p[1] - p[0], span / 120) : null)), itemStyle: { color: c, borderRadius: 4 }, barMaxWidth: 16, _starts: d.data });
       return;
     }
     if ((s.type === "scatter" && d.kind !== "line") || d.kind === "scatter") {
@@ -117,7 +118,7 @@ function option(s) {
     const n = (d.data || []).length;
     series.push({
       type: "line", name: d.name, data: d.data, step: d.step ? "end" : false, connectNulls: false,
-      symbol: few(n) && !d.line ? "circle" : "none", symbolSize: 7, showSymbol: few(n) && !d.line,
+      symbol: few(n) && !d.line && d.kind !== "line" ? "circle" : "none", symbolSize: 7, showSymbol: few(n) && !d.line && d.kind !== "line",
       lineStyle: { width: d.width || 2, color: c, type: d.line || "solid", cap: "round", join: "round" },
       itemStyle: { color: c, borderColor: surface, borderWidth: 2 },
       areaStyle: d.area ? { color: c, opacity: 0.1 } : undefined,

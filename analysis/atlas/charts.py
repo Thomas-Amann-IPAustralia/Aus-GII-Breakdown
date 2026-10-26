@@ -1609,8 +1609,8 @@ def funnel_view(count: pd.Series, people: pd.Series, labels: pd.Series, name: st
         f"keep 95% of areas between the dashed lines; {above:.1f}% are above and {below:.1f}% below.",
         "series": [
             {"name": "Areas", "data": pts, "colour": 0, "size": 5, "opacity": 0.55},
-            {"name": "95% limits (chance alone)", "kind": "line", "data": lim(hi), "line": "dashed", "colour": 1},
-            {"name": "Lower limit", "kind": "line", "data": lim(lo), "line": "dashed", "colour": 1},
+            {"name": "Upper 95% limit (chance alone)", "kind": "line", "data": lim(hi), "line": "dashed", "colour": 1},
+            {"name": "Lower 95% limit", "kind": "line", "data": lim(lo), "line": "dashed", "colour": 1},
             {"name": f"National rate ({1000 * nat:.2f})", "kind": "line", "data": [[r(grid[0], 0), r(1000 * nat, 3)], [r(grid[-1], 0), r(1000 * nat, 3)]], "colour": "ink"},
         ],
         "note": f"{int((rate == 0).sum())} areas with no applications cannot be drawn on the log scale.",
@@ -1764,6 +1764,291 @@ def U62() -> dict:
                    {"name": "Businesses", "data": col(s, "active_gst_abns", 1)}],
         "source": "AusTender; ABR (lens: regions). Nominal values.",
     }
+
+
+# ------------------------------------------------------------------------------------------------------------ national
+
+
+@chart
+def U64() -> dict:
+    w = sql("SELECT year, entity, sum(value) AS v FROM {lens/national} WHERE indicator = 'WIPO.PAT.APP' GROUP BY 1, 2")
+    p = pivot(w, "year", "entity", "v").fillna(0).loc[1980:2024]
+    sh = 100 * p.div(p.sum(axis=1), axis=0)
+    same(sh.loc[1980, "origin unknown"], 34.35, "unknown origin 1980")
+    same(sh.loc[1990, "origin unknown"], 29.02, "unknown origin 1990")
+    return {
+        "type": "bar", "stack": True, "title": "WIPO's patent applications whose origin is not a current country",
+        "subtitle": "% of patent applications by origin, all offices together",
+        "x": {"type": "category", "values": [str(y) for y in sh.index]},
+        "y": {"name": "% of applications", "min": 0, "format": "pct", "digits": 2},
+        "series": [{"name": "Origin unknown", "data": col(sh, "origin unknown", 2)},
+                   {"name": "Former states (the Soviet Union and others)", "data": col(sh, "former state", 2)}],
+        "marks": {"x": [{"at": "1995", "label": "Compared from here"}]},
+        "source": "WIPO IP statistics, filings by origin and office (lens: national)",
+    }
+
+
+@chart
+def U65() -> dict:
+    codes = {"OECD.MSTI.G": "Gross R&D (% of GDP)", "OECD.MSTI.B": "Business R&D (% of GDP)",
+             "NV.IND.MANF.ZS": "Manufacturing (% of GDP)", "NE.EXP.GNFS.ZS": "Exports (% of GDP)"}
+    inlist = ", ".join(f"'{c}'" for c in codes)
+    oe = sql(f"""SELECT indicator, year, median(value) AS med, quantile_cont(value, 0.25) AS q1,
+                        quantile_cont(value, 0.75) AS q3, count(*) AS n
+                 FROM {{lens/national}} WHERE oecd AND indicator IN ({inlist}) GROUP BY 1, 2""")
+    au = sql(f"SELECT indicator, year, value FROM {{lens/national}} WHERE australia AND indicator IN ({inlist})")
+    a = au.pivot(index="year", columns="indicator", values="value")
+    same(a.loc[2008, "OECD.MSTI.G"], 2.24, "GERD 2008")
+    same(a.loc[2023, "OECD.MSTI.G"], 1.68, "GERD 2023")
+    views = []
+    for c, name in codes.items():
+        o = oe[(oe.indicator == c) & (oe.n >= 10)].set_index("year").sort_index()
+        years = sorted(set(o.index) | set(a[c].dropna().index))
+        years = [y for y in years if y >= 1981]
+        o = o.reindex(years)
+        views.append({"label": name, "subtitle": f"{name}: Australia against the OECD members' median and middle half",
+                      "x": {"type": "category", "values": [str(y) for y in years]},
+                      "series": [{"name": "Australia", "data": [r(a[c].get(y), 2) for y in years], "width": 2.5},
+                                 {"name": "OECD median", "data": col(o, "med", 2), "colour": "ink", "line": "dashed"},
+                                 {"name": "OECD 75th percentile", "data": col(o, "q3", 2), "colour": "muted", "line": "dotted"},
+                                 {"name": "OECD 25th percentile", "data": col(o, "q1", 2), "colour": "muted", "line": "dotted"}]})
+    return {"type": "line", "title": "Australia against the OECD", "y": {"name": "% of GDP", "min": 0, "format": "pct", "digits": 2},
+            "views": views, "source": "OECD MSTI; World Bank WDI (lens: national). OECD lines where 10 or more members report."}
+
+
+@chart
+def U66() -> dict:
+    from eda import load_lens
+
+    nat = load_lens("national")
+    c = nat[nat.entity == "country"]
+    rows = []
+    for code, d in c.groupby("indicator"):
+        a = d[d.australia]
+        if a.empty:
+            continue
+        y = a.year.max()
+        v = a.loc[a.year == y, "value"].iloc[0]
+        o = d[d.oecd & (d.year == y)]
+        rows.append((code, d.indicator_name.iloc[0], int(y), len(o), int((o.value > v).sum() + 1), 100 * (o.value < v).mean()))
+    pos = pd.DataFrame(rows, columns=["code", "name", "year", "n", "rank", "below"]).sort_values("below", ascending=False)
+    p = pos.set_index("code")
+    same(p.loc["NE.EXP.GNFS.ZS", "rank"], 34, "exports rank")
+    same(p.loc["IP.PAT.NRES", "rank"], 5, "non-resident patents rank")
+    same(p.loc["OECD.MSTI.B", "rank"], 26, "BERD rank")
+
+    def short(n: str) -> str:
+        return n.replace(" (BoP, current US$)", "").replace(" (current US$)", "").replace("(OECD MSTI)", "").replace(", % of GDP", " (% of GDP)").strip()
+
+    return {
+        "type": "bar", "horizontal": True, "title": "Where Australia stands among OECD members",
+        "subtitle": "% of OECD members below Australia, in Australia's latest year for each indicator (50 = the median member)",
+        "x": {"type": "category", "values": [f"{short(n)} ({y}; {k}th of {m})" for n, y, k, m in zip(pos.name, pos.year, pos["rank"], pos.n, strict=True)]},
+        "y": {"name": "% of members below Australia", "min": 0, "max": 100, "format": "pct", "digits": 0},
+        "series": [{"name": "% of members below Australia", "data": col(pos, "below", 1)}],
+        "marks": {"y": [{"at": 50, "label": "Median member"}]},
+        "source": "World Bank WDI, WIPO, OECD MSTI (lens: national)",
+        "note": "Counts rank with a country's size: Australia's population is 14th of 38.",
+    }
+
+
+@chart
+def U67() -> dict:
+    t = sql("""
+        WITH ipr AS (
+            SELECT year(application_date) AS year,
+                   count(*) FILTER (patent_type = 'standard' AND australian_applicant) AS res,
+                   count(*) FILTER (patent_type = 'standard' AND NOT australian_applicant) AS nonres
+            FROM {lens/rights} WHERE year(application_date) BETWEEN 1980 AND 2024 GROUP BY 1),
+        wdi AS (
+            SELECT year, max(value) FILTER (indicator = 'IP.PAT.RESD') AS wres, max(value) FILTER (indicator = 'IP.PAT.NRES') AS wnon
+            FROM {lens/national} WHERE australia GROUP BY 1)
+        SELECT * FROM ipr JOIN wdi USING (year) ORDER BY year
+    """).set_index("year")
+    t["a"], t["o"] = t.res / t.wres, t.nonres / t.wnon
+    same(t.loc[1989:2024, "a"].median(), 1.002, "median ratio, Australian applicants")
+    same(t.loc[1980, "o"], 0.072, "overseas ratio 1980")
+    return {
+        "type": "line", "title": "The register against the World Bank: standard patent applications",
+        "subtitle": "The register's count divided by the World Bank's, by year (1.00 = they agree)",
+        "x": {"type": "category", "values": [str(y) for y in t.index]},
+        "y": {"name": "Ratio", "min": 0, "max": 1.2, "format": "ratio", "digits": 3},
+        "series": [{"name": "Australian applicants", "data": col(t, "a", 3)}, {"name": "Overseas applicants", "data": col(t, "o", 3)}],
+        "marks": {"y": [{"at": 1, "label": "Agree"}], "x": [{"at": "1989", "label": "Origins recorded"}]},
+        "source": "IP Australia, IP RAPID (lens: rights); World Bank WDI (lens: national)",
+    }
+
+
+@chart
+def U70() -> dict:
+    o = sql("""SELECT year, country, sum(value) AS v FROM {lens/national_indicators}
+               WHERE indicator = 'WIPO.AU.10' GROUP BY 1, 2""")
+    p = pivot(o, "year", "country", "v").fillna(0)
+    sh = (100 * p.div(p.sum(axis=1), axis=0)).loc[1995:2024]
+    same(sh.loc[2024, "United States"], 41.9, "US share 2024")
+    same(sh.loc[2024, "China"], 8.3, "China share 2024")
+    same(sh.loc[2024, "Australia"], 8.3, "Australia share 2024")
+    who = ["United States", "Australia", "China", "Japan", "Germany"]
+    return {
+        "type": "line", "title": "Who files patents at IP Australia",
+        "subtitle": "% of patent applications at IP Australia, by the applicant's origin, 1995 to 2024",
+        "x": {"type": "category", "values": [str(y) for y in sh.index]},
+        "y": {"name": "% of applications", "min": 0, "format": "pct", "digits": 1},
+        "series": [{"name": c, "data": col(sh, c, 1)} for c in who],
+        "source": "WIPO IP statistics, filings at IP Australia by origin (lens: national_indicators)",
+    }
+
+
+# ------------------------------------------------------------------------------------------------------------ industries
+
+
+def industries() -> pd.DataFrame:
+    from eda import load_lens
+
+    return load_lens("industries")
+
+
+def div_names(df: pd.DataFrame) -> list[str]:
+    return [f"{n} ({d})" for d, n in zip(df.index, df.division_name, strict=True)]
+
+
+@chart
+def U75() -> dict:
+    i = industries()
+    w = i[i.fy.between(2017, 2026)].groupby(["division", "division_name"])[["patents_standard", "trade_marks"]].sum().reset_index("division_name")
+    w["p"] = 100 * w.patents_standard / w.patents_standard.sum()
+    w["t"] = 100 * w.trade_marks / w.trade_marks.sum()
+    same(w.loc["C", "p"], 90.78, "manufacturing's share of standard patents")
+    same(w.loc["C", "t"], 55.65, "manufacturing's share of trade marks")
+    views = []
+    for k, label in [("p", "Standard patents"), ("t", "Trade marks")]:
+        s = w.sort_values(k, ascending=False)
+        views.append({"label": label, "subtitle": f"{label} filed FY2017 to FY2026: each industry's share (expected counts)",
+                      "x": {"type": "category", "values": div_names(s)},
+                      "series": [{"name": f"% of {label.lower()}", "data": col(s, k, 2)}]})
+    return {"type": "bar", "horizontal": True, "title": "Where IP falls by industry",
+            "y": {"name": "% of applications", "min": 0, "format": "pct", "digits": 2}, "views": views,
+            "source": "IP RAPID; ALP crosswalks (Lybbert and Zolas), ABS ANZSIC 2006 (lens: industries)",
+            "note": "The patent crosswalk in the corpus leaves out services, so patents reach only goods-producing industries."}
+
+
+@chart
+def U76() -> dict:
+    i = industries()
+    w = i[i.fy.between(2017, 2026)].groupby(["division", "division_name"])[["patents_standard", "patents_standard_au", "trade_marks", "trade_marks_au"]].sum().reset_index("division_name")
+    w["p"] = 100 * w.patents_standard_au / w.patents_standard.where(w.patents_standard > 50)
+    w["t"] = 100 * w.trade_marks_au / w.trade_marks
+    same(w.loc["C", "p"], 7.87, "Australian share of manufacturing's patents")
+    views = []
+    for k, label in [("t", "Trade marks"), ("p", "Standard patents")]:
+        s = w.dropna(subset=[k]).sort_values(k, ascending=False)
+        views.append({"label": label, "subtitle": f"{label} filed FY2017 to FY2026: % filed by Australian applicants, by industry",
+                      "x": {"type": "category", "values": div_names(s)}, "series": [{"name": "% Australian", "data": col(s, k, 2)}]})
+    return {"type": "bar", "horizontal": True, "title": "Australian applicants' share, by industry",
+            "y": {"name": "% filed by Australians", "min": 0, "max": 100, "format": "pct", "digits": 2}, "views": views,
+            "source": "IP RAPID; ALP crosswalks (lens: industries)", "note": "Patent shares only where the expected count is above 50."}
+
+
+@chart
+def U77() -> dict:
+    i = industries()
+    last = i[i.fy == 2026].set_index("division").sort_values("businesses_end", ascending=False)
+    same(last.loc["E", "businesses_end"], 478651, "construction businesses June 2026")
+    return {"type": "bar", "horizontal": True, "title": "Businesses by industry, June 2026",
+            "x": {"type": "category", "values": div_names(last)}, "y": {"name": "Businesses", "min": 0, "format": "int"},
+            "series": [{"name": "Businesses", "data": col(last, "businesses_end")}],
+            "source": "ABS, Counts of Australian Businesses (CABEE) (lens: industries)"}
+
+
+@chart
+def U78() -> dict:
+    i = industries()
+    x = i.groupby(["division", "division_name"]).berd.max().reset_index("division_name")
+    x["share"] = 100 * x.berd / x.berd.sum()
+    same(x.berd.sum() / 1e6, 24.41, "BERD total ($ billion)")
+    same(x.loc["M", "share"], 37.6, "professional services' share")
+    x = x.sort_values("share", ascending=False)
+    wpi = i.pivot(index="fy", columns="division", values="wpi_index")
+    g = (100 * (wpi.loc[2025] / wpi.loc[2010] - 1)).dropna().sort_values(ascending=False)
+    names = i.drop_duplicates("division").set_index("division").division_name
+    same(g["D"], 56.8, "utilities' wage growth")
+    return {
+        "type": "bar", "horizontal": True, "title": "R&D and wages by industry",
+        "source": "ABS Business Expenditure on R&D 2023-24 and Wage Price Index (lens: industries)",
+        "views": [
+            {"label": "Business R&D, 2023-24", "subtitle": "Each industry's share of $24.41 billion of business R&D",
+             "x": {"type": "category", "values": div_names(x)}, "y": {"name": "% of business R&D", "min": 0, "format": "pct", "digits": 1},
+             "series": [{"name": "Share of business R&D", "data": col(x, "share", 1)}]},
+            {"label": "Wage growth, FY2010 to FY2025", "subtitle": "% rise in the Wage Price Index, by industry",
+             "x": {"type": "category", "values": [f"{names[d]} ({d})" for d in g.index]},
+             "y": {"name": "% rise", "min": 0, "format": "pct", "digits": 1},
+             "series": [{"name": "Wage growth", "data": [r(v, 1) for v in g]}]},
+        ],
+    }
+
+
+@chart
+def U79() -> dict:
+    b = sql("""SELECT division, value FROM {lens/industry_indicators}
+               WHERE source = 'bcs' AND indicator = 'BCS.BCS_INNACT.P_D_GSNEWY.9999.TOTAL.9999.0' AND period = '2023'""").set_index("division").value
+    same(b["TOTAL"], 21.7, "all industries 2023")
+    same(b["A"], 9.9, "agriculture 2023")
+    names = industries().drop_duplicates("division").set_index("division").division_name
+    d = b.drop("TOTAL", errors="ignore")
+    d = d[d.index.isin(names.index)].sort_values(ascending=False)
+    return {"type": "bar", "horizontal": True, "title": "Businesses that introduced a new good or service, 2023",
+            "subtitle": "% of businesses, by industry (ABS Business Characteristics Survey)",
+            "x": {"type": "category", "values": [f"{names[k]} ({k})" for k in d.index]},
+            "y": {"name": "% of businesses", "min": 0, "format": "pct", "digits": 1},
+            "series": [{"name": "Introduced a new good or service", "data": [r(v, 1) for v in d]}],
+            "marks": {"y": [{"at": 21.7, "label": "All industries"}]},
+            "source": "ABS Business Characteristics Survey (lens: industry_indicators)",
+            "note": "Survey estimates; the ABS flags many for sampling error."}
+
+
+# ------------------------------------------------------------------------------------------------------------ institutions
+
+
+def institutions() -> pd.DataFrame:
+    from eda import load_lens
+
+    return load_lens("institutions")
+
+
+@chart
+def U83() -> dict:
+    g = institutions().groupby("year")[["arc_funding", "arc_industry_funding", "nhmrc_funding"]].sum(min_count=1) / 1e6
+    g = g.loc[2001:2026]
+    same(g.loc[2010, "arc_funding"], 757.9, "ARC funding 2010 ($m)")
+    return {"type": "line", "title": "Research grants to the institutions",
+            "subtitle": "$ million (current), by the year ARC funding starts or the NHMRC round",
+            "x": {"type": "category", "values": [str(y) for y in g.index]}, "y": {"name": "$ million", "min": 0, "format": "moneym", "digits": 1},
+            "series": [{"name": "ARC funding", "data": col(g, "arc_funding", 1)},
+                       {"name": "ARC funding with industry partners", "data": col(g, "arc_industry_funding", 1)},
+                       {"name": "NHMRC funding", "data": col(g, "nhmrc_funding", 1)}],
+            "source": "ARC National Competitive Grants Program; NHMRC grant outcomes (lens: institutions)"}
+
+
+@chart
+def U84() -> dict:
+    s = sql("""
+        WITH r AS (SELECT ip_right_type, application_number, patent_type, founding_australian, year(application_date) AS year
+                   FROM {lens/rights} WHERE patent_type IN ('standard', 'provisional') AND year(application_date) BETWEEN 1990 AND 2026),
+        x AS (SELECT DISTINCT ip_right_type, application_number FROM {lens/institution_rights})
+        SELECT (year // 5) * 5 AS period, patent_type, count(*) FILTER (founding_australian) AS a,
+               count(*) FILTER (founding_australian AND (ip_right_type, application_number) IN (SELECT * FROM x)) AS b
+        FROM r GROUP BY ALL ORDER BY 2, 1""")
+    s["pct"] = 100 * s.b / s.a
+    p = pivot(s, "period", "patent_type", "pct")
+    same(p.loc[1990, "standard"], 4.80, "share 1990 to 1994")
+    same(p.loc[2020, "standard"], 8.96, "share 2020 to 2024")
+    labels = [f"{int(y)} to {int(y) + 4}" if y < 2025 else "2025 to 2026" for y in p.index]
+    return {"type": "line", "title": "The research institutions' share of Australian patent filing",
+            "subtitle": "% of applications filed from Australia with a research institution among the filers, by five-year period",
+            "x": {"type": "category", "values": labels}, "y": {"name": "% of applications", "min": 0, "format": "pct", "digits": 2},
+            "series": [{"name": "Standard patents", "data": col(p, "standard", 2)}, {"name": "Provisional applications", "data": col(p, "provisional", 2)}],
+            "source": "IP RAPID; ROR and the reviewed link (lenses: institutions, institution_rights)",
+            "note": "2025 to 2026 is part of a period."}
 
 
 # ------------------------------------------------------------------------------------------------------------ main

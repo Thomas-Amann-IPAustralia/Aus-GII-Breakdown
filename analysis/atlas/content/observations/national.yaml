@@ -1,0 +1,472 @@
+# The national lens (section 4 of the notebook): one row per country, year and indicator, with its attachments.
+# Markup and rules as in firms.yaml.
+
+- id: U63
+  lens: national
+  about: data
+  headline: Thirty indicators cover 229 places from 1960, but Australia's records of R&D staff end early
+  statement: >-
+    The core table holds 30 indicators for 229 places from 1960 to 2025 (135,597 values). Australia's series are
+    complete except for R&D: researchers end in 2010 and technicians in 2008, and the World Bank's R&D spending ends in
+    2021 (the OECD's runs to 2023).
+  figures:
+    - value: "135,597"
+      label: values in the core table
+    - value: "2010"
+      label: the last year of Australia's count of researchers
+  points:
+    - "Over 2000 to 2024 Australia has 20% of the years for R&D technicians, 24% for researchers and 40% for tertiary
+      enrolment, against 44.2%, 81.4% and 82.8% of OECD member-years."
+    - "The World Bank supplies 113,147 values (217 countries), WIPO 19,296 and the OECD 3,154."
+  questions:
+    - q: 1
+      how: International comparison is how Australia's IP system can be judged against others; gaps limit it.
+    - q: 4
+      how: Missing R&D workforce data is itself a gap worth noting for policy evidence.
+  sources: [wdi, wipo_ipstats, oecd]
+  chart:
+    type: bar
+    title: Australia's gaps in R&D statistics
+    subtitle: Share of the years 2000 to 2024 with a value, Australia against OECD members
+    x: {type: category, values: [R&D technicians, Researchers in R&D, Tertiary enrolment]}
+    y: {name: "% of years with a value", min: 0, max: 100, format: pct, digits: 1}
+    series:
+      - name: Australia
+        data: [20, 24, 40]
+      - name: OECD member-years
+        data: [44.2, 81.4, 82.8]
+    source: World Bank WDI (lens national)
+  prep:
+    - what: One row per country, year and indicator, from the World Bank, WIPO and the OECD.
+      why: A country in a year is the unit of international comparison.
+    - what: The OECD's R&D series sit beside the World Bank's, never spliced.
+      why: They differ where they overlap (2021, 1.66% against 1.86%), so they are compared, not joined (ADR 0010).
+  steps:
+    - For each indicator, count the countries, the years, and Australia's years.
+    - Compare Australia's coverage over 2000 to 2024 with the OECD members'.
+  assumptions:
+    - The World Bank's and OECD's figures for Australia come from the ABS and are comparable across countries.
+  limits:
+    - Recent Australian R&D workforce figures are simply missing.
+  next: >-
+    Stage 2 uses the OECD's R&D series beside the World Bank's.
+  terms: [gerd, oecd-median]
+  related: [U65, U69]
+
+- id: U64
+  lens: national
+  about: data
+  headline: Before 1995, WIPO cannot say where most patent applicants come from
+  statement: >-
+    Of WIPO's patent applications by origin, 34.35% had an unknown origin in 1980, 29.02% in 1990 and 32.24% in 1993,
+    then 9.0% in 1994 and 1.12% in 2024. Australia's own series show the gap: WIPO's patent grants to Australian
+    residents were 2 to 6 a year in 1990 to 1993, then 1,451 in 1994.
+  figures:
+    - value: "29.02%"
+      label: of WIPO's 1990 applications have an unknown origin
+    - value: "1995"
+      label: the first year WIPO's series by country are compared
+  points:
+    - "Former states (the Soviet Union and others) held 22.59% in 1980; they are kept, never added to their successors."
+    - "Australians' applications at every office were barely more than at home until 1993 (1,723 against 1,712 in
+      1990), then 4,351 in 1994."
+  questions:
+    - q: 1
+      how: Long-run international comparisons would be wrong before 1995; this sets the safe window.
+  sources: [wipo_ipstats]
+  chart: U64
+  notebook_charts: [0]
+  prep:
+    - what: Filings by residents of former states and of unknown origin are kept, with a column saying what each place is.
+      why: They had been dropped, losing 9.65% of WIPO's patent applications by origin (ADR 0019).
+  steps:
+    - Add up WIPO's patent applications by origin for each year, all offices together.
+    - Work out the share from unknown origins and from former states.
+    - Check Australia's own series for the same break.
+  assumptions:
+    - WIPO's "unknown" means the origin was not reported, not that applicants had none.
+  limits:
+    - Counts by country before 1995 are floors.
+  next: >-
+    WIPO's series by country are compared from 1995 only.
+  terms: [wipo]
+  related: [U67, U70]
+
+- id: U65
+  lens: national
+  about: system
+  headline: Australia's R&D intensity peaked in 2008 and has fallen below the OECD median; manufacturing shrank twice as fast as the typical member's
+  statement: >-
+    Gross R&D spending was 1.26% of GDP in 1990, 2.24% in 2008 and 1.68% in 2023, against an OECD median of 1.85%.
+    Business R&D was 0.91% of GDP in 2023 (median 1.18%). Manufacturing fell from 13.7% of GDP in 1990 to 5.32% in 2025,
+    down 61%, against 30% for the median member.
+  figures:
+    - value: "2.24% → 1.68%"
+      label: gross R&D as a share of GDP, 2008 to 2023
+    - value: "−61%"
+      label: manufacturing's share of GDP since 1990
+  points:
+    - "**IP royalties:** Australia pays more for others' IP than it earns from its own in every year: payments $826
+      million (1990) to $12.4 billion (2025), receipts $162 million to $7.4 billion (US dollars)."
+    - "**Patents:** non-resident applications in Australia rose from 13,280 (1990) to 29,010 (2023) while the median
+      member's fell."
+    - "**Two breaks to read past:** the share of the labour force with advanced education steps up to 86.33% in 2010,
+      and net foreign investment was −3.6% of GDP in 2005, a single year."
+  questions:
+    - q: 1
+      how: The national context in which the IP system works; falling R&D and a shrinking manufacturing base matter for
+        what patents can do.
+    - q: 4
+      how: Shows where Australia sits against peers, a starting point for where intervention might matter.
+  sources: [oecd, wdi]
+  chart: U65
+  notebook_charts: [0]
+  prep:
+    - what: Each indicator is compared with the OECD members' median in the same year, where 10 or more report.
+      why: The median member is a fair benchmark; with fewer reporting, it moves with who reports.
+  steps:
+    - Take Australia's value for each indicator and year.
+    - Work out the OECD members' median and middle half for the same year.
+    - Compare at chosen years.
+  assumptions:
+    - Indicators are measured the same way across countries, as the publishers intend.
+  limits:
+    - Each value is a ratio of the whole economy; it does not say why R&D fell.
+  next: >-
+    Stage 2 compares Australia with OECD members as ratios to people and GDP.
+  terms: [gerd, oecd-median]
+  related: [U66, U69]
+
+- id: U66
+  lens: national
+  about: system
+  headline: Among OECD members Australia is near the top for filings from abroad and new businesses, near the bottom for exports, manufacturing and business R&D
+  statement: >-
+    In its latest year, Australia ranks 2nd of 30 OECD members for new businesses registered and 5th of 38 for patent
+    applications from non-residents. It ranks 34th of 35 for exports (23.24% of GDP, median 45.37%), 31st of 32 for
+    manufacturing and 26th of 35 for business R&D.
+  figures:
+    - value: "5th of 38"
+      label: for non-resident patent applications
+    - value: "34th of 35"
+      label: for exports as a share of GDP
+    - value: "26th of 35"
+      label: for business R&D as a share of GDP
+  points:
+    - "New business density 4th of 30 (18.06 per 1,000 people aged 15 to 64, median 5.83); tertiary enrolment 4th of 22."
+    - "Gross R&D 21st of 35 (1.68%, median 1.85%)."
+    - "Counts rank by size: Australia's population is 14th of 38 and its GDP 13th, so its counts sit around the 60th to
+      75th percentile for that reason alone."
+  questions:
+    - q: 1
+      how: Shows Australia as a market others protect inventions in, more than as an exporter of goods or R&D.
+    - q: 4
+      how: Low business R&D and exports are possible areas where IP policy works with others.
+  sources: [wdi, wipo_ipstats, oecd]
+  chart: U66
+  notebook_charts: [0]
+  prep:
+    - what: Each indicator uses Australia's latest year and the members reporting that year.
+      why: Comparing the same year is fair; members' coverage differs.
+  steps:
+    - For each indicator, find Australia's latest year and value.
+    - Rank Australia among the OECD members reporting that year.
+    - Work out the share of members below Australia.
+  assumptions:
+    - A higher value is a higher rank, whatever the indicator means.
+  limits:
+    - Counts favour large countries; ratios to people or GDP are fairer and come in Stage 2.
+  next: >-
+    Stage 2 compares as ratios to people and GDP.
+  terms: [oecd-median, percentile]
+  related: [U65, U69, U70]
+
+- id: U67
+  lens: national
+  about: data
+  headline: Three independent sources count Australia's patent applications alike; the World Bank's trade mark series counts classes
+  statement: >-
+    From 1989 to 2024, the register's standard patent count is within 1.5% of the World Bank's for Australian applicants
+    (median ratio 1.002) and within 2.2% for overseas ones. The World Bank's count is WIPO's exactly. For trade marks, the
+    World Bank counts classes: the register's Australian classes are 0.938 to 0.998 of its figure.
+  figures:
+    - value: "1.002"
+      label: median ratio of the register's count to the World Bank's
+    - value: "1.331"
+      label: innovation patents against WIPO's utility models in 2016, a lead
+  points:
+    - "Before 1989 the register's overseas count falls short (0.072 of the World Bank's in 1980), because it records few
+      overseas applicants' countries then."
+    - "The register's trade mark applications are 0.545 to 0.659 of the World Bank's \"applications\", which are really
+      classes. The source register now says so."
+  questions:
+    - q: 1
+      how: An independent check that the core counts of the IP system are right.
+  sources: [iprapid, wdi, wipo_ipstats]
+  chart: U67
+  notebook_charts: [0]
+  prep:
+    - what: The three sources are compared by calendar year of application.
+      why: International sources count by calendar year.
+  steps:
+    - Count standard patents by year and origin from the register.
+    - Take the World Bank's and WIPO's counts for Australia.
+    - Divide one by the other, year by year.
+  assumptions:
+    - Agreement between independent sources shows each is complete.
+  limits:
+    - The 2016 innovation patent gap is unexplained (a question for IP Australia).
+  next: >-
+    Trade marks are compared across countries as class counts.
+  terms: [ratio, wipo]
+  related: [U64, U89]
+
+- id: U68
+  lens: national
+  about: data
+  headline: The international attachments hold 41,218,170 values, and five OECD datasets have nothing for Australia
+  statement: >-
+    The companion table holds 41,218,170 values, almost all the OECD's cross-border patent and business tables.
+    Australia is absent from the OECD's business births and deaths, survival and high growth, innovation and IP methods,
+    and IP tax regimes. Venture capital ends for Australia in 2019.
+  figures:
+    - value: "41,218,170"
+      label: attached values
+    - value: "2019"
+      label: the last year of Australian venture capital in the OECD's data
+  points:
+    - "By source: the OECD 40,707,162 rows, WIPO 441,586, the GII 45,828, Closing the Gap 11,349, Measuring What Matters
+      5,159, the ABS 5,027 and BCARR 2,059."
+    - "28.7% of the OECD's R&D statistics are flagged (estimates, breaks, definitions that differ)."
+  questions:
+    - q: 4
+      how: Gaps in international data limit how Australia can be compared on the business outcomes interventions aim at.
+  sources: [oecd, wipo_ipstats, gii, ctg, mwm]
+  chart:
+    type: bar
+    horizontal: true
+    title: Values in the international attachments, by source
+    x: {type: category, values: [OECD, WIPO, Global Innovation Index, Closing the Gap, Measuring What Matters, ABS (Australia-wide), BCARR]}
+    y: {name: Values (log scale), type: log, min: 1000, max: 100000000, format: int}
+    series:
+      - name: Values
+        data: [40707162, 441586, 45828, 11349, 5159, 5027, 2059]
+    source: OECD, WIPO, GII 2026, Closing the Gap, Measuring What Matters, ABS, BCARR (lens national_indicators)
+    note: A log scale, because the OECD's tables are a thousand times larger than the rest.
+  prep:
+    - what: Every value of each source goes into one long table, one row per place, source, indicator and period, with the
+        publisher's flags.
+      why: Keeps every published value without making the lens unreadable (ADR 0019).
+    - what: The OECD's suppressed values, published as 0, are emptied.
+      why: A zero that means "not published" is not a zero.
+  steps:
+    - Count values and indicators by source.
+    - Check which datasets have any value for Australia.
+  assumptions:
+    - Each indicator keeps the publisher's own definition.
+  limits:
+    - Absence for Australia cannot be filled from these sources.
+  next: >-
+    Stage 2 uses one indicator at a time.
+  terms: [attachment, gii]
+  related: [U69, U71, U72]
+
+- id: U69
+  lens: national
+  about: system
+  headline: Australia ranks 20th of 139 economies in the Global Innovation Index 2026, 13th on inputs and 24th on outputs
+  statement: >-
+    In the GII 2026, Australia is 20th of 139: 13th on innovation inputs and 24th on outputs. Its pillars run from 9th
+    (human capital and research) to 29th (infrastructure). WIPO's strengths for Australia are education and
+    universities; its weaknesses are outputs and trade.
+  figures:
+    - value: "20th"
+      label: of 139 economies overall
+    - value: "13th vs 24th"
+      label: inputs against outputs
+  points:
+    - "Pillars: human capital and research 9th, institutions 12th, market sophistication 17th, business sophistication
+      23rd, knowledge and technology outputs 26th, creative outputs 26th, infrastructure 29th."
+    - "Strengths: school life expectancy (2nd), university, industry and international engagement (4th)."
+    - "Weaknesses: ICT services exports (99th), low-carbon energy use (91st), graduates in science and engineering
+      (90th), labour productivity growth (85th)."
+    - "A rank reflects WIPO's choice of indicators and weights; the indicators beneath it are the evidence."
+  questions:
+    - q: 1
+      how: The gap between strong inputs and weaker outputs frames the question of what the system turns into value.
+    - q: 4
+      how: Points to where Australia lags its peers, as context for choosing interventions.
+  sources: [gii]
+  chart:
+    type: bar
+    horizontal: true
+    title: Australia in the Global Innovation Index 2026
+    subtitle: "Australia's rank of 139 economies (1 = best): the index, its two sub-indices and seven pillars"
+    x: {type: category, values: [Global Innovation Index, Innovation inputs, Innovation outputs, Human capital and research, Institutions, Market sophistication, Business sophistication, Knowledge and technology outputs, Creative outputs, Infrastructure]}
+    y: {name: Rank (1 = best), min: 0, format: int}
+    series:
+      - name: Rank
+        data: [20, 13, 24, 9, 12, 17, 23, 26, 26, 29]
+    source: WIPO, Global Innovation Index 2026 (lens national_indicators)
+    note: A shorter bar is a better rank.
+  notebook_charts: [0]
+  prep:
+    - what: Every GII value is kept, with WIPO's strength and weakness flags.
+      why: The indicators are the evidence; the rank is a summary (ADR 0019).
+  steps:
+    - Take Australia's rank on the index, sub-indices and pillars.
+    - List the indicators WIPO marks as strengths and weaknesses.
+    - Count missing and outdated indicators against the median economy.
+  assumptions:
+    - WIPO's choice of indicators and weights is taken as published.
+  limits:
+    - A composite rank can move because of method changes; 6 of Australia's 79 indicators are missing and 8 outdated.
+  next: >-
+    Stage 2 works with the indicators, not the rank.
+  terms: [gii, wipo]
+  related: [U65, U66]
+
+- id: U70
+  lens: national
+  about: system
+  headline: The United States files about four in ten patent applications at IP Australia; China now files as many as Australians
+  statement: >-
+    Of patent applications at IP Australia, the United States filed 41.2% in 1995, 45.6% in 2004 and 41.9% in 2024.
+    Australians filed 12.7%, 11.2% and 8.3%; China 0.0%, 0.3% and 8.3%. Three-quarters of Australians' own applications
+    (76.1% in 2024) are made abroad.
+  figures:
+    - value: "41.9%"
+      label: of applications at IP Australia from the United States (2024)
+    - value: "8.3% = 8.3%"
+      label: China and Australia, 2024
+    - value: "76.1%"
+      label: of Australians' applications made abroad
+  points:
+    - "IP Australia beside other OECD offices (2024): 405 patent examiners (median office 83.5); 347 days from an
+      examination request to the first action (median 210); trade marks 37 days to the first action (median 30)."
+    - "WIPO gives IP Australia's average time to register a trade mark as 222 days (2016), the peak found in the register
+      ({U11}): the office's usual path, not an artefact."
+  questions:
+    - q: 1
+      how: Who files where shows whose inventions the Australian system protects, and where Australians seek protection.
+    - q: 3
+      how: Australians filing abroad is a measure of reaching international markets.
+  sources: [wipo_ipstats]
+  chart: U70
+  notebook_charts: [0]
+  prep:
+    - what: Applications at IP Australia by origin come from WIPO's office tables.
+      why: An independent view of the same filings, by every country.
+  steps:
+    - Take WIPO's patent applications at IP Australia by the applicant's origin, each year.
+    - Work out each origin's share.
+    - Compare Australians' applications at every office with those at home.
+  assumptions:
+    - WIPO's origin is the first applicant's residence.
+  limits:
+    - Before 1995 most origins are unknown ({U64}).
+  next: >-
+    Context for Stage 2's comparisons of origin and route.
+  terms: [wipo]
+  related: [U7, U13, U64]
+
+- id: U71
+  lens: national
+  about: system
+  headline: The United States is Australia's main partner in cross-border invention
+  statement: >-
+    Of inventions made in Australia (international applications, 2020), 7.0% were owned by US residents, 3.7% by Chinese
+    and 1.6% by Swiss; 7.1% had a US co-inventor and 3.5% a Chinese one. Of Australian-owned inventions, 4.0% were made
+    in the United States.
+  figures:
+    - value: "7.0%"
+      label: of inventions made in Australia owned in the US (2020)
+    - value: "2,117"
+      label: PCT applications invented in Australia in 2015
+  points:
+    - "In the OECD's tables, \"World\" as a partner is the country's own total: 2,117 inventions made in Australia in 2015,
+      1,762 owned in Australia; 1,720 and 1,489 in 2022."
+    - "China's share of foreign ownership was 0.0% (2000), 3.7% (2020) and 0.5% (2022)."
+  questions:
+    - q: 1
+      how: Inventions made here but owned abroad may send their returns overseas.
+  sources: [oecd]
+  chart:
+    type: bar
+    horizontal: true
+    title: Australia's partners in invention, 2020
+    subtitle: PCT applications, by priority date
+    x: {type: category, values: ["Made in Australia, owned in the US", "Made in Australia, owned in China", "Made in Australia, owned in Switzerland", "Australian invention with a US co-inventor", "Australian invention with a Chinese co-inventor", "Owned in Australia, made in the US"]}
+    y: {name: "% of the total", min: 0, format: pct, digits: 1}
+    series:
+      - name: Share
+        data: [7.0, 3.7, 1.6, 7.1, 3.5, 4.0]
+    source: OECD, cross-border patent tables (lens national_indicators)
+  prep:
+    - what: The OECD's three cross-border tables are read with "World" as each country's total.
+      why: A partner's count only means something as a share of that total.
+  steps:
+    - Take the totals for inventions made in, and owned in, Australia.
+    - Take each partner's share in 2020.
+  assumptions:
+    - Ownership is the applicant's residence; invention is the inventor's.
+  limits:
+    - International applications only; inventions filed only in Australia are not counted.
+  next: >-
+    Stage 2 compares shares, not counts.
+  terms: [pct]
+  related: [U96, U68]
+
+- id: U72
+  lens: national
+  about: data
+  headline: Measuring What Matters mostly repeats labour statistics held elsewhere; Closing the Gap mixes observations with projections
+  statement: >-
+    3,767 of Measuring What Matters' 5,159 values are monthly copies of ABS labour and price series, which stay the main
+    measures. Closing the Gap's 11,349 values include 353 projections (trajectories to each target, to 2031) and 443
+    model estimates; 809 are not available or not published.
+  figures:
+    - value: "353"
+      label: projected values in Closing the Gap, now marked
+    - value: "3,767"
+      label: of Measuring What Matters' 5,159 values are monthly copies
+  points:
+    - "So a projected value is never read as an observation; its status says which it is."
+    - "The Australian Government's land and sea values (85) are restored."
+  questions:
+    - q: 1
+      how: Wellbeing and First Nations outcomes are part of public value; this says how to read them safely.
+  sources: [mwm, ctg]
+  chart:
+    type: bar
+    horizontal: true
+    title: What kind of values the two frameworks hold
+    views:
+      - label: Measuring What Matters
+        subtitle: Values by the kind of period they describe
+        x: {type: category, values: [Monthly, Years, Financial years, No period]}
+        series:
+          - name: Values
+            data: [3767, 972, 273, 35]
+      - label: Closing the Gap
+        subtitle: Values that are not plain observations
+        x: {type: category, values: [Not available or not published, Model estimates, Projections, Assessments]}
+        series:
+          - name: Values
+            data: [809, 443, 353, 75]
+    y: {name: Values, min: 0, format: int}
+    source: Measuring What Matters; Closing the Gap (lens national_indicators)
+  prep:
+    - what: Each value keeps the publisher's status, so projections and model estimates are marked.
+      why: A projection is not an observation (ADR 0019).
+  steps:
+    - Count each framework's values by kind of period and status.
+    - Compare Measuring What Matters' monthly series with the ABS series already in the corpus.
+  assumptions:
+    - The publishers' own labels say which values are projected or modelled.
+  limits:
+    - Australia only; no comparison with other countries.
+  next: >-
+    Projections are filtered out by status; monthly copies are never added to the ABS's.
+  terms: [attachment]
+  related: [U68]

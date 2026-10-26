@@ -1,0 +1,294 @@
+# The industries lens (section 6 of the notebook): one row per ANZSIC division and financial year. Markup and rules
+# as in firms.yaml.
+
+- id: U73
+  lens: industries
+  about: data
+  headline: The industries table covers 19 divisions over 37 years, but only IP runs through all of them
+  statement: >-
+    IP columns are filled for every division and year, FY1990 to FY2026. Business counts cover FY2023 to FY2026,
+    business R&D only FY2024, wages FY1998 to FY2026 (18 divisions; the index leaves out agriculture) and creative value
+    added FY2016 to FY2025 for 10 divisions.
+  figures:
+    - value: "19"
+      label: industry divisions
+    - value: "FY2024"
+      label: the only year of business R&D by division
+  points:
+    - "So Stage 2 can relate IP to businesses over four years and to R&D in one, across 19 divisions: few points, so
+      comparisons are of patterns, not models."
+  questions:
+    - q: 2
+      how: Industry is one of the dimensions Q2 asks about; this says how much can be compared, and when.
+    - q: 3
+      how: R&D by industry is a complementary capability; there is only one year of it.
+  sources: [iprapid, abs_cabee, abs_rd_vc, abs_prices, bcarr_creative]
+  chart:
+    type: range
+    title: Which years each industry measure covers
+    x: {type: category, values: [IP applications, Wages (WPI), Creative value added, Businesses (CABEE), Business R&D (BERD)]}
+    y: {name: Financial year, min: 1985, max: 2030, format: year}
+    series:
+      - name: Years covered
+        data: [[1990, 2026], [1998, 2026], [2016, 2025], [2023, 2026], [2024, 2024]]
+    source: IP RAPID; ABS CABEE, BERD and WPI; BCARR (lens industries)
+    note: Business R&D covers a single year (2023-24).
+  prep:
+    - what: One row per ANZSIC division and financial year, FY1990 to FY2026.
+      why: Few overseas applicants' countries are recorded before 1989 ({U67}).
+  steps:
+    - For each column, find the first and last year with values, and the divisions it covers.
+  assumptions:
+    - The ABS's division codes are the same across its releases.
+  limits:
+    - Short series for businesses and R&D limit what can be tested.
+  next: >-
+    Stage 2 compares patterns across divisions, not models.
+  terms: [anzsic, gerd, cabee]
+  related: [U74, U77, U78]
+
+- id: U74
+  lens: industries
+  about: data
+  headline: The crosswalks carry nearly every right to an industry; a patent's division is usually clear, its subdivision often is not
+  statement: >-
+    The published crosswalks carry 98.42% to 99.73% of standard patents (FY1990 to FY2024) and 99.82% to 99.93% of trade
+    marks to an industry. A standard patent's largest division share has a median of 0.996, but its largest subdivision
+    share only 0.727. A trade mark's division is less clear (median 0.792).
+  figures:
+    - value: "0.996"
+      label: median share of a patent in its main division
+    - value: "0.727"
+      label: median share in its main subdivision
+  points:
+    - "77.9% of standard patents put 90% or more in one division; 39.28% of trade marks do."
+    - "Patent classes unknown to the crosswalk fell from 12,143 to 71 after mapping new or retired classes to their
+      predecessors."
+    - "So division counts for patents are close to certain; subdivision counts and all trade mark counts are spread
+      estimates."
+  questions:
+    - q: 2
+      how: Says how precisely IP can be placed in industries, which limits every industry comparison.
+  sources: [concordances, iprapid]
+  chart:
+    type: bar
+    horizontal: true
+    title: How decisively a right is placed in one industry
+    subtitle: The median share of a right in its largest industry (1 = entirely in one)
+    x: {type: category, values: [Standard patent, division, Trade mark, division, Standard patent, subdivision]}
+    y: {name: Median largest share, min: 0, max: 1, format: num, digits: 3}
+    series:
+      - name: Median largest share
+        data: [0.996, 0.792, 0.727]
+    source: IP RAPID; ALP crosswalks; ABS ANZSIC 2006 (lens industries)
+  prep:
+    - what: Each right is split equally over its classes, and each class over industries by the crosswalk's probabilities.
+      why: No firm in the corpus has an industry, so IP reaches industries only through what it protects (ADR 0020).
+    - what: The step between two industry classifications gives weight to full links first.
+      why: Splitting over partial links had sent half of pharmaceuticals' patents to textile finishing.
+  steps:
+    - For each right, add up its shares by division and by subdivision.
+    - Take each right's largest share, and summarise across rights.
+    - Count the share of rights the crosswalks carry, by year.
+  assumptions:
+    - The crosswalks' probabilities (from published research) describe Australian rights as well as the ones they were built from.
+  limits:
+    - An industry here is what a right protects, not who filed it or who uses it.
+  next: >-
+    Stage 2 reports patents by division, and treats subdivisions as estimates.
+  terms: [crosswalk, expected-count, anzsic]
+  related: [U75]
+
+- id: U75
+  lens: industries
+  about: system
+  headline: Nine in ten patents fall in manufacturing, partly because the patent crosswalk leaves out services
+  statement: >-
+    Of standard patents filed FY2017 to FY2026, manufacturing receives 90.78%, utilities 4.76% and agriculture 2.04%; no
+    service industry receives more than 0.23%, because the crosswalk in the corpus leaves services out. Trade marks
+    spread more widely: manufacturing 55.65%, professional services 11.05%.
+  figures:
+    - value: "90.78%"
+      label: of standard patents fall in manufacturing
+    - value: "55.65%"
+      label: of trade marks fall in manufacturing
+  points:
+    - "Within manufacturing: machinery and equipment 31.18% of all standard patents, chemicals (including
+      pharmaceuticals) 30.17%."
+    - "Manufacturing's share of trade marks fell from 73.94% (FY1990) to 56.51% (FY2000) and has stayed near 55%."
+    - "**The 2002 break:** accommodation and food services have no trade marks to FY2001 and 1.67% from FY2003, because
+      the classification of services was split in January 2002."
+  questions:
+    - q: 2
+      how: Which industries IP serves is part of who benefits; the crosswalk's limit must be stated with any answer.
+    - q: 3
+      how: Industry is one condition that may decide whether protection produces value.
+  sources: [iprapid, concordances]
+  chart: U75
+  notebook_charts: [0, 1]
+  prep:
+    - what: Rights are counted as expected counts through the crosswalks, FY2017 to FY2026.
+      why: A right can belong partly to several industries ({U74}).
+  steps:
+    - Add up each division's expected count of standard patents and trade marks.
+    - Work out each division's share.
+    - Follow each division's share over time, and look for breaks.
+  assumptions:
+    - A patent's division says what kind of product its technology is.
+  limits:
+    - A crosswalk that includes services exists (free); with it, patents would reach service industries.
+  next: >-
+    Stage 2 decides whether to add the services crosswalk, and compares trade marks from FY2003.
+  terms: [crosswalk, expected-count, anzsic, nice]
+  related: [U74, U76, U77]
+
+- id: U76
+  lens: industries
+  about: system
+  headline: Australians file a small share of patents in every industry, but most of the trade marks in services
+  statement: >-
+    Australian applicants file 7.87% of manufacturing's standard patents, 9.05% of agriculture's, 10.62% of utilities' and
+    17.29% of construction's. For trade marks they file 47.46% to 58.24% in the goods industries and 66.99% to 79.75% in
+    the services industries.
+  figures:
+    - value: "7.87%"
+      label: of manufacturing's patents filed by Australians
+    - value: "66.99% to 79.75%"
+      label: of services' trade marks filed by Australians
+  points:
+    - "Patent shares are given only where a division's expected count is above 50."
+    - "Professional services are the lowest of the services divisions for trade marks, other services the highest."
+  questions:
+    - q: 2
+      how: Shows that Australian use of patents is low in every industry, while brands in services are mostly Australian.
+  sources: [iprapid, concordances]
+  chart: U76
+  prep:
+    - what: Patent shares are shown only where a division's expected count is above 50.
+      why: A share of a handful of patents is not meaningful.
+  steps:
+    - For each division, divide Australians' expected count by the total, for patents and trade marks.
+  assumptions:
+    - Australian means the current applicant is in Australia, as the World Bank and WIPO count residents.
+  limits:
+    - Expected counts, not counts of filings by industry.
+  next: >-
+    Stage 2 relates these shares to each industry's businesses and R&D.
+  terms: [expected-count]
+  related: [U75, U7]
+
+- id: U77
+  lens: industries
+  about: system
+  headline: Construction, professional services and property hold two in five businesses; manufacturing, with nine in ten patents, holds 3.2%
+  statement: >-
+    In June 2026, construction had 478,651 businesses (17.0%), professional, scientific and technical services 366,289
+    (13.0%) and rental, hiring and real estate 319,717 (11.4%). Manufacturing had 90,879 (3.2%).
+  figures:
+    - value: "478,651"
+      label: construction businesses, the largest division
+    - value: "3.2%"
+      label: of businesses are in manufacturing
+  points:
+    - "Growth FY2023 to FY2026: health care 30.7%, transport 24.5%; agriculture −2.9%."
+    - "Entry rates in FY2026 run from 7.4% (agriculture) to 26.5% (transport); exit rates from 7.9% to 21.7%."
+    - "So a rate of IP per business would set manufacturing's many patents against few businesses."
+  questions:
+    - q: 2
+      how: Where businesses are tells Stage 2 what IP per business in each industry would mean.
+  sources: [abs_cabee]
+  chart: U77
+  notebook_charts: [0]
+  prep:
+    - what: Business counts come from CABEE by division, at the start and end of each financial year.
+      why: CABEE is the ABS's count of businesses actively trading, by industry.
+  steps:
+    - Take each division's businesses in June 2026, and its share.
+    - Work out growth since FY2023, and entry and exit rates.
+  assumptions:
+    - A business's industry is as the ABS records it.
+  limits:
+    - Four years of counts only.
+  next: >-
+    Stage 2 reads IP per business beside the crosswalk's limits ({U75}).
+  terms: [cabee, anzsic]
+  related: [U75, U78]
+
+- id: U78
+  lens: industries
+  about: system
+  headline: Professional services spend the most on R&D, mining the most per business
+  statement: >-
+    Business R&D was $24.41 billion in 2023-24: professional, scientific and technical services 37.6%, manufacturing
+    20.7% and finance 14.3%. Per business, mining spent $142,100 and manufacturing $55,770, against $3,175 in agriculture.
+  figures:
+    - value: "$24.41 billion"
+      label: business R&D in 2023-24
+    - value: "37.6%"
+      label: of it in professional services
+  points:
+    - "Wages rose 44.5% (rental, hiring and real estate) to 56.8% (utilities) from FY2010 to FY2025."
+    - "Creative value added (nominal): professional services $16,950 million (FY2016) to $28,630 million (FY2025)."
+  questions:
+    - q: 3
+      how: R&D is a complementary capability; its spread shows where invention effort is, beside where patents fall.
+    - q: 4
+      how: Industries that spend on R&D but file few patents are a lead for Stage 2.
+  sources: [abs_rd_vc, abs_prices, bcarr_creative, abs_cabee]
+  chart: U78
+  notebook_charts: [0]
+  prep:
+    - what: R&D per business uses June 2024 business counts.
+      why: It matches the R&D year.
+  steps:
+    - Take each division's business R&D for 2023-24, and its share.
+    - Divide by the division's businesses.
+    - Work out wage growth from FY2010 to FY2025.
+  assumptions:
+    - Business R&D is recorded under the industry of the business that spends it.
+  limits:
+    - One year of R&D; nominal dollars.
+  next: >-
+    Stage 2 sets R&D beside IP by industry.
+  terms: [gerd, nominal]
+  related: [U73, U77]
+
+- id: U79
+  lens: industries
+  about: system
+  headline: About a fifth of businesses introduced a new good or service in 2023, from one in ten in agriculture to three in ten in information media
+  statement: >-
+    21.7% of businesses introduced a new good or service in 2023 (22.0% in 2021), from 9.9% in agriculture to 31.9% in
+    information media. 61.9% of businesses operating in June 2022 survived to June 2026, from 47.3% in transport to 74.5%
+    in agriculture.
+  figures:
+    - value: "21.7%"
+      label: of businesses introduced a new good or service (2023)
+    - value: "61.9%"
+      label: of businesses survived June 2022 to June 2026
+  points:
+    - "The attachments hold 1,409,875 values, most of them CABEE's counts by class, state and area."
+    - "The business survey flags 36.2% of its values for sampling error, and 25% are not available for publication."
+    - "BCARR's two releases agree within 1.2% where they overlap; they stay separate."
+  questions:
+    - q: 1
+      how: Innovation without IP is part of the picture the research goal insists on; this measures it by industry.
+    - q: 3
+      how: Innovation beside IP use is the comparison Q3 needs.
+  sources: [abs_bcs, abs_cabee, bcarr_creative]
+  chart: U79
+  prep:
+    - what: Every value the ABS and BCARR publish by industry is kept in a long companion table, with the ABS's flags.
+      why: Keeps every value, and its reliability, without crowding the lens (ADR 0020).
+  steps:
+    - Count values by source.
+    - Take the share of businesses that introduced a new good or service, by division.
+    - Take the share of June 2022's businesses that survived to June 2026.
+  assumptions:
+    - Survey estimates are as reliable as the ABS's flags say.
+  limits:
+    - Many survey values have large sampling errors.
+  next: >-
+    Stage 2 sets innovation beside IP by industry.
+  terms: [bcs, cabee, attachment]
+  related: [U73, U77]

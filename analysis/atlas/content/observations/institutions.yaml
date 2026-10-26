@@ -1,0 +1,371 @@
+# The institutions lens (section 7 of the notebook): one row per research institution and calendar year. Markup and
+# rules as in firms.yaml.
+
+- id: U80
+  lens: institutions
+  about: data
+  headline: The institutions table covers 130 research institutions; IP and grants go back further than research output, which starts in 2010
+  statement: >-
+    The table holds 130 institutions: 46 medical research institutes, 44 universities, 18 other grant holders, 11 public
+    research agencies, 7 health services and 4 other research institutes. Research output and citations start in 2010,
+    ARC grants in 2001 and NHMRC grants with the 2013 round; IP is there for every year.
+  figures:
+    - value: "130"
+      label: research institutions
+    - value: "2010"
+      label: the first year of research output
+  points:
+    - "84 institutions filed a standard patent, 112 a trade mark."
+    - "Government contracts from 2005 (few before 2007)."
+    - "So Stage 2 can relate research to IP over 2010 to 2024, and grants to IP from 2001 (ARC) or 2013 (NHMRC)."
+  questions:
+    - q: 1
+      how: Research institutions are a main route from public research to invention; this says over which years they can be studied.
+  sources: [ror, openalex, arc_grants, nhmrc_grants, iprapid, austender]
+  chart:
+    type: range
+    title: Which years each institutions measure covers
+    x: {type: category, values: [IP and patent families, ARC grants, Government contracts, Research output (OpenAlex), NHMRC grants]}
+    y: {name: Year, min: 1985, max: 2030, format: year}
+    series:
+      - name: Years covered
+        data: [[1990, 2026], [2001, 2026], [2005, 2026], [2010, 2026], [2013, 2026]]
+    source: OpenAlex; ARC; NHMRC; IP RAPID; AusTender (lens institutions)
+  prep:
+    - what: Each institution is identified by its Research Organization Registry (ROR) record; the table runs by
+        calendar year.
+      why: OpenAlex, the ARC and the NHMRC count by calendar year (ADR 0021).
+  steps:
+    - Count the institutions by kind.
+    - For each column, find the years it covers and how many institutions have values.
+  assumptions:
+    - The list of institutions covers every university, public research agency and medical research institute that matters here.
+  limits:
+    - Research output only from 2010.
+  next: >-
+    Stage 2 works within each source's years.
+  terms: [ror, openalex]
+  related: [U81, U82]
+
+- id: U81
+  lens: institutions
+  about: data
+  headline: Universities file patents through their commercialisation companies to very different degrees
+  statement: >-
+    UNSW files 96.5% of its patent applications through NewSouth Innovations, the University of Newcastle 72.8% through
+    Newcastle Innovation and Adelaide 43.9%, while Queensland files 2.1% through UniQuest and Sydney, Monash and QUT under
+    1%. Without its company, UNSW would show 3.5% of its patents.
+  figures:
+    - value: "96.5%"
+      label: of UNSW's patents filed through NewSouth Innovations
+    - value: "31,528"
+      label: rights linked to an institution
+  points:
+    - "The link finds 31,528 institution-rights: 22,448 patent links by name and business number together, 4,158 by name
+      alone and 62 by business number alone."
+    - "Macquarie files 19.1% through its company, Flinders 15.7%."
+    - "Whether the list of names and companies is complete is a question for someone in the sector (OQ11)."
+  questions:
+    - q: 1
+      how: Counting a university's inventions needs its companies; otherwise universities' contribution is badly understated.
+  sources: [iprapid, ror, abr]
+  chart:
+    type: bar
+    horizontal: true
+    title: Universities' patents filed through their commercialisation companies
+    subtitle: "% of each university's patent applications filed in the company's name"
+    x: {type: category, values: [UNSW (NewSouth Innovations), Newcastle (Newcastle Innovation), Adelaide (Adelaide Research & Innovation), Macquarie, Flinders, Queensland (UniQuest)]}
+    y: {name: "% through the company", min: 0, max: 100, format: pct, digits: 1}
+    series:
+      - name: Through the company
+        data: [96.5, 72.8, 43.9, 19.1, 15.7, 2.1]
+    source: IP RAPID; ROR; the reviewed link (lens institutions)
+  prep:
+    - what: An institution's rights are those where it is among the filers, matched by a reviewed list of names (including
+        former names and companies) and business numbers.
+      why: Universities file under many names; a name decides, and a business number matches only where the name does not
+        (ADR 0021).
+  steps:
+    - Match every filer's name and business number against the reviewed list.
+    - Count how each right was matched.
+    - For each university, work out the share filed through its company.
+  assumptions:
+    - The reviewed list is complete; a missed company or merger would move an institution's counts.
+  limits:
+    - "Plant breeder's rights cannot be linked: their applicants are codes."
+  next: >-
+    A sector check of the list is recommended before Stage 2 compares institutions (OQ11).
+  terms: [commercialisation-company, abn, ror]
+  related: [U84, U87]
+
+- id: U82
+  lens: institutions
+  about: system
+  headline: Universities produce 86.8% of the institutions' research works, and five universities a third
+  statement: >-
+    From 2015 to 2024, universities produced 86.8% of the institutions' works, medical research institutes 7.1% and
+    public research agencies 3.9%. Melbourne produced 7.97%, Sydney 7.44%, Monash 6.90%, UNSW 6.38% and Queensland 6.28%;
+    the Group of Eight 45.35%.
+  figures:
+    - value: "86.8%"
+      label: of works from universities
+    - value: "45.35%"
+      label: from the Group of Eight
+  points:
+    - "CSIRO is 12th (2.50%)."
+    - "Works grew from 99,259 in 2010 to 252,456 in 2024."
+    - "A work with authors at two institutions counts for both, so shares are of institution-works."
+  questions:
+    - q: 1
+      how: Research output is the input whose link to invention Q1 asks about.
+    - q: 2
+      how: Concentration of research in a few universities bears on who benefits from public research.
+  sources: [openalex, ror]
+  chart:
+    type: bar
+    horizontal: true
+    title: The largest producers of research, 2015 to 2024
+    subtitle: Share of the institutions' works (a work with two institutions counts for both)
+    x: {type: category, values: [University of Melbourne, University of Sydney, Monash University, UNSW, University of Queensland, CSIRO (12th)]}
+    y: {name: "% of works", min: 0, format: pct, digits: 2}
+    series:
+      - name: Share of works
+        data: [7.97, 7.44, 6.90, 6.38, 6.28, 2.50]
+    source: OpenAlex (lens institutions)
+  notebook_charts: [0]
+  prep:
+    - what: Works are counted at each institution's own OpenAlex record; a child's (Data61's) are not added to its parent's.
+      why: Adding across institutions would count shared works twice.
+  steps:
+    - Add up works by kind of institution and by institution, 2015 to 2024.
+    - Work out shares, and the Group of Eight's.
+  assumptions:
+    - OpenAlex assigns works to institutions correctly.
+  limits:
+    - A count of works says nothing about their quality or use.
+  next: >-
+    Stage 2 relates research output to IP by institution.
+  terms: [openalex, go8]
+  related: [U83, U84, U85]
+
+- id: U83
+  lens: institutions
+  about: system
+  headline: The Group of Eight hold two-thirds of research grant funding; up to three-tenths of ARC funding is for research with industry
+  statement: >-
+    From 2015 to 2024 the Group of Eight held 66.3% of ARC funding and 63.5% of NHMRC funding; the top five institutions
+    51.5% and 55.9%. The industry-partner schemes took 9.7% (2017) to 29.2% (2024) of ARC funding.
+  figures:
+    - value: "66.3%"
+      label: of ARC funding to the Group of Eight
+    - value: "29.2%"
+      label: of ARC funding for research with industry (2024)
+  points:
+    - "ARC funding: $360.8 million (2002), $757.9 million (2010), $1,070 million (2020)."
+    - "Universities hold 100% of ARC funding and 78.8% of NHMRC funding; medical research institutes 20.8% of NHMRC's."
+  questions:
+    - q: 3
+      how: Collaboration with industry is one of the conditions Q3 asks about; industry-partner grants measure it.
+    - q: 4
+      how: Grant funding is a public lever beside IP; its concentration matters for who it reaches.
+  sources: [arc_grants, nhmrc_grants, ror]
+  chart: U83
+  notebook_charts: [0]
+  prep:
+    - what: ARC grants are counted by the year funding starts, NHMRC grants by round; industry-partner schemes are counted
+        apart.
+      why: The ARC's "Linkage" programme also holds centres and infrastructure, so it is not a measure of work with industry
+        (ADR 0021).
+  steps:
+    - Add up funding by year and source.
+    - Work out shares by kind, the top five and the Group of Eight, 2015 to 2024.
+  assumptions:
+    - Funding goes to the administering institution, not shared among collaborators.
+  limits:
+    - Nominal dollars; large schemes move totals from year to year.
+  next: >-
+    Stage 2 relates industry-partner grants to joint patent filing.
+  terms: [go8, nominal]
+  related: [U82, U84]
+
+- id: U84
+  lens: institutions
+  about: system
+  headline: Research institutions file a small, slowly rising share of Australian patents; CSIRO files the most
+  statement: >-
+    The institutions filed 4.80% of standard patents filed from Australia in 1990 to 1994, 7.33% in 2000 to 2004, 7.98%
+    in 2015 to 2019 and 8.96% in 2020 to 2024. In 2017 to 2026 CSIRO filed 481, UNSW 196, Monash 185, Sydney 156 and
+    Queensland 150: the top five 47.4%.
+  figures:
+    - value: "8.96%"
+      label: of Australian-filed standard patents, 2020 to 2024
+    - value: "481"
+      label: standard patents filed by CSIRO, 2017 to 2026
+  points:
+    - "Filing with others: 16.63% of CSIRO's standard patents have another filer, Sydney's 42.95%."
+    - "Provisionals: 6.01% to 9.83% over the same periods, then 4.86% in 2025 and 2026, when individuals' provisional filing
+      doubled ({U8})."
+  questions:
+    - q: 1
+      how: Measures how much of Australia's own patenting comes from publicly funded research.
+    - q: 3
+      how: Joint filing is a measure of collaboration to test in Stage 2.
+  sources: [iprapid, ror]
+  chart: U84
+  notebook_charts: [0]
+  prep:
+    - what: A right counts for an institution if the institution is among its filers, including its companies.
+      why: See {U81}.
+  steps:
+    - For each five-year period, count standard patents filed from Australia and those by the institutions.
+    - Rank institutions by standard patents filed 2017 to 2026.
+  assumptions:
+    - The reviewed link finds all the institutions' filings.
+  limits:
+    - A count of patents says nothing about their use or licensing.
+  next: >-
+    Stage 2 relates institutions' research and grants to their IP.
+  terms: [standard-patent]
+  related: [U81, U82, U85]
+
+- id: U85
+  lens: institutions
+  about: system
+  headline: US patents often cite Australian institutions' research, but almost always from inventions with no Australian link
+  statement: >-
+    93.6% of US patent citations to the institutions' research come from inventions with no Australian applicant or
+    inventor. Per 1,000 works published 2010 to 2014, US patents cite 107.7 of medical research institutes' works, 64.56 of
+    public research agencies' and 43.26 of universities'.
+  figures:
+    - value: "93.6%"
+      label: of citations come from inventions with no Australian link
+    - value: "107.7"
+      label: medical research institutes' works cited per 1,000
+  points:
+    - "Peter MacCallum 161.5, QIMR Berghofer 140.9, the Florey 119.3; Melbourne leads the universities (64.25)."
+    - "Works published in 2010 drew 26,933 US patent citations; 2024's 268, because citations accumulate for years."
+    - "97.0% of the institutions' standard applications filed 2000 to 2024 are found in Google Patents."
+  questions:
+    - q: 1
+      how: Research used mostly by foreign inventions may create value mostly abroad, a central question for public value.
+    - q: 4
+      how: The gap between Australian research and Australian invention is a lead for where intervention might help.
+  sources: [openalex_works, reliance_on_science, openalex, google_patents]
+  chart:
+    type: bar
+    horizontal: true
+    title: How often US patents cite each kind of institution's research
+    subtitle: Works cited by a US patent, per 1,000 works published 2010 to 2014
+    x: {type: category, values: [Medical research institutes, Other research institutes, Public research agencies, Health services, Universities]}
+    y: {name: Cited per 1,000 works, min: 0, format: num, digits: 2}
+    series:
+      - name: Cited per 1,000 works
+        data: [107.7, 74.39, 64.56, 60.65, 43.26]
+    source: OpenAlex; Reliance on Science (Marx and Fuegi), USPTO patents to 2025 (lens institutions)
+  notebook_charts: [0]
+  prep:
+    - what: Citations from US patents to the institutions' works come from the Reliance on Science dataset, by the work's
+        publication year.
+      why: It links patents to the research they cite.
+  steps:
+    - Count works cited by a US patent, by kind of institution, for works published 2010 to 2014.
+    - Divide by works published.
+    - Work out the share of citations from patents with an Australian applicant or inventor.
+  assumptions:
+    - A patent's citation to a paper means the invention drew on it, at least in part.
+  limits:
+    - US patents only; recent works have had little time to be cited.
+  next: >-
+    Stage 2 sets Australian research cited by patents against Australian inventions that cite it.
+  terms: [citations, openalex]
+  related: [U84, U94, U96]
+
+- id: U86
+  lens: institutions
+  about: system
+  headline: Universities hold 77.9% of the institutions' government contract value, public research agencies 19.0%
+  statement: >-
+    In 2017 to 2026, universities held 13,223 contracts worth $5,834 million, public research agencies 1,723 worth
+    $1,426 million and medical research institutes 215 worth $121.9 million. UNSW ($1,433 million) and CSIRO ($1,184
+    million) hold the most.
+  figures:
+    - value: "77.9%"
+      label: of contract value to universities
+    - value: "$1,433 million"
+      label: to UNSW, the largest
+  points:
+    - "Contracts number 1,000 to 1,835 a year from 2008: the institutions' records start in earnest in 2007."
+    - "Single large contracts move the yearly value ($1,637 million in 2019)."
+  questions:
+    - q: 3
+      how: Government procurement from research institutions is a channel for research to reach use.
+  sources: [austender, ror]
+  chart:
+    type: bar
+    horizontal: true
+    title: Government contract value by kind of institution, 2017 to 2026
+    x: {type: category, values: [Universities, Public research agencies, Medical research institutes]}
+    y: {name: "$ million (nominal)", min: 0, format: moneym, digits: 1}
+    series:
+      - name: Contract value
+        data: [5834, 1426, 121.9]
+    source: AusTender (lens institutions)
+  prep:
+    - what: Contracts whose supplier is one of an institution's business numbers, each once at its latest value.
+      why: As for firms (ADR 0010).
+  steps:
+    - Add up contracts and value by kind and institution, 2017 to 2026.
+  assumptions:
+    - Contracts to an institution's companies count for it.
+  limits:
+    - Nominal dollars; value agreed, not paid.
+  next: >-
+    Context for Stage 2's comparisons of institutions.
+  terms: [austender, nominal]
+  related: [U46, U62]
+
+- id: U87
+  lens: institutions
+  about: data
+  headline: Half the universities' standard patents carry a postcode where no one lives, so place-based counts miss them
+  statement: >-
+    In FY2017 to FY2026, 50.34% of the universities' standard patent applications with a filer's postcode (742 of 1,474)
+    carry a real postcode with no residents, against 16.80% of medical research institutes', 0% of public research
+    agencies' and 1.31% of everyone else's. The institutions hold 71.58% of all such codes.
+  figures:
+    - value: "50.34%"
+      label: of universities' patents carry a postcode with no residents
+    - value: "71.58%"
+      label: of such postcodes are the institutions'
+  points:
+    - "2052 (UNSW, 210), 3800 (Monash, 151), 4072 (Queensland, 112), 3010 (Melbourne, 100), 2006 (Sydney, 95)."
+    - "**Corrected (26 October 2026):** the table had counted an application once for each institution filing it."
+  questions:
+    - q: 2
+      how: Regional comparisons would miss half of universities' patents; this says how to place them.
+  sources: [iprapid, abs_regions, ror]
+  chart:
+    type: bar
+    horizontal: true
+    title: Standard patents carrying a postcode where no one lives
+    subtitle: "% of each group's standard patents with a filer's postcode, FY2017 to FY2026"
+    x: {type: category, values: [Universities, Medical research institutes, Everyone else, Public research agencies]}
+    y: {name: "% at a real postcode with no residents", min: 0, max: 100, format: pct, digits: 2}
+    series:
+      - name: Postcode with no residents
+        data: [50.34, 16.80, 1.31, 0]
+    source: IP RAPID; ABS postal areas (lenses institutions, regions)
+  prep:
+    - what: Each application is counted once, under the institution with the most filings at its postcode.
+      why: Counting it once per filer had double-counted joint filings (corrected).
+  steps:
+    - For standard patents with a filer's postcode, check whether the postcode is a postal area.
+    - Group by kind of filer, and work out the share at real postcodes with no residents.
+  assumptions:
+    - A university's own postcode is where its patents are filed from.
+  limits:
+    - Placing these patents needs the institutions' locations, not the postcode.
+  next: >-
+    Stage 2 can place them through the institutions' locations (ROR) if regional results are sensitive to them.
+  terms: [postal-area]
+  related: [U49, U81]
