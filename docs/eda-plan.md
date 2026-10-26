@@ -18,7 +18,8 @@ profiled (U73 to U79, ADR 0020): IP by ANZSIC division through the ALP crosswalk
 BCARR, with every industry table in `industry_indicators`. The `institutions` lens, the last planned, is built and
 profiled (U80 to U87, ADR 0021): 130 research institutions by ROR and year, linked to IP RAPID, the ARC and AusTender
 through a reviewed list of names and ABNs, with OpenAlex, patent citations, NHMRC grants and patent families, and
-the detail in `institution_rights`. Every lens now has its Stage 1 profile. This plan says what the exploratory data analysis (EDA) covers, where each dataset fits, what each part needs before it
+the detail in `institution_rights`. Every lens now has its Stage 1 profile, and the stage is summarised in
+`docs/stage-1-summary.md` (and section 9 of the notebook). This plan says what the exploratory data analysis (EDA) covers, where each dataset fits, what each part needs before it
 starts, and which gaps are worth filling. Decisions are in `docs/adr/` (0002 to 0021); terms are in `GLOSSARY.md`.
 
 ## Why an EDA first

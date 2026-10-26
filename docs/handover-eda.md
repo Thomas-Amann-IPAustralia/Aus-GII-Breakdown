@@ -12,7 +12,14 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-26, latest):** the `institutions` lens, the last planned, is built and complete for Stage 1, so
+**Status (2026-10-26, latest):** Stage 1 has its summary: `docs/stage-1-summary.md` gives the full account (the
+goals, the process, each lens's findings, eight themes across the lenses, the rules carried forward, the pairs for
+Stage 2, the open items and the limits, with an index of U0 to U87), and section 9 of `01_univariate.ipynb` holds the
+short version (the key observations and the pairs carried into Stage 2). The notebook's status line is brought up to
+date. Only markdown cells changed, so the notebook was not re-run. **Next is the owner's call: the remaining `rights`
+attachments (OQ1) or Stage 2; OQ11 is best answered before Stage 2 compares institutions.**
+
+Before that, on 2026-10-26: the `institutions` lens, the last planned, is built and complete for Stage 1, so
 **every lens now has its Stage 1 profile**. Section 7 of `01_univariate.ipynb` profiles every column (U80 to U87),
 ADR 0021. One row per research institution (its ROR identifier) and calendar year, 1990 to 2026 (4,810 rows): 44
 universities, 11 public research agencies, 46 medical research institutes and 29 other grant holders. A new corpus
@@ -353,8 +360,9 @@ and BLADE stays ruled out.
 
 ## Next, in order
 
-1. **The owner's call:** every lens has its Stage 1 profile. What remains of Stage 1 is its summary (section 9 of the
-   notebook) and the `rights` attachments below; then Stage 2. OQ11 (a sector check of the institutions link) is best
+1. **The owner's call:** every lens has its Stage 1 profile, and the stage's summary is written
+   (`docs/stage-1-summary.md`, section 9 of the notebook). What remains of Stage 1 is the `rights` attachments below;
+   then Stage 2. OQ11 (a sector check of the institutions link) is best
    answered before Stage 2 compares institutions.
 2. **Done:** the `national` section (U63 to U72, ADR 0019), the `industries` section (U73 to U79, ADR 0020) and the
    `institutions` section (U80 to U87, ADR 0021), each with its attachments.

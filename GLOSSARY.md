@@ -152,6 +152,7 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Trajectory (Closing the Gap)** | The path a measure would need to follow to reach its target by the target year. It is a projection, not an observation, and is marked as such in `status`. |
 | **Unit of analysis** | What one row stands for. Counting or averaging only makes sense once this is clear. |
 | **EDA** | Exploratory data analysis: getting to know the data before trying to answer questions with it. |
+| **Lead** | Something the data show that is worth following up but not yet explained or tested: a pattern, a jump or a gap. A lead is not a finding; Stage 2 tests leads, and some are questions for IP Australia. |
 | **Univariate, bivariate, multivariate** | Looking at one variable at a time, at two together, or at several together. These are the EDA's three stages. |
 | **Distribution** | How the values of a variable are spread out: which values are common and which are rare. |
 | **Mean and median** | The average, and the middle value. When a few very large values pull the mean up, the median is the better guide to a "typical" value. |

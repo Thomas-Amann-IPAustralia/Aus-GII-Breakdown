@@ -6,6 +6,8 @@ builds it, the plan that chose it, and the analysis of it (`analysis/`), which s
 in three stages (`docs/eda-plan.md`). Terms are explained in `GLOSSARY.md`; decisions are recorded in `docs/adr/`.
 
 - **`docs/research-goal.md`**: the five core questions.
+- **`docs/stage-1-summary.md`**: what the first stage of the analysis (each variable on its own) set out to do, how it was
+  done, what it found and what it hands to the next stage.
 - **`docs/data-plan.md`**: which data serve which question, what was dropped and why, how non-financial public value is
   handled, and what is still missing.
 - **`docs/catalogue.md`**: every source and table, with rows, columns and where each lives (generated).
