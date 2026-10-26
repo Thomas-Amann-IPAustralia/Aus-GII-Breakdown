@@ -826,7 +826,7 @@ def region_indicators_sql() -> str:
                'direct' AS method,
                CASE WHEN c.indicator ILIKE 'perc%' THEN 'percent' WHEN c.t <> 'G02' THEN 'people' END AS unit
         FROM ({census}) c
-        LEFT JOIN (SELECT short, regexp_extract(datapackfile, 'G\d\d') AS t, any_value(long) AS long
+        LEFT JOIN (SELECT short, regexp_extract(datapackfile, 'G\\d\\d') AS t, any_value(long) AS long
                    FROM {{abs_census/cells}} GROUP BY 1, 2) l ON l.short = c.indicator AND l.t = c.t
         WHERE c.poa_code IN (SELECT poa_code FROM places)
     ),
@@ -844,7 +844,7 @@ def region_indicators_sql() -> str:
                CASE cube WHEN '8165DC08' THEN 'employment' ELSE 'turnover' END || '|' || industry_code || '|' || size
                  AS indicator,
                'Businesses: ' || industry_label || ', ' || size AS label,
-               regexp_extract(table_title, 'June \d{{4}}') AS period, 'businesses' AS unit, 'count' AS kind,
+               regexp_extract(table_title, 'June \\d{{4}}') AS period, 'businesses' AS unit, 'count' AS kind,
                'Businesses by industry division and ' ||
                  CASE cube WHEN '8165DC08' THEN 'employment size' ELSE 'turnover size' END AS topic,
                value
@@ -890,20 +890,85 @@ def region_indicators_sql() -> str:
     """
 
 
+# The national lens's places (ADR 0019). A country is an ISO 3166 code. Former states keep their ISO 3166-3 codes, so
+# that WIPO's filings by residents of the Soviet Union or East Germany are not lost; they are never added to their
+# successors. WIPO's unknown origin ('**') is kept as its own row, 'ZZZ', so that totals over origins can be rebuilt.
+# Aggregates (the World Bank's regions, the OECD's and EU totals, the world) are left out.
+FORMER_STATES = {
+    "SU": ("SUN", "Soviet Union"),
+    "DD": ("DDR", "German Democratic Republic"),
+    "CS": ("CSK", "Czechoslovakia"),
+    "YU": ("YUG", "Yugoslavia"),
+    "ZR": ("ZAR", "Zaire"),
+    "AN": ("ANT", "Netherlands Antilles"),
+}
+UNKNOWN_ORIGIN = ("**", "ZZZ", "Origin unknown")
+# The WIPO series in the core lens: filings by residents of each country, summed over every office
+WIPO_CORE = {
+    10: ("WIPO.PAT.APP", "Patent applications filed worldwide by residents (all offices)"),
+    23: ("WIPO.PAT.GRANT", "Patent grants received worldwide by residents (all offices)"),
+    48: ("WIPO.TM.CLASS", "Trade mark applications by residents, counted in classes (all offices)"),
+    68: ("WIPO.DES.COUNT", "Industrial design applications by residents, counted in designs (all offices)"),
+}
+# Every OECD flow in the corpus goes to `national_indicators`, one indicator per combination of its dimensions
+# (ADR 0019). These columns are not dimensions: the place, the time, the value's flags and its display settings.
+OECD_FLOWS = [
+    "msti", "patents_coinventors", "patents_domestic_ownership_abroad", "patents_foreign_ownership",
+    "patents_environment", "patents_wipo_fields", "patents_regions", "innovation_ip_methods", "ip_tax_regimes",
+    "venture_capital", "business_births_deaths", "business_survival", "business_high_growth", "child_wellbeing",
+    "wellbeing_current", "wellbeing_future", "wellbeing_inequality", "wellbeing_by_age", "wellbeing_by_sex",
+    "wellbeing_by_education", "sdg_01_no_poverty", "sdg_02_zero_hunger", "sdg_09_industry_innovation",
+    "sdg_13_climate_action",
+]  # fmt: skip
+OECD_NOT_DIMENSIONS = {
+    "flow", "frequency_of_observation", "reference_area", "time_period", "observation_status", "observation_status_2",
+    "observation_status_3", "aux_observation_status", "confidentiality_status", "unit_multiplier", "decimals",
+    "base_period", "base_year", "price_reference_year", "territorial_level", "country",
+}  # fmt: skip
+OECD_STATUS = ["observation_status", "observation_status_2", "observation_status_3", "aux_observation_status"]
+# Closing the Gap's descriptive columns: together with the table and jurisdiction, they name one series
+CTG_SERIES = [
+    "measure", "age", "sex", "indigenous_status", "remoteness", "seifa_irsd", "description1", "description2",
+    "description3", "description4", "description6", "description7", "uncertainty",
+]  # fmt: skip
+
+
+def _places() -> str:
+    """A VALUES list of (ISO alpha-2, alpha-3, kind, name) for every current country, former state and the unknown
+    origin."""
+    rows = [(c.alpha_2, c.alpha_3, "country", None) for c in pycountry.countries]
+    rows += [(a2, a3, "former state", name) for a2, (a3, name) in FORMER_STATES.items()]
+    rows += [(UNKNOWN_ORIGIN[0], UNKNOWN_ORIGIN[1], "origin unknown", UNKNOWN_ORIGIN[2])]
+    q = lambda v: "NULL" if v is None else "'" + v.replace("'", "''") + "'"  # noqa: E731
+    return ", ".join(f"({q(a2)}, {q(a3)}, {q(k)}, {q(n)})" for a2, a3, k, n in sorted(rows))
+
+
+def _slug(col: str) -> str:
+    return f"trim(regexp_replace(lower({col}), '[^a-z0-9]+', '_', 'g'), '_')"
+
+
+def _year_of(col: str) -> str:
+    """The calendar year a published period ends in: '2018-19' and '2018–19' (financial years) give 2019; '2016 to
+    2021', '2021-2023' and '41 (2004)' their last year; 'Apr-06' 2006; NULL where the text holds no year."""
+    return (
+        f"CASE WHEN regexp_matches({col}, '^\\s*\\d{{4}}\\s*[-–]\\s*\\d{{2}}(\\s|\\(|$)') "
+        f"THEN CAST(left(trim({col}), 4) AS INTEGER) + 1 "
+        f"WHEN regexp_matches({col}, '\\d{{4}}') THEN CAST(regexp_extract_all({col}, '\\d{{4}}')[-1] AS INTEGER) "
+        f"WHEN regexp_matches({col}, '^[A-Z][a-z]{{2}}-\\d{{2}}$') "
+        f"THEN CAST(right({col}, 2) AS INTEGER) "
+        f"+ CASE WHEN CAST(right({col}, 2) AS INTEGER) > 50 THEN 1900 ELSE 2000 END "
+        f"END"
+    )
+
+
 def national_sql() -> str:
-    iso3 = {c.alpha_2: c.alpha_3 for c in pycountry.countries}
-    pairs = ", ".join(f"('{a2}', '{a3}')" for a2, a3 in sorted(iso3.items()))
+    """One row per country, year and indicator: the World Bank's 24 indicators, WIPO's filings by residents of each
+    country at every office, and the OECD's R&D intensity (ADR 0010, 0019)."""
     oecd = ", ".join(f"'{c}'" for c in OECD)
-    wipo = {
-        10: ("WIPO.PAT.APP", "Patent applications filed worldwide by residents (all offices)"),
-        23: ("WIPO.PAT.GRANT", "Patent grants received worldwide by residents (all offices)"),
-        48: ("WIPO.TM.CLASS", "Trade mark applications by residents, counted in classes (all offices)"),
-        68: ("WIPO.DES.COUNT", "Industrial design applications by residents, counted in designs (all offices)"),
-    }
-    cases = " ".join(f"WHEN {k} THEN '{c}'" for k, (c, _) in wipo.items())
-    names = " ".join(f"WHEN {k} THEN '{n}'" for k, (_, n) in wipo.items())
+    cases = " ".join(f"WHEN {k} THEN '{c}'" for k, (c, _) in WIPO_CORE.items())
+    names = " ".join(f"WHEN {k} THEN '{n}'" for k, (_, n) in WIPO_CORE.items())
     return f"""
-    WITH iso(a2, a3) AS (VALUES {pairs}),
+    WITH iso(a2, a3, kind, name) AS (VALUES {_places()}),
     wdi AS (
         SELECT p.iso3, p.country, p.year, p.indicator, p.indicator_name, p.value, NULL::VARCHAR AS status,
                'WDI' AS source
@@ -915,23 +980,187 @@ def national_sql() -> str:
                CAST(m.time_period AS INTEGER) AS year, 'OECD.MSTI.' || m.measure AS indicator,
                any_value(m.measure_label) || ', % of GDP (OECD MSTI)' AS indicator_name,
                any_value(m.value) AS value, any_value(m.observation_status_label) AS status, 'OECD' AS source
-        FROM {{oecd/msti}} m JOIN iso ON iso.a3 = m.reference_area
+        FROM {{oecd/msti}} m JOIN iso ON iso.a3 = m.reference_area AND iso.kind = 'country'
         WHERE m.measure IN ('G', 'B') AND m.unit_of_measure = 'PT_B1GQ' AND m.value IS NOT NULL
         GROUP BY m.reference_area, m.time_period, m.measure
     ),
-    wipo AS (
+    wipo AS (  -- former states and the unknown origin kept (ADR 0019)
         SELECT iso.a3 AS iso3, any_value(o.origin) AS country, o.year,
                CASE o.indicator_id {cases} END AS indicator,
                CASE o.indicator_id {names} END AS indicator_name,
                sum(o.value) AS value, NULL::VARCHAR AS status, 'WIPO' AS source
         FROM {{wipo_ipstats/office_origin}} o JOIN iso ON iso.a2 = o.origin_code
-        WHERE o.indicator_id IN ({", ".join(map(str, wipo))}) AND o.breakdown IS NULL
+        WHERE o.indicator_id IN ({", ".join(map(str, WIPO_CORE))}) AND o.breakdown IS NULL
         GROUP BY iso.a3, o.year, o.indicator_id
     )
-    SELECT u.* REPLACE (coalesce(n.name, u.country) AS country),  -- one name per country (the World Bank's)
-           u.iso3 IN ({oecd}) AS oecd, u.iso3 = 'AUS' AS australia
+    SELECT u.* REPLACE (coalesce(n.name, iso.name, u.country) AS country),  -- one name per place (the World Bank's)
+           coalesce(iso.kind, 'country') AS entity, u.iso3 IN ({oecd}) AS oecd, u.iso3 = 'AUS' AS australia
     FROM (SELECT * FROM wdi UNION ALL SELECT * FROM wipo UNION ALL SELECT * FROM oecd) u
     LEFT JOIN {{wdi/countries}} n ON n.iso3 = u.iso3
+    LEFT JOIN (SELECT DISTINCT a3, kind, name FROM iso) iso ON iso.a3 = u.iso3
+    """
+
+
+def _oecd_flow_sql(flow: str, iso: str) -> str:
+    """One OECD flow, long: one indicator per combination of its dimensions, coded 'OECD.<FLOW>.<codes>' and labelled
+    by the dimensions' labels (a dimension that does not apply, '_Z', is left out of the label)."""
+    import duckdb
+
+    from .data import table
+
+    cols = [r[0] for r in duckdb.sql(f"DESCRIBE SELECT * FROM {table('oecd', flow)}").fetchall()]
+    dims = [c for c in cols if f"{c}_label" in cols and c not in OECD_NOT_DIMENSIONS]
+    bases = [c for c in ("base_period", "base_year") if c in cols]
+    code = ", ".join(dims + [f"nullif({b}, '_Z')" for b in bases])
+    label = ", ".join(f"CASE WHEN {d} <> '_Z' THEN {d}_label END" for d in dims)
+    status = ", ".join(f"{c}_label" for c in OECD_STATUS if f"{c}_label" in cols)
+    unit = ["unit_of_measure_label"] if "unit_of_measure_label" in cols else ["NULL"]
+    if "unit_multiplier" in cols:
+        unit.append("CASE WHEN unit_multiplier <> '0' THEN unit_multiplier_label END")
+    unit = ", ".join(unit + [f"'base ' || nullif({b}, '_Z')" for b in bases])
+    where = [f"(reference_area IN ({iso}) OR reference_area = 'YUG_F')"]
+    where.append(f"({'value IS NOT NULL OR value_text IS NOT NULL' if 'value_text' in cols else 'value IS NOT NULL'})")
+    if "territorial_level" in cols:
+        where.append("territorial_level = 'CTRY'")  # its regions are within countries, not countries
+    if flow == "msti":  # the core lens holds these (OECD.MSTI.G and .B)
+        where.append("NOT (measure IN ('G', 'B') AND unit_of_measure = 'PT_B1GQ')")
+    return f"""
+        SELECT CASE reference_area WHEN 'YUG_F' THEN 'YUG' ELSE reference_area END AS iso3,
+               reference_area_label AS place_name, CAST(left(time_period, 4) AS INTEGER) AS year,
+               time_period AS period, 'oecd' AS source, '{flow}' AS dataset,
+               'OECD.{flow.upper()}.' || concat_ws('.', {code}) AS indicator, concat_ws(', ', {label}) AS label,
+               value, {"value_text" if "value_text" in cols else "NULL::VARCHAR"} AS value_text,
+               concat_ws(', ', {unit}) AS unit, nullif(concat_ws('; ', {status or "NULL"}), '') AS status
+        FROM {{oecd/{flow}}}
+        WHERE {" AND ".join(where)}"""
+
+
+def national_indicators_sql() -> str:
+    """The national lens's attachments, long (ADR 0019): one row per country, source, indicator and period, holding
+    every value of the GII, every OECD flow, WIPO's other tables, Measuring What Matters and Closing the Gap."""
+    iso = ", ".join(f"'{c.alpha_3}'" for c in pycountry.countries)
+    oecd = ", ".join(f"'{c}'" for c in OECD)
+    core_wipo = ", ".join(map(str, WIPO_CORE))
+    wipo_label = "regexp_replace(o.indicator, '^\\S+\\s*-\\s*', '') || coalesce(': ' || o.breakdown, '')"
+    wipo_unit = "CASE WHEN o.indicator ILIKE '%(days)%' THEN 'days' ELSE 'number' END"
+    flows = "\n        UNION ALL".join(_oecd_flow_sql(f, iso) for f in OECD_FLOWS)
+    gii_status = (
+        "nullif(concat_ws('; ', CASE WHEN outdated = '1' THEN 'outdated: older than the most common data year' END, "
+        "CASE WHEN dmc = '1' THEN 'data minimum coverage not met' END), '')"
+    )
+    mwm_period = (
+        "regexp_full_match(row, '(\\d{4}([-–]\\d{2}(\\d{2})?)?|[A-Z][a-z]{2}-\\d{2}|\\d+ \\(\\d{4}\\))( \\([a-z]\\))?')"
+    )
+    ctg_key = ", ".join(CTG_SERIES + ["unit"])
+    ctg_label = ", ".join(CTG_SERIES)
+    return f"""
+    WITH iso(a2, a3, kind, name) AS (VALUES {_places()}),
+    oecd AS ({flows}
+    ),
+    wipo AS (
+        SELECT iso.a3 AS iso3, any_value(o.origin) AS place_name, o.year, CAST(o.year AS VARCHAR) AS period,
+               'wipo' AS source, 'office_origin' AS dataset,
+               'WIPO.ORIGIN.' || o.indicator_id || coalesce('.' || {_slug("o.breakdown")}, '') AS indicator,
+               any_value({wipo_label}) || ' (by origin, all offices)' AS label, sum(o.value) AS value,
+               NULL::VARCHAR AS value_text, any_value({wipo_unit}) AS unit, NULL::VARCHAR AS status
+        FROM {{wipo_ipstats/office_origin}} o JOIN iso ON iso.a2 = o.origin_code
+        -- the core lens holds the four totals; a foreign-oriented family is counted at each office it goes to, so
+        -- summing indicator 21 over offices would count families more than once
+        WHERE o.indicator_id <> 21 AND NOT (o.indicator_id IN ({core_wipo}) AND o.breakdown IS NULL)
+        GROUP BY iso.a3, o.year, o.indicator_id, o.breakdown
+        UNION ALL
+        SELECT iso.a3, o.origin, o.year, CAST(o.year AS VARCHAR), 'wipo', 'office_origin',
+               'WIPO.AU.' || o.indicator_id || coalesce('.' || {_slug("o.breakdown")}, ''),
+               {wipo_label} || ' (at IP Australia, by origin)', o.value, NULL, {wipo_unit}, NULL
+        FROM {{wipo_ipstats/office_origin}} o JOIN iso ON iso.a2 = o.origin_code
+        WHERE o.office_code = 'AU'
+        UNION ALL  -- by office: the office's country (regional offices, such as the EPO, are not countries)
+        SELECT iso.a3, o.office, o.year, CAST(o.year AS VARCHAR), 'wipo', 'office',
+               'WIPO.OFFICE.' || o.right || '.' || o.indicator_id || coalesce('.' || {_slug("o.breakdown")}, ''),
+               {wipo_label} || ' (' || o.right || ', by office)', o.value, NULL, {wipo_unit}, NULL
+        FROM {{wipo_ipstats/office}} o JOIN iso ON iso.a2 = o.office_code AND iso.kind = 'country'
+        UNION ALL
+        SELECT iso.a3, o.origin, o.year, CAST(o.year AS VARCHAR), 'wipo', 'pmh', 'WIPO.PMH.' || o.indicator_id,
+               regexp_replace(o.indicator, '^\\S+\\s*-\\s*', '') || ' (' || upper(o.system) || ', by origin)', o.value,
+               NULL, 'number', NULL
+        FROM {{wipo_ipstats/pmh}} o JOIN iso ON iso.a2 = o.origin_code
+    ),
+    g AS (
+        SELECT d.*, coalesce(nullif(d.num, ''), 'GII') AS node, CAST(d.datayr AS INTEGER) AS y
+        FROM {{gii/data}} d
+    ),
+    gii AS (  -- the GII 2026 edition: a composite's year is the edition's; an indicator's is its data year
+        SELECT iso3, economy_name AS place_name, coalesce(y, 2026) AS year,
+               coalesce(CAST(y AS VARCHAR), 'GII 2026') AS period, 'gii' AS source, 'data' AS dataset,
+               'GII.' || node || '.' || m.k AS indicator, name || ': ' || m.l AS label,
+               CASE m.k WHEN 'score' THEN score WHEN 'rank' THEN rank WHEN 'value' THEN value_screen END AS value,
+               CASE m.k WHEN 'strength_overall' THEN sw_overall WHEN 'strength_income_group' THEN sw_incgrp END
+                 AS value_text,
+               CASE m.k WHEN 'score' THEN 'score, 0 to 100' WHEN 'rank' THEN 'rank, of 139 economies'
+                        WHEN 'value' THEN 'as named (the value WIPO screened)' ELSE 'S = strength, W = weakness' END
+                 AS unit,
+               {gii_status} AS status
+        FROM g CROSS JOIN (VALUES ('score', 'score'), ('rank', 'rank'), ('value', 'value'),
+                                  ('strength_overall', 'strength or weakness, overall'),
+                                  ('strength_income_group', 'strength or weakness, within its income group')) m(k, l)
+        WHERE CASE m.k WHEN 'score' THEN score IS NOT NULL WHEN 'rank' THEN rank IS NOT NULL
+                       WHEN 'value' THEN value_screen IS NOT NULL WHEN 'strength_overall' THEN sw_overall IS NOT NULL
+                       ELSE sw_incgrp IS NOT NULL END
+        UNION ALL
+        SELECT iso3, economy_name, 2026, 'GII 2026', 'gii', 'economies', 'GII.ECONOMY.' || m.k, m.l,
+               CASE m.k WHEN 'population' THEN pop WHEN 'gdp_ppp' THEN pppgdp WHEN 'gdp_ppp_per_person' THEN ppppc END,
+               CASE m.k WHEN 'income_group' THEN income_grp WHEN 'region' THEN subreg_un END, m.u, NULL
+        FROM {{gii/economies}} CROSS JOIN (VALUES
+            ('population', 'Population (GII 2026)', 'thousands'), ('gdp_ppp', 'GDP (GII 2026)', '$ billion, PPP'),
+            ('gdp_ppp_per_person', 'GDP per person (GII 2026)', '$, PPP'),
+            ('income_group', 'World Bank income group (GII 2026)', 'category'),
+            ('region', 'United Nations region (GII 2026)', 'category')) m(k, l, u)
+        WHERE CASE m.k WHEN 'population' THEN pop WHEN 'gdp_ppp' THEN pppgdp WHEN 'gdp_ppp_per_person' THEN ppppc
+                       END IS NOT NULL
+           OR CASE m.k WHEN 'income_group' THEN income_grp WHEN 'region' THEN subreg_un END IS NOT NULL
+    ),
+    mwm AS (  -- a table's first column is usually the period; where it is a group, a year in the series' name is
+        SELECT 'AUS' AS iso3, 'Australia' AS place_name,
+               {_year_of("period")} AS year, period, 'mwm' AS source, theme || '/' || indicator AS dataset,
+               'MWM.' || indicator || '.' || "table" || coalesce('.' || {_slug("block")}, '') || '.' || series
+                 AS indicator,
+               concat_ws(', ', title, caption, block, series_label) AS label, value, NULL::VARCHAR AS value_text,
+               NULL::VARCHAR AS unit, NULL::VARCHAR AS status
+        FROM (
+            SELECT d.*, i.title,
+                   CASE WHEN {mwm_period} THEN row WHEN regexp_matches("column", '^\\d{{4}}') THEN "column" END
+                     AS period,
+                   CASE WHEN {mwm_period} THEN {_slug('"column"')}
+                        WHEN regexp_matches("column", '^\\d{{4}}') THEN {_slug("row")}
+                        ELSE {_slug("row")} || '.' || {_slug('"column"')} END AS series,
+                   CASE WHEN {mwm_period} THEN "column" WHEN regexp_matches("column", '^\\d{{4}}') THEN row
+                        ELSE row || ', ' || "column" END AS series_label
+            FROM {{mwm/data}} d JOIN {{mwm/indicators}} i USING (theme, indicator))
+    ),
+    ctg AS (  -- Closing the Gap 2026: Australia, and its jurisdictions as breakdowns
+        SELECT 'AUS' AS iso3, 'Australia' AS place_name, {_year_of("year")} AS year, year AS period,
+               'ctg' AS source, target AS dataset,
+               'CTG.' || table_number || '.' || left(md5(concat_ws('|', {ctg_key})), 8) || '.'
+                 || replace(jurisdiction, ' ', '_') AS indicator,
+               concat_ws(', ', {ctg_label}) || ' (' || jurisdiction || ')' AS label, value,
+               CASE WHEN value IS NULL THEN value_text END AS value_text, unit,
+               CASE description7 WHEN 'Trajectory' THEN 'projected: the trajectory to the target'
+                    WHEN 'Linear regression estimates' THEN 'modelled: linear regression estimate'
+                    WHEN 'Estimated annual change' THEN 'assessment: estimated annual change'
+                    WHEN 'Assessment of progress' THEN 'assessment: progress'
+                    WHEN 'Confidence in assessment of progress' THEN 'assessment: confidence' END AS status
+        FROM {{ctg/data}}
+    ),
+    u AS (
+        SELECT * FROM oecd UNION ALL SELECT * FROM wipo UNION ALL SELECT * FROM gii
+        UNION ALL SELECT * FROM mwm UNION ALL SELECT * FROM ctg
+    )
+    SELECT u.iso3, coalesce(n.name, p.name, u.place_name) AS country, coalesce(p.kind, 'country') AS entity,
+           u.year, u.period, u.source, u.dataset, u.indicator, u.label, u.value, u.value_text, u.unit, u.status,
+           u.iso3 IN ({oecd}) AS oecd, u.iso3 = 'AUS' AS australia
+    FROM u
+    LEFT JOIN {{wdi/countries}} n ON n.iso3 = u.iso3
+    LEFT JOIN (SELECT DISTINCT a3, kind, name FROM iso) p ON p.a3 = u.iso3
     """
 
 
@@ -1018,6 +1247,7 @@ LENSES = {
     "regions": regions_sql,
     "region_indicators": region_indicators_sql,
     "national": national_sql,
+    "national_indicators": national_indicators_sql,
     "timeline": timeline_sql,
 }
 ORDER = [
@@ -1026,6 +1256,7 @@ ORDER = [
     "regions",
     "region_indicators",
     "national",
+    "national_indicators",
     "timeline",
 ]  # later lenses read the earlier ones
 

@@ -8446,7 +8446,7 @@
   "ctg": {
    "files": {
     "processed/data": {
-     "bytes": 87369,
+     "bytes": 87003,
      "columns": [
       "target",
       "table_number",
@@ -8468,14 +8468,13 @@
       "jurisdiction",
       "value_text",
       "value",
-      "uncertainty",
-      "aus gov"
+      "uncertainty"
      ],
      "describe": "Targets 8, 15 and 16, long",
      "location": "repo",
      "path": "data/processed/ctg/data.parquet",
-     "rows": 11264,
-     "sha256": "8f9be1776cfe68fdf26ed4bf1be949e9578607b549100ecc8880798a58c927a8"
+     "rows": 11349,
+     "sha256": "23ead1eedaabe2a3328b7af0195c9d8c09c1a6fde85d602f83a153e52ce9d6de"
     },
     "raw/ctg08-economic-participation.csv": {
      "bytes": 335245,
@@ -8496,6 +8495,7 @@
      "sha256": "c47b91eefc180bdd4e1fc52a1ec898c2cbaf1ffcace06724fd7a1bb6f2adebbd"
     }
    },
+   "reprocessed": "2026-10-26",
    "run": "2026-10-22"
   },
   "evidence": {
@@ -9430,13 +9430,14 @@
   "mwm": {
    "files": {
     "processed/data": {
-     "bytes": 34626,
+     "bytes": 34742,
      "columns": [
       "theme",
       "indicator",
       "table",
       "caption",
       "row",
+      "block",
       "column",
       "value_text",
       "value"
@@ -9444,11 +9445,11 @@
      "describe": "Every table on the indicator pages, long",
      "location": "repo",
      "path": "data/processed/mwm/data.parquet",
-     "rows": 5343,
-     "sha256": "44197412e17db256b94cdc056a0aa9043b77827425900bc1f24b4805e3791fa3"
+     "rows": 5159,
+     "sha256": "c958ddfac5a5ba3f7ef68387f425794e32e9ee8dc721a86482dfba8e681505e8"
     },
     "processed/indicators": {
-     "bytes": 5733,
+     "bytes": 5728,
      "columns": [
       "theme",
       "indicator",
@@ -9459,7 +9460,7 @@
      "location": "repo",
      "path": "data/processed/mwm/indicators.parquet",
      "rows": 50,
-     "sha256": "4d28fad78b7398358041b0a43e5e18955660113fffb8ee5898b2aae5be5f4221"
+     "sha256": "ce8ec11b593a61ca85d6a9e58a28558a3d535368de9892e8dac1667871192920"
     },
     "raw/cohesive--aboriginal-and-torres-strait-islander-languages-spoken.html.gz": {
      "bytes": 34997,
@@ -9765,6 +9766,7 @@
    "notes": [
     "mwm: no tables on air-quality"
    ],
+   "reprocessed": "2026-10-26",
    "run": "2026-10-22"
   },
   "nhmrc_grants": {

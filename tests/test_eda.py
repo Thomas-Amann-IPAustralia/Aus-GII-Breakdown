@@ -33,7 +33,15 @@ def test_resolve_leaves_ordinary_braces_alone(monkeypatch):
 
 def test_register_is_well_formed():
     reg = style.register()
-    assert set(reg) == {"rights", "firms", "regions", "region_indicators", "national", "timeline"}
+    assert set(reg) == {
+        "rights",
+        "firms",
+        "regions",
+        "region_indicators",
+        "national",
+        "national_indicators",
+        "timeline",
+    }
     for lens, cols in reg.items():
         for col, v in cols.items():
             assert v.get("label"), f"{lens}.{col} has no label"
@@ -42,7 +50,9 @@ def test_register_is_well_formed():
     assert style.label("firms", "not_a_column") == "not_a_column"
 
 
-@pytest.mark.parametrize("lens", ["rights", "firms", "regions", "region_indicators", "national", "timeline"])
+@pytest.mark.parametrize(
+    "lens", ["rights", "firms", "regions", "region_indicators", "national", "national_indicators", "timeline"]
+)
 def test_register_matches_built_lens(lens):
     p = data.LENS_DIR / f"{lens}.parquet"
     if not p.exists():
@@ -167,6 +177,7 @@ def _built(lens):
         ("regions", "poa_code"),
         ("region_indicators", "poa_code, source, indicator, period"),
         ("national", "iso3, year, indicator"),
+        ("national_indicators", "iso3, source, indicator, period"),
         ("timeline", "month"),
     ],
 )
@@ -252,6 +263,41 @@ def test_national_has_one_name_per_country_and_both_rd_series():
                count(*) FILTER (indicator LIKE 'IP.TMK%') AS trade_marks
         FROM read_parquet('{p}')""").iloc[0]
     assert r.names == 1 and r.au_oecd_rd > 0 and r.au_wdi_rd > 0 and r.trade_marks > 0
+
+
+def test_national_keeps_every_wipo_filing_and_no_aggregates():
+    """WIPO's filings by residents sum to the source's total over every origin, former states and the unknown origin
+    included (ADR 0019); no aggregate (the OECD, the EU, the world) is a place in either table."""
+    p, att = _built("national"), _built("national_indicators")
+    r = data.sql(f"""
+        SELECT (SELECT sum(value) FROM read_parquet('{p}') WHERE indicator = 'WIPO.PAT.APP')
+                 / (SELECT sum(value) FROM {data.table("wipo_ipstats", "office_origin")}
+                    WHERE indicator_id = 10 AND breakdown IS NULL) AS kept,
+               (SELECT count(*) FROM read_parquet('{p}') WHERE entity = 'former state') AS former,
+               (SELECT count(*) FROM (SELECT iso3 FROM read_parquet('{p}') UNION SELECT DISTINCT iso3
+                                      FROM read_parquet('{att}'))
+                WHERE length(iso3) <> 3 OR iso3 IN ('OECD', 'WLD', 'EUU', 'EU27_2020')) AS aggregates
+    """).iloc[0]
+    assert abs(r.kept - 1) < 1e-9 and r.former > 0 and r.aggregates == 0
+
+
+def test_national_indicators_hold_each_source_once():
+    """The OECD's R&D intensity is in the core lens only; WIPO's filings at IP Australia by origin sum to the office's
+    total; Australia's GII rank is the source's; Closing the Gap keeps the Australian Government's land (ADR 0019)."""
+    att = _built("national_indicators")
+    r = data.sql(f"""
+        SELECT count(*) FILTER (indicator LIKE 'OECD.MSTI.G.PT_B1GQ%' OR indicator LIKE 'OECD.MSTI.B.PT_B1GQ%')
+                 AS rd_twice,
+               sum(value) FILTER (indicator = 'WIPO.AU.10' AND year = 2024) AS au_2024,
+               max(value) FILTER (indicator = 'GII.GII.rank' AND australia) AS au_rank,
+               count(*) FILTER (source = 'ctg' AND indicator LIKE '%.Aus_Gov') AS aus_gov
+        FROM read_parquet('{att}')""").iloc[0]
+    src = data.sql(f"""
+        SELECT (SELECT sum(value) FROM {data.table("wipo_ipstats", "office_origin")}
+                WHERE office_code = 'AU' AND indicator_id = 10 AND year = 2024) AS au_2024,
+               (SELECT rank FROM {data.table("gii", "data")} WHERE iso3 = 'AUS' AND num = '') AS au_rank""").iloc[0]
+    assert r.rd_twice == 0 and r.aus_gov > 0
+    assert r.au_2024 == src.au_2024 and r.au_rank == src.au_rank
 
 
 def test_rights_origin_is_three_valued_and_patents_are_typed():
