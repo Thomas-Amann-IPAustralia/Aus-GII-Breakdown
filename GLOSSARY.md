@@ -119,6 +119,8 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | Term | Meaning |
 |---|---|
 | **Corpus** | All the data collected for this project (`docs/catalogue.md`). |
+| **Evidence atlas** | The web pages in `evidence/` that present each Stage 1 observation in plain English, with where its data came from, how they are stored and prepared, the reasoning that leads to it, its assumptions and limits, and the research questions it serves (ADR 0023). |
+| **Numbers rule (of the atlas)** | Every number the atlas states for an observation must appear in that observation's own text in the notebook or in the outputs above it; the atlas is not built otherwise. A chart redrawn from a lens table is checked against the numbers the observation quotes. |
 | **Lens** | One analysis-ready table with one row per thing being studied: a right, a firm, a place, an industry in a year, a research institution in a year, a country in a year, or a month in Australia's history (the *timeline*). Every dataset is attached to at least one lens, so that it can be compared with the others. The EDA works one lens at a time. |
 | **Attachment** | Bringing a dataset into a lens, by joining it on the lens's key or by summing or averaging it up to the lens's unit (for example, Census counts by postal area into `regions`). |
 | **Coverage (of a series)** | The months for which a timeline series is fully recorded. Before a series' records become continuous and complete, and in final months the register is still recording, the series is left empty rather than shown as 0, so that "not recorded" is not read as "none happened". |

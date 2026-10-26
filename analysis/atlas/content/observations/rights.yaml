@@ -1,0 +1,1915 @@
+# The IP rights lens (section 1 of the notebook, with its five attachments). Markup and rules as in firms.yaml.
+
+- id: U1
+  lens: rights
+  about: data
+  headline: The rights table has one row per right, and its columns are complete where they should be
+  statement: >-
+    The table holds 4,368,006 rights in 74 columns, and no right appears twice. Core facts (type, status, applicant
+    counts) are 100% filled; the application date 98.58%. Whether the applicant is Australian is known for 86.37% of
+    rights.
+  figures:
+    - value: "4,368,006"
+      label: rights, none repeated
+    - value: "98.58%"
+      label: have an application date
+    - value: "86.37%"
+      label: have a known origin (Australian or overseas)
+  points:
+    - "The registration date is 57.74% filled, because it is empty when a right was never registered; the end date
+      55.6%, empty while a right is still alive."
+    - "The emptiest columns are empty by design: the type of patent (40.12%, patents only), the technology area
+      (30.71%, patents only), the applicant's state and postcode (42.44% and 42.25%, mostly for Australian applicants)
+      and the business number (28.89%)."
+    - "29 columns are the core; 45 come from five attachments (12 from the parties, 11 from the events, 8 from the
+      links, 6 from Google Patents and 8 from the inventors)."
+  questions:
+    - q: 1
+      how: Confirms the basic register is sound before anything is measured from it.
+    - q: 2
+      how: Shows which facts about applicants (origin, state, business number) can be used, and for how many rights.
+  sources: [iprapid]
+  chart: U1
+  notebook_charts: [0]
+  prep:
+    - what: One row per right, built from IP RAPID's tables of patents, trade marks, designs and plant breeder's rights.
+      why: A right is the natural unit for questions about what is protected and by whom.
+  steps:
+    - Count the rows, and check that no type and application number appears twice (0 do).
+    - For every column, work out the share of rows that have a value.
+    - Compare each empty share with what the column means (a registration date should be empty for a right never registered).
+  assumptions:
+    - A right's type and application number together identify it uniquely, as IP RAPID intends.
+  limits:
+    - A column being filled does not make it right; later observations check what the values mean.
+  next: >-
+    Every later stage uses the table as built, with each column's completeness in mind.
+  terms: [lens, iprapid, abn]
+  related: [U2, U3, U4]
+
+- id: U2
+  lens: rights
+  about: data
+  headline: Five problems in the register were repaired before anything was measured
+  statement: >-
+    Profiling found five quirks: a false end date (1 January 1970) on 1,282 rights; one trade mark registered before
+    the register began; 121,207 old trade marks "registered" on the day they were filed; a "technology area" that only
+    repeated the class for trade marks and designs; and an attorney flag that counted applicants as their own
+    attorneys. Each was repaired.
+  figures:
+    - value: "1,282"
+      label: rights with a false end date of 1 January 1970
+    - value: "121,207"
+      label: trade marks before 1986 dated as registered when filed
+    - value: "100% → 57.02%"
+      label: Australian trade marks with an attorney, before and after the repair
+  points:
+    - "**The false end date.** 1,279 trade marks and 3 designs \"ended\" on 1 January 1970, though they were filed from
+      18 July 2013 and 3 March 2020. That date is the zero of computer clocks, standing in for an unknown date."
+    - "**Registered on filing.** Of 122,980 trade marks registered before 1986, 121,207 (98.6%) were registered the
+      day they were filed: the register holds only their filing date."
+    - "**A class, not a technology.** For all 2,335,057 trade marks and 248,748 designs with a \"technology area\", it
+      equalled the class of goods."
+    - "**Attorneys.** The register's \"agent\" is the address for service, often the applicant itself. Counting only
+      an agent who is not the applicant, attorney use by Australian applicants (FY2017 to FY2026) is 57.02% for trade
+      marks, 71.65% for designs, 82.62% for patents and 41.21% for plant breeder's rights, instead of 100%, 100%,
+      93.31% and 52.22%."
+    - "Counting only agents who act for five or more applicants gives 49.52% for Australian trade marks, so the repaired
+      flag may still include some agents who are not attorneys."
+  questions:
+    - q: 2
+      how: Who uses an attorney is a question about access and cost; the unrepaired flag would have said everyone does.
+    - q: 4
+      how: Reliable attorney use is needed before asking whether professional help is a barrier IP Australia could ease.
+  sources: [iprapid]
+  chart:
+    type: bar
+    horizontal: true
+    title: "The attorney repair: Australian applicants' rights with an attorney"
+    subtitle: Rights filed FY2017 to FY2026 by Australian applicants
+    x: {type: category, values: [Trade marks, Designs, Patents, Plant breeder's rights]}
+    y: {name: "% with an attorney or agent", min: 0, max: 100, format: pct, digits: 2}
+    series:
+      - name: The register's own flag
+        data: [100, 100, 93.31, 52.22]
+        colour: muted
+      - name: Agent who is not the applicant (repaired)
+        data: [57.02, 71.65, 82.62, 41.21]
+    source: IP Australia, IP RAPID, as published and as repaired (lens rights)
+  prep:
+    - what: The four repairs shown here are made in the code that builds the table, with the evidence kept in the
+        notebook from IP RAPID's own tables.
+      why: So that anyone can see both the problem and the fix, and the original data are never altered.
+  steps:
+    - Look for dates that cannot be true (before the register began, or a computer's default date).
+    - Compare trade marks' registration dates with their filing dates before 1986.
+    - Compare the "technology area" with the class for every type of right.
+    - For each right, check whether its agent is one of its own applicants, by identity number or by name.
+    - Recount attorney use without those self-agents.
+  assumptions:
+    - An agent with the same name as the applicant (ignoring case and punctuation) is the applicant acting for itself.
+  limits:
+    - The repaired attorney flag may still count some agents who are not professional attorneys, such as a related
+      company (up to about 8 points for Australian trade marks).
+  next: >-
+    Every later observation uses the repaired columns. Stage 2 uses attorney use with bounds for trade marks ({U20}).
+  terms: [placeholder-date, attorney, adr]
+  related: [U1, U13, U20]
+
+- id: U3
+  lens: rights
+  about: data
+  headline: The busiest filing days were rushes before rules changed, and 61,854 old rights cannot be placed in time
+  statement: >-
+    The most common application date is 12 April 2013 (1,856 rights), the Friday before the Raising the Bar reforms
+    took effect. The most common earliest filing date is 25 August 2021 (1,342 rights), the day before innovation
+    patents closed. Meanwhile 50,711 patents and 11,143 designs have no application date at all.
+  figures:
+    - value: "1,856"
+      label: rights filed on 12 April 2013, the busiest day
+    - value: "1,342"
+      label: earliest filings on 25 August 2021
+    - value: "61,854"
+      label: rights with no application date
+  points:
+    - "Applications run from 13 February 1904 to 17 October 2026."
+    - "14 end dates fall after the corpus was built (22 October 2026), the latest on 27 April 2029; they are left as
+      recorded."
+    - "Of the 50,711 undated patents, 50,488 are standard patents, almost all of unknown origin (50,442) and unknown
+      status (49,737). They are old records that cannot be placed in time, so counts by year leave them out: 2.9% of
+      patents and 4.1% of designs."
+  questions:
+    - q: 4
+      how: A rush before a rule change shows applicants responding to policy, which is what interventions rely on.
+    - q: 5
+      how: Dated rushes are the starting point for the before-and-after comparisons that later estimate what a policy did.
+  sources: [iprapid, policy_events]
+  chart: U3
+  prep:
+    - what: Each date column is checked for its range, its most common day and any day after the corpus was built.
+      why: Odd dates reveal placeholders, data entry patterns or real events.
+  steps:
+    - For each date column, find the earliest and latest date and the day with the most rights.
+    - Compare the busiest days with the dates of policy changes in the policy register.
+    - Count rights with no application date, and what else is known about them.
+  assumptions:
+    - The busiest days are linked to the rule changes by their timing alone; Stage 1 does not test the link.
+  limits:
+    - A rush shows timing, not why individual applicants filed.
+  next: >-
+    Stage 2 measures the rushes against trends and seasons, with placebo dates ({U28}).
+  terms: [raising-the-bar, second-tier, placebo]
+  related: [U28, U22, U9]
+
+- id: U4
+  lens: rights
+  about: data
+  headline: Most rights are trade marks, and most patents are standard patents
+  statement: >-
+    Trade marks are 53.5% of all rights, patents 40.12%, designs 6.153% and plant breeder's rights 0.2686%. Of patents,
+    82.17% are standard patents, 15.07% provisional applications and 2.77% second-tier patents.
+  figures:
+    - value: "53.5%"
+      label: of all rights are trade marks
+    - value: "82.17%"
+      label: of patents are standard patents
+  points:
+    - "Petty patents run from FY1980 to FY2001 and innovation patents from FY1999; innovation patents still appear in
+      FY2027 as divisionals and conversions of earlier applications."
+    - "Trade marks other than ordinary ones are rare: 3,033 certification, 2,594 collective and 1,456 defensive marks."
+    - "**Decision.** A count of \"rights\" across types is mostly a count of trade marks, so totals are always given by
+      type, and patent headlines use standard patents."
+  questions:
+    - q: 1
+      how: Different rights protect different things; any measure of value has to be read type by type.
+  sources: [iprapid]
+  chart:
+    type: bar
+    horizontal: true
+    title: Rights by type, 1904 to October 2026
+    x: {type: category, values: [Trade marks, Standard patents, Designs, Provisional applications, Innovation patents, Plant breeder's rights, Petty patents]}
+    y: {name: Rights, min: 0, format: int}
+    series:
+      - name: Rights
+        data: [2335064, 1439947, 268782, 264024, 41898, 11732, 6559]
+    source: IP Australia, IP RAPID (lens rights)
+    note: Trade marks include certification, collective and defensive marks.
+  notebook_charts: [0]
+  prep:
+    - what: Patents are split into standard, provisional and second-tier (innovation and petty).
+      why: A provisional is a placeholder that is never granted, and a second-tier patent is a cheaper, shorter right;
+        they are not the same thing as a standard patent (ADR 0009).
+  steps:
+    - Count rights by type and sub-type.
+    - Work out each one's share of all rights, and of its own type.
+  assumptions:
+    - IP RAPID's sub-types are taken as recorded.
+  limits:
+    - Counts of rights say nothing about their importance.
+  next: >-
+    Every later count is given by type of right.
+  terms: [standard-patent, provisional, second-tier, trade-mark, design, pbr]
+  related: [U5, U13]
+
+- id: U5
+  lens: rights
+  about: system
+  headline: Applications each year are steady for standard patents, and growing for trade marks and designs
+  statement: >-
+    In FY2017 to FY2026 there were 28,798 to 32,960 standard patent applications a year, 72,652 to 98,189 trade marks,
+    7,347 to 10,388 designs and 255 to 413 plant breeder's rights. Second-tier patents peaked at 7,150 in FY2021, the
+    year innovation patents closed, then fell to 52 (FY2026).
+  figures:
+    - value: "31,136"
+      label: standard patent applications in FY2026
+    - value: "98,189"
+      label: trade mark applications in FY2026
+    - value: "10,069"
+      label: provisional applications in FY2026, double the usual
+  points:
+    - "Provisional applications ran at 4,143 to 5,343 a year in FY2017 to FY2025, then doubled to 10,069 in FY2026
+      ({U8})."
+    - "In the chart, standard patents of \"origin unknown\" give way to \"overseas\" ones between about 1975 and 1990;
+      from FY1990 no more than 0.4% are of unknown origin. The change is in what the register records, not
+      necessarily in who filed."
+    - "**Corrected.** Before 1983 for trade marks, 1986 for designs and September 1985 for provisional applications,
+      the register holds only the rights still alive when it was computerised, so those early counts understate
+      filings ({U23})."
+  questions:
+    - q: 1
+      how: The volume of each kind of right over time is the basic measure of activity the later questions build on.
+    - q: 4
+      how: Sudden changes (the second-tier closure, the provisional rise) mark where policy or behaviour shifted.
+  sources: [iprapid]
+  chart: U5
+  notebook_charts: [0]
+  prep:
+    - what: Each right is placed in the Australian financial year (July to June) it was filed.
+      why: IP Australia and the government report by financial year.
+    - what: FY2027 (July to mid-October 2026) is left out of yearly counts.
+      why: It is a part year, and would look like a fall.
+    - what: Origin has three values (Australian, overseas, unknown).
+      why: Treating unknowns as overseas had inflated overseas filing for old patents (ADR 0009).
+  steps:
+    - Count applications by financial year, type of right and the applicants' origin.
+    - Draw each type's series by origin over the full span of the register.
+    - Note where the register's coverage changes, and read the recent ten years from the table.
+  assumptions:
+    - A PCT application is counted when it enters Australia (its national phase), not when it was first filed abroad.
+  limits:
+    - Early years of trade marks, designs and provisionals are survivors, not every filing ({U23}).
+  next: >-
+    Stage 2 compares changes in these series, not their levels, and lines them up with policy and fee events.
+  terms: [provisional, second-tier, national-phase, survivors]
+  related: [U6, U7, U8, U25]
+
+- id: U6
+  lens: rights
+  about: data
+  headline: The latest years are complete, so recent counts can be trusted
+  statement: >-
+    FY2025 and FY2026 are not lower than earlier years for any type of right: standard patents 29,950 and 31,136
+    (against 28,798 to 32,960 in FY2017 to FY2024); trade marks 92,470 and 98,189, and designs 10,126 and 10,388, the
+    decade's highest.
+  figures:
+    - value: "31,136"
+      label: standard patents in FY2026, within the usual range
+    - value: "8,357"
+      label: standard patents in FY2027 to mid-October, a part year left out
+  points:
+    - "The register counts an application when it is filed in Australia (for an international application, when it
+      enters Australia), so there is no publication delay that would make recent years look low."
+  questions:
+    - q: 1
+      how: Recent years can be used in trends without a correction for missing records.
+  sources: [iprapid]
+  chart: U6
+  prep:
+    - what: The partial year FY2027 is shown but marked, and left out of comparisons.
+      why: Three and a half months cannot be compared with a full year.
+  steps:
+    - Count applications by type for FY2017 to FY2027.
+    - Compare FY2025 and FY2026 with the years before; a shortfall would suggest records still arriving.
+  assumptions:
+    - Applications are recorded when filed, as IP Australia's data documentation and the owner have confirmed.
+  limits:
+    - Being complete means the applications are recorded; their outcomes (grants, registrations) are still to come.
+  next: >-
+    Stage 2's trends run to FY2026.
+  terms: [national-phase]
+  related: [U5]
+
+- id: U7
+  lens: rights
+  about: system
+  headline: About nine in ten standard patents come from overseas; most trade marks come from Australians
+  statement: >-
+    Among rights whose origin is known, Australian applicants filed 11.3% of standard patents in FY1990 and 12.4% in
+    FY1995, then about 8% to 11% (9.3% in FY2026). They filed 55.8% to 62.4% of trade marks since FY2018, and 91.8% to
+    98.1% of provisional applications.
+  figures:
+    - value: "9.3%"
+      label: of standard patents filed by Australians in FY2026
+    - value: "59.4%"
+      label: of trade marks filed by Australians in FY2026
+  points:
+    - "**Second-tier patents** were 79.2% to 87.4% Australian in FY1990 to FY2010, down to 16.1% in FY2021, when
+      overseas applicants filed before the closure."
+    - "**Plant breeder's rights:** 37.8% to 52.3% Australian since FY1995."
+    - "**Designs:** origin is unknown for 20.3% to 23.3% in FY1990 to FY2000 and 4.0% to 6.3% since FY2018, so a share
+      can be given only in a few recent years (27.4% to 33.9%). The unknown share is rising again."
+    - "**Decision.** Australian shares are compared from FY1990, and a design share is always shown with its unknown
+      share."
+  questions:
+    - q: 2
+      how: Who files from where is the first cut of who uses, and may benefit from, each kind of right.
+    - q: 1
+      how: A patent system used mostly from overseas raises different questions about public value from one used mostly at home.
+  sources: [iprapid]
+  chart: U7
+  prep:
+    - what: An application is Australian if any of its applicants is in Australia; overseas if none is and at least one
+        has a known country; unknown otherwise.
+      why: Three values keep the unknowns out of both groups (ADR 0009).
+    - what: A share is shown only in years when fewer than 5% of that type's applications are of unknown origin.
+      why: With many unknowns, a share of the known ones could be badly off.
+  steps:
+    - Count each type's applications by year and origin.
+    - Work out the share of unknown origin for each year.
+    - Where unknowns are under 5%, work out the Australian share of those with a known origin.
+  assumptions:
+    - An applicant's recorded country is where it is based.
+  limits:
+    - Origin describes the applicant, not where the invention was made or where it is used ({U96}).
+  next: >-
+    Stage 2 compares filing by origin, applicant type and technology, from FY1990.
+  terms: [share-of-known, standard-patent]
+  related: [U13, U70, U96]
+
+- id: U8
+  lens: rights
+  about: system
+  featured: true
+  headline: Provisional applications doubled in FY2026, driven by individuals, both broadly and through a few heavy filers
+  statement: >-
+    FY2026 had 10,069 provisional applications, against 4,143 to 5,047 a year in FY2022 to FY2025. 5,399 had an
+    individual as first applicant, against 1,365 to 1,926 before. The rise began in early 2025, peaked in March and
+    April 2026 and eased by September 2026.
+  figures:
+    - value: "10,069"
+      label: provisional applications in FY2026
+    - value: "5,399"
+      label: of them with an individual as first applicant
+    - value: "1,274"
+      label: in March 2026, the peak month
+  points:
+    - "**When.** 345 in March 2024, 481 in March 2025, 1,274 in March 2026 and 1,231 in April 2026, then 750 by
+      September 2026, still about twice March 2024's level."
+    - "**Not from businesses.** Distinct business numbers stayed flat (1,361 in FY2026; 1,333 to 1,431 before)."
+    - "**Broad.** Individuals who filed a single provisional rose from 1,538 (FY2025) to 2,507 (FY2026)."
+    - "**And concentrated.** 54 individuals filed 10 or more each (1,528 between them), against 9 in FY2025; one filed
+      375."
+  questions:
+    - q: 4
+      how: A sudden change in how individuals use the system could reflect a new channel, a cost change or new
+        drafting tools, each a possible lever or risk for IP Australia.
+    - q: 2
+      how: Individuals are the group most likely to file without help; who they are matters for who the system serves.
+  sources: [iprapid]
+  chart: U8
+  notebook_charts: [1]
+  prep:
+    - what: Provisional applications are counted apart from standard patents, by the type of their first applicant.
+      why: A provisional is a placeholder, and individuals and organisations use it differently.
+    - what: Each founding applicant's provisionals in a year are counted, to see whether the rise is broad or from a few.
+      why: Many single filers and a few heavy filers point to different explanations.
+  steps:
+    - Count provisional applications by month since July 2021, split by individual or organisation.
+    - Count them by year, with the number of distinct business numbers and those from overseas.
+    - For FY2025 and FY2026, count founding applicants by how many provisionals each filed (1, 2 to 9, 10 or more).
+  assumptions:
+    - The rise is in filing, not in recording. The owner confirmed that the register keeps provisionals once they are
+      claimed (ADR 0010).
+  limits:
+    - The data show who and when, not why. That is a question for IP Australia (OQ5).
+  next: >-
+    Stage 2 lines the months up against policy and fee events, with IP Australia's own published figures as the
+    benchmark.
+  terms: [provisional, abn]
+  related: [U5, U26, U84]
+
+- id: U9
+  lens: rights
+  about: data
+  headline: '"Lapsed" and "ceased" mean different things, and 408,957 old patents have no known outcome'
+  statement: >-
+    Under 0.01% of lapsed patents, trade marks and designs were ever registered, against 99.93% of ceased patents and
+    100% of ceased trade marks: a lapse is an application abandoned, a cessation a registered right let go. 408,957
+    patents filed before FY2000 have the status "unknown", with no registration or end date.
+  figures:
+    - value: "408,957"
+      label: old patents with an unknown status
+    - value: "68.9%"
+      label: of expired patents have a grant date (all were granted)
+    - value: "12%"
+      label: of standard patents are in force today
+  points:
+    - "\"Unknown\" patents were filed between FY1904 and FY1999 (median FY1961): 27% of standard patents."
+    - "Only 68.9% of expired patents have a grant date, though only a granted patent can expire, so old grants are
+      under-recorded."
+    - "Where rights stand today (all years): trade marks 41% in force, 26% ended before registration and 28% after;
+      designs 24% in force and 66% ended after registration; provisional applications 90% ended before grant, as they
+      are meant to."
+  questions:
+    - q: 1
+      how: How often rights are granted, kept or let go is basic to any measure of their value.
+  sources: [iprapid]
+  chart: U9
+  notebook_charts: [0]
+  prep:
+    - what: IP RAPID's 27 statuses are grouped into stages (pending, in force, ended before grant, ended after grant,
+        other, unknown).
+      why: Six stages can be compared across types; 27 statuses cannot. The grouping is by status name, and the table
+        in the notebook shows how well it holds.
+  steps:
+    - For each status, work out how often its rights were ever registered and have an end date.
+    - Group statuses into stages and work out each type's share in each.
+  assumptions:
+    - A status's name describes its rights; the registration check confirms this for lapsed and ceased.
+  limits:
+    - For old patents the register does not know what happened, so rates involving them understate grants.
+  next: >-
+    Lifetimes are measured from each right's end date with survival curves ({U36}).
+  terms: [lapse, cease, expiry]
+  related: [U10, U36]
+
+- id: U10
+  lens: rights
+  about: system
+  headline: The share of standard patent applications granted fell to 54.4% for FY2008's, then recovered
+  statement: >-
+    74.6% of FY1990's standard patent applications were granted and 75.5% of FY2000's, but only 54.4% of FY2008's;
+    then 61.4% (FY2010), 69.0% (FY2015) and 65.4% (FY2019). Trade marks rose from 52.1% registered (FY1990) to 80.7%
+    (FY2019).
+  figures:
+    - value: "54.4%"
+      label: of FY2008's standard patent applications were granted
+    - value: "80.7%"
+      label: of FY2019's trade mark applications were registered
+  points:
+    - "**Designs:** 78.3% (FY1990) and 79.8% (FY2000), then about 95% from FY2010."
+    - "**Second-tier patents:** 90.0% to 98.4% from FY2008 to FY2024. This is not a pass rate: an innovation patent was
+      granted after a check of formalities only."
+    - "**Still pending:** standard patents 2.0% of FY2021's applications, 12.2% of FY2022's and 49.1% of FY2024's."
+    - "**Decision.** Rates are compared only for years whose applications are nearly all decided: to FY2021 for
+      standard patents, FY2024 for trade marks."
+  questions:
+    - q: 1
+      how: How often applications succeed is part of what the system costs applicants and what it delivers.
+    - q: 4
+      how: Changes in grant rates may follow changes in law or practice, which IP Australia controls.
+  sources: [iprapid]
+  chart: U10
+  prep:
+    - what: The share registered is worked out for each financial year of filing, among all that year's applications.
+      why: Following each year's applications to their outcome avoids mixing old and new applications.
+  steps:
+    - For each type and filing year, count the applications ever registered or granted.
+    - Divide by all of that year's applications; separately, count those still pending.
+    - Mark the recent years whose applications are still being examined.
+  assumptions:
+    - An application with a registration date was registered; a missing date means it was not (except for old patents, {U9}).
+  limits:
+    - Recent years look low only because many are still being decided.
+    - Before 1983 (trade marks) and 1986 (designs) only survivors are recorded, so their rates look too high ({U23}).
+  next: >-
+    Stage 2 compares grant rates by origin, applicant and representation, within decided years.
+  terms: [grant-rate, second-tier]
+  related: [U9, U11, U33]
+
+- id: U11
+  lens: rights
+  about: system
+  headline: A standard patent takes a median 980 days to grant; a trade mark 223 days to register
+  statement: >-
+    For applications filed FY2010 to FY2019, standard patents took a median 980 days (about 2.7 years) to grant, the
+    middle half 681 to 1,318 days. Trade marks took a median 223 days, with a sharp peak at about 222 days, which
+    WIPO's figures show is the office's usual path to registration ({U70}).
+  figures:
+    - value: "980 days"
+      label: median time to grant a standard patent
+    - value: "223 days"
+      label: median time to register a trade mark
+    - value: "1,296 days"
+      label: median for plant breeder's rights
+  points:
+    - "99% of standard patents are granted within 2,156 days; 99% of trade marks within 1,081, with a long tail."
+    - "Designs take a median 33 days and second-tier patents 21; an innovation patent was granted after a check of
+      formalities only, so its 21 days are not compared with standard patents'."
+    - "57 values remain negative (registered before filed), down from 1,497 before the repairs. They are left as
+      recorded."
+  questions:
+    - q: 4
+      how: Time to protection is part of the cost of using the system, and something the office can influence.
+    - q: 2
+      how: Differences in waiting time by applicant group would bear on who is well served.
+  sources: [iprapid]
+  chart: U11
+  notebook_charts: [1, 3]
+  prep:
+    - what: Only applications filed FY2010 to FY2019 and since registered are used.
+      why: By 2026 at most 0.1% of them are pending, so the times are not cut short by applications still in
+        examination.
+  steps:
+    - Take every application filed FY2010 to FY2019 that was later registered or granted.
+    - Work out the days from application to registration for each.
+    - Summarise each type's spread (median, middle half, 99th percentile), and check the shape at several bin widths.
+  assumptions:
+    - The registration date is when protection was granted, as recorded.
+  limits:
+    - These are the times of successful applications only.
+  next: >-
+    Stage 2 compares times by origin, applicant and attorney use, within decided years.
+  terms: [median, middle-half, percentile, long-tail]
+  related: [U12, U33, U70]
+
+- id: U12
+  lens: rights
+  about: system
+  headline: Patents' typical wait rose to nearly four years for FY2005's applications; trade marks' fell to months
+  statement: >-
+    Standard patents took a median 2.59 years for FY1990's applications, 2.27 (FY2000), 3.96 (FY2005), 3.49 (FY2010),
+    2.32 (FY2015), 2.76 (FY2019) and 2.91 (FY2021). Trade marks fell from 2.35 years (FY1990) to 0.60 to 0.69 since
+    FY2005.
+  figures:
+    - value: "3.96 years"
+      label: median wait for FY2005's standard patents
+    - value: "0.60 to 0.69"
+      label: years, trade marks' median wait since FY2005
+  points:
+    - "**Designs:** 0.52 to 0.65 years to FY2005, then 0.08 to 0.16 since FY2010."
+    - "**Plant breeder's rights:** from 1.57 years (FY1990) to 3.93 (FY2019)."
+    - "Only applications later registered or granted count, so these are the times of successful applications."
+  questions:
+    - q: 4
+      how: Shows how the office's service has changed over time, before Stage 2 asks for whom.
+  sources: [iprapid]
+  chart: U12
+  prep:
+    - what: The median wait is worked out for each financial year of filing, FY1990 to FY2021.
+      why: Later years are still being examined, so their medians would be too short.
+  steps:
+    - For each type and filing year, take the median days from application to registration, among those registered.
+    - Convert to years and plot over time.
+  assumptions:
+    - Changes in the median reflect changes in processing and applicants' choices together; Stage 1 does not separate them.
+  limits:
+    - A patent applicant controls part of the wait (when to request examination), so the time is not only the office's.
+  next: >-
+    Stage 2 compares times within decided years, by origin and representation.
+  terms: [median]
+  related: [U11, U33]
+
+- id: U13
+  lens: rights
+  about: system
+  headline: Australians filed 8.675% of standard patents in FY2017 to FY2026; the United States filed 43.5%
+  statement: >-
+    Of standard patents filed FY2017 to FY2026 with a known origin, 8.675% came from Australian applicants, so 91.3%
+    came from overseas. By first applicant, the United States filed 43.5%, Australia 8.6%, China 6.8% and Japan 5.3%.
+    Australians filed 59.0% of trade marks and 94.45% of provisional applications.
+  figures:
+    - value: "91.3%"
+      label: of standard patents came from overseas
+    - value: "43.5%"
+      label: had a first applicant in the United States
+    - value: "59.0%"
+      label: of trade marks came from Australians
+  points:
+    - "**Individuals** are the first applicant on 20.59% of Australian standard patents, against 3.614% of overseas
+      ones; on 40.35% of Australian provisionals and 24.78% of trade marks."
+    - "**Business numbers.** 87.98% of Australian organisations' standard patents carry an ABN, and 78.3% of their
+      trade marks: 12% to 22% of organisations' rights cannot reach the firms lens."
+    - "**Attorneys.** Australian applicants used one for 86.79% of standard patents and 57.02% of trade marks;
+      overseas applicants for 89.91% to 99.12% of their rights."
+    - "91,979 rights have no applicant recorded, all of unknown origin."
+  questions:
+    - q: 2
+      how: "The basic profile of who files: countries, individuals against organisations, with and without help."
+    - q: 1
+      how: A system used mostly by overseas applicants for patents matters for where its benefits flow.
+  sources: [iprapid]
+  chart: U13
+  notebook_charts: [1]
+  prep:
+    - what: The ten latest complete years, FY2017 to FY2026, are used.
+      why: A recent decade describes the system as it is now.
+  steps:
+    - For each type, work out the Australian share among applications of known origin.
+    - Count standard patents by the first applicant's country.
+    - Among Australian applicants, work out the shares that are individuals, carry an ABN and use an attorney.
+  assumptions:
+    - The first applicant's country stands for the application's country when ranking countries.
+  limits:
+    - Counts by first applicant leave out co-applicants from other countries.
+  next: >-
+    Stage 2 compares filing, representation and outcomes by origin and applicant type.
+  terms: [share-of-known, abn, attorney]
+  related: [U7, U20, U70]
+
+- id: U14
+  lens: rights
+  about: system
+  headline: Health technologies lead standard patents; advertising and business services lead trade marks
+  statement: >-
+    In FY2017 to FY2026, medical technology (11.7%), pharmaceuticals (10.7%) and biotechnology (9.6%) together made up
+    32.0% of standard patents. Trade marks were led by advertising and business services (class 35, 11.7%), then
+    education and entertainment (6.3%) and clothing (6.3%).
+  figures:
+    - value: "32.0%"
+      label: of standard patents in medical technology, pharmaceuticals and biotechnology
+    - value: "11.7%"
+      label: of trade marks in advertising and business services
+  points:
+    - "**Designs:** means of transport 8.7%, recording and computing equipment 8.0%, furnishing 7.6%."
+    - "**Plant breeder's rights (all years):** roses 8.4%, stone fruit 7.5%, potatoes and tomatoes 4.4%."
+    - "Every provisional application has no class, and so do most standard patents filed before 1920; from the 1980s
+      to the 2010s under 1% lack one."
+  questions:
+    - q: 1
+      how: What is protected shapes what public value might follow, from medicines to brands.
+    - q: 3
+      how: Technology is one of the conditions that may decide whether protection produces value.
+  sources: [iprapid]
+  chart: U14
+  notebook_charts: [0, 1]
+  prep:
+    - what: Each standard patent is placed in one of WIPO's 35 technology fields by its main patent class.
+      why: The fields group thousands of classes into readable areas.
+    - what: Trade marks and designs use their main class of goods or product, with WIPO's headings shortened.
+      why: Their "technology area" in the register only repeated the class ({U2}).
+  steps:
+    - Count FY2017 to FY2026 rights by field or class, and take the largest.
+    - Count rights with no class by decade, and the number of classes per right.
+  assumptions:
+    - A right's main class describes what it mainly protects.
+  limits:
+    - Many patents span several fields; only the main one is counted here.
+  next: >-
+    The industries lens turns classes into industries ({U75}); Stage 2 compares value signals by field.
+  terms: [ipc, nice]
+  related: [U75, U93]
+
+- id: U15
+  lens: rights
+  about: system
+  headline: New South Wales and Victoria file most Australian rights
+  statement: >-
+    Of standard patents filed FY2017 to FY2026 by a first applicant in Australia, New South Wales filed 38.2%,
+    Victoria 23.7%, Queensland 17.4%, Western Australia 11.0%, South Australia 4.6%, the ACT 3.0%, Tasmania 0.8% and the
+    Northern Territory 0.2%.
+  figures:
+    - value: "38.2%"
+      label: of Australian standard patents from New South Wales
+    - value: "33.3%"
+      label: of Australian designs from Victoria
+  points:
+    - "**Trade marks:** New South Wales 35.8%, Victoria 29.5%, Queensland 18.7%."
+    - "**Plant breeder's rights:** 24.8% have no state, and no postcode to take one from."
+    - "Shares against population or businesses are for Stage 2, through the places lens."
+  questions:
+    - q: 2
+      how: The first look at geography; on its own it mostly reflects where people and businesses are.
+  sources: [iprapid, abs_regions]
+  chart:
+    type: bar
+    horizontal: true
+    title: Where Australian applicants are, by state
+    subtitle: Rights filed FY2017 to FY2026 by a first applicant in Australia (% of each type)
+    x: {type: category, values: [NSW, VIC, QLD, WA, SA, ACT, TAS, NT]}
+    y: {name: "% of the type's rights", min: 0, format: pct, digits: 1}
+    series:
+      - name: Standard patents
+        data: [38.2, 23.7, 17.4, 11, 4.6, 3, 0.8, 0.2]
+      - name: Trade marks
+        data: [35.8, 29.5, 18.7, 7.4, 5.8, 1.4, 0.9, 0.4]
+      - name: Designs
+        data: [37.5, 33.3, 15.9, 7.3, 4.5, 0.7, 0.6, 0.2]
+    source: IP Australia, IP RAPID (lens rights)
+  prep:
+    - what: A missing state is taken from the applicant's postcode.
+      why: The register left it out for 34.96% of recent Australian standard patents ({U16}).
+  steps:
+    - Take rights filed FY2017 to FY2026 whose first applicant is in Australia.
+    - Work out each state's share of each type.
+  assumptions:
+    - The first applicant's address stands for the right's location.
+  limits:
+    - A state's share largely follows its population and businesses; rates come in Stage 2.
+  next: >-
+    Stage 2 works with rates per person and per business in the places lens.
+  terms: [filer]
+  related: [U16, U47, U52]
+
+- id: U16
+  lens: rights
+  about: data
+  headline: The register stopped recording many applicants' states in FY2024; the postcode fills the gap
+  statement: >-
+    IP RAPID leaves out the state for 34.96% of Australian standard patents filed from FY2024 and 13.65% of FY2023's,
+    against 8.561% before. Where both are recorded, the postcode lies in the recorded state for 99.41% to 100% of
+    rights, so the missing state is taken from the postcode.
+  figures:
+    - value: "34.96%"
+      label: of recent Australian standard patents had no state
+    - value: "99.3%"
+      label: of Australian applicants' rights have a usable postcode
+  points:
+    - "Over all years, 99.3% of rights with an Australian first applicant have a usable postcode and 99.56% a state,
+      across 3,535 distinct postcodes. The postcode is the key into the places lens."
+    - "For overseas applicants the state is kept as recorded; \"wa\" for 3,135 overseas rights is most likely
+      Washington. The state is read only for Australian applicants."
+  questions:
+    - q: 2
+      how: Without the repair, recent geographic comparisons would lose a third of Australian patents.
+  sources: [iprapid, abs_regions]
+  chart:
+    type: bar
+    title: Australian standard patents with no state recorded
+    subtitle: By when they were filed, in IP RAPID as published
+    x: {type: category, values: [Before FY2023, FY2023, FY2024 on]}
+    y: {name: "% with no state", min: 0, format: pct, digits: 2}
+    series:
+      - name: Standard patents
+        data: [8.561, 13.65, 34.96]
+    source: IP Australia, IP RAPID as published; ABS postal areas
+  prep:
+    - what: A missing state is filled from the postcode's postal area (ABS 2021 geography).
+      why: Postcode and state agree for 99.41% to 100% of rights where both exist (ADR 0012).
+  steps:
+    - For Australian first applicants, count rights with no state, by when they were filed.
+    - Where both a state and a postcode exist, check whether the postcode's area is in that state.
+    - Fill the missing states from the postcode, and count usable postcodes.
+  assumptions:
+    - A postcode's postal area lies in one state, as the ABS geography says.
+  limits:
+    - Postcodes that are not postal areas cannot be placed ({U49}).
+  next: >-
+    The places lens uses the filer's postcode ({U48}).
+  terms: [postal-area, filer]
+  related: [U15, U48, U49]
+
+- id: U17
+  lens: rights
+  about: data
+  headline: The holder is often not the filer, and for patents filed before FY2003 the register cannot tell
+  statement: >-
+    Where the history is recorded, the current holder is not the applicant who filed for 22.0% of standard patents
+    filed in the 2000s (from FY2003), 17.1% of the 2010s' and 7.0% of the 2020s'. For patents filed before FY2003, the
+    register kept only one set of applicants, entered long after filing, so a change of holder cannot be seen.
+  figures:
+    - value: "22.0%"
+      label: of 2000s standard patents are held by someone other than the filer
+    - value: "20.8%"
+      label: of 2000s trade marks likewise
+  points:
+    - "Newer rights have had less time to change hands, so the share falls towards the present."
+    - "For patents filed FY1998 to FY2002, the first applicant record starts a median 5,974 to 7,445 days after
+      filing, against 3 to 8 days from FY2003: the records were entered when the data moved between systems."
+    - "Plant breeder's rights go the other way: 11.2% of those filed in the 2020s are held by someone other than the
+      filer, more than in any earlier decade."
+  questions:
+    - q: 1
+      how: Rights that change hands may be traded for their value; selling is one way a right produces value.
+    - q: 2
+      how: '"Who files" and "who benefits" can be different people; the data must keep them apart.'
+  sources: [iprapid]
+  chart: U17
+  notebook_charts: [0]
+  prep:
+    - what: The founding applicant (who filed) is kept beside the current applicant (who holds), compared by identity
+        number.
+      why: A party keeps its number through changes of address, so numbers, not records, show a change of holder
+        (ADR 0013).
+    - what: The "holder changed" column is empty for patents filed before FY2003.
+      why: The register kept one set of applicants for them, so a change cannot be seen.
+  steps:
+    - For each right, compare the founding applicants with the current ones.
+    - Work out the share that differ, by type and decade or year of filing.
+    - For patents, check when the first applicant record was made, relative to filing.
+  assumptions:
+    - A change of identity number means a change of holder. A change of name can also count as one.
+  limits:
+    - Changes before FY2003 for patents are not visible here; assignments fill part of the gap ({U35}).
+  next: >-
+    Stage 2 uses the founding columns for "who files" and the current ones for "who holds".
+  terms: [filer, assignment]
+  related: [U18, U19, U35]
+
+- id: U18
+  lens: rights
+  about: system
+  headline: More Australian-filed rights moved overseas than came the other way
+  statement: >-
+    Where the history is recorded, 3.212% of the 63,385 standard patents filed from Australia are now held overseas
+    (2,036), against 0.1323% of those filed from overseas now held in Australia (804). For trade marks, 15,391 moved
+    overseas and 4,840 came the other way.
+  figures:
+    - value: "2,036"
+      label: Australian-filed standard patents now held overseas
+    - value: "804"
+      label: overseas-filed standard patents now held in Australia
+  points:
+    - "By decade of filing, 5.481% of standard patents filed from Australia in the 2000s are now held overseas, 3.042% of
+      the 2010s' and 1.34% of the 2020s' (newer rights have had less time to move)."
+    - "**Designs:** 1,700 moved overseas and 452 came the other way."
+    - "These are counts of rights, not of their value."
+  questions:
+    - q: 1
+      how: Rights that move abroad may take some of their value with them; this sizes the flow.
+    - q: 2
+      how: Bears on whether the benefits of Australian inventions stay in Australia.
+  sources: [iprapid]
+  chart:
+    type: bar
+    title: Rights whose holder changed country
+    subtitle: Where the holder history is recorded, all years
+    x: {type: category, values: [Standard patents, Trade marks, Designs, Second-tier patents, Provisional applications]}
+    y: {name: Rights, min: 0, format: int}
+    series:
+      - name: Filed from Australia, now held overseas
+        data: [2036, 15391, 1700, 142, 426]
+      - name: Filed from overseas, now held in Australia
+        data: [804, 4840, 452, 58, 84]
+    source: IP Australia, IP RAPID (lens rights)
+  prep:
+    - what: Only rights whose holder history is recorded and whose origin is known at both ends are counted.
+      why: A right whose history or origin is unknown cannot be said to have moved.
+  steps:
+    - Take rights with a recorded holder history and a known origin for both the filer and the holder.
+    - Count those filed from Australia and now held overseas, and the reverse.
+  assumptions:
+    - The holder's country on the register is where the right is now held.
+  limits:
+    - The counts do not show why rights moved, or what they were worth.
+  next: >-
+    Stage 2 relates moves to technology, firm and the age of the right.
+  terms: [filer, assignment]
+  related: [U17, U96]
+
+- id: U19
+  lens: rights
+  about: data
+  headline: The filer's postcode differs from the holder's for about a tenth of rights
+  statement: >-
+    For rights filed FY2003 to FY2026 from Australia and still held in Australia, the filer's and holder's postcodes
+    differ for 11.13% of trade marks, 10.1% of standard patents and 7.7% of designs. States differ far less often
+    (1.585% to 2.672%), so most moves are within a state.
+  figures:
+    - value: "10.1%"
+      label: of standard patents have a different filer and holder postcode
+    - value: "4,019"
+      label: rights now placed through a co-filer's postcode
+  points:
+    - "Business numbers differ for 5.912% to 7.202% of each type where both exist."
+    - "The filer's postcode is known for 99.72% to 99.99% of each type (plant breeder's rights 69.14%)."
+    - "**Decision.** \"Where and who files\" uses the filer's columns; \"who holds\" the holder's."
+  questions:
+    - q: 2
+      how: Counting rights where they were filed, not where they ended up, keeps regional comparisons honest.
+  sources: [iprapid]
+  chart:
+    type: bar
+    horizontal: true
+    title: Filer's and holder's postcodes differ
+    subtitle: Rights filed FY2003 to FY2026 from Australia and still held in Australia
+    x: {type: category, values: [Trade marks, Standard patents, Designs, Second-tier patents, Plant breeder's rights, Provisional applications]}
+    y: {name: "% where the postcodes differ", min: 0, format: pct, digits: 2}
+    series:
+      - name: Postcodes differ
+        data: [11.13, 10.11, 7.711, 6.256, 3.027, 2.061]
+    source: IP Australia, IP RAPID (lens rights)
+  prep:
+    - what: The filer's postcode is the first founding applicant in Australia's.
+      why: For a right with several applicants, the Australian one places it.
+  steps:
+    - Take rights filed FY2003 to FY2026 by an Australian filer and still held in Australia.
+    - Compare filer and holder postcodes, states and business numbers where both exist.
+  assumptions:
+    - A different postcode means the right is now held at a different place, not that an address was corrected.
+  limits:
+    - Patents filed before FY2003 cannot differ, because their holder history is missing ({U17}).
+  next: >-
+    The places and firms lenses count by the filer ({U48}).
+  terms: [filer, postal-area]
+  related: [U17, U48]
+
+- id: U20
+  lens: rights
+  about: system
+  headline: Overseas filers almost always use an attorney; Australian individuals often file alone
+  statement: >-
+    In FY2017 to FY2026 overseas filers used an attorney for 99.0% of standard patents. Australian filers used one for
+    85.4% (13.2% filed alone), and for 49.7% of trade marks (42.9% alone). Individuals file alone most: 37.1% of
+    Australian individuals' standard patents and 62.4% of their trade marks.
+  figures:
+    - value: "62.4%"
+      label: of Australian individuals' trade marks filed with no agent
+    - value: "37.1%"
+      label: of Australian individuals' standard patents filed alone
+    - value: "99.0%"
+      label: of overseas filers' standard patents used an attorney
+  points:
+    - "Australian organisations file alone less: 6.7% of their standard patents and 36.4% of their trade marks."
+    - "**The threshold matters for trade marks, not patents.** Counting agents of at least 1, 5 or 100 applicants,
+      Australian standard patents are represented 86.81%, 85.41% and 84.4% of the time; Australian trade marks 57.08%,
+      49.67% and 42.59%."
+    - "**Plant breeder's rights** show many \"other agents\" (16.8% of Australian filers' and 37.7% of overseas
+      filers'); a specialist may act for fewer than five applicants."
+  questions:
+    - q: 2
+      how: Filing without professional help is a possible sign of a barrier, or of a choice; individuals stand out.
+    - q: 4
+      how: If filing alone goes with worse outcomes, help for self-filers is a lever IP Australia could pull.
+  sources: [iprapid]
+  chart:
+    type: bar
+    horizontal: true
+    stack: true
+    title: Who represents the filer
+    subtitle: Share of rights filed FY2017 to FY2026, by type and the filer's origin
+    x: {type: category, values: ["Standard patents, Australian", "Standard patents, overseas", "Second-tier, Australian", "Second-tier, overseas", "Trade marks, Australian", "Trade marks, overseas", "Designs, Australian", "Designs, overseas"]}
+    y: {name: "% of rights", min: 0, max: 100, format: pct, digits: 1}
+    series:
+      - name: An attorney
+        data: [85.4, 99, 62.2, 84.2, 49.7, 88.2, 68.5, 95.8]
+      - name: Another agent
+        data: [1.4, 0.2, 4.4, 5.8, 7.4, 8.1, 2.4, 3]
+      - name: No one (filed alone)
+        data: [13.2, 0.9, 33.3, 10, 42.9, 3.7, 29.1, 1.2]
+    source: IP Australia, IP RAPID (lens rights)
+    note: An attorney is an agent acting for five or more applicants.
+  prep:
+    - what: Each right's representation is "attorney" (an agent of five or more applicants), "other agent" (fewer) or
+        "self" (no agent but the applicant).
+      why: The register names an agent for almost everything, often the applicant itself; this separates professional
+        help from filing alone (ADR 0013).
+    - what: Provisional applications are left out.
+      why: The register publishes no agents for them.
+  steps:
+    - For each right, find its agents who are not its applicants, and how many applicants each acts for.
+    - Class the right as attorney, other agent or self.
+    - Work out the shares by type, origin and (for Australians) individual or organisation.
+    - Repeat with thresholds of 1, 2, 20 and 100 applicants to test the choice of five.
+  assumptions:
+    - An agent acting for five or more different applicants is a professional attorney.
+  limits:
+    - "The data do not say why someone files alone: cost, confidence or simplicity."
+  next: >-
+    Stage 2 compares outcomes (grant, time, lifetime) for self-filers and represented filers, with bounds for trade
+    marks.
+  terms: [attorney, filer]
+  related: [U2, U13, U21]
+
+- id: U21
+  lens: rights
+  about: system
+  headline: Five attorney firms handle 63.96% of standard patents; trade mark representation is spread widely
+  statement: >-
+    Of standard patents filed FY2017 to FY2026 through an attorney, 363 attorneys took part, the top 5 handled 63.96%
+    and the top 10 79.56%; 4 handled half. For trade marks, 9,754 attorneys took part and the top 5 handled 17.51%.
+  figures:
+    - value: "63.96%"
+      label: of standard patents handled by five attorney firms
+    - value: "4"
+      label: firms handle half of all standard patents
+    - value: "17.51%"
+      label: of trade marks handled by the top five
+  points:
+    - "The largest: Spruson & Ferguson 21.6%, Griffith Hack 16.0%, Davies Collison Cave 10.2%, FB Rice 8.9% and Phillips
+      Ormonde Fitzpatrick 7.3%."
+    - "**Designs:** 615 attorneys; the top 5 handle 45.17%."
+    - "Counted by firm name, this is a lower bound: some firms belong to the same corporate groups, which the register
+      does not record."
+  questions:
+    - q: 4
+      how: A concentrated profession bears on the cost of access, one of the barriers Q4 asks about.
+  sources: [iprapid]
+  chart: U21
+  notebook_charts: [0]
+  prep:
+    - what: Only rights represented by an attorney are counted, by the attorney's name.
+      why: The question is how concentrated professional representation is.
+  steps:
+    - Count standard patents, trade marks and designs by attorney, FY2017 to FY2026.
+    - Rank attorneys and work out the shares of the top 5 and 10, and how many handle half and 90%.
+  assumptions:
+    - Each firm name is one firm.
+  limits:
+    - Corporate groups are not recorded, so concentration by group is higher than shown.
+  next: >-
+    Stage 2 can compare outcomes by attorney size, within technology fields.
+  terms: [attorney, concentration]
+  related: [U20, U44]
+
+# ------------------------------------------------------------------------------------------------- the events (1.8.2)
+
+- id: U31
+  lens: rights
+  attachment: Events
+  about: data
+  headline: Each right's milestones were added only after five checks of how the register records them
+  statement: >-
+    Eleven columns of milestones (examination, acceptance, opposition, sale, extension, lifetime) rest on five checks
+    of IP RAPID's event records. Among them: trade marks' and designs' recorded ends fall from 3,213 in March 2026 to 0
+    from May, because an end is recorded only after a six-month grace period, so they are observed only to 31 March
+    2026.
+  figures:
+    - value: "99.99%"
+      label: of granted patents have their grant event on the registration date
+    - value: "3,213 → 0"
+      label: trade marks' recorded ends, March 2026 to May 2026
+  points:
+    - "**No separate grant column.** A patent's grant event falls on its registration date for 99.99% of granted
+      patents."
+    - "**Sales counted once.** 99.78% of patents with an assignment have it published twice; the first is used."
+    - "**Only standing events.** 4.76% of patent lapse events were later reversed, and 60.47% of the patents with one
+      are now granted, expired or ceased."
+    - "**When a term starts.** 92.19% of ceased trade marks whose two filing dates differ (mostly international ones)
+      end a whole number of years after the earliest; 84.59% of standard patents ceased since 1996 end 6 to 7 months
+      after an anniversary, at the end of the grace period."
+    - "**Left out:** 3,154 events dated 1 January 1970 (a placeholder) and 171 dated before the right was filed."
+  questions:
+    - q: 1
+      how: Lifetimes and sales are signs of a right's private value; they are only usable because these checks hold.
+  sources: [iprapid]
+  chart: U31
+  prep:
+    - what: Each milestone is the first event of its kind that the register still holds as standing.
+      why: A lapse that was later reversed did not end the right (ADR 0015).
+    - what: Trade marks and designs are observed to 31 March 2026, patents to 22 October 2026.
+      why: Their ends are recorded only once the six-month grace period for renewal has passed.
+  steps:
+    - Compare each grant event's date with the registration date.
+    - Count how often assignments are published twice.
+    - Find lapse events that are not standing, and what became of those rights.
+    - Measure each ended right's life from its filing and patent dates, to see which date its term runs from.
+    - Count ends recorded per month in 2026 to see where the record stops being complete.
+  assumptions:
+    - A right whose end has not been recorded by the cut-off date is still in force.
+  limits:
+    - Before 1995 some events were dated in batches, so early milestones are less precise ({U23}).
+  next: >-
+    The lifetimes feed the survival curves ({U36}), which the owner has adopted as a working measure for Stage 2.
+  terms: [grace-period, assignment, placeholder-date]
+  related: [U32, U36, U40]
+
+- id: U32
+  lens: rights
+  attachment: Events
+  about: data
+  headline: Each milestone is recorded only from a certain year, so shares can be compared only within those years
+  statement: >-
+    Examination requests are recorded for 0.27% of standard patents filed in the 1970s, 54.21% of the 1980s' and 85.5%
+    to 91.2% a decade since. Trade mark acceptances: 0.26% of the 1970s' marks, 30.88% of the 1980s' and 75.88% to
+    79.05% since 2000. Designs' examination requests are recorded only from 2013.
+  figures:
+    - value: "54.21%"
+      label: of 1980s standard patents have an examination request recorded
+    - value: "2013"
+      label: the year designs' examination requests start
+  points:
+    - "Petty patents filed FY1986 to FY1988 mostly have no acceptance recorded, though many were registered."
+    - "Second-tier patents: examination was requested for 19.52% to 21.97% of those filed each decade since 2000,
+      and 13.99% to 16.97% were certified."
+    - "Oppositions reach 1.69% to 2.62% of trade marks filed each decade since the 1990s and 0.11% to 0.31% of standard
+      patents (recorded from April 2003)."
+  questions:
+    - q: 4
+      how: How applicants move through examination is part of the service IP Australia gives; this says from when it can be measured.
+  sources: [iprapid]
+  chart: U32
+  notebook_charts: [0]
+  prep:
+    - what: The share of each year's applications with each milestone is worked out by financial year of filing.
+      why: Following each year's applications shows when a milestone starts being recorded.
+  steps:
+    - For each type and filing year, work out the share with each milestone recorded.
+    - Average the shares by decade, and look for the years where each one rises from near zero.
+  assumptions:
+    - A milestone that is missing for most of an early cohort was not recorded, rather than not reached.
+  limits:
+    - Where a milestone is not recorded, its absence cannot be read as the step not happening.
+  next: >-
+    Stage 2 compares milestone shares only within the years each is recorded.
+  terms: [examination, acceptance, opposition]
+  related: [U31, U33]
+
+- id: U33
+  lens: rights
+  attachment: Events
+  about: system
+  headline: Patent examination stretched to 755 days for FY2006's applications and has been 422 to 516 days since FY2014
+  statement: >-
+    The median time from a standard patent's examination request to its acceptance rose from 408 days (FY1990) to 755
+    (FY2006), and has been 422 to 516 days since FY2014. Trade marks went from 666 days to acceptance (FY1990) to 52 to
+    184 days from FY2005.
+  figures:
+    - value: "755 days"
+      label: from request to acceptance, FY2006 standard patents
+    - value: "44 days"
+      label: from filing to request for FY2013, the Raising the Bar rush
+  points:
+    - "Filing to examination request, standard patents: 192 days (FY2000), 652 (FY2005), 552 (FY2010), 309 (FY2015) and
+      553 (FY2021). For FY2013 it is 44 days: applicants asked for examination before Raising the Bar took effect, which
+      kept their applications under the old law."
+    - "Certification: 123 to 208 days after grant for innovation patents and 73 to 276 days after registration for
+      designs."
+    - "The latest years are still in progress, so their medians are understated."
+  questions:
+    - q: 4
+      how: Examination time is part of what the office delivers; changes in it are candidate effects of policy and resourcing.
+    - q: 2
+      how: Stage 2 will ask whether waiting times differ by who applies.
+  sources: [iprapid]
+  chart: U33
+  prep:
+    - what: Medians are taken among rights that reached each step, by financial year of filing, FY1990 to FY2021.
+      why: Later years are still being examined, so their medians would be too short.
+  steps:
+    - For each right, work out the days between its milestones.
+    - Take the median by financial year of filing, for each pair of steps.
+  assumptions:
+    - The applicant decides when to request examination; that part of the wait is the applicant's, not the office's.
+  limits:
+    - Only rights that reached a step count, so the times describe successful paths.
+  next: >-
+    Stage 2 compares times by origin and representation.
+  terms: [median, examination, acceptance, raising-the-bar]
+  related: [U11, U12, U34]
+
+- id: U34
+  lens: rights
+  attachment: Events
+  about: system
+  headline: More patent applicants ask for faster examination; trade mark requests fell sharply in November 2018
+  statement: >-
+    Expedited examination was asked for on 1.87% of standard patents examined (FY2005), rising to 10.31% (FY2026).
+    For trade marks, requests fell from 1,373 to 1,548 a month (July to October 2018) to 604 in November, 240 in
+    December and 156 to 294 a month in 2019, the month the register's trade mark records moved between systems.
+  figures:
+    - value: "10.31%"
+      label: of FY2026 standard patents examined asked for speed
+    - value: "604 → 240"
+      label: trade mark expedite requests, November and December 2018
+  points:
+    - "Designs: 2.48% to 4.05% asked for speed since FY2015."
+    - "Trade marks: 16.67% to 19.69% of marks filed FY2000 to FY2018 asked, against 3.08% to 3.97% since FY2020."
+    - "Oppositions: 1.98% to 2.93% of accepted trade marks are opposed; standard patents 0.92% (FY2005), falling to 0.14%
+      to 0.38% since FY2015."
+    - "The November 2018 fall may be a change in recording, in practice, or both: a lead, not a finding."
+  questions:
+    - q: 4
+      how: Demand for speed is a signal of what applicants need; expedited examination is a service IP Australia runs.
+  sources: [iprapid]
+  chart: U34
+  prep:
+    - what: Expedite requests are taken from the event records, by financial year of filing and, for trade marks, by month.
+      why: A monthly count shows exactly when the trade mark series breaks.
+  steps:
+    - For each type and year, work out the share of examined applications with an expedite request.
+    - Count trade mark expedite requests per month around 2018.
+    - Compare the break's month with the date the register's trade mark records were moved (10 November 2018).
+  assumptions:
+    - A fall that coincides exactly with a records migration may be partly an artefact of the migration.
+  limits:
+    - The data cannot say whether trade mark applicants stopped asking, or the new system stopped recording requests (OQ6).
+  next: >-
+    Trade mark expedite shares are compared only on one side of November 2018 until IP Australia explains the fall.
+  terms: [expedited, opposition]
+  related: [U33, U29]
+
+- id: U35
+  lens: rights
+  attachment: Events
+  about: system
+  headline: About one standard patent in seven and one trade mark in five is sold or assigned
+  statement: >-
+    15.1% of standard patents filed in the 2000s and 13.99% of the 1990s' have a recorded assignment (a change of
+    owner), as do 18.1% and 20.63% of trade marks. Assignments run smoothly across FY2003, so they fill most of the gap
+    in ownership history for older patents ({U17}).
+  figures:
+    - value: "15.1%"
+      label: of 2000s standard patents assigned
+    - value: "18.1%"
+      label: of 2000s trade marks assigned
+  points:
+    - "More than once: 2.24% (1990s) and 2.31% (2000s) of standard patents; 6.74% and 4.4% of trade marks."
+    - "From FY2003, 64.68% to 74.66% of patents whose holder changed have an assignment; the assigned share runs on
+      smoothly across the gap: 15.4% (FY2002), 16.41% (FY2003)."
+    - "**Decision.** For patents filed before FY2003, Stage 2 uses assignments as the measure of a change of owner,
+      covering about two-thirds of the changes seen later."
+  questions:
+    - q: 1
+      how: A right that is sold has a market value to someone; sales are one sign of private value.
+    - q: 3
+      how: Licensing and sale are routes to value that Q3 asks about.
+  sources: [iprapid]
+  chart: U35
+  notebook_charts: [0]
+  prep:
+    - what: Assignments are counted from the register's ownership events, each once a day.
+      why: The register publishes each patent assignment twice ({U31}).
+  steps:
+    - For each type and decade of filing, work out the share with at least one assignment.
+    - For standard patents by year, compare the assigned share with the share whose holder changed.
+    - Check that the assigned share has no break at FY2003, where the holder history begins.
+  assumptions:
+    - A recorded assignment is a change of owner.
+  limits:
+    - Unrecorded deals, licences and changes of name are not counted.
+  next: >-
+    Stage 2 compares assignment by origin, technology and firm.
+  terms: [assignment]
+  related: [U17, U18]
+
+- id: U36
+  lens: rights
+  attachment: Events
+  about: system
+  featured: true
+  headline: Owners keep standard patents longer than they used to; about half of trade marks are renewed at ten years
+  statement: >-
+    The median standard patent stayed in force 10.7 years (granted in the 1980s), 11.5 (1990s) and 13.5 (2000s and
+    2010s). 46.9% of trade marks filed in the 2000s and 47.5% of the 2010s' were still in force after 10 years, against
+    67.3% of those filed in 1983 to 1989.
+  figures:
+    - value: "10.7 → 13.5"
+      label: median years a standard patent stays in force, 1980s to 2000s
+    - value: "46.9%"
+      label: of 2000s trade marks still in force after 10 years
+  points:
+    - "Standard patents still in force after 10 years: 54.3%, 56.3%, 71.2% and 70.9% (1980s to 2010s); after 15 years:
+      28.3%, 32.1%, 43.7% and 44.1%."
+    - "Designs: 64.8% of the 2000s' designs were renewed at 5 years, 58.0% of the 2010s'."
+    - "Innovation patents: 39.3% in force after 5 years (median 3.5 years)."
+    - "Plant breeder's rights have no steps (their fees are annual): 42.4% (1990s), 47.8% (2000s) and 59.7% (2010s) in
+      force after 10 years."
+    - "These are lifetimes on the register, not value."
+  questions:
+    - q: 1
+      how: Owners pay to keep a right alive only if it is worth it to them, so lifetimes are a sign of private value. The
+        owner adopted years in force as a working measure for Stage 2, alongside other signals.
+  sources: [iprapid]
+  chart: U36
+  notebook_charts: [0]
+  prep:
+    - what: Each right's years in force run from the date its term starts to the day it ended; rights still in force
+        count as unfinished.
+      why: Dropping rights still alive would leave out the longest-lived and understate lifetimes (ADR 0015).
+    - what: Cohorts start where the register's records are complete (patents from 1980, trade marks from 1983, designs
+        from 1986).
+      why: Earlier years hold survivors only ({U23}).
+  steps:
+    - For each right, take its years in force and whether it has ended.
+    - Group rights into cohorts by when their term began.
+    - For each cohort, work out the share still in force after each number of years, counting unfinished rights for
+      as long as they have run (a Kaplan–Meier survival curve).
+    - Read off the median and the share in force after 10 and 15 years.
+  assumptions:
+    - Rights still in force at the cut-off date would behave like others in their cohort who had lived as long.
+  limits:
+    - Lifetime measures what owners pay to keep, not what society gains.
+    - Owners renew for many reasons, including strategy; long life is a sign of value, not proof.
+  next: >-
+    Stage 2 compares lifetimes by origin, applicant and technology, within cohorts, alongside family reach and citations.
+  terms: [survival-curve, unfinished, cohort, renewal, median]
+  related: [U31, U93, U94]
+
+- id: U37
+  lens: rights
+  attachment: Events
+  about: system
+  headline: Extensions of patent term for medicines are rare, with a wave in 1999 and 2000
+  statement: >-
+    1,450 standard patents (0.24% of those granted) have had their term extended. Grants of extension numbered 108 in
+    1999 and 114 in 2000, when the current scheme began, against 1 to 30 a year in 1991 to 1998 and 14 to 76 a year
+    since.
+  figures:
+    - value: "1,450"
+      label: standard patents with an extended term
+    - value: "24.09 years"
+      label: median life of the extended patents that have ended
+  points:
+    - "616 extended patents ended after more than 20 years; 701 are still in force; the longest lasted 25.01 years."
+  questions:
+    - q: 1
+      how: Extensions trade a longer monopoly on medicines against earlier competition, a direct public cost and benefit question.
+  sources: [iprapid]
+  chart: U37
+  notebook_charts: [0]
+  prep:
+    - what: An extension is the event of an extension being granted to a standard patent.
+      why: That is the event that changes the patent's term.
+  steps:
+    - Count extensions granted by calendar year.
+    - For extended patents, summarise how long they lasted.
+  assumptions:
+    - Extensions are recorded on the register for every patent that received one.
+  limits:
+    - The data do not link an extension to the medicine it covers or its sales.
+  next: >-
+    A later study of medicines could link extended patents to the Pharmaceutical Benefits Scheme.
+  terms: [extension-of-term]
+  related: [U36, U28]
+
+- id: U38
+  lens: rights
+  attachment: Events
+  about: data
+  headline: The 2002 dip in trade mark cessations came from two Acts' different first terms, not from processing
+  statement: >-
+    Trade marks ceasing at 7 years (the first term under the 1955 Act) numbered 4,045 in 2000, 2,161 in 2001 and 14 in
+    2002, while those ceasing at 10 years (the 1995 Act's first term) only began in 2002 (303), building to 7,589 by
+    2005. The gap between the two produced the dip.
+  figures:
+    - value: "4,045 → 14"
+      label: trade marks ceasing at 7 years, 2000 to 2002
+    - value: "42,907"
+      label: trade marks filed in 2000, the peak that drove 2002's lapses
+  points:
+    - "Lapses rose in 2002 because filings peaked in 2000: 10,247 of 2002's lapses were of marks filed in 2000, and 34.4%
+      of 2000's marks lapsed (against 27.8% to 32.7% in 1997 to 2003)."
+    - "So 2002 is a known feature of both series, explained by the register's terms and the 2000 filing peak."
+  questions:
+    - q: 5
+      how: Explains a feature of the record that could otherwise be mistaken for the effect of a policy.
+  sources: [iprapid]
+  chart: U38
+  notebook_charts: [0]
+  prep:
+    - what: Cessations are grouped by the mark's age when it ceased; lapses by the year the mark was filed.
+      why: Age at cessation shows which renewal point a mark failed to pass.
+  steps:
+    - Count trade mark cessations in 1998 to 2006 by the mark's age at the time.
+    - Count lapses in the same years by the year each mark was filed.
+    - Compare with each year's filings and the share that lapsed.
+  assumptions:
+    - A mark's age is measured from its earliest filing date, as its term is ({U31}).
+  limits:
+    - It explains a dip in the timeline; it is not itself a finding about the IP system.
+  next: >-
+    Stage 2 treats 2002 as a known feature of the trade mark series.
+  terms: [cease, lapse, renewal]
+  related: [U27, U29]
+
+- id: U39
+  lens: rights
+  attachment: Events
+  about: data
+  headline: Design lapses look missing in April from 1996 to 2002 because of how they were dated
+  statement: >-
+    Over 1996 to 2002, April holds 101 design lapses dated on 32 days, against 365 to 671 dated on 56 to 91 days in
+    every other month. Designs filed 21 months before April were no fewer, and every month of filing lost a similar
+    share to lapse (18.1% to 21.6%), so April's lapses were dated in other months.
+  figures:
+    - value: "101"
+      label: design lapses in April, 1996 to 2002 together
+    - value: "18.1% to 21.6%"
+      label: of each month's designs lapsed, a similar share every month
+  points:
+    - "Designs lapse a median 637.5 to 680 days after filing, the same in April (644)."
+    - "So monthly design lapses in those years are pooled across months in Stage 2."
+  questions:
+    - q: 5
+      how: Removes a false monthly pattern that could be mistaken for a seasonal or policy effect.
+  sources: [iprapid]
+  chart: U39
+  prep:
+    - what: Lapses from 1996 to 2002 are pooled by month of the year.
+      why: Pooling seven years shows a pattern too small to see in one.
+  steps:
+    - Count design lapses by month of the year, and the number of days each month's lapses are dated on.
+    - Compare with the designs filed 21 months earlier (the median age at lapse).
+    - Check the share of each month's filings that ever lapsed.
+  assumptions:
+    - Designs filed in each month are equally likely to lapse, unless the data show otherwise (they do not).
+  limits:
+    - Explains a recording pattern; it says nothing about designs themselves.
+  next: >-
+    Monthly design lapses in those years are pooled in Stage 2.
+  terms: [lapse, batch-dates]
+  related: [U29, U38]
+
+- id: U40
+  lens: rights
+  attachment: Events
+  about: data
+  headline: False placeholder dates in the register's events, links and parties are few, and are handled
+  statement: >-
+    The placeholder dates 1 January 1800, 1900 and 1970 appear on 7, 1 and 3,154 of the register's 49.35 million
+    events (all left out), on 8 and 26 of its 3.69 million links, and on 101 and 4 of its 12.52 million parties' start
+    dates.
+  figures:
+    - value: "3,154"
+      label: events dated 1 January 1970, left out
+    - value: "49.35 million"
+      label: events checked
+  points:
+    - "Parties' start dates are used only to order a right's filers, so at most 105 could be put in the wrong order."
+  questions:
+    - q: 1
+      how: Confirms that dates used for lifetimes and milestones are sound.
+  sources: [iprapid]
+  prep:
+    - what: Every date column of the events, links and parties tables is checked for the three common placeholders.
+      why: Placeholders stand in for unknown dates and would distort any time measured from them.
+  steps:
+    - For each date column, count the rows on each placeholder date.
+    - Compare with the column's total and how the lens uses it.
+  assumptions:
+    - Dates other than the known placeholders are real.
+  limits:
+    - Other, less obvious false dates could remain.
+  next: >-
+    The open item is closed; the links attachment rechecks its own dates ({U88}).
+  terms: [placeholder-date]
+  related: [U2, U31]
+
+# ------------------------------------------------------------------------------------------------- the links (1.8.3)
+
+- id: U88
+  lens: rights
+  attachment: Links
+  about: data
+  headline: The register labels most international patent numbers as Australian, so an application's office is read from its number
+  statement: >-
+    IP RAPID labels 93.88% of its 614,973 international (PCT) numbers as Australian, and 15,568 of its 1,367,808
+    priority claims carry another office's number under an Australian label. So a patent priority's office is read
+    from the number itself. After that, only 0.7% of standard patents with a priority have an office that cannot be
+    read.
+  figures:
+    - value: "93.88%"
+      label: of PCT numbers labelled Australian in the register
+    - value: "0.7%"
+      label: of priorities whose office cannot be read, after the repair
+  points:
+    - "The route into Australia is filled for 93.69% of rights: every right but provisional applications and plant
+      breeder's rights, which claim nothing."
+    - "65.8% of rights claim no priority; the most claimed priority office is the United States (44.6% of rights with
+      one)."
+    - "8 link dates are placeholders (1800, 1900) and are not used to order priorities."
+  questions:
+    - q: 1
+      how: Where an invention was first filed says where it came from, which matters for where its value is created.
+    - q: 2
+      how: Without the repair, every international application would look Australian.
+  sources: [iprapid]
+  prep:
+    - what: An Australian application number (ten digits, year first) is Australian; a PCT number names its receiving
+        office; any other number labelled Australian has an unknown office.
+      why: The register's country label is wrong for most international numbers (ADR 0022).
+  steps:
+    - Count the register's links by type and how often each is labelled Australian.
+    - Check each labelled number against the pattern of an Australian number.
+    - Read each patent priority's office from its number, and count those left unreadable.
+  assumptions:
+    - A number's format reliably shows the office that issued it.
+  limits:
+    - Trade mark and design priorities keep the register's label, which is sound for them.
+  next: >-
+    The routes and offices feed {U90} and {U91}.
+  terms: [pct, priority]
+  related: [U89, U90, U91]
+
+- id: U89
+  lens: rights
+  attachment: Links
+  about: data
+  headline: The register's count of international patent applications matches WIPO's, year by year
+  statement: >-
+    From 1995 to 2024, the patents entering Australia through the international (PCT) route are a median 1.001 times
+    WIPO's count of PCT entries at IP Australia (0.981 to 1.007 in every year), and the other standard patents are
+    0.989 to 1.019 times WIPO's direct applications.
+  figures:
+    - value: "1.001"
+      label: median ratio of the register's PCT count to WIPO's
+    - value: "0.981 to 1.007"
+      label: the ratio's range, 1995 to 2024
+  points:
+    - "So the links are complete for patents, and the register reproduces WIPO's split between the two routes."
+  questions:
+    - q: 1
+      how: An independent check that the data on how inventions reach Australia can be trusted.
+  sources: [iprapid, wipo_ipstats]
+  chart: U89
+  notebook_charts: [1]
+  prep:
+    - what: Two WIPO indicators (PCT national phase entries and direct applications at IP Australia) were added to the
+        corpus for this check.
+      why: An independent count is the best test of completeness (ADR 0022).
+  steps:
+    - Count standard and second-tier patents by calendar year and route, from the register.
+    - Take WIPO's counts for the same office and years.
+    - Divide one by the other, year by year, and summarise the ratios.
+  assumptions:
+    - WIPO's counts, which IP Australia reports to it, are an independent benchmark.
+  limits:
+    - Agreement in totals does not prove every individual link is right.
+  next: >-
+    The routes can be used in Stage 2 with confidence.
+  terms: [pct, national-phase, ratio, wipo]
+  related: [U88, U90, U67]
+
+- id: U90
+  lens: rights
+  attachment: Links
+  about: system
+  headline: Overseas applicants come through the international route; Australians have moved from provisionals to the PCT, divisionals and direct filing
+  statement: >-
+    The international (PCT) route carried 81.0% of overseas applicants' standard patents in FY2010 and 69.3% in FY2026,
+    while divisionals rose to 19.9%. Australians claiming only an Australian application (usually a provisional) fell
+    from 81.2% (FY1985) to 11.4% (FY2026), and direct filing, claiming nothing, reached 28.3% in FY2026.
+  figures:
+    - value: "81.0%"
+      label: of overseas standard patents came through the PCT in FY2010
+    - value: "28.3%"
+      label: of Australians' standard patents filed directly in FY2026, a lead
+  points:
+    - "Australians' use of the PCT rose from 7.8% to 45.2% (FY2020) and 34.6% (FY2026); divisionals from 2.0% to 22.2%."
+    - "Trade marks: Australians' are 97.9% to 99.1% direct; from overseas, the Madrid system carried 36.7% in FY2005,
+      57.2% in FY2020 and 44.0% in FY2026."
+    - "Designs from overseas claim a priority abroad for 70.7% (FY1985) to 87.5% (FY2010) and 75.8% (FY2026)."
+    - "The rise in direct filing is a lead: a change in practice, or priority claims recorded late."
+  questions:
+    - q: 1
+      how: How inventions reach Australia shows how the system connects to others, and where Australian inventions start.
+    - q: 3
+      how: Routes into other markets (PCT, Madrid) are part of how Q3's "access to international markets" works.
+  sources: [iprapid]
+  chart: U90
+  notebook_charts: [0]
+  prep:
+    - what: Each right's route is the first that applies, in the order PCT, divisional, priority abroad, Australian
+        priority, direct (Madrid for trade marks).
+      why: A right can claim several things; one route each keeps the shares adding to 100%.
+  steps:
+    - Give each right its route.
+    - Count rights by type, origin, filing year and route.
+    - Work out each route's share of each year's applications.
+  assumptions:
+    - The order of routes reflects how the application actually entered Australia.
+  limits:
+    - Recent direct filings may still have priority claims added; the FY2026 figure may change.
+  next: >-
+    Stage 2 compares routes by origin, applicant and technology.
+  terms: [pct, divisional, priority, madrid, provisional]
+  related: [U88, U89, U91]
+
+- id: U91
+  lens: rights
+  attachment: Links
+  about: system
+  headline: Most inventions patented here from overseas were first filed in the United States; Australians file their international applications at home
+  statement: >-
+    Of standard patents filed FY2017 to FY2026 from overseas, the earliest priority was filed in the United States for
+    53.42%, at the European Patent Office for 10.43%, in China 7.76% and Japan 5.35%. 91.24% of Australians'
+    international applications were filed at IP Australia.
+  figures:
+    - value: "53.42%"
+      label: of overseas inventions first filed in the United States
+    - value: "91.24%"
+      label: of Australians' PCT applications filed at IP Australia
+  points:
+    - "88.3% of Australians' priorities are Australian applications (7.97% American)."
+    - "Australian trade marks used as the basis of an international (Madrid) application numbered 268 (filed 2001),
+      1,941 (2015), 2,258 (2020) and 1,455 (2025); WIPO counts 2,064 (2015) and 2,151 (2020). The two agree in size."
+  questions:
+    - q: 1
+      how: Shows where the inventions protected in Australia originate.
+    - q: 3
+      how: Australian brands taken abroad through Madrid are one measure of reaching international markets.
+  sources: [iprapid, wipo_ipstats]
+  chart: U91
+  notebook_charts: [2]
+  prep:
+    - what: The earliest priority's office is read from its number ({U88}).
+      why: The register's label is unreliable for patents.
+  steps:
+    - For standard patents filed FY2017 to FY2026, count the earliest priority's office, by origin.
+    - Count the receiving office of each PCT application.
+    - Count Australian trade marks that became the basis of a Madrid application, and compare with WIPO.
+  assumptions:
+    - The office of first filing is where the invention originated.
+  limits:
+    - Where an invention was first filed is not always where it was made ({U96}).
+  next: >-
+    Stage 2 relates first-filing offices to inventors' locations and technology.
+  terms: [priority, pct, madrid]
+  related: [U88, U90, U96]
+
+# ------------------------------------------------------------------------------------------------- Google Patents (1.8.4)
+
+- id: U92
+  lens: rights
+  attachment: Google Patents
+  about: data
+  headline: Google Patents finds the worldwide family of nearly every standard patent filed since the 1980s
+  statement: >-
+    The family is found for 98.78% of standard patents filed in the 1980s, 98.99% (1990s), 94.81% (2000s), 99.23%
+    (2010s) and 98.14% (2020s). Provisional applications, which are rarely published, are almost never found.
+  figures:
+    - value: "99.23%"
+      label: of 2010s standard patents have their family found
+    - value: "23.14%"
+      label: of FY2010 to FY2019 standard patents share a family with another Australian application
+  points:
+    - "734 Australian application numbers fall in two families; the lower family number is taken, so every build agrees."
+    - "Sharing a family is mostly through divisionals (88.29%), so family measures repeat across those applications."
+    - "Five years of citations are complete for every family filed to FY2019, for 96.12% of FY2021's and 16.31% of
+      FY2024's."
+  questions:
+    - q: 1
+      how: Family reach and citations, the next two observations, are only usable because families are found this reliably.
+  sources: [google_patents, iprapid]
+  chart:
+    type: bar
+    title: Standard patents whose worldwide family is found
+    subtitle: By decade of filing
+    x: {type: category, values: [1970s, 1980s, 1990s, 2000s, 2010s, 2020s]}
+    y: {name: "% found in Google Patents", min: 0, max: 100, format: pct, digits: 2}
+    series:
+      - name: Found
+        data: [81.17, 98.78, 98.99, 94.81, 99.23, 98.14]
+    source: Google Patents Public Data, joined to IP RAPID (lens rights)
+  prep:
+    - what: Each Australian application is matched to its Google Patents family by its Australian application number,
+        with designs left out.
+      why: Google converts the old numbering schemes, so one key reaches every era (ADR 0022).
+    - what: The five-year citation count is left empty where five years have not yet passed.
+      why: A family filed recently has had less time to be cited; comparing it with older ones would mislead.
+  steps:
+    - Match each Australian patent application to a Google Patents family.
+    - Work out the share found, by type and decade.
+    - Count applications that share a family, and why.
+  assumptions:
+    - Google Patents' families group the same invention correctly.
+  limits:
+    - A family's measures are the whole family's, so divisionals share their parent's.
+  next: >-
+    Family reach and citations are compared within cohorts in Stage 2.
+  terms: [patent-family, citations, divisional]
+  related: [U93, U94]
+
+- id: U93
+  lens: rights
+  attachment: Google Patents
+  about: system
+  headline: Overseas applicants' patents are filed in a median six countries' offices; Australians' in two
+  statement: >-
+    Of standard patents filed FY2010 to FY2019, overseas applicants' families reach a median 6 offices, 68.9% reach five
+    or more, and 66.66% are granted in the United States. Australians' reach a median 2 offices; 45.53% are filed only in
+    Australia, and 29.09% are granted in the United States.
+  figures:
+    - value: "6 vs 2"
+      label: median offices reached, overseas against Australian applicants
+    - value: "45.53%"
+      label: of Australians' standard patents filed only in Australia
+  points:
+    - "Australian individuals filed 59.91% of theirs only in Australia, organisations 40.71%."
+    - "8.28% of overseas applicants' patents were filed only in Australia."
+    - "Reach is chosen by the owner and costs money in every office, so it is a common sign of expected value."
+  questions:
+    - q: 1
+      how: How widely an invention is protected is a widely used sign of its expected private value.
+    - q: 2
+      how: Australians, and individuals most, protect more narrowly, which bears on who gets value from inventing.
+  sources: [google_patents, iprapid]
+  chart: U93
+  notebook_charts: [0]
+  prep:
+    - what: Standard patents filed FY2010 to FY2019 are used.
+      why: They are nearly all decided, and five years of citations are complete for most.
+  steps:
+    - For each standard patent, take the number of offices its family reached and whether the US granted it.
+    - Summarise by the applicant's origin, and for Australians by individual or organisation.
+  assumptions:
+    - Filing in more offices reflects higher expected value, as the literature commonly assumes.
+  limits:
+    - Reach also depends on markets and budgets; a small firm may value a patent it can afford to file only here.
+  next: >-
+    Stage 2 uses reach beside years in force and citations, within cohorts and technology fields.
+  terms: [patent-family, median]
+  related: [U36, U92, U94]
+
+- id: U94
+  lens: rights
+  attachment: Google Patents
+  about: system
+  headline: Australians' patents are cited less by later inventions than overseas applicants' patents
+  statement: >-
+    Within five years, standard patents filed FY2010 to FY2019 by overseas applicants were cited by a median 6 later
+    patent families, and 13.29% were never cited. Australians' were cited by a median 1, and 43.99% were never cited.
+  figures:
+    - value: "6 vs 1"
+      label: median citing families in five years, overseas against Australian
+    - value: "43.99%"
+      label: of Australians' standard patents not cited within five years
+  points:
+    - "The spread is a long tail: the 99th percentile is 136 citing families for overseas applicants' patents and 44 for
+      Australians'."
+    - "A family filed in more offices is more often cited, so citations are compared beside family size."
+  questions:
+    - q: 1
+      how: Citations are a sign that later inventions build on a patent, one route to wider public value.
+  sources: [google_patents, iprapid]
+  chart: U94
+  prep:
+    - what: Citations are counted as distinct later families citing the family within five years of its first filing.
+      why: A fixed window treats old and new patents alike; the count is empty where the window is not complete.
+  steps:
+    - For standard patents filed FY2010 to FY2019, take each family's five-year citation count.
+    - Summarise by origin (median, share never cited, 99th percentile).
+  assumptions:
+    - A citation means the later invention builds on, or is close to, the cited one.
+  limits:
+    - Citations reflect family size, field and examiners' practice, not only importance.
+  next: >-
+    Stage 2 compares citations as ranks or logs, within cohorts and fields, beside family size.
+  terms: [citations, patent-family, long-tail, log-scale]
+  related: [U85, U93]
+
+# ------------------------------------------------------------------------------------------------- inventors (1.8.5)
+
+- id: U95
+  lens: rights
+  attachment: Inventors
+  about: data
+  headline: Inventors' countries are missing for most patents filed only in Australia
+  statement: >-
+    An inventor's country is known for 87.57% to 97.06% of overseas filers' standard patents each decade, but for only
+    11.71% (1990s), 22.3% (2000s), 56.98% (2010s) and 64.27% (2020s) of Australian filers'. Of Australian filers' patents
+    with inventors but no country, 94.33% to 99.18% were filed only in Australia, where Google's records give no inventor
+    countries.
+  figures:
+    - value: "56.98%"
+      label: of Australian filers' 2010s patents have an inventor's country
+    - value: "3"
+      label: inventors named on the median standard patent
+  points:
+    - "Inventors are named for 25.7% of rights (patents with a family that names them); standard patents filed FY2017 to
+      FY2026 name a median 3 (22.46% name one)."
+    - "**So** \"invented in Australia\" describes Australian filers' patents that were also filed abroad, and leaves out
+      most of those filed only here."
+  questions:
+    - q: 2
+      how: Limits what can be said about who invents in Australia, and for which patents.
+  sources: [google_patents_inventors, google_patents, iprapid]
+  chart: U95
+  prep:
+    - what: Inventors come from one publication per family, the one naming the most, with countries borrowed from the
+        rest of the family.
+      why: Counting every publication's names nearly doubled the inventors (ADR 0008).
+  steps:
+    - For each patent, count its inventors and those with a known country.
+    - Work out the share with a known country, by type, origin and decade.
+    - For those with inventors but no country, check how many were filed only in Australia.
+  assumptions:
+    - An inventor's recorded country is where they lived when the invention was made.
+  limits:
+    - Patents filed only in Australia, half of Australians', mostly cannot be placed.
+  next: >-
+    Stage 2 reads "invented in Australia" only among patents whose inventors' countries are known.
+  terms: [patent-family]
+  related: [U96, U97]
+
+- id: U96
+  lens: rights
+  attachment: Inventors
+  about: system
+  headline: Inventions filed from Australia are made here; very few filed from overseas are
+  statement: >-
+    Of standard patents filed FY2017 to FY2026 whose inventors' countries are known, 94.47% of those filed from
+    Australia have an inventor in Australia (16,062), against 0.85% of those filed from overseas (2,278).
+  figures:
+    - value: "94.47%"
+      label: of Australian-filed patents have an inventor in Australia
+    - value: "0.85%"
+      label: of overseas-filed patents have one
+  points:
+    - "Overseas filers' patents with an inventor in Australia numbered 28 (FY1990), 222 (FY2010), 212 (FY2020) and 222
+      (FY2026)."
+  questions:
+    - q: 1
+      how: Where inventions are made matters for where the knowledge and jobs behind them are; very little of what
+        overseas applicants patent here is invented here.
+    - q: 2
+      how: Australian inventors working for overseas firms are a group whose benefit from the system may be indirect.
+  sources: [google_patents_inventors, iprapid]
+  chart: U96
+  prep:
+    - what: A patent is "invented in Australia" if any inventor with a known country is in Australia.
+      why: One Australian inventor is enough for the invention to involve work here.
+  steps:
+    - Take standard patents filed FY2017 to FY2026 whose inventors' countries are known.
+    - Split by whether the filer is Australian, and count those with an inventor in Australia.
+    - Repeat by year for overseas filers.
+  assumptions:
+    - The inventor's country is where the inventive work was done.
+  limits:
+    - Most patents filed only in Australia are left out, because their inventors' countries are unknown ({U95}).
+  next: >-
+    Stage 2 relates where inventions are made to who owns them and the route they take.
+  terms: [patent-family]
+  related: [U90, U95, U71]
+
+- id: U97
+  lens: rights
+  attachment: Inventors
+  about: data
+  headline: Gender estimated from names matches WIPO's figure for Australia, but not for most other countries
+  statement: >-
+    For inventors of international applications, the share estimated to be women is 14.6% for Australia, against
+    WIPO's published 13.8%. But the median country is 4.5 points too high, and China (34.6% against 23.4%) and Korea
+    (37.0% against 15.7%) far too high. So estimates are read for inventors in Australia only.
+  figures:
+    - value: "14.6% vs 13.8%"
+      label: Australia, estimated against WIPO's share of women inventors
+    - value: "+21.3 points"
+      label: Korea's estimate above WIPO's
+  points:
+    - "The Netherlands, Spain, New Zealand, Finland and Ireland are within 2 points."
+    - "The United States 20.0% against 15.3%; Germany 16.6% against 10.7%; Japan 16.3% against 9.0%."
+    - "For China, 49.1% of names are between 10% and 90% likely to be a woman's; in Korea only 53.3% of inventors get
+      an estimate."
+    - "**Decision.** Estimates are read as levels for inventors in Australia only; for other countries only within one
+      country over time; for China and Korea not at all."
+  questions:
+    - q: 2
+      how: Q2 asks how outcomes vary by gender where reliable data exist; this check is what makes the Australian figure usable.
+  sources: [google_patents_inventors, wgnd, wipo_ipstats]
+  chart: U97
+  notebook_charts: [1]
+  prep:
+    - what: Each inventor's chance of being a woman comes from WIPO's World Gender-Name Dictionary, by first name and
+        country.
+      why: Gender is not recorded anywhere; a name-based probability is the only route, and must be checked.
+    - what: WIPO's share of women among PCT inventors by country was added to the corpus for the check.
+      why: An independent benchmark is needed before using any estimate (ADR 0022).
+  steps:
+    - For inventors of PCT families first filed 2015 to 2022, average their probabilities by country.
+    - Compare with WIPO's published share for 2016 to 2023, country by country.
+    - For Australia, compare year by year.
+  assumptions:
+    - Summed over many inventors, name-based probabilities give a fair count of women, where names are informative.
+  limits:
+    - An estimate says nothing about any individual.
+    - Recent Australian estimates run above WIPO's (17.2% against 14.4% in 2023).
+  next: >-
+    Stage 2 compares women's estimated share among inventors in Australia by field and filer.
+  terms: [gender-estimate, wipo]
+  related: [U95, U98]
+
+- id: U98
+  lens: rights
+  attachment: Inventors
+  about: system
+  headline: About one inventor in seven in Australia is estimated to be a woman
+  statement: >-
+    Of the inventors in Australia named on standard patents filed FY2017 to FY2026, an estimated 14.34% are women on
+    patents filed by Australian organisations, 12.43% on those filed by Australian individuals and 12.75% on those
+    filed from overseas.
+  figures:
+    - value: "14.34%"
+      label: estimated women among inventors on Australian organisations' patents
+  points:
+    - "It is an expected count from names, not a record of anyone's gender."
+  questions:
+    - q: 2
+      how: A first, checked measure of gender among inventors in Australia, which Q2 asks about directly.
+  sources: [google_patents_inventors, wgnd, iprapid]
+  chart:
+    type: bar
+    horizontal: true
+    title: Estimated women among inventors in Australia
+    subtitle: Standard patents filed FY2017 to FY2026, by who filed them; each inventor counted once per patent
+    x: {type: category, values: [Australian organisations, Australian individuals, Overseas filers]}
+    y: {name: "% estimated to be women", min: 0, format: pct, digits: 2}
+    series:
+      - name: Estimated women
+        data: [14.34, 12.43, 12.75]
+    source: Google Patents Public Data; WIPO World Gender-Name Dictionary; IP RAPID (lens rights)
+  prep:
+    - what: Only inventors in Australia are counted, each once per patent.
+      why: Australia is the one country whose estimates WIPO's figures confirm ({U97}).
+  steps:
+    - Take the inventors in Australia on standard patents filed FY2017 to FY2026.
+    - Average their probability of being a woman, by who filed the patent.
+  assumptions:
+    - The name-based estimate is as accurate for these patents as for the PCT inventors it was checked on.
+  limits:
+    - Covers patents with known inventor countries, which leaves out most patents filed only in Australia ({U95}).
+  next: >-
+    Stage 2 compares the share by technology field and filer.
+  terms: [gender-estimate]
+  related: [U97]

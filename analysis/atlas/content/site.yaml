@@ -1,0 +1,466 @@
+# The evidence atlas's own pages: everything that is not one observation, a lens, a question or a glossary term.
+# Plain English, Australian spelling, sentence case. Markup: **bold**, [[term]], {U44}, OQ numbers.
+# Numbers here come from docs/stage-1-summary.md, the research goal and the notebook; each is traceable to an
+# observation, linked where it is named.
+
+as_at: "2026-10-27"
+
+hero:
+  eyebrow: Stage 1 of 3 · exploratory data analysis · complete
+  title: What Australia's IP data show so far, and how we know
+  lead: >-
+    This research asks how Australia's intellectual property system creates public value, and where IP Australia
+    could add the most. Before answering, every piece of data has been examined on its own. These pages set out what
+    that first stage found, in plain English, and let you follow any finding back to the public data it came from.
+
+stats:
+  - value: "{n}"
+    label: numbered observations
+  - value: "7"
+    label: lenses (units of analysis)
+  - value: "42"
+    label: public data sources
+  - value: "5"
+    label: research questions, still to answer
+
+banner: >-
+  **Stage 1 describes; it does not explain.** Every observation here says what the data show: how much, how often,
+  for whom, since when. None says why, none is a cause, and none answers a research question yet. Associations come
+  in Stage 2; anything causal needs designs that come after Stage 3.
+
+journey_intro: >-
+  The analysis has three stages, each looking at the same data in a new way. Only after the third, and with the
+  research owner's agreement, are the five questions answered.
+
+stages:
+  - n: "1"
+    name: Each variable on its own
+    status: Complete
+    short: What each measure looks like, how complete it is, and its quirks. 99 observations.
+    href: "#/observations"
+  - n: "2"
+    name: Pairs of variables
+    status: Next
+    short: Which measures move together, how strongly, and for whom.
+  - n: "3"
+    name: Many variables together
+    status: To come
+    short: Whether the signals survive once other factors are allowed for.
+  - n: "→"
+    name: Answering the questions
+    status: After Stage 3
+    short: The five questions, with evidence proportionate to each claim.
+
+featured:
+  id: U44
+  intro: Every observation can be followed from the published data to the finding. This one shows how.
+  title: A few firms file most of the patents that firms file
+  text: >-
+    The top 1% of firms that file standard patents filed 55.3% of them. Open it to see where the data came from, how
+    they were prepared, the reasoning that leads to the number, and what it cannot tell you.
+
+ten_intro: >-
+  Read together, the 99 observations point to a handful of patterns. Each is descriptive: a shape in the data worth
+  testing, not an explanation. The numbers link to the observations behind them.
+
+ten:
+  - title: Patents are mostly filed from overseas; trade marks mostly from home
+    text: >-
+      About nine in ten standard patents filed in Australia come from overseas (the United States alone 43.5%),
+      against 59.0% of trade marks filed by Australians. China now files as many patent applications here as
+      Australians do, and three-quarters of Australians' own applications are made abroad.
+    ids: [U13, U70, U93]
+  - title: Almost everything is concentrated
+    text: >-
+      The top 1% of filing firms filed 55.3% of firms' standard patents; the tenth of postal areas with the most
+      patents filed 72.5% of them with 29.2% of the people; five attorney firms handle 63.96% of standard patents;
+      the Group of Eight hold two-thirds of ARC and NHMRC funding.
+    ids: [U44, U52, U21, U83]
+  - title: Places differ far more than chance would make them
+    text: >-
+      68.2% to 72.5% of areas file below what chance allows around the national rate, and 6.7% to 15.5% above it,
+      in small areas and pooled ones alike. Later stages must model this spread rather than assume it away.
+    ids: [U53]
+  - title: Australians, above all individuals, often file without an attorney
+    text: >-
+      Overseas filers use an attorney for 99.0% of standard patents, Australian filers for 85.4%, and Australian
+      individuals file 62.4% of their trade marks alone.
+    ids: [U20, U48]
+  - title: Provisional applications doubled in FY2026
+    text: >-
+      10,069 against 4,143 to 5,047 a year before, driven by individuals without business numbers, both broadly and
+      through a few heavy filers. It is real, not a recording artefact. Why is a question for IP Australia.
+    ids: [U8]
+  - title: Policy changes leave clear marks
+    text: >-
+      Rushes to file before a rule changed (Raising the Bar, 4.39 times Australians' usual month; the innovation
+      patent's closure, 4.31 times), steps, and pauses when new Acts began. These are the raw material for the
+      natural experiments the later questions need.
+    ids: [U28, U3]
+  - title: Patents are kept longer than they were; about half of trade marks are renewed at ten years
+    text: >-
+      Standard patents' median years in force rose from 10.7 (1980s) to 13.5 (2000s and 2010s). The research owner
+      has adopted years in force as a working measure for Stage 2, alongside other signals.
+    ids: [U36]
+  - title: Australia's research is used, but mostly abroad
+    text: >-
+      93.6% of US patent citations to Australian research institutions' work come from inventions with no Australian
+      applicant or inventor. Research intensity peaked in 2008 and has fallen below the OECD median.
+    ids: [U85, U65, U66]
+  - title: The register's history shapes what it can say
+    text: >-
+      Early years hold only the rights that survived until records were computerised; some events were dated in
+      batches; patent ownership history starts in FY2003. Each is handled, but each limits comparisons over time.
+    ids: [U23, U17, U34]
+  - title: Links between datasets are the weakest point
+    text: >-
+      Firms' IP counts are lower bounds; fewer recent filers are linked to a business number; no firm has an industry;
+      half the universities' patents carry a postcode that is not a place where people live.
+    ids: [U41, U45, U75, U87]
+
+reading:
+  intro: >-
+    Every observation page has the same parts, and each part looks different, so that a finding is never confused
+    with the reasoning, assumptions or limits around it.
+  parts:
+    - kind: obs
+      title: The observation
+      text: The finding itself, in a green box with its number (U1 to U98). Only this is a finding.
+    - kind: step
+      title: Reasoning steps
+      text: How the data lead to the finding, one step at a time, in dashed grey. Steps are not findings.
+    - kind: assume
+      title: Assumptions
+      text: Where the analysis takes something as given. Marked in amber, so you can judge them.
+    - kind: limit
+      title: Limits
+      text: What the observation cannot tell you, in rose.
+    - kind: explain
+      title: Explainers
+      text: Statistical or technical terms, explained in blue beside the text, and on any dotted word.
+  strength_intro: >-
+    The research goal asks every claim to say how strong its evidence is. There are four levels. Everything in
+    Stage 1 is the first.
+  strengths:
+    - name: Descriptive
+      now: true
+      text: What the data show. How much, how often, for whom. No claim about why.
+    - name: Observational
+      text: Two things go together. There may be other explanations. Stage 2 and 3 produce these.
+    - name: Causal
+      text: One thing causes another. Needs a design, such as a natural experiment, that this exploration does not have.
+    - name: Projected
+      text: An estimate of the future, with its assumptions stated. Belongs to Question 5.
+
+observations_intro: >-
+  Every observation from Stage 1, grouped by lens. Filter by lens, by research question, or by whether it describes
+  the IP system or the data themselves. Many Stage 1 observations are about the data: what is complete, what was
+  repaired, and what can safely be compared. They are what make later findings trustworthy.
+
+storage_text: >-
+  **Kept as published.** Each publisher's file is downloaded and kept exactly as released (the "raw" copy), so any
+  number can be traced back to the original.
+
+
+  **Tidied, not changed.** Each raw file is converted into tidy tables in a standard format (Parquet), one row per
+  record, with the publisher's values kept. Where a source had to be repaired, the repair is written into code and
+  recorded in a decision record, and the raw file still holds the original.
+
+
+  **Fingerprinted.** Every file gets a fingerprint (a SHA-256 hash: a code that changes if a single character of the
+  file changes), its size, rows and location, in the project's manifest. Tests check the files against the
+  fingerprints.
+
+
+  **Stored in two places.** Small tables are kept in the GitHub repository itself. Large ones (IP RAPID's events, the
+  business register and others) are kept in a private cloud storage bucket (Cloudflare R2), because they are too big
+  for GitHub; the manifest records them in the same way.
+
+lenses_page:
+  intro: >-
+    A lens is an analysis-ready table with one row per thing being described: an IP right, a firm, a place, a country
+    in a year, a month, an industry in a year, or a research institution in a year. Every source in the corpus is
+    attached to at least one lens.
+  why: >-
+    Two measures can only be compared if they describe the same thing. A patent count and a population cannot be set
+    side by side until both are counted for the same place. So every table is brought to a lens's unit by a stated
+    join or sum, and each lens keeps one row per unit (a test checks). Where two sources measure the same thing, one
+    is the main measure and the other a labelled comparison; they are never added together.
+
+questions_page:
+  intro: >-
+    The research asks five questions, from what public value the IP system creates to what interventions could
+    achieve. Stage 1 does not answer them. It finds out what the data can and cannot say about each, so that the
+    answers, when they come, rest on sound ground.
+  caution: >-
+    Each observation names the questions it moves closer to and says how. Those links are the analyst's guide, not
+    findings: an observation about patents filed from overseas does not, on its own, say anything about who benefits.
+
+data_page:
+  intro: >-
+    Every number on these pages starts in data that a public body published: IP Australia, the ABS, the ATO, the
+    World Bank, WIPO, the OECD and others. Nothing is typed in by hand. This page follows a number from its publisher
+    to an observation, and lists every source with its licence and where it is kept.
+  sources_intro: >-
+    The source register (42 sources). Observation {U0} describes the corpus as profiled on 25 October 2026 (41
+    sources, 162 tables); the research institutions' register (ROR) was added the next day. Open a source to see its
+    tables, their size, where each is kept and its fingerprint.
+  journey:
+    - title: Published
+      short: Published
+      sub: A public body releases the data
+      text: >-
+        A publisher releases data on its website or an open data portal, under a licence (most here are Creative
+        Commons, which allow reuse with credit).
+    - title: Copied as published
+      short: Copied
+      sub: The raw file is kept unchanged
+      text: >-
+        The project downloads the file and keeps it exactly as released, with the date it was copied. Nothing is
+        retyped.
+    - title: Tidied into tables
+      short: Tidied
+      sub: One row per record, values kept
+      text: >-
+        Code (one module per source, in the repository) reads the raw file into tidy tables. Values are not changed;
+        where a source needed repair, the repair is in code and recorded.
+    - title: Fingerprinted and stored
+      short: Stored
+      sub: In GitHub, or cloud storage if large
+      text: >-
+        Each table's fingerprint, rows and location go into the manifest. Small tables live in the repository; large
+        ones in a cloud storage bucket.
+    - title: Built into a lens
+      short: Lens
+      sub: One row per right, firm, place…
+      text: >-
+        The build code joins the tables into seven lenses, one row per unit. Every derived column is defined in one
+        file, so anyone can check exactly how it was made. Lenses are rebuilt in minutes, never edited by hand.
+    - title: Profiled in the notebook
+      short: Profiled
+      sub: Queries, charts and outputs saved
+      text: >-
+        The Stage 1 notebook runs a query on a lens, and saves its output (a table or chart) with the notebook, so it
+        can be read on GitHub without running anything.
+    - title: Written as an observation
+      short: Observation
+      sub: Quoting the output above it
+      text: >-
+        The analyst writes the observation directly under the output, quoting its numbers. If a number is not on the
+        page, it is not a finding. These pages are checked against the notebook in the same way.
+
+limits:
+  intro: >-
+    Stage 1 is groundwork. It is honest about what it is: a careful description of each measure on its own. This page
+    gathers what it cannot do, the assumptions it makes, where the data are weakest, and the mistakes found and
+    corrected on the way.
+  cannot:
+    - title: Why
+      text: >-
+        Every observation is descriptive. Stage 1 shows when, how much and who, not what caused it. Associations come
+        in Stage 2, and causal claims need designs (such as natural experiments) after Stage 3.
+    - title: Value
+      text: >-
+        Counts of rights, lifetimes and citations are measures of activity and private use, not of public value. The
+        research goal treats them as indicators, never as success.
+    - title: Everyone
+      text: >-
+        The firms lens holds firms that used a scheme, not all businesses. Individuals in IP RAPID are pseudonymised,
+        so their gender cannot be estimated; only inventors' can, from names, and reliably only for inventors in
+        Australia.
+    - title: Small firms' outcomes
+      text: >-
+        Without the ABS's BLADE (linked business data, ruled out for now), firm-level growth and survival for small
+        businesses are out of reach. This limits how far Questions 3 and 5 can be answered.
+    - title: Relationships
+      text: >-
+        By design, Stage 1 never relates one variable to another. Where two numbers sit side by side on a page (say,
+        patents and people in an area), they are context, not a measured relationship.
+    - title: The present
+      text: >-
+        The latest months of some records are incomplete because the register records them late (trade mark and
+        design cessations, recent ABN links). Each observation says which years are safe to compare.
+  assumptions:
+    - Public data are taken to be what their publishers say they are. Where checks found otherwise (placeholder dates,
+      mislabelled countries, numbers counted twice), the data were repaired and the repair recorded; elsewhere, the
+      publisher's values stand.
+    - A business is identified by its ABN. Related companies in a group have different ABNs and are counted apart.
+    - A place is a postal area, reached through the postcode recorded on an application or in the business register.
+      A registered address may be a head office or an adviser's, not where the work is done.
+    - An industry is reached through what a right protects (its technology or goods classes), by published
+      probabilities, because no firm in the corpus has an industry.
+    - Gender is estimated from first names and countries, as a probability summed over many people; it says nothing
+      about any one person, and is read only for inventors in Australia.
+    - Money is shown as recorded (nominal); Stage 2 adjusts for inflation with the quarterly Consumer Price Index.
+    - Where a series begins with only the survivors of an earlier system, or with partial records, those years are
+      left out rather than estimated.
+  weak_intro: >-
+    The binding limit on what this research can say is how well its datasets link together. These are the links
+    Stage 1 found weakest.
+  weak:
+    - title: Firms
+      text: Firms reach IP only through business numbers on applications, so firms' IP counts are lower bounds, and fewer recent filers carry one ({U41}, {U45}).
+    - title: Industries
+      text: Industries reach patents only through a crosswalk that leaves out services ({U75}).
+    - title: Places
+      text: Places reach IP only through postcodes, and half the universities' patents carry a postcode where no one lives ({U49}, {U87}).
+    - title: Institutions
+      text: Research institutions reach their IP through a reviewed list of names and business numbers that someone in the sector has yet to check ({U81}, OQ11).
+    - title: Inventors
+      text: Inventors' countries are known mostly for patents also filed abroad, and gender only as an estimate that holds for Australia ({U95}, {U97}).
+  corrections_intro: >-
+    The record corrects its own mistakes when they are found, in the notebook and in the summary. These are the
+    corrections made during Stage 1 and in building these pages.
+  corrections:
+    - when: 25 October 2026
+      what: The policy register said the Patents Act 1990 brought in 20-year patents.
+      now: Its term was 16 years until 1 July 1995; the change is now the 17th policy event ({U23}).
+    - when: 25 October 2026
+      what: Charts of trade marks before 1983 and designs before 1986 showed survivors without saying so.
+      now: Corrected in {U5} and {U10}; the series start where records are complete.
+    - when: 26 October 2026
+      what: The World Bank's trade mark series was described as applications.
+      now: It counts classes, as WIPO's do ({U67}).
+    - when: 26 October 2026
+      what: Five figures differed slightly between builds of the lenses, because two ties were broken arbitrarily.
+      now: The ties are fixed, two builds agree row for row, and the figures are corrected ({U48}, {U49}, {U52}, {U53}).
+    - when: 26 October 2026
+      what: Three more figures depended on how ties fell (the share of people in the top tenth of areas; universities' postcodes).
+      now: "Corrected ({U52}: 29.2% and 32.8% of people; {U87}: UNSW's 210, not 216)."
+    - when: 27 October 2026
+      what: Observation {U0} still gave the first corpus profile (152 tables from 38 sources) when the output above it gave the later one.
+      now: The notebook's text now follows its output (162 tables from 41 sources), found while building these pages.
+
+next:
+  intro: >-
+    Stage 1 prepared the ground. The next two stages look at the same data in new ways, each deepening what we
+    understand, before the five questions are answered. Nothing below has been done yet.
+  stages:
+    - name: Stage 2, pairs of variables
+      when: Next, when the owner says
+      asks: Which pairs of measures move together, in what shape, how strongly, and for whom?
+      how: >-
+        Within each lens, every pair of variables is screened. Promising pairs are measured with an effect size (how
+        big the link is) and an interval (how sure we can be), corrected for the number of pairs tested, and checked
+        in a second period or sample before they count.
+      example: >-
+        Do postal areas with more advantaged residents file more patents per person, and is the gap the same for
+        individuals and organisations?
+      adds: >-
+        The first **observational** evidence: associations that may bear on who benefits (Q2) and on the conditions
+        for value (Q3), with the rules Stage 1 set (medians not means, the safe years, the right counts).
+      done: Every pair within each lens screened; each lead with its size and interval, surviving correction and a second sample.
+    - name: Stage 3, many variables together
+      when: After Stage 2
+      asks: Do the signals survive once other factors are allowed for? What structure and groups exist?
+      how: >-
+        Several variables are looked at together: whether a link between two holds when a third is held steady,
+        which variables move as a group, and which kinds of firms or places form natural clusters.
+      example: >-
+        Is a place's patent rate still linked to advantage once its mix of industries and its universities are
+        allowed for?
+      adds: >-
+        Separates real signals from ones explained by something else, and produces two tables: early signals (with
+        their evidence and strength) and data gaps (with possible sources and costs).
+      done: A table of early signals and a table of data gaps, reviewed with the owner.
+    - name: Answering the questions
+      when: After Stage 3, with the owner's agreement
+      asks: The five research questions.
+      how: >-
+        Analyses designed for each question: descriptive where that suffices, and natural experiments or other
+        designs wherever an additional benefit is claimed.
+      example: >-
+        Using the closure of the innovation patent, or a fee change, as a natural experiment to estimate what a policy
+        actually changed.
+      adds: Answers with evidence proportionate to each claim, as the research goal requires.
+      done: When the owner adopts the findings.
+  leads_intro: >-
+    The pairs worth testing, from the leads Stage 1 found. Each will need its size, its interval, a correction for
+    the number of pairs tested, and a second period or sample before it counts.
+  leads:
+    - lead: The provisional rise, against policy and fee events, and IP Australia's own figures
+      ids: [U8]
+      questions: [4]
+    - lead: Before and after each policy change (two rushes, four steps, two pauses), with placebo dates
+      ids: [U28]
+      questions: [4, 5]
+    - lead: Filing without an attorney, and time to grant, by origin, applicant type and representation
+      ids: [U11, U20, U33]
+      questions: [2, 4]
+    - lead: Years in force, family reach and citations by origin, applicant and technology, within cohorts
+      ids: [U36, U93, U94]
+      questions: [1]
+    - lead: The route into Australia by origin and applicant, and where inventions are made against who files them
+      ids: [U90, U96]
+      questions: [1, 2]
+    - lead: Women's estimated share among inventors in Australia, by field and filer
+      ids: [U98]
+      questions: [2]
+    - lead: Rights moving overseas, by technology, firm and age
+      ids: [U18]
+      questions: [1, 2]
+    - lead: Firms' IP against their R&D, contracts, age and entity group
+      ids: [U41, U44, U46]
+      questions: [2, 3]
+    - lead: R&D claimants who have never filed IP ('missing filers'), by place and industry
+      ids: [U54]
+      questions: [4]
+    - lead: Area filing rates against advantage, remoteness, the Census and business mix
+      ids: [U51, U53]
+      questions: [2]
+    - lead: Australia against OECD members, as ratios to people and GDP
+      ids: [U65, U66]
+      questions: [1, 4]
+    - lead: IP per business by industry, beside the crosswalk's limits; innovation against IP
+      ids: [U75, U77, U79]
+      questions: [2, 3]
+    - lead: Research output against IP by institution (2010 to 2024); industry-partner grants against joint filing
+      ids: [U82, U83, U84]
+      questions: [1, 3]
+    - lead: Australian research cited by patents, against Australian inventions that cite it
+      ids: [U85]
+      questions: [1, 4]
+  puzzles_intro: >-
+    Things Stage 1 found that it cannot yet explain. They are kept in view, not explained away.
+  puzzles:
+    - Australians' direct filing of standard patents rose to 28.3% in FY2026 ({U90}).
+    - Trade mark expedite requests fell from about 1,400 to about 230 a month in November 2018 ({U34}, OQ6).
+    - Fewer recent applications are linked to the filer's business number since FY2025 ({U45}, OQ7).
+    - IP RAPID holds 1.331 times WIPO's count of utility models in 2016 ({U67}).
+    - The World Bank's share of the labour force with advanced education steps up around 2010 ({U65}).
+    - Plant breeder's rights change hands more often in recent years ({U17}).
+    - Petty patents filed in FY1986 to FY1988 mostly have no acceptance recorded ({U32}).
+  open_intro: >-
+    Some questions only the research owner, or IP Australia, can answer. They are listed so that nothing depends on
+    an unstated guess.
+  owner:
+    - "**When to start Stage 2.** Stage 1 is complete."
+    - "**A sector check of the institutions link** (OQ11): a half-hour review by someone who knows the sector, best done before Stage 2 compares institutions."
+    - "**The fee history** (OQ2): fees are IP Australia's most direct lever and are not yet in the data; recommended before Stage 2."
+    - "AusTender's missing amendments (OQ3, small) and ABS TableBuilder (OQ4, on hold)."
+  ipa:
+    - Why did provisional applications from individuals double in FY2026? (OQ5, {U8})
+    - Why did trade mark expedite requests fall in November 2018? (OQ6, {U34})
+    - Since FY2025, are ABNs attached to applications late, or collected less often? (OQ7, {U45})
+  gaps_intro: All free to obtain.
+  gaps:
+    - The Reserve Bank's cash and exchange rates and the ABS national accounts, for the timeline.
+    - The ATO's statistics by postcode, for places.
+    - IP Australia's own published statistics, as a benchmark for the lenses.
+    - A patent-to-industry crosswalk that includes services, so patents can reach service industries ({U75}).
+    - WIPO's patent families by origin, to size the Australian inventions filed only abroad.
+  after:
+    - Review the early signals and data gaps with the research owner.
+    - Source the data worth adding for the gaps (free first; any cost proposed with an estimate).
+    - Only then design the analyses that answer the five questions.
+
+glossary_intro: >-
+  Every technical term used on these pages, in plain English. Dotted words anywhere on the site open the same
+  explanations.
+
+glossary_groups:
+  stats: Statistics, explained
+  ip: The IP system
+  data: Data and how it is handled
+  places: Places, people and businesses
+  research: Research and the wider economy

@@ -6,6 +6,9 @@ builds it, the plan that chose it, and the analysis of it (`analysis/`), which s
 in three stages (`docs/eda-plan.md`). Terms are explained in `GLOSSARY.md`; decisions are recorded in `docs/adr/`.
 
 - **`docs/research-goal.md`**: the five core questions.
+- **The evidence atlas** (`evidence/`, on the repository's GitHub Pages site): every Stage 1 observation in plain
+  English for readers who are not data scientists, each traced back to its source, its storage, its preparation and the
+  reasoning behind it, with the lens it was made under and the research questions it serves (ADR 0023).
 - **`docs/stage-1-summary.md`**: what the first stage of the analysis (each variable on its own) set out to do, how it was
   done, what it found and what it hands to the next stage.
 - **`docs/data-plan.md`**: which data serve which question, what was dropped and why, how non-financial public value is
@@ -76,6 +79,7 @@ raw files pass through a cache outside the repo (`$IPHOLMES_CACHE`, default `~/.
 | `analysis/` | The analysis: the corpus profile, the EDA helpers (`analysis/eda/`) and notebooks (`analysis/notebooks/`) |
 | `CLAUDE.md`, `GLOSSARY.md`, `docs/adr/` | How Claude sessions work here, the plain-English glossary, and the decision records |
 | `tests/` | The rules, and the committed data against the manifest |
+| `evidence/`, `analysis/atlas/` | The evidence atlas (the Stage 1 observations for non-technical readers) and the code that builds it from the notebook and its plain-English content (`analysis/atlas/content/`) |
 | `index.html`, `assets/` | The GII breakdown page (Australia in the Global Innovation Index 2026), kept from the earlier site; it reads a frozen summary in `assets/data/`, and will be rebuilt on the corpus |
 
 ## Credentials

@@ -1,0 +1,91 @@
+# The research goal's five core questions (docs/research-goal.md §3), with what each asks and what stays out of reach
+# for now. Which observations bear on each question is set in each observation's `questions`, not here.
+
+- id: 1
+  title: What public value does the IP system create?
+  short: Public value
+  text: >-
+    The economic, social, technological and environmental outcomes that go with patents, trade marks and designs; the
+    costs of getting, keeping and enforcing rights; the costs to consumers, competitors and later innovators; and what
+    the evidence can say about the system's net contribution to public welfare.
+  sub:
+    - What economic, social, technological and environmental outcomes are associated with different forms of IP protection?
+    - Under what circumstances do patents, trade marks and registered designs support innovation, commercialisation, investment, competition or knowledge diffusion?
+    - What are the costs of obtaining, maintaining, licensing and enforcing rights?
+    - What are the potential costs to consumers, competitors, follow-on innovators and the broader public?
+    - What can existing evidence establish about the system's net contribution to public welfare?
+  reach:
+    - Counts of rights, lifetimes and citations measure activity and private use, not public value. The research goal
+      treats them as indicators, never as success.
+    - The costs to consumers and competitors are not in the data yet; fees, the most direct cost, wait for the fee
+      history (OQ2).
+
+- id: 2
+  title: Who benefits, and who is underserved?
+  short: Who benefits
+  text: >-
+    Which businesses, industries, regions and groups get the most from IP protection; who faces barriers to using it;
+    and how outcomes differ between startups, small firms, large firms and research institutions, and by gender,
+    place and circumstance, where reliable data exist.
+  sub:
+    - Which businesses, industries, regions and population groups derive the greatest benefits from IP protection?
+    - Which groups face disproportionate barriers to understanding, accessing or using the system?
+    - Are there underserved groups with substantial unrealised innovation potential?
+    - How do outcomes differ between startups, SMEs, established businesses, research institutions and larger enterprises?
+    - How do outcomes vary by gender, geography, socioeconomic circumstances and other relevant characteristics?
+  reach:
+    - Individuals in IP RAPID are pseudonymised, so their gender cannot be estimated; only inventors' can, and reliably
+      only for inventors in Australia ({U97}).
+    - Without the ABS's BLADE, small firms' growth and survival cannot be followed.
+
+- id: 3
+  title: What determines whether IP protection produces value?
+  short: Conditions for value
+  text: >-
+    The business, institutional and market conditions that let rights holders benefit from their IP: finance, skills,
+    management, market access and collaboration; whether registering changes access to investment, licensing,
+    procurement or overseas markets; and when alternatives such as trade secrets or open licensing work better.
+  sub:
+    - Which business, institutional and market conditions enable rights holders to commercialise or otherwise benefit from their IP?
+    - How important are complementary capabilities such as finance, skills, management, market access and collaboration?
+    - Does formal registration change access to investment, licensing, procurement, partnerships or international markets?
+    - When do alternative approaches, such as trade secrets, open licensing, collaborative research or public funding, produce better outcomes?
+    - What distinguishes successful use of registered IP from registration that produces little observable benefit?
+  reach:
+    - Firm-level outcomes (growth, survival, productivity) for small firms need BLADE, which is ruled out for now.
+    - Alternatives to registration (trade secrets, open licensing) leave almost no trace in these data.
+
+- id: 4
+  title: Where are the greatest opportunities for intervention?
+  short: Opportunities
+  text: >-
+    The barriers that stop valuable innovation happening or reaching the market, which of them IP Australia could
+    influence, and where funding, services, regulatory change, partnerships or better access to expertise could add
+    public value; and where IP Australia should act itself, collaborate or advocate.
+  sub:
+    - Which barriers prevent potentially valuable innovation from occurring or reaching the market?
+    - Which barriers could IP Australia materially influence?
+    - Where might targeted funding, new services, regulatory changes, partnerships or improved access to expertise generate additional public value?
+    - Which interventions could address market failures or institutional gaps that existing arrangements do not adequately address?
+    - Where should IP Australia focus its own efforts, and where would collaboration or advocacy be more appropriate?
+  reach:
+    - Stage 1 can point to where use is uneven; it cannot say that changing it would add value. That needs the later
+      stages and, for any claim of additional benefit, designs such as natural experiments.
+
+- id: 5
+  title: What outcomes could interventions produce?
+  short: Expected impact
+  text: >-
+    The size, spread and timing of the benefits an intervention could bring; how much would be additional to what
+    would happen anyway; its costs; how sensitive the results are to assumptions; and what evidence would justify
+    scaling, changing or stopping it.
+  sub:
+    - What is the expected magnitude, distribution and timing of the benefits?
+    - How much would be additional to what would occur without intervention?
+    - What are the likely financial, administrative and opportunity costs?
+    - How sensitive are expected results to assumptions about participation, effectiveness, economic conditions and implementation?
+    - What evidence would be needed to justify scaling, modifying or discontinuing an intervention?
+  reach:
+    - Additionality (what happens because of an intervention, compared with what would have happened anyway) needs
+      causal designs that come after Stage 3. The policy changes in the timeline ({U28}) are the raw material for
+      them.

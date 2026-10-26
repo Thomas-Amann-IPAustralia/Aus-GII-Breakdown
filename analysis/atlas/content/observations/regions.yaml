@@ -1,0 +1,624 @@
+# The places lens (section 3 of the notebook): one row per postal area, with its attachments. Markup and rules as in
+# firms.yaml.
+
+- id: U48
+  lens: regions
+  about: data
+  headline: The places table covers 2,641 postal areas and 25,365,506 people; individuals file a fifth of patents and two-fifths of provisionals
+  statement: >-
+    The table holds 2,641 postal areas and 25,365,506 people, with every count complete. Applications are counted where
+    the filer was; the filer's and holder's postcodes differ for 6.05% of standard patents and 7.6% of trade marks.
+    Individuals filed 21.53% of standard patents and 41.07% of provisional applications from Australia.
+  figures:
+    - value: "2,641"
+      label: postal areas
+    - value: "21.53%"
+      label: of standard patents filed by individuals
+    - value: "41.07%"
+      label: of provisional applications filed by individuals
+  points:
+    - "SEIFA scores are missing for 17 areas (99.36% filled); Census medians for 1 to 34 areas (rent: 34 areas with no
+      renters)."
+    - "Individuals also filed 24.97% of trade marks, 20.71% of designs and 43.11% of second-tier patents."
+    - "A rate per business counts organisations' filings only, because the business count holds no individuals."
+  questions:
+    - q: 2
+      how: Sets the ground for comparing places, and shows how large a part individuals play in Australian filing.
+  sources: [abs_regions, abs_census, iprapid, abr]
+  chart:
+    type: bar
+    horizontal: true
+    title: Applications from Australia filed by individuals
+    subtitle: "% filed by an individual, FY2017 to FY2026, where the filer's postcode is known"
+    x: {type: category, values: [Second-tier patents, Provisional applications, Trade marks, Standard patents, Designs]}
+    y: {name: "% filed by individuals", min: 0, format: pct, digits: 2}
+    series:
+      - name: Filed by individuals
+        data: [43.11, 41.07, 24.97, 21.53, 20.71]
+    source: IP Australia, IP RAPID (lens regions)
+  prep:
+    - what: Applications are counted at the postcode of the first founding applicant in Australia, over FY2017 to FY2026.
+      why: A right sold to a firm elsewhere stays where it was filed (ADR 0017).
+    - what: Organisations' counts are kept beside the totals.
+      why: Individuals file a fifth to two-fifths of applications, and the business count has no individuals in it.
+  steps:
+    - Count the postal areas and people, and check each column's completeness.
+    - For rights filed FY2017 to FY2026 from Australia, compare filer and holder postcodes.
+    - Work out the share filed by individuals, by type.
+  assumptions:
+    - The filer's postcode is where the filing happened.
+  limits:
+    - Some filers' postcodes are not postal areas and cannot be placed ({U49}).
+  next: >-
+    Stage 2 compares places by filing rates against advantage, remoteness and business mix.
+  terms: [postal-area, filer, census]
+  related: [U19, U49, U52]
+
+- id: U49
+  lens: regions
+  about: data
+  headline: One standard patent in eighteen comes from a postcode where no one lives, most of them universities'
+  statement: >-
+    94.45% of standard patents' filer postcodes are postal areas. 4.14% are real postcodes with no residents, such as a
+    university's own postcode, and 1.39% are post office box ranges. Of the twelve such codes with the most patents and
+    provisionals, seven are universities'.
+  figures:
+    - value: "94.45%"
+      label: of standard patents can be placed in a postal area
+    - value: "4.14%"
+      label: carry a real postcode with no residents
+  points:
+    - "2052 (NewSouth Innovations, 84.6% of its 749 patents and provisionals), 3800 (Monash University, 97.5% of 445),
+      2006 (the University of Sydney, 95.4% of 417), 3010 (the University of Melbourne, 87.2% of 352)."
+    - "Trade marks are placed more often: 96.43% fall in postal areas, 1.7% in real codes with no residents."
+    - "So universities' patents are mostly missing from the postal-area counts; they stay in the state totals."
+  questions:
+    - q: 2
+      how: Without this, places with universities would look as if they filed far less than they do.
+  sources: [iprapid, abs_regions, abr]
+  chart: U49
+  prep:
+    - what: A filer's postcode that is not a postal area is classed by Australia Post's ranges, and checked against the
+        business register.
+      why: It separates post office boxes from real places with no residents (ADR 0017).
+  steps:
+    - Check each filer's postcode against the ABS's postal areas.
+    - For those not found, class them by Australia Post's ranges, and check whether businesses are registered there.
+    - Find the largest filer behind the codes with the most patents.
+  assumptions:
+    - A postcode in a delivery range with registered businesses but no residents is a real place, such as a campus.
+  limits:
+    - These patents cannot be placed in an area without a lookup of where each code is.
+  next: >-
+    The institutions lens counts universities' patents directly ({U87}); Stage 2 checks whether regional results are
+    sensitive to them.
+  terms: [postal-area]
+  related: [U87, U48, U81]
+
+- id: U50
+  lens: regions
+  about: data
+  headline: Postal areas range from no residents to 129,883 people; 818 have fewer than 1,000
+  statement: >-
+    The median postal area has 3,508 people, a quarter have under 690, and the largest has 129,883. The 818 areas with
+    fewer than 1,000 people hold 1.33% of the population. 18 areas, business districts and industrial estates, have
+    more businesses than residents.
+  figures:
+    - value: "3,508"
+      label: people in the median postal area
+    - value: "818"
+      label: areas with fewer than 1,000 people
+    - value: "18"
+      label: areas with more businesses than residents
+  points:
+    - "Businesses: a median 463 active GST-registered businesses per area, the largest 70,543."
+    - "In 6106 (12 people, 1,632 businesses) and 4009 (5 people, 640), rates per person are meaningless."
+  questions:
+    - q: 2
+      how: Explains why small areas need care before any rate is compared.
+  sources: [abs_regions, abr]
+  chart: U50
+  notebook_charts: [0]
+  prep:
+    - what: People come from the 2021 Census geography; businesses are active GST-registered ABNs in the business
+        register.
+      why: The Census counts where people live; the register counts where businesses are registered.
+  steps:
+    - Summarise people and businesses per postal area.
+    - Count the very small areas, and the share of people in them.
+    - Find areas with more businesses than residents.
+  assumptions:
+    - Postcode boundaries match the ABS's postal areas closely enough.
+  limits:
+    - Areas differ greatly in size, so counts across areas are not comparable without rates.
+  next: >-
+    Rates are shown only where enough applications would be expected ({U53}).
+  terms: [postal-area, gst, median]
+  related: [U51, U53]
+
+- id: U51
+  lens: regions
+  about: data
+  headline: Most postal areas are outside the cities, but most people and businesses are in them
+  statement: >-
+    Major cities have 37.7% of postal areas but 72.8% of people and 77.2% of businesses; remote and very remote areas
+    have 11.9% of areas and 1.7% of people. Advantage tenths (SEIFA deciles) rank areas, not people: each holds 262 or
+    263 areas, of any size.
+  figures:
+    - value: "37.7%"
+      label: of postal areas are in major cities
+    - value: "72.8%"
+      label: of people live in them
+  points:
+    - "The median area has 8,011 people in New South Wales, 1,024 in Western Australia and 13,938 in the ACT."
+    - "Census medians (2021 dollars): personal income $754 a week, household income $1,495, rent $300; median age 43."
+  questions:
+    - q: 2
+      how: Remoteness and advantage are among the characteristics Q2 asks about; this shows how to weight them fairly.
+  sources: [abs_regions, abs_census, abr]
+  chart: U51
+  notebook_charts: [0]
+  prep:
+    - what: Each area takes the ABS's remoteness class and SEIFA scores.
+      why: They are the standard national measures of remoteness and advantage.
+  steps:
+    - Group areas by remoteness, and add up their people and businesses.
+    - Count areas in each SEIFA tenth.
+  assumptions:
+    - An area's remoteness class applies to all its residents.
+  limits:
+    - A tenth of areas is not a tenth of people; results by tenth must be weighted by people.
+  next: >-
+    Stage 2 weights by people when comparing areas.
+  terms: [remoteness, irsad, census]
+  related: [U47, U50, U54]
+
+- id: U52
+  lens: regions
+  about: system
+  headline: The tenth of areas with the most patents filed 72.5% of them, with 29.2% of the people
+  statement: >-
+    Over FY2017 to FY2026, the tenth of postal areas with the most standard patents (264 areas) filed 72.5% of them, but
+    hold 29.2% of people. For trade marks the figure is 60.8% (32.8% of people), for designs 75.4%. An area's patents are
+    often one firm's.
+  figures:
+    - value: "72.5%"
+      label: of standard patents from the top tenth of areas
+    - value: "29.2%"
+      label: of people live in those areas
+    - value: "1,166"
+      label: areas filed no standard patent in ten years
+  points:
+    - "**One filer:** in 2113 (North Ryde), 76.3% of 1,708 standard patents are Aristocrat Technologies'; in 2601
+      (Canberra), 88.1% of 521 are CSIRO's; in 2153, 64.1% of 220 are ResMed's."
+    - "In the city centres the largest filer has 5.2% to 14.6%."
+    - "**Corrected (26 October 2026):** the people shares were 29.0% and 32.9% when areas tied on their count were
+      ordered as the file happened to hold them; ties now go by postcode."
+  questions:
+    - q: 2
+      how: Filing is far more concentrated than population, and often reflects one firm, so area counts need the firms
+        behind them before they say anything about places.
+  sources: [iprapid, abs_regions, abr]
+  chart: U52
+  notebook_charts: [0]
+  prep:
+    - what: Areas are ranked by their count, with ties broken by postcode.
+      why: Arbitrary tie-breaking had made the figures shift slightly between builds (ADR 0019).
+  steps:
+    - Rank postal areas from the most standard patents to the fewest.
+    - Add up the top tenth's patents and their people, as shares of the national totals.
+    - For the areas with the most patents, find the share filed by the largest filer.
+  assumptions:
+    - A firm's registered postcode is where its patents come from.
+  limits:
+    - Concentration in a few areas may reflect a few firms rather than anything about the places.
+  next: >-
+    Stage 2 reads area counts beside the firms behind them.
+  terms: [concentration, postal-area]
+  related: [U44, U53]
+
+- id: U53
+  lens: regions
+  about: system
+  headline: Places differ in filing far more than chance would make them
+  statement: >-
+    At the national rate (0.99 standard patents a year per 10,000 people), chance alone would put 2.5% of areas above and
+    2.5% below the 95% limits. Instead 6.7% are above and 68.2% below for standard patents, and 15.0% and 71.4% for trade
+    marks. Pooled into 335 larger areas (SA3s) the pattern holds (15.5% above, 72.5% below).
+  figures:
+    - value: "68.2%"
+      label: of areas below chance limits for standard patents
+    - value: "2.5%"
+      label: expected below by chance alone
+  points:
+    - "Most areas file less than the nation, and a few file far more."
+    - "Rates are shown for 850 areas for standard patents (82.73% of people) and 2,094 for trade marks (99.46%); 324 of
+      the 335 SA3s would expect 10 or more standard patents."
+    - "The highest rate per person is Sydney's centre, 2000 (712.6 trade marks a year per 10,000 people); for standard
+      patents, 2113 (61.8)."
+  questions:
+    - q: 2
+      how: Real differences between places are the starting point for asking who is underserved; chance cannot explain
+        them away.
+    - q: 4
+      how: Areas far below the national rate are candidates, later, for asking whether something holds them back.
+  sources: [iprapid, abs_regions]
+  chart: U53
+  notebook_charts: [1, 2]
+  prep:
+    - what: A rate is applications a year per 10,000 people over FY2017 to FY2026, shown only where 10 or more would be
+        expected at the national rate.
+      why: A count of 10 has a 95% chance range of about 5 to 18; below that, an area's rate is mostly chance (ADR 0017).
+    - what: Small areas are pooled into 335 SA3s as a check.
+      why: If the pattern were small-area noise, pooling would remove it.
+  steps:
+    - Work out the national rate, and each area's expected count at that rate.
+    - Draw the range chance alone would allow around the national rate, for each size of area (a funnel plot).
+    - Count the areas above and below the range.
+    - Repeat for SA3s.
+  assumptions:
+    - Each area's filings would follow a Poisson pattern if only chance were at work.
+  limits:
+    - The funnel shows that areas differ, not why; a single firm can lift an area ({U52}).
+  next: >-
+    Stage 2 models area counts with room for this extra spread (negative binomial models), pooled to SA3s, beside the firms
+    behind them.
+  terms: [funnel-plot, chance-limits, poisson, negative-binomial, sa3]
+  related: [U50, U52, U54]
+
+- id: U54
+  lens: regions
+  about: system
+  headline: Half of R&D claimants have never filed for IP, and claimants are rarer outside the cities
+  statement: >-
+    Of 17,627 active R&D Tax Incentive claimants placed in a postal area, 50.7% have never filed IP as a founding
+    applicant. There are 5.6 claimants per 1,000 businesses in major cities, 2.4 in inner regional, 1.8 in outer
+    regional, 1.3 in remote and 0.6 in very remote areas.
+  figures:
+    - value: "50.7%"
+      label: of R&D claimants have never filed IP
+    - value: "5.6 vs 0.6"
+      label: claimants per 1,000 businesses, major cities against very remote
+  points:
+    - "Claimants outside the cities have more often never filed IP (59.6% in outer regional areas, against 50.4% in the
+      cities)."
+    - "IP-filing firms: 49.7 per 1,000 businesses in the cities, against 19.0 to 29.3 elsewhere."
+    - "These are counts by registered address, not necessarily where the R&D is done."
+  questions:
+    - q: 4
+      how: Firms doing R&D that never use the IP system ('missing filers') are an obvious group to ask about later, for
+        barriers IP Australia could ease.
+    - q: 3
+      how: R&D without IP is one of the alternatives to registration Q3 asks about.
+  sources: [rdti, iprapid, abr, abs_regions, linkage]
+  chart:
+    type: bar
+    title: R&D claimants per 1,000 businesses, by remoteness
+    subtitle: Active R&D Tax Incentive claimants, by their registered postcode
+    x: {type: category, values: [Major cities, Inner regional, Outer regional, Remote, Very remote]}
+    y: {name: Claimants per 1,000 businesses, min: 0, format: num, digits: 1}
+    series:
+      - name: Claimants per 1,000 businesses
+        data: [5.6, 2.4, 1.8, 1.3, 0.6]
+    source: ATO R&D Tax Incentive; ABR; IP RAPID (lens regions)
+  prep:
+    - what: Firms are placed by their business register postcode; "never filed" means never a founding applicant with
+        this ABN.
+      why: Filing is credited to the business that filed (ADR 0016).
+  steps:
+    - Count active claimants and IP-filing firms in each postal area.
+    - Count claimants who never filed IP.
+    - Group by remoteness and divide by businesses.
+  assumptions:
+    - A claimant with no IP under its own ABN has not filed; filings under a related company's ABN are missed.
+  limits:
+    - "A lower bound on IP use: firms' IP counts are lower bounds ({U41})."
+  next: >-
+    Stage 2 studies 'missing filers' by place and industry.
+  terms: [rdti, remoteness, lower-bound]
+  related: [U41, U47, U53]
+
+- id: U55
+  lens: regions
+  about: data
+  headline: Five more area sources add 22,511,923 values, nearly every one for nearly every postal area
+  statement: >-
+    The companion table holds 22,511,923 values: 8,874 indicator-periods from the Census, Data by Region, PHIDU's social
+    health atlas, business counts (CABEE) and the Clean Energy Regulator. The median indicator reaches 2,634 to 2,641 of
+    the 2,641 postal areas.
+  figures:
+    - value: "22,511,923"
+      label: attached values
+    - value: "8,874"
+      label: indicator-periods
+  points:
+    - "Census: 2,993 cells of 14 tables (2021). Data by Region: 774 items in 12 years. PHIDU: 2,368 indicators over 22
+      periods. CABEE: 260 business counts for June 2023, 2024 and 2025. Clean Energy Regulator: 11 series over 26 years."
+    - "0.05% of Data by Region's values and 0.11% of PHIDU's are empty."
+  questions:
+    - q: 2
+      how: Gives Stage 2 a wide range of local conditions (education, health, industry, income) to compare with filing.
+  sources: [abs_census, abs_regions, phidu, abs_cabee, cer]
+  chart: U55
+  prep:
+    - what: Values published for SA2s or PHIDU's areas reach postal areas through their 2021 residents; Census and Clean
+        Energy Regulator values are used directly.
+      why: A count can be split by where people live; a level (a median or rate) is averaged, weighted by people shared
+        (ADR 0018).
+  steps:
+    - Count values, indicators and periods by source.
+    - For each indicator and period, count the postal areas it reaches.
+  assumptions:
+    - People are spread evenly enough within small areas for residents to be a fair basis for splitting.
+  limits:
+    - A value split from a larger area is an estimate for the postal area.
+  next: >-
+    Stage 2 uses one indicator and period at a time.
+  terms: [attachment, census, cabee]
+  related: [U56, U57]
+
+- id: U56
+  lens: regions
+  about: data
+  headline: Values split from larger areas track direct counts; CABEE counts a quarter fewer businesses than the business register
+  statement: >-
+    Data by Region's 2021 population, split from larger areas, is within 10% of the direct count for 99.34% of postal
+    areas of 1,000 people or more. CABEE's June 2025 business count is 0.742 of the register's active GST businesses, but
+    ranks areas almost alike (Spearman 0.988): they count different things.
+  figures:
+    - value: "99.34%"
+      label: of areas within 10% of the direct population count
+    - value: "0.742"
+      label: CABEE's count as a share of the register's
+  points:
+    - "The Census's count (25,369,823) is the geography's count (25,365,506) to within 0.02%, the gap being the ABS's
+      privacy adjustment."
+    - "CABEE counts businesses actively trading; the register counts registrations. So a CABEE count is never compared
+      with a register count."
+  questions:
+    - q: 2
+      how: Confirms the method for placing other data in postal areas, and which business count to use.
+  sources: [abs_census, abs_regions, abs_cabee, abr]
+  chart: U56
+  prep:
+    - what: The same quantity is taken from two routes and compared, area by area.
+      why: Agreement shows the splitting method works; disagreement shows the measures differ.
+  steps:
+    - For each area, compare the Census and split population with the geography's count.
+    - Compare CABEE's split business count with the register's.
+    - Work out ratios of totals and rank correlations.
+  assumptions:
+    - Where two routes agree, the method is sound for other indicators split the same way.
+  limits:
+    - Agreement for people does not prove agreement for every indicator.
+  next: >-
+    Business counts by postal area come from the register; CABEE gives size and industry.
+  terms: [correlation, ratio, cabee, abr]
+  related: [U55, U59]
+
+- id: U57
+  lens: regions
+  about: data
+  headline: Many Census cells are small, and parts do not add exactly to totals
+  statement: >-
+    Half of the industry-by-age-by-sex cells (G54) are 0 (51.1%), as are 39.4% of the field-of-study cells and 37.4% of
+    the occupation cells. Males plus females equal persons exactly in only 10.9% of postal areas, because the ABS adjusts
+    small cells at random to protect privacy.
+  figures:
+    - value: "51.1%"
+      label: of industry-by-age-by-sex Census cells are zero
+    - value: "10.9%"
+      label: of areas where males plus females equal persons exactly
+  points:
+    - "3.0% to 8.3% of each table's cells are 1 to 4. The summary tables are larger (median cells 153 and 221)."
+    - "So Stage 2 uses Census shares of whole groups, never single small cells."
+  questions:
+    - q: 2
+      how: Census characteristics will be compared with filing; this says how to use them safely.
+  sources: [abs_census]
+  chart:
+    type: bar
+    horizontal: true
+    title: Census cells that are zero
+    subtitle: Share of each detailed table's count cells that are 0, across postal areas
+    x: {type: category, values: [Industry by age and sex (G54), Field of study (G50), Occupation (G60)]}
+    y: {name: "% of cells that are zero", min: 0, max: 100, format: pct, digits: 1}
+    series:
+      - name: Zero cells
+        data: [51.1, 39.4, 37.4]
+    source: ABS Census 2021 (lens region_indicators)
+  prep:
+    - what: Every cell of 14 Census tables is kept, by postal area.
+      why: Every dataset is kept whole; how to use it is decided here.
+  steps:
+    - For each table, work out the share of cells that are 0 and 1 to 4.
+    - Check whether males plus females equal persons in each area.
+  assumptions:
+    - The ABS's privacy adjustment is random and small, as it says.
+  limits:
+    - Small cells cannot be used on their own.
+  next: >-
+    Stage 2 uses shares of whole groups.
+  terms: [perturbation, census]
+  related: [U55, U58]
+
+- id: U58
+  lens: regions
+  about: data
+  headline: Data by Region holds a different set of items each year, and partly repeats the Census
+  statement: >-
+    Census years carry the most items (225 in 2011, 385 in 2016, 629 in 2021); other years 12 to 326. For 2021, industry
+    of employment, labour force status and others repeat the Census itself, so the two are never added together.
+  figures:
+    - value: "629"
+      label: Data by Region items in 2021
+  points:
+    - "Its largest topics are estimated resident population (111 items), Aboriginal and Torres Strait Islander peoples
+      (52), people born overseas (50) and personal income (29, from tax returns)."
+  questions:
+    - q: 2
+      how: Tells Stage 2 which local measures exist for which years.
+  sources: [abs_regions]
+  chart: U58
+  prep:
+    - what: Data by Region's SA2 values are split to postal areas by 2021 residents.
+      why: It is published for SA2s, not postal areas (ADR 0018).
+  steps:
+    - Count items by year.
+    - Compare topics with the Census tables already attached.
+  assumptions:
+    - Items with the same name in different years measure the same thing.
+  limits:
+    - Many items exist only in Census years.
+  next: >-
+    Never added to the Census; one source per measure.
+  terms: [census]
+  related: [U55, U57]
+
+- id: U59
+  lens: regions
+  about: system
+  headline: Most businesses employ no one, and the share is rising
+  statement: >-
+    In the table's postal areas, CABEE counts 2,574,558 businesses in June 2023 and 2,713,177 in June 2025. Businesses
+    with no employees rose from 61.3% to 63.6%; those with 1 to 4 employees fell from 27.2% to 25.3%; 200 or more
+    employees are 0.1%.
+  figures:
+    - value: "63.6%"
+      label: of businesses employ no one (June 2025)
+    - value: "0.1%"
+      label: employ 200 or more
+  points:
+    - "SA2s with no residents hold 0.05% of businesses, so the fallback for splitting them matters little."
+  questions:
+    - q: 2
+      how: Small and one-person businesses are most of the economy; the system's reach among them matters for who benefits.
+  sources: [abs_cabee]
+  chart: U59
+  notebook_charts: [0]
+  prep:
+    - what: CABEE's SA2 counts by employment size are split to postal areas by residents.
+      why: It gives business size, which the business register lacks.
+  steps:
+    - Add up businesses by employment size for each June.
+    - Work out each size's share.
+  assumptions:
+    - CABEE's size classes are measured the same way each year.
+  limits:
+    - Three years is a short span for a trend.
+  next: >-
+    Stage 2 compares filing with the business mix of each area.
+  terms: [cabee]
+  related: [U56, U77]
+
+- id: U60
+  lens: regions
+  about: data
+  headline: PHIDU's health and social indicators are mostly rates, for many different periods
+  statement: >-
+    54.14% of PHIDU's indicators are levels (mostly standardised ratios and percentages), the rest counts, mostly of
+    people. Periods differ by indicator: 702 indicators are for 2022/23, 359 for 2021, 234 for 2024 and 225 for 2019 to
+    2023.
+  figures:
+    - value: "54.14%"
+      label: of PHIDU's indicators are rates or ratios
+    - value: "702"
+      label: indicators for 2022/23
+  points:
+    - "A standardised ratio of 100 means the national rate after allowing for age."
+    - "Comparisons use one period at a time."
+  questions:
+    - q: 2
+      how: Health and social conditions are among the characteristics Q2 asks about.
+  sources: [phidu]
+  chart: U60
+  prep:
+    - what: PHIDU's areas reach postal areas through their residents; its confidence limits are left out.
+      why: An average of interval ends is not an interval (ADR 0018).
+  steps:
+    - Class each indicator as a count or a level.
+    - Count indicators by period.
+  assumptions:
+    - The publisher's own measure label identifies counts and levels correctly.
+  limits:
+    - Indicators for different periods cannot be combined.
+  next: >-
+    Stage 2 uses one period at a time.
+  terms: [attachment]
+  related: [U55]
+
+- id: U61
+  lens: regions
+  about: system
+  headline: Small-scale energy installations moved from solar water heaters to solar panels to batteries
+  statement: >-
+    Solar water heaters fell from 122,312 installations in 2009 to 18,505 in 2025. Solar panels went from 62,831 in 2009
+    to 360,423 in 2011, 370,287 in 2020 and 272,395 in 2025. Batteries, recorded from July 2025, numbered 339,457 in 2026
+    to September.
+  figures:
+    - value: "339,457"
+      label: batteries installed in 2026 to September
+    - value: "370,287"
+      label: solar panel installations in 2020
+  points:
+    - "Heat pump water heaters: 131,881 in 2023."
+    - "0.1% of installations are at postcodes that are not postal areas."
+  questions:
+    - q: 2
+      how: Adoption of new technology by households is one form of innovation diffusion, context for where innovation reaches.
+    - q: 4
+      how: A local measure of take-up that Stage 2 can set beside filing in green technologies.
+  sources: [cer]
+  chart: U61
+  notebook_charts: [0]
+  prep:
+    - what: Monthly installations are summed to calendar years, by postal area.
+      why: Years match the other sources; 2026 runs to September.
+  steps:
+    - Add up installations by year and technology.
+  assumptions:
+    - An installation's postcode is where it was installed.
+  limits:
+    - It counts installations, not their size.
+  next: >-
+    Context for green technology in Stage 2.
+  terms: [postal-area]
+  related: [U55]
+
+- id: U62
+  lens: regions
+  about: system
+  headline: Government contracts go mostly to suppliers registered in a few places, above all the ACT
+  statement: >-
+    Contracts first published in FY2017 to FY2026 went to 54,798 suppliers in 2,015 postal areas; the top 1% of areas
+    hold 68.4% of the value. The ACT has 27.0% of the contracts and 20.5% of the value, against 1.3% of businesses.
+  figures:
+    - value: "27.0%"
+      label: of contracts to ACT suppliers
+    - value: "1.3%"
+      label: of businesses are in the ACT
+    - value: "68.4%"
+      label: of contract value in the top 1% of areas
+  points:
+    - "521,968 contracts worth $590,440,993,686 in all (nominal, over each contract's life)."
+    - "South Australia holds 12.2% of the value against 6.1% of businesses."
+    - "A supplier's postcode is often its head office, so this is where contracts are addressed, not where work is done."
+  questions:
+    - q: 4
+      how: Procurement is a government lever; where its money goes matters for who it could reach.
+  sources: [austender, abr]
+  chart: U62
+  prep:
+    - what: Each contract counts once at its latest value, by the supplier's postcode on the contract.
+      why: Summing every amendment counted the same contract many times (ADR 0010, 0011).
+  steps:
+    - Add up suppliers, contracts and value by postal area.
+    - Work out the top 1% of areas' share, and each state's share against its share of businesses.
+  assumptions:
+    - The supplier's postcode on the contract stands for where the supplier is.
+  limits:
+    - Head offices, not workplaces; amendments to some older contracts are missing (OQ3).
+  next: >-
+    Stage 2 adjusts values for inflation and compares with areas' IP.
+  terms: [austender, nominal]
+  related: [U46, U47]
