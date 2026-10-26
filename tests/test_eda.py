@@ -33,7 +33,7 @@ def test_resolve_leaves_ordinary_braces_alone(monkeypatch):
 
 def test_register_is_well_formed():
     reg = style.register()
-    assert set(reg) == {"rights", "firms", "regions", "national", "timeline"}
+    assert set(reg) == {"rights", "firms", "regions", "region_indicators", "national", "timeline"}
     for lens, cols in reg.items():
         for col, v in cols.items():
             assert v.get("label"), f"{lens}.{col} has no label"
@@ -42,7 +42,7 @@ def test_register_is_well_formed():
     assert style.label("firms", "not_a_column") == "not_a_column"
 
 
-@pytest.mark.parametrize("lens", ["rights", "firms", "regions", "national", "timeline"])
+@pytest.mark.parametrize("lens", ["rights", "firms", "regions", "region_indicators", "national", "timeline"])
 def test_register_matches_built_lens(lens):
     p = data.LENS_DIR / f"{lens}.parquet"
     if not p.exists():
@@ -165,6 +165,7 @@ def _built(lens):
         ("rights", "ip_right_type, application_number"),
         ("firms", "abn"),
         ("regions", "poa_code"),
+        ("region_indicators", "poa_code, source, indicator, period"),
         ("national", "iso3, year, indicator"),
         ("timeline", "month"),
     ],
@@ -353,3 +354,69 @@ def test_firms_count_by_the_filer_and_name_their_state():
               AS filed
         FROM read_parquet('{p}')""").iloc[0]
     assert bad.to_dict() == dict.fromkeys(bad.index, 0)
+
+
+def test_poisson_interval_matches_known_values():
+    lo, hi = uni.poisson_interval([0, 10])
+    assert lo[0] == 0 and hi[0] == pytest.approx(3.689, abs=1e-3)
+    assert (lo[1], hi[1]) == (pytest.approx(4.795, abs=1e-3), pytest.approx(18.390, abs=1e-3))
+    fig, outside = uni.funnel(pd.Series([5, 50, 0, 400]), pd.Series([100, 1000, 10, 10_000]), per=1000)
+    assert set(outside.index) >= {"% above the 95% limit", "% below the 95% limit"}
+    plt.close("all")
+
+
+def test_postcode_ranges():
+    got = data.sql(f"""
+        SELECT {build.postcode_range("pc")} AS r FROM (VALUES ('2000'), ('1475'), ('9726'), ('0031'), (NULL)) t(pc)
+    """).r.tolist()
+    assert got[:4] == ["delivery", "non_geographic", "non_geographic", "none"] and pd.isna(got[4])
+
+
+def test_regions_count_by_the_filer_and_hide_unstable_rates():
+    """Applications are the rights filed from each postal area (by `founder_postcode`, in the window), and no rate is
+    shown where fewer than MIN_EXPECTED would be expected at the national rate (B3, ADR 0017)."""
+    p = _built("regions")
+    rights = _built("rights")
+    lo, hi = build.WINDOW
+    r = data.sql(f"""
+        WITH filed AS (
+            SELECT count(*) FILTER (ip_right_type = 'trade_mark') AS tm,
+                   count(*) FILTER (patent_type = 'standard') AS sp
+            FROM read_parquet('{rights}') WHERE filing_fy BETWEEN {lo} AND {hi}
+              AND founder_postcode IN (SELECT poa_code FROM read_parquet('{p}')))
+        , nat AS (SELECT sum(patents_standard) / sum(persons) AS rate FROM read_parquet('{p}'))
+        SELECT (SELECT tm FROM filed) - sum(trade_marks) AS tm, (SELECT sp FROM filed) - sum(patents_standard) AS sp,
+               count(*) FILTER (trade_marks_by_organisations > trade_marks) AS org,
+               count(*) FILTER (persons * nat.rate < {build.MIN_EXPECTED}
+                                AND patents_standard_per_10k_people IS NOT NULL) AS shown_small,
+               count(*) FILTER (persons * nat.rate >= {build.MIN_EXPECTED}
+                                AND patents_standard_per_10k_people IS NULL) AS hidden_large
+        FROM read_parquet('{p}'), nat GROUP BY nat.rate""").iloc[0]
+    assert r.to_dict() == dict.fromkeys(r.index, 0)
+
+
+def test_region_indicators_split_counts_without_losing_them():
+    """A count published for SA2s sums, over the postal areas, to the SA2s' own total (those with any residents or
+    mesh blocks in the lens's postal areas); levels are never marked as counts; the Census's total people match the
+    lens's population, to within the Census's perturbation (ADR 0018)."""
+    p = _built("region_indicators")
+    regions = _built("regions")
+    r = data.sql(f"""
+        WITH sa2 AS (SELECT DISTINCT sa2_code FROM {data.table("abs_regions", "mesh_blocks")}
+                     WHERE poa_code IN (SELECT poa_code FROM read_parquet('{regions}'))),
+        published AS (
+            SELECT sum(value) AS v FROM {data.table("abs_cabee", "cubes")}
+            WHERE cube = '8165DC08' AND table_title LIKE '%June 2025%' AND size = 'Total'
+              AND sa2_code IN (SELECT sa2_code FROM sa2)),
+        split AS (SELECT sum(value) AS v FROM read_parquet('{p}')
+                  WHERE source = 'cabee' AND indicator LIKE 'employment|%|Total' AND period = 'June 2025')
+        SELECT abs((SELECT v FROM split) / (SELECT v FROM published) - 1) < 1e-9 AS conserved,
+               (SELECT count(*) FROM read_parquet('{p}') WHERE additive AND (
+                    regexp_matches(lower(unit), 'median|mean|average|%|rate')
+                    OR (source <> 'phidu' AND regexp_matches(lower(label), 'median|mean|average'))))
+                 AS levels_as_counts,
+               -- the Census's counts are perturbed (randomly adjusted to protect privacy), the ASGS's are not
+               abs((SELECT sum(value) FROM read_parquet('{p}') WHERE indicator = 'G01.Tot_P_P')
+                   / (SELECT sum(persons) FROM read_parquet('{regions}')) - 1) < 0.001 AS census_people
+    """).iloc[0]
+    assert bool(r.conserved) and r.levels_as_counts == 0 and bool(r.census_people)

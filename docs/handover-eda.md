@@ -2,19 +2,29 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**The owner's decisions (2026-10-25):** after the events attachment, the owner adopted years in force (U36, with
+**The owner's decisions (2026-10-25):** after the `firms` lens, the owner asked for the `regions` lens to be
+completed (done: core and attachments). Before that, after the events attachment, the owner adopted years in force (U36, with
 unfinished rights kept) as a working measure for Stage 2, on condition that it is used alongside other signals, and
 asked for the `firms` lens next. They will try to find out from IP Australia why provisionals rose (U8) and why trade
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-25, latest):** the `firms` section (2) of `01_univariate.ipynb` profiles every column of that lens
+**Status (2026-10-25, latest):** the `regions` lens is complete for Stage 1: section 3 of `01_univariate.ipynb`
+profiles every column (U48 to U54) after the repairs of ADR 0017, and every attachment (3.5, U55 to U62, ADR 0018).
+Applications are now counted at the filer's postcode; rates are a year, per 10,000 people and (organisations only) per
+1,000 GST-registered businesses, and are empty where fewer than 10 applications would be expected at the national
+rate; `sa3_code` allows pooling; and the filers' postcodes that are not postal areas are classed (S6): 5.55% of
+standard patents, mostly universities' postcodes. The attachments are a new long table, `region_indicators` (22.5
+million rows: every value of the Census, Data by Region, CABEE, PHIDU and the Clean Energy Regulator by postal area,
+SA2 and PHA values split by 2021 residents), and three AusTender columns in `regions`. **Next is `national`.**
+
+Before that, the same day: the `firms` section (2) of `01_univariate.ipynb` profiles every column of that lens
 (U41 to U47), after four repairs (ADR 0016): applications are counted by the filer's ABN (`founder_abn`), not the
 current holder's; two new columns say what each firm holds (`n_held`, `n_held_in_force`); `in_iplord` flags the 50,790
 ABNs that only IPLORD links to IP (their IP counts are 0, so firms' IP counts are lower bounds); and blank ABR states
 are emptied (165 filled from the postcode). The profile found that recent filers are less often linked to an ABN
 (Australian organisations' trade marks 84.1% in FY2024, 59.9% in FY2026): firm filing by year is compared to FY2024
-for now. **Next is `regions`.**
+for now.
 
 Before that, the same day: the events attachment (B5) is built and profiled, as section 1.8.2 of
 `01_univariate.ipynb` (U31 to U40, ADR 0015). Eleven columns join `rights` from `iprapid/events`: the date of patent,
@@ -47,6 +57,28 @@ and BLADE stays ruled out.
 
 ## Where things stand
 
+- **Stage 1, `regions` (section 3, every column and attachment).** What it found (all descriptive):
+  - coverage (U48): 2,641 postal areas, 25,365,506 people; the filer's postcode differs from the holder's for 6.03% of
+    standard patents and 7.6% of trade marks (FY2017 to FY2026); individuals file 21.53% and 24.97%;
+  - the postcode check (U49): 94.45% of standard patents' filer postcodes are postal areas; 4.14% are real codes with
+    no residents, led by universities' (2052 UNSW's NewSouth Innovations, 3800 Monash, 2006 Sydney, 3010 Melbourne,
+    2109 Macquarie, 5005 Adelaide, 4072 Queensland); 1.39% post office box ranges. They stay in state totals;
+  - people and businesses (U50): median 3,508 people; 818 areas under 1,000 people (1.33% of people); 18 areas have
+    more businesses than residents (industrial estates, business districts);
+  - remoteness and SEIFA (U51): major cities 37.7% of areas, 72.8% of people; SEIFA deciles are tenths of areas;
+  - concentration (U52): the top tenth of areas file 72.5% of standard patents with 29.0% of people; one firm files
+    76.3% of 2113's (Aristocrat), 88.1% of 2601's (CSIRO), 64.1% of 2153's (ResMed);
+  - rates against chance (U53): 68.2% to 72.8% of areas fall below the funnel's 95% limits and 6.7% to 15.5% above,
+    for postal areas and for SA3s alike: far more spread than chance, so Stage 2 uses negative binomial models;
+  - R&D claimants (U54): 50.7% have never filed IP; 5.6 claimants per 1,000 businesses in major cities, 0.6 in very
+    remote areas;
+  - the attachments (U55, U56): 8,874 indicator-periods, nearly every one for nearly every area; split values track
+    direct ones (Data by Region's 2021 population within 10% of the ASGS count for 99.34% of areas); CABEE counts
+    0.742 of the ABR's businesses, in the same order (Spearman 0.988), so business counts come from the ABR;
+  - the Census (U57): small cells (51.1% of industry-by-age cells are 0) and perturbation (males plus females equal
+    persons in 10.9% of areas); Data by Region (U58) repeats Census items; CABEE (U59) non-employing businesses 61.3%
+    to 63.6% (June 2023 to 2025); PHIDU (U60) 54.14% levels, periods differ; the CER (U61) solar water heaters to
+    panels to batteries (from July 2025); AusTender (U62): the ACT holds 27.0% of contracts, 1.3% of businesses.
 - **Stage 1, `firms` (section 2, every column).** What it found (all descriptive):
   - who is in it (U41): 398,450 ABNs, 63.68% in IP RAPID alone, 13.69% AusTender alone, 12.75% linked to IP by IPLORD
     alone; active ABNs from 47.02% (IPLORD-only) to 95.35% (IP and R&D); IPLORD's own counts differ from IP RAPID's
@@ -138,10 +170,11 @@ and BLADE stays ruled out.
   - "unknown" status is 408,957 old patents (FY1904 to FY1999) whose outcome was never recorded; only 68.9% of
     expired patents have a grant date;
   - design origin is often unrecorded (4.0% to 6.3% unknown since FY2018, and rising), so design shares need care.
-- **Five lenses are built** (`analysis/eda/build.py`), in under a minute:
+- **Five lenses and one companion table are built** (`analysis/eda/build.py`), in about two minutes:
   - `rights`: 4,368,006 rows, 52 columns (29 core, 12 from the parties, 11 from the events);
   - `firms`: 398,450 rows, 40 columns (ADR 0016: `n_held`, `n_held_in_force`, `in_iplord`);
-  - `regions`: 2,641 rows, 31 columns;
+  - `regions`: 2,641 rows, 42 columns (ADR 0017, 0018);
+  - `region_indicators`: 22,511,923 rows, 10 columns, 173 MB (the `regions` lens's attachments, long; ADR 0018);
   - `national`: 135,140 rows, 10 columns;
   - `timeline`: 1,473 months, 35 columns.
 
@@ -185,6 +218,9 @@ and BLADE stays ruled out.
 - **Corrected this session (the timeline):** the policy register's note that the Patents Act 1990 brought in 20-year
   patents (it was 16 years until 1 July 1995); and section 1's U5 and U10, whose charts showed survivors' counts and
   registration rates for the years before 1983 (trade marks) and 1986 (designs) without saying so.
+- **Tests (regions):** 69 pass; new: the postal-area counts equal the window's rights with a filer's postcode, no
+  rate shown below the minimum or hidden above it, the Poisson interval, the postcode ranges, one row per key in
+  `region_indicators`, CABEE's split businesses sum to the published total, no level marked as a count.
 - **Tests (firms):** 63 pass; new: the filing counts sum to the rights with a filer's ABN, holdings, states.
 - **Tests (events attachment):** 62 pass; new: the events columns' dates, types and lifetimes, and the survival
   helper against a hand count.
@@ -193,16 +229,17 @@ and BLADE stays ruled out.
 
 ## Next, in order
 
-1. **`regions`, section 3 of `01_univariate.ipynb`.** First, in an ADR: count applications by the filer's postcode
-   (`founder_postcode`, ADR 0013) rather than the current holder's, and set the B3 rules for small areas (a minimum
-   denominator or pooling, intervals, a per-person rate); then the postcode check (S6); then profile every column.
-2. **`national`** (section 4), then the planned lenses, `industries` and `institutions`, in the order the plan gives.
+1. **`national`, section 4 of `01_univariate.ipynb`** (A8 done, ADR 0010): GII, the OECD flows, WIPO by origin. First
+   check it for repairs, in an ADR; then profile every column.
+2. **The planned lenses, `industries` and `institutions`,** in the order the plan gives. `institutions` will count the
+   universities' patents that fall outside the postal areas (U49).
 3. **The rest of the `rights` attachments, as sub-sections of 1.8, when the owner says:** the links (with the PCT
    country check), Google Patents (B4), and the inventors (gender estimates checked country by country against WIPO's
    published shares, above all China and Korea).
-4. **Done:** the `timeline` section (U22 to U30, ADR 0014), the events attachment (U31 to U40, ADR 0015) and the
-   `firms` section (U41 to U47, ADR 0016). The `firms` lens's later attachments (filing histories by year from
-   `applicant_year`; its rights' lifetimes and assignments) become sub-sections of section 2 as each is built.
+4. **Done:** the `timeline` section (U22 to U30, ADR 0014), the events attachment (U31 to U40, ADR 0015), the `firms`
+   section (U41 to U47, ADR 0016) and the `regions` section with its attachments (U48 to U62, ADR 0017, 0018). The
+   `firms` lens's later attachments (filing histories by year from `applicant_year`; its rights' lifetimes and
+   assignments) become sub-sections of section 2 as each is built.
 5. **The plan's "high value, little work" additions, with the lens each serves:** the RBA's cash rate and exchange
    rates and the ABS national accounts (timeline), the ATO's statistics by postcode (regions), and IP Australia's own
    published figures as a benchmark (which would also test the provisional rise, U8, and the trade mark expedite fall,
@@ -221,6 +258,12 @@ and BLADE stays ruled out.
      peak) and the April design lapses (how lapses were dated);
    - trade mark oppositions rise from 0 to 16 a month (1983 to 1987) to 20 to 40 (1988): left as recorded (ADR 0014);
    - the months before June 1904 are a start-up (applications lodged before the Patents Act 1903 took effect).
+   - the regional spread of filing is far more than chance, at postal areas and SA3s (U53), and a few areas' patents
+     are one firm's (U52): Stage 2 reads area counts beside their firms, with negative binomial models;
+   - universities' postcodes are not postal areas (U49): their filings are missing from postal-area counts. A lookup
+     that places these postcodes (GeoNames, free) only if Stage 2's regional results prove sensitive;
+   - the ACT holds 27.0% of government contracts against 1.3% of businesses (U62), and South Australia 12.2% of their
+     value against 6.1%: where contracts are addressed, to read beside the firms behind them.
 2. Check in Stage 1 (the placeholder dates are done, U40):
    - IP RAPID's `links.linked_application_country`, which labels every PCT number `au` (`analysis/README.md`), with
      the links attachment;
@@ -251,4 +294,5 @@ and every answer with its date. Nothing there blocks Stage 1. Add new questions 
   vintage (ADR 0011).
 - The `rights` section's cells are long; keep each new sub-section to a few cells, and the notebook under about
   25 MB (ADR 0002 says when to split it).
-- Next free ADR: 0017.
+- `region_indicators` is 22.5 million rows: always filter by `source` and `indicator` in SQL, never load it whole.
+- Next free ADR: 0019.

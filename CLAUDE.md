@@ -36,7 +36,8 @@ until Stage 3 is done and the owner says so.
 - Keep context small. Never print raw rows or whole tables: aggregate in DuckDB with `eda.sql`, which refuses results
   over 250,000 rows. Read `analysis/output/columns.csv` with filters, not whole.
 - **Lenses** are the units of analysis: `rights`, `firms`, `regions`, `national` and `timeline` (monthly), with
-  `industries` and `institutions` planned.
+  `industries` and `institutions` planned. `regions` has a long companion, `region_indicators` (its attachments: one
+  row per postal area, source, indicator and period); query it with filters, never whole.
   - Every dataset goes through all three stages, so every table is attached to at least one lens (ADR 0007; the map is
     in `docs/eda-plan.md`). Keep one row per key, never add two sources for the same measure together, and repair a
     table before its Stage 1 section (`docs/Aus-GII-Independent-Review-and-Action-Plan.md` has the evidence).

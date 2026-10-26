@@ -7,9 +7,12 @@ through all three stages (ADR 0007). Stage 1 has begun: every core variable of t
 (observations U1 to U16), after five more repairs found on the way (ADR 0012), and so is its first attachment, the
 parties (U17 to U21, ADR 0013), and its second, the events: each right's milestones and lifetime (U31 to U40, ADR
 0015). Every column of the `timeline` lens is profiled too (U22 to U30), after one more repair (ADR 0014), and every
-column of the `firms` lens (U41 to U47), after it switched to counting applications by the filer (ADR 0016). This plan says what the exploratory
-data analysis (EDA) covers, where each dataset fits, what each part needs before it starts, and which gaps are worth
-filling. Decisions are in `docs/adr/` (0002 to 0016); terms are in `GLOSSARY.md`.
+column of the `firms` lens (U41 to U47), after it switched to counting applications by the filer (ADR 0016), and
+every column of the `regions` lens (U48 to U54), after it switched to the filer's postcode and set rules for small
+areas (ADR 0017), with its attachments: every value of the Census, Data by Region, CABEE, PHIDU and the Clean Energy
+Regulator in a long companion table, `region_indicators`, and AusTender beside the core (U55 to U62, ADR 0018). This
+plan says what the exploratory data analysis (EDA) covers, where each dataset fits, what each part needs before it
+starts, and which gaps are worth filling. Decisions are in `docs/adr/` (0002 to 0018); terms are in `GLOSSARY.md`.
 
 ## Why an EDA first
 
@@ -43,7 +46,7 @@ All lenses are built by `uv run python -m eda.build`, and every column is descri
 |---|---|---|---|
 | `rights` | IP right | Built: 4,368,006 rows, 52 columns | Q1, Q2 |
 | `firms` | ABN in any IP, R&D, procurement or tax source | Built: 398,450 rows, 40 columns | Q2, Q3, Q4 |
-| `regions` | Postal area | Built: 2,641 | Q2, Q4 |
+| `regions` | Postal area | Built: 2,641 rows, 42 columns; its attachments in `region_indicators` (postal area, source, indicator and period: 22,511,923 rows) | Q2, Q4 |
 | `national` | Country, year and indicator | Built: 135,140 | Q1, Q4 (context) |
 | `timeline` | Month, for Australia (Jan 1904 to Sep 2026) | Built: 1,473 | Q1, Q4, Q5 |
 | `industries` | ANZSIC division and financial year | Planned (ADR 0007; confirmed by the owner) | Q2, Q3, Q4 |
@@ -65,20 +68,20 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 |---|---|---|---|
 | `iprapid` `*_rights`, `application` | rights | The base: one row per right | Done (ADR 0009): A2 (origin), A4 (patent types), raw applicant location; (ADR 0012) attorney use, technology area, placeholder dates, the state. Stage 1 profile done (U1 to U16) |
 | `iprapid/events` | rights, timeline | **Per right:** the dates of the examination request, acceptance, grant, opposition, assignments, licences and extension of term, and of the lapse, cessation or expiry, giving each right's lifetime. **Per month:** counts (already built). | Done (ADR 0010): A3 (coverage starts and ends), events labelled as events and counted once (F38), trade mark registrations by the date entered; (ADR 0014) starts past partial and batch-dated records. Timeline profile done (U22 to U30). Done for `rights` (ADR 0015, U31 to U40): B5, milestones and lifetimes, with rights still in force counted as unfinished |
-| `iprapid/party` | rights, firms | Applicants by country, all of them rather than only the first; founding filer against current holder; the attorney firm. Individuals are pseudonymised codes in IP RAPID, so their gender cannot be estimated. | Done for `rights` (ADR 0013, U17 to U21): founding applicant, holder changed (not before FY2003 for patents), agent, representation. Left: `firms` and `regions` count by the filer |
+| `iprapid/party` | rights, firms | Applicants by country, all of them rather than only the first; founding filer against current holder; the attorney firm. Individuals are pseudonymised codes in IP RAPID, so their gender cannot be estimated. | Done for `rights` (ADR 0013, U17 to U21): founding applicant, holder changed (not before FY2003 for patents), agent, representation. `firms` (ADR 0016) and `regions` (ADR 0017) count by the filer |
 | `iprapid/links` | rights | The route into Australia: foreign priority claimed, PCT entry, divisional | — |
 | `iprapid/classification`, `concordances` | rights, industries | Technology fields and the green-technology flag per right; industry shares for `industries` | B6 (new IPC subclasses) |
 | `iprapid/applicant_year`, `iplord` | firms | Filing histories per ABN. IPLORD is used only to check `applicant_year` before 2020, never added to it. | Checked (U41, ADR 0016): IPLORD's counts differ (81.02% of shared ABNs agree); `in_iplord` flags the 50,790 ABNs only it links to IP |
 | `iprapid/description` | text | Titles and goods and services descriptions; variables derived only if wanted | — |
 | `linkage/abn_spine`, `abr`, `asic` | firms, regions | Firm attributes; business counts by postal area and entity type | Done (ADR 0010, 0011): A6 (age basis and truncation); B2 (every applicant's ABN) |
-| `rdti` | firms, regions | R&D claims per ABN and year | Done: A5 (latest report, amended); ABNs from ACNs (ADR 0011) |
+| `rdti` | firms, regions | R&D claims per ABN and year | Done: A5 (latest report, amended); ABNs from ACNs (ADR 0011). In `regions` as claimants per postal area (U54) |
 | `ato_ctt` | firms | Income and tax of large entities | Done: latest report per year |
-| `austender` | firms, regions, timeline | Contracts and their value per ABN (one row per contract), per supplier postal area, per month | Done (ADR 0011): A1, with amendments in order. Limit: amendments from September 2019 to April 2023 to contracts published before July 2019 are missing |
-| `abs_census` (14 tables) | regions | Every table, as shares of its total: education, occupation, industry, labour force, health, care, volunteering, mobility | Totals or parts, not both |
-| `abs_regions` (Data by Region, SEIFA, geography) | regions | Regional indicators through SA2-to-postal-area population weights; SEIFA (built); geography as reference | — |
-| `abs_cabee` | regions, industries, national | Businesses by employment and turnover size; entries, exits and survival | Survival rates by size repaired (ADR 0011); weights from `poa_sa2` |
-| `phidu` | regions | Health and social indicators through a concordance from PHIDU's areas (PHAs) to SA2s and postal areas | Done (ADR 0011): B12 (`phidu/pha_sa2`), sub-indicators and area types |
-| `cer` | regions, timeline | Solar, battery and other small-scale installations per postal area, and nationally per month | Done (ADR 0011): B11 (one format, one row per key) |
+| `austender` | firms, regions, timeline | Contracts and their value per ABN (one row per contract), per supplier postal area, per month | Done (ADR 0011): A1, with amendments in order. Limit: amendments from September 2019 to April 2023 to contracts published before July 2019 are missing. In `regions` (ADR 0018, U62): suppliers, contracts and value FY2017 to FY2026 by the supplier's postcode |
+| `abs_census` (14 tables) | regions | Every table, as shares of its total: education, occupation, industry, labour force, health, care, volunteering, mobility | Done (ADR 0018, U57): every cell of the 14 tables in `region_indicators`, by postal area; perturbed, so parts do not add exactly to totals. Shares are made in Stage 2, against each table's own universe |
+| `abs_regions` (Data by Region, SEIFA, geography) | regions | Regional indicators through SA2-to-postal-area population weights; SEIFA (built); geography as reference | Done (ADR 0018, U58): every SA2 item, 2011 to 2025, split to postal areas by 2021 residents (mesh blocks) in `region_indicators`; SEIFA and geography in `regions` (ADR 0017: SA3 for pooling) |
+| `abs_cabee` | regions, industries, national | Businesses by employment and turnover size; entries, exits and survival | Survival rates by size repaired (ADR 0011). SA2 tables in `region_indicators` (ADR 0018, U59), split by residents; state and LGA tables wait for `industries` and `national` |
+| `phidu` | regions | Health and social indicators through a concordance from PHIDU's areas (PHAs) to SA2s and postal areas | Done (ADR 0011): B12 (`phidu/pha_sa2`), sub-indicators and area types. In `region_indicators` (ADR 0018, U60), without its confidence limits |
+| `cer` | regions, timeline | Solar, battery and other small-scale installations per postal area, and nationally per month | Done (ADR 0011): B11 (one format, one row per key). In `region_indicators` by year (ADR 0018, U61); the monthly national series waits for the `timeline` |
 | `abs_bcs` | industries | Innovation, barriers, finance and IP methods by industry and firm size (aggregate) | Status flags (S5) |
 | `abs_rd_vc` | industries, national | Business R&D by industry; R&D by sector; venture capital to 2019 | Done (ADR 0011): B10 (every cell, units, sheet rows) |
 | `bcarr_creative` | industries, national | Cultural and creative activity by industry and domain | — |
@@ -114,8 +117,12 @@ it is built. Each lens's repairs come first.
 3. **`firms`** (repairs done, ADR 0010 and 0011: A1, A5, A6, B2; ADR 0016: applications by the filer's ABN, holdings,
    the IPLORD flag, blank states). **Every column profiled (U41 to U47).** Its attachments (filing histories by year
    from `applicant_year`, firms' rights' lifetimes) come as sub-sections when built.
-4. **`regions`**: count applications by the filer's postcode (`founder_postcode`, ADR 0013); the rules (A4 is done)
-   for small areas (N03: a minimum denominator or pooling, intervals, a per-person rate); the postcode check (S6). Then the Census, CABEE, PHIDU (its concordance is built) and CER attachments.
+4. **`regions`** (ADR 0017: applications by the filer's postcode, organisations' counts, rates a year per person and
+   per business shown only where 10 or more applications would be expected, SA3s for pooling, the postcode check S6).
+   **Every column profiled (U48 to U54); every attachment built and profiled (ADR 0018, U55 to U62):** the Census,
+   Data by Region, CABEE, PHIDU and the CER in `region_indicators`, AusTender in `regions`. Left for later: the ATO's
+   statistics by postcode (an addition), and a lookup that places the postcodes that are not postal areas, if Stage 2
+   proves sensitive to them (U49).
 5. **`national`** (A8 done, ADR 0010): GII, the OECD flows (the tax regimes' values are kept), and WIPO by origin.
 6. **`industries`**: built new. Needs the IPC map (B6); the workbook parser (B10) is done.
 7. **`institutions`**: built new. Needs a reviewed link from research institutions to ROR identifiers and ABNs, for
@@ -260,7 +267,10 @@ Found while building the lenses or in the review. Those confirmed in Stage 1 nam
   still running when it closed now have their later amendments (asked for by id), and 70 values that look keyed in
   the wrong units are flagged (`value_jump`).
 - Some postal areas have no residents (population, median age and income of 0), and 295 have fewer than 50 active
-  businesses (N03).
+  businesses (N03). **Confirmed in Stage 1 (U50, U53):** 818 areas have fewer than 1,000 people (1.33% of people);
+  rates are now shown only where 10 or more applications would be expected (ADR 0017), and areas differ far more than
+  chance would make them (68.2% to 72.8% fall below the funnel's 95% limits), so Stage 2 needs models with room for
+  that spread.
 - Australia's R&D spending as a share of GDP: the World Bank series ends in 2021 (1.86%); the OECD series, now in the
   national lens beside it, runs to 2023 (1.68%) and differs where they overlap (2021: 1.66%). Researchers end in 2010
   (F15, F16).
