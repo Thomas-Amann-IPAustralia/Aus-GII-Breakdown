@@ -117,7 +117,8 @@ and BLADE stays ruled out.
     Bank's, 1989 to 2024, and the World Bank's are WIPO's exactly; the World Bank's trade marks count classes
     (IP RAPID's classes 0.938 to 0.998 of it, its applications 0.545 to 0.659); innovation patents in 2016 1.331 times
     WIPO's utility models, a lead;
-  - the attachments (U68): 41,196,081 values, 146,102 indicators; no Australian values in the OECD's business
+  - the attachments (U68): 41,203,167 values, 148,731 indicators (with the ABS's and BCARR's national tables, added
+    with `industries`); no Australian values in the OECD's business
     demography, innovation and IP methods or IP tax regimes; venture capital ends for Australia in 2019;
   - the GII 2026 (U69): 20th of 139 (inputs 13th, outputs 24th); strengths in education and universities, weaknesses
     in outputs and trade; 6 indicators missing and 8 outdated for Australia (the median economy: 6 and 9);
