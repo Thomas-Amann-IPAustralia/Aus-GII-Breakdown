@@ -40,6 +40,8 @@ def test_register_is_well_formed():
         "region_indicators",
         "national",
         "national_indicators",
+        "industries",
+        "industry_indicators",
         "timeline",
     }
     for lens, cols in reg.items():
@@ -51,7 +53,18 @@ def test_register_is_well_formed():
 
 
 @pytest.mark.parametrize(
-    "lens", ["rights", "firms", "regions", "region_indicators", "national", "national_indicators", "timeline"]
+    "lens",
+    [
+        "rights",
+        "firms",
+        "regions",
+        "region_indicators",
+        "national",
+        "national_indicators",
+        "industries",
+        "industry_indicators",
+        "timeline",
+    ],
 )
 def test_register_matches_built_lens(lens):
     p = data.LENS_DIR / f"{lens}.parquet"
@@ -178,6 +191,8 @@ def _built(lens):
         ("region_indicators", "poa_code, source, indicator, period"),
         ("national", "iso3, year, indicator"),
         ("national_indicators", "iso3, source, indicator, period"),
+        ("industries", "division, fy"),
+        ("industry_indicators", "division, source, indicator, period"),
         ("timeline", "month"),
     ],
 )
@@ -466,3 +481,38 @@ def test_region_indicators_split_counts_without_losing_them():
                    / (SELECT sum(persons) FROM read_parquet('{regions}')) - 1) < 0.001 AS census_people
     """).iloc[0]
     assert bool(r.conserved) and r.levels_as_counts == 0 and bool(r.census_people)
+
+
+def test_division_of_reads_classes_and_subdivisions():
+    """ANZSIC codes to divisions (ADR 0020): classes are four digits ('111' is class 0111), subdivisions two."""
+    cases = [("0145", 4, "A"), ("111", 4, "A"), ("1", 2, "A"), ("39", 2, "G"), ("99", 2, "X"), ("7000", 4, "M"),
+             ("6200", 4, "K"), ("9601", 4, "S"), ("61", 2, None)]  # fmt: skip
+    for code, digits, want in cases:
+        got = data.sql(f"SELECT {build._division_of(repr(code), digits)} AS d").d[0]
+        assert (got if isinstance(got, str) else None) == want, (code, digits, got)
+
+
+def test_industries_carry_their_sources_without_loss():
+    """Each right's shares sum to one over the divisions, so the divisions hold the classified rights and no more;
+    CABEE's divisions and its unknown industry sum to its total; business R&D's divisions sum to its total, to within
+    the ABS's rounding (ADR 0020)."""
+    ind, att = _built("industries"), _built("industry_indicators")
+    rights = _built("rights")
+    r = data.sql(f"""
+        WITH l AS (SELECT fy, sum(patents_standard) AS ps, sum(trade_marks) AS tm FROM read_parquet('{ind}')
+                   GROUP BY 1),
+        c AS (SELECT filing_fy AS fy, count(*) FILTER (patent_type = 'standard') AS ps,
+                     count(*) FILTER (ip_right_type = 'trade_mark') AS tm
+              FROM read_parquet('{rights}') WHERE filing_fy BETWEEN 2000 AND 2024 GROUP BY 1)
+        SELECT min(l.ps / c.ps) AS ps_min, max(l.ps / c.ps) AS ps_max, min(l.tm / c.tm) AS tm_min,
+               max(l.tm / c.tm) AS tm_max,
+               (SELECT max(abs(d.v + x.value - t.value)) FROM
+                   (SELECT fy, sum(businesses_end) AS v FROM read_parquet('{ind}') GROUP BY 1) d
+                   JOIN read_parquet('{att}') x ON x.fy = d.fy AND x.division = 'X'
+                     AND x.indicator = 'CABEE.T1.operating_at_end_of_financial_year'
+                   JOIN read_parquet('{att}') t ON t.fy = d.fy AND t.division = 'TOTAL'
+                     AND t.indicator = 'CABEE.T1.operating_at_end_of_financial_year') AS cabee_gap,
+               (SELECT sum(berd) FROM read_parquet('{ind}')) AS berd
+        FROM l JOIN c USING (fy)""").iloc[0]
+    assert 0.98 < r.ps_min and r.ps_max <= 1 + 1e-9 and 0.995 < r.tm_min and r.tm_max <= 1 + 1e-9
+    assert r.cabee_gap == 0 and abs(r.berd - 24_410_463) <= 19  # each division's total is rounded to $'000
