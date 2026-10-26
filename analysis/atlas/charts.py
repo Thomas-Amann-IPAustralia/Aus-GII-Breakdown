@@ -31,7 +31,6 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-
 from eda import sql
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -107,17 +106,21 @@ def U44() -> dict:
         quoted = {"n_patents_standard": 55.3, "n_trade_marks": 25.9, "n_designs": 35.8}[c]
         same(dict(map(tuple, curve))[1], quoted, f"top 1% share of {name}")
     same(int((f.n_patents_standard > 0).sum()), 23971, "firms filing standard patents")
-    series.append({"name": "If every firm filed the same", "data": [[0, 0], [100, 100]], "line": "dashed", "colour": "muted"})
+    series.append(
+        {"name": "If every firm filed the same", "data": [[0, 0], [100, 100]], "line": "dashed", "colour": "muted"}
+    )
     return {
         "type": "line",
         "title": "How concentrated firms' filing is",
-        "subtitle": "Firms lined up from the most applications to the fewest: the share of all applications filed by the "
+        "subtitle": "Firms lined up from the most applications to the fewest: the share of all applications "
+        "filed by the "
         "top x% of filing firms",
         "x": {"name": "Top % of filing firms", "type": "value", "min": 0, "max": 100, "format": "pct"},
         "y": {"name": "% of the applications they filed", "min": 0, "max": 100, "format": "pct"},
         "series": series,
         "marks": {"x": [{"at": 1, "label": "Top 1%"}]},
-        "source": "IP Australia, IP RAPID; ABN spine (lens: firms). Each application credited to the firm that filed it.",
+        "source": "IP Australia, IP RAPID; ABN spine (lens: firms). Each application credited to the firm that "
+        "filed it.",
         "note": "The observation quotes the top 1%. The rest of the curve is drawn from the same table for context.",
         "table_points": [1, 5, 10, 25, 50],
     }
@@ -187,7 +190,8 @@ def U45() -> dict:
 @chart
 def U46() -> dict:
     f = sql(
-        "SELECT rd_latest, in_rdti, austender_value, austender_contracts, in_austender, total_income_latest, in_ato_ctt "
+        "SELECT rd_latest, in_rdti, austender_value, austender_contracts, in_austender, total_income_latest, "
+        "in_ato_ctt "
         "FROM {lens/firms}",
         max_rows=None,
     )
@@ -201,7 +205,9 @@ def U46() -> dict:
         curve = lorenz(v.astype(float), LORENZ_GRID)
         same(dict(map(tuple, curve))[1], quoted, f"top 1% of {name}")
         series.append({"name": name, "data": curve})
-    series.append({"name": "If every firm had the same", "data": [[0, 0], [100, 100]], "line": "dashed", "colour": "muted"})
+    series.append(
+        {"name": "If every firm had the same", "data": [[0, 0], [100, 100]], "line": "dashed", "colour": "muted"}
+    )
     return {
         "type": "line",
         "title": "Contract value is far more concentrated than R&D claims",
@@ -235,7 +241,10 @@ def U47() -> dict:
     def share(column: str) -> pd.DataFrame:
         parts = []
         for name, cond in groups.items():
-            d = sql(f"SELECT {column} AS v, count(*) AS n FROM {{lens/firms}} WHERE {cond} AND {column} IS NOT NULL GROUP BY 1")
+            d = sql(
+                f"SELECT {column} AS v, count(*) AS n FROM {{lens/firms}} WHERE {cond} AND {column} IS NOT NULL "
+                "GROUP BY 1"
+            )
             parts.append(d.set_index("v").n.rename(name) / d.n.sum() * 100)
         return pd.concat(parts, axis=1)
 
@@ -252,13 +261,17 @@ def U47() -> dict:
             {
                 "label": "Remoteness",
                 "subtitle": "% of each group's firms, by the remoteness of their registered postcode",
-                "x": {"type": "category", "values": [o.replace(" of Australia", "").replace(" Australia", "") for o in order]},
+                "x": {
+                    "type": "category",
+                    "values": [o.replace(" of Australia", "").replace(" Australia", "") for o in order],
+                },
                 "y": {"name": "% of the group", "min": 0, "max": 100, "format": "pct", "digits": 1},
                 "series": [{"name": n, "data": col(remote, n, 1)} for n in names],
             },
             {
                 "label": "Advantage",
-                "subtitle": "% of each group's firms, by the advantage of their postcode (IRSAD tenth: 1 least, 10 most "
+                "subtitle": "% of each group's firms, by the advantage of their postcode (IRSAD tenth: 1 least, "
+                "10 most "
                 "advantaged)",
                 "x": {"type": "category", "values": [str(int(i)) for i in decile.index], "name": "IRSAD tenth"},
                 "y": {"name": "% of the group", "min": 0, "format": "pct", "digits": 1},
@@ -291,20 +304,33 @@ def U0() -> dict:
     same(int(by.sum()), 317792796, "rows")
     same(100 * by.iloc[:3].sum() / by.sum(), 69.73, "top three sources' share")
     names = {
-        "iprapid": "IP RAPID (IP Australia)", "tmlink": "TM-Link (trade marks worldwide)", "oecd": "OECD panels",
-        "abr": "ABN register (ABR)", "iplord": "IPLORD (IP Australia)", "abs_census": "ABS Census",
-        "austender": "AusTender contracts", "phidu": "PHIDU social health atlas", "abs_regions": "ABS Data by Region",
-        "google_patents": "Google Patents", "openalex_works": "OpenAlex works", "asic": "ASIC companies",
-        "abs_cabee": "ABS business counts (CABEE)", "linkage": "ABN spine (built here)",
-        "google_patents_inventors": "Google Patents inventors", "wipo_ipstats": "WIPO IP statistics",
-        "wgnd": "WIPO gender-name dictionary", "rdti": "R&D Tax Incentive", "ror": "Research Organization Registry",
+        "iprapid": "IP RAPID (IP Australia)",
+        "tmlink": "TM-Link (trade marks worldwide)",
+        "oecd": "OECD panels",
+        "abr": "ABN register (ABR)",
+        "iplord": "IPLORD (IP Australia)",
+        "abs_census": "ABS Census",
+        "austender": "AusTender contracts",
+        "phidu": "PHIDU social health atlas",
+        "abs_regions": "ABS Data by Region",
+        "google_patents": "Google Patents",
+        "openalex_works": "OpenAlex works",
+        "asic": "ASIC companies",
+        "abs_cabee": "ABS business counts (CABEE)",
+        "linkage": "ABN spine (built here)",
+        "google_patents_inventors": "Google Patents inventors",
+        "wipo_ipstats": "WIPO IP statistics",
+        "wgnd": "WIPO gender-name dictionary",
+        "rdti": "R&D Tax Incentive",
+        "ror": "Research Organization Registry",
     }
     top = by.iloc[:12]
     rest = by.iloc[12:]
     cats = [names.get(s, s) for s in top.index] + [f"The other {len(rest)} sources"]
     vals = [r(100 * v / by.sum(), 2) for v in [*top.to_numpy(), rest.sum()]]
     return {
-        "type": "bar", "horizontal": True,
+        "type": "bar",
+        "horizontal": True,
         "title": "Rows in the corpus, by source",
         "subtitle": "Share of all 317,792,796 rows (162 tables from 41 sources)",
         "x": {"type": "category", "values": cats},
@@ -320,11 +346,18 @@ def U0() -> dict:
 @chart
 def U1() -> dict:
     cols = {
-        "ip_right_type": "Type of right", "status": "Current status", "applicant_count": "Number of applicants",
-        "application_date": "Application date", "applicant_type": "Applicant type",
-        "australian_applicant": "Origin (Australian or overseas)", "registered_date": "Date registered or granted",
-        "retired_date": "Date the right ended", "applicant_state": "Applicant's state",
-        "applicant_postcode": "Applicant's postcode", "patent_type": "Type of patent", "main_area": "Technology area",
+        "ip_right_type": "Type of right",
+        "status": "Current status",
+        "applicant_count": "Number of applicants",
+        "application_date": "Application date",
+        "applicant_type": "Applicant type",
+        "australian_applicant": "Origin (Australian or overseas)",
+        "registered_date": "Date registered or granted",
+        "retired_date": "Date the right ended",
+        "applicant_state": "Applicant's state",
+        "applicant_postcode": "Applicant's postcode",
+        "patent_type": "Type of patent",
+        "main_area": "Technology area",
         "applicant_abn": "Applicant's ABN",
     }
     q = ", ".join(f"100.0 * count({c}) / count(*) AS {c}" for c in cols)
@@ -333,7 +366,8 @@ def U1() -> dict:
     same(d.australian_applicant, 86.37, "origin known")
     order = sorted(cols, key=lambda c: -d[c])
     return {
-        "type": "bar", "horizontal": True,
+        "type": "bar",
+        "horizontal": True,
         "title": "How complete the rights table's core columns are",
         "subtitle": "% of the 4,368,006 rights with a value",
         "x": {"type": "category", "values": [cols[c] for c in order]},
@@ -389,19 +423,29 @@ def U5() -> dict:
     for t, name in TYPES.items():
         p = pivot(d[d.t == t], "y", "o", "n")
         p = p.reindex(range(int(p.index.min()), 2027)).fillna(0)
-        series = [{"name": o, "data": col(p, o, 0), **({"colour": "muted"} if o == "Origin unknown" else {})}
-                  for o in ["Australian", "Overseas", "Origin unknown"] if o in p]
-        v = {"label": name, "subtitle": f"{name}: applications per financial year, by the applicants' origin",
-             "x": {"type": "category", "values": fy(p.index)}, "series": series}
+        series = [
+            {"name": o, "data": col(p, o, 0), **({"colour": "muted"} if o == "Origin unknown" else {})}
+            for o in ["Australian", "Overseas", "Origin unknown"]
+            if o in p
+        ]
+        v = {
+            "label": name,
+            "subtitle": f"{name}: applications per financial year, by the applicants' origin",
+            "x": {"type": "category", "values": fy(p.index)},
+            "series": series,
+        }
         if t in survivors:
-            v["marks"] = {"bands": [{"from": f"FY{int(p.index.min())}", "to": f"FY{survivors[t]}",
-                                     "label": "Survivors only"}]}
+            v["marks"] = {
+                "bands": [{"from": f"FY{int(p.index.min())}", "to": f"FY{survivors[t]}", "label": "Survivors only"}]
+            }
             v["note"] = "In the shaded years the register holds only rights that survived until it was computerised."
         views.append(v)
     return {
-        "type": "line", "title": "Applications per financial year",
+        "type": "line",
+        "title": "Applications per financial year",
         "y": {"name": "Applications", "min": 0, "format": "int"},
-        "views": views, "source": "IP Australia, IP RAPID (lens: rights). FY2027 (a part year) left out.",
+        "views": views,
+        "source": "IP Australia, IP RAPID (lens: rights). FY2027 (a part year) left out.",
     }
 
 
@@ -417,17 +461,28 @@ def U6() -> dict:
     views = []
     for t, name in TYPES.items():
         v = p[t]
-        views.append({
-            "label": name, "subtitle": f"{name}: applications per financial year; FY2027 runs only to mid-October 2026",
-            "series": [
-                {"name": "Complete year", "data": [r(x) if y < 2027 else None for y, x in v.items()]},
-                {"name": "Part year (FY2027)", "data": [r(x) if y == 2027 else None for y, x in v.items()], "colour": "muted"},
-            ],
-        })
+        views.append(
+            {
+                "label": name,
+                "subtitle": f"{name}: applications per financial year; FY2027 runs only to mid-October 2026",
+                "series": [
+                    {"name": "Complete year", "data": [r(x) if y < 2027 else None for y, x in v.items()]},
+                    {
+                        "name": "Part year (FY2027)",
+                        "data": [r(x) if y == 2027 else None for y, x in v.items()],
+                        "colour": "muted",
+                    },
+                ],
+            }
+        )
     return {
-        "type": "bar", "stack": True, "title": "Are the latest years complete?",
-        "x": {"type": "category", "values": fy(p.index)}, "y": {"name": "Applications", "min": 0, "format": "int"},
-        "views": views, "source": "IP Australia, IP RAPID (lens: rights)",
+        "type": "bar",
+        "stack": True,
+        "title": "Are the latest years complete?",
+        "x": {"type": "category", "values": fy(p.index)},
+        "y": {"name": "Applications", "min": 0, "format": "int"},
+        "views": views,
+        "source": "IP Australia, IP RAPID (lens: rights)",
     }
 
 
@@ -444,7 +499,8 @@ def U7() -> dict:
     same(share["trade_mark", 2026], 59.4, "Australian share of trade marks FY2026")
     years = list(range(1990, 2027))
     return {
-        "type": "line", "title": "Australian applicants' share, where origin is recorded",
+        "type": "line",
+        "title": "Australian applicants' share, where origin is recorded",
         "subtitle": "% of each type's applications of known origin; a gap where 5% or more are of unknown origin",
         "x": {"type": "category", "values": fy(years)},
         "y": {"name": "% Australian", "min": 0, "max": 100, "format": "pct", "digits": 1},
@@ -467,7 +523,8 @@ def U8() -> dict:
     same(p.loc["2026-03", "individual"], 740, "individuals' provisionals in March 2026")
     labels = [pd.Timestamp(f"{m}-01").strftime("%b %Y") for m in p.index]
     return {
-        "type": "line", "title": "Provisional applications per month",
+        "type": "line",
+        "title": "Provisional applications per month",
         "subtitle": "July 2021 to September 2026, by the type of the first applicant",
         "x": {"type": "category", "values": labels},
         "y": {"name": "Provisional applications", "min": 0, "format": "int"},
@@ -483,8 +540,15 @@ def U8() -> dict:
 STAGES = {
     "Pending": ["filed", "published", "accepted", "new", "received"],
     "In force": ["granted", "registered", "protected", "certified"],
-    "Ended before grant": ["lapsed", "withdrawn", "refused", "rejected", "inter_partes_refused", "ex_parte_refused",
-                           "voided"],
+    "Ended before grant": [
+        "lapsed",
+        "withdrawn",
+        "refused",
+        "rejected",
+        "inter_partes_refused",
+        "ex_parte_refused",
+        "voided",
+    ],
     "Ended after grant": ["ceased", "expired", "revoked", "terminated", "surrendered", "cancelled", "removed"],
     "Other": ["converted", "linked", "not_filed"],
     "Unknown": ["unknown"],
@@ -504,13 +568,17 @@ def U9() -> dict:
     same(pct.loc["trade_mark", "In force"], 41, "trade marks in force")
     order = list(TYPES)
     return {
-        "type": "bar", "horizontal": True, "stack": True,
+        "type": "bar",
+        "horizontal": True,
+        "stack": True,
         "title": "Where each type of right stands today",
         "subtitle": "% of each type's rights, all years, grouped from the register's status",
         "x": {"type": "category", "values": [TYPES[t] for t in order]},
         "y": {"name": "% of the type's rights", "min": 0, "max": 100, "format": "pct", "digits": 1},
-        "series": [{"name": s, "data": [r(pct.loc[t, s], 1) for t in order],
-                    **({"colour": "muted"} if s == "Unknown" else {})} for s in STAGES],
+        "series": [
+            {"name": s, "data": [r(pct.loc[t, s], 1) for t in order], **({"colour": "muted"} if s == "Unknown" else {})}
+            for s in STAGES
+        ],
         "source": "IP Australia, IP RAPID (lens: rights)",
     }
 
@@ -527,21 +595,26 @@ def U10() -> dict:
     same(p.loc[2008, "standard"], 54.4, "standard grant rate FY2008")
     same(p.loc[2019, "trade_mark"], 80.7, "trade mark registration rate FY2019")
     return {
-        "type": "line", "title": "Share of each year's applications granted or registered",
+        "type": "line",
+        "title": "Share of each year's applications granted or registered",
         "subtitle": "By financial year of application, FY1980 to FY2026",
         "x": {"type": "category", "values": fy(p.index)},
         "y": {"name": "% granted or registered", "min": 0, "max": 100, "format": "pct", "digits": 1},
         "series": [{"name": TYPES[t], "data": col(p, t, 1)} for t in TYPES if t != "provisional"],
         "marks": {"bands": [{"from": "FY2022", "to": "FY2026", "label": "Many still being examined"}]},
         "source": "IP Australia, IP RAPID (lens: rights). Provisional applications are never granted.",
-        "note": "Before FY1983 (trade marks) and FY1986 (designs) the register holds survivors, so their rates look high.",
+        "note": "Before FY1983 (trade marks) and FY1986 (designs) the register holds survivors, so their rates "
+        "look high.",
     }
 
 
 @chart
 def U11() -> dict:
     views = []
-    for t, name, width, top, quoted in [("standard", "Standard patents", 50, 2500, 980), ("trade_mark", "Trade marks", 10, 800, 223)]:
+    for t, name, width, top, quoted in [
+        ("standard", "Standard patents", 50, 2500, 980),
+        ("trade_mark", "Trade marks", 10, 800, 223),
+    ]:
         cond = "patent_type = 'standard'" if t == "standard" else "ip_right_type = 'trade_mark'"
         d = sql(f"""
             SELECT least(floor(days_to_registration / {width}) * {width}, {top}) AS b, count(*) AS n
@@ -554,18 +627,27 @@ def U11() -> dict:
         d["pct"] = 100 * d.n / d.n.sum()
         labels = [f"{int(b):,}+" if b == top else f"{int(b):,}" for b in d.b]
         mlabel = f"{int(med // width * width):,}"
-        views.append({
-            "label": name,
-            "subtitle": f"{name} filed FY2010 to FY2019 and since registered: % in each {width}-day band of days to "
-            "registration",
-            "x": {"type": "category", "values": labels, "name": "Days from application to registration (start of band)"},
-            "series": [{"name": "% of applications", "data": col(d, "pct", 2)}],
-            "marks": {"x": [{"at": mlabel, "label": f"Median {int(med)} days"}]},
-        })
+        views.append(
+            {
+                "label": name,
+                "subtitle": f"{name} filed FY2010 to FY2019 and since registered: % in each {width}-day band of "
+                "days to "
+                "registration",
+                "x": {
+                    "type": "category",
+                    "values": labels,
+                    "name": "Days from application to registration (start of band)",
+                },
+                "series": [{"name": "% of applications", "data": col(d, "pct", 2)}],
+                "marks": {"x": [{"at": mlabel, "label": f"Median {int(med)} days"}]},
+            }
+        )
     return {
-        "type": "bar", "title": "How long registration takes",
+        "type": "bar",
+        "title": "How long registration takes",
         "y": {"name": "% of applications", "min": 0, "format": "pct", "digits": 2},
-        "labels": False, "views": views,
+        "labels": False,
+        "views": views,
         "source": "IP Australia, IP RAPID (lens: rights). The last band holds everything longer.",
     }
 
@@ -579,7 +661,8 @@ def U12() -> dict:
     p = pivot(d, "y", "t", "v").reindex(range(1990, 2022))
     same(p.loc[2005, "standard"], 3.96, "median years FY2005")
     return {
-        "type": "line", "title": "The typical wait, by year of application",
+        "type": "line",
+        "title": "The typical wait, by year of application",
         "subtitle": "Median years from application to registration or grant, among those registered, FY1990 to FY2021",
         "x": {"type": "category", "values": fy(p.index)},
         "y": {"name": "Median years", "min": 0, "format": "num", "digits": 2},
@@ -602,14 +685,15 @@ def country(code: str) -> str:
 def U13() -> dict:
     d = sql("""
         SELECT applicant_country AS c, count(*) AS n FROM {lens/rights}
-        WHERE patent_type = 'standard' AND filing_fy BETWEEN 2017 AND 2026 GROUP BY 1 ORDER BY 2 DESC
+        WHERE patent_type = 'standard' AND filing_fy BETWEEN 2017 AND 2026 GROUP BY 1 ORDER BY 2 DESC, 1
     """)
     total = d.n.sum()
     same(100 * d.n.iloc[0] / total, 43.5, "United States share")
     top = d[d.c.notna()].head(10)
     rest = total - top.n.sum()
     return {
-        "type": "bar", "horizontal": True,
+        "type": "bar",
+        "horizontal": True,
         "title": "Standard patents by the first applicant's country",
         "subtitle": "% of standard patents filed FY2017 to FY2026",
         "x": {"type": "category", "values": [country(c) for c in top.c] + ["All other countries, or none recorded"]},
@@ -626,28 +710,50 @@ def U14() -> dict:
     views = []
     d = sql("""SELECT main_area AS c, count(*) AS n FROM {lens/rights}
                WHERE patent_type = 'standard' AND filing_fy BETWEEN 2017 AND 2026 AND main_area IS NOT NULL
-               GROUP BY 1 ORDER BY 2 DESC LIMIT 12""")
+               GROUP BY 1 ORDER BY 2 DESC, 1 LIMIT 12""")
     same(d.n.iloc[0], 35626, "medical technology patents")
-    views.append({"label": "Standard patents", "subtitle": "Standard patents filed FY2017 to FY2026, by WIPO technology field",
-                  "x": {"type": "category", "values": [c.split("_", 1)[1].replace("_", " ").capitalize() for c in d.c]},
-                  "series": [{"name": "Standard patents", "data": col(d, "n")}]})
-    for t, name, label in [("trade_mark", "Trade marks", "main Nice class"), ("design", "Designs", "main Locarno class")]:
+    views.append(
+        {
+            "label": "Standard patents",
+            "subtitle": "Standard patents filed FY2017 to FY2026, by WIPO technology field",
+            "x": {"type": "category", "values": [c.split("_", 1)[1].replace("_", " ").capitalize() for c in d.c]},
+            "series": [{"name": "Standard patents", "data": col(d, "n")}],
+        }
+    )
+    for t, name, label in [
+        ("trade_mark", "Trade marks", "main Nice class"),
+        ("design", "Designs", "main Locarno class"),
+    ]:
         d = sql(f"""SELECT main_class AS c, count(*) AS n FROM {{lens/rights}}
                     WHERE ip_right_type = '{t}' AND filing_fy BETWEEN 2017 AND 2026 AND main_class IS NOT NULL
-                    GROUP BY 1 ORDER BY 2 DESC LIMIT 12""")
+                    GROUP BY 1 ORDER BY 2 DESC, 1 LIMIT 12""")
         if t == "trade_mark":
             same(d.n.iloc[0], 97146, "class 35 trade marks")
-        views.append({"label": name, "subtitle": f"{name} filed FY2017 to FY2026, by {label}",
-                      "x": {"type": "category", "values": [f"{style.class_name(t, c)} ({int(c)})" for c in d.c]},
-                      "series": [{"name": name, "data": col(d, "n")}]})
-    d = sql("""SELECT main_class AS c, count(*) AS n FROM {lens/rights} WHERE ip_right_type = 'pbr' AND main_class IS NOT NULL
-               GROUP BY 1 ORDER BY 2 DESC LIMIT 12""")
-    views.append({"label": "Plant breeder's rights", "subtitle": "Plant breeder's rights, all years, by plant genus",
-                  "x": {"type": "category", "values": [c.capitalize() for c in d.c]},
-                  "series": [{"name": "Plant breeder's rights", "data": col(d, "n")}]})
+        views.append(
+            {
+                "label": name,
+                "subtitle": f"{name} filed FY2017 to FY2026, by {label}",
+                "x": {"type": "category", "values": [f"{style.class_name(t, c)} ({int(c)})" for c in d.c]},
+                "series": [{"name": name, "data": col(d, "n")}],
+            }
+        )
+    d = sql("""SELECT main_class AS c, count(*) AS n FROM {lens/rights} WHERE ip_right_type = 'pbr' AND main_class
+        IS NOT NULL
+               GROUP BY 1 ORDER BY 2 DESC, 1 LIMIT 12""")
+    views.append(
+        {
+            "label": "Plant breeder's rights",
+            "subtitle": "Plant breeder's rights, all years, by plant genus",
+            "x": {"type": "category", "values": [c.capitalize() for c in d.c]},
+            "series": [{"name": "Plant breeder's rights", "data": col(d, "n")}],
+        }
+    )
     return {
-        "type": "bar", "horizontal": True, "title": "What is protected: the largest fields and classes",
-        "y": {"name": "Rights", "min": 0, "format": "int"}, "views": views,
+        "type": "bar",
+        "horizontal": True,
+        "title": "What is protected: the largest fields and classes",
+        "y": {"name": "Rights", "min": 0, "format": "int"},
+        "views": views,
         "source": "IP Australia, IP RAPID (lens: rights). Class headings shortened from WIPO's.",
     }
 
@@ -663,7 +769,8 @@ def U17() -> dict:
                  WHERE patent_type = 'standard' AND filing_fy BETWEEN 2000 AND 2009""").v[0]
     same(dec, 22.0, "standard patents of the 2000s with a changed holder")
     return {
-        "type": "line", "title": "Rights now held by someone other than the filer",
+        "type": "line",
+        "title": "Rights now held by someone other than the filer",
         "subtitle": "% of each financial year's applications, FY1980 to FY2026",
         "x": {"type": "category", "values": fy(p.index)},
         "y": {"name": "% held by someone else", "min": 0, "format": "pct", "digits": 1},
@@ -680,7 +787,7 @@ def U21() -> dict:
     d = sql("""
         SELECT agent_name AS a, count(*) AS n FROM {lens/rights}
         WHERE patent_type = 'standard' AND filing_fy BETWEEN 2017 AND 2026 AND representation = 'attorney'
-        GROUP BY 1 ORDER BY 2 DESC
+        GROUP BY 1 ORDER BY 2 DESC, 1
     """)
     total = d.n.sum()
     named = d[d.a.notna()].head(12)
@@ -692,7 +799,8 @@ def U21() -> dict:
         return fix.get(s, " ".join(w if w in {"&", "of", "and"} else w.capitalize() for w in s.split()))
 
     return {
-        "type": "bar", "horizontal": True,
+        "type": "bar",
+        "horizontal": True,
         "title": "Standard patents filed through an attorney, by firm",
         "subtitle": "% of standard patents filed FY2017 to FY2026 through an attorney: the 12 largest firms",
         "x": {"type": "category", "values": [nice(a) for a in named.a]},
@@ -711,7 +819,8 @@ def U31() -> dict:
     d = sql("""
         SELECT strftime(date_trunc('month', retired_date), '%Y-%m') AS m, ip_right_type AS t, count(*) AS n
         FROM {lens/rights}
-        WHERE status IN ('ceased', 'expired', 'terminated') AND retired_date BETWEEN DATE '2025-07-01' AND DATE '2026-09-30'
+        WHERE status IN ('ceased', 'expired', 'terminated') AND retired_date BETWEEN DATE '2025-07-01' AND DATE
+            '2026-09-30'
           AND ip_right_type IN ('trade_mark', 'design', 'patent')
         GROUP BY ALL ORDER BY 1
     """)
@@ -721,19 +830,28 @@ def U31() -> dict:
     same(p.loc["2026-03", "trade_mark"], 3213, "trade marks ended in March 2026")
     same(p.loc["2026-05", "trade_mark"], 0, "trade marks ended in May 2026")
     return {
-        "type": "line", "title": "Recorded ends per month, mid-2025 to September 2026",
+        "type": "line",
+        "title": "Recorded ends per month, mid-2025 to September 2026",
         "subtitle": "Trade marks' and designs' ends stop being recorded after March 2026: the six-month grace period",
         "x": {"type": "category", "values": [pd.Timestamp(f"{m}-01").strftime("%b %Y") for m in p.index]},
         "y": {"name": "Rights that ceased, expired or terminated", "min": 0, "format": "int"},
-        "series": [{"name": "Trade marks", "data": col(p, "trade_mark", 0)}, {"name": "Patents", "data": col(p, "patent", 0)},
-                   {"name": "Designs", "data": col(p, "design", 0)}],
+        "series": [
+            {"name": "Trade marks", "data": col(p, "trade_mark", 0)},
+            {"name": "Patents", "data": col(p, "patent", 0)},
+            {"name": "Designs", "data": col(p, "design", 0)},
+        ],
         "marks": {"x": [{"at": "Mar 2026", "label": "Observed to 31 March"}]},
         "source": "IP Australia, IP RAPID (lens: rights; iprapid/events)",
     }
 
 
-MILESTONES = {"exam_requested_date": "Examination requested", "accepted_date": "Accepted", "certified_date": "Certified",
-              "opposed_date": "Opposed", "first_assigned_date": "Assigned"}
+MILESTONES = {
+    "exam_requested_date": "Examination requested",
+    "accepted_date": "Accepted",
+    "certified_date": "Certified",
+    "opposed_date": "Opposed",
+    "first_assigned_date": "Assigned",
+}
 
 
 @chart
@@ -752,13 +870,20 @@ def U32() -> dict:
     for t in ["standard", "trade_mark", "design", "second_tier"]:
         g = d[d.t == t].set_index("y").reindex(years)
         series = [{"name": name, "data": col(g, c, 1)} for c, name in MILESTONES.items() if g[c].max() >= 0.5]
-        views.append({"label": TYPES[t], "subtitle": f"{TYPES[t]}: % of each financial year's applications with each "
-                      "milestone recorded", "series": series})
+        views.append(
+            {
+                "label": TYPES[t],
+                "subtitle": f"{TYPES[t]}: % of each financial year's applications with each milestone recorded",
+                "series": series,
+            }
+        )
     return {
-        "type": "line", "title": "When each milestone starts being recorded",
+        "type": "line",
+        "title": "When each milestone starts being recorded",
         "x": {"type": "category", "values": fy(years)},
         "y": {"name": "% of the year's applications", "min": 0, "max": 100, "format": "pct", "digits": 1},
-        "views": views, "source": "IP Australia, IP RAPID (lens: rights; iprapid/events). Standing events only.",
+        "views": views,
+        "source": "IP Australia, IP RAPID (lens: rights; iprapid/events). Standing events only.",
     }
 
 
@@ -774,13 +899,16 @@ def U33() -> dict:
     same(d.b[2006], 755, "request to acceptance FY2006")
     same(d.a[2013], 44, "filing to request FY2013")
     return {
-        "type": "line", "title": "The time between milestones",
+        "type": "line",
+        "title": "The time between milestones",
         "subtitle": "Median days, by financial year of filing, among rights that reached each step",
         "x": {"type": "category", "values": fy(d.index)},
         "y": {"name": "Median days", "min": 0, "format": "int"},
-        "series": [{"name": "Standard patents: filing to examination request", "data": col(d, "a", 0)},
-                   {"name": "Standard patents: request to acceptance", "data": col(d, "b", 0)},
-                   {"name": "Trade marks: filing to acceptance", "data": col(d, "c", 0)}],
+        "series": [
+            {"name": "Standard patents: filing to examination request", "data": col(d, "a", 0)},
+            {"name": "Standard patents: request to acceptance", "data": col(d, "b", 0)},
+            {"name": "Trade marks: filing to acceptance", "data": col(d, "c", 0)},
+        ],
         "marks": {"x": [{"at": "FY2013", "label": "Raising the Bar"}]},
         "source": "IP Australia, IP RAPID (lens: rights). Later years still in progress are left out.",
     }
@@ -802,18 +930,25 @@ def U34() -> dict:
     """).set_index("m")
     same(m.n["2018-11"], 604, "trade mark expedite requests November 2018")
     return {
-        "type": "line", "title": "Asking for faster examination",
+        "type": "line",
+        "title": "Asking for faster examination",
         "source": "IP Australia, IP RAPID (lens: rights; iprapid/events)",
         "views": [
-            {"label": "By year of filing", "subtitle": "% of applications whose examination was expedited, by financial year",
-             "x": {"type": "category", "values": fy(p.index)},
-             "y": {"name": "% expedited", "min": 0, "format": "pct", "digits": 2},
-             "series": [{"name": TYPES[t], "data": col(p, t, 2)} for t in ["standard", "trade_mark", "design"]]},
-            {"label": "Trade mark requests per month", "subtitle": "Trade mark expedite requests per month, 2017 to 2020",
-             "x": {"type": "category", "values": [pd.Timestamp(f"{x}-01").strftime("%b %Y") for x in m.index]},
-             "y": {"name": "Requests", "min": 0, "format": "int"},
-             "series": [{"name": "Requests", "data": col(m, "n")}],
-             "marks": {"x": [{"at": "Nov 2018", "label": "Records moved"}]}},
+            {
+                "label": "By year of filing",
+                "subtitle": "% of applications whose examination was expedited, by financial year",
+                "x": {"type": "category", "values": fy(p.index)},
+                "y": {"name": "% expedited", "min": 0, "format": "pct", "digits": 2},
+                "series": [{"name": TYPES[t], "data": col(p, t, 2)} for t in ["standard", "trade_mark", "design"]],
+            },
+            {
+                "label": "Trade mark requests per month",
+                "subtitle": "Trade mark expedite requests per month, 2017 to 2020",
+                "x": {"type": "category", "values": [pd.Timestamp(f"{x}-01").strftime("%b %Y") for x in m.index]},
+                "y": {"name": "Requests", "min": 0, "format": "int"},
+                "series": [{"name": "Requests", "data": col(m, "n")}],
+                "marks": {"x": [{"at": "Nov 2018", "label": "Records moved"}]},
+            },
         ],
     }
 
@@ -821,18 +956,22 @@ def U34() -> dict:
 @chart
 def U35() -> dict:
     g = sql("""
-        SELECT filing_fy AS y, 100 * avg((assignment_count > 0)::int) AS assigned, 100 * avg(holder_changed::int) AS changed
+        SELECT filing_fy AS y, 100 * avg((assignment_count > 0)::int) AS assigned, 100 * avg(holder_changed::int)
+            AS changed
         FROM {lens/rights} WHERE patent_type = 'standard' AND filing_fy BETWEEN 1985 AND 2020 GROUP BY 1 ORDER BY 1
     """).set_index("y")
     same(g.assigned[2002], 15.4, "assigned FY2002")
     same(g.assigned[2003], 16.41, "assigned FY2003")
     return {
-        "type": "line", "title": "Standard patents that changed hands",
+        "type": "line",
+        "title": "Standard patents that changed hands",
         "subtitle": "By financial year of filing: with a recorded assignment, and held by someone other than the filer",
         "x": {"type": "category", "values": fy(g.index)},
         "y": {"name": "% of standard patents", "min": 0, "format": "pct", "digits": 2},
-        "series": [{"name": "With an assignment", "data": col(g, "assigned", 2)},
-                   {"name": "Holder differs from the filer (from FY2003)", "data": col(g, "changed", 2)}],
+        "series": [
+            {"name": "With an assignment", "data": col(g, "assigned", 2)},
+            {"name": "Holder differs from the filer (from FY2003)", "data": col(g, "changed", 2)},
+        ],
         "marks": {"x": [{"at": "FY2003", "label": "Holder history starts"}]},
         "source": "IP Australia, IP RAPID (lens: rights; iprapid/events, iprapid/party)",
     }
@@ -873,12 +1012,24 @@ def U36() -> dict:
             d = d[(d.years * 4) % 1 == 0]  # quarter-year steps keep the file small
             if (d.survival == 0).any():  # stop at the first point where none is left
                 d = d.loc[: d.index[d.survival.to_numpy() == 0][0]]
-            series.append({"name": g.split(": ", 1)[1], "step": True,
-                           "data": [[r(x, 2), r(100 * s, 1)] for x, s in zip(d.years, d.survival, strict=True)]})
-        views.append({"label": TYPES[t], "subtitle": f"{TYPES[t]}: % still in force, by years since the term began, for "
-                      "each cohort (rights still in force count as unfinished)", "series": series})
+            series.append(
+                {
+                    "name": g.split(": ", 1)[1],
+                    "step": True,
+                    "data": [[r(x, 2), r(100 * s, 1)] for x, s in zip(d.years, d.survival, strict=True)],
+                }
+            )
+        views.append(
+            {
+                "label": TYPES[t],
+                "subtitle": f"{TYPES[t]}: % still in force, by years since the term began, for "
+                "each cohort (rights still in force count as unfinished)",
+                "series": series,
+            }
+        )
     return {
-        "type": "line", "title": "How long rights stay in force",
+        "type": "line",
+        "title": "How long rights stay in force",
         "x": {"name": "Years since the term began", "type": "value", "min": 0, "format": "num", "digits": 1},
         "y": {"name": "% still in force", "min": 0, "max": 100, "format": "pct", "digits": 1},
         "tipHead": "After {x} years",
@@ -896,11 +1047,13 @@ def U37() -> dict:
     same(e.n[2000], 114, "extensions in 2000")
     e = e.reindex(range(int(e.index.min()), int(e.index.max()) + 1)).fillna(0)
     return {
-        "type": "bar", "title": "Extensions of term granted to standard patents",
+        "type": "bar",
+        "title": "Extensions of term granted to standard patents",
         "subtitle": "By calendar year (pharmaceutical substances)",
         "x": {"type": "category", "values": [str(y) for y in e.index]},
         "y": {"name": "Extensions granted", "min": 0, "format": "int"},
-        "series": [{"name": "Extensions", "data": col(e, "n")}], "labels": False,
+        "series": [{"name": "Extensions", "data": col(e, "n")}],
+        "labels": False,
         "source": "IP Australia, IP RAPID (lens: rights; iprapid/events)",
     }
 
@@ -915,7 +1068,8 @@ def U38() -> dict:
         )
         SELECT c, year(d) AS year,
                CASE WHEN c = 'lapsed' THEN (CASE WHEN year(r.application_date) IN (1999, 2000, 2001)
-                                                 THEN 'Filed ' || year(r.application_date)::VARCHAR ELSE 'Filed in other years' END)
+                                                 THEN 'Filed ' || year(r.application_date)::VARCHAR
+                                                 ELSE 'Filed in other years' END)
                     ELSE CASE round(date_diff('day', r.earliest_filed_date, d) / 365.25)
                         WHEN 7 THEN 'At 7 years (first term, 1955 Act)'
                         WHEN 10 THEN 'At 10 years (first term, 1995 Act)'
@@ -930,16 +1084,33 @@ def U38() -> dict:
     same(la.loc[2002, "Filed 2000"], 10247, "2002's lapses filed in 2000")
     years = [str(y) for y in ce.index]
     return {
-        "type": "bar", "stack": True, "title": "Trade marks: why cessations fell and lapses rose in 2002",
+        "type": "bar",
+        "stack": True,
+        "title": "Trade marks: why cessations fell and lapses rose in 2002",
         "x": {"type": "category", "values": years, "name": "Calendar year of the event"},
         "y": {"name": "Trade marks", "min": 0, "format": "int"},
         "source": "IP Australia, IP RAPID (iprapid/events; lens: rights). Each event once per mark and day.",
         "views": [
-            {"label": "Cessations, by age", "subtitle": "Trade mark cessations, by the mark's age when it ceased",
-             "series": [{"name": c, "data": col(ce, c)} for c in ["At 7 years (first term, 1955 Act)",
-                                                                  "At 10 years (first term, 1995 Act)", "Other ages (later renewals)"]]},
-            {"label": "Lapses, by year filed", "subtitle": "Trade mark lapses, by the year the mark was filed",
-             "series": [{"name": c, "data": col(la.reindex(ce.index).fillna(0), c)} for c in ["Filed 1999", "Filed 2000", "Filed 2001", "Filed in other years"]]},
+            {
+                "label": "Cessations, by age",
+                "subtitle": "Trade mark cessations, by the mark's age when it ceased",
+                "series": [
+                    {"name": c, "data": col(ce, c)}
+                    for c in [
+                        "At 7 years (first term, 1955 Act)",
+                        "At 10 years (first term, 1995 Act)",
+                        "Other ages (later renewals)",
+                    ]
+                ],
+            },
+            {
+                "label": "Lapses, by year filed",
+                "subtitle": "Trade mark lapses, by the year the mark was filed",
+                "series": [
+                    {"name": c, "data": col(la.reindex(ce.index).fillna(0), c)}
+                    for c in ["Filed 1999", "Filed 2000", "Filed 2001", "Filed in other years"]
+                ],
+            },
         ],
     }
 
@@ -949,7 +1120,8 @@ def U39() -> dict:
     a = sql("""
         WITH e AS (
             SELECT DISTINCT application_number, event_effective_date AS d FROM {iprapid/events}
-            WHERE ip_right_type = 'design' AND event_category = 'lapsed' AND year(event_effective_date) BETWEEN 1996 AND 2002
+            WHERE ip_right_type = 'design' AND event_category = 'lapsed' AND year(event_effective_date) BETWEEN
+                1996 AND 2002
         )
         SELECT month(d) AS m, count(*) AS lapses, count(DISTINCT d) AS days FROM e GROUP BY 1 ORDER BY 1
     """).set_index("m")
@@ -957,14 +1129,23 @@ def U39() -> dict:
     same(a.days[4], 32, "April days with a lapse")
     months = [pd.Timestamp(2000, m, 1).strftime("%B") for m in a.index]
     return {
-        "type": "bar", "title": "Design lapses by month of the year, 1996 to 2002 together",
+        "type": "bar",
+        "title": "Design lapses by month of the year, 1996 to 2002 together",
         "x": {"type": "category", "values": months},
         "source": "IP Australia, IP RAPID (iprapid/events; lens: rights)",
         "views": [
-            {"label": "Lapses", "subtitle": "Design lapses dated in each month, seven years pooled",
-             "y": {"name": "Lapses", "min": 0, "format": "int"}, "series": [{"name": "Lapses", "data": col(a, "lapses")}]},
-            {"label": "Days with a lapse", "subtitle": "The number of different days each month's lapses are dated on",
-             "y": {"name": "Days", "min": 0, "format": "int"}, "series": [{"name": "Days with a lapse", "data": col(a, "days")}]},
+            {
+                "label": "Lapses",
+                "subtitle": "Design lapses dated in each month, seven years pooled",
+                "y": {"name": "Lapses", "min": 0, "format": "int"},
+                "series": [{"name": "Lapses", "data": col(a, "lapses")}],
+            },
+            {
+                "label": "Days with a lapse",
+                "subtitle": "The number of different days each month's lapses are dated on",
+                "y": {"name": "Days", "min": 0, "format": "int"},
+                "series": [{"name": "Days with a lapse", "data": col(a, "days")}],
+            },
         ],
     }
 
@@ -989,7 +1170,8 @@ def U89() -> dict:
     same(ratio.median(), 1.001, "median PCT ratio")
     same(ratio.min(), 0.981, "lowest PCT ratio")
     return {
-        "type": "line", "title": "Patent applications by route: the register against WIPO",
+        "type": "line",
+        "title": "Patent applications by route: the register against WIPO",
         "subtitle": "By calendar year, 1995 to 2024",
         "x": {"type": "category", "values": [str(y) for y in w.index]},
         "y": {"name": "Applications", "min": 0, "format": "int"},
@@ -1000,12 +1182,19 @@ def U89() -> dict:
             {"name": "WIPO: direct applications", "data": col(w, "wdirect"), "line": "dashed"},
         ],
         "source": "IP Australia, IP RAPID (lens: rights); WIPO IP Statistics, indicators 1a and 1b",
-        "note": "Each solid line and the dashed line beside it count the same thing from two sources; they nearly overlap.",
+        "note": "Each solid line and the dashed line beside it count the same thing from two sources; they "
+        "nearly overlap.",
     }
 
 
-ROUTES = {"pct": "PCT", "divisional": "Divisional", "convention": "Priority abroad",
-          "australian_priority": "Australian priority", "madrid": "Madrid", "direct": "Direct"}
+ROUTES = {
+    "pct": "PCT",
+    "divisional": "Divisional",
+    "convention": "Priority abroad",
+    "australian_priority": "Australian priority",
+    "madrid": "Madrid",
+    "direct": "Direct",
+}
 
 
 @chart
@@ -1024,16 +1213,28 @@ def U90() -> dict:
     same(sh["standard", "Australian", 2026, "direct"], 28.3, "Australian direct filing FY2026")
     years = list(range(1985, 2027))
     views = []
-    for t, o, label in [("standard", "overseas", "Standard patents, overseas"), ("standard", "Australian", "Standard patents, Australian"),
-                        ("trade_mark", "overseas", "Trade marks, overseas"), ("design", "overseas", "Designs, overseas")]:
+    for t, o, label in [
+        ("standard", "overseas", "Standard patents, overseas"),
+        ("standard", "Australian", "Standard patents, Australian"),
+        ("trade_mark", "overseas", "Trade marks, overseas"),
+        ("design", "overseas", "Designs, overseas"),
+    ]:
         g = d[(d.t == t) & (d.o == o)].pivot_table(index="y", columns="route", values="share").reindex(years)
-        views.append({"label": label, "subtitle": f"{label}: % of each financial year's applications, by route",
-                      "series": [{"name": n, "data": col(g, k, 1)} for k, n in ROUTES.items() if k in g]})
+        views.append(
+            {
+                "label": label,
+                "subtitle": f"{label}: % of each financial year's applications, by route",
+                "series": [{"name": n, "data": col(g, k, 1)} for k, n in ROUTES.items() if k in g],
+            }
+        )
     return {
-        "type": "bar", "stack": True, "title": "How rights came to Australia",
+        "type": "bar",
+        "stack": True,
+        "title": "How rights came to Australia",
         "x": {"type": "category", "values": fy(years)},
         "y": {"name": "% of the year's applications", "min": 0, "max": 100, "format": "pct", "digits": 1},
-        "views": views, "source": "IP Australia, IP RAPID (lens: rights; iprapid/links). Origin known only.",
+        "views": views,
+        "source": "IP Australia, IP RAPID (lens: rights; iprapid/links). Origin known only.",
     }
 
 
@@ -1041,28 +1242,36 @@ def U90() -> dict:
 def U91() -> dict:
     d = sql("""
         SELECT priority_office AS o, count(*) AS n FROM {lens/rights}
-        WHERE patent_type = 'standard' AND filing_fy BETWEEN 2017 AND 2026 AND priority_claims > 0 AND NOT australian_applicant
-        GROUP BY 1 ORDER BY 2 DESC
+        WHERE patent_type = 'standard' AND filing_fy BETWEEN 2017 AND 2026 AND priority_claims > 0 AND NOT
+            australian_applicant
+        GROUP BY 1 ORDER BY 2 DESC, 1
     """)
     tot = d.n.sum()
     same(100 * d.n.iloc[0] / tot, 53.42, "US share of overseas priorities")
     top = d[d.o.notna()].head(8)
     names = {"ep": "European Patent Office", "wo": "WIPO (international)"}
     return {
-        "type": "bar", "horizontal": True,
+        "type": "bar",
+        "horizontal": True,
         "title": "Where overseas inventions patented in Australia were first filed",
         "subtitle": "Office of the earliest priority, standard patents filed FY2017 to FY2026 from overseas",
-        "x": {"type": "category", "values": [names.get(o, country(o)) for o in top.o] + ["All other offices, or unknown"]},
+        "x": {
+            "type": "category",
+            "values": [names.get(o, country(o)) for o in top.o] + ["All other offices, or unknown"],
+        },
         "y": {"name": "% of those with a priority", "min": 0, "format": "pct", "digits": 2},
-        "series": [{"name": "Share", "data": [r(100 * n / tot, 2) for n in top.n] + [r(100 * (tot - top.n.sum()) / tot, 2)]}],
+        "series": [
+            {"name": "Share", "data": [r(100 * n / tot, 2) for n in top.n] + [r(100 * (tot - top.n.sum()) / tot, 2)]}
+        ],
         "source": "IP Australia, IP RAPID (lens: rights; iprapid/links). Office read from the priority number.",
     }
 
 
-# ------------------------------------------------------------------------------------------------------------ Google Patents
+# ------------------------------------------------------------------------------------------------------------ Google Pa
 
 
-REACH = """FROM {lens/rights} WHERE patent_type = 'standard' AND filing_fy BETWEEN 2010 AND 2019 AND family_id IS NOT NULL
+REACH = """FROM {lens/rights} WHERE patent_type = 'standard' AND filing_fy BETWEEN 2010 AND 2019 AND family_id IS
+    NOT NULL
            AND australian_applicant IS NOT NULL"""
 ORIGIN2 = "CASE WHEN australian_applicant THEN 'Australian applicants' ELSE 'Overseas applicants' END"
 
@@ -1076,7 +1285,8 @@ def U93() -> dict:
     p = pivot(d, "k", "o", "n").fillna(0)
     p = 100 * p / p.sum()
     return {
-        "type": "bar", "title": "How many offices each patent's family reaches",
+        "type": "bar",
+        "title": "How many offices each patent's family reaches",
         "subtitle": "Standard patents filed FY2010 to FY2019: % of each group's patents by the number of offices "
         "(15 = 15 or more)",
         "x": {"type": "category", "values": [f"{int(k)}{'+' if k == 15 else ''}" for k in p.index], "name": "Offices"},
@@ -1095,10 +1305,16 @@ def U94() -> dict:
     same(p.loc[0, "Australian applicants"], 43.99, "Australians never cited")
     same(p.loc[0, "Overseas applicants"], 13.29, "overseas never cited")
     return {
-        "type": "bar", "title": "How often later inventions cite each patent",
-        "subtitle": "Standard patents filed FY2010 to FY2019: % of each group's patents by the number of families citing "
+        "type": "bar",
+        "title": "How often later inventions cite each patent",
+        "subtitle": "Standard patents filed FY2010 to FY2019: % of each group's patents by the number of "
+        "families citing "
         "them within five years (30 = 30 or more)",
-        "x": {"type": "category", "values": [f"{int(k)}{'+' if k == 30 else ''}" for k in p.index], "name": "Citing families"},
+        "x": {
+            "type": "category",
+            "values": [f"{int(k)}{'+' if k == 30 else ''}" for k in p.index],
+            "name": "Citing families",
+        },
         "y": {"name": "% of patents", "min": 0, "format": "pct", "digits": 2},
         "series": [{"name": c, "data": col(p, c, 2)} for c in ["Australian applicants", "Overseas applicants"]],
         "source": "Google Patents Public Data, joined to IP RAPID (lens: rights)",
@@ -1121,7 +1337,8 @@ def U95() -> dict:
     p = pivot(d, "dec", "f", "known")
     same(p.loc[2010, "Australian filers"], 56.98, "Australian filers' country known, 2010s")
     return {
-        "type": "bar", "title": "Standard patents with an inventor's country known",
+        "type": "bar",
+        "title": "Standard patents with an inventor's country known",
         "subtitle": "% of standard patents, by decade of filing and who filed them",
         "x": {"type": "category", "values": [f"{int(x)}s" for x in p.index]},
         "y": {"name": "% with an inventor's country", "min": 0, "max": 100, "format": "pct", "digits": 2},
@@ -1141,12 +1358,15 @@ def U96() -> dict:
     """).set_index("y")
     same(o.overseas[2010], 222, "overseas-filed with an Australian inventor FY2010")
     return {
-        "type": "line", "title": "Standard patents with an inventor in Australia",
+        "type": "line",
+        "title": "Standard patents with an inventor in Australia",
         "subtitle": "By who filed them and financial year of filing (patents whose inventors' countries are known)",
         "x": {"type": "category", "values": fy(o.index)},
         "y": {"name": "Standard patents", "min": 0, "format": "int"},
-        "series": [{"name": "Filed from Australia", "data": col(o, "au")},
-                   {"name": "Filed from overseas", "data": col(o, "overseas")}],
+        "series": [
+            {"name": "Filed from Australia", "data": col(o, "au")},
+            {"name": "Filed from overseas", "data": col(o, "overseas")},
+        ],
         "source": "Google Patents Public Data (inventors), joined to IP RAPID (lens: rights)",
     }
 
@@ -1174,27 +1394,61 @@ def U97() -> dict:
         SELECT * FROM est JOIN w USING (y) WHERE y BETWEEN 2001 AND 2024 ORDER BY y
     """).set_index("y")
     named = {"AU": "Australia", "CN": "China", "KR": "Korea"}
-    pts = lambda keep: [[r(w, 1), r(e, 1), country(c.lower())] for c, w, e in zip(g.index, g.wipo, g.est, strict=True) if keep(c)]  # noqa: E731
+
+    def pts(keep):
+        return [
+            [r(w, 1), r(e, 1), country(c.lower())] for c, w, e in zip(g.index, g.wipo, g.est, strict=True) if keep(c)
+        ]
+
     return {
         "title": "Gender estimated from names, against WIPO's published shares",
-        "source": "Google Patents Public Data (inventors); WIPO World Gender-Name Dictionary; WIPO IP Statistics (PCT indicator 15)",
+        "source": "Google Patents Public Data (inventors); WIPO World Gender-Name Dictionary; WIPO IP Statistics "
+        "(PCT indicator 15)",
         "views": [
-            {"label": "By country", "type": "scatter",
-             "subtitle": "% of inventors who are women, 2016 to 2023: WIPO's figure (across) against the estimate from names "
-             "(up). On the dashed line they agree.",
-             "x": {"name": "WIPO: women among PCT inventors (%)", "type": "value", "min": 5, "max": 40, "format": "pct", "digits": 1},
-             "y": {"name": "Estimated from names (%)", "min": 5, "max": 40, "format": "pct", "digits": 1},
-             "series": [
-                 {"name": "Other countries", "data": pts(lambda c: c not in named), "colour": 0},
-                 {"name": "Australia, China and Korea", "data": pts(lambda c: c in named), "colour": 1, "size": 11, "labels": True},
-                 {"name": "Where they agree", "kind": "line", "data": [[5, 5], [40, 40]], "line": "dashed", "colour": "muted"},
-             ]},
-            {"label": "Australia, by year", "type": "line",
-             "subtitle": "Women among inventors in Australia: the estimate from names against WIPO's figure",
-             "x": {"type": "category", "values": [str(y) for y in au.index]},
-             "y": {"name": "% women", "min": 0, "format": "pct", "digits": 1},
-             "series": [{"name": "Estimated from names", "data": col(au, "est", 1)},
-                        {"name": "WIPO", "data": col(au, "wipo", 1), "line": "dashed"}]},
+            {
+                "label": "By country",
+                "type": "scatter",
+                "subtitle": "% of inventors who are women, 2016 to 2023: WIPO's figure (across) against the "
+                "estimate from names "
+                "(up). On the dashed line they agree.",
+                "x": {
+                    "name": "WIPO: women among PCT inventors (%)",
+                    "type": "value",
+                    "min": 5,
+                    "max": 40,
+                    "format": "pct",
+                    "digits": 1,
+                },
+                "y": {"name": "Estimated from names (%)", "min": 5, "max": 40, "format": "pct", "digits": 1},
+                "series": [
+                    {"name": "Other countries", "data": pts(lambda c: c not in named), "colour": 0},
+                    {
+                        "name": "Australia, China and Korea",
+                        "data": pts(lambda c: c in named),
+                        "colour": 1,
+                        "size": 11,
+                        "labels": True,
+                    },
+                    {
+                        "name": "Where they agree",
+                        "kind": "line",
+                        "data": [[5, 5], [40, 40]],
+                        "line": "dashed",
+                        "colour": "muted",
+                    },
+                ],
+            },
+            {
+                "label": "Australia, by year",
+                "type": "line",
+                "subtitle": "Women among inventors in Australia: the estimate from names against WIPO's figure",
+                "x": {"type": "category", "values": [str(y) for y in au.index]},
+                "y": {"name": "% women", "min": 0, "format": "pct", "digits": 1},
+                "series": [
+                    {"name": "Estimated from names", "data": col(au, "est", 1)},
+                    {"name": "WIPO", "data": col(au, "wipo", 1), "line": "dashed"},
+                ],
+            },
         ],
     }
 
@@ -1235,8 +1489,10 @@ def U22() -> dict:
         spans.append((tl_label(c), round(a.year + (a.month - 1) / 12, 2), round(b.year + b.month / 12, 2)))
     spans.sort(key=lambda x: x[1])
     return {
-        "type": "range", "title": "Where each monthly series can be read",
-        "subtitle": "The span of each of the timeline's 28 series, after the repairs: earlier months are empty, not zero",
+        "type": "range",
+        "title": "Where each monthly series can be read",
+        "subtitle": "The span of each of the timeline's 28 series, after the repairs: earlier months are empty, "
+        "not zero",
         "x": {"type": "category", "values": [s[0] for s in spans]},
         "y": {"name": "Year", "min": 1900, "max": 2030, "format": "year"},
         "series": [{"name": "Months with a value", "data": [[s[1], s[2]] for s in spans]}],
@@ -1251,7 +1507,8 @@ def U23() -> dict:
         SELECT strftime(date_trunc('quarter', application_date), '%Y-%m') AS q, ip_right_type AS t,
                100 * avg((registered_date IS NULL)::int) AS never
         FROM {lens/rights}
-        WHERE application_date BETWEEN DATE '1978-01-01' AND DATE '1990-12-31' AND ip_right_type IN ('trade_mark', 'design')
+        WHERE application_date BETWEEN DATE '1978-01-01' AND DATE '1990-12-31' AND ip_right_type IN ('trade_mark',
+            'design')
         GROUP BY ALL
     """)
     p = pivot(e, "q", "t", "never")
@@ -1259,11 +1516,16 @@ def U23() -> dict:
     same(p.loc["1986-01", "design"], 26.3, "designs never registered, first quarter 1986")
     labels = [f"{q[:4]} Q{(int(q[5:]) - 1) // 3 + 1}" for q in p.index]
     return {
-        "type": "line", "title": "Applications never registered, by quarter of filing",
-        "subtitle": "A share near zero means the register holds only the survivors: applications that failed are missing",
+        "type": "line",
+        "title": "Applications never registered, by quarter of filing",
+        "subtitle": "A share near zero means the register holds only the survivors: applications that failed are "
+        "missing",
         "x": {"type": "category", "values": labels},
         "y": {"name": "% never registered", "min": 0, "max": 70, "format": "pct", "digits": 1},
-        "series": [{"name": "Trade marks", "data": col(p, "trade_mark", 1)}, {"name": "Designs", "data": col(p, "design", 1)}],
+        "series": [
+            {"name": "Trade marks", "data": col(p, "trade_mark", 1)},
+            {"name": "Designs", "data": col(p, "design", 1)},
+        ],
         "marks": {"x": [{"at": "1983 Q1", "label": "Trade marks start"}, {"at": "1986 Q1", "label": "Designs start"}]},
         "source": "IP Australia, IP RAPID (lens: rights). The timeline's series now start at the marked quarters.",
     }
@@ -1282,21 +1544,27 @@ def U24() -> dict:
     same(v[tl_label("patents_standard_overseas")], 0.08, "overseas standard patents' variation")
     same(v[tl_label("patents_second_tier")], 1.82, "second-tier variation")
     return {
-        "type": "bar", "horizontal": True, "title": "How much each monthly series moves",
-        "subtitle": "Variation from month to month as a share of the average (standard deviation ÷ mean), FY2017 to FY2026; "
+        "type": "bar",
+        "horizontal": True,
+        "title": "How much each monthly series moves",
+        "subtitle": "Variation from month to month as a share of the average (standard deviation ÷ mean), FY2017 "
+        "to FY2026; "
         "series with a median of 10 or more a month",
         "x": {"type": "category", "values": [x[0] for x in rows]},
         "y": {"name": "Relative variation", "min": 0, "format": "num", "digits": 2},
         "series": [{"name": "Relative variation", "data": [r(x[1], 2) for x in rows]}],
-        "height": "tall", "source": "IP Australia, IP RAPID (lens: timeline)",
+        "height": "tall",
+        "source": "IP Australia, IP RAPID (lens: timeline)",
     }
 
 
 APPS = {
     "standard": ["patents_standard_au", "patents_standard_overseas", "patents_standard_origin_unknown"],
-    "provisional": ["patents_provisional"], "second_tier": ["patents_second_tier"],
+    "provisional": ["patents_provisional"],
+    "second_tier": ["patents_second_tier"],
     "trade_mark": ["trade_marks_au", "trade_marks_overseas", "trade_marks_origin_unknown"],
-    "design": ["designs_au", "designs_overseas", "designs_origin_unknown"], "pbr": ["pbr_applications"],
+    "design": ["designs_au", "designs_overseas", "designs_origin_unknown"],
+    "pbr": ["pbr_applications"],
 }
 
 
@@ -1315,12 +1583,22 @@ def U25() -> dict:
         series = []
         for c in cols:
             name = next((n for s, n in names.items() if c.endswith(s)), "Applications")
-            series.append({"name": name, "data": col(y, c, 0), **({"colour": "muted"} if name == "Origin unknown" else {})})
-        views.append({"label": TYPES[k], "subtitle": f"{TYPES[k]}: applications per calendar year, from the series' start",
-                      "x": {"type": "category", "values": [str(i) for i in y.index]}, "series": series})
+            series.append(
+                {"name": name, "data": col(y, c, 0), **({"colour": "muted"} if name == "Origin unknown" else {})}
+            )
+        views.append(
+            {
+                "label": TYPES[k],
+                "subtitle": f"{TYPES[k]}: applications per calendar year, from the series' start",
+                "x": {"type": "category", "values": [str(i) for i in y.index]},
+                "series": series,
+            }
+        )
     return {
-        "type": "line", "title": "Applications per calendar year",
-        "y": {"name": "Applications", "min": 0, "format": "int"}, "views": views,
+        "type": "line",
+        "title": "Applications per calendar year",
+        "y": {"name": "Applications", "min": 0, "format": "int"},
+        "views": views,
         "source": "IP Australia, IP RAPID (lens: timeline). Complete years only.",
     }
 
@@ -1330,24 +1608,43 @@ def U26() -> dict:
     from eda import univariate as uni
 
     t = timeline().reset_index()
-    cols = ["patents_standard_au", "patents_standard_overseas", "trade_marks_au", "trade_marks_overseas",
-            "designs_au", "designs_overseas", "patents_provisional"]
+    cols = [
+        "patents_standard_au",
+        "patents_standard_overseas",
+        "trade_marks_au",
+        "trade_marks_overseas",
+        "designs_au",
+        "designs_overseas",
+        "patents_provisional",
+    ]
     s = uni.seasonal_profile(t, cols, start="2010-01-01", end="2019-12-01")
     same(s.loc["patents_standard_au", 1], 75, "Australian standard patents in January")
     same(s.loc["patents_standard_overseas", 1], 95, "overseas standard patents in January")
     months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     views = []
-    for label, a, o in [("Standard patents", "patents_standard_au", "patents_standard_overseas"),
-                        ("Trade marks", "trade_marks_au", "trade_marks_overseas"), ("Designs", "designs_au", "designs_overseas")]:
-        views.append({"label": label, "subtitle": f"{label}: each month as a % of an ordinary month (100), median of 2010 to 2019",
-                      "series": [{"name": "Australian applicants", "data": [r(v, 0) for v in s.loc[a]]},
-                                 {"name": "Overseas applicants", "data": [r(v, 0) for v in s.loc[o]]}]})
+    for label, a, o in [
+        ("Standard patents", "patents_standard_au", "patents_standard_overseas"),
+        ("Trade marks", "trade_marks_au", "trade_marks_overseas"),
+        ("Designs", "designs_au", "designs_overseas"),
+    ]:
+        views.append(
+            {
+                "label": label,
+                "subtitle": f"{label}: each month as a % of an ordinary month (100), median of 2010 to 2019",
+                "series": [
+                    {"name": "Australian applicants", "data": [r(v, 0) for v in s.loc[a]]},
+                    {"name": "Overseas applicants", "data": [r(v, 0) for v in s.loc[o]]},
+                ],
+            }
+        )
     return {
-        "type": "line", "title": "The typical month of the year",
+        "type": "line",
+        "title": "The typical month of the year",
         "x": {"type": "category", "values": months},
         "y": {"name": "% of an ordinary month", "min": 50, "max": 130, "format": "num", "digits": 0},
         "marks": {"y": [{"at": 100, "label": "An ordinary month"}]},
-        "views": views, "source": "IP Australia, IP RAPID (lens: timeline)",
+        "views": views,
+        "source": "IP Australia, IP RAPID (lens: timeline)",
     }
 
 
@@ -1358,17 +1655,29 @@ def U27() -> dict:
         "Granted or registered": ["patents_granted", "trade_marks_registered", "designs_registered"],
         "Lapsed": ["patents_lapsed", "trade_marks_lapsed", "designs_lapsed"],
         "Ceased or expired": ["patents_ceased", "trade_marks_ceased", "designs_ceased", "patents_expired"],
-        "Sold or opposed": ["patent_assignments", "trade_mark_assignments", "trade_mark_oppositions", "patent_oppositions"],
+        "Sold or opposed": [
+            "patent_assignments",
+            "trade_mark_assignments",
+            "trade_mark_oppositions",
+            "patent_oppositions",
+        ],
     }
     years = t.groupby(t.index.year)[sum(groups.values(), [])].sum(min_count=12).loc[1984:2025]
     same(years.patents_granted[2016], 25687, "patent grants in 2016")
     same(years.trade_marks_ceased[2025], 35484, "trade mark cessations in 2025")
     return {
-        "type": "line", "title": "What happened to rights each year",
+        "type": "line",
+        "title": "What happened to rights each year",
         "x": {"type": "category", "values": [str(y) for y in years.index]},
         "y": {"name": "Events", "min": 0, "format": "int"},
-        "views": [{"label": g, "subtitle": f"{g}: events per calendar year, from each series' start",
-                   "series": [{"name": tl_label(c), "data": col(years, c, 0)} for c in cs]} for g, cs in groups.items()],
+        "views": [
+            {
+                "label": g,
+                "subtitle": f"{g}: events per calendar year, from each series' start",
+                "series": [{"name": tl_label(c), "data": col(years, c, 0)} for c in cs],
+            }
+            for g, cs in groups.items()
+        ],
         "source": "IP Australia, IP RAPID (iprapid/events, each event once; lens: timeline)",
     }
 
@@ -1400,27 +1709,41 @@ def U28() -> dict:
 
     t = timeline()
     w = uni.event_windows(t.reset_index(), POLICY_TARGETS)
-    same(w.loc[("raising-the-bar", "patents_standard_au"), "month of the change, × average before"], 4.39, "Raising the Bar rush")
-    same(w.loc[("innovation-patent-closed", "patents_second_tier"), "% change in the average"], -95.9, "after the closure")
+    same(
+        w.loc[("raising-the-bar", "patents_standard_au"), "month of the change, × average before"],
+        4.39,
+        "Raising the Bar rush",
+    )
+    same(
+        w.loc[("innovation-patent-closed", "patents_second_tier"), "% change in the average"],
+        -95.9,
+        "after the closure",
+    )
     names = sql("SELECT id, event FROM {policy_events/events}").set_index("id").event
     marked = t.loc[t.policy_events.notna(), "policy_events"]
     when = {e: m for m, es in marked.items() for e in es.split(", ")}
     views = []
     for ev, cols in sorted(POLICY_TARGETS.items(), key=lambda kv: when[kv[0]]):
         m = when[ev]
-        win = t.loc[m - pd.DateOffset(months=24): m + pd.DateOffset(months=24), cols].astype(float)
+        win = t.loc[m - pd.DateOffset(months=24) : m + pd.DateOffset(months=24), cols].astype(float)
         labels = [x.strftime("%b %Y") for x in win.index]
-        views.append({
-            "label": f"{m:%b %Y}: {names[ev]}",
-            "subtitle": f"{names[ev]} ({m:%B %Y}): the series it targets, 24 months either side",
-            "x": {"type": "category", "values": labels},
-            "series": [{"name": tl_label(c), "data": col(win, c, 0)} for c in cols],
-            "marks": {"x": [{"at": f"{m:%b %Y}", "label": "The change"}]},
-        })
+        views.append(
+            {
+                "label": f"{m:%b %Y}: {names[ev]}",
+                "subtitle": f"{names[ev]} ({m:%B %Y}): the series it targets, 24 months either side",
+                "x": {"type": "category", "values": labels},
+                "series": [{"name": tl_label(c), "data": col(win, c, 0)} for c in cols],
+                "marks": {"x": [{"at": f"{m:%b %Y}", "label": "The change"}]},
+            }
+        )
     return {
-        "type": "line", "title": "The 17 policy changes, one at a time",
-        "y": {"name": "Per month", "min": 0, "format": "int"}, "views": views, "select": True,
-        "source": "IP Australia, IP RAPID (lens: timeline); dates from policy_events, checked against the Federal Register",
+        "type": "line",
+        "title": "The 17 policy changes, one at a time",
+        "y": {"name": "Per month", "min": 0, "format": "int"},
+        "views": views,
+        "select": True,
+        "source": "IP Australia, IP RAPID (lens: timeline); dates from policy_events, checked against the "
+        "Federal Register",
         "note": "Months either side are shown as recorded; trends and seasons are not allowed for until Stage 2.",
     }
 
@@ -1431,19 +1754,51 @@ def U29() -> dict:
     same(t.loc["2015-07-01", "patent_assignments"], 1603, "patent assignments in July 2015")
     same(t.loc["1991-06-01", "patents_granted"], 113, "patent grants in June 1991")
     cases = [
-        ("Patent grants, 1990 to 1992", "patents_granted", "1990-01-01", "1992-12-01", "1991-06-01", "Patents Act 1990 began"),
-        ("Trade mark registrations, 1995 to 1997", "trade_marks_registered", "1995-01-01", "1997-12-01", "1996-01-01", "Trade Marks Act 1995 began"),
-        ("Patent assignments, 2014 to 2016", "patent_assignments", "2014-01-01", "2016-12-01", "2015-07-01", "One large transfer"),
+        (
+            "Patent grants, 1990 to 1992",
+            "patents_granted",
+            "1990-01-01",
+            "1992-12-01",
+            "1991-06-01",
+            "Patents Act 1990 began",
+        ),
+        (
+            "Trade mark registrations, 1995 to 1997",
+            "trade_marks_registered",
+            "1995-01-01",
+            "1997-12-01",
+            "1996-01-01",
+            "Trade Marks Act 1995 began",
+        ),
+        (
+            "Patent assignments, 2014 to 2016",
+            "patent_assignments",
+            "2014-01-01",
+            "2016-12-01",
+            "2015-07-01",
+            "One large transfer",
+        ),
     ]
     views = []
     for label, c, a, b, m, why in cases:
         s = t.loc[a:b, c].astype(float)
-        views.append({"label": label, "subtitle": f"{label}, per month", "x": {"type": "category", "values": [x.strftime("%b %Y") for x in s.index]},
-                      "series": [{"name": tl_label(c), "data": [r(v, 0) for v in s]}],
-                      "marks": {"x": [{"at": pd.Timestamp(m).strftime("%b %Y"), "label": why}]}})
-    return {"type": "bar", "title": "Three of the 42 unusual months, and what they are",
-            "y": {"name": "Per month", "min": 0, "format": "int"}, "labels": False, "views": views,
-            "source": "IP Australia, IP RAPID (lens: timeline)"}
+        views.append(
+            {
+                "label": label,
+                "subtitle": f"{label}, per month",
+                "x": {"type": "category", "values": [x.strftime("%b %Y") for x in s.index]},
+                "series": [{"name": tl_label(c), "data": [r(v, 0) for v in s]}],
+                "marks": {"x": [{"at": pd.Timestamp(m).strftime("%b %Y"), "label": why}]},
+            }
+        )
+    return {
+        "type": "bar",
+        "title": "Three of the 42 unusual months, and what they are",
+        "y": {"name": "Per month", "min": 0, "format": "int"},
+        "labels": False,
+        "views": views,
+        "source": "IP Australia, IP RAPID (lens: timeline)",
+    }
 
 
 @chart
@@ -1454,7 +1809,8 @@ def U30() -> dict:
     same(cpi.iloc[-1], 102.31, "the June quarter 2026")
     ch = (100 * (cpi / cpi.shift(4) - 1)).dropna()
     return {
-        "type": "line", "title": "Price rises over the year, by quarter",
+        "type": "line",
+        "title": "Price rises over the year, by quarter",
         "subtitle": "% change in the consumer price index over four quarters, 1949 to June quarter 2026",
         "x": {"type": "category", "values": [f"{m:%b %Y}" for m in ch.index]},
         "y": {"name": "% change over four quarters", "format": "pct", "digits": 1},
@@ -1467,8 +1823,13 @@ def U30() -> dict:
 # ------------------------------------------------------------------------------------------------------------ regions
 
 
-REMOTE = ["Major Cities of Australia", "Inner Regional Australia", "Outer Regional Australia", "Remote Australia",
-          "Very Remote Australia"]
+REMOTE = [
+    "Major Cities of Australia",
+    "Inner Regional Australia",
+    "Outer Regional Australia",
+    "Remote Australia",
+    "Very Remote Australia",
+]
 
 
 def regions() -> pd.DataFrame:
@@ -1498,16 +1859,34 @@ def U49() -> dict:
     p = pivot(d, "t", "c", "n").fillna(0)
     pct = 100 * p.div(p.sum(axis=1), axis=0)
     same(pct.loc["standard", "A postal area"], 94.45, "standard patents in a postal area")
-    same(pct.loc["standard", "A real postcode with no residents"], 4.14, "standard patents at real codes with no residents")
+    same(
+        pct.loc["standard", "A real postcode with no residents"],
+        4.14,
+        "standard patents at real codes with no residents",
+    )
     order = ["standard", "provisional", "second_tier", "trade_mark", "design"]
-    cls = ["A postal area", "A real postcode with no residents", "Post office box or large-volume range", "Other or unknown"]
+    cls = [
+        "A postal area",
+        "A real postcode with no residents",
+        "Post office box or large-volume range",
+        "Other or unknown",
+    ]
     return {
-        "type": "bar", "horizontal": True, "stack": True,
+        "type": "bar",
+        "horizontal": True,
+        "stack": True,
         "title": "Can the filer's postcode be placed?",
         "subtitle": "Applications from Australia, FY2017 to FY2026, by what the filer's postcode is",
         "x": {"type": "category", "values": [TYPES[t] for t in order]},
         "y": {"name": "% of applications", "min": 0, "max": 100, "format": "pct", "digits": 2},
-        "series": [{"name": c, "data": [r(pct.loc[t, c], 2) for t in order], **({"colour": "muted"} if c == "Other or unknown" else {})} for c in cls],
+        "series": [
+            {
+                "name": c,
+                "data": [r(pct.loc[t, c], 2) for t in order],
+                **({"colour": "muted"} if c == "Other or unknown" else {}),
+            }
+            for c in cls
+        ],
         "source": "IP RAPID; ABS postal areas; ABR; Australia Post's postcode ranges (lens: regions)",
     }
 
@@ -1519,11 +1898,22 @@ def U50() -> dict:
     same(int((p < 1000).sum()), 818, "areas under 1,000 people")
     same(p.median(), 3508, "median people")
     edges = [0, 1, 100, 500, 1000, 2500, 5000, 10000, 20000, 50000, 1e9]
-    labels = ["None", "1 to 99", "100 to 499", "500 to 999", "1,000 to 2,499", "2,500 to 4,999", "5,000 to 9,999",
-              "10,000 to 19,999", "20,000 to 49,999", "50,000 or more"]
+    labels = [
+        "None",
+        "1 to 99",
+        "100 to 499",
+        "500 to 999",
+        "1,000 to 2,499",
+        "2,500 to 4,999",
+        "5,000 to 9,999",
+        "10,000 to 19,999",
+        "20,000 to 49,999",
+        "50,000 or more",
+    ]
     cnt = pd.cut(p, edges, right=False, labels=labels).value_counts().reindex(labels)
     return {
-        "type": "bar", "title": "How many people each postal area has",
+        "type": "bar",
+        "title": "How many people each postal area has",
         "subtitle": "Postal areas by their number of residents (2021 Census geography)",
         "x": {"type": "category", "values": labels, "name": "People in the area"},
         "y": {"name": "Postal areas", "min": 0, "format": "int"},
@@ -1535,16 +1925,24 @@ def U50() -> dict:
 @chart
 def U51() -> dict:
     g = regions()
-    geo = g.groupby("remoteness").agg(a=("poa_code", "size"), p=("persons", "sum"), b=("active_gst_abns", "sum")).loc[REMOTE]
+    geo = (
+        g.groupby("remoteness")
+        .agg(a=("poa_code", "size"), p=("persons", "sum"), b=("active_gst_abns", "sum"))
+        .loc[REMOTE]
+    )
     pct = 100 * geo / geo.sum()
     same(pct.loc["Major Cities of Australia", "a"], 37.7, "areas in major cities")
     same(pct.loc["Major Cities of Australia", "p"], 72.8, "people in major cities")
     return {
-        "type": "bar", "title": "Areas, people and businesses by remoteness",
+        "type": "bar",
+        "title": "Areas, people and businesses by remoteness",
         "x": {"type": "category", "values": [x.replace(" of Australia", "").replace(" Australia", "") for x in REMOTE]},
         "y": {"name": "% of the national total", "min": 0, "format": "pct", "digits": 1},
-        "series": [{"name": "Postal areas", "data": col(pct, "a", 1)}, {"name": "People", "data": col(pct, "p", 1)},
-                   {"name": "Businesses", "data": col(pct, "b", 1)}],
+        "series": [
+            {"name": "Postal areas", "data": col(pct, "a", 1)},
+            {"name": "People", "data": col(pct, "p", 1)},
+            {"name": "Businesses", "data": col(pct, "b", 1)},
+        ],
         "source": "ABS remoteness areas and Census 2021; ABR (lens: regions)",
     }
 
@@ -1553,7 +1951,11 @@ def U51() -> dict:
 def U52() -> dict:
     g = regions().sort_values("poa_code")
     series = []
-    for c, name, quoted in [("patents_standard", "Standard patents", 72.5), ("trade_marks", "Trade marks", 60.8), ("designs", "Designs", 75.4)]:
+    for c, name, quoted in [
+        ("patents_standard", "Standard patents", 72.5),
+        ("trade_marks", "Trade marks", 60.8),
+        ("designs", "Designs", 75.4),
+    ]:
         v = g[c].astype(float)
         ranked = v.sort_values(ascending=False, kind="stable")
         curve = [[0, 0]]
@@ -1563,18 +1965,41 @@ def U52() -> dict:
         same(100 * ranked.iloc[:264].sum() / v.sum(), quoted, f"top tenth's share, {name}")
         series.append({"name": name, "data": curve})
         if c == "patents_standard":
-            people = [[0, 0]] + [[pt, r(100 * g.loc[ranked.index[: max(1, round(pt / 100 * len(v)))], "persons"].sum() / g.persons.sum(), 2)] for pt in LORENZ_GRID]
+            people = [[0, 0]] + [
+                [
+                    pt,
+                    r(
+                        100
+                        * g.loc[ranked.index[: max(1, round(pt / 100 * len(v)))], "persons"].sum()
+                        / g.persons.sum(),
+                        2,
+                    ),
+                ]
+                for pt in LORENZ_GRID
+            ]
             same(100 * g.loc[ranked.index[:264], "persons"].sum() / g.persons.sum(), 29.2, "people in the top tenth")
-    series.append({"name": "People in the same areas (ranked by standard patents)", "data": people, "line": "dashed", "colour": "ink"})
+    series.append(
+        {
+            "name": "People in the same areas (ranked by standard patents)",
+            "data": people,
+            "line": "dashed",
+            "colour": "ink",
+        }
+    )
     return {
-        "type": "line", "title": "How concentrated filing is across places",
-        "subtitle": "Postal areas lined up from the most applications to the fewest (FY2017 to FY2026): the share filed by "
+        "type": "line",
+        "title": "How concentrated filing is across places",
+        "subtitle": "Postal areas lined up from the most applications to the fewest (FY2017 to FY2026): the "
+        "share filed by "
         "the top x% of areas, and the share of people who live in the top areas for standard patents",
         "x": {"name": "Top % of postal areas", "type": "value", "min": 0, "max": 100, "format": "pct"},
         "y": {"name": "% of the national total", "min": 0, "max": 100, "format": "pct"},
-        "series": series, "marks": {"x": [{"at": 10, "label": "Top tenth"}]}, "table_points": [1, 5, 10, 25, 50],
+        "series": series,
+        "marks": {"x": [{"at": 10, "label": "Top tenth"}]},
+        "table_points": [1, 5, 10, 25, 50],
         "source": "IP RAPID; ABS Census 2021 (lens: regions). At the filer's postcode.",
-        "note": "The observation quotes the top tenth. The rest of each curve is drawn from the same table for context.",
+        "note": "The observation quotes the top tenth. The rest of each curve is drawn from the same table for "
+        "context.",
     }
 
 
@@ -1583,7 +2008,9 @@ def log_range(values) -> tuple[float, float]:
     return 10 ** math.floor(math.log10(min(v))), 10 ** math.ceil(math.log10(max(v)))
 
 
-def funnel_view(count: pd.Series, people: pd.Series, labels: pd.Series, name: str, quoted: tuple[float, float] | None) -> dict:
+def funnel_view(
+    count: pd.Series, people: pd.Series, labels: pd.Series, name: str, quoted: tuple[float, float] | None
+) -> dict:
     from eda import univariate as uni
 
     d = pd.DataFrame({"k": count.astype(float), "e": people.astype(float), "l": labels}).dropna()
@@ -1605,30 +2032,43 @@ def funnel_view(count: pd.Series, people: pd.Series, labels: pd.Series, name: st
         "label": name,
         "x": {"min": xlo, "max": xhi},
         "y": {"min": ylo, "max": yhi},
-        "subtitle": f"{name}: each area's applications a year per 10,000 people, against its population. Chance alone would "
+        "subtitle": f"{name}: each area's applications a year per 10,000 people, against its population. Chance "
+        "alone would "
         f"keep 95% of areas between the dashed lines; {above:.1f}% are above and {below:.1f}% below.",
         "series": [
             {"name": "Areas", "data": pts, "colour": 0, "size": 5, "opacity": 0.55},
             {"name": "Upper 95% limit (chance alone)", "kind": "line", "data": lim(hi), "line": "dashed", "colour": 1},
             {"name": "Lower 95% limit", "kind": "line", "data": lim(lo), "line": "dashed", "colour": 1},
-            {"name": f"National rate ({1000 * nat:.2f})", "kind": "line", "data": [[r(grid[0], 0), r(1000 * nat, 3)], [r(grid[-1], 0), r(1000 * nat, 3)]], "colour": "ink"},
+            {
+                "name": f"National rate ({1000 * nat:.2f})",
+                "kind": "line",
+                "data": [[r(grid[0], 0), r(1000 * nat, 3)], [r(grid[-1], 0), r(1000 * nat, 3)]],
+                "colour": "ink",
+            },
         ],
-        "note": f"{int((rate == 0).sum())} areas with no applications cannot be drawn on the log scale.",
+        "note": f"{int((rate == 0).sum()):,} areas with no applications cannot be drawn on the log scale.",
     }
 
 
 @chart
 def U53() -> dict:
     g = regions()
-    sa3 = g.groupby(["sa3_code", "sa3_name"]).agg(persons=("persons", "sum"), patents_standard=("patents_standard", "sum")).reset_index()
+    sa3 = (
+        g.groupby(["sa3_code", "sa3_name"])
+        .agg(persons=("persons", "sum"), patents_standard=("patents_standard", "sum"))
+        .reset_index()
+    )
     return {
-        "type": "scatter", "title": "Do places differ more than chance would make them?",
+        "type": "scatter",
+        "title": "Do places differ more than chance would make them?",
         "x": {"name": "People in the area (log scale)", "type": "log", "format": "int"},
         "y": {"name": "Applications a year per 10,000 people (log scale)", "type": "log", "format": "num", "digits": 2},
         "views": [
             funnel_view(g.patents_standard, g.persons, "Postal area " + g.poa_code, "Standard patents", (6.7, 68.2)),
             funnel_view(g.trade_marks, g.persons, "Postal area " + g.poa_code, "Trade marks", (15.0, 71.4)),
-            funnel_view(sa3.patents_standard, sa3.persons, sa3.sa3_name, "Standard patents, pooled into SA3s", (15.5, 72.5)),
+            funnel_view(
+                sa3.patents_standard, sa3.persons, sa3.sa3_name, "Standard patents, pooled into SA3s", (15.5, 72.5)
+            ),
         ],
         "height": "tall",
         "source": "IP RAPID, FY2017 to FY2026; ABS Census 2021 (lens: regions). A funnel plot.",
@@ -1637,12 +2077,19 @@ def U53() -> dict:
 
 @chart
 def U55() -> dict:
-    d = sql("SELECT source, count(*) AS n FROM {lens/region_indicators} GROUP BY 1 ORDER BY 2 DESC")
+    d = sql("SELECT source, count(*) AS n FROM {lens/region_indicators} GROUP BY 1 ORDER BY 2 DESC, 1")
     same(int(d.n.sum()), 22511923, "attached values")
-    names = {"census": "Census 2021", "data_by_region": "Data by Region", "phidu": "PHIDU social health atlas", "cabee": "CABEE business counts",
-             "cer": "Clean Energy Regulator"}
+    names = {
+        "census": "Census 2021",
+        "data_by_region": "Data by Region",
+        "phidu": "PHIDU social health atlas",
+        "cabee": "CABEE business counts",
+        "cer": "Clean Energy Regulator",
+    }
     return {
-        "type": "bar", "horizontal": True, "title": "Values attached to the places table, by source",
+        "type": "bar",
+        "horizontal": True,
+        "title": "Values attached to the places table, by source",
         "x": {"type": "category", "values": [names.get(s, s) for s in d.source]},
         "y": {"name": "Values", "min": 0, "format": "int"},
         "series": [{"name": "Values", "data": col(d, "n")}],
@@ -1655,19 +2102,42 @@ def U56() -> dict:
     d = sql("""
         WITH v AS (SELECT poa_code, sum(value) AS cabee FROM {lens/region_indicators}
                    WHERE source = 'cabee' AND indicator LIKE 'employment|%|Total' AND period = 'June 2025' GROUP BY 1)
-        SELECT r.poa_code, r.active_gst_abns AS abr, v.cabee FROM {lens/regions} r JOIN v USING (poa_code)
+        SELECT r.poa_code, r.active_gst_abns AS abr, v.cabee FROM {lens/regions} r JOIN v USING (poa_code) ORDER BY 1
     """).dropna()
     same(d.cabee.sum() / d.abr.sum(), 0.742, "CABEE against the ABR")
     d = d[(d.abr > 0) & (d.cabee > 0)]
-    lo, hi = log_range(list(d.abr) + list(d.cabee))
+    lo, hi = log_range([max(v, 1) for v in list(d.abr) + list(d.cabee)])
     return {
-        "type": "scatter", "title": "Two counts of businesses, area by area",
-        "subtitle": "Postal areas: active GST-registered ABNs in the business register (across) against CABEE's count of "
+        "type": "scatter",
+        "title": "Two counts of businesses, area by area",
+        "subtitle": "Postal areas: active GST-registered ABNs in the business register (across) against CABEE's "
+        "count of "
         "businesses actively trading, June 2025 (up). Points on the dashed line agree.",
-        "x": {"name": "ABR: active GST-registered ABNs (log scale)", "type": "log", "format": "int", "min": lo, "max": hi},
+        "x": {
+            "name": "ABR: active GST-registered ABNs (log scale)",
+            "type": "log",
+            "format": "int",
+            "min": lo,
+            "max": hi,
+        },
         "y": {"name": "CABEE: businesses (log scale)", "type": "log", "format": "int", "min": lo, "max": hi},
-        "series": [{"name": "Postal areas", "data": [[r(a, 0), r(c, 0), f"Postal area {p}"] for p, a, c in zip(d.poa_code, d.abr, d.cabee, strict=True)], "size": 5, "opacity": 0.55},
-                   {"name": "Where they agree", "kind": "line", "data": [[1, 1], [100000, 100000]], "line": "dashed", "colour": "muted"}],
+        "series": [
+            {
+                "name": "Postal areas",
+                "data": [
+                    [r(a, 0), r(c, 0), f"Postal area {p}"] for p, a, c in zip(d.poa_code, d.abr, d.cabee, strict=True)
+                ],
+                "size": 5,
+                "opacity": 0.55,
+            },
+            {
+                "name": "Where they agree",
+                "kind": "line",
+                "data": [[1, 1], [100000, 100000]],
+                "line": "dashed",
+                "colour": "muted",
+            },
+        ],
         "height": "tall",
         "source": "ABR; ABS CABEE split to postal areas by residents (lenses: regions, region_indicators)",
     }
@@ -1679,8 +2149,10 @@ def U58() -> dict:
                WHERE source = 'data_by_region' GROUP BY 1 ORDER BY 1""").set_index("period")
     same(d.n["2021"], 629, "Data by Region items in 2021")
     return {
-        "type": "bar", "title": "Data by Region: items published for each year",
-        "x": {"type": "category", "values": list(d.index)}, "y": {"name": "Items", "min": 0, "format": "int"},
+        "type": "bar",
+        "title": "Data by Region: items published for each year",
+        "x": {"type": "category", "values": list(d.index)},
+        "y": {"name": "Items", "min": 0, "format": "int"},
         "series": [{"name": "Items", "data": col(d, "n")}],
         "source": "ABS Data by Region (lens: region_indicators)",
         "note": "Census years (2011, 2016, 2021) carry the most.",
@@ -1700,11 +2172,21 @@ def U59() -> dict:
     same(pct.loc["June 2025", "Non employing"], 63.6, "non-employing 2025")
     periods = [x for x in ["June 2023", "June 2024", "June 2025"] if x in pct.index]
     return {
-        "type": "bar", "horizontal": True, "stack": True, "title": "Businesses by number of employees",
+        "type": "bar",
+        "horizontal": True,
+        "stack": True,
+        "title": "Businesses by number of employees",
         "x": {"type": "category", "values": periods},
         "y": {"name": "% of businesses", "min": 0, "max": 100, "format": "pct", "digits": 1},
-        "series": [{"name": s.replace("Non employing", "No employees").replace(" Employees", " employees").replace("-", " to "),
-                    "data": [r(pct.loc[x, s], 1) for x in periods]} for s in sizes],
+        "series": [
+            {
+                "name": s.replace("Non employing", "No employees")
+                .replace(" Employees", " employees")
+                .replace("-", " to "),
+                "data": [r(pct.loc[x, s], 1) for x in periods],
+            }
+            for s in sizes
+        ],
         "source": "ABS CABEE, split to postal areas by residents (lens: region_indicators)",
     }
 
@@ -1715,9 +2197,12 @@ def U60() -> dict:
                WHERE source = 'phidu' GROUP BY 1 ORDER BY n DESC, period LIMIT 10""")
     same(int(d.n.iloc[0]), 702, "indicators for 2022/23")
     return {
-        "type": "bar", "horizontal": True, "title": "PHIDU indicators by the period they describe",
+        "type": "bar",
+        "horizontal": True,
+        "title": "PHIDU indicators by the period they describe",
         "subtitle": "The ten most common periods",
-        "x": {"type": "category", "values": list(d.period)}, "y": {"name": "Indicators", "min": 0, "format": "int"},
+        "x": {"type": "category", "values": list(d.period)},
+        "y": {"name": "Indicators", "min": 0, "format": "int"},
         "series": [{"name": "Indicators", "data": col(d, "n")}],
         "source": "PHIDU, Social Health Atlas (lens: region_indicators)",
     }
@@ -1732,11 +2217,18 @@ def U61() -> dict:
     p = pivot(d, "y", "t", "n").sort_index()
     same(p.loc[2009, "solar_water_heater"], 122312, "solar water heaters 2009")
     same(p.loc[2020, "solar_pv"], 370287, "solar panels 2020")
-    tech = {"solar_pv": "Solar panels", "solar_water_heater": "Solar water heaters", "heat_pump_water_heater": "Heat pump water heaters",
-            "battery": "Batteries", "wind": "Small wind", "hydro": "Small hydro"}
+    tech = {
+        "solar_pv": "Solar panels",
+        "solar_water_heater": "Solar water heaters",
+        "heat_pump_water_heater": "Heat pump water heaters",
+        "battery": "Batteries",
+        "wind": "Small wind",
+        "hydro": "Small hydro",
+    }
     p = p.loc[2001:2025]
     return {
-        "type": "line", "title": "Small-scale energy installations a year, by technology",
+        "type": "line",
+        "title": "Small-scale energy installations a year, by technology",
         "subtitle": "2001 to 2025 (2026 is part of a year and left out)",
         "x": {"type": "category", "values": [str(y) for y in p.index]},
         "y": {"name": "Installations a year", "min": 0, "format": "int"},
@@ -1756,12 +2248,18 @@ def U62() -> dict:
     same(s.loc[act, "austender_contracts"], 27.0, "ACT share of contracts")
     same(s.loc[act, "active_gst_abns"], 1.3, "ACT share of businesses")
     return {
-        "type": "bar", "horizontal": True, "title": "Government contracts and businesses, by state",
-        "subtitle": "Contracts first published FY2017 to FY2026, by the supplier's postcode, against the share of businesses",
+        "type": "bar",
+        "horizontal": True,
+        "title": "Government contracts and businesses, by state",
+        "subtitle": "Contracts first published FY2017 to FY2026, by the supplier's postcode, against the share "
+        "of businesses",
         "x": {"type": "category", "values": list(s.index)},
         "y": {"name": "% of the national total", "min": 0, "format": "pct", "digits": 1},
-        "series": [{"name": "Contracts", "data": col(s, "austender_contracts", 1)}, {"name": "Contract value", "data": col(s, "austender_value", 1)},
-                   {"name": "Businesses", "data": col(s, "active_gst_abns", 1)}],
+        "series": [
+            {"name": "Contracts", "data": col(s, "austender_contracts", 1)},
+            {"name": "Contract value", "data": col(s, "austender_value", 1)},
+            {"name": "Businesses", "data": col(s, "active_gst_abns", 1)},
+        ],
         "source": "AusTender; ABR (lens: regions). Nominal values.",
     }
 
@@ -1777,12 +2275,16 @@ def U64() -> dict:
     same(sh.loc[1980, "origin unknown"], 34.35, "unknown origin 1980")
     same(sh.loc[1990, "origin unknown"], 29.02, "unknown origin 1990")
     return {
-        "type": "bar", "stack": True, "title": "WIPO's patent applications whose origin is not a current country",
+        "type": "bar",
+        "stack": True,
+        "title": "WIPO's patent applications whose origin is not a current country",
         "subtitle": "% of patent applications by origin, all offices together",
         "x": {"type": "category", "values": [str(y) for y in sh.index]},
         "y": {"name": "% of applications", "min": 0, "format": "pct", "digits": 2},
-        "series": [{"name": "Origin unknown", "data": col(sh, "origin unknown", 2)},
-                   {"name": "Former states (the Soviet Union and others)", "data": col(sh, "former state", 2)}],
+        "series": [
+            {"name": "Origin unknown", "data": col(sh, "origin unknown", 2)},
+            {"name": "Former states (the Soviet Union and others)", "data": col(sh, "former state", 2)},
+        ],
         "marks": {"x": [{"at": "1995", "label": "Compared from here"}]},
         "source": "WIPO IP statistics, filings by origin and office (lens: national)",
     }
@@ -1790,8 +2292,12 @@ def U64() -> dict:
 
 @chart
 def U65() -> dict:
-    codes = {"OECD.MSTI.G": "Gross R&D (% of GDP)", "OECD.MSTI.B": "Business R&D (% of GDP)",
-             "NV.IND.MANF.ZS": "Manufacturing (% of GDP)", "NE.EXP.GNFS.ZS": "Exports (% of GDP)"}
+    codes = {
+        "OECD.MSTI.G": "Gross R&D (% of GDP)",
+        "OECD.MSTI.B": "Business R&D (% of GDP)",
+        "NV.IND.MANF.ZS": "Manufacturing (% of GDP)",
+        "NE.EXP.GNFS.ZS": "Exports (% of GDP)",
+    }
     inlist = ", ".join(f"'{c}'" for c in codes)
     oe = sql(f"""SELECT indicator, year, median(value) AS med, quantile_cont(value, 0.25) AS q1,
                         quantile_cont(value, 0.75) AS q3, count(*) AS n
@@ -1806,14 +2312,26 @@ def U65() -> dict:
         years = sorted(set(o.index) | set(a[c].dropna().index))
         years = [y for y in years if y >= 1981]
         o = o.reindex(years)
-        views.append({"label": name, "subtitle": f"{name}: Australia against the OECD members' median and middle half",
-                      "x": {"type": "category", "values": [str(y) for y in years]},
-                      "series": [{"name": "Australia", "data": [r(a[c].get(y), 2) for y in years], "width": 2.5},
-                                 {"name": "OECD median", "data": col(o, "med", 2), "colour": "ink", "line": "dashed"},
-                                 {"name": "OECD 75th percentile", "data": col(o, "q3", 2), "colour": "muted", "line": "dotted"},
-                                 {"name": "OECD 25th percentile", "data": col(o, "q1", 2), "colour": "muted", "line": "dotted"}]})
-    return {"type": "line", "title": "Australia against the OECD", "y": {"name": "% of GDP", "min": 0, "format": "pct", "digits": 2},
-            "views": views, "source": "OECD MSTI; World Bank WDI (lens: national). OECD lines where 10 or more members report."}
+        views.append(
+            {
+                "label": name,
+                "subtitle": f"{name}: Australia against the OECD members' median and middle half",
+                "x": {"type": "category", "values": [str(y) for y in years]},
+                "series": [
+                    {"name": "Australia", "data": [r(a[c].get(y), 2) for y in years], "width": 2.5},
+                    {"name": "OECD median", "data": col(o, "med", 2), "colour": "ink", "line": "dashed"},
+                    {"name": "OECD 75th percentile", "data": col(o, "q3", 2), "colour": "muted", "line": "dotted"},
+                    {"name": "OECD 25th percentile", "data": col(o, "q1", 2), "colour": "muted", "line": "dotted"},
+                ],
+            }
+        )
+    return {
+        "type": "line",
+        "title": "Australia against the OECD",
+        "y": {"name": "% of GDP", "min": 0, "format": "pct", "digits": 2},
+        "views": views,
+        "source": "OECD MSTI; World Bank WDI (lens: national). OECD lines where 10 or more members report.",
+    }
 
 
 @chart
@@ -1830,20 +2348,39 @@ def U66() -> dict:
         y = a.year.max()
         v = a.loc[a.year == y, "value"].iloc[0]
         o = d[d.oecd & (d.year == y)]
-        rows.append((code, d.indicator_name.iloc[0], int(y), len(o), int((o.value > v).sum() + 1), 100 * (o.value < v).mean()))
-    pos = pd.DataFrame(rows, columns=["code", "name", "year", "n", "rank", "below"]).sort_values("below", ascending=False)
+        rows.append(
+            (code, d.indicator_name.iloc[0], int(y), len(o), int((o.value > v).sum() + 1), 100 * (o.value < v).mean())
+        )
+    pos = pd.DataFrame(rows, columns=["code", "name", "year", "n", "rank", "below"]).sort_values(
+        "below", ascending=False
+    )
     p = pos.set_index("code")
     same(p.loc["NE.EXP.GNFS.ZS", "rank"], 34, "exports rank")
     same(p.loc["IP.PAT.NRES", "rank"], 5, "non-resident patents rank")
     same(p.loc["OECD.MSTI.B", "rank"], 26, "BERD rank")
 
     def short(n: str) -> str:
-        return n.replace(" (BoP, current US$)", "").replace(" (current US$)", "").replace("(OECD MSTI)", "").replace(", % of GDP", " (% of GDP)").strip()
+        return (
+            n.replace(" (BoP, current US$)", "")
+            .replace(" (current US$)", "")
+            .replace("(OECD MSTI)", "")
+            .replace(", % of GDP", " (% of GDP)")
+            .strip()
+        )
 
     return {
-        "type": "bar", "horizontal": True, "title": "Where Australia stands among OECD members",
-        "subtitle": "% of OECD members below Australia, in Australia's latest year for each indicator (50 = the median member)",
-        "x": {"type": "category", "values": [f"{short(n)} ({y}; {k}th of {m})" for n, y, k, m in zip(pos.name, pos.year, pos["rank"], pos.n, strict=True)]},
+        "type": "bar",
+        "horizontal": True,
+        "title": "Where Australia stands among OECD members",
+        "subtitle": "% of OECD members below Australia, in Australia's latest year for each indicator (50 = the "
+        "median member)",
+        "x": {
+            "type": "category",
+            "values": [
+                f"{short(n)} ({y}; {k}th of {m})"
+                for n, y, k, m in zip(pos.name, pos.year, pos["rank"], pos.n, strict=True)
+            ],
+        },
         "y": {"name": "% of members below Australia", "min": 0, "max": 100, "format": "pct", "digits": 0},
         "series": [{"name": "% of members below Australia", "data": col(pos, "below", 1)}],
         "marks": {"y": [{"at": 50, "label": "Median member"}]},
@@ -1861,7 +2398,8 @@ def U67() -> dict:
                    count(*) FILTER (patent_type = 'standard' AND NOT australian_applicant) AS nonres
             FROM {lens/rights} WHERE year(application_date) BETWEEN 1980 AND 2024 GROUP BY 1),
         wdi AS (
-            SELECT year, max(value) FILTER (indicator = 'IP.PAT.RESD') AS wres, max(value) FILTER (indicator = 'IP.PAT.NRES') AS wnon
+            SELECT year, max(value) FILTER (indicator = 'IP.PAT.RESD') AS wres, max(value) FILTER (indicator =
+                'IP.PAT.NRES') AS wnon
             FROM {lens/national} WHERE australia GROUP BY 1)
         SELECT * FROM ipr JOIN wdi USING (year) ORDER BY year
     """).set_index("year")
@@ -1869,11 +2407,15 @@ def U67() -> dict:
     same(t.loc[1989:2024, "a"].median(), 1.002, "median ratio, Australian applicants")
     same(t.loc[1980, "o"], 0.072, "overseas ratio 1980")
     return {
-        "type": "line", "title": "The register against the World Bank: standard patent applications",
+        "type": "line",
+        "title": "The register against the World Bank: standard patent applications",
         "subtitle": "The register's count divided by the World Bank's, by year (1.00 = they agree)",
         "x": {"type": "category", "values": [str(y) for y in t.index]},
         "y": {"name": "Ratio", "min": 0, "max": 1.2, "format": "ratio", "digits": 3},
-        "series": [{"name": "Australian applicants", "data": col(t, "a", 3)}, {"name": "Overseas applicants", "data": col(t, "o", 3)}],
+        "series": [
+            {"name": "Australian applicants", "data": col(t, "a", 3)},
+            {"name": "Overseas applicants", "data": col(t, "o", 3)},
+        ],
         "marks": {"y": [{"at": 1, "label": "Agree"}], "x": [{"at": "1989", "label": "Origins recorded"}]},
         "source": "IP Australia, IP RAPID (lens: rights); World Bank WDI (lens: national)",
     }
@@ -1890,7 +2432,8 @@ def U70() -> dict:
     same(sh.loc[2024, "Australia"], 8.3, "Australia share 2024")
     who = ["United States", "Australia", "China", "Japan", "Germany"]
     return {
-        "type": "line", "title": "Who files patents at IP Australia",
+        "type": "line",
+        "title": "Who files patents at IP Australia",
         "subtitle": "% of patent applications at IP Australia, by the applicant's origin, 1995 to 2024",
         "x": {"type": "category", "values": [str(y) for y in sh.index]},
         "y": {"name": "% of applications", "min": 0, "format": "pct", "digits": 1},
@@ -1899,7 +2442,7 @@ def U70() -> dict:
     }
 
 
-# ------------------------------------------------------------------------------------------------------------ industries
+# ------------------------------------------------------------------------------------------------------------ industrie
 
 
 def industries() -> pd.DataFrame:
@@ -1915,7 +2458,12 @@ def div_names(df: pd.DataFrame) -> list[str]:
 @chart
 def U75() -> dict:
     i = industries()
-    w = i[i.fy.between(2017, 2026)].groupby(["division", "division_name"])[["patents_standard", "trade_marks"]].sum().reset_index("division_name")
+    w = (
+        i[i.fy.between(2017, 2026)]
+        .groupby(["division", "division_name"])[["patents_standard", "trade_marks"]]
+        .sum()
+        .reset_index("division_name")
+    )
     w["p"] = 100 * w.patents_standard / w.patents_standard.sum()
     w["t"] = 100 * w.trade_marks / w.trade_marks.sum()
     same(w.loc["C", "p"], 90.78, "manufacturing's share of standard patents")
@@ -1923,30 +2471,60 @@ def U75() -> dict:
     views = []
     for k, label in [("p", "Standard patents"), ("t", "Trade marks")]:
         s = w.sort_values(k, ascending=False)
-        views.append({"label": label, "subtitle": f"{label} filed FY2017 to FY2026: each industry's share (expected counts)",
-                      "x": {"type": "category", "values": div_names(s)},
-                      "series": [{"name": f"% of {label.lower()}", "data": col(s, k, 2)}]})
-    return {"type": "bar", "horizontal": True, "title": "Where IP falls by industry",
-            "y": {"name": "% of applications", "min": 0, "format": "pct", "digits": 2}, "views": views,
-            "source": "IP RAPID; ALP crosswalks (Lybbert and Zolas), ABS ANZSIC 2006 (lens: industries)",
-            "note": "The patent crosswalk in the corpus leaves out services, so patents reach only goods-producing industries."}
+        views.append(
+            {
+                "label": label,
+                "subtitle": f"{label} filed FY2017 to FY2026: each industry's share (expected counts)",
+                "x": {"type": "category", "values": div_names(s)},
+                "series": [{"name": f"% of {label.lower()}", "data": col(s, k, 2)}],
+            }
+        )
+    return {
+        "type": "bar",
+        "horizontal": True,
+        "title": "Where IP falls by industry",
+        "y": {"name": "% of applications", "min": 0, "format": "pct", "digits": 2},
+        "views": views,
+        "source": "IP RAPID; ALP crosswalks (Lybbert and Zolas), ABS ANZSIC 2006 (lens: industries)",
+        "note": "The patent crosswalk in the corpus leaves out services, so patents reach only goods-producing "
+        "industries.",
+    }
 
 
 @chart
 def U76() -> dict:
     i = industries()
-    w = i[i.fy.between(2017, 2026)].groupby(["division", "division_name"])[["patents_standard", "patents_standard_au", "trade_marks", "trade_marks_au"]].sum().reset_index("division_name")
+    w = (
+        i[i.fy.between(2017, 2026)]
+        .groupby(["division", "division_name"])[
+            ["patents_standard", "patents_standard_au", "trade_marks", "trade_marks_au"]
+        ]
+        .sum()
+        .reset_index("division_name")
+    )
     w["p"] = 100 * w.patents_standard_au / w.patents_standard.where(w.patents_standard > 50)
     w["t"] = 100 * w.trade_marks_au / w.trade_marks
     same(w.loc["C", "p"], 7.87, "Australian share of manufacturing's patents")
     views = []
     for k, label in [("t", "Trade marks"), ("p", "Standard patents")]:
         s = w.dropna(subset=[k]).sort_values(k, ascending=False)
-        views.append({"label": label, "subtitle": f"{label} filed FY2017 to FY2026: % filed by Australian applicants, by industry",
-                      "x": {"type": "category", "values": div_names(s)}, "series": [{"name": "% Australian", "data": col(s, k, 2)}]})
-    return {"type": "bar", "horizontal": True, "title": "Australian applicants' share, by industry",
-            "y": {"name": "% filed by Australians", "min": 0, "max": 100, "format": "pct", "digits": 2}, "views": views,
-            "source": "IP RAPID; ALP crosswalks (lens: industries)", "note": "Patent shares only where the expected count is above 50."}
+        views.append(
+            {
+                "label": label,
+                "subtitle": f"{label} filed FY2017 to FY2026: % filed by Australian applicants, by industry",
+                "x": {"type": "category", "values": div_names(s)},
+                "series": [{"name": "% Australian", "data": col(s, k, 2)}],
+            }
+        )
+    return {
+        "type": "bar",
+        "horizontal": True,
+        "title": "Australian applicants' share, by industry",
+        "y": {"name": "% filed by Australians", "min": 0, "max": 100, "format": "pct", "digits": 2},
+        "views": views,
+        "source": "IP RAPID; ALP crosswalks (lens: industries)",
+        "note": "Patent shares only where the expected count is above 50.",
+    }
 
 
 @chart
@@ -1954,10 +2532,15 @@ def U77() -> dict:
     i = industries()
     last = i[i.fy == 2026].set_index("division").sort_values("businesses_end", ascending=False)
     same(last.loc["E", "businesses_end"], 478651, "construction businesses June 2026")
-    return {"type": "bar", "horizontal": True, "title": "Businesses by industry, June 2026",
-            "x": {"type": "category", "values": div_names(last)}, "y": {"name": "Businesses", "min": 0, "format": "int"},
-            "series": [{"name": "Businesses", "data": col(last, "businesses_end")}],
-            "source": "ABS, Counts of Australian Businesses (CABEE) (lens: industries)"}
+    return {
+        "type": "bar",
+        "horizontal": True,
+        "title": "Businesses by industry, June 2026",
+        "x": {"type": "category", "values": div_names(last)},
+        "y": {"name": "Businesses", "min": 0, "format": "int"},
+        "series": [{"name": "Businesses", "data": col(last, "businesses_end")}],
+        "source": "ABS, Counts of Australian Businesses (CABEE) (lens: industries)",
+    }
 
 
 @chart
@@ -1973,40 +2556,58 @@ def U78() -> dict:
     names = i.drop_duplicates("division").set_index("division").division_name
     same(g["D"], 56.8, "utilities' wage growth")
     return {
-        "type": "bar", "horizontal": True, "title": "R&D and wages by industry",
+        "type": "bar",
+        "horizontal": True,
+        "title": "R&D and wages by industry",
         "source": "ABS Business Expenditure on R&D 2023-24 and Wage Price Index (lens: industries)",
         "views": [
-            {"label": "Business R&D, 2023-24", "subtitle": "Each industry's share of $24.41 billion of business R&D",
-             "x": {"type": "category", "values": div_names(x)}, "y": {"name": "% of business R&D", "min": 0, "format": "pct", "digits": 1},
-             "series": [{"name": "Share of business R&D", "data": col(x, "share", 1)}]},
-            {"label": "Wage growth, FY2010 to FY2025", "subtitle": "% rise in the Wage Price Index, by industry",
-             "x": {"type": "category", "values": [f"{names[d]} ({d})" for d in g.index]},
-             "y": {"name": "% rise", "min": 0, "format": "pct", "digits": 1},
-             "series": [{"name": "Wage growth", "data": [r(v, 1) for v in g]}]},
+            {
+                "label": "Business R&D, 2023-24",
+                "subtitle": "Each industry's share of $24.41 billion of business R&D",
+                "x": {"type": "category", "values": div_names(x)},
+                "y": {"name": "% of business R&D", "min": 0, "format": "pct", "digits": 1},
+                "series": [{"name": "Share of business R&D", "data": col(x, "share", 1)}],
+            },
+            {
+                "label": "Wage growth, FY2010 to FY2025",
+                "subtitle": "% rise in the Wage Price Index, by industry",
+                "x": {"type": "category", "values": [f"{names[d]} ({d})" for d in g.index]},
+                "y": {"name": "% rise", "min": 0, "format": "pct", "digits": 1},
+                "series": [{"name": "Wage growth", "data": [r(v, 1) for v in g]}],
+            },
         ],
     }
 
 
 @chart
 def U79() -> dict:
-    b = sql("""SELECT division, value FROM {lens/industry_indicators}
-               WHERE source = 'bcs' AND indicator = 'BCS.BCS_INNACT.P_D_GSNEWY.9999.TOTAL.9999.0' AND period = '2023'""").set_index("division").value
+    b = (
+        sql("""SELECT division, value FROM {lens/industry_indicators}
+               WHERE source = 'bcs' AND indicator = 'BCS.BCS_INNACT.P_D_GSNEWY.9999.TOTAL.9999.0' AND period =
+                   '2023'""")
+        .set_index("division")
+        .value
+    )
     same(b["TOTAL"], 21.7, "all industries 2023")
     same(b["A"], 9.9, "agriculture 2023")
     names = industries().drop_duplicates("division").set_index("division").division_name
     d = b.drop("TOTAL", errors="ignore")
     d = d[d.index.isin(names.index)].sort_values(ascending=False)
-    return {"type": "bar", "horizontal": True, "title": "Businesses that introduced a new good or service, 2023",
-            "subtitle": "% of businesses, by industry (ABS Business Characteristics Survey)",
-            "x": {"type": "category", "values": [f"{names[k]} ({k})" for k in d.index]},
-            "y": {"name": "% of businesses", "min": 0, "format": "pct", "digits": 1},
-            "series": [{"name": "Introduced a new good or service", "data": [r(v, 1) for v in d]}],
-            "marks": {"y": [{"at": 21.7, "label": "All industries"}]},
-            "source": "ABS Business Characteristics Survey (lens: industry_indicators)",
-            "note": "Survey estimates; the ABS flags many for sampling error."}
+    return {
+        "type": "bar",
+        "horizontal": True,
+        "title": "Businesses that introduced a new good or service, 2023",
+        "subtitle": "% of businesses, by industry (ABS Business Characteristics Survey)",
+        "x": {"type": "category", "values": [f"{names[k]} ({k})" for k in d.index]},
+        "y": {"name": "% of businesses", "min": 0, "format": "pct", "digits": 1},
+        "series": [{"name": "Introduced a new good or service", "data": [r(v, 1) for v in d]}],
+        "marks": {"y": [{"at": 21.7, "label": "All industries"}]},
+        "source": "ABS Business Characteristics Survey (lens: industry_indicators)",
+        "note": "Survey estimates; the ABS flags many for sampling error.",
+    }
 
 
-# ------------------------------------------------------------------------------------------------------------ institutions
+# ------------------------------------------------------------------------------------------------------------ instituti
 
 
 def institutions() -> pd.DataFrame:
@@ -2020,20 +2621,28 @@ def U83() -> dict:
     g = institutions().groupby("year")[["arc_funding", "arc_industry_funding", "nhmrc_funding"]].sum(min_count=1) / 1e6
     g = g.loc[2001:2026]
     same(g.loc[2010, "arc_funding"], 757.9, "ARC funding 2010 ($m)")
-    return {"type": "line", "title": "Research grants to the institutions",
-            "subtitle": "$ million (current), by the year ARC funding starts or the NHMRC round",
-            "x": {"type": "category", "values": [str(y) for y in g.index]}, "y": {"name": "$ million", "min": 0, "format": "moneym", "digits": 1},
-            "series": [{"name": "ARC funding", "data": col(g, "arc_funding", 1)},
-                       {"name": "ARC funding with industry partners", "data": col(g, "arc_industry_funding", 1)},
-                       {"name": "NHMRC funding", "data": col(g, "nhmrc_funding", 1)}],
-            "source": "ARC National Competitive Grants Program; NHMRC grant outcomes (lens: institutions)"}
+    return {
+        "type": "line",
+        "title": "Research grants to the institutions",
+        "subtitle": "$ million (current), by the year ARC funding starts or the NHMRC round",
+        "x": {"type": "category", "values": [str(y) for y in g.index]},
+        "y": {"name": "$ million", "min": 0, "format": "moneym", "digits": 1},
+        "series": [
+            {"name": "ARC funding", "data": col(g, "arc_funding", 1)},
+            {"name": "ARC funding with industry partners", "data": col(g, "arc_industry_funding", 1)},
+            {"name": "NHMRC funding", "data": col(g, "nhmrc_funding", 1)},
+        ],
+        "source": "ARC National Competitive Grants Program; NHMRC grant outcomes (lens: institutions)",
+    }
 
 
 @chart
 def U84() -> dict:
     s = sql("""
-        WITH r AS (SELECT ip_right_type, application_number, patent_type, founding_australian, year(application_date) AS year
-                   FROM {lens/rights} WHERE patent_type IN ('standard', 'provisional') AND year(application_date) BETWEEN 1990 AND 2026),
+        WITH r AS (SELECT ip_right_type, application_number, patent_type, founding_australian,
+            year(application_date) AS year
+                   FROM {lens/rights} WHERE patent_type IN ('standard', 'provisional') AND year(application_date)
+                       BETWEEN 1990 AND 2026),
         x AS (SELECT DISTINCT ip_right_type, application_number FROM {lens/institution_rights})
         SELECT (year // 5) * 5 AS period, patent_type, count(*) FILTER (founding_australian) AS a,
                count(*) FILTER (founding_australian AND (ip_right_type, application_number) IN (SELECT * FROM x)) AS b
@@ -2043,12 +2652,20 @@ def U84() -> dict:
     same(p.loc[1990, "standard"], 4.80, "share 1990 to 1994")
     same(p.loc[2020, "standard"], 8.96, "share 2020 to 2024")
     labels = [f"{int(y)} to {int(y) + 4}" if y < 2025 else "2025 to 2026" for y in p.index]
-    return {"type": "line", "title": "The research institutions' share of Australian patent filing",
-            "subtitle": "% of applications filed from Australia with a research institution among the filers, by five-year period",
-            "x": {"type": "category", "values": labels}, "y": {"name": "% of applications", "min": 0, "format": "pct", "digits": 2},
-            "series": [{"name": "Standard patents", "data": col(p, "standard", 2)}, {"name": "Provisional applications", "data": col(p, "provisional", 2)}],
-            "source": "IP RAPID; ROR and the reviewed link (lenses: institutions, institution_rights)",
-            "note": "2025 to 2026 is part of a period."}
+    return {
+        "type": "line",
+        "title": "The research institutions' share of Australian patent filing",
+        "subtitle": "% of applications filed from Australia with a research institution among the filers, by "
+        "five-year period",
+        "x": {"type": "category", "values": labels},
+        "y": {"name": "% of applications", "min": 0, "format": "pct", "digits": 2},
+        "series": [
+            {"name": "Standard patents", "data": col(p, "standard", 2)},
+            {"name": "Provisional applications", "data": col(p, "provisional", 2)},
+        ],
+        "source": "IP RAPID; ROR and the reviewed link (lenses: institutions, institution_rights)",
+        "note": "2025 to 2026 is part of a period.",
+    }
 
 
 # ------------------------------------------------------------------------------------------------------------ main

@@ -13,7 +13,18 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-26, latest):** **Stage 1 is complete.** The last three `rights` attachments are built and profiled
+**Status (2026-10-27, latest):** **Stage 1 has a plain-English website, the evidence atlas** (`evidence/`, ADR 0023),
+asked for by the owner for readers who are not data scientists. Every observation (U0 to U98) has a page: what was
+found, under which lens, how it serves the five questions, and a trail from the original source through storage and
+preparation to the reasoning, with its assumptions and limits; plus pages on the questions, the lenses, the data's
+journey, Stage 1's limits, what Stages 2 and 3 will add, and a glossary. `analysis/atlas` builds it from the notebook
+and the plain English in `analysis/atlas/content/`, refusing any number the notebook does not show; 69 charts are
+redrawn from the lens tables and checked against the quoted numbers. Building it found that U0 had kept the first
+corpus profile's figures (152 tables, 38 sources, 314,742,745 rows); corrected to the profile its output reads (162,
+41, 317,792,796; Parquet 69.73%) in the notebook's markdown, `docs/stage-1-summary.md` and the site. **The site is live
+only once this branch reaches the branch Pages serves: the owner's call.**
+
+Before that, on 2026-10-26: **Stage 1 is complete.** The last three `rights` attachments are built and profiled
 (sections 1.8.3 to 1.8.5 of `01_univariate.ipynb`, U88 to U98, ADR 0022): how each right came to Australia (8 columns
 from `iprapid/links`, with a patent priority's office read from its number because IP RAPID labels PCT numbers `au`),
 each patent's Google Patents family (6 columns: offices, US grant, citations, with the five-year count only where its
@@ -122,6 +133,13 @@ and BLADE stays ruled out.
 
 ## Where things stand
 
+- **The evidence atlas (ADR 0023).** `evidence/` (index.html, css, js, data, img) is static; `evidence/data/atlas.json`
+  and `evidence/data/charts/*.json` are generated and committed. To change it: edit the notebook or
+  `analysis/atlas/content/`, then `cd analysis && uv run python -m atlas.charts` (needs the lens tables) and
+  `uv run python -m atlas.build` (`--draft` lists problems without failing). Preview with
+  `python3 -m http.server` from the repository root and open `/evidence/`. Tests: 91 pass (4 new in
+  `tests/test_atlas.py`: every observation has a page, the committed JSON is in step, every observation names a lens
+  and a question, and the numbers rule).
 - **Stage 1, `rights`, links, Google Patents and inventors (1.8.3 to 1.8.5).** What it found (all descriptive):
   - the links (U88): IP RAPID labels 93.88% of PCT numbers and 15,568 other offices' priority numbers `au`; read from
     the number, 0.7% of standard patents' priority offices are unknown;
@@ -405,7 +423,8 @@ and BLADE stays ruled out.
 
 ## Next, in order
 
-1. **The owner's call:** Stage 1 is complete (every lens and attachment profiled, U0 to U98; summary in
+1. **The owner's call:** publish the evidence atlas (merge to the branch Pages serves) and review its plain English;
+   Stage 1 is complete (every lens and attachment profiled, U0 to U98; summary in
    `docs/stage-1-summary.md` and section 9). Stage 2 begins when the owner says. OQ11 (a sector check of the
    institutions link) is best answered before Stage 2 compares institutions.
 2. **Done:** the `national` section (U63 to U72, ADR 0019), the `industries` section (U73 to U79, ADR 0020) and the
@@ -498,6 +517,8 @@ and every answer with its date. Nothing there blocks Stage 1. Add new questions 
   25 MB (ADR 0002 says when to split it).
 - `region_indicators` is 22.5 million rows: always filter by `source` and `indicator` in SQL, never load it whole.
 - `national_indicators` is 41 million rows: always filter by `source`, `dataset` and `indicator` in SQL.
+- When an observation changes, change its plain English in `analysis/atlas/content/` too and rebuild the atlas; the
+  tests fail until `evidence/data/atlas.json` is in step. Stage 2's observations get pages the same way.
 - Compare WIPO's series by country from 1995 only (U64), and filter `entity = 'country'` for comparisons between
   countries.
 - `industry_indicators`: filter by `source` and `indicator`; never add `TOTAL` to the divisions.

@@ -88,6 +88,11 @@ function ocard(o) {
   a.style.setProperty("--lc", lensColour(o.lens));
   return a;
 }
+/** A name or phrase used mid-sentence: first letter lower-cased, unless it starts an acronym or a proper noun. */
+function lower(s) {
+  const t = String(s ?? "");
+  return /^([A-Z]{2}|Australia)/.test(t) ? t : t.charAt(0).toLowerCase() + t.slice(1);
+}
 /** Markup removed, for short summaries. */
 function plain(s) {
   return String(s ?? "").replace(/\[\[[^\]|]+\|([^\]]+)\]\]/g, "$1").replace(/\[\[([^\]]+)\]\]/g, (_, k) => A.glossary[k]?.title?.toLowerCase() || k)
@@ -384,13 +389,13 @@ function observationPage(id) {
     `${tables} tidy table${tables === 1 ? "" : "s"} from these sources, ${inR2} of them large enough to live in cloud storage`,
     [...paras(A.site.storage_text),
       el("details.more", el("summary", icon("table"), "The tables behind these sources"), el("div", tablesTable(srcs))),
-      el("p.small.muted", inline(`The lens table this observation reads, ${L.name.toLowerCase()} (${L.unit.toLowerCase()}), is not stored: it is rebuilt from these tables in minutes by the project's build code, so it always matches them.`))]);
+      el("p.small.muted", inline(`The lens table this observation reads, ${lower(L.name)} (${lower(L.unit)}), is not stored: it is rebuilt from these tables in minutes by the project's build code, so it always matches them.`))]);
   const prep = [...(o.prep || []).map((p) => el("div.prepitem", el("p", inline(p.what)), el("p.why", el("strong", "Why"), ...inline(p.why))))];
   const lensRepairs = (L.repairs || []).map((p) => el("div.prepitem", el("p", inline(p.what)), el("p.why", el("strong", "Why"), ...inline(p.why))));
   const step3 = trailStep(3, "tool", "How it was prepared",
-    `${(o.prep || []).length} step${(o.prep || []).length === 1 ? "" : "s"} for this observation, on the ${L.name.toLowerCase()} lens (${L.unit.toLowerCase()})`,
+    `${(o.prep || []).length} step${(o.prep || []).length === 1 ? "" : "s"} for this observation, on the ${lower(L.name)} lens (${lower(L.unit)})`,
     [el("h4", "For this observation"), el("div.prep", prep),
-      lensRepairs.length ? el("details.more", el("summary", icon("tool"), `Repairs made to the ${L.name.toLowerCase()} lens before any observation (${lensRepairs.length})`), el("div", el("div.prep", lensRepairs))) : null]);
+      lensRepairs.length ? el("details.more", el("summary", icon("tool"), `Repairs made to the ${lower(L.name)} lens before any observation (${lensRepairs.length})`), el("div", el("div.prep", lensRepairs))) : null]);
   const step4 = trailStep(4, "route", "From the data to the observation",
     `${o.steps.length} reasoning steps. The steps are not findings; only the last box is.`,
     [el("ol.steps", o.steps.map((s) => el("li", el("span.slabel", "Step"), el("span", inline(s)))),
@@ -471,7 +476,7 @@ function lensPage(l) {
   show(head,
     el("div.prose", ...paras(L.description)),
     L.questions?.length ? el("div.row", { style: { margin: "10px 0 0" } }, el("span.muted.small", "Mainly informs"), ...L.questions.map(qChip)) : "",
-    section("Built from", "Each source as its publisher released it; open a source for its tables.", el("div.srclist", srcs.map((s) => sourceCard(s)))),
+    section("Built from", "Each source as its publisher released it. Where the data come from lists every table, where it is kept and its fingerprint.", el("div.srclist", srcs.map((s) => sourceCard(s)))),
     L.repairs?.length ? section("Repairs made before any observation", "Problems found while profiling, fixed in the lens and recorded in a decision record. Each says why.",
       el("div.prep", L.repairs.map((p) => el("div.prepitem", el("p", inline(p.what)), el("p.why", el("strong", "Why"), ...inline(p.why), p.adr ? el("span.muted", ` (ADR ${p.adr})`) : null))))) : "",
     L.limits?.length ? section("Limits of this lens", null, el("div.notes", L.limits.map((x) => note("limit", x)))) : "",

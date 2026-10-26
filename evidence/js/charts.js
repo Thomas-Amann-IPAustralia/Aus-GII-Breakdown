@@ -80,7 +80,8 @@ function option(s) {
     axisLabel: { color: muted, fontFamily: font, fontSize: 11.5, hideOverlap: !(horizontal || s.type === "range"), interval: horizontal || s.type === "range" ? 0 : "auto", width: horizontal || s.type === "range" ? 200 : undefined, overflow: horizontal || s.type === "range" ? "break" : undefined, lineHeight: 13 },
     inverse: horizontal,
   });
-  let xAxis = cat ? catAxis(xs) : valueAxis(xs, true);
+  // A titled log x-axis makes ECharts draw a stray "0" beside the title, so its title is a caption below the chart
+  let xAxis = cat ? catAxis(xs) : valueAxis(xs.type === "log" ? { ...xs, name: "" } : xs, true);
   let yAxis = valueAxis(ys, false);
   if (s.type === "range") {
     xAxis = valueAxis({ ...ys, min: ys.min, max: ys.max }, true);
@@ -178,7 +179,7 @@ function option(s) {
   return {
     animation: !reduced, animationDuration: 450,
     textStyle: { fontFamily: font, color: ink2 },
-    grid: { left: 10, right: horizontal || s.type === "range" ? 46 : 22, top: ys.name && !horizontal && s.type !== "range" ? 40 : 26, bottom: xs.name || horizontal ? 34 : 8, containLabel: true },
+    grid: { left: 10, right: horizontal || s.type === "range" ? 46 : 22, top: ys.name && !horizontal && s.type !== "range" ? 40 : 26, bottom: (xs.name && xs.type !== "log") || horizontal ? 34 : 8, containLabel: true },
     legend: { show: false, data: (s.series || []).map((d) => d.name) },
     tooltip, xAxis, yAxis, series,
   };
@@ -236,6 +237,7 @@ export function chartCard(spec, { origin = "query", compact = false } = {}) {
   const box = el(`div.chart${spec.height ? `.${spec.height}` : ""}`, { role: "img" });
   const tableBox = el("div.chart-table", { hidden: true });
   const legendBox = el("div");
+  const xCaption = el("p.x-caption");
   const head = el("div.chart-head");
   const title = el("div");
   const tools = el("div.chart-tools");
@@ -262,6 +264,8 @@ export function chartCard(spec, { origin = "query", compact = false } = {}) {
       instance = echarts.getInstanceByDom(box) || echarts.init(box, null, { renderer: "canvas" });
       instance.setOption(option(s), true);
     }
+    xCaption.textContent = s.x?.type === "log" && s.x?.name ? s.x.name : "";
+    xCaption.hidden = !xCaption.textContent || showTable;
     const lg = legendNode(s, () => instance);
     legendBox.replaceChildren(...(lg ? [lg] : []));
     tableBox.replaceChildren(tableNode(s));
@@ -298,7 +302,7 @@ export function chartCard(spec, { origin = "query", compact = false } = {}) {
       views.append(b);
     });
   }
-  card.append(...[head, views, box, legendBox, tableBox, foot].filter(Boolean));
+  card.append(...[head, views, box, xCaption, legendBox, tableBox, foot].filter(Boolean));
   requestAnimationFrame(() => {
     draw();
     const ro = new ResizeObserver(() => instance?.resize());

@@ -78,7 +78,7 @@ def read(path: Path = NOTEBOOK) -> list[Observation]:
         starts = list(_START.finditer(src))
         headings = list(_HEADING.finditer(src))
 
-        def heading_to(pos: int) -> None:
+        def heading_to(pos: int, headings: list = headings) -> None:
             nonlocal chapter, section
             while headings and headings[0].start() < pos:
                 h = headings.pop(0)

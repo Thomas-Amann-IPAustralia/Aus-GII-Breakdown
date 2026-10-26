@@ -87,7 +87,7 @@ def _strings(x) -> list[str]:
 
 
 def check_numbers(obs: dict, nb: notebook.Observation) -> list[str]:
-    """The numbers in an observation's plain-English layer (and its quoted chart) that are not on the notebook's page."""
+    """The numbers in an observation's plain English (and its quoted chart) that are not on the notebook's page."""
     page = numbers(nb.text + "\n" + nb.evidence_text)
     fields = [obs["headline"], obs["statement"], obs["figures"], obs["points"]]
     if isinstance(obs.get("chart"), dict):  # a chart of quoted values
@@ -153,21 +153,21 @@ def _webp(png: bytes) -> bytes:
     return out.getvalue()
 
 
-def notebook_charts(nb: notebook.Observation, pick: list[int] | None) -> list[dict]:
+def notebook_charts(nb: notebook.Observation, pick: list[int] | None, write: bool = True) -> list[dict]:
     """Write the notebook's own charts above an observation as WebP, and return where they are."""
     charts = nb.charts if pick is None else [nb.charts[i] for i in pick]
     out = []
     for c in charts:
         name = f"{c.cell_id}-{c.index}.webp"
         path = IMAGES / name
-        if not path.exists():
+        if write and not path.exists():
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(_webp(c.png))
         out.append({"src": f"img/notebook/{name}", "cell": c.cell_id})
     return out
 
 
-def observations(nbs: dict[str, notebook.Observation]) -> tuple[list[dict], list[str]]:
+def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tuple[list[dict], list[str]]:
     """Every observation's plain-English layer joined to the notebook, and the problems found on the way."""
     problems, out = [], []
     for lens in LENSES:
@@ -195,8 +195,9 @@ def observations(nbs: dict[str, notebook.Observation]) -> tuple[list[dict], list
             chart = o.pop("chart", None)
             if isinstance(chart, dict):
                 chart = {"id": oid, **chart}
-                CHARTS.mkdir(parents=True, exist_ok=True)
-                (CHARTS / f"{oid}.json").write_text(json.dumps(chart, ensure_ascii=False, separators=(",", ":")))
+                if write:
+                    CHARTS.mkdir(parents=True, exist_ok=True)
+                    (CHARTS / f"{oid}.json").write_text(json.dumps(chart, ensure_ascii=False, separators=(",", ":")))
                 o["chart"], o["chart_origin"] = oid, "quoted"
             elif isinstance(chart, str):
                 o["chart"], o["chart_origin"] = chart, "query"
@@ -204,7 +205,7 @@ def observations(nbs: dict[str, notebook.Observation]) -> tuple[list[dict], list
             o["section"] = nb.section
             o["chapter"] = nb.chapter
             o["original"] = nb.text
-            o["notebook_charts"] = notebook_charts(nb, o.get("notebook_charts"))
+            o["notebook_charts"] = notebook_charts(nb, o.get("notebook_charts"), write)
             out.append(o)
     seen = [o["id"] for o in out]
     for oid in nbs:
@@ -217,9 +218,10 @@ def observations(nbs: dict[str, notebook.Observation]) -> tuple[list[dict], list
     return out, problems
 
 
-def build(strict: bool = True) -> dict:
+def build(strict: bool = True, write: bool = True) -> dict:
+    """Join everything into atlas.json; with write=False, only return it for the tests."""
     nbs = {o.id: o for o in notebook.read()}
-    obs, problems = observations(nbs)
+    obs, problems = observations(nbs, write)
     site = load_yaml("site.yaml")
     atlas = {
         "built": site["as_at"],
@@ -248,6 +250,8 @@ def build(strict: bool = True) -> dict:
             problems.append(f"{o['id']}: chart '{o['chart']}' has not been drawn (run `python -m atlas.charts`)")
     if problems and strict:
         sys.exit("The evidence pages were not built:\n- " + "\n- ".join(problems))
+    if not write:
+        return atlas
     DATA.mkdir(parents=True, exist_ok=True)
     text = json.dumps(atlas, ensure_ascii=False, separators=(",", ":"))
     (DATA / "atlas.json").write_text(text, encoding="utf-8")
