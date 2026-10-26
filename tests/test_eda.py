@@ -33,7 +33,17 @@ def test_resolve_leaves_ordinary_braces_alone(monkeypatch):
 
 def test_register_is_well_formed():
     reg = style.register()
-    assert set(reg) == {"rights", "firms", "regions", "region_indicators", "national", "timeline"}
+    assert set(reg) == {
+        "rights",
+        "firms",
+        "regions",
+        "region_indicators",
+        "national",
+        "national_indicators",
+        "industries",
+        "industry_indicators",
+        "timeline",
+    }
     for lens, cols in reg.items():
         for col, v in cols.items():
             assert v.get("label"), f"{lens}.{col} has no label"
@@ -42,7 +52,20 @@ def test_register_is_well_formed():
     assert style.label("firms", "not_a_column") == "not_a_column"
 
 
-@pytest.mark.parametrize("lens", ["rights", "firms", "regions", "region_indicators", "national", "timeline"])
+@pytest.mark.parametrize(
+    "lens",
+    [
+        "rights",
+        "firms",
+        "regions",
+        "region_indicators",
+        "national",
+        "national_indicators",
+        "industries",
+        "industry_indicators",
+        "timeline",
+    ],
+)
 def test_register_matches_built_lens(lens):
     p = data.LENS_DIR / f"{lens}.parquet"
     if not p.exists():
@@ -167,6 +190,9 @@ def _built(lens):
         ("regions", "poa_code"),
         ("region_indicators", "poa_code, source, indicator, period"),
         ("national", "iso3, year, indicator"),
+        ("national_indicators", "iso3, source, indicator, period"),
+        ("industries", "division, fy"),
+        ("industry_indicators", "division, source, indicator, period"),
         ("timeline", "month"),
     ],
 )
@@ -252,6 +278,41 @@ def test_national_has_one_name_per_country_and_both_rd_series():
                count(*) FILTER (indicator LIKE 'IP.TMK%') AS trade_marks
         FROM read_parquet('{p}')""").iloc[0]
     assert r.names == 1 and r.au_oecd_rd > 0 and r.au_wdi_rd > 0 and r.trade_marks > 0
+
+
+def test_national_keeps_every_wipo_filing_and_no_aggregates():
+    """WIPO's filings by residents sum to the source's total over every origin, former states and the unknown origin
+    included (ADR 0019); no aggregate (the OECD, the EU, the world) is a place in either table."""
+    p, att = _built("national"), _built("national_indicators")
+    r = data.sql(f"""
+        SELECT (SELECT sum(value) FROM read_parquet('{p}') WHERE indicator = 'WIPO.PAT.APP')
+                 / (SELECT sum(value) FROM {data.table("wipo_ipstats", "office_origin")}
+                    WHERE indicator_id = 10 AND breakdown IS NULL) AS kept,
+               (SELECT count(*) FROM read_parquet('{p}') WHERE entity = 'former state') AS former,
+               (SELECT count(*) FROM (SELECT iso3 FROM read_parquet('{p}') UNION SELECT DISTINCT iso3
+                                      FROM read_parquet('{att}'))
+                WHERE length(iso3) <> 3 OR iso3 IN ('OECD', 'WLD', 'EUU', 'EU27_2020')) AS aggregates
+    """).iloc[0]
+    assert abs(r.kept - 1) < 1e-9 and r.former > 0 and r.aggregates == 0
+
+
+def test_national_indicators_hold_each_source_once():
+    """The OECD's R&D intensity is in the core lens only; WIPO's filings at IP Australia by origin sum to the office's
+    total; Australia's GII rank is the source's; Closing the Gap keeps the Australian Government's land (ADR 0019)."""
+    att = _built("national_indicators")
+    r = data.sql(f"""
+        SELECT count(*) FILTER (indicator LIKE 'OECD.MSTI.G.PT_B1GQ%' OR indicator LIKE 'OECD.MSTI.B.PT_B1GQ%')
+                 AS rd_twice,
+               sum(value) FILTER (indicator = 'WIPO.AU.10' AND year = 2024) AS au_2024,
+               max(value) FILTER (indicator = 'GII.GII.rank' AND australia) AS au_rank,
+               count(*) FILTER (source = 'ctg' AND indicator LIKE '%.Aus_Gov') AS aus_gov
+        FROM read_parquet('{att}')""").iloc[0]
+    src = data.sql(f"""
+        SELECT (SELECT sum(value) FROM {data.table("wipo_ipstats", "office_origin")}
+                WHERE office_code = 'AU' AND indicator_id = 10 AND year = 2024) AS au_2024,
+               (SELECT rank FROM {data.table("gii", "data")} WHERE iso3 = 'AUS' AND num = '') AS au_rank""").iloc[0]
+    assert r.rd_twice == 0 and r.aus_gov > 0
+    assert r.au_2024 == src.au_2024 and r.au_rank == src.au_rank
 
 
 def test_rights_origin_is_three_valued_and_patents_are_typed():
@@ -420,3 +481,38 @@ def test_region_indicators_split_counts_without_losing_them():
                    / (SELECT sum(persons) FROM read_parquet('{regions}')) - 1) < 0.001 AS census_people
     """).iloc[0]
     assert bool(r.conserved) and r.levels_as_counts == 0 and bool(r.census_people)
+
+
+def test_division_of_reads_classes_and_subdivisions():
+    """ANZSIC codes to divisions (ADR 0020): classes are four digits ('111' is class 0111), subdivisions two."""
+    cases = [("0145", 4, "A"), ("111", 4, "A"), ("1", 2, "A"), ("39", 2, "G"), ("99", 2, "X"), ("7000", 4, "M"),
+             ("6200", 4, "K"), ("9601", 4, "S"), ("61", 2, None)]  # fmt: skip
+    for code, digits, want in cases:
+        got = data.sql(f"SELECT {build._division_of(repr(code), digits)} AS d").d[0]
+        assert (got if isinstance(got, str) else None) == want, (code, digits, got)
+
+
+def test_industries_carry_their_sources_without_loss():
+    """Each right's shares sum to one over the divisions, so the divisions hold the classified rights and no more;
+    CABEE's divisions and its unknown industry sum to its total; business R&D's divisions sum to its total, to within
+    the ABS's rounding (ADR 0020)."""
+    ind, att = _built("industries"), _built("industry_indicators")
+    rights = _built("rights")
+    r = data.sql(f"""
+        WITH l AS (SELECT fy, sum(patents_standard) AS ps, sum(trade_marks) AS tm FROM read_parquet('{ind}')
+                   GROUP BY 1),
+        c AS (SELECT filing_fy AS fy, count(*) FILTER (patent_type = 'standard') AS ps,
+                     count(*) FILTER (ip_right_type = 'trade_mark') AS tm
+              FROM read_parquet('{rights}') WHERE filing_fy BETWEEN 2000 AND 2024 GROUP BY 1)
+        SELECT min(l.ps / c.ps) AS ps_min, max(l.ps / c.ps) AS ps_max, min(l.tm / c.tm) AS tm_min,
+               max(l.tm / c.tm) AS tm_max,
+               (SELECT max(abs(d.v + x.value - t.value)) FROM
+                   (SELECT fy, sum(businesses_end) AS v FROM read_parquet('{ind}') GROUP BY 1) d
+                   JOIN read_parquet('{att}') x ON x.fy = d.fy AND x.division = 'X'
+                     AND x.indicator = 'CABEE.T1.operating_at_end_of_financial_year'
+                   JOIN read_parquet('{att}') t ON t.fy = d.fy AND t.division = 'TOTAL'
+                     AND t.indicator = 'CABEE.T1.operating_at_end_of_financial_year') AS cabee_gap,
+               (SELECT sum(berd) FROM read_parquet('{ind}')) AS berd
+        FROM l JOIN c USING (fy)""").iloc[0]
+    assert 0.98 < r.ps_min and r.ps_max <= 1 + 1e-9 and 0.995 < r.tm_min and r.tm_max <= 1 + 1e-9
+    assert r.cabee_gap == 0 and abs(r.berd - 24_410_463) <= 19  # each division's total is rounded to $'000

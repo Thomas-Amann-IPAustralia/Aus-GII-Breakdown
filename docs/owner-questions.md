@@ -27,7 +27,9 @@ The data show when and who, not why. Each answer would turn a lead into an expla
 | OQ7 | Since FY2025, are ABNs attached to applications late, or collected less often? | U45: Australian organisations' trade marks with the filer's ABN 84.1% (FY2024), 71.4% (FY2025), 59.9% (FY2026); designs 88.4% to 76.3% | Firm-level filing by year compared only to FY2024 |
 
 These could go in the same request, if it is easy to add: why plant breeder's rights change hands more often in recent
-years (11.2% of those filed in the 2020s, U17), and IP Australia's own published counts, to benchmark the lenses.
+years (11.2% of those filed in the 2020s, U17); IP Australia's own published counts, to benchmark the lenses; and why
+IP RAPID holds a third more innovation patents filed in 2016 than WIPO's count of Australia's utility models (2,469
+against 1,855; other years 0.958 to 1.072 of it, U67).
 
 ## Deferred: not needed for the EDA
 
@@ -42,6 +44,7 @@ years (11.2% of those filed in the 2020s, U17), and IP Australia's own published
 
 | # | Question | Answer | Date | Recorded in |
 |---|---|---|---|---|
+| A6 | Go on to the `industries` lens after `national`? | Yes | 2026-10-26 | Handover; ADR 0020 |
 | A1 | Adopt years in force (U36), with unfinished rights kept, as a working measure of how long owners keep their rights? | Yes, as long as it is used alongside other signals | 2026-10-25 | ADR 0015; handover |
 | A2 | Order of work after the timeline | The events attachment (B5), then `firms` | 2026-10-25 | Handover; plan |
 | A3 | Are N01 (provisionals not dropped once claimed) and N06 (a PCT application's date is its national phase entry) settled? | Yes | 2026-10-25 | ADR 0010 |

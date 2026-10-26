@@ -10,9 +10,11 @@
 | `regions` | Postal area (the ABS's version of a postcode) | `abs_regions`, `abs_census`, `abr`, `rights`, `firms` |
 | `region_indicators` | Postal area, source, indicator, period | Census, Data by Region, CABEE, PHIDU, CER |
 | `national` | Country, year and indicator | `wdi/panel`, `wipo_ipstats/office_origin`, `oecd/msti` |
+| `industries` | ANZSIC division and financial year | `rights`, classification, concordances, CABEE, BERD, WPI |
 | `timeline` | Month, for Australia (IP Australia's whole register) | `rights`, `iprapid/events`, `policy_events` |
 
-`regions` also reads `austender`; `region_indicators` holds its attachments, long (ADR 0018). Every column is
+`regions` also reads `austender`; `region_indicators` holds its attachments, long (ADR 0018), as do
+`national_indicators` (ADR 0019) and `industry_indicators` (ADR 0020). Every column is
 described, in plain English, in `analysis/eda/variables.yaml`. Derived columns are defined here and
 nowhere else, so a reader can check exactly how each was made.
 """
@@ -299,10 +301,11 @@ def rights_sql() -> str:
         FROM other_agents o JOIN clients c USING (party_id)
         GROUP BY 1, 2
     ),
-    agent_info AS (
-        SELECT party_id AS agent_id,
-               any_value(CASE WHEN party_type = 'organisation' THEN party_name END) AS agent_name
-        FROM {{iprapid/party}} WHERE party_role_category = 'applicant_agent'
+    agent_info AS (  -- 12,214 agents have more than one name (some are pseudonymised codes): the most used, so that
+                     -- every build picks the same one (ADR 0019)
+        SELECT agent_id, arg_max(party_name, (n, party_name)) AS agent_name
+        FROM (SELECT party_id AS agent_id, party_name, count(*) AS n FROM {{iprapid/party}}
+              WHERE party_role_category = 'applicant_agent' AND party_type = 'organisation' GROUP BY 1, 2)
         GROUP BY 1
     ),
     founders AS (  -- each founding applicant or owner, as first recorded
@@ -310,8 +313,12 @@ def rights_sql() -> str:
             SELECT ip_right_type, application_number, party_id, party_type, country_code, state_code,
                    {_postcode("post_code")} AS postcode, effective_from_date AS since,
                    max(abn) OVER (PARTITION BY ip_right_type, application_number, party_id) AS abn,
+                   -- ties (1,686 founders have two postcodes on their first day) go to the lowest postcode, so
+                   -- that every build picks the same one (ADR 0019)
                    row_number() OVER (PARTITION BY ip_right_type, application_number, party_id
-                                      ORDER BY effective_from_date, country_code NULLS LAST) AS k
+                                      ORDER BY effective_from_date, country_code NULLS LAST,
+                                               {_postcode("post_code")} NULLS LAST, post_code NULLS LAST,
+                                               state_code NULLS LAST) AS k
             FROM {{iprapid/party}}
             WHERE party_role_category IN ('applicant', 'owner') AND is_founding
         ) WHERE k = 1
@@ -826,7 +833,7 @@ def region_indicators_sql() -> str:
                'direct' AS method,
                CASE WHEN c.indicator ILIKE 'perc%' THEN 'percent' WHEN c.t <> 'G02' THEN 'people' END AS unit
         FROM ({census}) c
-        LEFT JOIN (SELECT short, regexp_extract(datapackfile, 'G\d\d') AS t, any_value(long) AS long
+        LEFT JOIN (SELECT short, regexp_extract(datapackfile, 'G\\d\\d') AS t, any_value(long) AS long
                    FROM {{abs_census/cells}} GROUP BY 1, 2) l ON l.short = c.indicator AND l.t = c.t
         WHERE c.poa_code IN (SELECT poa_code FROM places)
     ),
@@ -844,7 +851,7 @@ def region_indicators_sql() -> str:
                CASE cube WHEN '8165DC08' THEN 'employment' ELSE 'turnover' END || '|' || industry_code || '|' || size
                  AS indicator,
                'Businesses: ' || industry_label || ', ' || size AS label,
-               regexp_extract(table_title, 'June \d{{4}}') AS period, 'businesses' AS unit, 'count' AS kind,
+               regexp_extract(table_title, 'June \\d{{4}}') AS period, 'businesses' AS unit, 'count' AS kind,
                'Businesses by industry division and ' ||
                  CASE cube WHEN '8165DC08' THEN 'employment size' ELSE 'turnover size' END AS topic,
                value
@@ -890,20 +897,85 @@ def region_indicators_sql() -> str:
     """
 
 
+# The national lens's places (ADR 0019). A country is an ISO 3166 code. Former states keep their ISO 3166-3 codes, so
+# that WIPO's filings by residents of the Soviet Union or East Germany are not lost; they are never added to their
+# successors. WIPO's unknown origin ('**') is kept as its own row, 'ZZZ', so that totals over origins can be rebuilt.
+# Aggregates (the World Bank's regions, the OECD's and EU totals, the world) are left out.
+FORMER_STATES = {
+    "SU": ("SUN", "Soviet Union"),
+    "DD": ("DDR", "German Democratic Republic"),
+    "CS": ("CSK", "Czechoslovakia"),
+    "YU": ("YUG", "Yugoslavia"),
+    "ZR": ("ZAR", "Zaire"),
+    "AN": ("ANT", "Netherlands Antilles"),
+}
+UNKNOWN_ORIGIN = ("**", "ZZZ", "Origin unknown")
+# The WIPO series in the core lens: filings by residents of each country, summed over every office
+WIPO_CORE = {
+    10: ("WIPO.PAT.APP", "Patent applications filed worldwide by residents (all offices)"),
+    23: ("WIPO.PAT.GRANT", "Patent grants received worldwide by residents (all offices)"),
+    48: ("WIPO.TM.CLASS", "Trade mark applications by residents, counted in classes (all offices)"),
+    68: ("WIPO.DES.COUNT", "Industrial design applications by residents, counted in designs (all offices)"),
+}
+# Every OECD flow in the corpus goes to `national_indicators`, one indicator per combination of its dimensions
+# (ADR 0019). These columns are not dimensions: the place, the time, the value's flags and its display settings.
+OECD_FLOWS = [
+    "msti", "patents_coinventors", "patents_domestic_ownership_abroad", "patents_foreign_ownership",
+    "patents_environment", "patents_wipo_fields", "patents_regions", "innovation_ip_methods", "ip_tax_regimes",
+    "venture_capital", "business_births_deaths", "business_survival", "business_high_growth", "child_wellbeing",
+    "wellbeing_current", "wellbeing_future", "wellbeing_inequality", "wellbeing_by_age", "wellbeing_by_sex",
+    "wellbeing_by_education", "sdg_01_no_poverty", "sdg_02_zero_hunger", "sdg_09_industry_innovation",
+    "sdg_13_climate_action",
+]  # fmt: skip
+OECD_NOT_DIMENSIONS = {
+    "flow", "frequency_of_observation", "reference_area", "time_period", "observation_status", "observation_status_2",
+    "observation_status_3", "aux_observation_status", "confidentiality_status", "unit_multiplier", "decimals",
+    "base_period", "base_year", "price_reference_year", "territorial_level", "country",
+}  # fmt: skip
+OECD_STATUS = ["observation_status", "observation_status_2", "observation_status_3", "aux_observation_status"]
+# Closing the Gap's descriptive columns: together with the table and jurisdiction, they name one series
+CTG_SERIES = [
+    "measure", "age", "sex", "indigenous_status", "remoteness", "seifa_irsd", "description1", "description2",
+    "description3", "description4", "description6", "description7", "uncertainty",
+]  # fmt: skip
+
+
+def _places() -> str:
+    """A VALUES list of (ISO alpha-2, alpha-3, kind, name) for every current country, former state and the unknown
+    origin."""
+    rows = [(c.alpha_2, c.alpha_3, "country", None) for c in pycountry.countries]
+    rows += [(a2, a3, "former state", name) for a2, (a3, name) in FORMER_STATES.items()]
+    rows += [(UNKNOWN_ORIGIN[0], UNKNOWN_ORIGIN[1], "origin unknown", UNKNOWN_ORIGIN[2])]
+    q = lambda v: "NULL" if v is None else "'" + v.replace("'", "''") + "'"  # noqa: E731
+    return ", ".join(f"({q(a2)}, {q(a3)}, {q(k)}, {q(n)})" for a2, a3, k, n in sorted(rows))
+
+
+def _slug(col: str) -> str:
+    return f"trim(regexp_replace(lower({col}), '[^a-z0-9]+', '_', 'g'), '_')"
+
+
+def _year_of(col: str) -> str:
+    """The calendar year a published period ends in: '2018-19' and '2018–19' (financial years) give 2019; '2016 to
+    2021', '2021-2023' and '41 (2004)' their last year; 'Apr-06' 2006; NULL where the text holds no year."""
+    return (
+        f"CASE WHEN regexp_matches({col}, '^\\s*\\d{{4}}\\s*[-–]\\s*\\d{{2}}(\\s|\\(|$)') "
+        f"THEN CAST(left(trim({col}), 4) AS INTEGER) + 1 "
+        f"WHEN regexp_matches({col}, '\\d{{4}}') THEN CAST(regexp_extract_all({col}, '\\d{{4}}')[-1] AS INTEGER) "
+        f"WHEN regexp_matches({col}, '^[A-Z][a-z]{{2}}-\\d{{2}}$') "
+        f"THEN CAST(right({col}, 2) AS INTEGER) "
+        f"+ CASE WHEN CAST(right({col}, 2) AS INTEGER) > 50 THEN 1900 ELSE 2000 END "
+        f"END"
+    )
+
+
 def national_sql() -> str:
-    iso3 = {c.alpha_2: c.alpha_3 for c in pycountry.countries}
-    pairs = ", ".join(f"('{a2}', '{a3}')" for a2, a3 in sorted(iso3.items()))
+    """One row per country, year and indicator: the World Bank's 24 indicators, WIPO's filings by residents of each
+    country at every office, and the OECD's R&D intensity (ADR 0010, 0019)."""
     oecd = ", ".join(f"'{c}'" for c in OECD)
-    wipo = {
-        10: ("WIPO.PAT.APP", "Patent applications filed worldwide by residents (all offices)"),
-        23: ("WIPO.PAT.GRANT", "Patent grants received worldwide by residents (all offices)"),
-        48: ("WIPO.TM.CLASS", "Trade mark applications by residents, counted in classes (all offices)"),
-        68: ("WIPO.DES.COUNT", "Industrial design applications by residents, counted in designs (all offices)"),
-    }
-    cases = " ".join(f"WHEN {k} THEN '{c}'" for k, (c, _) in wipo.items())
-    names = " ".join(f"WHEN {k} THEN '{n}'" for k, (_, n) in wipo.items())
+    cases = " ".join(f"WHEN {k} THEN '{c}'" for k, (c, _) in WIPO_CORE.items())
+    names = " ".join(f"WHEN {k} THEN '{n}'" for k, (_, n) in WIPO_CORE.items())
     return f"""
-    WITH iso(a2, a3) AS (VALUES {pairs}),
+    WITH iso(a2, a3, kind, name) AS (VALUES {_places()}),
     wdi AS (
         SELECT p.iso3, p.country, p.year, p.indicator, p.indicator_name, p.value, NULL::VARCHAR AS status,
                'WDI' AS source
@@ -915,23 +987,586 @@ def national_sql() -> str:
                CAST(m.time_period AS INTEGER) AS year, 'OECD.MSTI.' || m.measure AS indicator,
                any_value(m.measure_label) || ', % of GDP (OECD MSTI)' AS indicator_name,
                any_value(m.value) AS value, any_value(m.observation_status_label) AS status, 'OECD' AS source
-        FROM {{oecd/msti}} m JOIN iso ON iso.a3 = m.reference_area
+        FROM {{oecd/msti}} m JOIN iso ON iso.a3 = m.reference_area AND iso.kind = 'country'
         WHERE m.measure IN ('G', 'B') AND m.unit_of_measure = 'PT_B1GQ' AND m.value IS NOT NULL
         GROUP BY m.reference_area, m.time_period, m.measure
     ),
-    wipo AS (
+    wipo AS (  -- former states and the unknown origin kept (ADR 0019)
         SELECT iso.a3 AS iso3, any_value(o.origin) AS country, o.year,
                CASE o.indicator_id {cases} END AS indicator,
                CASE o.indicator_id {names} END AS indicator_name,
                sum(o.value) AS value, NULL::VARCHAR AS status, 'WIPO' AS source
         FROM {{wipo_ipstats/office_origin}} o JOIN iso ON iso.a2 = o.origin_code
-        WHERE o.indicator_id IN ({", ".join(map(str, wipo))}) AND o.breakdown IS NULL
+        WHERE o.indicator_id IN ({", ".join(map(str, WIPO_CORE))}) AND o.breakdown IS NULL
         GROUP BY iso.a3, o.year, o.indicator_id
     )
-    SELECT u.* REPLACE (coalesce(n.name, u.country) AS country),  -- one name per country (the World Bank's)
-           u.iso3 IN ({oecd}) AS oecd, u.iso3 = 'AUS' AS australia
+    SELECT u.* REPLACE (coalesce(n.name, iso.name, u.country) AS country),  -- one name per place (the World Bank's)
+           coalesce(iso.kind, 'country') AS entity, u.iso3 IN ({oecd}) AS oecd, u.iso3 = 'AUS' AS australia
     FROM (SELECT * FROM wdi UNION ALL SELECT * FROM wipo UNION ALL SELECT * FROM oecd) u
     LEFT JOIN {{wdi/countries}} n ON n.iso3 = u.iso3
+    LEFT JOIN (SELECT DISTINCT a3, kind, name FROM iso) iso ON iso.a3 = u.iso3
+    """
+
+
+def _oecd_flow_sql(flow: str, iso: str) -> str:
+    """One OECD flow, long: one indicator per combination of its dimensions, coded 'OECD.<FLOW>.<codes>' and labelled
+    by the dimensions' labels (a dimension that does not apply, '_Z', is left out of the label)."""
+    import duckdb
+
+    from .data import table
+
+    cols = [r[0] for r in duckdb.sql(f"DESCRIBE SELECT * FROM {table('oecd', flow)}").fetchall()]
+    dims = [c for c in cols if f"{c}_label" in cols and c not in OECD_NOT_DIMENSIONS]
+    bases = [c for c in ("base_period", "base_year") if c in cols]
+    code = ", ".join(dims + [f"nullif({b}, '_Z')" for b in bases])
+    label = ", ".join(f"CASE WHEN {d} <> '_Z' THEN {d}_label END" for d in dims)
+    # a normal value ('A') carries no flag; a suppressed one ('Q', confidential) is published as 0, so it is emptied
+    status = ", ".join(f"CASE WHEN {c} <> 'A' THEN {c}_label END" for c in OECD_STATUS if f"{c}_label" in cols)
+    suppressed = "observation_status = 'Q'" if "observation_status" in cols else "false"
+    unit = ["unit_of_measure_label"] if "unit_of_measure_label" in cols else ["NULL"]
+    if "unit_multiplier" in cols:
+        unit.append("CASE WHEN unit_multiplier <> '0' THEN unit_multiplier_label END")
+    unit = ", ".join(unit + [f"'base ' || nullif({b}, '_Z')" for b in bases])
+    where = [f"(reference_area IN ({iso}) OR reference_area = 'YUG_F')"]
+    where.append(f"(value IS NOT NULL OR {'value_text IS NOT NULL OR ' if 'value_text' in cols else ''}{suppressed})")
+    if "territorial_level" in cols:
+        where.append("territorial_level = 'CTRY'")  # its regions are within countries, not countries
+    if flow == "msti":  # the core lens holds these (OECD.MSTI.G and .B)
+        where.append("NOT (measure IN ('G', 'B') AND unit_of_measure = 'PT_B1GQ')")
+    return f"""
+        SELECT CASE reference_area WHEN 'YUG_F' THEN 'YUG' ELSE reference_area END AS iso3,
+               reference_area_label AS place_name, CAST(left(time_period, 4) AS INTEGER) AS year,
+               time_period AS period, 'oecd' AS source, '{flow}' AS dataset,
+               'OECD.{flow.upper()}.' || concat_ws('.', {code}) AS indicator, concat_ws(', ', {label}) AS label,
+               CASE WHEN {suppressed} THEN NULL ELSE value END AS value,
+               {"value_text" if "value_text" in cols else "NULL::VARCHAR"} AS value_text,
+               concat_ws(', ', {unit}) AS unit, nullif(concat_ws('; ', {status or "NULL"}), '') AS status
+        FROM {{oecd/{flow}}}
+        WHERE {" AND ".join(where)}"""
+
+
+def national_indicators_sql() -> str:
+    """The national lens's attachments, long (ADR 0019): one row per country, source, indicator and period, holding
+    every value of the GII, every OECD flow, WIPO's other tables, Measuring What Matters and Closing the Gap."""
+    iso = ", ".join(f"'{c.alpha_3}'" for c in pycountry.countries)
+    oecd = ", ".join(f"'{c}'" for c in OECD)
+    core_wipo = ", ".join(map(str, WIPO_CORE))
+    wipo_label = "regexp_replace(o.indicator, '^\\S+\\s*-\\s*', '') || coalesce(': ' || o.breakdown, '')"
+    wipo_unit = "CASE WHEN o.indicator ILIKE '%(days)%' THEN 'days' ELSE 'number' END"
+    flows = "\n        UNION ALL".join(_oecd_flow_sql(f, iso) for f in OECD_FLOWS)
+    gii_status = (
+        "nullif(concat_ws('; ', CASE WHEN outdated = '1' THEN 'outdated: older than the most common data year' END, "
+        "CASE WHEN dmc = '1' THEN 'data minimum coverage not met' END), '')"
+    )
+    mwm_period = (
+        "regexp_full_match(row, '(\\d{4}([-–]\\d{2}(\\d{2})?)?|[A-Z][a-z]{2}-\\d{2}|\\d+ \\(\\d{4}\\))( \\([a-z]\\))?')"
+    )
+    ctg_key = ", ".join(CTG_SERIES + ["unit"])
+    ctg_label = ", ".join(CTG_SERIES)
+    col_fy = "nullif(regexp_extract(\"column\", '\\d{4}-\\d{2}'), '')"  # an ABS column such as "2023-24 | $'000"
+    col_no_fy = "regexp_replace(\"column\", '\\d{4}-\\d{2}( \\| )?', '')"
+    return f"""
+    WITH iso(a2, a3, kind, name) AS (VALUES {_places()}),
+    oecd AS ({flows}
+    ),
+    wipo AS (
+        SELECT iso.a3 AS iso3, any_value(o.origin) AS place_name, o.year, CAST(o.year AS VARCHAR) AS period,
+               'wipo' AS source, 'office_origin' AS dataset,
+               'WIPO.ORIGIN.' || o.indicator_id || coalesce('.' || {_slug("o.breakdown")}, '') AS indicator,
+               any_value({wipo_label}) || ' (by origin, all offices)' AS label, sum(o.value) AS value,
+               NULL::VARCHAR AS value_text, any_value({wipo_unit}) AS unit, NULL::VARCHAR AS status
+        FROM {{wipo_ipstats/office_origin}} o JOIN iso ON iso.a2 = o.origin_code
+        -- the core lens holds the four totals; a foreign-oriented family is counted at each office it goes to, so
+        -- summing indicator 21 over offices would count families more than once
+        WHERE o.indicator_id <> 21 AND NOT (o.indicator_id IN ({core_wipo}) AND o.breakdown IS NULL)
+        GROUP BY iso.a3, o.year, o.indicator_id, o.breakdown
+        UNION ALL
+        SELECT iso.a3, o.origin, o.year, CAST(o.year AS VARCHAR), 'wipo', 'office_origin',
+               'WIPO.AU.' || o.indicator_id || coalesce('.' || {_slug("o.breakdown")}, ''),
+               {wipo_label} || ' (at IP Australia, by origin)', o.value, NULL, {wipo_unit}, NULL
+        FROM {{wipo_ipstats/office_origin}} o JOIN iso ON iso.a2 = o.origin_code
+        WHERE o.office_code = 'AU'
+        UNION ALL  -- by office: the office's country (regional offices, such as the EPO, are not countries)
+        SELECT iso.a3, o.office, o.year, CAST(o.year AS VARCHAR), 'wipo', 'office',
+               'WIPO.OFFICE.' || o.right || '.' || o.indicator_id || coalesce('.' || {_slug("o.breakdown")}, ''),
+               {wipo_label} || ' (' || o.right || ', by office)', o.value, NULL, {wipo_unit}, NULL
+        FROM {{wipo_ipstats/office}} o JOIN iso ON iso.a2 = o.office_code AND iso.kind = 'country'
+        UNION ALL
+        SELECT iso.a3, o.origin, o.year, CAST(o.year AS VARCHAR), 'wipo', 'pmh', 'WIPO.PMH.' || o.indicator_id,
+               regexp_replace(o.indicator, '^\\S+\\s*-\\s*', '') || ' (' || upper(o.system) || ', by origin)', o.value,
+               NULL, 'number', NULL
+        FROM {{wipo_ipstats/pmh}} o JOIN iso ON iso.a2 = o.origin_code
+    ),
+    g AS (
+        SELECT d.*, coalesce(nullif(d.num, ''), 'GII') AS node, CAST(d.datayr AS INTEGER) AS y
+        FROM {{gii/data}} d
+    ),
+    gii AS (  -- the GII 2026 edition: a composite's year is the edition's; an indicator's is its data year
+        SELECT iso3, economy_name AS place_name, coalesce(y, 2026) AS year,
+               coalesce(CAST(y AS VARCHAR), 'GII 2026') AS period, 'gii' AS source, 'data' AS dataset,
+               'GII.' || node || '.' || m.k AS indicator, name || ': ' || m.l AS label,
+               CASE m.k WHEN 'score' THEN score WHEN 'rank' THEN rank WHEN 'value' THEN value_screen END AS value,
+               CASE m.k WHEN 'strength_overall' THEN sw_overall WHEN 'strength_income_group' THEN sw_incgrp END
+                 AS value_text,
+               CASE m.k WHEN 'score' THEN 'score, 0 to 100' WHEN 'rank' THEN 'rank, of 139 economies'
+                        WHEN 'value' THEN 'as named (the value WIPO screened)' ELSE 'S = strength, W = weakness' END
+                 AS unit,
+               {gii_status} AS status
+        FROM g CROSS JOIN (VALUES ('score', 'score'), ('rank', 'rank'), ('value', 'value'),
+                                  ('strength_overall', 'strength or weakness, overall'),
+                                  ('strength_income_group', 'strength or weakness, within its income group')) m(k, l)
+        WHERE CASE m.k WHEN 'score' THEN score IS NOT NULL WHEN 'rank' THEN rank IS NOT NULL
+                       WHEN 'value' THEN value_screen IS NOT NULL WHEN 'strength_overall' THEN sw_overall IS NOT NULL
+                       ELSE sw_incgrp IS NOT NULL END
+        UNION ALL
+        SELECT iso3, economy_name, 2026, 'GII 2026', 'gii', 'economies', 'GII.ECONOMY.' || m.k, m.l,
+               CASE m.k WHEN 'population' THEN pop WHEN 'gdp_ppp' THEN pppgdp WHEN 'gdp_ppp_per_person' THEN ppppc END,
+               CASE m.k WHEN 'income_group' THEN income_grp WHEN 'region' THEN subreg_un END, m.u, NULL
+        FROM {{gii/economies}} CROSS JOIN (VALUES
+            ('population', 'Population (GII 2026)', 'thousands'), ('gdp_ppp', 'GDP (GII 2026)', '$ billion, PPP'),
+            ('gdp_ppp_per_person', 'GDP per person (GII 2026)', '$, PPP'),
+            ('income_group', 'World Bank income group (GII 2026)', 'category'),
+            ('region', 'United Nations region (GII 2026)', 'category')) m(k, l, u)
+        WHERE CASE m.k WHEN 'population' THEN pop WHEN 'gdp_ppp' THEN pppgdp WHEN 'gdp_ppp_per_person' THEN ppppc
+                       END IS NOT NULL
+           OR CASE m.k WHEN 'income_group' THEN income_grp WHEN 'region' THEN subreg_un END IS NOT NULL
+    ),
+    mwm AS (  -- a table's first column is usually the period; where it is a group, a year in the series' name is
+        SELECT 'AUS' AS iso3, 'Australia' AS place_name,
+               {_year_of("period")} AS year, period, 'mwm' AS source, theme || '/' || indicator AS dataset,
+               'MWM.' || indicator || '.' || "table" || coalesce('.' || {_slug("block")}, '') || '.' || series
+                 AS indicator,
+               concat_ws(', ', title, caption, block, series_label) AS label, value, NULL::VARCHAR AS value_text,
+               NULL::VARCHAR AS unit, NULL::VARCHAR AS status
+        FROM (
+            SELECT d.*, i.title,
+                   CASE WHEN {mwm_period} THEN row WHEN regexp_matches("column", '^\\d{{4}}') THEN "column" END
+                     AS period,
+                   CASE WHEN {mwm_period} THEN {_slug('"column"')}
+                        WHEN regexp_matches("column", '^\\d{{4}}') THEN {_slug("row")}
+                        ELSE {_slug("row")} || '.' || {_slug('"column"')} END AS series,
+                   CASE WHEN {mwm_period} THEN "column" WHEN regexp_matches("column", '^\\d{{4}}') THEN row
+                        ELSE row || ', ' || "column" END AS series_label
+            FROM {{mwm/data}} d JOIN {{mwm/indicators}} i USING (theme, indicator))
+    ),
+    ctg AS (  -- Closing the Gap 2026: Australia, and its jurisdictions as breakdowns
+        SELECT 'AUS' AS iso3, 'Australia' AS place_name, {_year_of("year")} AS year, year AS period,
+               'ctg' AS source, target AS dataset,
+               'CTG.' || table_number || '.' || left(md5(concat_ws('|', {ctg_key})), 8) || '.'
+                 || replace(jurisdiction, ' ', '_') AS indicator,
+               concat_ws(', ', {ctg_label}) || ' (' || jurisdiction || ')' AS label, value,
+               CASE WHEN value IS NULL THEN value_text END AS value_text, unit,
+               CASE description7 WHEN 'Trajectory' THEN 'projected: the trajectory to the target'
+                    WHEN 'Linear regression estimates' THEN 'modelled: linear regression estimate'
+                    WHEN 'Estimated annual change' THEN 'assessment: estimated annual change'
+                    WHEN 'Assessment of progress' THEN 'assessment: progress'
+                    WHEN 'Confidence in assessment of progress' THEN 'assessment: confidence' END AS status
+        FROM {{ctg/data}}
+    ),
+    abs_nat AS (  -- the ABS's and BCARR's tables for Australia as a whole (their industry tables are in
+                  -- industry_indicators): CABEE's national tables 4 to 16, R&D and venture capital, creative domains
+        SELECT 'AUS' AS iso3, 'Australia' AS place_name,
+               {_year_of("coalesce(period, 'June 2026')")} AS year,
+               coalesce(period, 'survival, June 2022 to June 2026') AS period, 'abs' AS source,
+               'cabee_national' AS dataset,
+               'CABEE.' || replace("table", 'Table ', 'T') || '.' || {_slug("row")} || '.' || {_slug('"column"')}
+                 AS indicator, table_title || ': ' || row || ', ' || "column" AS label, value,
+               NULL::VARCHAR AS value_text,
+               CASE WHEN "column" LIKE '%rate%' OR "column" LIKE 'Percentage%' THEN '%' ELSE 'businesses' END AS unit,
+               NULL::VARCHAR AS status
+        FROM {{abs_cabee/national}}
+        WHERE "table" NOT IN ('Table 1', 'Table 2', 'Table 3')
+        UNION ALL
+        SELECT 'AUS', 'Australia',
+               {_year_of(f"coalesce({col_fy}, period)")}, coalesce({col_fy}, period), 'abs', release,
+               -- the row on the sheet is part of the code: headings can nest deeper than the cube reader records,
+               -- so two blocks of a table can share a section and row label (the venture capital tables)
+               'ABS.' || upper(release) || '.' || regexp_extract(cube, '^[^_.]+') || '.' || sheet || '.' || sheet_row
+                 || '.' || concat_ws('|', {_slug("coalesce(section, '')")}, {_slug("row")},
+                              {_slug(col_no_fy)}),
+               title || ': ' || concat_ws(', ', section, row, "column"), value, value_text,
+               coalesce(nullif(split_part("column", ' | ', 2), ''), unit), NULL
+        FROM {{abs_rd_vc/cubes}}
+        WHERE NOT (release = 'berd' AND title LIKE '%industry subdivision%')
+        UNION ALL
+        SELECT 'AUS', 'Australia', fy_end, financial_year, 'bcarr', release,
+               'BCARR.' || left(release, 4) || '.' || {_slug("table_title")} || '.' || {_slug("series")} || '.'
+                 || {_slug("unit")},
+               table_title || ': ' || series || ' (' || release || ' release)', value, NULL, unit, NULL
+        FROM {{bcarr_creative/activity}}
+        WHERE NOT (table_title LIKE '%by industry division' OR table_title IN ('Specialised activity',
+                   'Support activity', 'Embedded activity', 'In-scope cultural and creative industry subdivisions'))
+    ),
+    u AS (
+        SELECT * FROM oecd UNION ALL SELECT * FROM wipo UNION ALL SELECT * FROM gii
+        UNION ALL SELECT * FROM mwm UNION ALL SELECT * FROM ctg UNION ALL SELECT * FROM abs_nat
+    )
+    SELECT u.iso3, coalesce(n.name, p.name, u.place_name) AS country, coalesce(p.kind, 'country') AS entity,
+           u.year, u.period, u.source, u.dataset, u.indicator, u.label, u.value, u.value_text, u.unit, u.status,
+           u.iso3 IN ({oecd}) AS oecd, u.iso3 = 'AUS' AS australia
+    FROM u
+    LEFT JOIN {{wdi/countries}} n ON n.iso3 = u.iso3
+    LEFT JOIN (SELECT DISTINCT a3, kind, name FROM iso) p ON p.a3 = u.iso3
+    """
+
+
+# The industries lens (ADR 0020): one row per ANZSIC 2006 division and financial year. A division is identified by its
+# letter; a subdivision's two-digit code falls in one division's range (ABS, ANZSIC 2006, cat. no. 1292.0).
+ANZSIC_DIVISIONS = {
+    "A": ("Agriculture, Forestry and Fishing", 1, 5),
+    "B": ("Mining", 6, 10),
+    "C": ("Manufacturing", 11, 25),
+    "D": ("Electricity, Gas, Water and Waste Services", 26, 29),
+    "E": ("Construction", 30, 32),
+    "F": ("Wholesale Trade", 33, 38),
+    "G": ("Retail Trade", 39, 43),
+    "H": ("Accommodation and Food Services", 44, 45),
+    "I": ("Transport, Postal and Warehousing", 46, 53),
+    "J": ("Information Media and Telecommunications", 54, 60),
+    "K": ("Financial and Insurance Services", 62, 64),
+    "L": ("Rental, Hiring and Real Estate Services", 66, 67),
+    "M": ("Professional, Scientific and Technical Services", 69, 70),
+    "N": ("Administrative and Support Services", 72, 73),
+    "O": ("Public Administration and Safety", 75, 77),
+    "P": ("Education and Training", 80, 82),
+    "Q": ("Health Care and Social Assistance", 84, 87),
+    "R": ("Arts and Recreation Services", 89, 92),
+    "S": ("Other Services", 94, 96),
+}
+# IP applications by industry run from FY1990: before 1989 IP RAPID records few overseas applicants' countries (U67)
+INDUSTRIES_FY = (1990, 2026)
+# B6 (the review's F27): IPC subclasses the ALP crosswalk does not know, mapped to the subclass they came from (new
+# ones, 2018 to 2026) or were merged into (obsolete ones). Each is flagged in the profile, never silently added.
+IPC_PREDECESSORS = {
+    "G16H": "G06F",  # healthcare informatics, from G06F 19/00 (2018)
+    "G16B": "G06F",  # bioinformatics, from G06F 19/10 (2019)
+    "G16C": "G06F",  # computational chemistry, from G06F 19/00 (2019)
+    "G16Z": "G06F",  # other ICT for specific fields, from G06F 19/00 (2019)
+    "G16Y": "H04L",  # ICT for the Internet of Things, from H04L 29 and H04W (2020)
+    "G06V": "G06K",  # image and video recognition, from G06K 9 (2022)
+    "F24S": "F24J",  # solar heat collectors, from F24J 2 (2018)
+    "F24T": "F24J",  # geothermal collectors, from F24J 3 (2018)
+    "F24V": "F24J",  # other heat production, from F24J 1 (2018)
+    "B64U": "B64C",  # unmanned aerial vehicles, from B64C 39/02 (2023)
+    "H10B": "H01L",  # electronic memory devices, from H01L 27 (2023)
+    "H10K": "H01L",  # organic semiconductor devices, from H01L 51 (2023)
+    "H10N": "H01L",  # thermoelectric and other devices, from H01L 35 to 49 (2023)
+    "H10D": "H01L",  # inorganic semiconductor devices, from H01L 29 (2025)
+    "H10F": "H01L",  # light-sensitive semiconductor devices, from H01L 31 (2025)
+    "H10P": "H01L",  # semiconductor processes, from H01L 21 (2026)
+    "H10W": "H01L",  # semiconductor packaging, from H01L 23 (2026)
+    "B65J": "B65D",  # containers, from B65D (2025)
+    "B29F": "B29C",  # obsolete rubber and plastics subclasses, merged into B29C
+    "B29G": "B29C",
+    "B29H": "B29C",
+    "B29J": "B29C",
+    "C08D": "C08C",  # obsolete rubber subclass, merged into C08C
+    "F21M": "F21S",  # obsolete lighting subclasses, merged into F21S and F21V
+    "F21P": "F21V",
+    "F21Q": "F21S",
+}
+
+
+def _divisions() -> str:
+    """A VALUES list of (division, name, first subdivision, last subdivision)."""
+    return ", ".join(f"('{d}', '{n}', {lo}, {hi})" for d, (n, lo, hi) in ANZSIC_DIVISIONS.items())
+
+
+def _division_of(code: str, digits: int = 4) -> str:
+    """The division of an ANZSIC code given as text, or NULL: a class (`digits` 4: '111' is class 0111) or a
+    subdivision (`digits` 2: '1' is subdivision 01)."""
+    sub = f"TRY_CAST(left(lpad(trim({code}), {digits}, '0'), 2) AS INTEGER)"
+    cases = " ".join(f"WHEN {sub} BETWEEN {lo} AND {hi} THEN '{d}'" for d, (_, lo, hi) in ANZSIC_DIVISIONS.items())
+    return f"CASE WHEN {sub} = 99 THEN 'X' {cases} END"
+
+
+def _norm(col: str) -> str:
+    return f"trim(regexp_replace(lower({col}), '[^a-z0-9]+', ' ', 'g'))"
+
+
+def _industry_names() -> str:
+    """CTEs `divs` (the 19 divisions) and `names` (a normalised division or subdivision name, or a word for all
+    industries or an unknown one, to its division: 'TOTAL' and 'X'), for tables that name industries in words."""
+    return f"""
+    divs(division, division_name, lo, hi) AS (VALUES {_divisions()}),
+    names AS (
+        SELECT {_norm("division_name")} AS name, division FROM divs
+        UNION
+        SELECT DISTINCT {_norm("anzsic_subdivision_label")}, {_division_of("anzsic_subdivision_code", 2)}
+        FROM {{abs_cabee/cubes}} WHERE anzsic_subdivision_code IS NOT NULL AND cube = '8165DC04'
+        UNION SELECT * FROM (VALUES ('all industries', 'TOTAL'), ('total all industries', 'TOTAL'), ('total', 'TOTAL'),
+                                    ('currently unknown', 'X')) t(name, division)
+    )"""
+
+
+def _ip_by_division() -> str:
+    """CTEs `ip_pat` and `ip_tm`: each patent's and trade mark's expected share in each division, through the ALP
+    crosswalks (ADR 0020). A right's current classes share its weight equally (1/n), each class's weight is split over
+    ANZSIC classes by the crosswalk's probabilities, so each right sums to 1 over the divisions. Patent subclasses the
+    crosswalk does not know are first mapped to their predecessors (`IPC_PREDECESSORS`, B6); a patent with no known
+    subclass is left out."""
+    pred = ", ".join(f"('{a}', '{b}')" for a, b in IPC_PREDECESSORS.items())
+    return f"""
+    pred(ipc_from, ipc_to) AS (VALUES {pred}),
+    ipc AS (
+        SELECT DISTINCT c.application_number, coalesce(p.ipc_to, left(c.classification, 4)) AS ipc4
+        FROM {{iprapid/classification}} c LEFT JOIN pred p ON p.ipc_from = left(c.classification, 4)
+        WHERE c.ip_right_type = 'patent' AND c.classification_system = 'ipc_mark' AND c.is_current
+          AND coalesce(p.ipc_to, left(c.classification, 4)) IN (SELECT ipc4 FROM {{concordances/ipc4_anzsic}})
+    ),
+    ip_pat AS (
+        SELECT i.application_number, left(lpad(a.anzsic, 4, '0'), 2) AS subdivision,
+               {_division_of("a.anzsic")} AS division, sum(a.weight / i.n) AS share
+        FROM (SELECT *, count(*) OVER (PARTITION BY application_number) AS n FROM ipc) i
+        JOIN {{concordances/ipc4_anzsic}} a USING (ipc4)
+        GROUP BY 1, 2, 3
+    ),
+    nice AS (
+        SELECT DISTINCT application_number, lpad(trim(classification), 2, '0') AS nice
+        FROM {{iprapid/classification}}
+        WHERE ip_right_type = 'trade_mark' AND classification_system = 'nice' AND is_current
+    ),
+    ip_tm AS (
+        SELECT c.application_number, left(lpad(a.anzsic, 4, '0'), 2) AS subdivision,
+               {_division_of("a.anzsic")} AS division, sum(a.weight / c.n) AS share
+        FROM (SELECT *, count(*) OVER (PARTITION BY application_number) AS n FROM nice) c
+        JOIN {{concordances/nice_anzsic}} a USING (nice)
+        GROUP BY 1, 2, 3
+    )"""
+
+
+def industries_sql() -> str:
+    """One row per ANZSIC division (A to S) and financial year, FY1990 to FY2026. IP applications are expected counts
+    (a right's share in each division, ADR 0020); the rest is the ABS's: businesses, entries and exits (CABEE),
+    business R&D (BERD), wages (the WPI, the financial year's average of its quarterly index) and the cultural and
+    creative industries' value added (BCARR). Each is empty outside the years its source covers."""
+    lo, hi = INDUSTRIES_FY
+    core = (
+        "'Operating at start of financial year', 'Operating at end of financial year', 'Entries - Total', "
+        "'Exits - Total', 'Entry rate', 'Exit rate'"
+    )
+    return f"""
+    WITH {_industry_names()},
+    {_ip_by_division()},
+    grid AS (
+        SELECT d.division, d.division_name, f.fy
+        FROM divs d CROSS JOIN (SELECT unnest(range({lo}, {hi + 1})) AS fy) f
+    ),
+    r AS (
+        SELECT ip_right_type, application_number, patent_type, australian_applicant, filing_fy
+        FROM {lens_table("rights")} WHERE filing_fy BETWEEN {lo} AND {hi}
+    ),
+    pat AS (
+        SELECT p.division, r.filing_fy AS fy,
+               sum(p.share) FILTER (r.patent_type = 'standard') AS patents_standard,
+               sum(p.share) FILTER (r.patent_type = 'standard' AND r.australian_applicant) AS patents_standard_au,
+               sum(p.share) FILTER (r.patent_type = 'second_tier') AS patents_second_tier
+        FROM ip_pat p JOIN r ON r.ip_right_type = 'patent' AND r.application_number = p.application_number
+        GROUP BY 1, 2
+    ),
+    tm AS (
+        SELECT t.division, r.filing_fy AS fy, sum(t.share) AS trade_marks,
+               sum(t.share) FILTER (r.australian_applicant) AS trade_marks_au
+        FROM ip_tm t JOIN r ON r.ip_right_type = 'trade_mark' AND r.application_number = t.application_number
+        GROUP BY 1, 2
+    ),
+    cabee AS (  -- CABEE's national release: counts by division and financial year
+        SELECT n.division, CAST(left(c.period, 4) AS INTEGER) + 1 AS fy,
+               max(c.value) FILTER (c."column" = 'Operating at start of financial year') AS businesses_start,
+               max(c.value) FILTER (c."column" = 'Operating at end of financial year') AS businesses_end,
+               max(c.value) FILTER (c."column" = 'Entries - Total') AS business_entries,
+               max(c.value) FILTER (c."column" = 'Exits - Total') AS business_exits,
+               max(c.value) FILTER (c."column" = 'Entry rate') AS business_entry_rate,
+               max(c.value) FILTER (c."column" = 'Exit rate') AS business_exit_rate
+        FROM {{abs_cabee/national}} c JOIN names n ON n.name = {_norm("c.row")}
+        WHERE c."table" = 'Table 1' AND c."column" IN ({core})
+        GROUP BY 1, 2
+    ),
+    berd AS (  -- business expenditure on R&D, 2023-24: each division's total row
+        SELECT n.division, 2024 AS fy, b.value AS berd
+        FROM {{abs_rd_vc/cubes}} b JOIN names n ON n.name = {_norm("b.section")}
+        WHERE b.cube = '81040DO002_202324.xlsx' AND b."column" = 'Total expenditure on R&D | $''000'
+          AND {_norm("b.row")} = 'total ' || n.name
+    ),
+    wpi AS (  -- the financial year's average of the quarterly index, where it has all four quarters
+        SELECT industry AS division,
+               CAST(left(time_period, 4) AS INTEGER) + (right(time_period, 1) IN ('3', '4'))::INT AS fy,
+               CASE WHEN count(*) = 4 THEN avg(value) END AS wpi_index
+        FROM {{abs_prices/wpi}}
+        WHERE measure = '1' AND index = 'THRPEB' AND sector = '7' AND adjustment_type = '10' AND region = 'AUS'
+          AND industry IN (SELECT division FROM divs)
+        GROUP BY 1, 2
+    ),
+    creative AS (  -- the cultural and creative industries' value added by division, the newer release (2015-16 on)
+        SELECT n.division, a.fy_end AS fy, a.value AS creative_gva
+        FROM {{bcarr_creative/activity}} a JOIN names n ON n.name = {_norm("a.series")}
+        WHERE a.release = '2015-16 to 2024-25' AND a.table_title LIKE '%GVA by industry division'
+          AND n.division IN (SELECT division FROM divs)
+    )
+    SELECT g.division, g.division_name, g.fy,
+           coalesce(pat.patents_standard, 0) AS patents_standard,
+           coalesce(pat.patents_standard_au, 0) AS patents_standard_au,
+           coalesce(pat.patents_second_tier, 0) AS patents_second_tier,
+           coalesce(tm.trade_marks, 0) AS trade_marks, coalesce(tm.trade_marks_au, 0) AS trade_marks_au,
+           cabee.* EXCLUDE (division, fy), berd.berd, wpi.wpi_index, creative.creative_gva
+    FROM grid g
+    LEFT JOIN pat USING (division, fy) LEFT JOIN tm USING (division, fy) LEFT JOIN cabee USING (division, fy)
+    LEFT JOIN berd USING (division, fy) LEFT JOIN wpi USING (division, fy) LEFT JOIN creative USING (division, fy)
+    ORDER BY g.division, g.fy
+    """
+
+
+# BCS tables (the ABS's business characteristics and innovation surveys): every column with a label is a dimension,
+# except these, which place the value in time or describe it
+BCS_TABLES = [
+    "bcs_inn", "bcs_innact", "bcs_innsig", "bcs_businf", "bcs_businf2", "bcs_busgvtsk", "abs_it_innovation",
+    "abs_it_barrier", "abs_it_bus_struc", "abs_it_finance", "abs_it_mktcomp", "abs_it_perf", "abs_it_support",
+]  # fmt: skip
+BCS_NOT_DIMENSIONS = {
+    "flow",
+    "frequency",
+    "time_period",
+    "observation_status",
+    "decimals",
+    "industry",
+    "unit_of_measure",
+}
+
+
+def _bcs_sql(name: str) -> str:
+    import duckdb
+
+    from .data import table
+
+    cols = [r[0] for r in duckdb.sql(f"DESCRIBE SELECT * FROM {table('abs_bcs', name)}").fetchall()]
+    dims = [c for c in cols if f"{c}_label" in cols and c not in BCS_NOT_DIMENSIONS]
+    return f"""
+        SELECT industry AS division, 'bcs' AS source,
+               '{name}' AS dataset, 'BCS.{name.upper()}.' || concat_ws('.', {", ".join(dims)}) AS indicator,
+               concat_ws(', ', {", ".join(f"{d}_label" for d in dims)}) AS label, time_period AS period,
+               CAST(left(time_period, 4) AS INTEGER) AS fy, value, NULL::VARCHAR AS value_text,
+               unit_of_measure_label AS unit, observation_status_label AS status
+        FROM {{abs_bcs/{name}}}"""
+
+
+def industry_indicators_sql() -> str:
+    """The industries lens's attachments, long (ADR 0020): one row per division, source, indicator and period, for
+    every value the ABS and BCARR publish by industry. A value for all industries has the division 'TOTAL' and one
+    for an unknown industry 'X'; the core lens's own values are not repeated."""
+    core = (
+        "'Operating at start of financial year', 'Operating at end of financial year', 'Entries - Total', "
+        "'Exits - Total', 'Entry rate', 'Exit rate'"
+    )
+    period_fy = "CAST(left({p}, 4) AS INTEGER) + 1"
+    return f"""
+    WITH {_industry_names()},
+    {_ip_by_division()},
+    cabee_national AS (  -- CABEE's national release, tables 1 to 3 (by division)
+        SELECT n.division, 'cabee' AS source, 'national' AS dataset,
+               'CABEE.' || replace(c."table", 'Table ', 'T') || '.' || {_slug('c."column"')} AS indicator,
+               c.table_title || ': ' || c."column" AS label,
+               coalesce(c.period, 'survival, June 2022 to June 2026') AS period,
+               coalesce({period_fy.format(p="c.period")}, 2026) AS fy, c.value, NULL::VARCHAR AS value_text,
+               CASE WHEN c."column" LIKE '%rate%' OR c."column" LIKE 'Percentage%' THEN '%' ELSE 'businesses' END
+                 AS unit, NULL::VARCHAR AS status
+        FROM {{abs_cabee/national}} c JOIN names n ON n.name = {_norm("c.row")}
+        WHERE c."table" IN ('Table 1', 'Table 2', 'Table 3')
+          AND NOT (c."table" = 'Table 1' AND c."column" IN ({core}) AND n.division IN (SELECT division FROM divs))
+    ),
+    cabee_cubes AS (  -- CABEE's cubes by state and class or subdivision, and by local government area and division
+        SELECT coalesce(c.industry_code, {_division_of("c.anzsic_industry_code")},
+                        {_division_of("c.anzsic_subdivision_code", 2)}, 'TOTAL') AS division,
+               'cabee' AS source, c.cube AS dataset,
+               'CABEE.' || c.cube || '.' || concat_ws('|', coalesce(c.measure, 'count'),
+                   coalesce(c.anzsic_industry_code, c.anzsic_subdivision_code, ''),
+                   coalesce(c.lga_code, c.state_name, c.state_label, ''), c.size, c.unit) AS indicator,
+               concat_ws(', ', coalesce(c.measure, 'Businesses'),
+                         coalesce(c.anzsic_industry_label, c.anzsic_subdivision_label, c.industry_label),
+                         coalesce(c.lga_label, c.state_label), c.size) AS label,
+               regexp_extract(c.table_title, 'June \\d{{4}}( – June \\d{{4}})?') AS period,
+               CAST(regexp_extract(c.table_title, '(\\d{{4}}) \\(a\\)', 1) AS INTEGER) AS fy,
+               c.value, NULL::VARCHAR AS value_text, c.unit, NULL::VARCHAR AS status
+        FROM {{abs_cabee/cubes}} c WHERE c.cube NOT IN ('8165DC08', '8165DC09')  -- SA2s: in region_indicators
+    ),
+    bcs AS ({"UNION ALL".join(_bcs_sql(t) for t in BCS_TABLES)}
+    ),
+    berd AS (  -- business R&D by subdivision, 2023-24: the division from the section, or from the row
+        SELECT coalesce(ns.division, nr.division, CASE WHEN {_norm("b.row")} LIKE 'total%' THEN 'TOTAL' END)
+                 AS division,
+               'berd' AS source, regexp_extract(b.cube, 'DO\\d+') AS dataset,
+               'BERD.' || regexp_extract(b.cube, 'DO\\d+') || '.' || b.sheet || '.' || b.sheet_row || '.' ||
+                 concat_ws('|', {_slug("coalesce(b.section, '')")}, {_slug("b.row")}, {_slug('b."column"')})
+                 AS indicator,
+               b.title || ': ' || concat_ws(', ', b.section, b.row, b."column") AS label, b.period,
+               {period_fy.format(p="b.period")} AS fy, b.value, b.value_text,
+               CASE WHEN b.title LIKE '%RELATIVE STANDARD ERROR%' THEN '% (relative standard error)'
+                    ELSE coalesce(nullif(split_part(b."column", ' | ', 2), ''), b.unit) END AS unit,
+               NULL::VARCHAR AS status
+        FROM {{abs_rd_vc/cubes}} b
+        LEFT JOIN names ns ON ns.name = {_norm("b.section")}
+        LEFT JOIN names nr ON nr.name = regexp_replace({_norm("b.row")}, '^total ', '')
+        WHERE b.release = 'berd' AND b.title LIKE '%industry subdivision%'
+          AND NOT (b.cube = '81040DO002_202324.xlsx' AND b."column" = 'Total expenditure on R&D | $''000'
+                   AND {_norm("b.row")} = 'total ' || ns.name)
+    ),
+    creative AS (  -- cultural and creative value added by division or subdivision, both releases (never spliced)
+        SELECT coalesce(n.division, CASE WHEN a.series LIKE 'Total%' OR a.series LIKE 'Cultural and creative%'
+                                         THEN 'TOTAL' END) AS division,
+               'bcarr' AS source, a.release AS dataset,
+               'BCARR.' || left(a.release, 4) || '.' || {_slug("a.table_title")} || '.' || {_slug("a.series")}
+                 || '.' || {_slug("a.unit")} AS indicator,
+               a.table_title || ': ' || a.series || ' (' || a.release || ' release)' AS label,
+               a.financial_year AS period, a.fy_end AS fy, a.value, NULL::VARCHAR AS value_text, a.unit,
+               NULL::VARCHAR AS status
+        FROM {{bcarr_creative/activity}} a LEFT JOIN names n ON n.name = {_norm("a.series")}
+        WHERE (a.table_title LIKE '%by industry division' OR a.table_title IN ('Specialised activity',
+               'Support activity', 'Embedded activity', 'In-scope cultural and creative industry subdivisions'))
+          AND NOT (a.release = '2015-16 to 2024-25' AND a.table_title LIKE '%GVA by industry division'
+                   AND n.division IN (SELECT division FROM divs))
+    ),
+    r AS (
+        SELECT ip_right_type, application_number, patent_type, australian_applicant, filing_fy
+        FROM {lens_table("rights")} WHERE filing_fy BETWEEN {INDUSTRIES_FY[0]} AND {INDUSTRIES_FY[1]}
+    ),
+    ip_sub AS (  -- the core lens's IP counts by subdivision: the detail within a division (ADR 0020)
+        SELECT x.division, x.subdivision, x.kind, r.filing_fy AS fy, sum(x.share) AS value
+        FROM (SELECT application_number, 'patent' AS ip_right_type, subdivision, division, share, 'patents' AS kind
+              FROM ip_pat
+              UNION ALL SELECT application_number, 'trade_mark', subdivision, division, share, 'trade_marks'
+              FROM ip_tm) x
+        JOIN r ON r.ip_right_type = x.ip_right_type AND r.application_number = x.application_number
+        WHERE x.kind = 'trade_marks' OR r.patent_type = 'standard'
+        GROUP BY ALL
+    ),
+    ip AS (
+        SELECT division, 'ip' AS source, 'rights' AS dataset,
+               'IP.' || upper(kind) || '.' || subdivision AS indicator,
+               CASE kind WHEN 'patents' THEN 'Standard patent applications (expected)'
+                         ELSE 'Trade mark applications (expected)' END || ', ' || subdivision || ' '
+                 || coalesce(sub_name, '') AS label,
+               CAST(fy - 1 AS VARCHAR) || '-' || right(CAST(fy AS VARCHAR), 2) AS period, fy, value,
+               NULL::VARCHAR AS value_text, 'applications (expected)' AS unit, NULL::VARCHAR AS status
+        FROM ip_sub LEFT JOIN (SELECT DISTINCT lpad(anzsic_subdivision_code, 2, '0') AS subdivision,
+                                          anzsic_subdivision_label AS sub_name
+                               FROM {{abs_cabee/cubes}} WHERE cube = '8165DC04' AND anzsic_subdivision_code IS NOT NULL)
+          USING (subdivision)
+    ),
+    wpi AS (  -- the Wage Price Index by industry, quarterly (a quarter is never spread over months or years)
+        SELECT CASE industry WHEN 'TOT' THEN 'TOTAL' ELSE industry END AS division, 'wpi' AS source,
+               'wpi' AS dataset, 'WPI.' || measure || '.' || index || '.' || sector || '.' || adjustment_type
+                 AS indicator,
+               concat_ws(', ', index_label, measure_label, sector_label, adjustment_type_label) AS label,
+               time_period AS period,
+               CAST(left(time_period, 4) AS INTEGER) + (right(time_period, 1) IN ('3', '4'))::INT AS fy,
+               value, NULL::VARCHAR AS value_text, unit_of_measure_label AS unit,
+               nullif(observation_status_label, 'not applicable') AS status
+        FROM {{abs_prices/wpi}} WHERE region = 'AUS'
+    )
+    SELECT u.*, d.division_name
+    FROM (SELECT * FROM cabee_national UNION ALL SELECT * FROM cabee_cubes UNION ALL SELECT * FROM bcs
+          UNION ALL SELECT * FROM berd UNION ALL SELECT * FROM creative UNION ALL SELECT * FROM wpi
+          UNION ALL SELECT * FROM ip) u
+    LEFT JOIN divs d USING (division)
     """
 
 
@@ -1018,6 +1653,9 @@ LENSES = {
     "regions": regions_sql,
     "region_indicators": region_indicators_sql,
     "national": national_sql,
+    "national_indicators": national_indicators_sql,
+    "industries": industries_sql,
+    "industry_indicators": industry_indicators_sql,
     "timeline": timeline_sql,
 }
 ORDER = [
@@ -1026,6 +1664,9 @@ ORDER = [
     "regions",
     "region_indicators",
     "national",
+    "national_indicators",
+    "industries",
+    "industry_indicators",
     "timeline",
 ]  # later lenses read the earlier ones
 

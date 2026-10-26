@@ -159,17 +159,78 @@ region_indicators:
   additive: {label: A count, kind: binary, note: "true for a count, which is split among postal areas by residents and can be summed over areas; false for a level (median, mean, rate, percentage, index), which is a residents-weighted average of the areas overlapping the postal area and must never be summed"}
   method: {label: How it reached the postal area, kind: category, note: "direct (published for postal areas or postcodes: Census, CER), from SA2s (Data by Region, CABEE) or from PHAs (PHIDU), through 2021 residents by mesh block (an area with none is split by its mesh blocks). Values from SA2s or PHAs are estimates for the postal area, not published figures"}
 
+# One row per country, year and indicator: the World Bank's 24 indicators, WIPO's filings by residents of each country at
+# every office, and the OECD's R&D intensity. Its attachments are in `national_indicators` (ADR 0019).
 national:
-  iso3: {label: Country code, kind: id}
-  country: {label: Country, kind: category, note: "one name per country: the World Bank's where it has the country"}
+  iso3: {label: Country code, kind: id, note: "ISO 3166 alpha-3. Former states keep their ISO 3166-3 codes (SUN, DDR, CSK, YUG, ZAR, ANT) and WIPO's unknown origin is ZZZ (see entity); aggregates (regions, income groups, the OECD, the world) are left out"}
+  country: {label: Country, kind: category, note: "one name per place: the World Bank's where it has the country"}
   year: {label: Year, kind: year}
-  indicator: {label: Indicator code, kind: category, note: "the World Bank's codes (trade marks are IP.TMK.RSCT and IP.TMK.NRCT, 2004 on), WIPO.* (filings by residents at every office) and OECD.MSTI.G and .B (GERD and BERD, % of GDP). The World Bank's and the OECD's R&D series differ where they overlap: compare them side by side, never splice them (ADR 0010)"}
+  indicator: {label: Indicator code, kind: category, note: "the World Bank's codes (trade marks are IP.TMK.RSCT and IP.TMK.NRCT, 2004 on), WIPO.* (filings by residents at every office) and OECD.MSTI.G and .B (GERD and BERD, % of GDP). The World Bank's and the OECD's R&D series differ where they overlap: compare them side by side, never splice them (ADR 0010). The World Bank's trade mark and design series 'by count' count classes and designs, not applications: they equal WIPO's class and design counts at the office (U67)"}
   indicator_name: {label: Indicator, kind: category}
   value: {label: Value, kind: numeric, note: "units differ by indicator; compare within one indicator only"}
   status: {label: Value's status, kind: category, note: "the OECD's flag on its values (estimated, provisional, definition differs, time series break: 32.5% of its values here; every Australian GERD value from 2010 is an estimate); empty for the World Bank's and WIPO's, which publish none"}
   source: {label: Source, kind: category, note: "WDI, WIPO or OECD"}
+  entity: {label: Kind of place, kind: category, note: "country; former state (WIPO's filings by residents of the Soviet Union, East Germany, Czechoslovakia, Yugoslavia, Zaire and the Netherlands Antilles, never added to their successors); or origin unknown (WIPO's filings whose applicant's country is not known). Filter to countries for comparisons between countries (ADR 0019)"}
   oecd: {label: OECD member, kind: binary}
   australia: {label: Australia, kind: binary}
+
+# The national lens's attachments (ADR 0019), long: one row per place, source, indicator and period, for every value of
+# the GII 2026, every OECD flow in the corpus, WIPO's other tables, Measuring What Matters and Closing the Gap. Query it
+# in SQL with filters on source, dataset and indicator; never load it whole (41 million rows).
+national_indicators:
+  iso3: {label: Country code, kind: id, note: "as in national (former states and the unknown origin kept; aggregates left out); Measuring What Matters and Closing the Gap are Australia's only"}
+  country: {label: Country, kind: category, note: "the World Bank's name where it has the country, otherwise the publisher's"}
+  entity: {label: Kind of place, kind: category, note: "country, former state or origin unknown, as in national"}
+  year: {label: Year, kind: year, note: "the calendar year the period ends in (a financial year 2018-19 is 2019; Closing the Gap's '2016 to 2021' is 2021). For the GII, an indicator's data year, and 2026 (the edition) for its composite scores and ranks. Empty for 35 Measuring What Matters values that are for groups, not periods"}
+  period: {label: Period, kind: category, note: "as published: the OECD's and WIPO's year, the GII's data year or 'GII 2026', Measuring What Matters' row (a year, financial year or month such as 'Apr-06'), Closing the Gap's year (including trajectories to 2031)"}
+  source: {label: Source, kind: category, note: "gii (the Global Innovation Index 2026), oecd (24 OECD flows), wipo (WIPO IP statistics), mwm (Measuring What Matters), ctg (Closing the Gap 2026), abs (CABEE's national tables 4 to 16, the ABS's R&D releases for business, government, non-profit and higher education, and venture capital to 2018-19) or bcarr (cultural and creative activity by domain, both releases); the ABS's and BCARR's tables by industry are in industry_indicators (ADR 0020)"}
+  dataset: {label: Dataset, kind: category, note: "the OECD flow (msti, patents_coinventors, ...); WIPO's table (office_origin, office, pmh); the GII's sheet (data, economies); Measuring What Matters' theme and page; Closing the Gap's target (ctg08, ctg15, ctg16)"}
+  indicator: {label: Indicator code, kind: category, note: "unique within a source. OECD.<FLOW>.<dimension codes>; WIPO.ORIGIN.<id>[.<breakdown>] (by origin, summed over every office), WIPO.AU.<id>[...] (at IP Australia, by origin), WIPO.OFFICE.<right>.<id> (by office), WIPO.PMH.<id> (PCT, Madrid and Hague, by origin); GII.<node>.score, .rank, .value, .strength_overall and .strength_income_group, and GII.ECONOMY.*; MWM.<page>.<table>[.<block>].<series>; CTG.<table>.<series>.<jurisdiction>"}
+  label: {label: Indicator, kind: category, note: "the publisher's names for the indicator and its breakdowns, joined by commas (an OECD dimension that does not apply is left out)"}
+  value: {label: Value, kind: numeric, note: "units differ by indicator: compare within one indicator only. Never add a total to its parts, or one source's measure to another's (MWM's patents and trade marks, and the OECD's patents, repeat counts held elsewhere)"}
+  value_text: {label: Value as text, kind: category, note: "where the value is not a number: the OECD's IP tax regimes (mostly text), the GII's strengths and weaknesses (S or W), its income groups and regions, and Closing the Gap's '..', 'np' and 'na' (not available or not published) and assessments (High, Low)"}
+  unit: {label: Unit, kind: category, note: "as published (the OECD's unit, multiplier and base period; WIPO's counts or days; the GII's score, rank or value; Closing the Gap's unit). Empty for Measuring What Matters, whose units are in the label"}
+  status: {label: Value's status, kind: category, note: "the OECD's flags (estimated, provisional, break; a normal value has none, and a suppressed one, which the OECD publishes as 0, has an empty value); the GII's 'outdated' (older than the most common data year) and 'data minimum coverage not met'; Closing the Gap's trajectories (projected), regression estimates (modelled) and assessments. A projected value is not an observation"}
+  oecd: {label: OECD member, kind: binary}
+  australia: {label: Australia, kind: binary}
+
+# One row per ANZSIC 2006 division (A to S) and financial year, FY1990 to FY2026 (ADR 0020). IP applications are
+# expected counts: each right's current classes are split over industries by the ALP crosswalks' probabilities, so a
+# division's count is a sum of shares, not a count of whole rights. Its attachments are in `industry_indicators`.
+industries:
+  division: {label: Industry division, kind: category, note: "the ANZSIC 2006 division's letter, A to S"}
+  division_name: {label: Industry division name, kind: category}
+  fy: {label: Financial year, kind: year, note: "year ending 30 June"}
+  patents_standard: {label: Standard patent applications (expected), kind: numeric, note: "by filing year; each application's current IPC subclasses share it equally, and each subclass is split over ANZSIC classes by the ALP crosswalk (Lybbert and Zolas), so the divisions sum to the applications with a known subclass (98.4% to 99.7% of them, FY1990 to FY2025; fewer for FY2026, not yet all classified). Subclasses the crosswalk does not know are first mapped to their predecessors (B6). A probability, not where the patent is used"}
+  patents_standard_au: {label: Standard patent applications from Australian applicants (expected), kind: numeric, note: "as patents_standard, for applicants in Australia (the current applicant's country, as the World Bank and WIPO count residents, U67)"}
+  patents_second_tier: {label: Innovation and petty patent applications (expected), kind: numeric, note: "as patents_standard; many petty patents before 2001 have no class (about half are carried in FY1990)"}
+  trade_marks: {label: Trade mark applications (expected), kind: numeric, note: "each application's current Nice classes share it equally, and each class is split over ANZSIC classes by the ALP crosswalk; 99.8% of applications are carried"}
+  trade_marks_au: {label: Trade mark applications from Australian applicants (expected), kind: numeric, note: "as trade_marks, for applicants in Australia"}
+  businesses_start: {label: Businesses operating at the start of the year, kind: count, note: "CABEE (the ABS's count of actively trading businesses), FY2023 to FY2026; with 'currently unknown' (in industry_indicators, division X) the divisions sum to the ABS's total"}
+  businesses_end: {label: Businesses operating at the end of the year, kind: count, note: "as businesses_start"}
+  business_entries: {label: Business entries in the year, kind: count, note: "births and other entries (CABEE)"}
+  business_exits: {label: Business exits in the year, kind: count, note: "cancellations and other exits (CABEE)"}
+  business_entry_rate: {label: Business entry rate, kind: rate, note: "entries as a % of businesses at the start of the year, as the ABS publishes it"}
+  business_exit_rate: {label: Business exit rate, kind: rate, note: "as business_entry_rate"}
+  berd: {label: Business expenditure on R&D, kind: money, unit: "$'000", note: "the ABS's BERD survey, 2023-24 only (FY2024), current dollars"}
+  wpi_index: {label: Wage Price Index, kind: numeric, note: "total hourly rates of pay excluding bonuses, private and public sectors, original; the financial year's average of the four quarterly index numbers (2008-09 = 100); none for agriculture (A), which the index does not cover"}
+  creative_gva: {label: Cultural and creative value added, kind: money, unit: "$m", note: "the cultural and creative activity in the division (BCARR's satellite account, the 2015-16 to 2024-25 release), FY2016 to FY2025; only divisions with such activity have a value. The older release is in industry_indicators, never spliced on"}
+
+# The industries lens's attachments (ADR 0020), long: one row per division, source, indicator and period, for every
+# value the ABS and BCARR publish by industry. Query it in SQL with filters on source and indicator.
+industry_indicators:
+  division: {label: Industry division, kind: category, note: "A to S; TOTAL for all industries and X for an industry currently unknown. Never add TOTAL to the divisions"}
+  source: {label: Source, kind: category, note: "cabee (counts of businesses: the national release's tables by division, and the cubes by state and class or subdivision, and by local government area), bcs (the business characteristics and innovation surveys), berd (business R&D by subdivision, 2023-24), bcarr (cultural and creative value added, both releases), wpi (the Wage Price Index, quarterly) or ip (the core lens's standard patents and trade marks by ANZSIC subdivision, expected counts, the detail within a division)"}
+  dataset: {label: Dataset, kind: category, note: "the cube, table or release"}
+  indicator: {label: Indicator code, kind: category, note: "unique within a source and division: CABEE.<cube or table>.<measure|class or subdivision|state or area|size|unit>, BCS.<table>.<dimension codes>, BERD.<cube>.<sheet>.<sheet row>.<section|row|column>, BCARR.<release>.<table>.<series>.<unit>, WPI.<measure>.<index>.<sector>.<adjustment>, IP.PATENTS.<subdivision> and IP.TRADE_MARKS.<subdivision>"}
+  label: {label: Indicator, kind: category, note: "the publisher's names, joined by commas"}
+  period: {label: Period, kind: category, note: "as published: a financial year (2023-24), June of a year, a survival span, a survey year or a quarter (2025-Q4)"}
+  fy: {label: Financial year, kind: year, note: "the financial year the period ends in (a quarter's financial year; the BCS's survey year, which the ABS labels by the year's end)"}
+  value: {label: Value, kind: numeric, note: "units differ by indicator; compare within one indicator only"}
+  value_text: {label: Value as text, kind: category, note: "BERD's cells that are not numbers ('np', not published; '-', nil)"}
+  unit: {label: Unit, kind: category}
+  status: {label: Value's status, kind: category, note: "the BCS's and WPI's flags (relative standard errors of 10% to 50% or more, 'not available for publication', in which case the value is empty)"}
+  division_name: {label: Industry division name, kind: category, note: "empty for TOTAL and X"}
 
 # One row per month, January 1904 to September 2026, for IP Australia's whole register (Australian and overseas
 # applicants). A series is empty (not 0) before its records become continuous (the first month from which 9 of the next

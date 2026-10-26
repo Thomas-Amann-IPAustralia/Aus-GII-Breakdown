@@ -8316,7 +8316,7 @@
      "sha256": "947469052d205a3e5901511c88d0f3eacd54d6b173dca86a0b8db17ad6528b96"
     },
     "processed/ipc4_anzsic": {
-     "bytes": 55134,
+     "bytes": 50625,
      "columns": [
       "ipc4",
       "anzsic",
@@ -8326,8 +8326,8 @@
      "describe": "ipc4 to ANZSIC 2006 class, ALP weights carried through ISIC Rev. 4",
      "location": "repo",
      "path": "data/processed/concordances/ipc4_anzsic.parquet",
-     "rows": 8384,
-     "sha256": "760e190f7f13aae3a3a67fb3fd89055881003b74d2b002d95d75af5951239c02"
+     "rows": 6883,
+     "sha256": "41b1437e674357e972024e8dc4b1f224f1fefc18f83c60206ac41695f9d8cd9f"
     },
     "processed/ipc_green_inventory": {
      "bytes": 14391,
@@ -8377,7 +8377,7 @@
      "sha256": "5fc8256bb7a5249a7e7a46e602cd0e8234bda4510504dc6d3c7ec3f9f36f38b9"
     },
     "processed/nice_anzsic": {
-     "bytes": 16248,
+     "bytes": 15197,
      "columns": [
       "nice",
       "anzsic",
@@ -8387,8 +8387,8 @@
      "describe": "nice to ANZSIC 2006 class, ALP weights carried through ISIC Rev. 4",
      "location": "repo",
      "path": "data/processed/concordances/nice_anzsic.parquet",
-     "rows": 826,
-     "sha256": "ea0daa4ea19a6a8e1b864677f5c13d78b729f5049435e9a999325582b3f9ab0a"
+     "rows": 700,
+     "sha256": "88d99cdd9cc50a9dc1c820cec80358375188f3125e5691703fa14c7cf3f6a0ba"
     },
     "processed/patent_fields": {
      "bytes": 5794058,
@@ -8441,12 +8441,13 @@
    "notes": [
     "concordances: nice_anzsic: 0.0% of ALP weight is on ISIC classes the ABS table lacks"
    ],
+   "reprocessed": "2026-10-26",
    "run": "2026-10-22"
   },
   "ctg": {
    "files": {
     "processed/data": {
-     "bytes": 87369,
+     "bytes": 87003,
      "columns": [
       "target",
       "table_number",
@@ -8468,14 +8469,13 @@
       "jurisdiction",
       "value_text",
       "value",
-      "uncertainty",
-      "aus gov"
+      "uncertainty"
      ],
      "describe": "Targets 8, 15 and 16, long",
      "location": "repo",
      "path": "data/processed/ctg/data.parquet",
-     "rows": 11264,
-     "sha256": "8f9be1776cfe68fdf26ed4bf1be949e9578607b549100ecc8880798a58c927a8"
+     "rows": 11349,
+     "sha256": "23ead1eedaabe2a3328b7af0195c9d8c09c1a6fde85d602f83a153e52ce9d6de"
     },
     "raw/ctg08-economic-participation.csv": {
      "bytes": 335245,
@@ -8496,6 +8496,7 @@
      "sha256": "c47b91eefc180bdd4e1fc52a1ec898c2cbaf1ffcace06724fd7a1bb6f2adebbd"
     }
    },
+   "reprocessed": "2026-10-26",
    "run": "2026-10-22"
   },
   "evidence": {
@@ -9430,13 +9431,14 @@
   "mwm": {
    "files": {
     "processed/data": {
-     "bytes": 34626,
+     "bytes": 34742,
      "columns": [
       "theme",
       "indicator",
       "table",
       "caption",
       "row",
+      "block",
       "column",
       "value_text",
       "value"
@@ -9444,11 +9446,11 @@
      "describe": "Every table on the indicator pages, long",
      "location": "repo",
      "path": "data/processed/mwm/data.parquet",
-     "rows": 5343,
-     "sha256": "44197412e17db256b94cdc056a0aa9043b77827425900bc1f24b4805e3791fa3"
+     "rows": 5159,
+     "sha256": "c958ddfac5a5ba3f7ef68387f425794e32e9ee8dc721a86482dfba8e681505e8"
     },
     "processed/indicators": {
-     "bytes": 5733,
+     "bytes": 5728,
      "columns": [
       "theme",
       "indicator",
@@ -9459,7 +9461,7 @@
      "location": "repo",
      "path": "data/processed/mwm/indicators.parquet",
      "rows": 50,
-     "sha256": "4d28fad78b7398358041b0a43e5e18955660113fffb8ee5898b2aae5be5f4221"
+     "sha256": "ce8ec11b593a61ca85d6a9e58a28558a3d535368de9892e8dac1667871192920"
     },
     "raw/cohesive--aboriginal-and-torres-strait-islander-languages-spoken.html.gz": {
      "bytes": 34997,
@@ -9765,6 +9767,7 @@
    "notes": [
     "mwm: no tables on air-quality"
    ],
+   "reprocessed": "2026-10-26",
    "run": "2026-10-22"
   },
   "nhmrc_grants": {

@@ -14,8 +14,8 @@ its web app. Processed:
 - `alp_ipc4_isic4`, `alp_nice_isic4`: the probability-weighted links from IPC subclass, and from Nice class, to ISIC
   Rev. 4 four-digit classes.
 - `isic4_anzsic`: ISIC Rev. 4 class to ANZSIC 2006 class (`partial` where the ABS marks the link as partial).
-- `ipc4_anzsic`, `nice_anzsic`: the ALP weights carried through to ANZSIC 2006 classes (a weight split equally where
-  one ISIC class maps to several ANZSIC classes), with the ANZSIC division.
+- `ipc4_anzsic`, `nice_anzsic`: the ALP weights carried through to ANZSIC 2006 classes (an ISIC class's weight split
+  equally over the ANZSIC classes it links to fully, or over its partial links where it has no full one; ADR 0020).
 - `ipc_green_inventory`: the Green Inventory's topics, each with its IPC references, one row per reference.
 """
 
@@ -23,11 +23,12 @@ from __future__ import annotations
 
 import json
 import re
+from pathlib import Path
 
 import duckdb
 import pandas as pd
 
-from ..core import CorpusError, Ctx, http_get, path, unzip_member, unzip_names
+from ..core import CorpusError, Ctx, http_get, path, raw_path, unzip_member, unzip_names
 
 ALP_IPC = "https://drive.google.com/uc?export=download&id=1wsIflv45zCyLNvB1mcSWGS6vhfNC_qxv"
 ALP_NICE = "https://drive.google.com/uc?export=download&id=1P1NQ4tfggVOu_CtLxTXCKTr9yzoyeniP"
@@ -107,6 +108,65 @@ def _ipc_refs(s: str) -> list[str]:
     return out
 
 
+def _crosswalks(ctx: Ctx, zi, zn, html_path) -> None:
+    """The ALP crosswalks (IPC subclass and Nice class to ISIC Rev. 4) and the ABS's ISIC Rev. 4 to ANZSIC 2006
+    correspondence, and the ALP weights carried through to ANZSIC classes.
+
+    An ISIC class's weight goes to the ANZSIC classes it links to fully, in equal parts; only where it has no full
+    link does it go to its partial links, equally. A partial link carries only part of an ANZSIC class (pharmaceuticals,
+    ISIC 2100, links fully to human and veterinary pharmaceuticals and partly to textile finishing and inorganic
+    chemicals), so an equal split over every link sent half of pharmaceuticals' weight to the partial ones (ADR 0020).
+    """
+    work = ctx.cache / "work"
+    member = next((m for m in unzip_names(zi) if m.endswith("ipc4_to_isic_rev4_4_excl_service.txt")), None)
+    nmember = next((m for m in unzip_names(zn) if re.search(r"nice_to_ISIC_Rev4_4\.txt$", m)), None)
+    if not member or not nmember:
+        raise CorpusError("concordances: the ALP zips no longer hold the IPC4 or Nice to ISIC Rev. 4 files")
+    alp = pd.read_csv(unzip_member(zi, member, work), dtype={"ipc4": str, "isic_rev4_4": str})
+    alp.columns = ["ipc4", "isic4", "weight"]
+    nice = pd.read_csv(unzip_member(zn, nmember, work), dtype=str)
+    nice.columns = ["nice", "isic4", "weight"]
+    nice["weight"] = nice["weight"].astype(float)
+    ctx.table(alp, "alp_ipc4_isic4", describe="ALP: IPC subclass to ISIC Rev. 4 class, probability weights")
+    ctx.table(nice, "alp_nice_isic4", describe="ALP: Nice class to ISIC Rev. 4 class, probability weights")
+
+    from io import StringIO
+
+    t = pd.concat(pd.read_html(StringIO(Path(html_path).read_text(encoding="utf-8"))), ignore_index=True)
+    t.columns = ["isic_top", "isic_class", "isic_title", "anzsic", "anzsic_title"]
+    t["isic4"] = t["isic_class"].where(t["isic_class"].astype(str).str.fullmatch(r"\d{4}")).ffill()
+    t = t.dropna(subset=["anzsic"])
+    t["partial"] = t["anzsic"].astype(str).str.endswith("p")
+    t["anzsic"] = t["anzsic"].astype(str).str.rstrip("p")
+    t = t[t["anzsic"].str.fullmatch(r"\d{4}")]
+    ia = t[["isic4", "anzsic", "anzsic_title", "partial"]].drop_duplicates().reset_index(drop=True)
+    ctx.table(ia, "isic4_anzsic", describe="ISIC Rev. 4 class to ANZSIC 2006 class (ABS)")
+
+    has_full = ia.groupby("isic4")["partial"].transform(lambda p: (~p).any())
+    split = ia[~ia["partial"] | ~has_full].copy()
+    split["share"] = 1 / split.groupby("isic4")["anzsic"].transform("count")
+    for name, df, key in (("ipc4_anzsic", alp, "ipc4"), ("nice_anzsic", nice, "nice")):
+        x = df.merge(split, on="isic4", how="left")
+        x["weight"] = x["weight"] * x["share"].fillna(1)
+        x = x.groupby([key, "anzsic", "anzsic_title"], dropna=False, as_index=False)["weight"].sum()
+        unmatched = df[~df.isic4.isin(ia.isic4)]["weight"].sum() / df["weight"].sum()
+        if unmatched > 0:
+            ctx.note(f"concordances: {name}: {unmatched:.1%} of ALP weight is on ISIC classes the ABS table lacks")
+        ctx.table(x, name, describe=f"{key} to ANZSIC 2006 class, ALP weights carried through ISIC Rev. 4")
+
+
+def reprocess(ctx: Ctx, tables: list[str] | None = None) -> None:
+    """The crosswalks again from the raw files in the repo (the ALP zips and the ABS correspondence page), fetching
+    nothing. The other tables (technology fields, `patent_fields`, the Green Inventory) are left as they are."""
+    zi, zn, html = (
+        raw_path("concordances", n)
+        for n in ("alp-ipc-excl-service-v2209.zip", "alp-trademark-v2305.zip", "isic-rev-4-anzsic-2006.html")
+    )
+    for f, url in ((zi, ALP_IPC), (zn, ALP_NICE), (html, None)):
+        ctx.keep_raw(f, url=url)
+    _crosswalks(ctx, zi, zn, html)
+
+
 def run(ctx: Ctx) -> None:
     tech = pd.read_csv(ctx.raw / "ipc-technology-35.csv", dtype=str)
     ctx.keep_raw(ctx.raw / "ipc-technology-35.csv")
@@ -153,46 +213,11 @@ def run(ctx: Ctx) -> None:
     pf = pf.merge(names[["field_no", "field", "sector"]], on="field_no").sort_values(["application_number", "field_no"])
     ctx.table(pf, "patent_fields", describe="IP RAPID patents to WIPO technology fields, weighted")
 
-    # ALP crosswalks
+    # ALP crosswalks, and ISIC Rev. 4 to ANZSIC 2006
     zi = ctx.fetch(ALP_IPC, "alp-ipc-excl-service-v2209.zip", keep="repo")
     zn = ctx.fetch(ALP_NICE, "alp-trademark-v2305.zip", keep="repo")
-    work = ctx.cache / "work"
-    member = next((m for m in unzip_names(zi) if m.endswith("ipc4_to_isic_rev4_4_excl_service.txt")), None)
-    nmember = next((m for m in unzip_names(zn) if re.search(r"nice_to_ISIC_Rev4_4\.txt$", m)), None)
-    if not member or not nmember:
-        raise CorpusError("concordances: the ALP zips no longer hold the IPC4 or Nice to ISIC Rev. 4 files")
-    alp = pd.read_csv(unzip_member(zi, member, work), dtype={"ipc4": str, "isic_rev4_4": str})
-    alp.columns = ["ipc4", "isic4", "weight"]
-    nice = pd.read_csv(unzip_member(zn, nmember, work), dtype=str)
-    nice.columns = ["nice", "isic4", "weight"]
-    nice["weight"] = nice["weight"].astype(float)
-    ctx.table(alp, "alp_ipc4_isic4", describe="ALP: IPC subclass to ISIC Rev. 4 class, probability weights")
-    ctx.table(nice, "alp_nice_isic4", describe="ALP: Nice class to ISIC Rev. 4 class, probability weights")
-
-    # ISIC Rev. 4 to ANZSIC 2006
     html = http_get(ISIC_ANZSIC).text
-    ctx.raw_text("isic-rev-4-anzsic-2006.html", html)
-    from io import StringIO
-
-    t = pd.concat(pd.read_html(StringIO(html)), ignore_index=True)
-    t.columns = ["isic_top", "isic_class", "isic_title", "anzsic", "anzsic_title"]
-    t["isic4"] = t["isic_class"].where(t["isic_class"].astype(str).str.fullmatch(r"\d{4}")).ffill()
-    t = t.dropna(subset=["anzsic"])
-    t["partial"] = t["anzsic"].astype(str).str.endswith("p")
-    t["anzsic"] = t["anzsic"].astype(str).str.rstrip("p")
-    t = t[t["anzsic"].str.fullmatch(r"\d{4}")]
-    ia = t[["isic4", "anzsic", "anzsic_title", "partial"]].drop_duplicates().reset_index(drop=True)
-    ctx.table(ia, "isic4_anzsic", describe="ISIC Rev. 4 class to ANZSIC 2006 class (ABS)")
-
-    split = ia.assign(share=1 / ia.groupby("isic4")["anzsic"].transform("count"))
-    for name, df, key in (("ipc4_anzsic", alp, "ipc4"), ("nice_anzsic", nice, "nice")):
-        x = df.merge(split, on="isic4", how="left")
-        x["weight"] = x["weight"] * x["share"].fillna(1)
-        x = x.groupby([key, "anzsic", "anzsic_title"], dropna=False, as_index=False)["weight"].sum()
-        unmatched = df[~df.isic4.isin(ia.isic4)]["weight"].sum() / df["weight"].sum()
-        if unmatched > 0:
-            ctx.note(f"concordances: {name}: {unmatched:.1%} of ALP weight is on ISIC classes the ABS table lacks")
-        ctx.table(x, name, describe=f"{key} to ANZSIC 2006 class, ALP weights carried through ISIC Rev. 4")
+    _crosswalks(ctx, zi, zn, ctx.raw_text("isic-rev-4-anzsic-2006.html", html))
 
     # IPC Green Inventory
     page = http_get(GREEN + "home").text
