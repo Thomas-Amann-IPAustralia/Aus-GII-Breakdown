@@ -236,6 +236,50 @@ industry_indicators:
 # applicants). A series is empty (not 0) before its records become continuous (the first month from which 9 of the next
 # 12 have a record) and, for a few, in final months the register is still recording. Outcomes are counts of events,
 # each event once. Definitions: TIMELINE_*, EVENT_DATE in build.py (ADR 0010).
+# The institutions lens (ADR 0021): one row per Australian research institution (its ROR identifier) and calendar year,
+# 1990 to 2026. The institutions, and the names and ABNs that link them to IP RAPID, the ARC and AusTender, are the
+# reviewed files in analysis/eda/institutions/.
+institution_rights:
+  ip_right_type: {label: Type of right, kind: category, note: "as in rights"}
+  application_number: {label: Application number, kind: id, note: "joins rights"}
+  ror: {label: Institution (ROR), kind: id, note: "the ROR identifier of a research institution among the right's founding applicants; a right filed by two institutions has a row for each"}
+  matched_by: {label: How the filer was matched, kind: category, note: "name (the founding applicant's name is one of the institution's: ROR's names and aliases, or the reviewed names), abn (only its ABN is one of the institution's), or both. A name decides over an ABN where they disagree"}
+  country_unknown: {label: Filer's country unknown, kind: binary, note: "the matched founding applicant has no recorded country (mostly rights filed before 1990); those in Australia are kept, those overseas are not matched"}
+  shared: {label: Filed with others, kind: binary, note: "the right has a founding applicant (organisation or individual) that is not this institution"}
+  shared_with_institution: {label: Filed with another research institution, kind: binary, note: "another institution in the lens is also a founding applicant"}
+
+institutions:
+  ror: {label: Institution (ROR), kind: id, note: "the Research Organization Registry's identifier (without https://ror.org/)"}
+  institution: {label: Institution, kind: category}
+  kind: {label: Kind of institution, kind: category, note: "university, public research agency (Commonwealth or state), medical research institute, other research institute, health service, or other (academies, museums, foundations and others that hold an ARC or NHMRC grant), as reviewed (ADR 0021)"}
+  parent_ror: {label: Parent institution (ROR), kind: id, note: "for an institution that is part of another (Data61 of CSIRO, the Royal Melbourne Hospital of Melbourne Health, the Australian Maritime College of the University of Tasmania). Its counts are its own: never add a child to its parent's OpenAlex counts, which overlap"}
+  state: {label: State, kind: category, note: "ROR's location"}
+  established: {label: Year established, kind: year, note: "as ROR gives it"}
+  ror_status: {label: Status in ROR, kind: category, note: "active, or inactive for an institution that has closed or merged (the University of Adelaide and the University of South Australia, into Adelaide University in 2026)"}
+  year: {label: Year, kind: year, note: "calendar year"}
+  works: {label: Research works, kind: count, note: "OpenAlex's works with the institution among the authors' affiliations, by publication year, 2010 on (OpenAlex's counts by year); empty where the institution is not in OpenAlex. 2026 is a part year (the corpus's harvest)"}
+  citations: {label: Citations received, kind: count, note: "OpenAlex: citations made in the year to any of the institution's works, 2010 on"}
+  works_patent_cited: {label: Works cited by US patents, kind: count, note: "the institution's works published in the year that at least one USPTO patent cites (Reliance on Science, patents to 2025, and OpenAlex's cited works with an Australian institution). Recent works have had little time to be cited"}
+  patent_citations: {label: Citations from US patents, kind: count, note: "USPTO patents' citations to the institution's works published in the year (front page or text, made by applicants or examiners)"}
+  patent_citations_au: {label: Citations from US patents with Australian links, kind: count, note: "as patent_citations, from patents whose family has an Australian applicant or inventor (Google Patents)"}
+  arc_grants: {label: ARC grants, kind: count, note: "ARC National Competitive Grants by the year funding starts, at the organisation that won it (the ARC's administering organisation at announcement), 2001 on. Grants to Adelaide University in 2026 are those announced to it"}
+  arc_funding: {label: ARC funding, kind: money, unit: AUD, note: "the funding announced for those grants (current funding where none was announced), current dollars"}
+  arc_industry_grants: {label: ARC grants with industry partners, kind: count, note: "the schemes for research with industry and other end users: Linkage Projects, the Industrial Transformation Training Centres and Research Hubs, and the industry fellowships (ARC_INDUSTRY_SCHEMES). Not the whole Linkage program, which also holds Centres of Excellence and infrastructure grants"}
+  arc_industry_funding: {label: ARC funding with industry partners, kind: money, unit: AUD, note: "as arc_funding, for those schemes"}
+  nhmrc_grants: {label: NHMRC grants, kind: count, note: "by application round, 2013 on (the corpus's workbooks), at the administering institution: its ROR from the 2025 round, its name before"}
+  nhmrc_funding: {label: NHMRC funding, kind: money, unit: AUD, note: "the total awarded, current dollars"}
+  patents_standard: {label: Standard patent applications, kind: count, note: "applications with the institution among their founding applicants (institution_rights), by the year of application_date (for a PCT filing, its national phase entry, ADR 0010)"}
+  patents_standard_shared: {label: Standard patent applications filed with others, kind: count, note: "as patents_standard, with another founding applicant (a firm, another institution or a person)"}
+  patents_provisional: {label: Provisional patent applications, kind: count}
+  patents_second_tier: {label: Innovation and petty patent applications, kind: count}
+  trade_marks: {label: Trade mark applications, kind: count}
+  designs: {label: Design applications, kind: count, note: "plant breeder's rights are left out: IP RAPID gives their applicants' names as codes, with no ABNs, so they cannot be linked"}
+  patent_families: {label: Patent families, kind: count, note: "the Google Patents families of the institution's Australian patent applications, by the year of the family's first priority. Families filed only abroad are missed (the review's F07)"}
+  patent_families_us_granted: {label: Patent families granted in the US, kind: count}
+  patent_family_citations_5y: {label: Citations to patent families within five years, kind: count, note: "families citing them within five years of their first priority (Google Patents); recent families have had less time"}
+  contracts: {label: Government contracts, kind: count, note: "AusTender contracts with one of the institution's ABNs as supplier, by the year first published, each contract once at its latest notice, 2005 on"}
+  contract_value: {label: Government contract value, kind: money, unit: AUD, note: "the contracts' value at their latest notice, current dollars"}
+
 timeline:
   month: {label: Month, kind: date, note: "the first day of the month"}
   year: {label: Year, kind: year}
