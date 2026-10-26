@@ -15,6 +15,7 @@ ADR, the handover or the plan). Number new questions from the next free one: **O
 | OQ2 | Should the two biggest data gaps be filled before Stage 2: the history of official fees (R3, B8) and the PBS monthly report with Section 100 (B9)? Both are free, from the Federal Register and the PBS website | Fees are IP Australia's most direct lever (Q4, Q5); Section 100 holds high-cost medicines, central to a medicine case study | Build the fee history before Stage 2 (a few days); leave the PBS report until a medicine case study is chosen (OQ8) | Whether Stage 2 can relate filing and renewal to fees |
 | OQ3 | Should the missing AusTender amendments be fetched? Amendments after August 2019 to contracts that had ended by then are not in the corpus | A sample suggests under 1% of contract value; the harvester exists (`austender._harvest_by_id`); it takes about a day of running, at no cost | Not now: the effect is small. Fetch it if Stage 2 leans on contract values | The completeness of `austender_value` |
 | OQ4 | TableBuilder: only if a question needs owner-managers by sex or Indigenous status for each postal area, would you register as a private user? | It needs an account in your name; the free Basic version may not have the variables (`docs/tablebuilder-owner-managers.md`) | Hold until the `regions` profile shows a need | One more `regions` attachment |
+| OQ11 | The `institutions` lens is built (ADR 0021) on a reviewed link: 130 institutions, 116 extra names (former names, predecessors, commercialisation companies, misspellings) and 146 ABNs, in `analysis/eda/institutions/`. Should someone who knows the sector (IPAVentures, or IP Australia's own research team) check it? | It decides which IP counts as a university's: UNSW files 96.5% of its patents through NewSouth Innovations, Newcastle 72.8% through Newcastle Innovation (U81). A missed company or merger moves an institution's counts | A half-hour check of the three CSV files by someone in the sector, before Stage 2 compares institutions; in particular each university's companies, and which medical research institutes and health services belong | Corrections to the link; the lens rebuilds in seconds |
 
 ## Open: for IP Australia (you are asking)
 
@@ -38,7 +39,6 @@ against 1,855; other years 0.958 to 1.072 of it, U67).
 | OQ8 | Rank the medicine case study (R7) against the other case studies | Ask when Stage 3 ends |
 | OQ9 | Reopen BLADE (F24, R4), the only route to small-firm outcomes and firm-level additionality (Q3, Q5)? A scoping enquiry to the ABS is free to send but outward-facing and may lead to fees | Ruled out by the owner (2026-10-22); revisit before answering Q3 and Q5 |
 | OQ10 | Outward-facing research: R3's survey of what IP costs small firms, R5's user research, and First Nations data governance (F23) | Not recommended now; the owner's call if and when |
-| OQ11 | Should the `institutions` lens's link from research institutions to ROR identifiers and ABNs (about 60 universities, CSIRO and the medical research institutes) be reviewed by someone who knows the sector? | Ask when that lens is built |
 
 ## Answered
 
