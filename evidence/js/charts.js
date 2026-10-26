@@ -77,7 +77,7 @@ function option(s) {
     type: "category", data: a.values, name: a.name || "", nameLocation: "middle", nameGap: 30,
     nameTextStyle: { color: muted, fontFamily: font, fontSize: 12 },
     axisLine: { lineStyle: { color: axis } }, axisTick: { show: false },
-    axisLabel: { color: muted, fontFamily: font, fontSize: 11.5, hideOverlap: true, width: horizontal ? 150 : undefined, overflow: horizontal ? "truncate" : undefined },
+    axisLabel: { color: muted, fontFamily: font, fontSize: 11.5, hideOverlap: !(horizontal || s.type === "range"), interval: horizontal || s.type === "range" ? 0 : "auto", width: horizontal || s.type === "range" ? 200 : undefined, overflow: horizontal || s.type === "range" ? "break" : undefined, lineHeight: 13 },
     inverse: horizontal,
   });
   let xAxis = cat ? catAxis(xs) : valueAxis(xs, true);
@@ -97,8 +97,12 @@ function option(s) {
       series.push({ type: "bar", stack: "r", name: d.name, data: d.data.map((p) => (p ? p[1] - p[0] : null)), itemStyle: { color: c, borderRadius: 4 }, barMaxWidth: 16, _starts: d.data });
       return;
     }
-    if (s.type === "scatter" || d.kind === "scatter") {
-      series.push({ type: "scatter", name: d.name, data: d.data, symbolSize: d.size || 7, itemStyle: { color: c, opacity: d.opacity ?? 0.75, borderColor: surface, borderWidth: 1 }, emphasis: { scale: 1.6 } });
+    if ((s.type === "scatter" && d.kind !== "line") || d.kind === "scatter") {
+      series.push({
+        type: "scatter", name: d.name, data: d.data, symbolSize: d.size || 7,
+        itemStyle: { color: c, opacity: d.opacity ?? 0.8, borderColor: surface, borderWidth: 1 }, emphasis: { scale: 1.6 },
+        label: d.labels ? { show: true, position: "right", color: ink2, fontFamily: font, fontSize: 11.5, formatter: (p) => p.data[2] ?? "" } : { show: false },
+      });
       return;
     }
     if (s.type === "bar" || d.kind === "bar") {
@@ -249,6 +253,10 @@ export function chartCard(spec, { origin = "query", compact = false } = {}) {
     const s = current();
     title.replaceChildren(...[el("h3", s.title || spec.title || ""), s.subtitle ? el("p", s.subtitle) : null].filter(Boolean));
     box.setAttribute("aria-label", `${s.title || spec.title || "Chart"}. ${s.subtitle || ""} The same numbers are in the table view.`);
+    if (s.horizontal || s.type === "range") {
+      const rows = (s.x?.values || []).length * (s.stack || s.type === "range" ? 1 : Math.max(1, (s.series || []).length * 0.6));
+      box.style.height = `${Math.max(240, Math.round(rows * 26 + 80))}px`;
+    }
     if (!showTable && typeof echarts !== "undefined") {
       instance = echarts.getInstanceByDom(box) || echarts.init(box, null, { renderer: "canvas" });
       instance.setOption(option(s), true);
@@ -274,7 +282,11 @@ export function chartCard(spec, { origin = "query", compact = false } = {}) {
     tableBox.hidden = !t;
     if (!t) requestAnimationFrame(() => { draw(); instance?.resize(); });
   }
-  if (views) {
+  if (views && spec.select) {
+    const sel = el("select", { "aria-label": "Choose a view" }, spec.views.map((v, i) => el("option", { value: String(i) }, v.label)));
+    sel.addEventListener("change", () => { k = Number(sel.value); draw(); });
+    views.append(el("label.view-select", el("span", "Show "), sel));
+  } else if (views) {
     spec.views.forEach((v, i) => {
       const b = el("button", { type: "button", "aria-pressed": String(i === 0) }, v.label);
       b.addEventListener("click", () => {

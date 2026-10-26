@@ -29,6 +29,7 @@ import sys
 from collections.abc import Callable
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 from eda import sql
@@ -710,7 +711,8 @@ def U31() -> dict:
     d = sql("""
         SELECT strftime(date_trunc('month', retired_date), '%Y-%m') AS m, ip_right_type AS t, count(*) AS n
         FROM {lens/rights}
-        WHERE retired_date BETWEEN DATE '2025-07-01' AND DATE '2026-09-30' AND ip_right_type IN ('trade_mark', 'design', 'patent')
+        WHERE status IN ('ceased', 'expired', 'terminated') AND retired_date BETWEEN DATE '2025-07-01' AND DATE '2026-09-30'
+          AND ip_right_type IN ('trade_mark', 'design', 'patent')
         GROUP BY ALL ORDER BY 1
     """)
     p = pivot(d, "m", "t", "n").fillna(0)
@@ -722,7 +724,7 @@ def U31() -> dict:
         "type": "line", "title": "Recorded ends per month, mid-2025 to September 2026",
         "subtitle": "Trade marks' and designs' ends stop being recorded after March 2026: the six-month grace period",
         "x": {"type": "category", "values": [pd.Timestamp(f"{m}-01").strftime("%b %Y") for m in p.index]},
-        "y": {"name": "Rights that ended", "min": 0, "format": "int"},
+        "y": {"name": "Rights that ceased, expired or terminated", "min": 0, "format": "int"},
         "series": [{"name": "Trade marks", "data": col(p, "trade_mark", 0)}, {"name": "Patents", "data": col(p, "patent", 0)},
                    {"name": "Designs", "data": col(p, "design", 0)}],
         "marks": {"x": [{"at": "Mar 2026", "label": "Observed to 31 March"}]},
@@ -869,6 +871,8 @@ def U36() -> dict:
         for g, d in curves[curves.group.str.startswith(t + ":")].groupby("group"):
             d = d[d.at_risk >= 30].sort_values("years")
             d = d[(d.years * 4) % 1 == 0]  # quarter-year steps keep the file small
+            if (d.survival == 0).any():  # stop at the first point where none is left
+                d = d.loc[: d.index[d.survival.to_numpy() == 0][0]]
             series.append({"name": g.split(": ", 1)[1], "step": True,
                            "data": [[r(x, 2), r(100 * s, 1)] for x, s in zip(d.years, d.survival, strict=True)]})
         views.append({"label": TYPES[t], "subtitle": f"{TYPES[t]}: % still in force, by years since the term began, for "
@@ -1182,7 +1186,7 @@ def U97() -> dict:
              "y": {"name": "Estimated from names (%)", "min": 5, "max": 40, "format": "pct", "digits": 1},
              "series": [
                  {"name": "Other countries", "data": pts(lambda c: c not in named), "colour": 0},
-                 {"name": "Australia, China and Korea", "data": pts(lambda c: c in named), "colour": 1, "size": 11},
+                 {"name": "Australia, China and Korea", "data": pts(lambda c: c in named), "colour": 1, "size": 11, "labels": True},
                  {"name": "Where they agree", "kind": "line", "data": [[5, 5], [40, 40]], "line": "dashed", "colour": "muted"},
              ]},
             {"label": "Australia, by year", "type": "line",
@@ -1192,6 +1196,573 @@ def U97() -> dict:
              "series": [{"name": "Estimated from names", "data": col(au, "est", 1)},
                         {"name": "WIPO", "data": col(au, "wipo", 1), "line": "dashed"}]},
         ],
+    }
+
+
+# ------------------------------------------------------------------------------------------------------------ timeline
+
+
+def timeline() -> pd.DataFrame:
+    from eda import load_lens
+
+    t = load_lens("timeline")
+    return t.set_index("month")
+
+
+def tl_label(c: str) -> str:
+    from eda import style
+
+    return style.label("timeline", c, unit=False).replace(" (events)", "")
+
+
+def tl_series() -> list[str]:
+    from eda import style
+
+    t = timeline()
+    return [c for c in t.columns if style.kind("timeline", c) == "count" and c != "days_in_month"]
+
+
+@chart
+def U22() -> dict:
+    t = timeline()
+    cols = tl_series()
+    same(t.patents_standard_au.max(), 1018, "busiest month of Australian standard patents")
+    same(t.patents_standard_au.idxmax().year, 2013, "busiest year")
+    spans = []
+    for c in cols:
+        s = t[c].dropna()
+        a, b = s.index.min(), s.index.max()
+        spans.append((tl_label(c), round(a.year + (a.month - 1) / 12, 2), round(b.year + b.month / 12, 2)))
+    spans.sort(key=lambda x: x[1])
+    return {
+        "type": "range", "title": "Where each monthly series can be read",
+        "subtitle": "The span of each of the timeline's 28 series, after the repairs: earlier months are empty, not zero",
+        "x": {"type": "category", "values": [s[0] for s in spans]},
+        "y": {"name": "Year", "min": 1900, "max": 2030, "format": "year"},
+        "series": [{"name": "Months with a value", "data": [[s[1], s[2]] for s in spans]}],
+        "height": "tall",
+        "source": "IP Australia, IP RAPID (lens: timeline)",
+    }
+
+
+@chart
+def U23() -> dict:
+    e = sql("""
+        SELECT strftime(date_trunc('quarter', application_date), '%Y-%m') AS q, ip_right_type AS t,
+               100 * avg((registered_date IS NULL)::int) AS never
+        FROM {lens/rights}
+        WHERE application_date BETWEEN DATE '1978-01-01' AND DATE '1990-12-31' AND ip_right_type IN ('trade_mark', 'design')
+        GROUP BY ALL
+    """)
+    p = pivot(e, "q", "t", "never")
+    same(p.loc["1983-01", "trade_mark"], 52.0, "trade marks never registered, first quarter 1983")
+    same(p.loc["1986-01", "design"], 26.3, "designs never registered, first quarter 1986")
+    labels = [f"{q[:4]} Q{(int(q[5:]) - 1) // 3 + 1}" for q in p.index]
+    return {
+        "type": "line", "title": "Applications never registered, by quarter of filing",
+        "subtitle": "A share near zero means the register holds only the survivors: applications that failed are missing",
+        "x": {"type": "category", "values": labels},
+        "y": {"name": "% never registered", "min": 0, "max": 70, "format": "pct", "digits": 1},
+        "series": [{"name": "Trade marks", "data": col(p, "trade_mark", 1)}, {"name": "Designs", "data": col(p, "design", 1)}],
+        "marks": {"x": [{"at": "1983 Q1", "label": "Trade marks start"}, {"at": "1986 Q1", "label": "Designs start"}]},
+        "source": "IP Australia, IP RAPID (lens: rights). The timeline's series now start at the marked quarters.",
+    }
+
+
+@chart
+def U24() -> dict:
+    t = timeline().loc["2016-07-01":"2026-06-01"]
+    rows = []
+    for c in tl_series():
+        s = t[c].dropna().astype(float)
+        if len(s) and s.median() >= 10:
+            rows.append((tl_label(c), s.std() / s.mean()))
+    rows.sort(key=lambda x: x[1])
+    v = dict(rows)
+    same(v[tl_label("patents_standard_overseas")], 0.08, "overseas standard patents' variation")
+    same(v[tl_label("patents_second_tier")], 1.82, "second-tier variation")
+    return {
+        "type": "bar", "horizontal": True, "title": "How much each monthly series moves",
+        "subtitle": "Variation from month to month as a share of the average (standard deviation ÷ mean), FY2017 to FY2026; "
+        "series with a median of 10 or more a month",
+        "x": {"type": "category", "values": [x[0] for x in rows]},
+        "y": {"name": "Relative variation", "min": 0, "format": "num", "digits": 2},
+        "series": [{"name": "Relative variation", "data": [r(x[1], 2) for x in rows]}],
+        "height": "tall", "source": "IP Australia, IP RAPID (lens: timeline)",
+    }
+
+
+APPS = {
+    "standard": ["patents_standard_au", "patents_standard_overseas", "patents_standard_origin_unknown"],
+    "provisional": ["patents_provisional"], "second_tier": ["patents_second_tier"],
+    "trade_mark": ["trade_marks_au", "trade_marks_overseas", "trade_marks_origin_unknown"],
+    "design": ["designs_au", "designs_overseas", "designs_origin_unknown"], "pbr": ["pbr_applications"],
+}
+
+
+@chart
+def U25() -> dict:
+    t = timeline()
+    years = t.groupby(t.index.year)[sum(APPS.values(), [])].sum(min_count=12)
+    std = years[APPS["standard"]].sum(axis=1, min_count=1)
+    same(std[2021], 32399, "standard patents in 2021")
+    same(std[2025], 30448, "standard patents in 2025")
+    names = {"_au": "Australian", "_overseas": "Overseas", "_origin_unknown": "Origin unknown"}
+    views = []
+    for k, cols in APPS.items():
+        y = years[cols].dropna(how="all")
+        y = y.loc[:2025]
+        series = []
+        for c in cols:
+            name = next((n for s, n in names.items() if c.endswith(s)), "Applications")
+            series.append({"name": name, "data": col(y, c, 0), **({"colour": "muted"} if name == "Origin unknown" else {})})
+        views.append({"label": TYPES[k], "subtitle": f"{TYPES[k]}: applications per calendar year, from the series' start",
+                      "x": {"type": "category", "values": [str(i) for i in y.index]}, "series": series})
+    return {
+        "type": "line", "title": "Applications per calendar year",
+        "y": {"name": "Applications", "min": 0, "format": "int"}, "views": views,
+        "source": "IP Australia, IP RAPID (lens: timeline). Complete years only.",
+    }
+
+
+@chart
+def U26() -> dict:
+    from eda import univariate as uni
+
+    t = timeline().reset_index()
+    cols = ["patents_standard_au", "patents_standard_overseas", "trade_marks_au", "trade_marks_overseas",
+            "designs_au", "designs_overseas", "patents_provisional"]
+    s = uni.seasonal_profile(t, cols, start="2010-01-01", end="2019-12-01")
+    same(s.loc["patents_standard_au", 1], 75, "Australian standard patents in January")
+    same(s.loc["patents_standard_overseas", 1], 95, "overseas standard patents in January")
+    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    views = []
+    for label, a, o in [("Standard patents", "patents_standard_au", "patents_standard_overseas"),
+                        ("Trade marks", "trade_marks_au", "trade_marks_overseas"), ("Designs", "designs_au", "designs_overseas")]:
+        views.append({"label": label, "subtitle": f"{label}: each month as a % of an ordinary month (100), median of 2010 to 2019",
+                      "series": [{"name": "Australian applicants", "data": [r(v, 0) for v in s.loc[a]]},
+                                 {"name": "Overseas applicants", "data": [r(v, 0) for v in s.loc[o]]}]})
+    return {
+        "type": "line", "title": "The typical month of the year",
+        "x": {"type": "category", "values": months},
+        "y": {"name": "% of an ordinary month", "min": 50, "max": 130, "format": "num", "digits": 0},
+        "marks": {"y": [{"at": 100, "label": "An ordinary month"}]},
+        "views": views, "source": "IP Australia, IP RAPID (lens: timeline)",
+    }
+
+
+@chart
+def U27() -> dict:
+    t = timeline()
+    groups = {
+        "Granted or registered": ["patents_granted", "trade_marks_registered", "designs_registered"],
+        "Lapsed": ["patents_lapsed", "trade_marks_lapsed", "designs_lapsed"],
+        "Ceased or expired": ["patents_ceased", "trade_marks_ceased", "designs_ceased", "patents_expired"],
+        "Sold or opposed": ["patent_assignments", "trade_mark_assignments", "trade_mark_oppositions", "patent_oppositions"],
+    }
+    years = t.groupby(t.index.year)[sum(groups.values(), [])].sum(min_count=12).loc[1984:2025]
+    same(years.patents_granted[2016], 25687, "patent grants in 2016")
+    same(years.trade_marks_ceased[2025], 35484, "trade mark cessations in 2025")
+    return {
+        "type": "line", "title": "What happened to rights each year",
+        "x": {"type": "category", "values": [str(y) for y in years.index]},
+        "y": {"name": "Events", "min": 0, "format": "int"},
+        "views": [{"label": g, "subtitle": f"{g}: events per calendar year, from each series' start",
+                   "series": [{"name": tl_label(c), "data": col(years, c, 0)} for c in cs]} for g, cs in groups.items()],
+        "source": "IP Australia, IP RAPID (iprapid/events, each event once; lens: timeline)",
+    }
+
+
+POLICY_TARGETS = {
+    "pct-accession": ["patents_standard_origin_unknown", "patents_standard_overseas"],
+    "patents-act-1990": ["patents_granted", "patents_second_tier"],
+    "pbr-act-1994": ["pbr_applications"],
+    "patent-term-20-years": ["patents_expired"],
+    "trade-marks-act-1995": ["trade_marks_registered", "trade_marks_au", "trade_mark_assignments"],
+    "pharma-extension-of-term": ["patent_extensions_of_term"],
+    "innovation-patent-introduced": ["patents_second_tier"],
+    "madrid-protocol": ["trade_marks_overseas"],
+    "designs-act-2003": ["designs_registered", "designs_overseas", "designs_au"],
+    "raising-the-bar-enacted": ["patents_standard_overseas", "patents_standard_au"],
+    "tobacco-plain-packaging": ["trade_marks_au", "trade_marks_overseas"],
+    "raising-the-bar": ["patents_standard_overseas", "patents_standard_au", "patents_granted"],
+    "pc-response-parallel-importation": ["patent_extensions_of_term"],
+    "pc-response-part-1": ["trade_mark_oppositions"],
+    "innovation-patent-phase-out-enacted": ["patents_second_tier"],
+    "innovation-patent-closed": ["patents_second_tier"],
+    "designs-grace-period": ["designs_au", "designs_overseas"],
+}
+
+
+@chart
+def U28() -> dict:
+    from eda import univariate as uni
+
+    t = timeline()
+    w = uni.event_windows(t.reset_index(), POLICY_TARGETS)
+    same(w.loc[("raising-the-bar", "patents_standard_au"), "month of the change, × average before"], 4.39, "Raising the Bar rush")
+    same(w.loc[("innovation-patent-closed", "patents_second_tier"), "% change in the average"], -95.9, "after the closure")
+    names = sql("SELECT id, event FROM {policy_events/events}").set_index("id").event
+    marked = t.loc[t.policy_events.notna(), "policy_events"]
+    when = {e: m for m, es in marked.items() for e in es.split(", ")}
+    views = []
+    for ev, cols in sorted(POLICY_TARGETS.items(), key=lambda kv: when[kv[0]]):
+        m = when[ev]
+        win = t.loc[m - pd.DateOffset(months=24): m + pd.DateOffset(months=24), cols].astype(float)
+        labels = [x.strftime("%b %Y") for x in win.index]
+        views.append({
+            "label": f"{m:%b %Y}: {names[ev]}",
+            "subtitle": f"{names[ev]} ({m:%B %Y}): the series it targets, 24 months either side",
+            "x": {"type": "category", "values": labels},
+            "series": [{"name": tl_label(c), "data": col(win, c, 0)} for c in cols],
+            "marks": {"x": [{"at": f"{m:%b %Y}", "label": "The change"}]},
+        })
+    return {
+        "type": "line", "title": "The 17 policy changes, one at a time",
+        "y": {"name": "Per month", "min": 0, "format": "int"}, "views": views, "select": True,
+        "source": "IP Australia, IP RAPID (lens: timeline); dates from policy_events, checked against the Federal Register",
+        "note": "Months either side are shown as recorded; trends and seasons are not allowed for until Stage 2.",
+    }
+
+
+@chart
+def U29() -> dict:
+    t = timeline()
+    same(t.loc["2015-07-01", "patent_assignments"], 1603, "patent assignments in July 2015")
+    same(t.loc["1991-06-01", "patents_granted"], 113, "patent grants in June 1991")
+    cases = [
+        ("Patent grants, 1990 to 1992", "patents_granted", "1990-01-01", "1992-12-01", "1991-06-01", "Patents Act 1990 began"),
+        ("Trade mark registrations, 1995 to 1997", "trade_marks_registered", "1995-01-01", "1997-12-01", "1996-01-01", "Trade Marks Act 1995 began"),
+        ("Patent assignments, 2014 to 2016", "patent_assignments", "2014-01-01", "2016-12-01", "2015-07-01", "One large transfer"),
+    ]
+    views = []
+    for label, c, a, b, m, why in cases:
+        s = t.loc[a:b, c].astype(float)
+        views.append({"label": label, "subtitle": f"{label}, per month", "x": {"type": "category", "values": [x.strftime("%b %Y") for x in s.index]},
+                      "series": [{"name": tl_label(c), "data": [r(v, 0) for v in s]}],
+                      "marks": {"x": [{"at": pd.Timestamp(m).strftime("%b %Y"), "label": why}]}})
+    return {"type": "bar", "title": "Three of the 42 unusual months, and what they are",
+            "y": {"name": "Per month", "min": 0, "format": "int"}, "labels": False, "views": views,
+            "source": "IP Australia, IP RAPID (lens: timeline)"}
+
+
+@chart
+def U30() -> dict:
+    t = timeline()
+    cpi = t.cpi.dropna()
+    same(len(cpi), 312, "quarters")
+    same(cpi.iloc[-1], 102.31, "the June quarter 2026")
+    ch = (100 * (cpi / cpi.shift(4) - 1)).dropna()
+    return {
+        "type": "line", "title": "Price rises over the year, by quarter",
+        "subtitle": "% change in the consumer price index over four quarters, 1949 to June quarter 2026",
+        "x": {"type": "category", "values": [f"{m:%b %Y}" for m in ch.index]},
+        "y": {"name": "% change over four quarters", "format": "pct", "digits": 1},
+        "series": [{"name": "Change over four quarters", "data": [r(v, 1) for v in ch], "area": True}],
+        "marks": {"y": [{"at": 0, "label": ""}]},
+        "source": "ABS, Consumer Price Index, all groups, eight capital cities (abs_prices; lens: timeline)",
+    }
+
+
+# ------------------------------------------------------------------------------------------------------------ regions
+
+
+REMOTE = ["Major Cities of Australia", "Inner Regional Australia", "Outer Regional Australia", "Remote Australia",
+          "Very Remote Australia"]
+
+
+def regions() -> pd.DataFrame:
+    from eda import load_lens
+
+    return load_lens("regions")
+
+
+@chart
+def U49() -> dict:
+    from eda import build
+
+    d = sql(f"""
+        WITH a AS (SELECT postcode, count(*) AS abns FROM {{abr/abns}} GROUP BY 1),
+        r AS (
+            SELECT coalesce(patent_type, ip_right_type) AS t, founder_postcode AS pc,
+                   {build.postcode_range("founder_postcode")} AS rng,
+                   founder_postcode IN (SELECT poa_code FROM {{lens/regions}}) AS in_poa
+            FROM {{lens/rights}}
+            WHERE founder_postcode IS NOT NULL AND filing_fy BETWEEN 2017 AND 2026 AND ip_right_type <> 'pbr')
+        SELECT t, CASE WHEN in_poa THEN 'A postal area'
+                       WHEN rng = 'non_geographic' THEN 'Post office box or large-volume range'
+                       WHEN rng = 'delivery' AND coalesce(a.abns, 0) > 0 THEN 'A real postcode with no residents'
+                       ELSE 'Other or unknown' END AS c, count(*) AS n
+        FROM r LEFT JOIN a ON a.postcode = r.pc GROUP BY ALL
+    """)
+    p = pivot(d, "t", "c", "n").fillna(0)
+    pct = 100 * p.div(p.sum(axis=1), axis=0)
+    same(pct.loc["standard", "A postal area"], 94.45, "standard patents in a postal area")
+    same(pct.loc["standard", "A real postcode with no residents"], 4.14, "standard patents at real codes with no residents")
+    order = ["standard", "provisional", "second_tier", "trade_mark", "design"]
+    cls = ["A postal area", "A real postcode with no residents", "Post office box or large-volume range", "Other or unknown"]
+    return {
+        "type": "bar", "horizontal": True, "stack": True,
+        "title": "Can the filer's postcode be placed?",
+        "subtitle": "Applications from Australia, FY2017 to FY2026, by what the filer's postcode is",
+        "x": {"type": "category", "values": [TYPES[t] for t in order]},
+        "y": {"name": "% of applications", "min": 0, "max": 100, "format": "pct", "digits": 2},
+        "series": [{"name": c, "data": [r(pct.loc[t, c], 2) for t in order], **({"colour": "muted"} if c == "Other or unknown" else {})} for c in cls],
+        "source": "IP RAPID; ABS postal areas; ABR; Australia Post's postcode ranges (lens: regions)",
+    }
+
+
+@chart
+def U50() -> dict:
+    g = regions()
+    p = g.persons.astype(float)
+    same(int((p < 1000).sum()), 818, "areas under 1,000 people")
+    same(p.median(), 3508, "median people")
+    edges = [0, 1, 100, 500, 1000, 2500, 5000, 10000, 20000, 50000, 1e9]
+    labels = ["None", "1 to 99", "100 to 499", "500 to 999", "1,000 to 2,499", "2,500 to 4,999", "5,000 to 9,999",
+              "10,000 to 19,999", "20,000 to 49,999", "50,000 or more"]
+    cnt = pd.cut(p, edges, right=False, labels=labels).value_counts().reindex(labels)
+    return {
+        "type": "bar", "title": "How many people each postal area has",
+        "subtitle": "Postal areas by their number of residents (2021 Census geography)",
+        "x": {"type": "category", "values": labels, "name": "People in the area"},
+        "y": {"name": "Postal areas", "min": 0, "format": "int"},
+        "series": [{"name": "Postal areas", "data": [int(v) for v in cnt]}],
+        "source": "ABS, ASGS 2021 and Census 2021 (lens: regions)",
+    }
+
+
+@chart
+def U51() -> dict:
+    g = regions()
+    geo = g.groupby("remoteness").agg(a=("poa_code", "size"), p=("persons", "sum"), b=("active_gst_abns", "sum")).loc[REMOTE]
+    pct = 100 * geo / geo.sum()
+    same(pct.loc["Major Cities of Australia", "a"], 37.7, "areas in major cities")
+    same(pct.loc["Major Cities of Australia", "p"], 72.8, "people in major cities")
+    return {
+        "type": "bar", "title": "Areas, people and businesses by remoteness",
+        "x": {"type": "category", "values": [x.replace(" of Australia", "").replace(" Australia", "") for x in REMOTE]},
+        "y": {"name": "% of the national total", "min": 0, "format": "pct", "digits": 1},
+        "series": [{"name": "Postal areas", "data": col(pct, "a", 1)}, {"name": "People", "data": col(pct, "p", 1)},
+                   {"name": "Businesses", "data": col(pct, "b", 1)}],
+        "source": "ABS remoteness areas and Census 2021; ABR (lens: regions)",
+    }
+
+
+@chart
+def U52() -> dict:
+    g = regions().sort_values("poa_code")
+    series = []
+    for c, name, quoted in [("patents_standard", "Standard patents", 72.5), ("trade_marks", "Trade marks", 60.8), ("designs", "Designs", 75.4)]:
+        v = g[c].astype(float)
+        ranked = v.sort_values(ascending=False, kind="stable")
+        curve = [[0, 0]]
+        for pt in LORENZ_GRID:
+            k = max(1, round(pt / 100 * len(v)))
+            curve.append([pt, r(100 * ranked.iloc[:k].sum() / v.sum(), 2)])
+        same(100 * ranked.iloc[:264].sum() / v.sum(), quoted, f"top tenth's share, {name}")
+        series.append({"name": name, "data": curve})
+        if c == "patents_standard":
+            people = [[0, 0]] + [[pt, r(100 * g.loc[ranked.index[: max(1, round(pt / 100 * len(v)))], "persons"].sum() / g.persons.sum(), 2)] for pt in LORENZ_GRID]
+            same(100 * g.loc[ranked.index[:264], "persons"].sum() / g.persons.sum(), 29.2, "people in the top tenth")
+    series.append({"name": "People in the same areas (ranked by standard patents)", "data": people, "line": "dashed", "colour": "ink"})
+    return {
+        "type": "line", "title": "How concentrated filing is across places",
+        "subtitle": "Postal areas lined up from the most applications to the fewest (FY2017 to FY2026): the share filed by "
+        "the top x% of areas, and the share of people who live in the top areas for standard patents",
+        "x": {"name": "Top % of postal areas", "type": "value", "min": 0, "max": 100, "format": "pct"},
+        "y": {"name": "% of the national total", "min": 0, "max": 100, "format": "pct"},
+        "series": series, "marks": {"x": [{"at": 10, "label": "Top tenth"}]}, "table_points": [1, 5, 10, 25, 50],
+        "source": "IP RAPID; ABS Census 2021 (lens: regions). At the filer's postcode.",
+        "note": "The observation quotes the top tenth. The rest of each curve is drawn from the same table for context.",
+    }
+
+
+def log_range(values) -> tuple[float, float]:
+    v = [x for x in values if x and x > 0]
+    return 10 ** math.floor(math.log10(min(v))), 10 ** math.ceil(math.log10(max(v)))
+
+
+def funnel_view(count: pd.Series, people: pd.Series, labels: pd.Series, name: str, quoted: tuple[float, float] | None) -> dict:
+    from eda import univariate as uni
+
+    d = pd.DataFrame({"k": count.astype(float), "e": people.astype(float), "l": labels}).dropna()
+    d = d[d.e > 0]
+    nat = d.k.sum() / d.e.sum()
+    lo_k, hi_k = uni.poisson_interval(nat * d.e)
+    above, below = 100 * (d.k > hi_k).mean(), 100 * (d.k < lo_k).mean()
+    if quoted:
+        same(above, quoted[0], f"{name}: % above")
+        same(below, quoted[1], f"{name}: % below")
+    grid = np.logspace(np.log10(d.e.min()), np.log10(d.e.max()), 60)
+    lo, hi = uni.poisson_interval(nat * grid)
+    rate = 1000 * d.k / d.e
+    pts = [[r(e, 0), r(v, 3), lab] for e, v, lab in zip(d.e, rate, d.l, strict=True) if v > 0]
+    lim = lambda arr: [[r(x, 0), r(1000 * y / x, 4)] for x, y in zip(grid, arr, strict=True) if y > 0]  # noqa: E731
+    ylo, yhi = log_range([p[1] for p in pts])
+    xlo, xhi = log_range(d.e)
+    return {
+        "label": name,
+        "x": {"min": xlo, "max": xhi},
+        "y": {"min": ylo, "max": yhi},
+        "subtitle": f"{name}: each area's applications a year per 10,000 people, against its population. Chance alone would "
+        f"keep 95% of areas between the dashed lines; {above:.1f}% are above and {below:.1f}% below.",
+        "series": [
+            {"name": "Areas", "data": pts, "colour": 0, "size": 5, "opacity": 0.55},
+            {"name": "95% limits (chance alone)", "kind": "line", "data": lim(hi), "line": "dashed", "colour": 1},
+            {"name": "Lower limit", "kind": "line", "data": lim(lo), "line": "dashed", "colour": 1},
+            {"name": f"National rate ({1000 * nat:.2f})", "kind": "line", "data": [[r(grid[0], 0), r(1000 * nat, 3)], [r(grid[-1], 0), r(1000 * nat, 3)]], "colour": "ink"},
+        ],
+        "note": f"{int((rate == 0).sum())} areas with no applications cannot be drawn on the log scale.",
+    }
+
+
+@chart
+def U53() -> dict:
+    g = regions()
+    sa3 = g.groupby(["sa3_code", "sa3_name"]).agg(persons=("persons", "sum"), patents_standard=("patents_standard", "sum")).reset_index()
+    return {
+        "type": "scatter", "title": "Do places differ more than chance would make them?",
+        "x": {"name": "People in the area (log scale)", "type": "log", "format": "int"},
+        "y": {"name": "Applications a year per 10,000 people (log scale)", "type": "log", "format": "num", "digits": 2},
+        "views": [
+            funnel_view(g.patents_standard, g.persons, "Postal area " + g.poa_code, "Standard patents", (6.7, 68.2)),
+            funnel_view(g.trade_marks, g.persons, "Postal area " + g.poa_code, "Trade marks", (15.0, 71.4)),
+            funnel_view(sa3.patents_standard, sa3.persons, sa3.sa3_name, "Standard patents, pooled into SA3s", (15.5, 72.5)),
+        ],
+        "height": "tall",
+        "source": "IP RAPID, FY2017 to FY2026; ABS Census 2021 (lens: regions). A funnel plot.",
+    }
+
+
+@chart
+def U55() -> dict:
+    d = sql("SELECT source, count(*) AS n FROM {lens/region_indicators} GROUP BY 1 ORDER BY 2 DESC")
+    same(int(d.n.sum()), 22511923, "attached values")
+    names = {"census": "Census 2021", "data_by_region": "Data by Region", "phidu": "PHIDU social health atlas", "cabee": "CABEE business counts",
+             "cer": "Clean Energy Regulator"}
+    return {
+        "type": "bar", "horizontal": True, "title": "Values attached to the places table, by source",
+        "x": {"type": "category", "values": [names.get(s, s) for s in d.source]},
+        "y": {"name": "Values", "min": 0, "format": "int"},
+        "series": [{"name": "Values", "data": col(d, "n")}],
+        "source": "ABS Census 2021, Data by Region, CABEE; PHIDU; Clean Energy Regulator (lens: region_indicators)",
+    }
+
+
+@chart
+def U56() -> dict:
+    d = sql("""
+        WITH v AS (SELECT poa_code, sum(value) AS cabee FROM {lens/region_indicators}
+                   WHERE source = 'cabee' AND indicator LIKE 'employment|%|Total' AND period = 'June 2025' GROUP BY 1)
+        SELECT r.poa_code, r.active_gst_abns AS abr, v.cabee FROM {lens/regions} r JOIN v USING (poa_code)
+    """).dropna()
+    same(d.cabee.sum() / d.abr.sum(), 0.742, "CABEE against the ABR")
+    d = d[(d.abr > 0) & (d.cabee > 0)]
+    lo, hi = log_range(list(d.abr) + list(d.cabee))
+    return {
+        "type": "scatter", "title": "Two counts of businesses, area by area",
+        "subtitle": "Postal areas: active GST-registered ABNs in the business register (across) against CABEE's count of "
+        "businesses actively trading, June 2025 (up). Points on the dashed line agree.",
+        "x": {"name": "ABR: active GST-registered ABNs (log scale)", "type": "log", "format": "int", "min": lo, "max": hi},
+        "y": {"name": "CABEE: businesses (log scale)", "type": "log", "format": "int", "min": lo, "max": hi},
+        "series": [{"name": "Postal areas", "data": [[r(a, 0), r(c, 0), f"Postal area {p}"] for p, a, c in zip(d.poa_code, d.abr, d.cabee, strict=True)], "size": 5, "opacity": 0.55},
+                   {"name": "Where they agree", "kind": "line", "data": [[1, 1], [100000, 100000]], "line": "dashed", "colour": "muted"}],
+        "height": "tall",
+        "source": "ABR; ABS CABEE split to postal areas by residents (lenses: regions, region_indicators)",
+    }
+
+
+@chart
+def U58() -> dict:
+    d = sql("""SELECT period, count(DISTINCT indicator) AS n FROM {lens/region_indicators}
+               WHERE source = 'data_by_region' GROUP BY 1 ORDER BY 1""").set_index("period")
+    same(d.n["2021"], 629, "Data by Region items in 2021")
+    return {
+        "type": "bar", "title": "Data by Region: items published for each year",
+        "x": {"type": "category", "values": list(d.index)}, "y": {"name": "Items", "min": 0, "format": "int"},
+        "series": [{"name": "Items", "data": col(d, "n")}],
+        "source": "ABS Data by Region (lens: region_indicators)",
+        "note": "Census years (2011, 2016, 2021) carry the most.",
+    }
+
+
+@chart
+def U59() -> dict:
+    d = sql("""
+        SELECT split_part(indicator, '|', 3) AS size, period, sum(value) AS n FROM {lens/region_indicators}
+        WHERE source = 'cabee' AND split_part(indicator, '|', 1) = 'employment' GROUP BY ALL
+    """)
+    p = pivot(d, "period", "size", "n")
+    sizes = ["Non employing", "1-4 Employees", "5-19 Employees", "20-199 Employees", "200+ Employees"]
+    pct = 100 * p[sizes].div(p["Total"], axis=0)
+    same(pct.loc["June 2023", "Non employing"], 61.3, "non-employing 2023")
+    same(pct.loc["June 2025", "Non employing"], 63.6, "non-employing 2025")
+    periods = [x for x in ["June 2023", "June 2024", "June 2025"] if x in pct.index]
+    return {
+        "type": "bar", "horizontal": True, "stack": True, "title": "Businesses by number of employees",
+        "x": {"type": "category", "values": periods},
+        "y": {"name": "% of businesses", "min": 0, "max": 100, "format": "pct", "digits": 1},
+        "series": [{"name": s.replace("Non employing", "No employees").replace(" Employees", " employees").replace("-", " to "),
+                    "data": [r(pct.loc[x, s], 1) for x in periods]} for s in sizes],
+        "source": "ABS CABEE, split to postal areas by residents (lens: region_indicators)",
+    }
+
+
+@chart
+def U60() -> dict:
+    d = sql("""SELECT period, count(DISTINCT indicator) AS n FROM {lens/region_indicators}
+               WHERE source = 'phidu' GROUP BY 1 ORDER BY n DESC, period LIMIT 10""")
+    same(int(d.n.iloc[0]), 702, "indicators for 2022/23")
+    return {
+        "type": "bar", "horizontal": True, "title": "PHIDU indicators by the period they describe",
+        "subtitle": "The ten most common periods",
+        "x": {"type": "category", "values": list(d.period)}, "y": {"name": "Indicators", "min": 0, "format": "int"},
+        "series": [{"name": "Indicators", "data": col(d, "n")}],
+        "source": "PHIDU, Social Health Atlas (lens: region_indicators)",
+    }
+
+
+@chart
+def U61() -> dict:
+    d = sql("""
+        SELECT period::INT AS y, topic AS t, sum(value) AS n FROM {lens/region_indicators}
+        WHERE source = 'cer' AND indicator LIKE '%|installations' GROUP BY 1, 2
+    """)
+    p = pivot(d, "y", "t", "n").sort_index()
+    same(p.loc[2009, "solar_water_heater"], 122312, "solar water heaters 2009")
+    same(p.loc[2020, "solar_pv"], 370287, "solar panels 2020")
+    tech = {"solar_pv": "Solar panels", "solar_water_heater": "Solar water heaters", "heat_pump_water_heater": "Heat pump water heaters",
+            "battery": "Batteries", "wind": "Small wind", "hydro": "Small hydro"}
+    p = p.loc[2001:2025]
+    return {
+        "type": "line", "title": "Small-scale energy installations a year, by technology",
+        "subtitle": "2001 to 2025 (2026 is part of a year and left out)",
+        "x": {"type": "category", "values": [str(y) for y in p.index]},
+        "y": {"name": "Installations a year", "min": 0, "format": "int"},
+        "series": [{"name": tech[c], "data": col(p, c, 0)} for c in tech if c in p],
+        "source": "Clean Energy Regulator, small-scale installations by postcode (lens: region_indicators)",
+        "note": "Batteries are recorded from July 2025.",
+    }
+
+
+@chart
+def U62() -> dict:
+    g = regions()
+    s = g.groupby("state")[["austender_contracts", "austender_value", "active_gst_abns"]].sum()
+    s = 100 * s / s.sum()
+    s = s.sort_values("austender_value", ascending=False)
+    act = "Australian Capital Territory"
+    same(s.loc[act, "austender_contracts"], 27.0, "ACT share of contracts")
+    same(s.loc[act, "active_gst_abns"], 1.3, "ACT share of businesses")
+    return {
+        "type": "bar", "horizontal": True, "title": "Government contracts and businesses, by state",
+        "subtitle": "Contracts first published FY2017 to FY2026, by the supplier's postcode, against the share of businesses",
+        "x": {"type": "category", "values": list(s.index)},
+        "y": {"name": "% of the national total", "min": 0, "format": "pct", "digits": 1},
+        "series": [{"name": "Contracts", "data": col(s, "austender_contracts", 1)}, {"name": "Contract value", "data": col(s, "austender_value", 1)},
+                   {"name": "Businesses", "data": col(s, "active_gst_abns", 1)}],
+        "source": "AusTender; ABR (lens: regions). Nominal values.",
     }
 
 

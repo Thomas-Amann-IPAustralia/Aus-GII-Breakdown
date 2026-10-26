@@ -1,0 +1,401 @@
+# The timeline lens (section 5 of the notebook): IP Australia's register month by month. Markup and rules as in
+# firms.yaml.
+
+- id: U22
+  lens: timeline
+  about: data
+  headline: The timeline has one row per month since 1904, with each series starting only where it can be trusted
+  statement: >-
+    The timeline holds 1,473 months, January 1904 to September 2026, with 28 monthly series of applications and events,
+    the price index and the policy changes. After the repairs, series begin between January 1904 and December 2003, and
+    none has a gap inside its span.
+  figures:
+    - value: "1,473"
+      label: months
+    - value: "1,018"
+      label: Australian standard patent applications in April 2013, the busiest month
+  points:
+    - "The busiest month of standard patent applications, from Australian and overseas applicants alike, is April 2013
+      (1,018 and 5,407), when Raising the Bar took effect; of second-tier applications, August 2021 (2,789), when
+      innovation patents closed; of provisional applications, March 2026 (1,274)."
+    - "The last months are empty only where the register is still recording: six months for trade mark and design
+      cessations, three for designs by origin."
+  questions:
+    - q: 5
+      how: Month-by-month series are what before-and-after comparisons of policy changes need.
+    - q: 1
+      how: Long-run series show how use of the system has changed over a century.
+  sources: [iprapid, policy_events, abs_prices]
+  chart: U22
+  prep:
+    - what: Each series starts at the first month from which its records are continuous and complete; earlier months
+        are empty, not zero.
+      why: Before that, the register holds survivors, partial records or batch dates, so a month's count is not what
+        happened that month (ADR 0010, 0014).
+    - what: Each event is counted once, even where the register records it twice.
+      why: Duplicate records would inflate the counts.
+  steps:
+    - For each series, find its first and last month with a value.
+    - Check for gaps inside each series' span.
+    - Find each series' busiest month.
+  assumptions:
+    - A month with no record inside a series' span really had none.
+  limits:
+    - "A long series is not complete back to 1904: each starts where its records do."
+  next: >-
+    Stage 2 compares months around events, within each series' span.
+  terms: [survivors, batch-dates]
+  related: [U23, U24, U28]
+
+- id: U23
+  lens: timeline
+  about: data
+  headline: Fifteen series started too early, on records that hold only survivors or batches, and one policy change was missing
+  statement: >-
+    Before records were computerised, the register holds only rights still alive then. Only 2.0% of trade marks filed
+    in early 1981 were never registered, against 52.0% from the first quarter of 1983. So those years count survivors,
+    not filings, and fifteen series now start later. The rise of the patent term from 16 to 20 years (1 July 1995) was
+    missing from the policy list and has been added.
+  figures:
+    - value: "2.0% → 52.0%"
+      label: trade marks never registered, early 1981 against early 1983
+    - value: "Fifteen"
+      label: series given a later start
+    - value: "17th"
+      label: policy change added (the 20-year patent term)
+  points:
+    - "**Designs:** 0.4% and 0.7% never registered in the second half of 1985, then 26.3% in the first quarter of 1986."
+    - "**Batches.** Patent cessations were dated in batches to April 1995: 29.8% of the 104 months from September 1986
+      hold none."
+    - "**Partial records.** Grants are recorded only for patents filed from 1979: 1.0% to 1.9% of standard patents filed
+      in 1976 to 1978 have a grant date, against 68.5% of those filed in 1979."
+    - "**Real, not an artefact:** patent expiries all but stop from July 1995 and resume in July 1999, because every
+      patent then in force gained four more years."
+  questions:
+    - q: 5
+      how: A false rise or fall in a series could be mistaken for a policy's effect; these repairs prevent that.
+    - q: 1
+      how: Long-run comparisons are honest only from where the records are complete.
+  sources: [iprapid, policy_events]
+  chart: U23
+  notebook_charts: [0, 1]
+  prep:
+    - what: Fifteen series start by hand where their records become complete, each with its reason in the build code.
+      why: The general rule (the first month from which 9 of the next 12 have a record) started them too early (ADR 0014).
+    - what: The 1995 term change is checked against the Act itself and added to the policy register.
+      why: The patent expiry series shows it plainly, and the register's note on the 1990 Act was wrong.
+  steps:
+    - For trade marks, designs and provisionals, work out by quarter of filing the share never registered, or the count.
+    - "Find the quarter where the share jumps from near zero to a normal level: before it, only survivors are held."
+    - "For event series, find months with no events followed by backlogs: signs of batch dating."
+    - Set each series' start after these, and check the patent expiry series against the 1995 Act.
+  assumptions:
+    - A sudden jump in the share never registered marks the start of complete records, not a real change in filing.
+  limits:
+    - Before each new start, the register cannot say how many applications were really made.
+  next: >-
+    Every count by year in the rights lens carries this note ({U5}, {U10}).
+  terms: [survivors, batch-dates]
+  related: [U22, U5, U10]
+
+- id: U24
+  lens: timeline
+  about: data
+  headline: Large monthly series are steady; small ones are noisy and need longer periods
+  statement: >-
+    Over FY2017 to FY2026 the steadiest series is standard patent applications from overseas (a median 2,310 a month,
+    varying by only 0.08 of its average). The most variable are second-tier patents (1.82, from the rush before their
+    closure and the near-silence after) and small series such as extensions of term.
+  figures:
+    - value: "0.08"
+      label: relative variation of overseas standard patents, the steadiest series
+    - value: "1.82"
+      label: relative variation of second-tier patents, the most uneven
+  points:
+    - "Small series: patent oppositions (median 5 a month), extensions of term (5) and plant breeder's rights granted
+      (13.5)."
+    - "Outliers: 12 months each for provisional applications (the rise of 2025 and 2026) and second-tier patents (2021)."
+    - "**Decision.** Series with a median under 10 a month are compared by quarter or year, not by month."
+  questions:
+    - q: 5
+      how: Tells later stages which series can show a policy effect month by month and which need longer periods.
+  sources: [iprapid]
+  chart: U24
+  notebook_charts: [2]
+  prep:
+    - what: Each series is described over the ten latest complete financial years.
+      why: A recent decade shows how each behaves now.
+  steps:
+    - For each series, work out its median, mean and standard deviation over FY2017 to FY2026.
+    - Divide the standard deviation by the mean to compare series of different sizes.
+    - Count outlying months by the box-plot rule.
+  assumptions:
+    - Ten years is long enough to describe each series' usual behaviour.
+  limits:
+    - Variation includes real events (rushes) as well as noise.
+  next: >-
+    Small series are grouped into quarters or years in Stage 2.
+  terms: [variation, outlier, median]
+  related: [U22, U26]
+
+- id: U25
+  lens: timeline
+  about: system
+  headline: Growth in standard patents has slowed to 0.4% a year; trade marks and designs are growing faster
+  statement: >-
+    Standard patent applications grew 3.9% a year in the 1990s, 1.3% from 2000 to 2010, 2.0% from 2010 to 2019 and
+    0.4% from 2019 to 2025, with overseas applicants setting the pace. Trade marks grew 4.3% a year and designs 5.5% a
+    year from 2019 to 2025.
+  figures:
+    - value: "0.4%"
+      label: a year, standard patents' growth, 2019 to 2025
+    - value: "5.5%"
+      label: a year, designs' growth, 2019 to 2025
+    - value: "32,399"
+      label: standard patent applications in 2021, the highest year
+  points:
+    - "Australians' standard patents grew 1.1%, 2.3%, 1.0% and 1.1% a year in the four periods."
+    - "Designs grew almost entirely from overseas; Australians' stayed near 2,000 to 2,700 a year."
+    - "**Falls.** In 2009, standard patents fell 10.9%, designs 15.2% and trade marks 4.5%, the year after the global
+      financial crisis began; trade marks fell 11.2% in 2022 from the 2021 peak."
+  questions:
+    - q: 1
+      how: The long-run path of each kind of right is context for any claim about the system's contribution.
+  sources: [iprapid]
+  chart: U25
+  notebook_charts: [0]
+  prep:
+    - what: Calendar-year totals are used only for complete years, and growth is the steady yearly rate between two
+        years.
+      why: Part years would look like falls; a yearly rate compares periods of different lengths.
+  steps:
+    - Add up each series by calendar year, from each series' start.
+    - Work out the average yearly growth between chosen years.
+    - Note the years with falls.
+  assumptions:
+    - Growth between two years summarises the path between them; the years in between may differ.
+  limits:
+    - Counts grow with the economy and with overseas demand; growth alone is not a measure of value.
+  next: >-
+    Stage 2 compares changes, not levels, so that series that both grow over decades are not mistaken for related.
+  terms: [growth-rate, rolling-total]
+  related: [U5, U7]
+
+- id: U26
+  lens: timeline
+  about: system
+  headline: Australians file a quarter less in January; overseas applicants barely pause
+  statement: >-
+    From 2010 to 2019, Australians' January filings were 75% of an ordinary month for standard patents and trade marks,
+    70% for provisionals and 66% for designs, while overseas applicants' were 90% to 95%. The January lull is deepening
+    for Australian patents: 80% (1990s), 78, 75 and 73 (2020 to 2025).
+  figures:
+    - value: "75%"
+      label: of an ordinary month, Australian standard patents in January
+    - value: "95%"
+      label: overseas standard patents in January
+  points:
+    - "Australian trade marks also dip in December (82) and peak in August (115)."
+    - "The office's output follows its own calendar: trade mark registrations run at 133% of an ordinary month in
+      January and 68% in December, following working days and processing, not demand."
+    - "**Decision.** Months are compared with the same month a year earlier, or as 12-month totals."
+  questions:
+    - q: 4
+      how: Seasons in demand and in the office's output matter for service planning and for reading monthly figures.
+  sources: [iprapid]
+  chart: U26
+  notebook_charts: [0]
+  prep:
+    - what: Each month is compared with the 12 months centred on it, and the median of each calendar month is taken over
+        2010 to 2019.
+      why: Comparing with the months around it removes the trend; a decade before COVID-19 and after the financial
+        crisis gives a typical pattern.
+  steps:
+    - For each series and month, divide the count by the centred 12-month average around it.
+    - Take the median for each calendar month over 2010 to 2019 (100 = an ordinary month).
+    - Repeat January's figure by decade to see whether the lull has changed.
+  assumptions:
+    - A decade's median month is the series' typical seasonal pattern.
+  limits:
+    - The reasons (holidays, business cycles) are not in the data.
+  next: >-
+    Stage 2 compares months with the same month a year earlier.
+  terms: [seasonal, median]
+  related: [U24, U8]
+
+- id: U27
+  lens: timeline
+  about: system
+  headline: Patent grants peaked in 2016; trade mark cessations keep rising
+  statement: >-
+    Patent grants peaked at 25,687 in 2016, three years after the rush to file before Raising the Bar, and were 19,612
+    in 2025. Trade mark registrations reached 70,634 in 2021. Trade mark cessations (registered marks let go) rose from
+    7,240 in 1996 to 35,484 in 2025, the peak.
+  figures:
+    - value: "25,687"
+      label: patent grants in 2016, the peak
+    - value: "35,484"
+      label: trade mark cessations in 2025, the peak
+  points:
+    - "Patent expiries rose from 30 (1996) to 4,019 (2025), as patents filed under the 20-year term reach it."
+    - "Ownership transfers: trade mark assignments peaked at 18,370 (2019), patent assignments at 6,015 (2015)."
+    - "Trade mark oppositions rose from 824 (1996) to 2,309 (2025, the peak)."
+    - "Trade mark cessations fell to 3,773 in 2002 while lapses rose: explained by the register's terms ({U38})."
+  questions:
+    - q: 1
+      how: What happens to rights (granted, kept, let go, sold, challenged) is the flow behind any measure of their value.
+  sources: [iprapid]
+  chart: U27
+  notebook_charts: [0]
+  prep:
+    - what: Events are counted once per right and day, by calendar year, from each series' start.
+      why: The register sometimes records the same event twice (ADR 0010).
+  steps:
+    - Add up each event series by calendar year.
+    - Find each series' peak year.
+  assumptions:
+    - The date recorded for an event is when it happened (after each series' start, where batch dating ends).
+  limits:
+    - Event counts mix rights of every age; lifetimes per right are in {U36}.
+  next: >-
+    Stage 2 relates events to policy changes and to the applications behind them.
+  terms: [cease, lapse, expiry, assignment, opposition]
+  related: [U36, U38, U28]
+
+- id: U28
+  lens: timeline
+  about: system
+  featured: true
+  headline: Policy changes leave clear marks, two rushes, four steps and two pauses, while several leave none
+  statement: >-
+    Before Raising the Bar (April 2013), Australians filed 1,018 standard patents in a month, 4.39 times their average
+    month in the year before. Before the innovation patent closed (August 2021), 2,789 second-tier applications came in
+    one month (4.31 times), then 95.9% fewer. Patent expiries fell 98.4% when the term rose to 20 years.
+  figures:
+    - value: "4.39×"
+      label: Australians' usual monthly patent filing, in April 2013
+    - value: "−95.9%"
+      label: second-tier applications after the innovation patent closed
+    - value: "−98.4%"
+      label: patent expiries after the term rose to 20 years
+  points:
+    - "**Rushes:** Raising the Bar (Australians 4.39 times, overseas 2.66 times their usual month) and the innovation
+      patent's closure. Anticipation also shows after each was enacted."
+    - "**Steps:** patent expiries (the 20-year term), extensions of term (the 1999 scheme, from 0.08 to 11.17 a month),
+      second-tier applications when the innovation patent replaced the petty patent (+71.5%), and designs under the
+      Designs Act 2003 (overseas applications +34.1%)."
+    - "**Pauses when an Act began:** no trade mark registrations in January 1996 (Trade Marks Act 1995) and 113 patent
+      grants in June 1991 (Patents Act 1990), against about 1,025 a month."
+    - "**Nothing visible:** joining the PCT, the plain packaging of tobacco, the 2018 and 2019 Productivity Commission
+      responses and the designs grace period."
+    - "All compare the 12 months after with the 12 before; trends and seasons are not yet allowed for."
+  questions:
+    - q: 5
+      how: These dated changes are the raw material for natural experiments, the designs that can estimate what a policy
+        actually changed.
+    - q: 4
+      how: Shows which levers have moved behaviour visibly in the past, and which have not.
+  sources: [iprapid, policy_events]
+  chart: U28
+  notebook_charts: [0]
+  prep:
+    - what: Each of the 17 policy changes is placed in the month it took effect (or, for two, was enacted), checked
+        against the Federal Register of Legislation.
+      why: A wrong date would put the change in the wrong place (ADR 0011, 0014).
+    - what: Each change is paired with the series it targets.
+      why: A change to trade mark law should show in trade mark series, not patents.
+  steps:
+    - For each change, take its target series for 24 months either side.
+    - Compare the change's month and the 12 months after with the average month of the 12 before.
+    - Class each response as a rush, a step, a pause or nothing visible.
+  assumptions:
+    - The change caused what is seen around it. Stage 1 only describes timing; trends, seasons and other events could
+      also be at work.
+  limits:
+    - Fee changes, IP Australia's most direct lever, are not yet in the data (OQ2).
+  next: >-
+    Stage 2 measures each candidate against trends and seasons, with placebo dates.
+  terms: [natural-experiment, placebo, raising-the-bar, second-tier]
+  related: [U3, U22, U29, U37]
+
+- id: U29
+  lens: timeline
+  about: data
+  headline: Forty-two months still stand out after the repairs; each is explained and kept
+  statement: >-
+    After the repairs, 42 months in 12 series are at least three times, or under a third of, the months around them.
+    They are rushes, the register's start-up in 1904, pauses and backlogs when new Acts began, and one transfer of many
+    patents at once (1,603 patent assignments in July 2015).
+  figures:
+    - value: "42"
+      label: unusual months, all explained
+    - value: "1,603"
+      label: patent assignments in July 2015, one large transfer
+  points:
+    - "**Pauses and backlogs:** patent grants in June 1991 (113); trade mark registrations in January and March 1996 (0,
+      then 4,021); patent cessations in February 2020 (7)."
+    - "**The register's first months:** applications could be lodged from February 1904, before the Patents Act 1903
+      took effect on 1 June 1904."
+    - "**Design lapses** fall to 0 to 16 in April in six of the seven years from 1996 to 2002 ({U39})."
+    - "**The July 2015 transfer:** the patents assigned on 2 July 2015 are now held mostly in Finland (198) and the United
+      States (170)."
+    - "**Decision.** No more months are removed; pauses are pooled with their backlogs, rushes are studied."
+  questions:
+    - q: 5
+      how: Unusual months must be explained before any month can be read as a policy effect.
+  sources: [iprapid]
+  chart: U29
+  prep:
+    - what: Each month is compared with the median of the two years around it, in series running at 50 or more a month.
+      why: A two-year median is not pulled about by one odd month.
+  steps:
+    - For each series, work out the median of the 25 months centred on each month.
+    - Flag months at least three times or under a third of it.
+    - Look up what happened in each flagged month.
+  assumptions:
+    - A month three times its neighbours is unusual enough to need explaining.
+  limits:
+    - Smaller oddities are not flagged.
+  next: >-
+    Stage 2 pools pauses with their backlogs, or uses 12-month totals.
+  terms: [outlier, median]
+  related: [U28, U39]
+
+- id: U30
+  lens: timeline
+  about: data
+  headline: The consumer price index is complete each quarter from 1948, so money can be compared across years
+  statement: >-
+    The price index has 312 quarters, from the September quarter 1948 to the June quarter 2026, with none missing.
+    Prices rose about 40-fold, from 2.59 to 102.31. Price rises have run at a median 2.3% a year from 1990 to 2019 and
+    3.6% from 2020 to 2026.
+  figures:
+    - value: "312"
+      label: quarters, none missing
+    - value: "40-fold"
+      label: rise in prices since 1948
+  points:
+    - "The median yearly rise was 3.0% from 1949 to 1969 and 8.7% from 1970 to 1989 (highest 17.5%, March quarter 1975)."
+    - "Prices fell in 13 quarters."
+    - "**Decision.** Money is adjusted with this quarterly index, and shown as recorded beside it, with the base stated
+      (September 2025 = 100)."
+  questions:
+    - q: 5
+      how: Costs and benefits from different years can be compared only once inflation is taken out.
+  sources: [abs_prices]
+  chart: U30
+  notebook_charts: [0]
+  prep:
+    - what: The quarterly index is attached to the timeline; the monthly index (from April 2024 only) is not.
+      why: One series must cover the whole span.
+  steps:
+    - Check the index for missing quarters.
+    - Work out the change over four quarters, and its median in each era.
+  assumptions:
+    - The all-groups index for the eight capital cities stands for prices everywhere in Australia.
+  limits:
+    - A general price index may not suit every kind of spending (R&D costs rise differently).
+  next: >-
+    Every money series is adjusted in Stage 2.
+  terms: [cpi, nominal]
+  related: [U46, U62]

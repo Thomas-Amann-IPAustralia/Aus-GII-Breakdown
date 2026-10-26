@@ -387,6 +387,8 @@ details.more > div { padding: 0 16px 16px; }
 .chart-views button { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 5px 12px; font-size: .8rem; font-weight: 600; color: var(--ink-2); }
 .chart-views button:hover { border-color: var(--line-strong); }
 .chart-views button[aria-pressed="true"] { background: var(--teal-wash); border-color: var(--teal); color: var(--teal); }
+.view-select { display: flex; align-items: center; gap: 8px; font-size: .84rem; color: var(--muted); flex: 1 1 100%; min-width: 0; }
+.view-select select { flex: 1; min-width: 0; width: 100%; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 7px 10px; font-size: .86rem; color: var(--ink); }
 .chart { height: 360px; margin-top: 10px; }
 .chart.tall { height: 460px; }
 .chart.short { height: 280px; }
