@@ -11,7 +11,11 @@ Processed:
   where the indicator has one) and year. Resident filings are those where office and origin are the same; an
   origin's total is the sum over offices.
 - `office`: indicators reported by office only (rights in force, examiners, pendency, oppositions).
-- `pmh`: PCT applications by origin, Madrid applications by country of holder and Hague applications by origin.
+- `pmh`: PCT applications by origin, Madrid applications by country of holder and Hague applications by origin; and
+  the share of women among the inventors named in PCT applications, by origin (a percentage, from WIPO's names).
+
+Exports already held in the raw folder are read, not fetched again, so adding an indicator leaves the others' vintage
+unchanged (delete the folder to fetch every export afresh).
 """
 
 from __future__ import annotations
@@ -31,6 +35,8 @@ HEADERS = {"Accept-Language": "en"}  # the API answers 400 without it
 # (tab, indicator, report type): 15 is by office and origin, 11 by office only
 IPS = [
     ("patent", 10, 15),  # total applications
+    ("patent", 11, 15),  # direct applications
+    ("patent", 12, 15),  # PCT national phase entries
     ("patent", 23, 15),  # total grants
     ("patent", 15, 15),  # in force
     ("patent", 21, 15),  # foreign-oriented patent families by origin and destination office
@@ -53,7 +59,12 @@ IPS = [
     ("industrial", 63, 11),  # registrations in force
 ]
 # (tab, indicator, the list of codes to ask for): PCT by origin, Madrid by holder, Hague by origin
-PMH = [("pct", 1001, "ori"), ("madrid", 2002, "ori"), ("hague", 3001, "ori")]
+PMH = [
+    ("pct", 1001, "ori"),
+    ("pct", 1042, "ori"),  # share of women among the inventors named in PCT applications, by origin
+    ("madrid", 2002, "ori"),
+    ("hague", 3001, "ori"),
+]
 
 
 def _get(path: str, **params):
@@ -168,10 +179,13 @@ def _pmh(ctx: Ctx) -> pd.DataFrame:
         params = {"type": "PMH", "selectedTab": tab, "indicator": ind, "reportType": 4001, "fromYear": 1995}
         params["toYear"] = max(int(y["value"] if isinstance(y, dict) else y) for y in _pmh_years(tab))
         params["pmhOriSelValues"] = ",".join(origins)
-        if tab == "pct":
-            params["pmhOffSelValues"] = "ZZ"  # every receiving office
-        r = _get("pmh-search/downloadCsv", **params)
-        text = r.content.decode("utf-8-sig")
+        if (tab, ind) == ("pct", 1001):
+            params["pmhOffSelValues"] = "ZZ"  # every receiving office (the shares of women inventors have no offices)
+        cached = ctx.raw / f"{tab}_{ind}.csv.gz"
+        if cached.exists():  # delete data/raw/wipo_ipstats/ to fetch afresh
+            text = gzip.decompress(cached.read_bytes()).decode()
+        else:
+            text = _get("pmh-search/downloadCsv", **params).content.decode("utf-8-sig")
         _keep(ctx, f"{tab}_{ind}", text, f"{API}/pmh-search/downloadCsv ({tab} {ind})")
         updated, df = _read(text)
         code = next(c for c in df.columns if c.endswith("(Code)") and not c.startswith("Receiving"))
