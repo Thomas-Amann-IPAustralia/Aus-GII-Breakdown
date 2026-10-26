@@ -27,7 +27,9 @@ The data show when and who, not why. Each answer would turn a lead into an expla
 | OQ7 | Since FY2025, are ABNs attached to applications late, or collected less often? | U45: Australian organisations' trade marks with the filer's ABN 84.1% (FY2024), 71.4% (FY2025), 59.9% (FY2026); designs 88.4% to 76.3% | Firm-level filing by year compared only to FY2024 |
 
 These could go in the same request, if it is easy to add: why plant breeder's rights change hands more often in recent
-years (11.2% of those filed in the 2020s, U17), and IP Australia's own published counts, to benchmark the lenses.
+years (11.2% of those filed in the 2020s, U17); IP Australia's own published counts, to benchmark the lenses; and why
+IP RAPID holds a third more innovation patents filed in 2016 than WIPO's count of Australia's utility models (2,469
+against 1,855; other years 0.958 to 1.072 of it, U67).
 
 ## Deferred: not needed for the EDA
 
