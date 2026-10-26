@@ -6,13 +6,13 @@ readers who have not followed the work day by day and are not data scientists.
 
 **Date:** 26 October 2026. **Evidence:** every number below is quoted from an observation in
 [`analysis/notebooks/01_univariate.ipynb`](../analysis/notebooks/01_univariate.ipynb), named by its number (U0 to
-U87), where the output it rests on is on the page. Every observation in Stage 1 is **descriptive**: it says what the
+U98), where the output it rests on is on the page. Every observation in Stage 1 is **descriptive**: it says what the
 data show, not why, and nothing here is a cause or a conclusion. Terms are explained in [`GLOSSARY.md`](../GLOSSARY.md).
 
-**Status.** Every lens has its Stage 1 profile. Three attachments to the `rights` lens (its links, Google Patents and
-the inventors) are still to be built; when they are done is the owner's call (OQ1 in
-[`owner-questions.md`](owner-questions.md)). Nothing here answers the five research questions: that waits until
-Stage 3 is done and the owner says so.
+**Status.** Stage 1 is complete: every lens and every planned attachment has its profile. The last three attachments
+to the `rights` lens (how each right came to Australia, each patent's worldwide family, and its inventors) were added
+on 26 October (U88 to U98, ADR 0022). Nothing here answers the five research questions: that waits until Stage 3 is
+done and the owner says so.
 
 ---
 
@@ -21,8 +21,8 @@ Stage 3 is done and the owner says so.
 **What Stage 1 did.** It took a corpus of 152 tables from 38 sources (314.7 million rows, U0), organised it into seven
 analysis-ready tables called *lenses* (one row per IP right, firm, postal area, country-year, industry-year, research
 institution-year and month) with four long companion tables, and described every column on its own: how complete it
-is, its shape, its outliers and its quirks. That produced 88 numbered observations, a series of repairs to the data
-before they could be trusted (recorded in ADR 0008 to 0021), and a set of rules for how each variable may be used in
+is, its shape, its outliers and its quirks. That produced 99 numbered observations, a series of repairs to the data
+before they could be trusted (recorded in ADR 0008 to 0022), and a set of rules for how each variable may be used in
 Stages 2 and 3. The groundwork was laid from 21 to 24 October 2026; Stage 1 itself ran on 25 and 26 October, lens by
 lens, with the owner setting the order.
 
@@ -32,9 +32,11 @@ lens, with the owner setting the order.
    ten standard patents are filed from overseas (91.3% in FY2017 to FY2026; the United States alone 43.5%), against
    59.0% of trade marks filed by Australians (U13). China now files as many patent applications at IP Australia as
    Australians do (8.3% each in 2024, from 0.3% in 2004), and three-quarters of Australians' own applications are made
-   abroad (76.1%, U70).
+   abroad (76.1%, U70). Overseas applicants arrive through the PCT (81.0% of their standard patents in FY2010), mostly
+   with inventions first filed in the United States (53.42%), and their patents reach a median 6 offices against
+   Australians' 2 (U90, U91, U93).
 2. **Almost everything is concentrated.** The top 1% of filing firms filed 55.3% of standard patents (U44); the tenth
-   of postal areas with the most patents filed 72.5% of them with 29.0% of the people (U52); five attorney firms
+   of postal areas with the most patents filed 72.5% of them with 29.2% of the people (U52); five attorney firms
    handle 63.96% of standard patents (U21); the Group of Eight hold two-thirds of ARC and NHMRC funding (U83); and one
    firm can be most of a postcode's patents (Aristocrat 76.3% of 2113's, U52).
 3. **Places differ far more than chance would make them.** 68.2% to 72.5% of areas file below what chance allows
@@ -58,7 +60,8 @@ lens, with the owner setting the order.
 8. **Australia's research is used, but mostly abroad.** 93.6% of US patent citations to Australian research
    institutions' work come from inventions with no Australian applicant or inventor (U85). Nationally, research
    intensity peaked in 2008 (gross R&D 2.24% of GDP) and has fallen to 1.68% (2023), below the OECD median of 1.85%;
-   business R&D is 26th of 35 OECD members (U65, U66).
+   business R&D is 26th of 35 OECD members (U65, U66). Of the patents filed in Australia from overseas, 0.85% have an
+   inventor here (U96).
 9. **The register's history shapes what it can say.** Early years hold only the rights that survived until records
    were computerised; some events were dated in batches; patent ownership history starts in FY2003; trade mark
    expedite requests fall sharply when records moved between systems in November 2018 (U23, U17, U34). Each is now
@@ -126,10 +129,10 @@ making the lens unreadable.
 
 | Lens | One row per | Rows | Mainly informs |
 |---|---|---|---|
-| `rights` | IP right (patent, trade mark, design, plant breeder's right), 1904 to 2026 | 4,368,006 (52 columns) | Q1, Q2 |
+| `rights` | IP right (patent, trade mark, design, plant breeder's right), 1904 to 2026 | 4,368,006 (74 columns) | Q1, Q2 |
 | `firms` | ABN in any IP, R&D, procurement or tax source | 398,450 | Q2, Q3, Q4 |
 | `regions` (+ `region_indicators`) | Postal area | 2,641 (+ 22,511,923) | Q2, Q4 |
-| `national` (+ `national_indicators`) | Country, year and indicator | 135,597 (+ 41,203,167) | Q1, Q4 |
+| `national` (+ `national_indicators`) | Country, year and indicator | 135,597 (+ 41,218,170) | Q1, Q4 |
 | `timeline` | Month, for Australia, January 1904 to September 2026 | 1,473 | Q1, Q4, Q5 |
 | `industries` (+ `industry_indicators`) | ANZSIC division and financial year, FY1990 to FY2026 | 703 (+ 1,409,875) | Q2, Q3, Q4 |
 | `institutions` (+ `institution_rights`) | Research institution (ROR) and calendar year, 1990 to 2026 | 4,810 (+ 31,528) | Q1, Q2, Q3 |
@@ -165,6 +168,7 @@ All are rebuilt from the corpus in about two minutes by `analysis/eda/build.py`,
 | 26 October | `national` and its attachments (U63 to U72) | ADR 0019 |
 | 26 October | `industries` and its attachments (U73 to U79) | ADR 0020 |
 | 26 October | `institutions` (U80 to U87), the last planned lens | ADR 0021 |
+| 26 October | `rights`: its links, Google Patents families and inventors (U88 to U98) | ADR 0022 |
 
 The owner set the order at each step (the answered questions A1 to A6 in `owner-questions.md`); Claude made the
 analytical and engineering choices and recorded the non-obvious ones as ADRs.
@@ -189,6 +193,7 @@ tables, so it survives the repair), and record the repair in an ADR. The main re
 | `national` | WIPO's former states and unknown origins dropped (9.65% of patent applications by origin) | Kept, with an `entity` column | 0019 |
 | `concordances` | Each ISIC class split over partial ANZSIC links (textiles had 8.9% of patents) | Weight to full links first (textiles 2.3%) | 0020 |
 | `rights` build | Two ties broken arbitrarily, so a few figures changed from build to build | Ties fixed; two builds agree row for row; five quoted figures corrected | 0019 |
+| `rights` links | IP RAPID labels every PCT number, and many other offices' priority numbers, `au` | A patent priority's office read from its number | 0022 |
 
 Each repair has a test, and the suite passes (86 tests at the end of the stage).
 
@@ -197,14 +202,18 @@ Each repair has a test, and the suite passes (86 tests at the end of the stage).
 The record corrects its own mistakes in the turn they are found. Stage 1's corrections include: the policy register's
 note that the Patents Act 1990 brought in 20-year patents (it was 16 years until 1 July 1995, U23); charts of trade
 marks before 1983 and designs before 1986 that showed survivors without saying so (U5, U10); the World Bank's trade
-mark series, described as applications but counting classes (U67); and five figures that differed between builds
-(U48, U49, U52, U53). Each is noted where it applies and in the handover.
+mark series, described as applications but counting classes (U67); five figures that differed between builds
+(U48, U49, U52, U53); and, found when the notebook was re-run with the last attachments, three more that depended on
+how ties were broken: the share of people in the top tenth of areas (29.0% became 29.2% for standard patents, 32.9%
+became 32.8% for trade marks, U52), and the universities' postcodes outside the postal areas, which counted joint
+filings twice and named an arbitrary institution (UNSW's 216 became 210, U87). Each is noted where it applies and in
+the handover.
 
 ---
 
 ## 4. What each lens shows
 
-### 4.1 IP rights (`rights`, U1 to U21 and U31 to U40)
+### 4.1 IP rights (`rights`, U1 to U21 and U31 to U40, U88 to U98)
 
 Every patent, trade mark, design and plant breeder's right in IP RAPID, 1904 to October 2026.
 
@@ -242,6 +251,22 @@ Every patent, trade mark, design and plant breeder's right in IP RAPID, 1904 to 
   longer than they did and renew about half of trade marks at ten years (U36). Extensions of term are rare (1,450,
   U37). Two timeline puzzles were resolved: the 2002 trade mark trough (the gap between two Acts' first terms and the
   2000 filing peak, U38) and April design lapses (how lapses were dated, U39).
+- **How rights came to Australia (the links).** IP RAPID labels 93.88% of PCT numbers as Australian, so a priority's
+  office is read from its number (U88). The PCT route then matches WIPO's count of national phase entries at IP
+  Australia, a median 1.001 of it from 1995 to 2024 (U89). Overseas applicants' standard patents came through the PCT
+  for 81.0% in FY2010 and 69.3% in FY2026, with divisionals rising to 19.9%; Australians' moved from claiming a
+  provisional (81.2% in FY1985, 11.4% in FY2026) to the PCT, divisionals and, lately, direct filing (28.3% in FY2026, a
+  lead) (U90). Overseas inventions were first filed in the United States for 53.42%; 91.24% of Australians' PCT
+  applications were filed at IP Australia (U91).
+- **Families, reach and citations (Google Patents).** 94.81% to 99.23% of standard patents filed in each decade since
+  the 1980s find their family (U92). Overseas applicants' patents reach a median 6 offices and 66.66% are granted in
+  the United States; Australians' reach 2, and 45.53% are filed only here (U93). Within five years, overseas
+  applicants' families are cited by a median 6 others and Australians' by 1 (43.99% never) (U94).
+- **Inventors.** Inventors' countries are missing for most patents filed only in Australia, because Google's
+  Australian publications give none (U95). Where known, 94.47% of patents filed from Australia have an inventor here,
+  against 0.85% of those filed from overseas (U96). Gender estimated from names matches WIPO's published share for
+  Australia (14.6% against 13.8%) but runs a median 4.5 points high elsewhere, 11.2 for China and 21.3 for Korea, so it
+  is read for inventors in Australia only (U97): about one in seven is estimated to be a woman (U98).
 
 ### 4.2 Australia over time (`timeline`, U22 to U30)
 
@@ -292,16 +317,17 @@ claimants and contracts, and every value of five area sources in `region_indicat
   (U87).
 - **Very different areas.** 818 areas have fewer than 1,000 people; 18 have more businesses than residents (U50).
   Major cities hold 37.7% of areas and 72.8% of people; SEIFA deciles rank areas, not people (U51).
-- **Concentration and chance.** The top tenth of areas file 72.5% of standard patents with 29.0% of people, and an
+- **Concentration and chance.** The top tenth of areas file 72.5% of standard patents with 29.2% of people, and an
   area's patents are often one firm's (U52). Areas differ far more than chance would make them, so Stage 2 uses
   negative binomial models and pooling (U53).
 - **'Missing filers'.** 50.7% of R&D claimants have never filed IP; claimants are 5.6 per 1,000 businesses in major
   cities and 0.6 in very remote areas (U54).
 - **The attachments.** 22.5 million values (U55). Values split from SA2s track direct counts (Data by Region's
-  population is within 10% of the direct count for 99.34% of areas of 1,000 people or more); CABEE counts 0.742 of the ABR's businesses in the same order, so business
-  counts come from the ABR (U56). Census cells are small and perturbed (U57); Data by Region repeats the Census (U58);
-  most businesses employ no one (U59); PHIDU's periods differ (U60); installations moved from solar water heaters to
-  panels to batteries (U61); the ACT holds 27.0% of government contracts with 1.3% of businesses (U62).
+  population is within 10% of the direct count for 99.34% of areas of 1,000 people or more); CABEE counts 0.742 of the
+  ABR's businesses in the same order, so business counts come from the ABR (U56). Census cells are small and perturbed
+  (U57); Data by Region repeats the Census (U58); most businesses employ no one (U59); PHIDU's periods differ (U60);
+  installations moved from solar water heaters to panels to batteries (U61); the ACT holds 27.0% of government
+  contracts with 1.3% of businesses (U62).
 
 ### 4.5 Australia and other countries (`national`, U63 to U72)
 
@@ -374,29 +400,34 @@ explanation.
 
 1. **Two systems in one.** Patents are an overseas filers' system in Australia (U7, U13, U70, U66: 5th of 38 OECD
    members for non-resident patents), while trade marks, provisionals and second-tier patents are mostly Australians'
-   (U7, U13). Australians themselves file mostly abroad (U70). Who benefits from each right (Q2) may differ sharply.
+   (U7, U13). Overseas applicants come through the PCT and file widely (U90, U93); Australians themselves file mostly
+   abroad (U70), yet nearly half of their own standard patents are filed only here (U93). Who benefits from each right
+   (Q2) may differ sharply.
 2. **Concentration at every level.** Firms (U44), places (U52), attorneys (U21), grants (U83), contracts (U46, U62)
    and institutions' patents (U84) are all dominated by a few. Averages will mislead; Stage 2 uses medians, logs,
    ranks and shares.
-3. **Uneven access.** Individuals and regional areas stand out: individuals file alone (U20), file a fifth of the standard
-   patents filed from Australia (U48) and drove the provisional rise (U8); R&D claimants are rarer outside the cities and more often have
-   never filed IP there (U54); filers are more advantaged than firms in general (U47). This bears directly on Q2 and
-   Q4.
+3. **Uneven access.** Individuals and regional areas stand out: individuals file alone (U20), file a fifth of the
+   standard patents filed from Australia (U48), drove the provisional rise (U8) and file more of their patents only
+   here (U93); R&D claimants are rarer outside the cities and more often have never filed IP there (U54); filers are
+   more advantaged than firms in general (U47). About one inventor in seven in Australia is estimated to be a woman
+   (U98). This bears directly on Q2 and Q4.
 4. **Research without local invention.** Strong research inputs (GII inputs 13th, U69; universities 86.8% of works,
    U82) sit beside weak outputs (24th), falling business R&D (U65) and research cited mostly by foreign inventions
-   (U85). The gap between research and Australian invention is a lead for Q1 and Q4.
+   (U85). Few foreign-filed inventions are made here (0.85%, U96), and Australians' patents are cited less (U94). The
+   gap between research and Australian invention is a lead for Q1 and Q4.
 5. **Policy leaves fingerprints.** Rushes, steps and pauses around rule changes (U28, U3, U33) offer before-and-after
    comparisons, the starting point for the natural experiments Q5 needs. Fees, the lever IP Australia holds most
    directly, are not yet in the data (R3).
-6. **How long rights are kept.** Lifetimes have lengthened for patents and shortened for trade marks (U36), and
-   ownership changes are common (U17, U35). Lifetimes are the closest the data come to the private value of a right
-   (Q1), and they are now a working measure.
+6. **Signs of a right's value.** Lifetimes have lengthened for patents and shortened for trade marks (U36), and
+   ownership changes are common (U17, U35). How widely a patent is filed and how often it is cited (U93, U94) add two
+   more signs of private value (Q1), to read beside years in force, which is now a working measure.
 7. **The record has a history.** System migrations, Acts and classifications change what is recorded: survivors and
    batch dates (U23), ownership history from FY2003 (U17), November 2018 (U34), the Nice 8th edition (U75), WIPO's
    unknown origins before 1995 (U64). Every comparison over time now has a stated safe window.
 8. **Linkage is the binding limit.** Firms only through schemes and ABNs (U41, U45), industries only through
-   crosswalks (U75), places only through postcodes (U49, U87), institutions through a reviewed list (U81), and no
-   firm-level outcomes for small firms (BLADE ruled out). These limits shape how far Q3 and Q5 can be answered.
+   crosswalks (U75), places only through postcodes (U49, U87), institutions through a reviewed list (U81), inventors'
+   countries only for patents also filed abroad (U95), gender only as an estimate that holds for Australia (U97), and
+   no firm-level outcomes for small firms (BLADE ruled out). These limits shape how far Q3 and Q5 can be answered.
 
 ---
 
@@ -416,6 +447,14 @@ The decisions Stage 1 made about how each variable may be used.
 - Lifetimes come from survival curves with unfinished rights kept; trade marks and designs are observed to 31 March
   2026 (U31, U36).
 - Trade mark expedite shares are compared only on one side of November 2018 (U34).
+- A patent priority's office is read from its number, not IP RAPID's label (U88); `filing_route` names the first route
+  that applies (U90).
+- A family's reach and citations are the whole family's, so they repeat across divisionals (U92); citations are
+  compared as ranks or logs within cohorts, and the five-year count only where its window is complete (U92, U94).
+- "Invented in Australia" is read among patents whose inventors' countries are known, which leaves out most patents
+  filed only here (U95).
+- Gender estimates are read as levels for inventors in Australia only; for other countries only within one country
+  over time; for China and Korea not at all (U97).
 
 **Over time**
 - Changes, or months around events, not levels; months against the same month a year earlier, or 12-month totals
@@ -456,7 +495,9 @@ the number of pairs tested, and a second period or sample before it counts as a 
 | The provisional rise against policy and fee events, and IP Australia's own figures | U8 | Q4 |
 | Before and after each policy change (two rushes, four steps, two pauses), with placebo dates | U28 | Q4, Q5 |
 | Filing alone, and time to grant, by origin, applicant type and representation | U11, U20, U33 | Q2, Q4 |
-| Years in force by origin, applicant and technology, within cohorts | U36 | Q1 |
+| Years in force, family reach and citations by origin, applicant and technology, within cohorts | U36, U93, U94 | Q1 |
+| The route into Australia by origin and applicant, and where inventions are made against who files them | U90, U96 | Q1, Q2 |
+| Women's estimated share among inventors in Australia, by field and filer | U98 | Q2 |
 | Rights moving overseas by technology, firm and age | U18 | Q1, Q2 |
 | Firms' IP against their R&D, contracts, age and entity group | U41 to U46 | Q2, Q3 |
 | R&D claimants who have never filed IP ('missing filers'), by place and industry | U54 | Q4 |
@@ -466,7 +507,8 @@ the number of pairs tested, and a second period or sample before it counts as a 
 | Research output against IP by institution (2010 to 2024); industry-partner grants against joint filing | U82 to U84 | Q1, Q3 |
 | Australian research cited by patents against Australian inventions that cite it | U85 | Q1, Q4 |
 
-**Unexplained leads, kept in view:** the November 2018 fall in trade mark expedite requests (U34, OQ6); ABN linking
+**Unexplained leads, kept in view:** Australians' direct filing of standard patents, 28.3% in FY2026 (U90); the
+November 2018 fall in trade mark expedite requests (U34, OQ6); ABN linking
 since FY2025 (U45, OQ7); IP RAPID's innovation patents in 2016 at 1.331 times WIPO's utility models (U67); the step in
 the World Bank's advanced education share around 2010 (U65); rising holder changes for plant breeder's rights (U17);
 petty patents of FY1986 to FY1988 without acceptances (U32).
@@ -476,8 +518,8 @@ petty patents of FY1986 to FY1988 without acceptances (U32).
 ## 8. Open items and data gaps
 
 **For the owner** (`owner-questions.md`):
-1. **What next** (OQ1): the three remaining `rights` attachments (the links, Google Patents and the inventors with
-   estimated gender), or Stage 2.
+1. **What next:** Stage 1 is complete, so Stage 2 can begin when you say (the three `rights` attachments, OQ1, are
+   done).
 2. **A sector check of the institutions link** (OQ11): a half-hour review by someone who knows the sector, best done
    before Stage 2 compares institutions.
 3. **The fee history and the PBS report** (OQ2): fees are IP Australia's most direct lever and are not yet in the
@@ -489,8 +531,9 @@ November 2018 (OQ6), and whether ABNs are attached late or collected less since 
 
 **Data worth adding, all free:** the RBA's cash and exchange rates and the ABS national accounts (timeline); the ATO's
 statistics by postcode (regions); IP Australia's published statistics as a benchmark; ALP's crosswalk that includes
-services (industries). BLADE, the only route to small firms' outcomes, stays ruled out, and that limit is stated
-wherever it bears on a finding.
+services (industries); WIPO's patent families by origin, to size the Australian inventions filed only abroad that
+Google's selection misses (the review's F07). BLADE, the only route to small firms' outcomes, stays ruled out, and that
+limit is stated wherever it bears on a finding.
 
 ---
 
@@ -501,7 +544,8 @@ wherever it bears on a finding.
 - **Value.** Counts of rights, lifetimes and citations are activity and use, not public value. The research goal
   treats them as indicators, not success.
 - **Everyone.** The `firms` lens holds firms that used a scheme, not all businesses; individuals in IP RAPID are
-  pseudonymised, so their gender cannot be estimated (only inventors', from Google Patents, once attached).
+  pseudonymised, so their gender cannot be estimated (only inventors' is, from Google Patents, and reliably only for
+  inventors in Australia, U97).
 - **Small firms' outcomes.** Without BLADE, firm-level growth and survival for small businesses are out of reach.
 
 ---
@@ -513,7 +557,7 @@ wherever it bears on a finding.
 | Every observation, with its chart and the output it quotes | `analysis/notebooks/01_univariate.ipynb` (section summaries 1.9, 2.6, 3.6, 4.5, 5.7, 6.5, 7.7; section 9) |
 | The plan, and where every table goes | `docs/eda-plan.md` |
 | Status, leads and conventions for the next session | `docs/handover-eda.md` |
-| Every decision and repair | `docs/adr/` (0001 to 0021) |
+| Every decision and repair | `docs/adr/` (0001 to 0022) |
 | Questions for the owner and IP Australia | `docs/owner-questions.md` |
 | Terms | `GLOSSARY.md` |
 | How each lens is built, and its columns | `analysis/eda/build.py`, `analysis/eda/variables.yaml` |
@@ -615,3 +659,14 @@ All descriptive.
 | U85 | institutions | US patents cite the institutions' research, 93.6% from inventions with no Australian link |
 | U86 | institutions | Universities hold 77.9% of the institutions' contract value |
 | U87 | institutions | Half the universities' standard patents carry a postcode that is not a postal area |
+| U88 | rights (links) | Eight columns from the links; IP RAPID's PCT country label read past |
+| U89 | rights (links) | The PCT route agrees with WIPO's count of national phase entries, year by year |
+| U90 | rights (links) | Overseas applicants come through the PCT; Australians moved from provisionals to the PCT, divisionals and direct filing |
+| U91 | rights (links) | Most overseas inventions first filed in the United States; Australians' PCT applications filed at home; marks taken abroad |
+| U92 | rights (Google Patents) | The family of nearly every standard patent since the 1980s is found |
+| U93 | rights (Google Patents) | Overseas applicants' patents belong to wide families; Australians' are mostly narrow |
+| U94 | rights (Google Patents) | Citations are a long tail, and Australians' patents are cited less |
+| U95 | rights (inventors) | Inventors are named, but their countries are missing for patents filed only in Australia |
+| U96 | rights (inventors) | Inventions filed from Australia are made here; few filed from overseas are |
+| U97 | rights (inventors) | Gender estimates match WIPO's for Australia, run high elsewhere, far too high for China and Korea |
+| U98 | rights (inventors) | About one inventor in seven in Australia is estimated to be a woman |

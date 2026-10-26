@@ -88,7 +88,8 @@ only the result into pandas. The machine has about 15 GB of memory and 4 cores.
 - **IP RAPID's link countries.** For patents, `links.linked_application_country` is not the linked application's
   office: all 577,317 PCT application numbers are labelled `au` (37,656 more `wo`), and of the 85,067 convention
   priorities labelled `au`, 5,603 are PCT numbers and 9,965 have other offices' formats (mostly 11 to 15 digits).
-  Tell an Australian priority by its number (year first, ten digits), as the N01 check did. No lens reads the column.
+  Tell an Australian priority by its number (year first, ten digits), as the N01 check did. The links attachment
+  (ADR 0022) reads a patent priority's office from its number for this reason.
 
 ## Found in Stage 1 (2026-10-25, ADR 0012)
 
@@ -225,6 +226,23 @@ From section 7 of `01_univariate.ipynb`.
   industry.
 - **Half the universities' standard patents carry a postcode that is not a postal area** (2052, 3800, 4072, 3010,
   2006): the institutions hold 71.58% of such real codes with no residents (U87).
+
+## Found in the last rights attachments (2026-10-26, ADR 0022)
+
+From sections 1.8.3 to 1.8.5 of `01_univariate.ipynb`. The lens is built around these; the corpus is as published.
+
+- **Divisionals carry no links of their own** but the one to their parent: no PCT number and no priority, though
+  their date of patent is often the parent's. `filing_route` therefore names `divisional` before `convention` and
+  `direct`.
+- **Designs' divisional links change name in 2004:** `divisional_parent` and `additional_parent` stop in June 2004 and
+  `exclusive_parent` (a design excluded from an earlier application, Designs Act 2003) starts in January 2004.
+- **18,898 rights claim a priority with no number;** they are counted by office and date.
+- **Google Patents' Australian publications give no inventor countries,** so a patent filed only in Australia rarely
+  has one: 94% to 99% of Australian filers' standard patents with inventors but no inventor country were filed only
+  in Australia.
+- **734 Australian application numbers fall in two Google Patents families;** the lens takes the lower family id.
+- **Gender estimates from names run high against WIPO's published shares** for most countries (median 4.5 points;
+  China 11.2, Korea 21.3) but not for Australia (0.8 points), so they are read for inventors in Australia only.
 
 ## Not yet checked
 

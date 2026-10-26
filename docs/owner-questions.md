@@ -11,7 +11,6 @@ ADR, the handover or the plan). Number new questions from the next free one: **O
 
 | # | Question | Why it matters | Recommendation | What the answer changes |
 |---|---|---|---|---|
-| OQ1 | When should the other `rights` attachments be done: the links (the route into Australia), Google Patents (family size, citations, B4) and the inventors (with estimated gender)? | They add who invents and how inventions reach Australia (Q1, Q2); they are not needed for the other lenses' Stage 1 | After `regions` and `national`, so that every lens has its Stage 1 core before more attachments | The order of work in the handover |
 | OQ2 | Should the two biggest data gaps be filled before Stage 2: the history of official fees (R3, B8) and the PBS monthly report with Section 100 (B9)? Both are free, from the Federal Register and the PBS website | Fees are IP Australia's most direct lever (Q4, Q5); Section 100 holds high-cost medicines, central to a medicine case study | Build the fee history before Stage 2 (a few days); leave the PBS report until a medicine case study is chosen (OQ8) | Whether Stage 2 can relate filing and renewal to fees |
 | OQ3 | Should the missing AusTender amendments be fetched? Amendments after August 2019 to contracts that had ended by then are not in the corpus | A sample suggests under 1% of contract value; the harvester exists (`austender._harvest_by_id`); it takes about a day of running, at no cost | Not now: the effect is small. Fetch it if Stage 2 leans on contract values | The completeness of `austender_value` |
 | OQ4 | TableBuilder: only if a question needs owner-managers by sex or Indigenous status for each postal area, would you register as a private user? | It needs an account in your name; the free Basic version may not have the variables (`docs/tablebuilder-owner-managers.md`) | Hold until the `regions` profile shows a need | One more `regions` attachment |
@@ -44,6 +43,7 @@ against 1,855; other years 0.958 to 1.072 of it, U67).
 
 | # | Question | Answer | Date | Recorded in |
 |---|---|---|---|---|
+| A7 | When should the other `rights` attachments be done (OQ1): the links, Google Patents and the inventors? | Now: done (U88 to U98) | 2026-10-26 | ADR 0022; handover |
 | A6 | Go on to the `industries` lens after `national`? | Yes | 2026-10-26 | Handover; ADR 0020 |
 | A1 | Adopt years in force (U36), with unfinished rights kept, as a working measure of how long owners keep their rights? | Yes, as long as it is used alongside other signals | 2026-10-25 | ADR 0015; handover |
 | A2 | Order of work after the timeline | The events attachment (B5), then `firms` | 2026-10-25 | Handover; plan |

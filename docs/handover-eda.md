@@ -2,7 +2,8 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**The owner's decisions (2026-10-26):** complete the `institutions` lens (done: core, its IP detail and every source
+**The owner's decisions (2026-10-26):** address the three remaining `rights` attachments (done: the links, Google
+Patents and the inventors); before that, complete the `institutions` lens (done: core, its IP detail and every source
 mapped to it); before that, go on to the `industries` lens (done: core and attachments); before that, commence the
 `national` lens (done). **(2026-10-25):**
 after the `firms` lens, the owner asked for the `regions` lens to be
@@ -12,7 +13,22 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-26, latest):** Stage 1 has its summary: `docs/stage-1-summary.md` gives the full account (the
+**Status (2026-10-26, latest):** **Stage 1 is complete.** The last three `rights` attachments are built and profiled
+(sections 1.8.3 to 1.8.5 of `01_univariate.ipynb`, U88 to U98, ADR 0022): how each right came to Australia (8 columns
+from `iprapid/links`, with a patent priority's office read from its number because IP RAPID labels PCT numbers `au`),
+each patent's Google Patents family (6 columns: offices, US grant, citations, with the five-year count only where its
+window is complete) and its inventors (8 columns: countries and expected women and men). `rights` has 74 columns. The
+PCT route matches WIPO's PCT national phase entries at IP Australia (median ratio 1.001, 1995 to 2024). Gender
+estimates match WIPO's published share for Australia (14.6% against 13.8%) but run high elsewhere (median +4.5
+points, China +11.2, Korea +21.3), so they are read as levels for inventors in Australia only. Two WIPO indicators
+joined the corpus for the checks (`wipo_ipstats`: direct and PCT national phase applications; women's share of PCT
+inventors), every earlier value unchanged; `national_indicators` now has 41,218,170 rows. Re-running the whole notebook
+found four cells whose answers depended on how ties fell (row order, `any_value`); all are fixed, and three quoted
+figures are corrected (U52: 29.2% and 32.8% of people, not 29.0% and 32.9%; U87: UNSW's 210, Monash's 151 and so on,
+not 216 and 178; U68's totals). `docs/stage-1-summary.md` and section 9 are updated. **Next is the owner's call:
+Stage 2. OQ11 (the institutions link) and OQ2 (the fee history) are best answered before it.**
+
+Before that, on 2026-10-26: Stage 1 has its summary: `docs/stage-1-summary.md` gives the full account (the
 goals, the process, each lens's findings, eight themes across the lenses, the rules carried forward, the pairs for
 Stage 2, the open items and the limits, with an index of U0 to U87), and section 9 of `01_univariate.ipynb` holds the
 short version (the key observations and the pairs carried into Stage 2). The notebook's status line is brought up to
@@ -106,6 +122,27 @@ and BLADE stays ruled out.
 
 ## Where things stand
 
+- **Stage 1, `rights`, links, Google Patents and inventors (1.8.3 to 1.8.5).** What it found (all descriptive):
+  - the links (U88): IP RAPID labels 93.88% of PCT numbers and 15,568 other offices' priority numbers `au`; read from
+    the number, 0.7% of standard patents' priority offices are unknown;
+  - against WIPO (U89): the PCT route is 0.981 to 1.007 of WIPO's PCT national phase entries (1995 to 2024), other
+    standard patents 0.989 to 1.019 of its direct applications;
+  - routes (U90): overseas standard patents through the PCT 81.0% (FY2010), 69.3% (FY2026), divisionals 19.9%;
+    Australians claiming only a provisional 81.2% (FY1985) to 11.4% (FY2026), direct filing 28.3% in FY2026 (a lead);
+    overseas trade marks through Madrid 57.2% (FY2020);
+  - offices (U91): overseas priorities first filed in the US 53.42%; Australians' PCT at IP Australia 91.24%; Madrid
+    basis marks 268 (2001) to 2,258 (2020), beside WIPO's 2,064 (2015) and 2,151 (2020);
+  - families (U92): found for 94.81% to 99.23% of standard patents per decade since the 1980s; 734 numbers in two
+    families; 23.14% of standard patents FY2010 to FY2019 share a family, 88.29% through a divisional;
+  - reach (U93): overseas median 6 offices, US grant 66.66%; Australian median 2, 45.53% only in Australia
+    (individuals 59.91%);
+  - citations (U94): median citing families in five years 6 (overseas) against 1 (Australian), never cited 13.29%
+    against 43.99%;
+  - inventors (U95, U96): Australian filers' inventor countries known for 56.98% (2010s), the rest almost all filed
+    only here (Google's Australian publications give none); where known, 94.47% of Australian-filed patents have an
+    inventor here, 0.85% of overseas-filed ones;
+  - gender (U97, U98): Australia 14.6% against WIPO's 13.8%; median country +4.5 points; China +11.2, Korea +21.3;
+    about one inventor in seven in Australia an estimated woman (14.34% on Australian organisations' patents).
 - **Stage 1, `institutions` (section 7, every column).** What it found (all descriptive):
   - coverage (U80): 130 institutions, 1990 to 2026; works from 2010, ARC from 2001, NHMRC from the 2013 round,
     contracts in earnest from 2007; 84 institutions filed a standard patent, 112 a trade mark;
@@ -283,13 +320,14 @@ and BLADE stays ruled out.
     expired patents have a grant date;
   - design origin is often unrecorded (4.0% to 6.3% unknown since FY2018, and rising), so design shares need care.
 - **Seven lenses and four companion tables are built** (`analysis/eda/build.py`), in about two minutes:
-  - `rights`: 4,368,006 rows, 52 columns (29 core, 12 from the parties, 11 from the events);
+  - `rights`: 4,368,006 rows, 74 columns (29 core, 12 from the parties, 11 from the events, 8 from the links, 6 from
+    Google Patents, 8 from the inventors);
   - `firms`: 398,450 rows, 40 columns (ADR 0016: `n_held`, `n_held_in_force`, `in_iplord`);
   - `regions`: 2,641 rows, 42 columns (ADR 0017, 0018);
   - `region_indicators`: 22,511,923 rows, 10 columns, 173 MB (the `regions` lens's attachments, long; ADR 0018);
   - `national`: 135,597 rows, 11 columns (ADR 0019: `entity`);
-  - `national_indicators`: 41,203,167 rows, 15 columns, 264 MB (the `national` lens's attachments, long; ADR 0019,
-    0020);
+  - `national_indicators`: 41,218,170 rows, 15 columns, 264 MB (the `national` lens's attachments, long; ADR 0019,
+    0020, 0022);
   - `industries`: 703 rows, 17 columns (ADR 0020);
   - `industry_indicators`: 1,409,875 rows, 12 columns, 8 MB (the `industries` lens's attachments, long; ADR 0020);
   - `institutions`: 4,810 rows, 30 columns (ADR 0021);
@@ -325,6 +363,11 @@ and BLADE stays ruled out.
 - **Settled (descriptive, ADR 0010; confirmed by the owner, 2026-10-25):** the register does not drop provisional applications once a full application
   claims them (N01, refuted), so FY2026's jump to 10,069 provisionals is real; `application_date` for a PCT filing is
   the date it entered Australia's national phase (N06).
+- **Corrected on 2026-10-26** (ADR 0022 and the notebook): three figures whose answers depended on how ties fell, found
+  by re-running the whole notebook: U52's share of people in the top tenth of areas (29.0% and 32.9% became 29.2% and
+  32.8%), U87's postcode table (it counted joint filings twice and named an arbitrary institution: 216 became 210 for
+  UNSW, 178 became 151 for Monash), and two displays (cells naming the largest filer and the names matched by ABN);
+  U68's totals change with the new WIPO indicators.
 - **Corrected on 2026-10-26** (ADR 0020): the corpus's ISIC-to-ANZSIC step, which split each ISIC class over its
   partial links (textiles had 8.9% of patents, now 2.3%).
 - **Corrected on 2026-10-26** (ADR 0019): the `rights` build's arbitrary ties (founders' same-day postcodes, agents'
@@ -340,6 +383,8 @@ and BLADE stays ruled out.
 - **Corrected this session (the timeline):** the policy register's note that the Patents Act 1990 brought in 20-year
   patents (it was 16 years until 1 July 1995); and section 1's U5 and U10, whose charts showed survivors' counts and
   registration rates for the years before 1983 (trade marks) and 1986 (designs) without saying so.
+- **Tests (the last rights attachments):** 87 pass; new: the links, family and inventor columns are consistent (routes
+  by type, PCT numbers, priority offices, the citation window, inventor and gender sums).
 - **Tests (institutions):** 86 pass; new: one row per key in both tables, the reviewed link's integrity (every
   institution, name and ABN a ROR record, each ABN one institution, no name key two institutions), the name key
   across spellings, and the lens carrying its grants (all but 14 of the ARC's and 15 of the NHMRC's) and its IP links.
@@ -360,15 +405,15 @@ and BLADE stays ruled out.
 
 ## Next, in order
 
-1. **The owner's call:** every lens has its Stage 1 profile, and the stage's summary is written
-   (`docs/stage-1-summary.md`, section 9 of the notebook). What remains of Stage 1 is the `rights` attachments below;
-   then Stage 2. OQ11 (a sector check of the institutions link) is best
-   answered before Stage 2 compares institutions.
+1. **The owner's call:** Stage 1 is complete (every lens and attachment profiled, U0 to U98; summary in
+   `docs/stage-1-summary.md` and section 9). Stage 2 begins when the owner says. OQ11 (a sector check of the
+   institutions link) is best answered before Stage 2 compares institutions.
 2. **Done:** the `national` section (U63 to U72, ADR 0019), the `industries` section (U73 to U79, ADR 0020) and the
    `institutions` section (U80 to U87, ADR 0021), each with its attachments.
-3. **The rest of the `rights` attachments, as sub-sections of 1.8, when the owner says:** the links (with the PCT
-   country check), Google Patents (B4), and the inventors (gender estimates checked country by country against WIPO's
-   published shares, above all China and Korea).
+3. **Done:** the last `rights` attachments (1.8.3 to 1.8.5, U88 to U98, ADR 0022): the links (with the PCT country
+   check), Google Patents (B4) and the inventors (gender checked against WIPO's shares). Left from B4: sizing the
+   Australian families filed only abroad that Google misses (F07, needs WIPO's patent families by origin), and the
+   1990s and 2000s numbers that do not match (1% to 5% of standard patents in those decades).
 4. **Done:** the `timeline` section (U22 to U30, ADR 0014), the events attachment (U31 to U40, ADR 0015), the `firms`
    section (U41 to U47, ADR 0016) and the `regions` section with its attachments (U48 to U62, ADR 0017, 0018). The
    `firms` lens's later attachments (filing histories by year from `applicant_year`; its rights' lifetimes and
@@ -412,11 +457,13 @@ and BLADE stays ruled out.
    - medical research institutes' works are cited by patents two and a half times as often per work as universities'
      (U85), and the institutions' joint filing (a quarter to a third of standard patents, U84) is a measure of
      collaboration to set beside the ARC's industry-partner grants (U83);
+   - Australians' standard patents filed directly, claiming nothing, rose to 28.3% in FY2026 (11.3% in FY2020, U90): a
+     change in practice, or priority claims recorded late?
+   - family reach and citations (U93, U94) are value measures to read beside years in force (U36), within cohorts;
+   - gender estimates are levels for inventors in Australia only (U97, ADR 0022);
    - the universities' patents outside the postal areas (U87) can be placed through `institution_rights` and ROR's
      locations, replacing the GeoNames lookup in the item above, if Stage 2's regional results prove sensitive.
 2. Check in Stage 1 (the placeholder dates are done, U40):
-   - IP RAPID's `links.linked_application_country`, which labels every PCT number `au` (`analysis/README.md`), with
-     the links attachment;
    - the 222-day peak in trade mark registration times (U11): WIPO gives IP Australia's average time from filing to
      registration as 222 days in 2016 (U70), so the peak is the office's usual path. IP Australia's own process
      times would confirm it for other years.
@@ -436,7 +483,7 @@ and BLADE stays ruled out.
 
 ## For the owner
 
-The owner's questions are kept in **`docs/owner-questions.md`**: open ones (OQ1 to OQ4), those the owner is asking IP
+The owner's questions are kept in **`docs/owner-questions.md`**: open ones (OQ2 to OQ4 and OQ11), those the owner is asking IP
 Australia (OQ5 to OQ7: the provisional rise, the trade mark expedite fall, ABN linking since FY2025), deferred ones,
 and every answer with its date. Nothing there blocks Stage 1. Add new questions there, and move answers to its
 "Answered" table.
@@ -459,4 +506,7 @@ and every answer with its date. Nothing there blocks Stage 1. Add new questions 
   same age.
 - Corrections to the institutions link go in `analysis/eda/institutions/*.csv`; `uv run python -m eda.build
   institution_rights institutions` rebuilds both in seconds, and the tests check the link.
-- Next free ADR: 0022.
+- Next free ADR: 0023.
+- The `rights` lens's gender columns: levels for inventors in Australia only; never for China or Korea (ADR 0022).
+- Tie-breaks: any query that picks a top row or a name must order ties explicitly (the lens files' row order is not
+  fixed between builds).
