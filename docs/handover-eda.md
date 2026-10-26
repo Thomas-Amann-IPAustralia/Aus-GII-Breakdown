@@ -13,7 +13,23 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-27, latest):** **Stage 1 has a plain-English website, the evidence atlas** (`evidence/`, ADR 0023),
+**Status (2026-10-27, latest):** **Stage 1 is audited against IP Australia's published evidence**
+(`docs/audit-ip-australia.md`, ADR 0024), at the owner's request: the twelve Australian IP Reports (2015 to 2026),
+IP Australia's research papers and notes, as the Econ repository holds them page by page. A tested benchmark
+(`analysis/audit/`, `python -m audit.benchmark`) recomputes 195 figures IP Australia published from the lenses on its
+definitions (calendar years; a resident has a founding applicant in Australia); 155 agree within 2% (or 1 point), the
+rest explained by definition or found to be four real discrepancies. Of the 99 observations, 23 are corroborated, 9
+consistent, 1 disputed in part and 66 not testable from IP Australia's publications; none is contradicted. What
+changes: design shares among known origin are lower bounds (IP Australia counts about three in four "origin unknown"
+designs as Australian); trade marks filed in 2018 are flagged (IP RAPID 1,994 short, in Madrid applications); U67's
+2016 lead is closed (a real rise IP Australia reported); U45's fall in first-time filers is a fall in ABN linking
+(by applicant, first-time resident trade mark filers rose from 22,838 to 28,626 in 2025); U28 gains Australians'
+standard patents brought forward by the innovation closure in 2021 (+24.8%). IP Australia's "55.6% of resident
+applications filed by individuals" (2022) cannot be reproduced (OQ12). The notebook is not rewritten; the verdicts
+live in the audit, ADR 0024 and `docs/stage-1-summary.md` (section 10). **Next is still the owner's call:** Stage 2,
+publishing the atlas, and whether to add OQ12 to OQ14 to the request to IP Australia.
+
+Before that, on 2026-10-27: **Stage 1 has a plain-English website, the evidence atlas** (`evidence/`, ADR 0023),
 asked for by the owner for readers who are not data scientists. Every observation (U0 to U98) has a page: what was
 found, under which lens, how it serves the five questions, and a trail from the original source through storage and
 preparation to the reasoning, with its assumptions and limits; plus pages on the questions, the lenses, the data's
@@ -133,6 +149,20 @@ and BLADE stays ruled out.
 
 ## Where things stand
 
+- **The audit against IP Australia (ADR 0024).** `analysis/audit/published.csv` (195 figures, each with its Econ
+  document and page), `benchmark.py` and `output/` (the comparison, a summary, the states' shares and the lens-only
+  figures the audit quotes). Rerun `cd analysis && uv run python -m audit.benchmark` after rebuilding the lenses and
+  commit the output; `tests/test_audit.py` fails if it is out of step (93 tests pass, 2 new). What it found (all
+  descriptive):
+  - counts: standard patents 12 of 12 years within 0.34%, provisionals 11 of 11 within 0.25%, trade marks 10 of 11
+    within 0.05%, standard grants 10 of 10 within 0.03%, the PCT route within 0.35%, Madrid within 0.1%, states'
+    shares within 0.2 points;
+  - D1: resident designs 0.8619 to 0.8983 of IP Australia's, because about three in four "origin unknown" designs are
+    Australian on its count; D2: trade marks 2018 0.9749 (Madrid); D3: IP Australia's 55.6% of residents'
+    applications by individuals (2022) against the lens's 20.65%; D4: trade marks in force in 2005 0.9384 (context);
+  - IP Australia's readings of the leads, with their strength: digital tools behind the provisional rise (U8), real
+    direct filing among domestic innovators (U90), the closure behind 2021's resident patents (U28), fast-tracked
+    patents renewed more (a Stage 2 pair, U34 with U36).
 - **The evidence atlas (ADR 0023).** `evidence/` (index.html, css, js, data, img) is static; `evidence/data/atlas.json`
   and `evidence/data/charts/*.json` are generated and committed. To change it: edit the notebook or
   `analysis/atlas/content/`, then `cd analysis && uv run python -m atlas.charts` (needs the lens tables) and
@@ -438,15 +468,16 @@ and BLADE stays ruled out.
    `firms` lens's later attachments (filing histories by year from `applicant_year`; its rights' lifetimes and
    assignments) become sub-sections of section 2 as each is built.
 5. **The plan's "high value, little work" additions, with the lens each serves:** the RBA's cash rate and exchange
-   rates and the ABS national accounts (timeline), the ATO's statistics by postcode (regions), and IP Australia's own
-   published figures as a benchmark (which would also test the provisional rise, U8, and the trade mark expedite fall,
-   U34).
+   rates and the ABS national accounts (timeline) and the ATO's statistics by postcode (regions). Done: IP Australia's
+   own published figures as a benchmark (ADR 0024: the provisional rise, U8, is corroborated; the trade mark expedite
+   fall, U34, is not mentioned in IP Australia's reports).
 
 ## Open items
 
 1. Leads for Stage 2:
    - fewer recent filers are linked to an ABN (U45): Australian organisations' trade marks 84.1% (FY2024) to 59.9%
-     (FY2026). Late linking, or ABNs collected less? Firm filing by year is compared to FY2024 until known;
+     (FY2026). Late linking, or ABNs collected less? Filing itself did not fall (ADR 0024). Firm filing by year is
+     compared to FY2024 until known;
    - trade mark requests for expedited examination fell from about 1,400 a month to about 230 in November 2018, when
      the trade mark records moved between systems (U34): recording or practice? IP Australia's published figures
      could tell;
@@ -461,8 +492,18 @@ and BLADE stays ruled out.
      that places these postcodes (GeoNames, free) only if Stage 2's regional results prove sensitive;
    - the ACT holds 27.0% of government contracts against 1.3% of businesses (U62), and South Australia 12.2% of their
      value against 6.1%: where contracts are addressed, to read beside the firms behind them.
-   - IP RAPID's innovation patents filed in 2016 are 1.331 times WIPO's utility models (2,469 against 1,855; other
-     years 0.958 to 1.072, U67): how WIPO counted divisionals or conversions that year?
+   - closed (ADR 0024): IP RAPID's innovation patents filed in 2016 (1.331 times WIPO's utility models, U67) were a
+     real rise from non-residents that IP Australia reported (2,322); the gap is between IP Australia's count and
+     WIPO's;
+   - trade marks filed in 2018 are 2.5% short in IP RAPID, in Madrid applications (ADR 0024, OQ13): flag 2018 in trade
+     mark series;
+   - design shares among known origin are lower bounds: IP Australia counts most "origin unknown" designs as
+     Australian (ADR 0024, OQ14);
+   - IP Australia's 55.6% of residents' patent applications by individuals (2022) cannot be reproduced (20.65% in the
+     lens; ADR 0024, OQ12): U13 and U48 stand meanwhile;
+   - the innovation closure pulled forward Australians' standard patents in 2021 (+24.8%, U28 and ADR 0024): include
+     them in the closure's Stage 2 window;
+   - first-time filers from FY2025: count by applicant (party id) beside the ABN count (U45, ADR 0024).
    - the World Bank's share of the labour force with advanced education steps up to 86.33% in 2010 for Australia
      (80.42% in 2008, 82.09% in 2015), a break the OECD median does not show (U65): use with care.
    - Australia ranks near the bottom of the OECD on business R&D, exports and manufacturing, and near the top on
@@ -484,8 +525,9 @@ and BLADE stays ruled out.
      locations, replacing the GeoNames lookup in the item above, if Stage 2's regional results prove sensitive.
 2. Check in Stage 1 (the placeholder dates are done, U40):
    - the 222-day peak in trade mark registration times (U11): WIPO gives IP Australia's average time from filing to
-     registration as 222 days in 2016 (U70), so the peak is the office's usual path. IP Australia's own process
-     times would confirm it for other years.
+     registration as 222 days in 2016 (U70), so the peak is the office's usual path. IP Australia's reports give no
+     trade mark process times (ADR 0024); its median patent time from examination request to acceptance, 1.3 years
+     for 2020, matches the lens's 1.23 (U33).
 3. Settled by the parties attachment (ADR 0013): `representation` separates attorneys (agents of five or more
    applicants) from other agents. For trade marks the share still depends on the threshold, so Stage 2 gives bounds.
    Attorney firms' corporate groups are not recorded, so concentration by firm name is a lower bound.
@@ -503,7 +545,9 @@ and BLADE stays ruled out.
 ## For the owner
 
 The owner's questions are kept in **`docs/owner-questions.md`**: open ones (OQ2 to OQ4 and OQ11), those the owner is asking IP
-Australia (OQ5 to OQ7: the provisional rise, the trade mark expedite fall, ABN linking since FY2025), deferred ones,
+Australia (OQ5 to OQ7: the provisional rise, the trade mark expedite fall, ABN linking since FY2025; OQ5 and OQ7
+narrowed by the audit) and three the audit proposes for the same request (OQ12 to OQ14: the 55.6% individuals' base,
+the 2018 Madrid gap, design origins), deferred ones,
 and every answer with its date. Nothing there blocks Stage 1. Add new questions there, and move answers to its
 "Answered" table.
 
@@ -527,7 +571,9 @@ and every answer with its date. Nothing there blocks Stage 1. Add new questions 
   same age.
 - Corrections to the institutions link go in `analysis/eda/institutions/*.csv`; `uv run python -m eda.build
   institution_rights institutions` rebuilds both in seconds, and the tests check the link.
-- Next free ADR: 0023.
+- Next free ADR: 0025.
+- After `python -m eda.build`, rerun `python -m audit.benchmark` and commit `analysis/audit/output/`; compare with IP
+  Australia on calendar years and `founding_australian` (ADR 0024).
 - The `rights` lens's gender columns: levels for inventors in Australia only; never for China or Korea (ADR 0022).
 - Tie-breaks: any query that picks a top row or a name must order ties explicitly (the lens files' row order is not
   fixed between builds).

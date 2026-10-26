@@ -459,6 +459,9 @@ The decisions Stage 1 made about how each variable may be used.
   filed only here (U95).
 - Gender estimates are read as levels for inventors in Australia only; for other countries only within one country
   over time; for China and Korea not at all (U97).
+- Comparisons with IP Australia's published figures use calendar years and `founding_australian` for residency; a
+  design share among known origin is a lower bound; trade marks filed in 2018 are flagged (2.5% short in IP RAPID, in
+  Madrid applications); second-tier counts include conversions from standard patents (ADR 0024).
 
 **Over time**
 - Changes, or months around events, not levels; months against the same month a year earlier, or 12-month totals
@@ -509,13 +512,15 @@ the number of pairs tested, and a second period or sample before it counts as a 
 | Australia against OECD members, as ratios to people and GDP | U65, U66 | Q1, Q4 |
 | IP per business by industry, beside the crosswalk's limits; innovation (BCS) against IP | U75, U77, U79 | Q2, Q3 |
 | Research output against IP by institution (2010 to 2024); industry-partner grants against joint filing | U82 to U84 | Q1, Q3 |
+| Expedited examination against years in force, as IP Australia's commissioned study found (ADR 0024) | U34, U36 | Q1, Q4 |
 | Australian research cited by patents against Australian inventions that cite it | U85 | Q1, Q4 |
 
-**Unexplained leads, kept in view:** Australians' direct filing of standard patents, 28.3% in FY2026 (U90); the
-November 2018 fall in trade mark expedite requests (U34, OQ6); ABN linking
-since FY2025 (U45, OQ7); IP RAPID's innovation patents in 2016 at 1.331 times WIPO's utility models (U67); the step in
-the World Bank's advanced education share around 2010 (U65); rising holder changes for plant breeder's rights (U17);
-petty patents of FY1986 to FY1988 without acceptances (U32).
+**Unexplained leads, kept in view:** Australians' direct filing of standard patents, 28.3% in FY2026 (U90; IP
+Australia reads it as a real change among domestic innovators); the November 2018 fall in trade mark expedite requests
+(U34, OQ6); ABN linking since FY2025 (U45, OQ7: a fall in linking, not filing, ADR 0024); the step in the World Bank's
+advanced education share around 2010 (U65); rising holder changes for plant breeder's rights (U17); petty patents of
+FY1986 to FY1988 without acceptances (U32). Closed by the audit: IP RAPID's innovation patents in 2016 (U67), a real
+rise IP Australia reported.
 
 ---
 
@@ -531,7 +536,8 @@ petty patents of FY1986 to FY1988 without acceptances (U32).
 4. AusTender's missing amendments (OQ3, small) and TableBuilder (OQ4, on hold).
 
 **For IP Australia** (the owner is asking): why provisionals doubled (OQ5), why trade mark expedite requests fell in
-November 2018 (OQ6), and whether ABNs are attached late or collected less since FY2025 (OQ7).
+November 2018 (OQ6), and whether ABNs are attached late or collected less since FY2025 (OQ7). The audit against IP
+Australia's reports (section 10) narrows OQ5 and OQ7 and proposes three more (OQ12 to OQ14).
 
 **Data worth adding, all free:** the RBA's cash and exchange rates and the ABS national accounts (timeline); the ATO's
 statistics by postcode (regions); IP Australia's published statistics as a benchmark; ALP's crosswalk that includes
@@ -554,14 +560,39 @@ limit is stated wherever it bears on a finding.
 
 ---
 
-## 10. Where to find things
+## 10. Checked against IP Australia's published evidence (27 October 2026)
+
+After Stage 1 closed, its observations were audited against what IP Australia has published: the twelve Australian IP
+Reports (2015 to 2026), its economic research papers and notes, as the Econ repository holds them
+([`audit-ip-australia.md`](audit-ip-australia.md), ADR 0024). In short:
+
+- **The counts are corroborated.** 195 figures IP Australia published were recomputed from the lenses on its own
+  definitions (calendar years; a resident has a founding applicant in Australia); 155 agree within 2% (or 1 point).
+  Standard patent applications agree in all 12 years from 2014 to 2025, within 0.34%; provisionals, grants, trade
+  mark registrations, Madrid trade marks and the PCT route as closely.
+- **Verdicts:** of the 99 observations, 23 are corroborated, 9 consistent, 1 disputed in part and 66 not testable from
+  IP Australia's publications; none is contradicted.
+- **Three readings change:** design shares among known origin are lower bounds, because IP Australia counts about three
+  in four of IP RAPID's "origin unknown" designs as Australian (U7, U13); trade marks filed in 2018 are 2.5% short in
+  IP RAPID, in Madrid applications (U5, U25); and U27's 2016 grant peak counts second-tier patents too.
+- **Leads:** U67's 2016 innovation patents were a real rise IP Australia reported (closed); U45's fall in first-time
+  filers is a fall in ABN linking (narrowed); U28 gains a response (Australians' standard patents brought forward in
+  2021 by the innovation closure); U8 and U90 have IP Australia's published readings (digital tools; direct filing by
+  domestic innovators).
+- **Disputed:** IP Australia's "55.6% of resident applications were filed by individuals" (2022) cannot be reproduced
+  (the lens: 20.65%); U13 and U48 stand meanwhile (OQ12).
+
+---
+
+## 11. Where to find things
 
 | What | Where |
 |---|---|
 | Every observation, with its chart and the output it quotes | `analysis/notebooks/01_univariate.ipynb` (section summaries 1.9, 2.6, 3.6, 4.5, 5.7, 6.5, 7.7; section 9) |
 | The plan, and where every table goes | `docs/eda-plan.md` |
 | Status, leads and conventions for the next session | `docs/handover-eda.md` |
-| Every decision and repair | `docs/adr/` (0001 to 0022) |
+| Every decision and repair | `docs/adr/` (0001 to 0024) |
+| The audit against IP Australia's published evidence | `docs/audit-ip-australia.md`; the benchmark in `analysis/audit/` |
 | Questions for the owner and IP Australia | `docs/owner-questions.md` |
 | Terms | `GLOSSARY.md` |
 | How each lens is built, and its columns | `analysis/eda/build.py`, `analysis/eda/variables.yaml` |

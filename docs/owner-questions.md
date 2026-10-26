@@ -5,7 +5,7 @@ needs an account or a request (`CLAUDE.md`). Each says why it matters, what Clau
 changes. **Nothing here blocks Stage 1**; the work carries on around each one.
 
 When a question is answered, move it to **Answered** with the date and the answer, and record it where it applies (an
-ADR, the handover or the plan). Number new questions from the next free one: **OQ12**.
+ADR, the handover or the plan). Number new questions from the next free one: **OQ15**.
 
 ## Open: for you to answer
 
@@ -18,18 +18,24 @@ ADR, the handover or the plan). Number new questions from the next free one: **O
 
 ## Open: for IP Australia (you are asking)
 
-The data show when and who, not why. Each answer would turn a lead into an explanation.
+The data show when and who, not why. Each answer would turn a lead into an explanation. OQ12 to OQ14 came from the
+audit against IP Australia's published figures (27 October 2026) and are proposed for the same request: whether to
+send them is your call.
 
 | # | Question | Evidence | Meanwhile |
 |---|---|---|---|
-| OQ5 | Why did provisional applications from individuals double in FY2026 (10,069 against 5,047)? A new filing channel, a fee change, or drafting tools? | U8: individuals without ABNs; 54 individuals filed 10 or more, one 375; monthly filings peaked in March and April 2026 | Counts are kept as recorded; Stage 2 tests them against policy and fee events |
-| OQ6 | Why did requests for expedited examination of trade marks fall from about 1,400 a month to about 230 in November 2018? A change in practice, or in how requests were recorded when the trade mark records moved to a new system? | U34: 1,417 in October 2018, 604 in November, 240 in December; 16.67% to 19.69% of marks to FY2018, 3.08% to 3.97% since FY2020 | Trade mark expedite shares compared only on one side of November 2018 |
-| OQ7 | Since FY2025, are ABNs attached to applications late, or collected less often? | U45: Australian organisations' trade marks with the filer's ABN 84.1% (FY2024), 71.4% (FY2025), 59.9% (FY2026); designs 88.4% to 76.3% | Firm-level filing by year compared only to FY2024 |
+| OQ5 | Why did provisional applications from individuals double in FY2026 (10,069 against 5,047)? A new filing channel, a fee change, or drafting tools? **Narrowed (2026-10-27):** IP Australia's IP Report 2026 reads the rise as "consistent with reduced entry costs and faster drafting and search enabled by digital tools, including artificial intelligence" (new filers 63%, self-filers 52%, ipr-2026 p21). What to ask now: the evidence behind that reading, and whether the few heavy filers are part of it | U8: individuals without ABNs; 54 individuals filed 10 or more, one 375; monthly filings peaked in March and April 2026. The lens reproduces IP Australia's 2025 count (6,874 against 6,867, ADR 0024) | Counts are kept as recorded; Stage 2 tests them against policy and fee events |
+| OQ6 | Why did requests for expedited examination of trade marks fall from about 1,400 a month to about 230 in November 2018? A change in practice, or in how requests were recorded when the trade mark records moved to a new system? | U34: 1,417 in October 2018, 604 in November, 240 in December; 16.67% to 19.69% of marks to FY2018, 3.08% to 3.97% since FY2020 | Trade mark expedite shares compared only on one side of November 2018. IP Australia's reports do not mention it (ADR 0024) |
+| OQ7 | Since FY2025, are ABNs attached to applications late, or collected less often? **Narrowed (2026-10-27):** filing did not fall. IP Australia reports record resident trade marks in 2025 (55,913, +15.1%), and counted by applicant first-time resident trade mark filers rose from 22,838 (2024) to 28,626 (2025), so the fall is in linking (ADR 0024) | U45: Australian organisations' trade marks with the filer's ABN 84.1% (FY2024), 71.4% (FY2025), 59.9% (FY2026); designs 88.4% to 76.3% | Firm-level filing by year compared only to FY2024; entry counted by applicant beside it |
+| OQ12 | What does IP Australia's "In 2022, 55.6% of resident applications were filed by individuals rather than organisations" (ipr-2023 p12) count? | The lens gives 20.65% of 2022's resident standard applications with an individual as first founding applicant, and 26.76% of their applicants (U13, U48); no base reproduces 55.6% (the audit, D3) | U13 and U48 stand on the lens's evidence, recorded as disputed |
+| OQ13 | Why does IP RAPID hold about 2,000 fewer trade marks filed in 2018 than the IP Report 2019 counted (77,496 against 79,490), all of them Madrid applications? | Every other year from 2015 to 2025 agrees within 0.05%; IP Australia reported Madrid +13% in 2018, the lens none (the audit, D2) | 2018 is flagged in trade mark series |
+| OQ14 | Could IP RAPID publish the applicant origin IP Australia holds for designs it now leaves unknown? | IP Australia counts 264 to 425 more resident designs a year than the lens (2021 to 2025), about three in four of the designs with no country in IP RAPID (the audit, D1) | Design shares among known origin are lower bounds |
 
 These could go in the same request, if it is easy to add: why plant breeder's rights change hands more often in recent
-years (11.2% of those filed in the 2020s, U17); IP Australia's own published counts, to benchmark the lenses; and why
-IP RAPID holds a third more innovation patents filed in 2016 than WIPO's count of Australia's utility models (2,469
-against 1,855; other years 0.958 to 1.072 of it, U67).
+years (11.2% of those filed in the 2020s, U17). Two earlier add-ons are answered from IP Australia's own reports
+(ADR 0024, `docs/audit-ip-australia.md`): its published counts now benchmark the lenses (155 of 195 figures agree);
+and IP RAPID's innovation patents filed in 2016 (2,469, 1.331 of WIPO's utility models) were a real rise that IP
+Australia reported itself (2,322, from non-residents), so the gap is between IP Australia's count and WIPO's (U67).
 
 ## Deferred: not needed for the EDA
 

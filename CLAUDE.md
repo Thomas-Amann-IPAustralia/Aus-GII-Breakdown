@@ -56,6 +56,7 @@ until Stage 3 is done and the owner says so.
 ```sh
 uv sync --group dev --group analysis
 uv run python -m eda.build                     # the lens tables (seconds)
+uv run python -m audit.benchmark               # IP Australia's published figures against the lenses (ADR 0024)
 uv run jupyter nbconvert --to notebook --execute --inplace analysis/notebooks/01_univariate.ipynb
 uv run ruff check src tests analysis && uv run ruff format --check src tests analysis
 uv run pytest -q
