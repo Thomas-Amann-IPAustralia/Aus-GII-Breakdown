@@ -15,8 +15,11 @@ column of the `national` lens is profiled too (U63 to U72), after it kept WIPO's
 its attachments: every value of the GII 2026, the 24 OECD flows, WIPO's other tables, Measuring What Matters and
 Closing the Gap in a long companion table, `national_indicators` (ADR 0019). The `industries` lens is built and
 profiled (U73 to U79, ADR 0020): IP by ANZSIC division through the ALP crosswalks, beside CABEE, BERD, the WPI and
-BCARR, with every industry table in `industry_indicators`. This plan says what the exploratory data analysis (EDA) covers, where each dataset fits, what each part needs before it
-starts, and which gaps are worth filling. Decisions are in `docs/adr/` (0002 to 0020); terms are in `GLOSSARY.md`.
+BCARR, with every industry table in `industry_indicators`. The `institutions` lens, the last planned, is built and
+profiled (U80 to U87, ADR 0021): 130 research institutions by ROR and year, linked to IP RAPID, the ARC and AusTender
+through a reviewed list of names and ABNs, with OpenAlex, patent citations, NHMRC grants and patent families, and
+the detail in `institution_rights`. Every lens now has its Stage 1 profile. This plan says what the exploratory data analysis (EDA) covers, where each dataset fits, what each part needs before it
+starts, and which gaps are worth filling. Decisions are in `docs/adr/` (0002 to 0021); terms are in `GLOSSARY.md`.
 
 ## Why an EDA first
 
@@ -54,7 +57,7 @@ All lenses are built by `uv run python -m eda.build`, and every column is descri
 | `national` | Country, year and indicator | Built: 135,597 rows, 11 columns; its attachments in `national_indicators` (place, source, indicator and period: 41,196,081 rows) | Q1, Q4 (context) |
 | `timeline` | Month, for Australia (Jan 1904 to Sep 2026) | Built: 1,473 | Q1, Q4, Q5 |
 | `industries` | ANZSIC division and financial year | Built: 703 rows (FY1990 to FY2026), 17 columns; its attachments in `industry_indicators` (division, source, indicator and period: 1,409,875 rows) | Q2, Q3, Q4 |
-| `institutions` | Australian research institution (ROR) and year | Planned (ADR 0007; confirmed by the owner) | Q1, Q2, Q3 |
+| `institutions` | Australian research institution (ROR) and calendar year | Built: 4,810 rows (130 institutions, 1990 to 2026), 30 columns; its IP in `institution_rights` (right and institution: 31,528 rows) | Q1, Q2, Q3 |
 
 **Rules for time.**
 - Monthly and quarterly series join the `timeline`. Quarterly series are compared at quarterly resolution, never spread
@@ -95,9 +98,10 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 | `pbs` | timeline; medicines | Prescriptions, and government and patient costs, per month. Items are linked to ingredients for the medicine strand. | B9 (Section 100) |
 | `tga` | own unit | ARTG entries; sponsors per ingredient (competition); joins PBS and extension-of-term patents by ingredient | — |
 | `fedcourt` | timeline; text | IP judgments per month by right; variables derived from the text later | — |
-| `google_patents`, `google_patents_inventors` | rights, firms, institutions | Per Australian application: family size, offices, US grant, forward citations (with a follow-up flag); inventors by country and their estimated gender (expected counts, from `wgnd`) | B4 |
-| `openalex`, `openalex_works`, `reliance_on_science` | institutions, rights | Output, citations and patent-cited works per institution; science cited by Australian-linked patent families | F37 test |
-| `arc_grants`, `nhmrc_grants` | institutions, timeline | Grants and funding per institution and year (ARC names matched to ROR) | Label round years (F41) |
+| `google_patents`, `google_patents_inventors` | rights, firms, institutions | Per Australian application: family size, offices, US grant, forward citations (with a follow-up flag); inventors by country and their estimated gender (expected counts, from `wgnd`) | B4. In `institutions` (ADR 0021, U85): the families of the institutions' Australian applications |
+| `openalex`, `openalex_works`, `reliance_on_science` | institutions, rights | Output, citations and patent-cited works per institution; science cited by Australian-linked patent families | Done for `institutions` (ADR 0021, U82, U85): works and citations from 2010, US patent citations by publication year. F37 test still to do |
+| `arc_grants`, `nhmrc_grants` | institutions, timeline | Grants and funding per institution and year (ARC names matched to ROR) | Done (ADR 0021, U83): ARC by the year funding starts, NHMRC by round (F41), names matched to ROR; industry-partner schemes apart |
+| `ror` (added 2026-10-26) | institutions | Every Australian ROR record, with names, aliases and relationships: the lens's key | Done (ADR 0021): from ROR's data dump |
 | `policy_events` | timeline | Policy changes per month; the policy register is reference | Done (ADR 0011): B7 (every date checked against the Federal Register); (ADR 0014) the 1995 term change added: 17 events. Profiled one at a time (U28) |
 | `ipa_fees` | timeline, rights | The fee in force each month, and fees per right, once the fee history exists | R3 |
 | `wgnd` | reference | The name-gender dictionary behind `google_patents_inventors` | — |
@@ -135,8 +139,10 @@ it is built. Each lens's repairs come first.
    every attachment built and profiled (U79):** CABEE, the BCS, BERD, BCARR, the WPI and IP by subdivision in
    `industry_indicators`; the same releases' Australia-wide tables in `national_indicators`. Patents reach only
    goods-producing industries (the crosswalk excludes services, U75).
-7. **`institutions`**: built new. Needs a reviewed link from research institutions to ROR identifiers and ABNs, for
-   about 60 universities, CSIRO and the medical research institutes.
+7. **`institutions`** (ADR 0021: the `ror` source; a reviewed link of 130 institutions, 116 names and 146 ABNs in
+   `analysis/eda/institutions/`; IP by the filer, with commercialisation companies). **Every column profiled (U80 to
+   U87)**, with `institution_rights` and the follow-up to U49 (half the universities' patents carry a postcode that
+   is not a postal area). Whether someone who knows the sector should review the link is OQ11.
 
 Record each change to a lens in an ADR, and the repairs to the existing lenses together in one ADR, as the review
 proposes.

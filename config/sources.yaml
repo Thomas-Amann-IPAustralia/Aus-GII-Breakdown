@@ -229,6 +229,15 @@ sources:
     url: https://openalex.org/
     licence: CC0
 
+  - id: ror
+    title: ROR, the Research Organization Registry (Australian organisations)
+    publisher: ROR (California Digital Library, Crossref and DataCite)
+    tier: 2
+    questions: [1, 2, 3]
+    url: https://ror.org/
+    licence: CC0
+    coverage: Every Australian record (active, inactive and withdrawn), with names, aliases and relationships, as at the run date
+
   - id: evidence
     title: Evidence register (key literature and evaluations)
     publisher: various

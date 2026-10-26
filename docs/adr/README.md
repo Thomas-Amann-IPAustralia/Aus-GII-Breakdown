@@ -27,4 +27,6 @@ the owner's, or Claude's, which the owner can overturn.
 | [0019](0019-national-lens-repairs-and-attachments.md) | The national lens keeps WIPO's former states and unknown origins (`entity`), and its attachments (the GII 2026, every OECD flow, WIPO's other tables, Measuring What Matters and Closing the Gap) go in a long table, `national_indicators`; two corpus repairs (Closing the Gap's "Aus Gov", Measuring What Matters' stacked tables) | 2026-10-26 | Claude (owner asked for the national lens) |
 | [0020](0020-industries-lens.md) | The industries lens: one row per ANZSIC division and financial year, with IP as expected counts through the ALP crosswalks (B6: IPC predecessors), CABEE, BERD, the WPI and BCARR, and every industry table in `industry_indicators`; the corpus's ISIC-to-ANZSIC step no longer splits weight over partial links | 2026-10-26 | Claude (owner asked for the industries lens) |
 
-Next free number: 0021.
+| [0021](0021-institutions-lens.md) | The institutions lens: 130 research institutions by ROR and calendar year, linked to IP RAPID, the ARC and AusTender through a reviewed list of names (with commercialisation companies) and ABNs, with OpenAlex, US patent citations, NHMRC grants and patent families, and the IP detail in `institution_rights`; ROR joins the corpus from its data dump | 2026-10-26 | Claude (owner asked for the institutions lens) |
+
+Next free number: 0022.

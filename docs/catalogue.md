@@ -227,19 +227,19 @@ its web app. Processed:
 - `alp_ipc4_isic4`, `alp_nice_isic4`: the probability-weighted links from IPC subclass, and from Nice class, to ISIC
   Rev. 4 four-digit classes.
 - `isic4_anzsic`: ISIC Rev. 4 class to ANZSIC 2006 class (`partial` where the ABS marks the link as partial).
-- `ipc4_anzsic`, `nice_anzsic`: the ALP weights carried through to ANZSIC 2006 classes (a weight split equally where
-  one ISIC class maps to several ANZSIC classes), with the ANZSIC division.
+- `ipc4_anzsic`, `nice_anzsic`: the ALP weights carried through to ANZSIC 2006 classes (an ISIC class's weight split
+  equally over the ANZSIC classes it links to fully, or over its partial links where it has no full one; ADR 0020).
 - `ipc_green_inventory`: the Green Inventory's topics, each with its IPC references, one row per reference.
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
 | `alp_ipc4_isic4` | 3,098 | repo (0.0 MB) | `ipc4`, `isic4`, `weight` |
 | `alp_nice_isic4` | 453 | repo (0.0 MB) | `nice`, `isic4`, `weight` |
-| `ipc4_anzsic` | 8,384 | repo (0.1 MB) | `ipc4`, `anzsic`, `anzsic_title`, `weight` |
+| `ipc4_anzsic` | 6,883 | repo (0.1 MB) | `ipc4`, `anzsic`, `anzsic_title`, `weight` |
 | `ipc_green_inventory` | 346 | repo (0.0 MB) | `level`, `topic`, `title`, `ipc_raw`, `ipc` |
 | `ipc_technology` | 369 | repo (0.0 MB) | `field_no`, `field`, `sector`, `ipc_prefix`, `groups`, `except_groups`, `except_prefix`, `unless_also` |
 | `isic4_anzsic` | 1,138 | repo (0.0 MB) | `isic4`, `anzsic`, `anzsic_title`, `partial` |
-| `nice_anzsic` | 826 | repo (0.0 MB) | `nice`, `anzsic`, `anzsic_title`, `weight` |
+| `nice_anzsic` | 700 | repo (0.0 MB) | `nice`, `anzsic`, `anzsic_title`, `weight` |
 | `patent_fields` | 1,909,193 | repo (5.8 MB) | `application_number`, `field_no`, `weight`, `field`, `sector` |
 
 - Note: concordances: nice_anzsic: 0.0% of ALP weight is on ISIC classes the ABS table lacks
@@ -288,12 +288,13 @@ Closing the Gap Annual Data Compilation Report 2026, targets 8, 15 and 16 (Produ
 
 Context for a First Nations workstream (economic participation; land and waters; cultures and languages): they
 describe the setting, not the IP system's effect. Raw: the three targets' CSVs (repo, as uploaded). Processed: `data`,
-long, one value per row: the descriptive columns as published, `jurisdiction` (NSW to NT, Total, Aust) and `value`
-(numeric where the cell is a number; `value_text` keeps the cell, for '..', 'np' and the like).
+long, one value per row: the descriptive columns as published, `jurisdiction` (NSW to NT, Aus Gov, Total, Aust) and
+`value` (numeric where the cell is a number; `value_text` keeps the cell, for '..', 'np' and the like). Target 15's
+"Aus Gov" column (land and sea held by the Australian Government) is a jurisdiction like the states (ADR 0019).
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `data` | 11,264 | repo (0.1 MB) | `target`, `table_number`, `year`, `measure`, `age`, `sex`, `indigenous_status`, `remoteness`, `seifa_irsd`, `description1`, `description2`, `description3`, `description4`, `description6` … |
+| `data` | 11,349 | repo (0.1 MB) | `target`, `table_number`, `year`, `measure`, `age`, `sex`, `indigenous_status`, `remoteness`, `seifa_irsd`, `description1`, `description2`, `description3`, `description4`, `description6` … |
 
 ## AusTender contract notices (`austender`)
 
@@ -642,6 +643,30 @@ an Australian institution, by primary field and publication year, 2000 on).
 | `institution_year` | 18,532 | repo (0.1 MB) | `id`, `year`, `works_count`, `cited_by_count` |
 | `institutions` | 1,910 | repo (0.1 MB) | `id`, `ror`, `name`, `type`, `city`, `region`, `works_count`, `cited_by_count` |
 
+## ROR, the Research Organization Registry (Australian organisations) (`ror`)
+
+ROR (California Digital Library, Crossref and DataCite). Tier 2; questions 1, 2, 3. Licence: CC0. Source: https://ror.org/
+
+ROR, the Research Organization Registry: every Australian research organisation's identifier, names and links.
+
+The key of the `institutions` lens (ADR 0021): ROR identifiers join OpenAlex (which carries each institution's ROR),
+the NHMRC (whose workbooks give the administering institution's ROR from the 2025 round) and, through the names and
+aliases kept here, the ARC's administering organisations and IP RAPID's applicants. Free, no key, CC0. Raw: ROR's data
+dump (one Zenodo release, every organisation in the world; R2), from which every Australian record, active, inactive
+and withdrawn, is kept. The API is not used: its pages are not in a stable order, so paging through a query returns some
+records twice and misses others (2,052 rows for 1,518 records). Processed:
+- `organisations`: one row per ROR record: id, display name, types, status, the year established, state and city,
+  website, and its Wikidata, GRID and ISNI ids;
+- `names`: one row per record and name (display name, labels, aliases and acronyms), for matching;
+- `relationships`: one row per record and related record (parent, child, related, predecessor, successor), as ROR
+  gives them.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `names` | 4,467 | repo (0.1 MB) | `ror`, `name`, `name_types`, `lang` |
+| `organisations` | 2,052 | repo (0.1 MB) | `ror`, `name`, `types`, `status`, `established`, `state`, `city`, `website`, `wikidata`, `grid`, `isni` |
+| `relationships` | 1,678 | repo (0.0 MB) | `ror`, `type`, `related_ror`, `label` |
+
 ## Evidence register (key literature and evaluations) (`evidence`)
 
 various. Tier 2; questions 1, 3, 4, 5. Licence: each item's own. Source: docs/evidence-register.md
@@ -691,12 +716,13 @@ secure, sustainable, cohesive, prosperous) and about 50 indicators, plus overall
 The outcome layer and vocabulary for public value (section 2 of docs/data-plan.md): used to frame and value outcomes,
 not to correlate with IP measures. The ABS publishes each indicator as a web page whose charts carry their data as
 HTML tables. Raw: each page's HTML (repo, gzipped). Processed: `indicators` (theme, indicator, title, URL) and `data`,
-long: `theme`, `indicator`, `table` (its position on the page), `caption`, `row` (the table's first column, usually
-the period or group), `column` (the series) and `value` (numeric where the cell is a number; `value_text` keeps it).
+long, one row per filled cell: `theme`, `indicator`, `table` (its position on the page), `caption`, `row` (the
+table's first column, usually the period or group), `block` (the group, where a table stacks two under one header, as
+males then females), `column` (the series) and `value` (numeric where the cell is a number; `value_text` keeps it).
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `data` | 5,343 | repo (0.0 MB) | `theme`, `indicator`, `table`, `caption`, `row`, `column`, `value_text`, `value` |
+| `data` | 5,159 | repo (0.0 MB) | `theme`, `indicator`, `table`, `caption`, `row`, `block`, `column`, `value_text`, `value` |
 | `indicators` | 50 | repo (0.0 MB) | `theme`, `indicator`, `url`, `title` |
 
 - Note: mwm: no tables on air-quality
@@ -1014,7 +1040,7 @@ id, title, status, priority, tags, issue summary, comments and URL, as IP Austra
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `events` | 16 | repo (0.0 MB) | `id`, `date`, `rights`, `lever`, `event`, `source`, `verify` |
+| `events` | 17 | repo (0.0 MB) | `id`, `date`, `rights`, `lever`, `event`, `source`, `verify` |
 | `policy_register` | 155 | repo (0.1 MB) | `policy_id`, `title`, `status`, `priority`, `tags`, `issue_summary`, `comments`, `url` |
 
 ## The ABN spine (every ABN in the corpus, with ABR and ASIC attributes and source flags) (`linkage`)

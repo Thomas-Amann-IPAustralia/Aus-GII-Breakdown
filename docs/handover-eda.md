@@ -2,8 +2,9 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**The owner's decisions (2026-10-26):** go on to the `industries` lens (done: core and attachments); before that,
-commence the `national` lens (done). **(2026-10-25):**
+**The owner's decisions (2026-10-26):** complete the `institutions` lens (done: core, its IP detail and every source
+mapped to it); before that, go on to the `industries` lens (done: core and attachments); before that, commence the
+`national` lens (done). **(2026-10-25):**
 after the `firms` lens, the owner asked for the `regions` lens to be
 completed (done: core and attachments). Before that, after the events attachment, the owner adopted years in force (U36, with
 unfinished rights kept) as a working measure for Stage 2, on condition that it is used alongside other signals, and
@@ -11,7 +12,22 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-26, latest):** the `industries` lens is built and complete for Stage 1: section 6 of
+**Status (2026-10-26, latest):** the `institutions` lens, the last planned, is built and complete for Stage 1, so
+**every lens now has its Stage 1 profile**. Section 7 of `01_univariate.ipynb` profiles every column (U80 to U87),
+ADR 0021. One row per research institution (its ROR identifier) and calendar year, 1990 to 2026 (4,810 rows): 44
+universities, 11 public research agencies, 46 medical research institutes and 29 other grant holders. A new corpus
+source, `ror` (every Australian ROR record, from ROR's data dump: its API pages unstably), keys it. The link from
+institutions to IP RAPID, the ARC and AusTender is a reviewed list in `analysis/eda/institutions/` (130 institutions,
+116 extra names, 146 ABNs), with the universities' commercialisation companies: UNSW files 96.5% of its patents
+through NewSouth Innovations. The IP detail is a companion table, `institution_rights` (31,528 rows, joinable to
+`rights`). The lens holds OpenAlex's works and citations (2010 on), US patents' citations to the institutions' works,
+ARC grants (2001 on, industry-partner schemes apart) and NHMRC grants (2013 on), IP by type, the patents' families
+(Google Patents) and AusTender contracts. Plant breeder's rights cannot be linked (their applicants are codes). The
+profile also answers U49: half the universities' standard patents carry a postcode that is not a postal area. **Next is
+the owner's call (Stage 1's summary, then Stage 2, or the remaining `rights` attachments); OQ11 asks whether someone
+in the sector should check the link.**
+
+Before that, on 2026-10-26: the `industries` lens is built and complete for Stage 1: section 6 of
 `01_univariate.ipynb` profiles every column (U73 to U78) and every attachment (6.4, U79), ADR 0020. One row per ANZSIC
 division and financial year, FY1990 to FY2026 (703 rows): IP applications as expected counts through the ALP
 crosswalks (each right split over industries by probabilities), CABEE's businesses, entries and exits (FY2023 to
@@ -83,6 +99,23 @@ and BLADE stays ruled out.
 
 ## Where things stand
 
+- **Stage 1, `institutions` (section 7, every column).** What it found (all descriptive):
+  - coverage (U80): 130 institutions, 1990 to 2026; works from 2010, ARC from 2001, NHMRC from the 2013 round,
+    contracts in earnest from 2007; 84 institutions filed a standard patent, 112 a trade mark;
+  - the link (U81): 31,528 institution-rights, almost all matched by name and ABN together; UNSW files 96.5% of its
+    patent applications through NewSouth Innovations, Newcastle 72.8%, Adelaide 43.9%, Queensland 2.1%, Sydney and
+    Monash under 1%; the few grants left unmatched are councils, foundations and networks outside the lens;
+  - research (U82): universities 86.8% of works (2015 to 2024), the Group of Eight 45.35%, Melbourne 7.97%;
+  - grants (U83): the Go8 hold 66.3% of ARC and 63.5% of NHMRC funding; industry-partner schemes 9.7% to 29.2% of
+    ARC funding a year; medical research institutes 20.8% of NHMRC's;
+  - IP (U84): the institutions file 4.80% (1990 to 1994) to 8.96% (2020 to 2024) of standard patents filed from
+    Australia; CSIRO 481 in 2017 to 2026, the top five 47.4%; a quarter to a third filed with others;
+  - science and patents (U85): medical research institutes' works are cited by US patents most (107.7 per 1,000
+    works, 2010 to 2014; universities 43.26), but 93.6% of the citations come from inventions with no Australian
+    applicant or inventor; 97.0% of the institutions' standard applications are found in Google Patents;
+  - contracts (U86): universities 77.9% of the institutions' contract value, public research agencies 19.0%;
+  - postcodes (U87): 50.34% of the universities' standard patents (FY2017 to FY2026) carry a real postcode with no
+    residents; the institutions hold 71.58% of such codes.
 - **Stage 1, `industries` (section 6, every column and attachment).** What it found (all descriptive):
   - coverage (U73): 19 divisions, FY1990 to FY2026; IP in every year, CABEE FY2023 to FY2026, BERD FY2024, the WPI
     from FY1998 (no agriculture), creative value added FY2016 to FY2025 (10 divisions);
@@ -242,7 +275,7 @@ and BLADE stays ruled out.
   - "unknown" status is 408,957 old patents (FY1904 to FY1999) whose outcome was never recorded; only 68.9% of
     expired patents have a grant date;
   - design origin is often unrecorded (4.0% to 6.3% unknown since FY2018, and rising), so design shares need care.
-- **Five lenses and one companion table are built** (`analysis/eda/build.py`), in about two minutes:
+- **Seven lenses and four companion tables are built** (`analysis/eda/build.py`), in about two minutes:
   - `rights`: 4,368,006 rows, 52 columns (29 core, 12 from the parties, 11 from the events);
   - `firms`: 398,450 rows, 40 columns (ADR 0016: `n_held`, `n_held_in_force`, `in_iplord`);
   - `regions`: 2,641 rows, 42 columns (ADR 0017, 0018);
@@ -252,10 +285,11 @@ and BLADE stays ruled out.
     0020);
   - `industries`: 703 rows, 17 columns (ADR 0020);
   - `industry_indicators`: 1,409,875 rows, 12 columns, 8 MB (the `industries` lens's attachments, long; ADR 0020);
+  - `institutions`: 4,810 rows, 30 columns (ADR 0021);
+  - `institution_rights`: 31,528 rows, 7 columns (the `institutions` lens's IP, one row per right and institution);
   - `timeline`: 1,473 months, 35 columns.
 
-  Two more, `industries` and `institutions`, are planned (ADR 0007). Every table has a lens to attach to; the map is
-  in `docs/eda-plan.md`.
+  Every planned lens is built (ADR 0007). Every table has a lens to attach to; the map is in `docs/eda-plan.md`.
 - **The lenses' repairs (ADR 0010):**
   - `rights`: `earliest_filed_date` (for a PCT filing, `application_date` is the date it entered the national phase);
     attorney use is unknown, not "no", for provisionals, for which IP RAPID publishes no agents;
@@ -299,6 +333,9 @@ and BLADE stays ruled out.
 - **Corrected this session (the timeline):** the policy register's note that the Patents Act 1990 brought in 20-year
   patents (it was 16 years until 1 July 1995); and section 1's U5 and U10, whose charts showed survivors' counts and
   registration rates for the years before 1983 (trade marks) and 1986 (designs) without saying so.
+- **Tests (institutions):** 86 pass; new: one row per key in both tables, the reviewed link's integrity (every
+  institution, name and ABN a ROR record, each ABN one institution, no name key two institutions), the name key
+  across spellings, and the lens carrying its grants (all but 14 of the ARC's and 15 of the NHMRC's) and its IP links.
 - **Tests (industries):** 79 pass; new: one row per key in both tables, the division of a class or subdivision code,
   each right's shares summing to one, CABEE's divisions summing to its total, BERD's divisions to its total.
 - **Tests (national):** 73 pass; new: WIPO's applications by residents sum to the source's total, no aggregate is a
@@ -316,11 +353,11 @@ and BLADE stays ruled out.
 
 ## Next, in order
 
-1. **The last planned lens, `institutions`:** research institutions (ROR) by year. It needs a reviewed link from
-   institutions to ROR identifiers and ABNs (about 60 universities, CSIRO and the medical research institutes; OQ11),
-   and will count the universities' patents that fall outside the postal areas (U49).
-2. **Done:** the `national` section (U63 to U72, ADR 0019) and the `industries` section (U73 to U79, ADR 0020), each
-   with its attachments.
+1. **The owner's call:** every lens has its Stage 1 profile. What remains of Stage 1 is its summary (section 9 of the
+   notebook) and the `rights` attachments below; then Stage 2. OQ11 (a sector check of the institutions link) is best
+   answered before Stage 2 compares institutions.
+2. **Done:** the `national` section (U63 to U72, ADR 0019), the `industries` section (U73 to U79, ADR 0020) and the
+   `institutions` section (U80 to U87, ADR 0021), each with its attachments.
 3. **The rest of the `rights` attachments, as sub-sections of 1.8, when the owner says:** the links (with the PCT
    country check), Google Patents (B4), and the inventors (gender estimates checked country by country against WIPO's
    published shares, above all China and Korea).
@@ -362,6 +399,13 @@ and BLADE stays ruled out.
      publishes a version that includes services (free); whether to use it, beside or instead, is a Stage 2 choice;
    - trade marks by industry break in January 2002 (the Nice 8th edition, U75): compare from FY2003;
    - the BCS flags 36.2% of its values for sampling error and withholds 25% (U79): division comparisons need care.
+   - US patents cite Australian institutions' research, but 93.6% of the citations come from inventions with no
+     Australian applicant or inventor (U85): the research-to-invention link runs mostly abroad (Q1);
+   - medical research institutes' works are cited by patents two and a half times as often per work as universities'
+     (U85), and the institutions' joint filing (a quarter to a third of standard patents, U84) is a measure of
+     collaboration to set beside the ARC's industry-partner grants (U83);
+   - the universities' patents outside the postal areas (U87) can be placed through `institution_rights` and ROR's
+     locations, replacing the GeoNames lookup in the item above, if Stage 2's regional results prove sensitive.
 2. Check in Stage 1 (the placeholder dates are done, U40):
    - IP RAPID's `links.linked_application_country`, which labels every PCT number `au` (`analysis/README.md`), with
      the links attachment;
@@ -378,6 +422,9 @@ and BLADE stays ruled out.
 6. Fee history (R3) and the PBS monthly report with Section 100 (B9) are the biggest data gaps for the later stages.
 7. The `coalesce` in `iprapid.py` that caused the origin problem (ADR 0009) is left until IP RAPID is next rebuilt; no
    lens reads that column.
+8. The corpus profile (`analysis/output/`, `analysis/profile_corpus.py`) predates the `ror` source, so
+   `data.corpus_columns("ror", ...)` finds nothing until the profile is next run in full (its `--only` replaces the
+   CSVs rather than adding to them).
 
 ## For the owner
 
@@ -399,4 +446,9 @@ and every answer with its date. Nothing there blocks Stage 1. Add new questions 
 - Compare WIPO's series by country from 1995 only (U64), and filter `entity = 'country'` for comparisons between
   countries.
 - `industry_indicators`: filter by `source` and `indicator`; never add `TOTAL` to the divisions.
-- Next free ADR: 0021.
+- `institutions`: never add works or citations across institutions as if distinct, or a child's (Data61's) to its
+  parent's; count a university's IP with its companies (the link does); compare patent citations by cohorts of the
+  same age.
+- Corrections to the institutions link go in `analysis/eda/institutions/*.csv`; `uv run python -m eda.build
+  institution_rights institutions` rebuilds both in seconds, and the tests check the link.
+- Next free ADR: 0022.

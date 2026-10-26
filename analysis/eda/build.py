@@ -11,10 +11,13 @@
 | `region_indicators` | Postal area, source, indicator, period | Census, Data by Region, CABEE, PHIDU, CER |
 | `national` | Country, year and indicator | `wdi/panel`, `wipo_ipstats/office_origin`, `oecd/msti` |
 | `industries` | ANZSIC division and financial year | `rights`, classification, concordances, CABEE, BERD, WPI |
+| `institution_rights` | IP right and research institution that filed it | `iprapid/party`, `ror`, the reviewed link |
+| `institutions` | Research institution (ROR) and year | OpenAlex, ARC, NHMRC, `institution_rights`, AusTender |
 | `timeline` | Month, for Australia (IP Australia's whole register) | `rights`, `iprapid/events`, `policy_events` |
 
 `regions` also reads `austender`; `region_indicators` holds its attachments, long (ADR 0018), as do
-`national_indicators` (ADR 0019) and `industry_indicators` (ADR 0020). Every column is
+`national_indicators` (ADR 0019) and `industry_indicators` (ADR 0020). `institutions` reads the reviewed link from
+research institutions to ROR, names and ABNs in `analysis/eda/institutions/` (ADR 0021). Every column is
 described, in plain English, in `analysis/eda/variables.yaml`. Derived columns are defined here and
 nowhere else, so a reader can check exactly how each was made.
 """
@@ -23,6 +26,7 @@ from __future__ import annotations
 
 import sys
 import time
+from pathlib import Path
 
 import pycountry
 
@@ -1570,6 +1574,214 @@ def industry_indicators_sql() -> str:
     """
 
 
+# The institutions lens (ADR 0021): one row per Australian research institution (its ROR identifier) and calendar
+# year. The reviewed link is three files in `analysis/eda/institutions/`: the institutions and their kind, the names
+# they appear under beyond ROR's own (former names, commercialisation companies, misspellings) and their ABNs.
+INSTITUTIONS_DIR = Path(__file__).resolve().parent / "institutions"
+OPENALEX_FROM = 2010  # OpenAlex gives an institution's works and citations by year for 2010 on
+# The ARC's schemes for research with industry partners. The ARC's 'Linkage' program also holds the Centres of
+# Excellence, infrastructure (LIEF), Special Research Initiatives and the learned academies' projects
+ARC_INDUSTRY_SCHEMES = (
+    "Linkage Projects", "Industrial Transformation Training Centres", "Industrial Transformation Research Hubs",
+    "Industry Laureate Fellowships", "Mid-Career Industry Fellowships", "Early Career Industry Fellowships",
+)  # fmt: skip
+INSTITUTIONS_YEARS = (1990, 2026)  # IP and grants run further back than OpenAlex's counts (2010 on); each is empty
+# outside the years its source covers. OpenAlex's later years (2027 to 10000) are placeholders on a few works.
+
+
+def _name_key(col: str) -> str:
+    """An organisation's name for matching: capitals, no apostrophes, '&' as 'AND', other punctuation as spaces, and
+    no 'THE' or legal suffixes ('PTY', 'LTD', 'INC' ...), so 'The Walter & Eliza Hall Institute ... Ltd' and 'WALTER
+    AND ELIZA HALL INSTITUTE ...' agree."""
+    s = f"regexp_replace(upper({col}), '[''’`]', '', 'g')"
+    s = f"regexp_replace({s}, '&', ' AND ', 'g')"
+    s = f"regexp_replace({s}, '[^A-Z0-9]+', ' ', 'g')"
+    s = f"regexp_replace({s}, '\\b(THE|PTY|PROPRIETARY|LTD|LIMITED|INC|INCORPORATED|CO|COMPANY)\\b', ' ', 'g')"
+    return f"trim(regexp_replace({s}, ' +', ' ', 'g'))"
+
+
+def _institution_names(sources: tuple[str, ...]) -> str:
+    """CTEs `inst` (the lens's institutions), `inst_names` (each name key to its institution: ROR's names, labels and
+    aliases for the lens's institutions, acronyms excepted, and the reviewed names for these `sources`) and
+    `inst_abns` (each reviewed ABN to its institution). A test checks that no key names two institutions."""
+    d = INSTITUTIONS_DIR
+    src = ", ".join(f"'{s}'" for s in (*sources, "any"))
+    return f"""
+    inst AS (SELECT * FROM read_csv('{d / "institutions.csv"}', all_varchar = true)),
+    inst_names AS (
+        SELECT DISTINCT {_name_key("n.name")} AS key, n.ror
+        FROM {{ror/names}} n JOIN inst USING (ror) WHERE n.name_types <> 'acronym'
+        UNION
+        SELECT DISTINCT {_name_key("a.name")}, a.ror FROM read_csv('{d / "names.csv"}', all_varchar = true) a
+        WHERE a.source IN ({src})
+    ),
+    inst_abns AS (SELECT abn, ror FROM read_csv('{d / "abns.csv"}', all_varchar = true))"""
+
+
+def institution_rights_sql() -> str:
+    """One row per IP right and research institution among its founding applicants (ADR 0021): the detail behind the
+    `institutions` lens's IP counts, joinable to `rights` by application number. A founding applicant or owner (ADR
+    0013) in Australia, or of no recorded country, and not an individual, belongs to an institution when its name
+    matches one of the institution's names, or else when its ABN is one of the institution's ABNs."""
+    return f"""
+    WITH {_institution_names(("iprapid",))},
+    founders AS (
+        SELECT DISTINCT ip_right_type, application_number, party_id, abn, country_code, party_type,
+               {_name_key("party_name")} AS key
+        FROM {{iprapid/party}}
+        WHERE party_role_category IN ('applicant', 'owner') AND is_founding
+    ),
+    matched AS (
+        SELECT f.ip_right_type, f.application_number, f.party_id, coalesce(n.ror, a.ror) AS ror,
+               CASE WHEN n.ror IS NOT NULL AND n.ror = a.ror THEN 'both'
+                    WHEN n.ror IS NOT NULL THEN 'name' ELSE 'abn' END AS matched_by, f.country_code
+        FROM founders f
+        LEFT JOIN inst_names n USING (key)
+        LEFT JOIN inst_abns a ON a.abn = f.abn
+        WHERE (f.country_code = 'au' OR f.country_code IS NULL) AND (n.ror IS NOT NULL OR a.ror IS NOT NULL)
+          AND f.party_type IS DISTINCT FROM 'individual'
+    ),
+    per AS (
+        SELECT ip_right_type, application_number, ror,
+               CASE WHEN count(DISTINCT matched_by) > 1 OR bool_or(matched_by = 'both') THEN 'both'
+                    ELSE any_value(matched_by) END AS matched_by,
+               bool_and(country_code IS NULL) AS country_unknown, list(DISTINCT party_id) AS parties
+        FROM matched GROUP BY 1, 2, 3
+    ),
+    n_founders AS (SELECT ip_right_type, application_number, count(DISTINCT party_id) AS n FROM founders GROUP BY 1, 2),
+    n_inst AS (SELECT ip_right_type, application_number, count(*) AS n FROM per GROUP BY 1, 2)
+    SELECT p.ip_right_type, p.application_number, p.ror, p.matched_by, p.country_unknown,
+           nf.n > len(p.parties) AS shared, ni.n > 1 AS shared_with_institution
+    FROM per p
+    JOIN n_founders nf USING (ip_right_type, application_number)
+    JOIN n_inst ni USING (ip_right_type, application_number)
+    ORDER BY p.ror, p.ip_right_type, p.application_number
+    """
+
+
+def institutions_sql() -> str:
+    """One row per research institution and calendar year (ADR 0021). Research output and citations are OpenAlex's
+    (works by publication year); citations from US patents are to the institution's works published that year;
+    grants are the ARC's (by the year funding starts, at the organisation that won it) and the NHMRC's (by round);
+    IP applications are those with the institution among their founding applicants (`institution_rights`), by the
+    year of the application date (plant breeder's rights cannot be linked: IP RAPID gives their applicants' names as
+    codes, with no ABNs); patent families (Google Patents) by the year of their first priority; government
+    contracts (AusTender) by the year first published, each contract once at its latest notice."""
+    lo, hi = INSTITUTIONS_YEARS
+    industry = "g.scheme_name IN (" + ", ".join(f"'{x}'" for x in ARC_INDUSTRY_SCHEMES) + ")"
+    return f"""
+    WITH {_institution_names(("arc", "nhmrc"))},
+    grid AS (
+        SELECT i.ror, y.year FROM inst i CROSS JOIN (SELECT unnest(range({lo}, {hi + 1})) AS year) y
+    ),
+    oa AS (SELECT id, replace(ror, 'https://ror.org/', '') AS ror FROM {{openalex/institutions}}),
+    works AS (
+        SELECT oa.ror, y.year, y.works_count AS works, y.cited_by_count AS citations
+        FROM {{openalex/institution_year}} y JOIN oa USING (id)
+    ),
+    cited AS (  -- the institution's works that US patents cite, by the work's publication year
+        SELECT oa.ror, w.year, count(DISTINCT c.work_id) AS works_patent_cited,
+               sum(pc.n) AS patent_citations, sum(pc.n_au) AS patent_citations_au
+        FROM (SELECT DISTINCT work_id, institution_id FROM {{openalex_works/cited_au_works}}) c
+        JOIN oa ON oa.id = c.institution_id
+        JOIN {{openalex_works/au_works}} w USING (work_id)
+        JOIN (SELECT work_id, count(*) AS n, count(*) FILTER (citing_au_family) AS n_au
+              FROM {{openalex_works/patent_citations}} GROUP BY 1) pc USING (work_id)
+        GROUP BY 1, 2
+    ),
+    arc AS (  -- the organisation that won the grant (at announcement), else the one administering it now
+        SELECT n.ror, g.funding_commencement_year AS year, count(*) AS arc_grants,
+               sum(coalesce(g.announced_funding_amount, g.current_funding_amount)) AS arc_funding,
+               count(*) FILTER ({industry}) AS arc_industry_grants,
+               sum(coalesce(g.announced_funding_amount, g.current_funding_amount)) FILTER ({industry})
+                 AS arc_industry_funding
+        FROM {{arc_grants/grants}} g
+        JOIN inst_names n
+          ON n.key = {_name_key("coalesce(g.announcement_admin_organisation, g.current_admin_organisation)")}
+        GROUP BY 1, 2
+    ),
+    nhmrc AS (  -- the NHMRC gives the institution's ROR from the 2025 round; before then it is matched by name
+        SELECT coalesce(replace(g.admin_institution_ror, 'https://ror.org/', ''), n.ror) AS ror,
+               CAST(g.round AS INTEGER) AS year, count(*) AS nhmrc_grants, sum(g.amount) AS nhmrc_funding
+        FROM {{nhmrc_grants/grants}} g LEFT JOIN inst_names n ON n.key = {_name_key("g.admin_institution")}
+        GROUP BY 1, 2
+    ),
+    ir AS (
+        SELECT x.ror, x.shared, r.application_number, r.ip_right_type, r.patent_type, year(r.application_date) AS year
+        FROM {lens_table("institution_rights")} x
+        JOIN {lens_table("rights")} r USING (ip_right_type, application_number)
+    ),
+    ip AS (
+        SELECT ror, year,
+               count(*) FILTER (patent_type = 'standard') AS patents_standard,
+               count(*) FILTER (patent_type = 'standard' AND shared) AS patents_standard_shared,
+               count(*) FILTER (patent_type = 'provisional') AS patents_provisional,
+               count(*) FILTER (patent_type = 'second_tier') AS patents_second_tier,
+               count(*) FILTER (ip_right_type = 'trade_mark') AS trade_marks,
+               count(*) FILTER (ip_right_type = 'design') AS designs
+        FROM ir GROUP BY 1, 2
+    ),
+    fam AS (  -- the patent families of the institution's Australian applications, by year of first priority
+        SELECT DISTINCT ir.ror, m.family_id
+        FROM ir JOIN {{google_patents/members}} m
+          ON m.country_code = 'AU' AND m.au_application = ir.application_number
+        WHERE ir.ip_right_type = 'patent'
+    ),
+    families AS (
+        SELECT fam.ror, year(f.first_priority_date) AS year, count(*) AS patent_families,
+               count(*) FILTER (f.granted_us) AS patent_families_us_granted,
+               sum(f.citing_families_5y) AS patent_family_citations_5y
+        FROM fam JOIN {{google_patents/families}} f USING (family_id) GROUP BY 1, 2
+    ),
+    contracts AS (  -- each contract once, at its latest notice (as in `linkage/abn_spine`, ADR 0010)
+        SELECT parent_cn_id,
+               arg_max(supplier_abn, (amendment IS NOT NULL, amendment, published)) FILTER (supplier_abn IS NOT NULL)
+                 AS abn,
+               arg_max(value, (amendment IS NOT NULL, amendment, published)) FILTER (value IS NOT NULL) AS value,
+               min(published)::DATE AS first_published
+        FROM {{austender/contracts}} GROUP BY 1
+    ),
+    tender AS (
+        SELECT a.ror, year(c.first_published) AS year, count(*) AS contracts, sum(c.value) AS contract_value
+        FROM contracts c JOIN inst_abns a USING (abn) GROUP BY 1, 2
+    ),
+    o AS (SELECT ror, state, established, status FROM {{ror/organisations}})
+    SELECT g.ror, i.institution, i.kind, nullif(i.parent_ror, '') AS parent_ror, upper(o.state) AS state,
+           o.established, o.status AS ror_status, g.year,
+           CASE WHEN g.year >= {OPENALEX_FROM} AND oa.id IS NOT NULL THEN coalesce(works.works, 0) END AS works,
+           CASE WHEN g.year >= {OPENALEX_FROM} AND oa.id IS NOT NULL THEN coalesce(works.citations, 0) END
+             AS citations,
+           CASE WHEN oa.id IS NOT NULL THEN coalesce(cited.works_patent_cited, 0) END AS works_patent_cited,
+           CASE WHEN oa.id IS NOT NULL THEN coalesce(cited.patent_citations, 0) END AS patent_citations,
+           CASE WHEN oa.id IS NOT NULL THEN coalesce(cited.patent_citations_au, 0) END AS patent_citations_au,
+           CASE WHEN g.year >= 2001 THEN coalesce(arc.arc_grants, 0) END AS arc_grants,
+           CASE WHEN g.year >= 2001 THEN coalesce(arc.arc_funding, 0) END AS arc_funding,
+           CASE WHEN g.year >= 2001 THEN coalesce(arc.arc_industry_grants, 0) END AS arc_industry_grants,
+           CASE WHEN g.year >= 2001 THEN coalesce(arc.arc_industry_funding, 0) END AS arc_industry_funding,
+           CASE WHEN g.year >= 2013 THEN coalesce(nhmrc.nhmrc_grants, 0) END AS nhmrc_grants,
+           CASE WHEN g.year >= 2013 THEN coalesce(nhmrc.nhmrc_funding, 0) END AS nhmrc_funding,
+           coalesce(ip.patents_standard, 0) AS patents_standard,
+           coalesce(ip.patents_standard_shared, 0) AS patents_standard_shared,
+           coalesce(ip.patents_provisional, 0) AS patents_provisional,
+           coalesce(ip.patents_second_tier, 0) AS patents_second_tier,
+           coalesce(ip.trade_marks, 0) AS trade_marks,
+           coalesce(ip.designs, 0) AS designs,
+           coalesce(families.patent_families, 0) AS patent_families,
+           coalesce(families.patent_families_us_granted, 0) AS patent_families_us_granted,
+           coalesce(families.patent_family_citations_5y, 0) AS patent_family_citations_5y,
+           CASE WHEN g.year >= 2005 THEN coalesce(tender.contracts, 0) END AS contracts,
+           CASE WHEN g.year >= 2005 THEN coalesce(tender.contract_value, 0) END AS contract_value
+    FROM grid g
+    JOIN inst i USING (ror)
+    LEFT JOIN o USING (ror)
+    LEFT JOIN oa USING (ror)
+    LEFT JOIN works USING (ror, year) LEFT JOIN cited USING (ror, year) LEFT JOIN arc USING (ror, year)
+    LEFT JOIN nhmrc USING (ror, year) LEFT JOIN ip USING (ror, year) LEFT JOIN families USING (ror, year)
+    LEFT JOIN tender USING (ror, year)
+    ORDER BY g.ror, g.year
+    """
+
+
 def timeline_sql() -> str:
     """One row per month. A series is empty before its records become continuous (the 9-in-12 rule, or
     `TIMELINE_START_OVERRIDE`) and in the final months the register has not finished recording (`TIMELINE_LAG`), so
@@ -1656,6 +1868,8 @@ LENSES = {
     "national_indicators": national_indicators_sql,
     "industries": industries_sql,
     "industry_indicators": industry_indicators_sql,
+    "institution_rights": institution_rights_sql,
+    "institutions": institutions_sql,
     "timeline": timeline_sql,
 }
 ORDER = [
@@ -1667,6 +1881,8 @@ ORDER = [
     "national_indicators",
     "industries",
     "industry_indicators",
+    "institution_rights",
+    "institutions",
     "timeline",
 ]  # later lenses read the earlier ones
 

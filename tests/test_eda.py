@@ -42,6 +42,8 @@ def test_register_is_well_formed():
         "national_indicators",
         "industries",
         "industry_indicators",
+        "institution_rights",
+        "institutions",
         "timeline",
     }
     for lens, cols in reg.items():
@@ -63,6 +65,8 @@ def test_register_is_well_formed():
         "national_indicators",
         "industries",
         "industry_indicators",
+        "institution_rights",
+        "institutions",
         "timeline",
     ],
 )
@@ -193,6 +197,8 @@ def _built(lens):
         ("national_indicators", "iso3, source, indicator, period"),
         ("industries", "division, fy"),
         ("industry_indicators", "division, source, indicator, period"),
+        ("institution_rights", "ip_right_type, application_number, ror"),
+        ("institutions", "ror, year"),
         ("timeline", "month"),
     ],
 )
@@ -516,3 +522,55 @@ def test_industries_carry_their_sources_without_loss():
         FROM l JOIN c USING (fy)""").iloc[0]
     assert 0.98 < r.ps_min and r.ps_max <= 1 + 1e-9 and 0.995 < r.tm_min and r.tm_max <= 1 + 1e-9
     assert r.cabee_gap == 0 and abs(r.berd - 24_410_463) <= 19  # each division's total is rounded to $'000
+
+
+def test_name_key_agrees_across_spellings():
+    """Organisations' names are compared without case, apostrophes, punctuation, 'the' or legal suffixes (ADR 0021)."""
+    pairs = [("The Walter & Eliza Hall Institute Ltd", "WALTER AND ELIZA HALL INSTITUTE"),
+             ("Murdoch Children's Research Institute", "MURDOCH CHILDRENS RESEARCH INSTITUTE"),
+             ("NewSouth Innovations Pty. Limited", "NEWSOUTH INNOVATIONS PTY LTD")]  # fmt: skip
+    lit = lambda x: "'" + x.replace("'", "''") + "'"  # noqa: E731
+    for a, b in pairs:
+        r = data.sql(f"SELECT {build._name_key(lit(a))} = {build._name_key(lit(b))} AS same").same[0]
+        assert r, (a, b)
+
+
+def test_institution_link_is_consistent():
+    """The reviewed link (ADR 0021): every institution, name and ABN names a ROR record that exists; each institution
+    is listed once and each ABN belongs to one institution; no name key points to two institutions, for any source."""
+    d = build.INSTITUTIONS_DIR
+    inst = pd.read_csv(d / "institutions.csv", dtype=str)
+    names = pd.read_csv(d / "names.csv", dtype=str)
+    abns = pd.read_csv(d / "abns.csv", dtype=str)
+    ror = set(data.sql(f"SELECT ror FROM {data.table('ror', 'organisations')}").ror)
+    assert not inst.ror.duplicated().any() and set(inst.ror) <= ror
+    assert set(names.ror) <= set(inst.ror) and set(abns.ror) <= set(inst.ror)
+    assert set(inst.parent_ror.dropna()) <= set(inst.ror)
+    assert not abns.abn.duplicated().any() and abns.abn.str.fullmatch(r"\d{11}").all()
+    assert set(names.source) <= {"any", "iprapid", "arc", "nhmrc"}
+    for sources in (("iprapid",), ("arc", "nhmrc")):
+        q = f"WITH {build._institution_names(sources)} SELECT key FROM inst_names GROUP BY 1 HAVING count(*) > 1"
+        assert data.sql(q).empty, sources
+
+
+def test_institutions_carry_their_sources():
+    """Every ARC and NHMRC grant matched to an institution is counted once (the unmatched ones are a few councils and
+    foundations: under 0.1% of the ARC's and 0.5% of the NHMRC's); the lens's IP counts equal its rights' links;
+    every institution has a row for every year (ADR 0021)."""
+    p, ir = _built("institutions"), _built("institution_rights")
+    rights = _built("rights")
+    lo, hi = build.INSTITUTIONS_YEARS
+    r = data.sql(f"""
+        SELECT (SELECT sum(arc_grants) FROM read_parquet('{p}'))
+                 / (SELECT count(*) FROM {data.table("arc_grants", "grants")}) AS arc_share,
+               (SELECT sum(nhmrc_grants) FROM read_parquet('{p}'))
+                 / (SELECT count(*) FROM {data.table("nhmrc_grants", "grants")}) AS nhmrc_share,
+               (SELECT sum(patents_standard) + sum(patents_provisional) + sum(patents_second_tier) + sum(trade_marks)
+                       + sum(designs) FROM read_parquet('{p}')) AS lens_ip,
+               (SELECT count(*) FROM read_parquet('{ir}') x JOIN read_parquet('{rights}') r
+                  USING (ip_right_type, application_number)
+                WHERE r.ip_right_type <> 'pbr' AND year(r.application_date) BETWEEN {lo} AND {hi}) AS linked_ip,
+               (SELECT count(DISTINCT ror) * ({hi} - {lo} + 1) = count(*) FROM read_parquet('{p}'))
+                 AS full_grid""").iloc[0]
+    assert 0.999 < r.arc_share <= 1 and 0.995 < r.nhmrc_share <= 1
+    assert r.lens_ip == r.linked_ip and bool(r.full_grid)

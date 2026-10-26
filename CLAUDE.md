@@ -36,7 +36,8 @@ until Stage 3 is done and the owner says so.
 - Keep context small. Never print raw rows or whole tables: aggregate in DuckDB with `eda.sql`, which refuses results
   over 250,000 rows. Read `analysis/output/columns.csv` with filters, not whole.
 - **Lenses** are the units of analysis: `rights`, `firms`, `regions`, `national`, `industries` (ANZSIC division and
-  financial year) and `timeline` (monthly), with `institutions` planned. `regions` has a long companion, `region_indicators` (its attachments: one
+  financial year), `institutions` (research institution by ROR and calendar year; its IP in `institution_rights`, and
+  its reviewed link to names and ABNs in `analysis/eda/institutions/`) and `timeline` (monthly). `regions` has a long companion, `region_indicators` (its attachments: one
   row per postal area, source, indicator and period), and so do `national`, `national_indicators` (one row per
   place, source, indicator and period: 41 million rows), and `industries`, `industry_indicators`; query them with
   filters, never whole.

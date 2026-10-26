@@ -12541,6 +12541,67 @@
    },
    "run": "2026-10-22"
   },
+  "ror": {
+   "files": {
+    "processed/names": {
+     "bytes": 65665,
+     "columns": [
+      "ror",
+      "name",
+      "name_types",
+      "lang"
+     ],
+     "describe": "Every name, alias and acronym of each Australian ROR record",
+     "location": "repo",
+     "path": "data/processed/ror/names.parquet",
+     "rows": 4467,
+     "sha256": "b6cec034c2fcb91ef2e971b2bbf820e1a0af40e987deba75d21238a03a9a16cc"
+    },
+    "processed/organisations": {
+     "bytes": 95949,
+     "columns": [
+      "ror",
+      "name",
+      "types",
+      "status",
+      "established",
+      "state",
+      "city",
+      "website",
+      "wikidata",
+      "grid",
+      "isni"
+     ],
+     "describe": "Australian research organisations in ROR",
+     "location": "repo",
+     "path": "data/processed/ror/organisations.parquet",
+     "rows": 2052,
+     "sha256": "feb53bfe8d24c8059a64af3ccc3fe54e4facf1ca0f6a98ac816a1414b9d0c228"
+    },
+    "processed/relationships": {
+     "bytes": 26338,
+     "columns": [
+      "ror",
+      "type",
+      "related_ror",
+      "label"
+     ],
+     "describe": "Each Australian ROR record's parents, children and successors",
+     "location": "repo",
+     "path": "data/processed/ror/relationships.parquet",
+     "rows": 1678,
+     "sha256": "b3a4381ec8ecf5d59edc4bcd15c4422fd65c3de71c5d6a27e7d993d42bbff4da"
+    },
+    "raw/v2.15-2026-10-20-ror-data.zip": {
+     "bytes": 39263398,
+     "key": "raw/ror/v2.15-2026-10-20-ror-data.zip",
+     "location": "r2",
+     "sha256": "7a7bf58d5ac18436ed98daf5da906913761d54869edf86d405e51966609dd133",
+     "url": "https://zenodo.org/api/records/23500708/files/v2.15-2026-10-20-ror-data.zip/content"
+    }
+   },
+   "run": "2026-10-26"
+  },
   "tga": {
    "files": {
     "processed/artg": {

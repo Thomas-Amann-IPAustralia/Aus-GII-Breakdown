@@ -6,7 +6,7 @@ what is learned by using it.
 ## Exploratory data analysis (EDA)
 
 Three notebooks, one per stage, each organised by *lenses*: analysis-ready tables with one row per right, firm, postal
-area, country-year or month for Australia, with industries and research institutions planned. Every dataset is attached
+area, country-year, industry-year, research institution-year or month for Australia. Every dataset is attached
 to a lens and goes through all three stages (ADR 0007). The plan is `docs/eda-plan.md`; the status is
 `docs/handover-eda.md`.
 
@@ -21,6 +21,7 @@ uv run jupyter nbconvert --to notebook --execute --inplace analysis/notebooks/01
 | `notebooks/01_univariate.ipynb`, `02_bivariate.ipynb`, `03_multivariate.ipynb` | The three stages, committed with their outputs so they read on GitHub |
 | `eda/build.py` | How each lens is built from the corpus (every derived column is defined here) |
 | `eda/variables.yaml` | Every lens column in plain English: label, kind, unit, notes |
+| `eda/institutions/` | The reviewed link for the `institutions` lens: its institutions (by ROR), their other names and their ABNs (ADR 0021) |
 | `eda/data.py` | `sql()`: DuckDB over the corpus (`{source/table}`) and the lenses (`{lens/name}`), refusing un-aggregated results |
 | `eda/style.py` | One look for every chart (colour-blind-safe palette), labels, source captions |
 | `eda/univariate.py`, `bivariate.py`, `multivariate.py` | The tools of each stage |
@@ -205,6 +206,25 @@ From section 6 of `01_univariate.ipynb`.
   values share a section and row label; the lenses key ABS cube rows by their row on the sheet as well.
 - **BCARR's two releases overlap** (FY2016 to FY2023) and differ by up to 1.2%; the BCS flags 36.2% of its values and
   withholds 25%.
+
+## Found in the institutions lens's Stage 1 profile (2026-10-26, ADR 0021)
+
+From section 7 of `01_univariate.ipynb`.
+- **ROR's API pages are not in a stable order:** paging through a query for Australian records returned 2,052 rows for
+  1,518 records. The `ror` source reads ROR's data dump instead.
+- **IP RAPID gives plant breeder's rights' applicants as codes** (UUIDs), organisations included, with no ABNs, so no
+  plant breeder's right can be linked to a filer by name or ABN.
+- **Universities file through companies, under many names:** UNSW as NewSouth Innovations and before that Unisearch
+  (one company, ACN 000 263 025); CSIRO under eight spellings. IP RAPID gives UQ's own filings no ABN (96% of them).
+- **OpenAlex's counts by year** run from 2010 and include a few works dated 2027 to 10000 (placeholders), which the
+  lens leaves out.
+- **The NHMRC's workbooks give the administering institution's ROR only from the 2025 round;** the ARC gives names, and
+  its current administering organisation for older grants can be a successor (Adelaide University), so the lens uses
+  the organisation at announcement.
+- **The ARC's "Linkage" program holds the Centres of Excellence and infrastructure grants** as well as research with
+  industry.
+- **Half the universities' standard patents carry a postcode that is not a postal area** (2052, 3800, 4072, 3010,
+  2006): the institutions hold 71.58% of such real codes with no residents (U87).
 
 ## Not yet checked
 
