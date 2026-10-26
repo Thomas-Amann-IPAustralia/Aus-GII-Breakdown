@@ -2,21 +2,35 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**The owner's decisions (2026-10-25):** after the `firms` lens, the owner asked for the `regions` lens to be
+**The owner's decisions (2026-10-26):** commence the `national` lens (done: core and attachments). **(2026-10-25):**
+after the `firms` lens, the owner asked for the `regions` lens to be
 completed (done: core and attachments). Before that, after the events attachment, the owner adopted years in force (U36, with
 unfinished rights kept) as a working measure for Stage 2, on condition that it is used alongside other signals, and
 asked for the `firms` lens next. They will try to find out from IP Australia why provisionals rose (U8) and why trade
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-25, latest):** the `regions` lens is complete for Stage 1: section 3 of `01_univariate.ipynb`
+**Status (2026-10-26, latest):** the `national` lens is complete for Stage 1: section 4 of `01_univariate.ipynb`
+profiles every column (U63 to U67) after the repairs of ADR 0019, and every attachment (4.4, U68 to U72). WIPO's filings
+by residents of former states (the Soviet Union, East Germany and four more) and of unknown origin are kept (they were
+9.65% of patent applications by origin, and silently dropped), with a new column, `entity`. The attachments are a new
+long table, `national_indicators` (41.2 million rows: every value of the GII 2026, the 24 OECD flows, WIPO's filings at
+IP Australia by origin, its office table and PCT, Madrid and Hague counts, Measuring What Matters and Closing the Gap).
+Two corpus repairs, by reprocessing: Closing the Gap's "Aus Gov" jurisdiction (85 values) and Measuring What Matters'
+stacked tables (45 cells shared a key). Re-running the notebook also showed that the `rights` build broke two ties
+arbitrarily (a founder's two same-day postcodes, an agent's several names), so a few figures in sections 1 and 3
+changed from build to build; the ties are now fixed (ADR 0019, decision 6), two builds agree row for row, and five
+quoted figures are corrected (U48, U49, U52, U53). **Next is `industries`, then `institutions` (the plan's order),
+unless the owner says otherwise.**
+
+Before that, on 2026-10-25: the `regions` lens is complete for Stage 1: section 3 of `01_univariate.ipynb`
 profiles every column (U48 to U54) after the repairs of ADR 0017, and every attachment (3.5, U55 to U62, ADR 0018).
 Applications are now counted at the filer's postcode; rates are a year, per 10,000 people and (organisations only) per
 1,000 GST-registered businesses, and are empty where fewer than 10 applications would be expected at the national
 rate; `sa3_code` allows pooling; and the filers' postcodes that are not postal areas are classed (S6): 5.55% of
 standard patents, mostly universities' postcodes. The attachments are a new long table, `region_indicators` (22.5
 million rows: every value of the Census, Data by Region, CABEE, PHIDU and the Clean Energy Regulator by postal area,
-SA2 and PHA values split by 2021 residents), and three AusTender columns in `regions`. **Next is `national`.**
+SA2 and PHA values split by 2021 residents), and three AusTender columns in `regions`.
 
 Before that, the same day: the `firms` section (2) of `01_univariate.ipynb` profiles every column of that lens
 (U41 to U47), after four repairs (ADR 0016): applications are counted by the filer's ABN (`founder_abn`), not the
@@ -57,8 +71,35 @@ and BLADE stays ruled out.
 
 ## Where things stand
 
+- **Stage 1, `national` (section 4, every column and attachment).** What it found (all descriptive):
+  - coverage (U63): 30 indicators, 229 places, 1960 to 2025; Australia's researchers end in 2010, technicians 2008,
+    the World Bank's R&D spending 2021 (the OECD's 2023); tertiary enrolment starts in 2015;
+  - WIPO before 1995 (U64): 29% to 34% of patent applications by origin had an unknown origin to 1993 (1.12% in
+    2024), 87% to 90% at IP Australia; Australians' filings abroad, and WIPO's grants and designs to them, near zero
+    until 1994. WIPO by country is compared from 1995;
+  - Australia over time (U65): GERD 1.26% (1990), 2.24% (2008), 1.68% (2023), against an OECD median of 1.85%; BERD
+    0.91% (median 1.18%); manufacturing 13.7% to 5.32% of GDP (−61%, the median member −30%); IP payments exceed
+    receipts in every year; two series breaks (advanced education 2009 to 2011, FDI 2005);
+  - against OECD members (U66): near the top for non-resident patents (5th of 38), new businesses (2nd of 30) and
+    new business density (4th); near the bottom for exports (34th of 35), manufacturing (31st of 32) and BERD (26th
+    of 35);
+  - three routes (U67): IP RAPID's standard patents are within 1.5% (Australian) and 2.2% (overseas) of the World
+    Bank's, 1989 to 2024, and the World Bank's are WIPO's exactly; the World Bank's trade marks count classes
+    (IP RAPID's classes 0.938 to 0.998 of it, its applications 0.545 to 0.659); innovation patents in 2016 1.331 times
+    WIPO's utility models, a lead;
+  - the attachments (U68): 41,196,081 values, 146,102 indicators; no Australian values in the OECD's business
+    demography, innovation and IP methods or IP tax regimes; venture capital ends for Australia in 2019;
+  - the GII 2026 (U69): 20th of 139 (inputs 13th, outputs 24th); strengths in education and universities, weaknesses
+    in outputs and trade; 6 indicators missing and 8 outdated for Australia (the median economy: 6 and 9);
+  - WIPO (U70): the United States files 41.9% of patent applications at IP Australia (2024), Australia 8.3%, China
+    8.3% (0.3% in 2004); 76.1% of Australians' applications are abroad; IP Australia's average trade mark time to
+    registration was 222 days (2016), the U11 peak;
+  - the OECD's cross-border patents (U71): the "World" partner is the country's total (2,117 PCT applications
+    invented in Australia, 2015); 7.0% of Australian inventions were US-owned in 2020;
+  - Measuring What Matters and Closing the Gap (U72): 3,767 of 5,159 MWM values are monthly copies of ABS series; 353
+    Closing the Gap values are projections and 443 model estimates, marked in `status`.
 - **Stage 1, `regions` (section 3, every column and attachment).** What it found (all descriptive):
-  - coverage (U48): 2,641 postal areas, 25,365,506 people; the filer's postcode differs from the holder's for 6.03% of
+  - coverage (U48): 2,641 postal areas, 25,365,506 people; the filer's postcode differs from the holder's for 6.05% of
     standard patents and 7.6% of trade marks (FY2017 to FY2026); individuals file 21.53% and 24.97%;
   - the postcode check (U49): 94.45% of standard patents' filer postcodes are postal areas; 4.14% are real codes with
     no residents, led by universities' (2052 UNSW's NewSouth Innovations, 3800 Monash, 2006 Sydney, 3010 Melbourne,
@@ -68,7 +109,7 @@ and BLADE stays ruled out.
   - remoteness and SEIFA (U51): major cities 37.7% of areas, 72.8% of people; SEIFA deciles are tenths of areas;
   - concentration (U52): the top tenth of areas file 72.5% of standard patents with 29.0% of people; one firm files
     76.3% of 2113's (Aristocrat), 88.1% of 2601's (CSIRO), 64.1% of 2153's (ResMed);
-  - rates against chance (U53): 68.2% to 72.8% of areas fall below the funnel's 95% limits and 6.7% to 15.5% above,
+  - rates against chance (U53): 68.2% to 72.5% of areas fall below the funnel's 95% limits and 6.7% to 15.5% above,
     for postal areas and for SA3s alike: far more spread than chance, so Stage 2 uses negative binomial models;
   - R&D claimants (U54): 50.7% have never filed IP; 5.6 claimants per 1,000 businesses in major cities, 0.6 in very
     remote areas;
@@ -175,7 +216,8 @@ and BLADE stays ruled out.
   - `firms`: 398,450 rows, 40 columns (ADR 0016: `n_held`, `n_held_in_force`, `in_iplord`);
   - `regions`: 2,641 rows, 42 columns (ADR 0017, 0018);
   - `region_indicators`: 22,511,923 rows, 10 columns, 173 MB (the `regions` lens's attachments, long; ADR 0018);
-  - `national`: 135,140 rows, 10 columns;
+  - `national`: 135,597 rows, 11 columns (ADR 0019: `entity`);
+  - `national_indicators`: 41,196,081 rows, 15 columns, 264 MB (the `national` lens's attachments, long; ADR 0019);
   - `timeline`: 1,473 months, 35 columns.
 
   Two more, `industries` and `institutions`, are planned (ADR 0007). Every table has a lens to attach to; the map is
@@ -208,7 +250,10 @@ and BLADE stays ruled out.
 - **Settled (descriptive, ADR 0010; confirmed by the owner, 2026-10-25):** the register does not drop provisional applications once a full application
   claims them (N01, refuted), so FY2026's jump to 10,069 provisionals is real; `application_date` for a PCT filing is
   the date it entered Australia's national phase (N06).
-- **Corrected this session** (each in the record as well):
+- **Corrected on 2026-10-26** (ADR 0019): the `rights` build's arbitrary ties (founders' same-day postcodes, agents'
+  names), which made five quoted figures in U48, U49, U52 and U53 differ from a fresh build; and the World Bank's
+  trade mark series, which the register described as applications but which count classes (U67).
+- **Corrected on 2026-10-25** (each in the record as well):
   - the plan to ask AusTender's API for notices by the date last modified: its windows from July 2023 page back
     through every older contract, so it was replaced by asking for the running contracts by id. The draft of ADR 0011
     had said the 2019 to 2023 amendments could not be recovered; asking by id recovers them;
@@ -218,6 +263,10 @@ and BLADE stays ruled out.
 - **Corrected this session (the timeline):** the policy register's note that the Patents Act 1990 brought in 20-year
   patents (it was 16 years until 1 July 1995); and section 1's U5 and U10, whose charts showed survivors' counts and
   registration rates for the years before 1983 (trade marks) and 1986 (designs) without saying so.
+- **Tests (national):** 73 pass; new: WIPO's applications by residents sum to the source's total, no aggregate is a
+  place, the OECD's R&D intensity is held once, WIPO's filings at IP Australia sum to the office's total, Australia's
+  GII rank is the source's, Closing the Gap keeps the Australian Government's values; one row per key in
+  `national_indicators`.
 - **Tests (regions):** 69 pass; new: the postal-area counts equal the window's rights with a filer's postcode, no
   rate shown below the minimum or hidden above it, the Poisson interval, the postcode ranges, one row per key in
   `region_indicators`, CABEE's split businesses sum to the published total, no level marked as a count.
@@ -229,10 +278,10 @@ and BLADE stays ruled out.
 
 ## Next, in order
 
-1. **`national`, section 4 of `01_univariate.ipynb`** (A8 done, ADR 0010): GII, the OECD flows, WIPO by origin. First
-   check it for repairs, in an ADR; then profile every column.
-2. **The planned lenses, `industries` and `institutions`,** in the order the plan gives. `institutions` will count the
-   universities' patents that fall outside the postal areas (U49).
+1. **The planned lenses, `industries` and `institutions`,** in the order the plan gives. `industries` also takes the
+   national tables of `abs_rd_vc`, `bcarr_creative` and CABEE (ADR 0019), and needs the IPC map (B6). `institutions`
+   will count the universities' patents that fall outside the postal areas (U49).
+2. **Done:** the `national` section with its attachments (U63 to U72, ADR 0019).
 3. **The rest of the `rights` attachments, as sub-sections of 1.8, when the owner says:** the links (with the PCT
    country check), Google Patents (B4), and the inventors (gender estimates checked country by country against WIPO's
    published shares, above all China and Korea).
@@ -264,10 +313,18 @@ and BLADE stays ruled out.
      that places these postcodes (GeoNames, free) only if Stage 2's regional results prove sensitive;
    - the ACT holds 27.0% of government contracts against 1.3% of businesses (U62), and South Australia 12.2% of their
      value against 6.1%: where contracts are addressed, to read beside the firms behind them.
+   - IP RAPID's innovation patents filed in 2016 are 1.331 times WIPO's utility models (2,469 against 1,855; other
+     years 0.958 to 1.072, U67): how WIPO counted divisionals or conversions that year?
+   - the World Bank's share of the labour force with advanced education steps up to 86.33% in 2010 for Australia
+     (80.42% in 2008, 82.09% in 2015), a break the OECD median does not show (U65): use with care.
+   - Australia ranks near the bottom of the OECD on business R&D, exports and manufacturing, and near the top on
+     filings from abroad and new businesses (U66): Stage 2 compares them as ratios to people and GDP.
 2. Check in Stage 1 (the placeholder dates are done, U40):
    - IP RAPID's `links.linked_application_country`, which labels every PCT number `au` (`analysis/README.md`), with
      the links attachment;
-   - the 222-day peak in trade mark registration times (U11), against IP Australia's published process times.
+   - the 222-day peak in trade mark registration times (U11): WIPO gives IP Australia's average time from filing to
+     registration as 222 days in 2016 (U70), so the peak is the office's usual path. IP Australia's own process
+     times would confirm it for other years.
 3. Settled by the parties attachment (ADR 0013): `representation` separates attorneys (agents of five or more
    applicants) from other agents. For trade marks the share still depends on the threshold, so Stage 2 gives bounds.
    Attorney firms' corporate groups are not recorded, so concentration by firm name is a lower bound.
@@ -295,4 +352,7 @@ and every answer with its date. Nothing there blocks Stage 1. Add new questions 
 - The `rights` section's cells are long; keep each new sub-section to a few cells, and the notebook under about
   25 MB (ADR 0002 says when to split it).
 - `region_indicators` is 22.5 million rows: always filter by `source` and `indicator` in SQL, never load it whole.
-- Next free ADR: 0019.
+- `national_indicators` is 41 million rows: always filter by `source`, `dataset` and `indicator` in SQL.
+- Compare WIPO's series by country from 1995 only (U64), and filter `entity = 'country'` for comparisons between
+  countries.
+- Next free ADR: 0020.

@@ -299,10 +299,11 @@ def rights_sql() -> str:
         FROM other_agents o JOIN clients c USING (party_id)
         GROUP BY 1, 2
     ),
-    agent_info AS (
-        SELECT party_id AS agent_id,
-               any_value(CASE WHEN party_type = 'organisation' THEN party_name END) AS agent_name
-        FROM {{iprapid/party}} WHERE party_role_category = 'applicant_agent'
+    agent_info AS (  -- 12,214 agents have more than one name (some are pseudonymised codes): the most used, so that
+                     -- every build picks the same one (ADR 0019)
+        SELECT agent_id, arg_max(party_name, (n, party_name)) AS agent_name
+        FROM (SELECT party_id AS agent_id, party_name, count(*) AS n FROM {{iprapid/party}}
+              WHERE party_role_category = 'applicant_agent' AND party_type = 'organisation' GROUP BY 1, 2)
         GROUP BY 1
     ),
     founders AS (  -- each founding applicant or owner, as first recorded
@@ -310,8 +311,12 @@ def rights_sql() -> str:
             SELECT ip_right_type, application_number, party_id, party_type, country_code, state_code,
                    {_postcode("post_code")} AS postcode, effective_from_date AS since,
                    max(abn) OVER (PARTITION BY ip_right_type, application_number, party_id) AS abn,
+                   -- ties (1,686 founders have two postcodes on their first day) go to the lowest postcode, so
+                   -- that every build picks the same one (ADR 0019)
                    row_number() OVER (PARTITION BY ip_right_type, application_number, party_id
-                                      ORDER BY effective_from_date, country_code NULLS LAST) AS k
+                                      ORDER BY effective_from_date, country_code NULLS LAST,
+                                               {_postcode("post_code")} NULLS LAST, post_code NULLS LAST,
+                                               state_code NULLS LAST) AS k
             FROM {{iprapid/party}}
             WHERE party_role_category IN ('applicant', 'owner') AND is_founding
         ) WHERE k = 1
@@ -1013,13 +1018,15 @@ def _oecd_flow_sql(flow: str, iso: str) -> str:
     bases = [c for c in ("base_period", "base_year") if c in cols]
     code = ", ".join(dims + [f"nullif({b}, '_Z')" for b in bases])
     label = ", ".join(f"CASE WHEN {d} <> '_Z' THEN {d}_label END" for d in dims)
-    status = ", ".join(f"{c}_label" for c in OECD_STATUS if f"{c}_label" in cols)
+    # a normal value ('A') carries no flag; a suppressed one ('Q', confidential) is published as 0, so it is emptied
+    status = ", ".join(f"CASE WHEN {c} <> 'A' THEN {c}_label END" for c in OECD_STATUS if f"{c}_label" in cols)
+    suppressed = "observation_status = 'Q'" if "observation_status" in cols else "false"
     unit = ["unit_of_measure_label"] if "unit_of_measure_label" in cols else ["NULL"]
     if "unit_multiplier" in cols:
         unit.append("CASE WHEN unit_multiplier <> '0' THEN unit_multiplier_label END")
     unit = ", ".join(unit + [f"'base ' || nullif({b}, '_Z')" for b in bases])
     where = [f"(reference_area IN ({iso}) OR reference_area = 'YUG_F')"]
-    where.append(f"({'value IS NOT NULL OR value_text IS NOT NULL' if 'value_text' in cols else 'value IS NOT NULL'})")
+    where.append(f"(value IS NOT NULL OR {'value_text IS NOT NULL OR ' if 'value_text' in cols else ''}{suppressed})")
     if "territorial_level" in cols:
         where.append("territorial_level = 'CTRY'")  # its regions are within countries, not countries
     if flow == "msti":  # the core lens holds these (OECD.MSTI.G and .B)
@@ -1029,7 +1036,8 @@ def _oecd_flow_sql(flow: str, iso: str) -> str:
                reference_area_label AS place_name, CAST(left(time_period, 4) AS INTEGER) AS year,
                time_period AS period, 'oecd' AS source, '{flow}' AS dataset,
                'OECD.{flow.upper()}.' || concat_ws('.', {code}) AS indicator, concat_ws(', ', {label}) AS label,
-               value, {"value_text" if "value_text" in cols else "NULL::VARCHAR"} AS value_text,
+               CASE WHEN {suppressed} THEN NULL ELSE value END AS value,
+               {"value_text" if "value_text" in cols else "NULL::VARCHAR"} AS value_text,
                concat_ws(', ', {unit}) AS unit, nullif(concat_ws('; ', {status or "NULL"}), '') AS status
         FROM {{oecd/{flow}}}
         WHERE {" AND ".join(where)}"""

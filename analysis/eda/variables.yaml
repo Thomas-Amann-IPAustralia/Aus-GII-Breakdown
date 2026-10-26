@@ -165,7 +165,7 @@ national:
   iso3: {label: Country code, kind: id, note: "ISO 3166 alpha-3. Former states keep their ISO 3166-3 codes (SUN, DDR, CSK, YUG, ZAR, ANT) and WIPO's unknown origin is ZZZ (see entity); aggregates (regions, income groups, the OECD, the world) are left out"}
   country: {label: Country, kind: category, note: "one name per place: the World Bank's where it has the country"}
   year: {label: Year, kind: year}
-  indicator: {label: Indicator code, kind: category, note: "the World Bank's codes (trade marks are IP.TMK.RSCT and IP.TMK.NRCT, 2004 on), WIPO.* (filings by residents at every office) and OECD.MSTI.G and .B (GERD and BERD, % of GDP). The World Bank's and the OECD's R&D series differ where they overlap: compare them side by side, never splice them (ADR 0010)"}
+  indicator: {label: Indicator code, kind: category, note: "the World Bank's codes (trade marks are IP.TMK.RSCT and IP.TMK.NRCT, 2004 on), WIPO.* (filings by residents at every office) and OECD.MSTI.G and .B (GERD and BERD, % of GDP). The World Bank's and the OECD's R&D series differ where they overlap: compare them side by side, never splice them (ADR 0010). The World Bank's trade mark and design series 'by count' count classes and designs, not applications: they equal WIPO's class and design counts at the office (U67)"}
   indicator_name: {label: Indicator, kind: category}
   value: {label: Value, kind: numeric, note: "units differ by indicator; compare within one indicator only"}
   status: {label: Value's status, kind: category, note: "the OECD's flag on its values (estimated, provisional, definition differs, time series break: 32.5% of its values here; every Australian GERD value from 2010 is an estimate); empty for the World Bank's and WIPO's, which publish none"}
@@ -190,7 +190,7 @@ national_indicators:
   value: {label: Value, kind: numeric, note: "units differ by indicator: compare within one indicator only. Never add a total to its parts, or one source's measure to another's (MWM's patents and trade marks, and the OECD's patents, repeat counts held elsewhere)"}
   value_text: {label: Value as text, kind: category, note: "where the value is not a number: the OECD's IP tax regimes (mostly text), the GII's strengths and weaknesses (S or W), its income groups and regions, and Closing the Gap's '..', 'np' and 'na' (not available or not published) and assessments (High, Low)"}
   unit: {label: Unit, kind: category, note: "as published (the OECD's unit, multiplier and base period; WIPO's counts or days; the GII's score, rank or value; Closing the Gap's unit). Empty for Measuring What Matters, whose units are in the label"}
-  status: {label: Value's status, kind: category, note: "the OECD's flags (estimated, provisional, break); the GII's 'outdated' (older than the most common data year) and 'data minimum coverage not met'; Closing the Gap's trajectories (projected), regression estimates (modelled) and assessments. A projected value is not an observation"}
+  status: {label: Value's status, kind: category, note: "the OECD's flags (estimated, provisional, break; a normal value has none, and a suppressed one, which the OECD publishes as 0, has an empty value); the GII's 'outdated' (older than the most common data year) and 'data minimum coverage not met'; Closing the Gap's trajectories (projected), regression estimates (modelled) and assessments. A projected value is not an observation"}
   oecd: {label: OECD member, kind: binary}
   australia: {label: Australia, kind: binary}
 

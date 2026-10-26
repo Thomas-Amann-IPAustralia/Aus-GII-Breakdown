@@ -35,7 +35,8 @@ def overview(df: pd.DataFrame, lens: str | None = None) -> pd.DataFrame:
                 "max": _show(s.max(), k) if _orderable(s) else None,
                 "most common": None
                 if vc is None or vc.empty
-                else f"{_top(vc.index[0])} ({100 * vc.iloc[0] / filled:.1f}%)",
+                # among values tied for most common, the smallest, so the table is the same on every run
+                else f"{_top(min(vc.index[vc == vc.iloc[0]], key=str))} ({100 * vc.iloc[0] / filled:.1f}%)",
             }
         )
     return pd.DataFrame(rows).set_index("column")
