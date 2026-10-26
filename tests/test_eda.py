@@ -396,6 +396,45 @@ def test_rights_events_attachment_is_consistent():
     assert bad.to_dict() == dict.fromkeys(bad.index, 0)
 
 
+def test_rights_links_google_patents_and_inventors_are_consistent():
+    p = _built("rights")
+    routes = {
+        "standard": "('pct', 'divisional', 'convention', 'australian_priority', 'direct')",
+        "second_tier": "('pct', 'divisional', 'convention', 'australian_priority', 'direct')",
+        "trade_mark": "('madrid', 'divisional', 'convention', 'direct')",
+        "design": "('divisional', 'convention', 'direct')",
+    }
+    wrong_route = " OR ".join(
+        f"(coalesce(patent_type, ip_right_type) = '{t}' AND filing_route NOT IN {r})" for t, r in routes.items()
+    )
+    bad = data.sql(f"""
+        SELECT
+            count(*) FILTER ({wrong_route}) AS wrong_route,
+            count(*) FILTER ((patent_type = 'provisional' OR ip_right_type = 'pbr') AND filing_route IS NOT NULL)
+                AS route_not_applicable,
+            count(*) FILTER ((filing_route = 'pct') <> (pct_number IS NOT NULL) AND patent_type <> 'provisional')
+                AS pct_number,
+            count(*) FILTER (filing_route = 'convention' AND priority_claims = 0) AS convention_without_priority,
+            count(*) FILTER (filing_route = 'australian_priority' AND NOT australian_priority) AS australian_route,
+            count(*) FILTER (priority_claims = 0 AND priority_office IS NOT NULL) AS office_without_priority,
+            count(*) FILTER (priority_office = 'au' AND ip_right_type = 'patent' AND NOT australian_priority)
+                AS au_office,
+            count(*) FILTER (family_id IS NOT NULL AND ip_right_type <> 'patent') AS family_not_patent,
+            count(*) FILTER ((family_id IS NULL) <> (family_offices IS NULL)) AS family_pairs,
+            count(*) FILTER (family_offices < 1) AS no_office,
+            count(*) FILTER (family_citations_5y > family_citations) AS citations_5y,
+            count(*) FILTER (family_citations_5y IS NOT NULL
+                             AND family_priority_date > DATE '{build.CITATIONS_5Y_COMPLETE}') AS citations_window,
+            count(*) FILTER (inventors IS NOT NULL AND family_id IS NULL) AS inventors_without_family,
+            count(*) FILTER (inventors_au + inventors_abroad + inventors_country_unknown <> inventors) AS inventor_sum,
+            count(*) FILTER (abs(inventors_women_expected + inventors_men_expected + inventors_gender_unknown
+                                 - inventors) > 1e-6) AS gender_sum,
+            count(*) FILTER ((invented_in_australia IS NULL) <> (inventors_au + inventors_abroad = 0)
+                             AND inventors IS NOT NULL) AS invented_here
+        FROM read_parquet('{p}')""").iloc[0]
+    assert bad.to_dict() == dict.fromkeys(bad.index, 0)
+
+
 def test_kaplan_meier_matches_a_hand_count():
     # 10 at risk: 2 end at t=1, 1 is unfinished at t=1, then 3 end at t=2 of the 7 left, and 4 are unfinished then
     counts = pd.DataFrame({"t": [1, 2], "ended": [2, 3], "unfinished": [1, 4]})

@@ -5,7 +5,7 @@
 
 | Lens | One row per | Built from |
 |---|---|---|
-| `rights` | IP right (patent, trade mark, design, plant breeder's right) | `iprapid/*_rights`, `party`, `events` |
+| `rights` | IP right (patent, trade mark, design, plant breeder's right) | `iprapid/*`, `google_patents*` |
 | `firms` | ABN in any IP, R&D, procurement or tax source | `linkage/abn_spine`, `rights`, `rdti`, `ato_ctt` |
 | `regions` | Postal area (the ABS's version of a postcode) | `abs_regions`, `abs_census`, `abr`, `rights`, `firms` |
 | `region_indicators` | Postal area, source, indicator, period | Census, Data by Region, CABEE, PHIDU, CER |
@@ -197,6 +197,18 @@ RIGHT_EVENTS = [
 # for renewal, so the register's record of their ends stops six months early, as in `TIMELINE_LAG`.
 OBSERVED_UNTIL = {"trade_mark": "2026-03-31", "design": "2026-03-31"}
 
+# The links attachment (ADR 0022): how each right came to Australia. A right's own links name the applications it
+# claims (its parent, its priorities, its PCT application); the *_child links are the other side of the same pairs.
+# IP RAPID labels every PCT number `au`, and many other offices' priority numbers too, so a patent priority's office
+# is read from its number: an Australian application number is ten digits, year first (or an associated provisional);
+# a PCT number names its receiving office after "PCT"; any other number labelled `au` or `wo` has an unknown office.
+AU_NUMBER = r"(19|20)\d{8}"
+PRIORITY_LINKS = ("convention", "associated_provisional", "convention_priority")
+DIVISIONAL_LINKS = ("divisional_parent", "divisional_parent_unresolved", "exclusive_parent")
+# Google Patents (B4, ADR 0022): a family's citations within five years of its first priority are complete only when
+# five years and the 18 months before citing applications are published have passed by the release (October 2026)
+CITATIONS_5Y_COMPLETE = "2020-04-22"
+
 OECD = (
     "AUS AUT BEL CAN CHL COL CRI CZE DNK EST FIN FRA DEU GRC HUN ISL IRL ISR ITA JPN KOR LVA LTU LUX MEX NLD NZL NOR "
     "POL PRT SVK SVN ESP SWE CHE TUR GBR USA"
@@ -241,7 +253,17 @@ def rights_sql() -> str:
 
     The events attachment (B5, ADR 0015) adds each right's milestones (`RIGHT_EVENTS`) and its lifetime: the years
     from the date its term runs from to its end, or to `OBSERVED_UNTIL` if it is still in force then (`in_force` is
-    then true, and the lifetime is unfinished). Only rights that were granted or registered have a lifetime."""
+    then true, and the lifetime is unfinished). Only rights that were granted or registered have a lifetime.
+
+    The last three attachments (ADR 0022). The links say how a right came to Australia (`filing_route`): for a
+    standard or second-tier patent, as the national phase of a PCT application, as a divisional of an earlier
+    application, claiming a priority abroad (the Paris Convention), claiming only an Australian application (usually a
+    provisional), or directly; for a trade mark, through the Madrid system, as a divisional, with a priority or
+    directly; for a design, as a divisional, with a priority or directly. Google Patents (B4) gives a patent's family:
+    the offices it was filed in, whether the United States granted it, and the families citing it. The inventors are
+    those of the family's representative publication (ADR 0008), with their countries and the expected numbers of
+    women and men among them (from first names, `wgnd`); a family's inventors are counted for each of its Australian
+    applications."""
     milestones = ",\n               ".join(
         f"min(event_effective_date) FILTER ({cond}) AS {col}" for col, cond in RIGHT_EVENTS
     )
@@ -367,6 +389,44 @@ def rights_sql() -> str:
           AND ({any_milestone})
         GROUP BY 1, 2
     ),
+    links AS (  -- the links attachment (ADR 0022): the right's own links
+        SELECT ip_right_type, application_number, link_type, linked_application_number AS number,
+               nullif(nullif(link_date, DATE '1800-01-01'), DATE '1900-01-01') AS link_date,
+               CASE WHEN link_type NOT IN {PRIORITY_LINKS} THEN NULL
+                    WHEN ip_right_type <> 'patent' THEN linked_application_country
+                    WHEN link_type = 'associated_provisional' OR regexp_full_match(linked_application_number,
+                         '{AU_NUMBER}') THEN 'au'
+                    WHEN upper(linked_application_number) LIKE 'PCT%'
+                         THEN lower(substr(regexp_replace(upper(linked_application_number), '[^A-Z0-9]', '', 'g'),
+                                           4, 2))
+                    WHEN linked_application_country NOT IN ('au', 'wo') THEN linked_application_country
+               END AS office
+        FROM {{iprapid/links}}
+    ),
+    route AS (
+        SELECT ip_right_type, application_number,
+               bool_or(link_type = 'pct_application_number') AS pct,
+               arg_min(number, (coalesce(link_date, DATE '9999-12-31'), number))
+                   FILTER (link_type = 'pct_application_number') AS pct_number,
+               bool_or(link_type IN {DIVISIONAL_LINKS}) AS divisional,
+               bool_or(link_type = 'madrid_import') AS madrid,
+               bool_or(link_type = 'madrid_export') AS madrid_export,
+               -- a priority with no number (18,898 rights have one) is told apart by its office and date
+               count(DISTINCT coalesce(number, concat_ws('|', office, link_date)))
+                   FILTER (link_type IN {PRIORITY_LINKS}) AS priorities,
+               bool_or(link_type IN {PRIORITY_LINKS} AND office IS DISTINCT FROM 'au') AS foreign_priority,
+               bool_or(link_type IN {PRIORITY_LINKS} AND office = 'au') AS australian_priority,
+               arg_min(office, (coalesce(link_date, DATE '9999-12-31'), office))
+                   FILTER (link_type IN {PRIORITY_LINKS} AND office IS NOT NULL) AS priority_office
+        FROM links GROUP BY 1, 2
+    ),
+    gp AS (  -- Google Patents (B4, ADR 0022): each Australian patent application's family; 734 numbers fall in two
+             -- families, of which the first is taken so that every build picks the same one
+        SELECT au_application AS application_number, min(family_id) AS family_id
+        FROM {{google_patents/members}}
+        WHERE country_code = 'AU' AND kind_code <> 'S' AND au_application <> ''
+        GROUP BY 1
+    ),
     dated AS (
         SELECT *,
                CASE WHEN applicant_country = 'au' THEN {_postcode("applicant_postcode")} END AS postcode_au,
@@ -446,7 +506,36 @@ def rights_sql() -> str:
         CASE WHEN {observed} THEN r.retired IS NULL OR r.retired > {until} END AS in_force,
         CASE WHEN {observed}
              THEN round(date_diff('day', {term_from}, least(coalesce(r.retired, {until}), {until})) / 365.25, 2)
-        END AS years_in_force
+        END AS years_in_force,
+        CASE WHEN r.ip_right_sub_type = 'provisional' OR r.ip_right_type = 'pbr' THEN NULL
+             WHEN rt.pct THEN 'pct'
+             WHEN rt.madrid THEN 'madrid'
+             WHEN rt.divisional THEN 'divisional'
+             WHEN rt.foreign_priority OR (r.ip_right_type <> 'patent' AND rt.priorities > 0) THEN 'convention'
+             WHEN rt.australian_priority THEN 'australian_priority'
+             ELSE 'direct' END AS filing_route,
+        CASE WHEN r.ip_right_type <> 'pbr' THEN coalesce(rt.priorities, 0) END AS priority_claims,
+        rt.priority_office,
+        CASE WHEN r.ip_right_type = 'patent' THEN coalesce(rt.australian_priority, false) END AS australian_priority,
+        CASE WHEN r.ip_right_type <> 'pbr' THEN coalesce(rt.divisional, false) END AS divisional,
+        rt.pct_number,
+        lower(substr(regexp_replace(upper(rt.pct_number), '[^A-Z0-9]', '', 'g'), 4, 2)) AS pct_office,
+        CASE WHEN r.ip_right_type = 'trade_mark' THEN coalesce(rt.madrid_export, false) END AS madrid_export,
+        gp.family_id,
+        fam.first_priority_date AS family_priority_date,
+        fam.n_offices AS family_offices,
+        fam.granted_us AS family_granted_us,
+        fam.citing_families AS family_citations,
+        CASE WHEN fam.first_priority_date <= DATE '{CITATIONS_5Y_COMPLETE}' THEN fam.citing_families_5y END
+            AS family_citations_5y,
+        inv.inventors,
+        inv.inventors_au,
+        inv.inventors_abroad,
+        inv.inventors_country_unknown,
+        CASE WHEN inv.inventors_au > 0 THEN true WHEN inv.inventors_abroad > 0 THEN false END AS invented_in_australia,
+        inv.women_expected AS inventors_women_expected,
+        inv.men_expected AS inventors_men_expected,
+        inv.gender_unknown AS inventors_gender_unknown
     FROM dated r
     LEFT JOIN applicants a USING (ip_right_type, application_number)
     LEFT JOIN agents g USING (ip_right_type, application_number)
@@ -456,6 +545,10 @@ def rights_sql() -> str:
     LEFT JOIN poa_state ps ON ps.poa_code = r.postcode_au
     LEFT JOIN poa_state fs ON fs.poa_code = f.founder_postcode
     LEFT JOIN milestones m USING (ip_right_type, application_number)
+    LEFT JOIN route rt USING (ip_right_type, application_number)
+    LEFT JOIN gp ON r.ip_right_type = 'patent' AND gp.application_number = r.application_number
+    LEFT JOIN {{google_patents/families}} fam ON fam.family_id = gp.family_id
+    LEFT JOIN {{google_patents_inventors/family_inventors}} inv ON inv.family_id = gp.family_id
     """
 
 
@@ -1098,7 +1191,7 @@ def national_indicators_sql() -> str:
         UNION ALL
         SELECT iso.a3, o.origin, o.year, CAST(o.year AS VARCHAR), 'wipo', 'pmh', 'WIPO.PMH.' || o.indicator_id,
                regexp_replace(o.indicator, '^\\S+\\s*-\\s*', '') || ' (' || upper(o.system) || ', by origin)', o.value,
-               NULL, 'number', NULL
+               NULL, CASE WHEN o.indicator_id = 1042 THEN 'percent' ELSE 'number' END, NULL
         FROM {{wipo_ipstats/pmh}} o JOIN iso ON iso.a2 = o.origin_code
     ),
     g AS (

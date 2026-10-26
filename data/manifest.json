@@ -13219,7 +13219,7 @@
      "sha256": "3cad2d26046329213ca63dc0936b053c91a8582b769c4b6d8f88f658a6d2f4ae"
     },
     "processed/office_origin": {
-     "bytes": 7184008,
+     "bytes": 7397956,
      "columns": [
       "right",
       "indicator_id",
@@ -13236,11 +13236,11 @@
      "describe": "WIPO indicators by filing office and applicant's origin, long",
      "location": "repo",
      "path": "data/processed/wipo_ipstats/office_origin.parquet",
-     "rows": 4939588,
-     "sha256": "52e445dd17d23a43cd39f509c0a5fe72422016721bcb3109a9d1d7d708f3449b"
+     "rows": 5061559,
+     "sha256": "5c8096c0a2ec4a1d61bf4031bba08bc73abdd3db7466d8a337e61f1a0f2bece9"
     },
     "processed/pmh": {
-     "bytes": 25436,
+     "bytes": 29342,
      "columns": [
       "system",
       "indicator_id",
@@ -13254,8 +13254,8 @@
      "describe": "PCT, Madrid and Hague applications by origin or holder, long",
      "location": "repo",
      "path": "data/processed/wipo_ipstats/pmh.parquet",
-     "rows": 8440,
-     "sha256": "84d3332780bfd2bde0a2241fc1df436b6ae7738a5ea274e043a46f36ac4c86c3"
+     "rows": 10165,
+     "sha256": "ecaed131485f8ec0f68143e30a85b27bf7dd8b50e232e0f50a2054f5bb489797"
     },
     "raw/hague_3001.csv.gz": {
      "bytes": 4241,
@@ -13320,12 +13320,26 @@
      "sha256": "d382fac46f5cd56022787b06b0024e363b499698166657a8bd44cf0e2f85fb9a",
      "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 112 11)"
     },
+    "raw/patent_11_15.csv.gz": {
+     "bytes": 149448,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_11_15.csv.gz",
+     "sha256": "55ec00d8e25a94b8ca9f40826bf10132ab9a84a6dc322c3a4f5f07413eef7e8b",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 11 15)"
+    },
     "raw/patent_120_11.csv.gz": {
      "bytes": 1770,
      "location": "repo",
      "path": "data/raw/wipo_ipstats/patent_120_11.csv.gz",
      "sha256": "df3019a05a40bf3571d00000f219bad02f308a1be811361570ab7021c825fc05",
      "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 120 11)"
+    },
+    "raw/patent_12_15.csv.gz": {
+     "bytes": 124001,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_12_15.csv.gz",
+     "sha256": "36455fce442d7fe621ce5dd2d3d790630e66a9182e9fd48c5a4be7a48d1072a4",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 12 15)"
     },
     "raw/patent_15_15.csv.gz": {
      "bytes": 175627,
@@ -13375,6 +13389,13 @@
      "path": "data/raw/wipo_ipstats/pct_1001.csv.gz",
      "sha256": "e338bdc856d2a112e6578e40ef20b83970e80b227dc73d1967d7505d8e7ee863",
      "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/pmh-search/downloadCsv (pct 1001)"
+    },
+    "raw/pct_1042.csv.gz": {
+     "bytes": 4657,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/pct_1042.csv.gz",
+     "sha256": "9dc174884530eee34b573a2c2d0cb2aea7297acfa97fc766861449e9b4552d62",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/pmh-search/downloadCsv (pct 1042)"
     },
     "raw/trademark_114_11.csv.gz": {
      "bytes": 5308,
@@ -13426,7 +13447,7 @@
      "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (utility 70 15)"
     }
    },
-   "run": "2026-10-22"
+   "run": "2026-10-26"
   }
  }
 }

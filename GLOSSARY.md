@@ -45,6 +45,12 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Nice class** | One of the 45 classes of goods and services a trade mark is registered for (for example class 35, advertising and business services). |
 | **Locarno class** | The international classification for designs. |
 | **PCT, Madrid, Hague** | International filing routes, for patents, trade marks and designs respectively. |
+| **Filing route** | How a right came to Australia: for a patent, as the national phase of an international (PCT) application, as a divisional of an earlier Australian application, claiming a *convention priority* (an earlier filing abroad), claiming only an Australian application (usually a provisional), or directly; for a trade mark, also through the Madrid system. |
+| **Convention priority** | An earlier application, usually in another country, whose filing date a new application claims under the Paris Convention, if it is filed within 12 months (6 for designs and trade marks). The first such filing is often in the applicant's home office. |
+| **Receiving office (PCT)** | The office an international patent application is filed at, usually the applicant's home office, the European Patent Office or WIPO's own International Bureau (`ib`). |
+| **Madrid basis** | An Australian trade mark application or registration on which an application for international registration through the Madrid system is based: a sign of an Australian brand taken abroad. |
+| **Forward citation (citing family)** | A later patent that cites an earlier one as prior art. Counted here as distinct citing families; often read as a sign of an invention's technical importance, and it grows with time, so it is compared over a fixed window (five years) or within cohorts. |
+| **Offices in a family** | The number of patent offices an invention was filed at, counting Australia and leaving out WIPO and the European Patent Office (whose filings are not protection in themselves): a measure of how widely an owner chose to protect it, and so of its expected value. |
 | **IP RAPID** | IP Australia's open data on every Australian IP right, updated weekly. The `rights` lens is built from it. |
 | **IPLORD** | IP Australia's longitudinal research dataset, which links IP applicants to businesses. |
 | **Applicant origin** | Whether a right's applicants are in Australia or overseas: *Australian* if any current applicant is in Australia, *overseas* if at least one has a known country and none is in Australia, and *origin unknown* if no applicant's country is recorded (most patents filed before 1980). |
@@ -152,6 +158,7 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Trajectory (Closing the Gap)** | The path a measure would need to follow to reach its target by the target year. It is a projection, not an observation, and is marked as such in `status`. |
 | **Unit of analysis** | What one row stands for. Counting or averaging only makes sense once this is clear. |
 | **EDA** | Exploratory data analysis: getting to know the data before trying to answer questions with it. |
+| **Lead** | Something the data show that is worth following up but not yet explained or tested: a pattern, a jump or a gap. A lead is not a finding; Stage 2 tests leads, and some are questions for IP Australia. |
 | **Univariate, bivariate, multivariate** | Looking at one variable at a time, at two together, or at several together. These are the EDA's three stages. |
 | **Distribution** | How the values of a variable are spread out: which values are common and which are rare. |
 | **Mean and median** | The average, and the middle value. When a few very large values pull the mean up, the median is the better guide to a "typical" value. |

@@ -18,8 +18,11 @@ profiled (U73 to U79, ADR 0020): IP by ANZSIC division through the ALP crosswalk
 BCARR, with every industry table in `industry_indicators`. The `institutions` lens, the last planned, is built and
 profiled (U80 to U87, ADR 0021): 130 research institutions by ROR and year, linked to IP RAPID, the ARC and AusTender
 through a reviewed list of names and ABNs, with OpenAlex, patent citations, NHMRC grants and patent families, and
-the detail in `institution_rights`. Every lens now has its Stage 1 profile. This plan says what the exploratory data analysis (EDA) covers, where each dataset fits, what each part needs before it
-starts, and which gaps are worth filling. Decisions are in `docs/adr/` (0002 to 0021); terms are in `GLOSSARY.md`.
+the detail in `institution_rights`. The last three `rights` attachments, the links, Google Patents and the
+inventors, are built and profiled (U88 to U98, ADR 0022). **Stage 1 is complete:** every lens and attachment has its
+profile, summarised in `docs/stage-1-summary.md` (and section 9 of the notebook). This plan says what the exploratory
+data analysis (EDA) covers, where each dataset fits, what each part needs before it starts, and which gaps are worth
+filling. Decisions are in `docs/adr/` (0002 to 0022); terms are in `GLOSSARY.md`.
 
 ## Why an EDA first
 
@@ -51,10 +54,10 @@ All lenses are built by `uv run python -m eda.build`, and every column is descri
 
 | Lens | One row per | Status | Main questions |
 |---|---|---|---|
-| `rights` | IP right | Built: 4,368,006 rows, 52 columns | Q1, Q2 |
+| `rights` | IP right | Built: 4,368,006 rows, 74 columns | Q1, Q2 |
 | `firms` | ABN in any IP, R&D, procurement or tax source | Built: 398,450 rows, 40 columns | Q2, Q3, Q4 |
 | `regions` | Postal area | Built: 2,641 rows, 42 columns; its attachments in `region_indicators` (postal area, source, indicator and period: 22,511,923 rows) | Q2, Q4 |
-| `national` | Country, year and indicator | Built: 135,597 rows, 11 columns; its attachments in `national_indicators` (place, source, indicator and period: 41,196,081 rows) | Q1, Q4 (context) |
+| `national` | Country, year and indicator | Built: 135,597 rows, 11 columns; its attachments in `national_indicators` (place, source, indicator and period: 41,218,170 rows) | Q1, Q4 (context) |
 | `timeline` | Month, for Australia (Jan 1904 to Sep 2026) | Built: 1,473 | Q1, Q4, Q5 |
 | `industries` | ANZSIC division and financial year | Built: 703 rows (FY1990 to FY2026), 17 columns; its attachments in `industry_indicators` (division, source, indicator and period: 1,409,875 rows) | Q2, Q3, Q4 |
 | `institutions` | Australian research institution (ROR) and calendar year | Built: 4,810 rows (130 institutions, 1990 to 2026), 30 columns; its IP in `institution_rights` (right and institution: 31,528 rows) | Q1, Q2, Q3 |
@@ -76,7 +79,7 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 | `iprapid` `*_rights`, `application` | rights | The base: one row per right | Done (ADR 0009): A2 (origin), A4 (patent types), raw applicant location; (ADR 0012) attorney use, technology area, placeholder dates, the state. Stage 1 profile done (U1 to U16) |
 | `iprapid/events` | rights, timeline | **Per right:** the dates of the examination request, acceptance, grant, opposition, assignments, licences and extension of term, and of the lapse, cessation or expiry, giving each right's lifetime. **Per month:** counts (already built). | Done (ADR 0010): A3 (coverage starts and ends), events labelled as events and counted once (F38), trade mark registrations by the date entered; (ADR 0014) starts past partial and batch-dated records. Timeline profile done (U22 to U30). Done for `rights` (ADR 0015, U31 to U40): B5, milestones and lifetimes, with rights still in force counted as unfinished |
 | `iprapid/party` | rights, firms | Applicants by country, all of them rather than only the first; founding filer against current holder; the attorney firm. Individuals are pseudonymised codes in IP RAPID, so their gender cannot be estimated. | Done for `rights` (ADR 0013, U17 to U21): founding applicant, holder changed (not before FY2003 for patents), agent, representation. `firms` (ADR 0016) and `regions` (ADR 0017) count by the filer |
-| `iprapid/links` | rights | The route into Australia: foreign priority claimed, PCT entry, divisional | — |
+| `iprapid/links` | rights | The route into Australia: foreign priority claimed, PCT entry, divisional | Done (ADR 0022, U88 to U91): `filing_route` and 7 more; a patent priority's office read from its number (PCT numbers are labelled `au`); the PCT route checked against WIPO |
 | `iprapid/classification`, `concordances` | rights, industries | Technology fields and the green-technology flag per right; industry shares for `industries` | Done (ADR 0020): B6 (26 IPC predecessors; unknown subclass marks 0.48% to 0.003%); Nice classes padded; ISIC to ANZSIC no longer split over partial links (a corpus repair). Profiled (U74, U75) |
 | `iprapid/applicant_year`, `iplord` | firms | Filing histories per ABN. IPLORD is used only to check `applicant_year` before 2020, never added to it. | Checked (U41, ADR 0016): IPLORD's counts differ (81.02% of shared ABNs agree); `in_iplord` flags the 50,790 ABNs only it links to IP |
 | `iprapid/description` | text | Titles and goods and services descriptions; variables derived only if wanted | — |
@@ -98,7 +101,7 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 | `pbs` | timeline; medicines | Prescriptions, and government and patient costs, per month. Items are linked to ingredients for the medicine strand. | B9 (Section 100) |
 | `tga` | own unit | ARTG entries; sponsors per ingredient (competition); joins PBS and extension-of-term patents by ingredient | — |
 | `fedcourt` | timeline; text | IP judgments per month by right; variables derived from the text later | — |
-| `google_patents`, `google_patents_inventors` | rights, firms, institutions | Per Australian application: family size, offices, US grant, forward citations (with a follow-up flag); inventors by country and their estimated gender (expected counts, from `wgnd`) | B4. In `institutions` (ADR 0021, U85): the families of the institutions' Australian applications |
+| `google_patents`, `google_patents_inventors` | rights, firms, institutions | Per Australian application: family size, offices, US grant, forward citations (with a follow-up flag); inventors by country and their estimated gender (expected counts, from `wgnd`) | B4. In `institutions` (ADR 0021, U85): the families of the institutions' Australian applications. Done for `rights` (ADR 0022, U92 to U98): family reach, US grant and citations (five-year count only where complete); inventors' countries and expected women and men, the gender estimates checked against WIPO's shares (levels for inventors in Australia only). Left: F07 |
 | `openalex`, `openalex_works`, `reliance_on_science` | institutions, rights | Output, citations and patent-cited works per institution; science cited by Australian-linked patent families | Done for `institutions` (ADR 0021, U82, U85): works and citations from 2010, US patent citations by publication year. F37 test still to do |
 | `arc_grants`, `nhmrc_grants` | institutions, timeline | Grants and funding per institution and year (ARC names matched to ROR) | Done (ADR 0021, U83): ARC by the year funding starts, NHMRC by round (F41), names matched to ROR; industry-partner schemes apart |
 | `ror` (added 2026-10-26) | institutions | Every Australian ROR record, with names, aliases and relationships: the lens's key | Done (ADR 0021): from ROR's data dump |
@@ -115,9 +118,8 @@ it is built. Each lens's repairs come first.
 1. **`rights`** (repairs done, ADR 0009, 0010 and 0012: A2, A4, the raw applicant location, the earliest filing date,
    attorney use unknown for provisionals and excluding the applicant itself, the technology area for patents only,
    placeholder dates, the state from the postcode). **Core variables profiled (U1 to U16); the parties attached and
-   profiled (B1, ADR 0013, U17 to U21); the events attached and profiled (B5, ADR 0015, U31 to U40).** Then come the
-   other attachments, when the owner says: links, Google Patents (B4) and the inventors (with their estimated
-   gender). The owner's order (2026-10-25) is events, then `firms`.
+   profiled (B1, ADR 0013, U17 to U21); the events attached and profiled (B5, ADR 0015, U31 to U40); the links,
+   Google Patents (B4) and the inventors attached and profiled (ADR 0022, U88 to U98).** Every attachment is done.
 2. **`timeline`** (repairs done, ADR 0010: A3 at both ends, events counted once, trade mark registrations by the date
    entered, the policy dates (B7), the quarterly CPI; ADR 0014: 15 series start where their records are complete, and
    the 1995 term change). **Every column profiled (U22 to U30).** Later attachments, each a sub-section of section 5:
@@ -198,7 +200,8 @@ Re-checked on 2026-10-25 with the owner's steer to go broad. Every source here i
 13. **OpenAlex.** Test whether the "cited at least once" filter drops works that patents cite (F37); re-harvest if it
     matters.
 14. **Google Patents.** Size how many Australian families filed only abroad are missed, against WIPO's counts by origin
-    (F07).
+    (F07). WIPO's patent families by origin (indicator 6a) would do it; the loader takes another indicator in minutes
+    (ADR 0022 added three).
 
 **Needs the owner (an account or a request):**
 15. **ABS TableBuilder (on hold; if it is needed, the owner registers as a private user):** Census owner-managers by
