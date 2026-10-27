@@ -103,7 +103,7 @@ def U44() -> dict:
         v = f.loc[f[c] > 0, c]
         curve = lorenz(v, LORENZ_GRID)
         series.append({"name": name, "data": curve})
-        quoted = {"n_patents_standard": 55.3, "n_trade_marks": 25.9, "n_designs": 35.8}[c]
+        quoted = {"n_patents_standard": 55.3, "n_trade_marks": 25.7, "n_designs": 35.6}[c]
         same(dict(map(tuple, curve))[1], quoted, f"top 1% share of {name}")
     same(int((f.n_patents_standard > 0).sum()), 23971, "firms filing standard patents")
     series.append(
@@ -362,14 +362,14 @@ def U1() -> dict:
     }
     q = ", ".join(f"100.0 * count({c}) / count(*) AS {c}" for c in cols)
     d = sql(f"SELECT {q} FROM {{lens/rights}}").iloc[0]
-    same(d.application_date, 98.58, "application date filled")
-    same(d.australian_applicant, 86.37, "origin known")
+    same(d.application_date, 98.83, "application date filled")
+    same(d.australian_applicant, 86.59, "origin known")
     order = sorted(cols, key=lambda c: -d[c])
     return {
         "type": "bar",
         "horizontal": True,
         "title": "How complete the rights table's core columns are",
-        "subtitle": "% of the 4,368,006 rights with a value",
+        "subtitle": "% of the 4,356,908 rights with a value",
         "x": {"type": "category", "values": [cols[c] for c in order]},
         "y": {"name": "% filled", "min": 0, "max": 100, "format": "pct", "digits": 2},
         "series": [{"name": "% filled", "data": [r(d[c], 2) for c in order]}],

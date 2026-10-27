@@ -393,6 +393,28 @@ iprapid:
   group: data
   title: IP RAPID
   short: IP Australia's open data on every patent, trade mark, design and plant breeder's right since 1904, updated weekly.
+register:
+  group: data
+  title: IP Australia's register
+  short: >-
+    The live records behind IP Australia's search sites, read through its trade mark, patent and design APIs. IP RAPID
+    is a weekly copy of it, with some fields left out.
+  more: >-
+    Checked against IP RAPID on 27 October 2026, the register agreed with it for nearly every record of a random
+    sample, and held what IP RAPID leaves out: owners' business numbers, design owners' countries and its own record
+    of fast-tracked examination. Those fill the gaps here, beside IP RAPID's own values.
+filled:
+  group: data
+  title: Filled (from the register)
+  short: >-
+    A value that keeps IP RAPID's where it has one and takes IP Australia's register's where IP RAPID has none. IP
+    RAPID's own value is kept beside it.
+design-shell:
+  group: data
+  title: Design shell
+  short: >-
+    A design record with nothing in it but its number and status: no date, owner or class in IP RAPID or in IP
+    Australia's register. 11,098 of them, numbered 1973 to 1982, are left out.
 iplord:
   group: data
   title: IPLORD
