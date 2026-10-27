@@ -602,6 +602,78 @@ function nextPage() {
     section("After Stage 3", null, el("ol.prose", N.after.map((x) => el("li", inline(x))))));
 }
 
+// the review against IP Australia's published evidence (ADR 0024, 0025): a page of its own, read from atlas.audit;
+// the observation pages are left as they are
+const VERDICT_CLASS = { corroborated: "ok", consistent: "near", qualified: "near", disputed: "warn", contradicted: "bad", "not testable": "none" };
+function verdictPill(label, category) {
+  return el(`span.verdict.v-${VERDICT_CLASS[category] || "none"}`, label);
+}
+function auditPage() {
+  setCrumbs([{ label: "Overview", href: "#/" }, { label: "Checked against IP Australia" }]);
+  setNav("audit");
+  document.title = "Checked against IP Australia · Evidence atlas";
+  const R = A.audit;
+  const figures = el("div.figures", R.stats.map((s) => el("div.figure", el("strong", s.value), el("span", s.label))));
+  const brief = el("ul.prose", R.in_brief.map((p) => el("li", inline(p))));
+  const method = el("div.dsteps", R.method.map((s, i) => el("div.dstep", el("div.dn", String(i + 1)), el("div", el("h3", s.title), ...paras(s.text)))));
+  const words = el("div.tablewrap", el("table.data", el("thead", el("tr", el("th", "Verdict"), el("th", "What it means"))),
+    el("tbody", Object.entries(R.verdict_words).map(([k, t]) => el("tr", el("td", verdictPill(k.charAt(0).toUpperCase() + k.slice(1), k)), el("td", inline(t)))))));
+  const gap = (m) => (m.gap_pct != null ? `${fmtNum(m.gap_pct)}%` : m.gap_pts != null ? `${fmtNum(m.gap_pts)} points` : "–");
+  const measures = el("div.tablewrap", el("table.data",
+    el("thead", el("tr", el("th", "What was compared"), el("th", "Years"), el("th.n", "Figures"), el("th.n", "Agree"), el("th.n", "Largest gap"))),
+    el("tbody", R.measures.map((m) => el("tr", el("td", m.label), el("td", m.years), el("td.n", String(m.figures)), el("td.n", String(m.agree)), el("td.n", gap(m)))))));
+
+  const order = ["corroborated", "consistent", "qualified", "disputed", "contradicted"];
+  const byCat = order.map((c) => [c, R.verdicts.filter((v) => v.category === c)]).filter(([, vs]) => vs.length);
+  const tested = byCat.flatMap(([c, vs]) => [
+    el("h3", { style: { margin: "22px 0 10px" } }, verdictPill(c.charAt(0).toUpperCase() + c.slice(1), c), el("span.muted.small", { style: { marginLeft: "8px" } }, `${vs.length} observation${vs.length === 1 ? "" : "s"}`)),
+    el("div.qlist", vs.map((v) => el("div.qitem", obsLink(v.id),
+      el("div",
+        el("h3", el("a", { href: `#/${v.id}` }, byId[v.id]?.headline || v.id)),
+        el("p", verdictPill(v.label, v.category)),
+        ...paras(v.note),
+        el("details.more", el("summary", icon("book"), "The record's evidence"),
+          el("div", el("p.small", inline(v.evidence)), el("p.small", el("strong", "What follows: "), ...inline(v.follows)))))))),
+  ]);
+  const untested = el("div.grid.g2", R.untestable.map((g) => el("div.card.flat",
+    el("div.meta", verdictPill("Not testable", "not testable"), el("span.muted.small", `${g.ids.length}`)),
+    el("h3", { style: { marginTop: "8px" } }, g.why), el("div.meta", g.ids.map(obsLink)))));
+
+  const findings = el("div.grid", R.findings.map((d) => el("div.card",
+    el("div.meta", el("span.chip", d.id), ...(d.affects.length ? d.affects.map(obsLink) : [el("span.muted.small", "No observation affected")])),
+    el("h3", { style: { marginTop: "8px" } }, d.title), ...paras(d.text),
+    el("p", el("strong", "What it means: "), ...inline(d.means)),
+    d.chart ? chartSlot(d.chart, { origin: "audit" }) : null)));
+
+  const conclusions = el("div.tablewrap", el("table.data",
+    el("thead", el("tr", el("th", ""), el("th", "IP Australia concludes"), el("th", "How strongly it says so"), el("th", "What Stage 1 adds"))),
+    el("tbody", R.conclusions.map((c) => el("tr", el("td", c.id), el("td", inline(c.claim)), el("td", inline(c.strength)), el("td", inline(c.adds)))))));
+  const questions = el("div.qlist", R.questions.map((q) => el("div.qitem", el("span.qn", q.id), el("div", el("p", inline(q.text))))));
+
+  show(el("div.eyebrow", R.eyebrow), el("h1", R.title), ...paras(R.lead, "lead"),
+    el("div.banner", { style: { margin: "18px 0" } }, icon("info"), el("div", ...paras(R.banner))),
+    figures,
+    section("In brief", null, brief),
+    section("How the check was done", null, method, el("h3", { style: { margin: "22px 0 10px" } }, "The verdicts"), words),
+    section("How close the figures are", R.closeness_intro, chartSlot("audit-closeness", { origin: "audit" }),
+      el("h3", { style: { margin: "22px 0 10px" } }, "By kind of figure"), ...paras(R.measures_intro, "muted"), measures),
+    section("Four things that do not agree", null, findings),
+    section("Every observation, and how it stands", "Each verdict is read from the review's record; open one to see IP Australia's evidence as the record gives it.",
+      chartSlot("audit-verdicts", { origin: "audit" }), ...tested,
+      el("h3", { style: { margin: "26px 0 10px" } }, `Not testable from IP Australia's publications (${R.untestable.reduce((n, g) => n + g.ids.length, 0)})`),
+      ...paras(R.untestable_intro, "muted"), untested),
+    section("What IP Australia concludes, and what Stage 1 adds", R.conclusions_intro, conclusions),
+    section("What changes, and what does not", R.changes_intro, el("ul.prose", R.changes.map((x) => el("li", inline(x))))),
+    section("Questions put to IP Australia", R.questions_intro, questions),
+    section("Limits of this check", null, el("div.notes", R.limits.map((x) => el("div.note.limit", icon("alert"), el("div", el("span.tag", x.title), ...paras(x.text)))))),
+    el("p.small.muted", { style: { marginTop: "26px" } }, "The full record: ",
+      el("a", { href: R.record, rel: "noopener noreferrer", target: "_blank" }, "the audit"), " and ",
+      el("a", { href: R.adr, rel: "noopener noreferrer", target: "_blank" }, "the decision record (ADR 0024)"), `, as at ${longDate(R.as_at)}.`));
+}
+function fmtNum(v) {
+  return new Intl.NumberFormat("en-AU", { maximumFractionDigits: 2 }).format(v);
+}
+
 function glossaryPage(focus) {
   setCrumbs([{ label: "Overview", href: "#/" }, { label: "Glossary" }]);
   setNav("glossary");
@@ -640,6 +712,7 @@ function route() {
   else if (parts[0] === "question" && A.questions.some((q) => String(q.id) === parts[1])) questionPage(parts[1]);
   else if (parts[0] === "data") dataPage();
   else if (parts[0] === "limits") limitsPage();
+  else if (parts[0] === "audit" && A.audit) auditPage();
   else if (parts[0] === "next") nextPage();
   else if (parts[0] === "glossary") glossaryPage(parts[1]);
   else {

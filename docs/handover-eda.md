@@ -13,7 +13,16 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-27, latest):** **Stage 1 is audited against IP Australia's published evidence**
+**Status (2026-10-27, latest):** **The audit is in the evidence atlas** (ADR 0025), as the owner asked: a page of its
+own, "Checked against IP Australia" (`#/audit`), built by `python -m atlas.build` from the audit's record
+(`docs/audit-ip-australia.md`, whose tables give each observation's verdict), the benchmark's outputs and plain English
+in `analysis/atlas/content/audit.yaml`, under the numbers rule. The notebook and every existing atlas page are
+unchanged (the observations in `atlas.json` are byte for byte as before), by the owner's instruction "at this stage".
+The owner also sent OQ12 to OQ14 to IP Australia (A8). Tests: 95 pass (2 new). **Next is the owner's call:** whether
+and when to revise observations in the light of the audit (then the notebook, the atlas content, the "What comes
+next" page and per-observation pointers change together), Stage 2, and publishing the atlas.
+
+Before that, the same day: **Stage 1 is audited against IP Australia's published evidence**
 (`docs/audit-ip-australia.md`, ADR 0024), at the owner's request: the twelve Australian IP Reports (2015 to 2026),
 IP Australia's research papers and notes, as the Econ repository holds them page by page. A tested benchmark
 (`analysis/audit/`, `python -m audit.benchmark`) recomputes 195 figures IP Australia published from the lenses on its
@@ -571,7 +580,10 @@ and every answer with its date. Nothing there blocks Stage 1. Add new questions 
   same age.
 - Corrections to the institutions link go in `analysis/eda/institutions/*.csv`; `uv run python -m eda.build
   institution_rights institutions` rebuilds both in seconds, and the tests check the link.
-- Next free ADR: 0025.
+- Next free ADR: 0026.
+- The atlas's audit page reads the record's tables (sections 5.1 and 5.2 of `docs/audit-ip-australia.md`): keep their
+  layout, and after changing the record, the benchmark or `analysis/atlas/content/audit.yaml`, rerun
+  `python -m atlas.build` and commit `evidence/data/` (ADR 0025).
 - After `python -m eda.build`, rerun `python -m audit.benchmark` and commit `analysis/audit/output/`; compare with IP
   Australia on calendar years and `founding_australian` (ADR 0024).
 - The `rights` lens's gender columns: levels for inventors in Australia only; never for China or Korea (ADR 0022).

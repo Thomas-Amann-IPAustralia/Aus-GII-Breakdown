@@ -234,6 +234,10 @@ def build(strict: bool = True, write: bool = True) -> dict:
         "sources": sources(),
         "observations": obs,
     }
+    from . import audit  # the review against IP Australia's evidence, a page of its own (ADR 0025)
+
+    atlas["audit"], more = audit.page(write)
+    problems += more
     ids = {o["id"] for o in obs}
     for ref in sorted(set(re.findall(r"\{(U\d+)\}", json.dumps(atlas, ensure_ascii=False)))):
         if ref not in nbs:

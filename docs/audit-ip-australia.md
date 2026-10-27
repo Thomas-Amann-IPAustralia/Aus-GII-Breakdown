@@ -312,7 +312,8 @@ Recorded in [ADR 0024](adr/0024-audit-against-ip-australia.md):
 8. Timeline grants include second-tier patents; standard grants come from `rights` (U27).
 9. Expedited examination against years in force joins Stage 2's pairs (C3).
 10. The notebook's observations are not rewritten: they quote the outputs above them, and IP Australia's figures are
-    not among those outputs. The audit's verdicts live here, in the ADR, in the handover and in `stage-1-summary.md`.
+    not among those outputs. The audit's verdicts live here, in the ADR, in the handover and in `stage-1-summary.md`,
+    and the evidence atlas shows them on a page of their own, read from this record's tables (ADR 0025).
 
 ---
 
@@ -321,7 +322,8 @@ Recorded in [ADR 0024](adr/0024-audit-against-ip-australia.md):
 1. **Three questions for IP Australia**, to add to the request already being made (OQ5 to OQ7): what base its "55.6%
    of resident applications were filed by individuals" (2022) uses (D3); why IP RAPID holds about 2,000 fewer Madrid
    trade marks for 2018 than its report (D2); and whether IP RAPID could publish the origin it holds for designs that
-   IP RAPID leaves unknown (D1). Recorded as OQ12 to OQ14.
+   IP RAPID leaves unknown (D1). Recorded as OQ12 to OQ14, and added to the request by the owner on 27 October
+   2026.
 2. **OQ5 (the provisional rise)** now has IP Australia's published reading: digital tools, including AI, lowering
    entry costs, with new filers 63% and self-filers 52% in 2025. The question to IP Australia narrows to the evidence
    behind it, and whether a few heavy filers (U8) are part of it.

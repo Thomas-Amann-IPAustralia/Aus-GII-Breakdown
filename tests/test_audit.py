@@ -29,3 +29,21 @@ def test_committed_benchmark_is_in_step_with_the_lenses():
     committed = pd.read_csv(benchmark.OUT)[cols]
     fresh = benchmark.benchmark()[cols].astype({"lens": float})
     assert committed.equals(fresh), "run `python -m audit.benchmark` and commit"
+
+
+def test_the_atlas_shows_the_review_on_a_page_of_its_own():
+    from atlas import audit as audit_page
+
+    page, problems = audit_page.page(write=False)
+    assert not problems, problems
+    tested = [v["id"] for v in page["verdicts"]]
+    untested = [i for g in page["untestable"] for i in g["ids"]]
+    assert sorted(tested + untested, key=lambda u: int(u[1:])) == [f"U{i}" for i in range(99)], "one verdict each"
+    assert sum(page["counts"].values()) == 99
+    assert all(v["note"] for v in page["verdicts"]), "every tested observation has a plain-English note"
+
+
+def test_committed_audit_charts_are_in_step():
+    from atlas import audit as audit_page
+
+    assert not audit_page.stale_charts(), "run `python -m atlas.build` and commit"

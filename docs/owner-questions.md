@@ -19,8 +19,8 @@ ADR, the handover or the plan). Number new questions from the next free one: **O
 ## Open: for IP Australia (you are asking)
 
 The data show when and who, not why. Each answer would turn a lead into an explanation. OQ12 to OQ14 came from the
-audit against IP Australia's published figures (27 October 2026) and are proposed for the same request: whether to
-send them is your call.
+audit against IP Australia's published figures and were added to the same request by the owner on 27 October 2026
+(A8).
 
 | # | Question | Evidence | Meanwhile |
 |---|---|---|---|
@@ -49,6 +49,8 @@ Australia reported itself (2,322, from non-residents), so the gap is between IP 
 
 | # | Question | Answer | Date | Recorded in |
 |---|---|---|---|---|
+| A9 | How should the audit against IP Australia be shown? | Pushed to the repository and shown in the evidence atlas; at this stage neither the notebook nor the atlas's existing pages are altered | 2026-10-27 | ADR 0025; handover |
+| A8 | Add OQ12 to OQ14 (the audit's questions) to the request to IP Australia? | Yes | 2026-10-27 | This page; ADR 0024 |
 | A7 | When should the other `rights` attachments be done (OQ1): the links, Google Patents and the inventors? | Now: done (U88 to U98) | 2026-10-26 | ADR 0022; handover |
 | A6 | Go on to the `industries` lens after `national`? | Yes | 2026-10-26 | Handover; ADR 0020 |
 | A1 | Adopt years in force (U36), with unfinished rights kept, as a working measure of how long owners keep their rights? | Yes, as long as it is used alongside other signals | 2026-10-25 | ADR 0015; handover |

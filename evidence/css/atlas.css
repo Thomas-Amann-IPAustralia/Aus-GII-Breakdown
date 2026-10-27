@@ -500,3 +500,12 @@ details.more > div { padding: 0 16px 16px; }
   .app { margin: 0; }
   details { open: true; }
 }
+
+/* the review against IP Australia (ADR 0025): a verdict carries its word as well as its colour */
+.verdict { display: inline-flex; align-items: center; font-size: .72rem; font-weight: 700; border-radius: 999px; padding: 3px 10px; border: 1px solid; line-height: 1.5; white-space: nowrap; }
+.verdict.v-ok { background: var(--obs); color: var(--obs-ink); border-color: color-mix(in srgb, var(--obs-line) 55%, transparent); }
+.verdict.v-near { background: var(--explain); color: var(--explain-ink); border-color: color-mix(in srgb, var(--explain-line) 55%, transparent); }
+.verdict.v-warn { background: var(--assume); color: var(--assume-ink); border-color: color-mix(in srgb, var(--assume-line) 55%, transparent); }
+.verdict.v-bad { background: var(--limit); color: var(--limit-ink); border-color: color-mix(in srgb, var(--limit-line) 55%, transparent); }
+.verdict.v-none { background: var(--surface-3); color: var(--ink-2); border-color: var(--line); }
+.qitem .verdict { white-space: normal; }

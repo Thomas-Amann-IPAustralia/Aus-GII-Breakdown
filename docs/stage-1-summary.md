@@ -581,6 +581,8 @@ Reports (2015 to 2026), its economic research papers and notes, as the Econ repo
   domestic innovators).
 - **Disputed:** IP Australia's "55.6% of resident applications were filed by individuals" (2022) cannot be reproduced
   (the lens: 20.65%); U13 and U48 stand meanwhile (OQ12).
+- **In the atlas:** the review has its own page, "Checked against IP Australia" (ADR 0025); the observation pages and
+  the notebook are unchanged until the owner decides to revise them.
 
 ---
 
@@ -591,7 +593,7 @@ Reports (2015 to 2026), its economic research papers and notes, as the Econ repo
 | Every observation, with its chart and the output it quotes | `analysis/notebooks/01_univariate.ipynb` (section summaries 1.9, 2.6, 3.6, 4.5, 5.7, 6.5, 7.7; section 9) |
 | The plan, and where every table goes | `docs/eda-plan.md` |
 | Status, leads and conventions for the next session | `docs/handover-eda.md` |
-| Every decision and repair | `docs/adr/` (0001 to 0024) |
+| Every decision and repair | `docs/adr/` (0001 to 0025) |
 | The audit against IP Australia's published evidence | `docs/audit-ip-australia.md`; the benchmark in `analysis/audit/` |
 | Questions for the owner and IP Australia | `docs/owner-questions.md` |
 | Terms | `GLOSSARY.md` |
