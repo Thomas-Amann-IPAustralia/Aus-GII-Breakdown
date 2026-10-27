@@ -57,6 +57,45 @@ no inventors, only applicants, owners, agents and other parties.
 
 - Note: iprapid: release of 2026-10-19T00:32:40.599789
 
+## IP Australia's register APIs (trade mark, patent and design search), for checking IP RAPID and filling its gaps (`ipa_api`)
+
+IP Australia. Tier 1; questions 1, 2, 3, 4. Licence: IP Australia API terms (client credentials, held by the owner). Source: https://anypoint.mulesoft.com/exchange/portals/ip-australia-3/
+
+IP Australia's register APIs: the live records behind IP RAPID, to check it against and to fill its gaps (ADR 0028).
+
+The client is `corpus.ipa_api` (production; credentials in the environment). A run takes:
+
+- `numbers`: every trade mark and design number the APIs' searches find, by year of lodgement (trade marks) or filing
+  (designs), and whether the record changed after the IP RAPID release in the corpus. Patents cannot be listed: the
+  patent search ignores fields and returns at most 5,000 numbers.
+- records, fetched one by one, for these targets (a right can have several; `reasons` lists them):
+  - `sample`: a random sample of IP RAPID's applications (seed 2026): 3,000 trade marks, 2,000 designs and 2,000
+    patents, to check IP RAPID field by field;
+  - `abn_gap`: trade marks filed from July 2024 whose first current applicant is an Australian organisation with no
+    ABN in IP RAPID (OQ7); `abn_control`: the same in FY2023, before the change;
+  - `country_gap`: designs with no applicant country in IP RAPID (OQ14);
+  - `number_gap`: trade mark numbers 1,978,060 to 1,980,352, missing from IP RAPID (OQ13);
+  - `api_only`, `iprapid_only`: numbers one side has and the other's searches do not find.
+
+Raw: the records as the API sent them, gzipped JSON lines by right (R2: they hold individuals' names and addresses).
+Processed: `trade_marks`, `designs` and `patents`, one row per number fetched (whether found, status, dates, the
+first current owner's ABN, ACN, country, state and postcode, classes), without names (repo); `owners`, one row per
+right and current owner with names, as the API gives them (R2).
+
+A run takes about two hours (600 requests a minute per API). Records already fetched today are kept if a run is
+interrupted, so running it again the same day carries on.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `designs` | 42,708 | repo (0.5 MB) | `application_number`, `reasons`, `found`, `status`, `filed_date`, `registered_date`, `certified_date`, `published_date`, `ceased_date`, `lapsed_date`, `refused_date`, `withdrawn_date`, `revoked_date`, `priority_date` … |
+| `numbers` | 2,594,082 | repo (3.3 MB) | `ip_right_type`, `application_number`, `year`, `changed_since_release`, `date_type` |
+| `owners` | 80,200 | R2 (1.4 MB) | `ip_right_type`, `application_number`, `seq`, `name`, `abn`, `acn`, `country`, `state`, `postcode` |
+| `patents` | 2,000 | repo (0.1 MB) | `application_number`, `reasons`, `found`, `patent_type`, `status_code`, `filed_date`, `priority_date`, `opi_date`, `acceptance_published_date`, `sealing_date`, `expiry_date`, `inforce_to_date`, `main_ipc`, `ipc_subclasses` … |
+| `trade_marks` | 49,909 | repo (1.3 MB) | `application_number`, `reasons`, `found`, `status_group`, `status_code`, `status_detail`, `lodgement_date`, `filing_date`, `priority_date`, `divisional_date`, `ir_notification_date`, `first_report_date`, `acceptance_date`, `entered_on_register_date` … |
+
+- Note: ipa_api: production register as at 2026-10-27; compared with the IP RAPID release of 2026-10-19
+- Note: ipa_api: 0 calls, 0 retried (production patents answer 403 at random)
+
 ## Intellectual Property Longitudinal Research Data (IPLORD) 2020 (`iplord`)
 
 IP Australia. Tier 1; questions 2, 3. Licence: CC BY 4.0. Source: https://data.gov.au/data/dataset/intellectual-property-longitudinal-research-data-2020

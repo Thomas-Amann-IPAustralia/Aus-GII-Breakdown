@@ -5,7 +5,7 @@ needs an account or a request (`CLAUDE.md`). Each says why it matters, what Clau
 changes. **Nothing here blocks Stage 1**; the work carries on around each one.
 
 When a question is answered, move it to **Answered** with the date and the answer, and record it where it applies (an
-ADR, the handover or the plan). Number new questions from the next free one: **OQ15**.
+ADR, the handover or the plan). Number new questions from the next free one: **OQ17**.
 
 ## Open: for you to answer
 
@@ -15,6 +15,7 @@ ADR, the handover or the plan). Number new questions from the next free one: **O
 | OQ3 | Should the missing AusTender amendments be fetched? Amendments after August 2019 to contracts that had ended by then are not in the corpus | A sample suggests under 1% of contract value; the harvester exists (`austender._harvest_by_id`); it takes about a day of running, at no cost | Not now: the effect is small. Fetch it if Stage 2 leans on contract values | The completeness of `austender_value` |
 | OQ4 | TableBuilder: only if a question needs owner-managers by sex or Indigenous status for each postal area, would you register as a private user? | It needs an account in your name; the free Basic version may not have the variables (`docs/tablebuilder-owner-managers.md`) | Hold until the `regions` profile shows a need | One more `regions` attachment |
 | OQ11 | The `institutions` lens is built (ADR 0021) on a reviewed link: 130 institutions, 116 extra names (former names, predecessors, commercialisation companies, misspellings) and 146 ABNs, in `analysis/eda/institutions/`. Should someone who knows the sector (IPAVentures, or IP Australia's own research team) check it? | It decides which IP counts as a university's: UNSW files 96.5% of its patents through NewSouth Innovations, Newcastle 72.8% through Newcastle Innovation (U81). A missed company or merger moves an institution's counts | A half-hour check of the three CSV files by someone in the sector, before Stage 2 compares institutions; in particular each university's companies, and which medical research institutes and health services belong | Corrections to the link; the lens rebuilds in seconds |
+| OQ15 | Should the gaps the register fills be attached to the `rights` lens: trade mark ABNs (and ABNs found through the register's ACNs), design owners' countries, and the register's expedite events? | The register holds an ABN or ACN for 83.8% of the Australian organisations' trade marks without an ABN in IP RAPID since July 2024 (V12); a country for 61.4% of the designs IP RAPID leaves unknown, which closes the gap with IP Australia's resident design counts (V13); and "Examination expedited" on every priority-claiming mark since FY2020 (V14). `docs/audit-ipa-api.md`, ADR 0028 | Attach them as new columns beside IP RAPID's (never replacing them), with the source named, and revise U45, the design shares (U7, U13) and U34 when the observations are revised (ADR 0026). Refresh the harvest first: a run takes about two hours | U45's fall in ABN linking, the design origin shares and U34's expedite break are restated; Stage 2 can use ABN-linked firms after July 2024 |
 
 ## Open: for IP Australia (you are asking)
 
@@ -30,6 +31,16 @@ audit against IP Australia's published figures and were added to the same reques
 | OQ12 | What does IP Australia's "In 2022, 55.6% of resident applications were filed by individuals rather than organisations" (ipr-2023 p12) count? | The lens gives 20.65% of 2022's resident standard applications with an individual as first founding applicant, and 26.76% of their applicants (U13, U48); no base reproduces 55.6% (the audit, D3) | U13 and U48 stand on the lens's evidence, recorded as disputed |
 | OQ13 | WIPO records 15,943 designations of Australia through the Madrid system in 2018, and IP RAPID holds 15,836 Madrid trade marks, but the IP Report 2019 implies about 17,830 (+13%; 79,490 trade marks in all, against IP RAPID's 77,496). What did the 2018 count in the IP Report 2019 include, and does IP Australia still stand by 79,490? And were trade mark numbers 1,978,060 to 1,980,352, issued around New Year 2019, ever used? **Reworded (2026-10-27, recheck and WIPO)**: WIPO's own count agrees with IP RAPID, so the gap is probably in the report's count, not missing records (ADR 0027, R6 to R10). Was: why does IP RAPID hold about 2,000 fewer trade marks filed in 2018 than the IP Report 2019 counted, all of them Madrid applications? | Every other year from 2015 to 2025 agrees with IP Australia within 0.05% (the audit, D2). IP RAPID's Madrid marks are 0.9884 to 1.0121 of WIPO's designations of Australia in every year from 2014 to 2024 but 2023 (1.0662); 2018: 0.9933. TM-Link (IP Australia, 2020) has the same 2018 count as IP RAPID. The 2,292 numbers in the gap are all missing but one, about 2,100 to 2,200 beyond the usual rate | 2018 is flagged in trade mark series |
 | OQ14 | Could IP RAPID publish the applicant origin IP Australia holds for designs it now leaves unknown? | IP Australia counts 264 to 425 more resident designs a year than the lens (2021 to 2025), about three in four of the designs with no country in IP RAPID (the audit, D1) | Design shares among known origin are lower bounds |
+
+**The register check (2026-10-27, ADR 0028, `docs/audit-ipa-api.md`) answers part of four of these, from IP
+Australia's own register:** OQ6, the expedite event is still recorded in the register, as "Examination expedited",
+and IP RAPID does not publish it (V14); OQ7, the ABN or ACN is collected for most new applicants and not published
+(V12); OQ13, trade mark numbers 1,978,060 to 1,980,352 were not used (V10), and the register agrees with IP RAPID
+about 2018 (V11); OQ14, the register holds the country for most designs IP RAPID leaves unknown (V13). **OQ16 (for
+the owner):** should the request be reworded to ask why IP RAPID leaves these out (the expedite event since November
+2018, ABNs and ACNs, design applicants' countries) and whether it could publish them, and should the number-gap half
+of OQ13 be dropped? Recommendation: yes; the questions become requests to publish what IP Australia already holds,
+which are easier to answer.
 
 These could go in the same request, if it is easy to add: why plant breeder's rights change hands more often in recent
 years (11.2% of those filed in the 2020s, U17). Two earlier add-ons are answered from IP Australia's own reports

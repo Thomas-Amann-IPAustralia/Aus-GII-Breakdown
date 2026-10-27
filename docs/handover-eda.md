@@ -13,7 +13,21 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-27, latest):** **OQ6, OQ7 and OQ13 rechecked on a fresh IP RAPID release** (ADR 0027,
+**Status (2026-10-27, latest):** **IP RAPID checked against IP Australia's live register** (ADR 0028,
+`docs/audit-ipa-api.md`), after the owner obtained API access (credentials in the environment: `IPA_API_*_DEV` is
+production, `IPA_API_*_TEST` the test host). The client is `src/corpus/ipa_api.py` (`python -m corpus.ipa_api get
+trade_mark 1000000`; guide in `docs/ip-reg-api/README.md`); the harvest is a corpus source, `ipa_api` (about two
+hours); the comparison is `python -m audit.api_check --live` (seconds, plus the live yearly counts). Findings (V1 to
+V14): IP RAPID is complete to within the week since its release and its fields agree with the register's in 99.7% to
+100% of a random sample of every right; Madrid marks are dated by IP Australia's notification and PCT patents by
+national phase entry, by definition. Its gaps are in what it publishes: the register holds an ABN or ACN for 83.8% of
+the OQ7 marks, a country for 61.4% of the OQ14 designs (which reproduces IP Australia's resident design counts, D1),
+and "Examination expedited" on every priority-claiming mark since FY2020 (OQ6: U34's break is publication). Trade mark
+numbers 1,978,060 to 1,980,352 were never used. No lens or observation is changed. **Next is the owner's call:** OQ15
+(attach the fills to `rights`) and OQ16 (reword the request to IP Australia); then Stage 2. Production's patent API
+fails about half its calls at random; the client retries.
+
+Before that, the same day: **OQ6, OQ7 and OQ13 rechecked on a fresh IP RAPID release** (ADR 0027,
 `docs/recheck-oq6-oq7-oq13.md`), at the owner's request before taking them to IP Australia. `analysis/audit/recheck.py`
 reads the 26 October 2026 release raw from data.gov.au, without the corpus or lenses, and reproduces U34, U45 and D2.
 None is a misclassification in how we read the data, but two are now explained further:

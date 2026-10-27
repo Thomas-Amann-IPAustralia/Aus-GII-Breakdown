@@ -113,3 +113,25 @@ def test_pace_keeps_under_the_limit(monkeypatch):
     for _ in range(4):
         pace.wait()
     assert clock[0] >= 60  # the fourth call waited for the first to leave the window
+
+
+def test_the_committed_register_check_adds_up():
+    """analysis/audit/output/api (ADR 0028): each comparison's parts sum to its records, shares lie in their
+    intervals, and the gaps quoted in docs/audit-ipa-api.md are what the tables hold."""
+    from pathlib import Path
+
+    import pandas as pd
+
+    out = Path(__file__).resolve().parents[1] / "analysis/audit/output/api"
+    f = pd.read_csv(out / "fields.csv")
+    assert (f.agree + f.differ == f.both_have).all()
+    assert (f.both_have + f.iprapid_only + f.register_only + f.neither == f.records).all()
+    ok = f.both_have > 0
+    assert (f.agree_low[ok] <= f.agree_share[ok] + 1e-9).all() and (f.agree_share[ok] <= f.agree_high[ok] + 1e-9).all()
+    g = pd.read_csv(out / "gaps.csv")
+    abn = g[g.gap == "abn_gap"]
+    assert abn.records.sum() == 34_635 and abn.filled_either.sum() == 29_041
+    assert (g.filled_either.fillna(0) <= g.records).all()
+    assert g.loc[g.gap == "number_gap", "in_register"].item() == 1
+    c = pd.read_csv(out / "completeness.csv")
+    assert (c.both + c.iprapid_only == c.iprapid).all() and (c.both + c.register_only == c.register_search).all()

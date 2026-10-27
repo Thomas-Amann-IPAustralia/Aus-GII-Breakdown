@@ -250,11 +250,31 @@ def fields(con) -> pd.DataFrame:
     return df
 
 
+# IP RAPID's trade mark statuses and the register's status groups they belong to (the register has several codes
+# for one state, such as "Registered" and "Protected", the latter for Madrid marks)
+TM_STATUS_GROUP = {
+    "protected": "REGISTERED",
+    "ceased": "REMOVED",
+    "cancelled": "REMOVED",
+    "removed": "REMOVED",
+    "lapsed": "NEVER_REGISTERED",
+    "withdrawn": "NEVER_REGISTERED",
+    "linked": "NEVER_REGISTERED",
+    "voided": "NEVER_REGISTERED",
+    "refused": "REFUSED",
+    "ex_parte_refused": "REFUSED",
+    "inter_partes_refused": "REFUSED",
+    "accepted": "PENDING",
+    "published": "PENDING",
+    "filed": "PENDING",
+}
+
+
 def status(con) -> pd.DataFrame:
     """IP RAPID's status against the register's, for the sample, split by whether the register changed the record
     after the release (unknown for patents)."""
     ch = "application_number IN (SELECT application_number FROM changed WHERE ip_right_type = '{r}')"
-    return con.execute(f"""
+    df = con.execute(f"""
         SELECT 'trade_mark' AS ip_right_type, x.status AS iprapid, a.status_group || ': ' || a.status_code AS register,
                {ch.format(r="trade_mark")} AS changed_since_release, count(*) AS n
         FROM tm a JOIN tmr x USING (application_number) WHERE a.found AND a.reasons LIKE '%sample%' GROUP BY ALL
@@ -266,6 +286,13 @@ def status(con) -> pd.DataFrame:
         FROM pt a JOIN pr x USING (application_number) WHERE a.found AND a.reasons LIKE '%sample%' GROUP BY ALL
         ORDER BY 1, 2, 5 DESC
     """).df()
+    group = df.register.str.split(":").str[0]
+    df["agrees"] = np.where(
+        df.ip_right_type == "trade_mark",
+        df.iprapid.map(TM_STATUS_GROUP) == group,
+        df.iprapid.str.lower() == df.register.str.lower(),
+    )
+    return df
 
 
 # -- gaps -------------------------------------------------------------------------------------------------------------

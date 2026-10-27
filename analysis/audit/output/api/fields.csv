@@ -1,0 +1,40 @@
+ip_right_type,field,records,both_have,agree,differ,iprapid_only,register_only,neither,agree_share,agree_low,agree_high
+trade_mark,application date (lodgement),2961,2960,2567,393,1,0,0,0.86723,0.854528,0.878979
+trade_mark,"application date (lodgement, not Madrid)",2567,2567,2567,0,0,0,0,1,0.998506,1
+trade_mark,"application date (lodgement, Madrid)",394,393,0,393,1,0,0,0,0,0.00968044
+trade_mark,application date (Madrid: IR notification),394,393,393,0,1,0,0,1,0.99032,1
+trade_mark,application date (Madrid: filing),394,394,0,394,0,0,0,0,8.67362e-19,0.0096561
+trade_mark,priority date,2961,2961,2961,0,0,0,0,1,0.998704,1
+trade_mark,registered (entered on register),2961,1981,1981,0,145,0,835,1,0.998065,1
+trade_mark,Nice classes,2961,2961,2961,0,0,0,0,1,0.998704,1
+trade_mark,number of owners,2961,2961,2958,3,0,0,0,0.998987,0.997025,0.999655
+trade_mark,"Madrid, either way (an international registration number)",2961,2961,2960,1,0,0,0,0.999662,0.998089,0.99994
+trade_mark,Madrid designation of Australia (an IR notification date),2961,2961,2960,1,0,0,0,0.999662,0.998089,0.99994
+trade_mark,convention priority claimed,2961,2961,2961,0,0,0,0,1,0.998704,1
+trade_mark,any owner in Australia,2961,2961,2958,3,0,0,0,0.998987,0.997025,0.999655
+trade_mark,any owner's ABN,2961,161,152,9,958,91,1751,0.944099,0.897184,0.970315
+trade_mark,owner's country (one owner),2855,2814,2814,0,2,0,39,1,0.998637,1
+trade_mark,"owner's state (one owner, Australia)",1690,1681,1681,0,0,0,9,1,0.99772,1
+trade_mark,"owner's postcode (one owner, Australia)",1690,1681,1681,0,9,0,0,1,0.99772,1
+trade_mark,owner's ABN (one owner),2855,157,150,7,942,85,1671,0.955414,0.910836,0.978238
+design,application date (filed),1993,1902,1902,0,0,0,91,1,0.997984,1
+design,priority date,1993,1903,1903,0,0,0,90,1,0.997985,1
+design,registered,1993,1709,1709,0,0,0,284,1,0.997757,1
+design,certified (enforceable),1993,184,184,0,0,0,1809,1,0.979549,1
+design,Locarno class,1993,1841,1841,0,0,0,152,1,0.997918,1
+design,number of owners,1993,1993,1992,1,0,0,0,0.999498,0.997163,0.999911
+design,any owner in Australia,1993,1993,1850,143,0,0,0,0.928249,0.916075,0.938775
+design,any owner's ABN,1993,56,56,0,516,21,1400,1,0.935804,1
+design,owner's country (one owner),1774,1594,1594,0,35,139,6,1,0.997596,1
+design,"owner's state (one owner, Australia)",715,697,697,0,0,0,18,1,0.994519,1
+design,"owner's postcode (one owner, Australia)",715,188,188,0,469,0,58,1,0.979975,1
+design,owner's ABN (one owner),1774,55,55,0,511,21,1187,1,0.934713,1
+patent,type,2000,2000,2000,0,0,0,0,1,0.998083,1
+patent,"application date (filed, not PCT)",1283,1226,1226,0,0,0,57,1,0.996876,1
+patent,application date (PCT: national phase entry),717,717,715,2,0,0,0,0.997211,0.989887,0.999235
+patent,earliest filing date (PCT: international filing),717,717,717,0,0,0,0,1,0.994671,1
+patent,priority date (where the register has one),1237,1237,1237,0,0,0,0,1,0.996904,1
+patent,priority date (where the register has none): IP RAPID's is the application date,706,706,705,1,0,0,0,0.998584,0.992021,0.99975
+patent,granted (standard patents; sealing date),1639,717,717,0,0,2,920,1,0.994671,1
+patent,IPC subclass (IP RAPID's main one among the register's),1533,1533,1533,0,0,0,0,1,0.9975,1
+patent,number of applicants,2000,2000,2000,0,0,0,0,1,0.998083,1
