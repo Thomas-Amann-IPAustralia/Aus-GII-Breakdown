@@ -18,7 +18,8 @@ own, "Checked against IP Australia" (`#/audit`), built by `python -m atlas.build
 (`docs/audit-ip-australia.md`, whose tables give each observation's verdict), the benchmark's outputs and plain English
 in `analysis/atlas/content/audit.yaml`, under the numbers rule. The notebook and every existing atlas page are
 unchanged (the observations in `atlas.json` are byte for byte as before), by the owner's instruction "at this stage".
-The owner also sent OQ12 to OQ14 to IP Australia (A8). Tests: 95 pass (2 new). **Next is the owner's call:** whether
+The owner also sent OQ12 to OQ14 to IP Australia (A8) and had OQ5 and OQ7 reworded to ask what IP Australia's reports
+leave open (A10). Tests: 95 pass (2 new). **Next is the owner's call:** whether
 and when to revise observations in the light of the audit (then the notebook, the atlas content, the "What comes
 next" page and per-observation pointers change together), Stage 2, and publishing the atlas.
 
@@ -554,9 +555,10 @@ and BLADE stays ruled out.
 ## For the owner
 
 The owner's questions are kept in **`docs/owner-questions.md`**: open ones (OQ2 to OQ4 and OQ11), those the owner is asking IP
-Australia (OQ5 to OQ7: the provisional rise, the trade mark expedite fall, ABN linking since FY2025; OQ5 and OQ7
-narrowed by the audit) and three the audit proposes for the same request (OQ12 to OQ14: the 55.6% individuals' base,
-the 2018 Madrid gap, design origins), deferred ones,
+Australia (OQ5 to OQ7: the evidence behind IP Australia's digital-tools reading of the provisional rise and the heavy
+filers, the trade mark expedite fall, whether ABNs are added later or no longer collected; OQ5 and OQ7 reworded after
+the audit, A10) and three the audit added to the same request (OQ12 to OQ14: the 55.6% individuals' base, the 2018
+Madrid gap, design origins; A8), deferred ones,
 and every answer with its date. Nothing there blocks Stage 1. Add new questions there, and move answers to its
 "Answered" table.
 

@@ -326,9 +326,10 @@ Recorded in [ADR 0024](adr/0024-audit-against-ip-australia.md):
    2026.
 2. **OQ5 (the provisional rise)** now has IP Australia's published reading: digital tools, including AI, lowering
    entry costs, with new filers 63% and self-filers 52% in 2025. The question to IP Australia narrows to the evidence
-   behind it, and whether a few heavy filers (U8) are part of it.
+   behind it, and whether a few heavy filers (U8) are part of it. Reworded so by the owner on 27 October 2026.
 3. **OQ7 (ABN linking)** narrows: IP Australia's record resident trade marks in 2025, and first-time filers counted by
    applicant, show the fall is in linking. What remains is whether ABNs are attached late or collected less.
+   Reworded so by the owner on 27 October 2026.
 4. **Two items in the request are now answered from IP Australia's reports:** its published counts, as a benchmark
    (this audit), and why IP RAPID holds more innovation patents in 2016 than WIPO's utility models (U67).
 

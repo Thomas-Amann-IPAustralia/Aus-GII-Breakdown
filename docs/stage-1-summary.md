@@ -535,9 +535,11 @@ rise IP Australia reported.
    data; recommended before Stage 2.
 4. AusTender's missing amendments (OQ3, small) and TableBuilder (OQ4, on hold).
 
-**For IP Australia** (the owner is asking): why provisionals doubled (OQ5), why trade mark expedite requests fell in
-November 2018 (OQ6), and whether ABNs are attached late or collected less since FY2025 (OQ7). The audit against IP
-Australia's reports (section 10) narrows OQ5 and OQ7 and proposes three more (OQ12 to OQ14).
+**For IP Australia** (the owner is asking): what evidence supports its reading that digital tools, including AI, drove
+the provisional rise, and whether the few heavy filers are part of it (OQ5); why trade mark expedite requests fell in
+November 2018 (OQ6); and whether ABNs are added to records later, or no longer collected or checked, since mid-2024
+(OQ7). OQ5 and OQ7 were reworded after the audit against IP Australia's reports (section 10), which also added three
+more (OQ12 to OQ14).
 
 **Data worth adding, all free:** the RBA's cash and exchange rates and the ABS national accounts (timeline); the ATO's
 statistics by postcode (regions); IP Australia's published statistics as a benchmark; ALP's crosswalk that includes
