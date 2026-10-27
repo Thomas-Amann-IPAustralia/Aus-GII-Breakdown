@@ -94,6 +94,7 @@ request.AddParameter(
 );
 
 IRestResponse response = client.Execute(request);
+```
 
 ## PHP (HttpRequest)
 ```php
@@ -139,8 +140,10 @@ var settings = {
 $.ajax(settings).done(function (response) {
     console.log(response);
 });
+```
 
 ## Go
+```Go
 package main
 
 import (
@@ -170,8 +173,10 @@ func main() {
     fmt.Println(res)
     fmt.Println(string(body))
 }
+```
 
 ## Raw HTTP
+```HTTP
 POST /api/messages HTTP/1.1
 Host: example.com
 Content-Type: application/json
@@ -181,3 +186,4 @@ Content-Type: application/json
     "sender": "Barney",
     "message": "Hi Fred"
 }
+```
