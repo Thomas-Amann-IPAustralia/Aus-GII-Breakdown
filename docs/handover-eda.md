@@ -21,9 +21,11 @@ None is a misclassification in how we read the data, but two are now explained f
   the event to FY2018, against 0.06% to 0.16% since FY2020. Other marks: 4.81% to 6.11%, then 3.60% to 4.87%, no
   break. This looks like recording.
 - **OQ7:** the ABN goes missing from July 2024 for applicants new to IP Australia. Companies under a year old: 89% to
-  90% with an ABN, then 10.3% (FY2026). ASIC shows they have ABNs, and the ABNs are not added later.
-- **OQ13:** trade mark numbers 1,978,060 to 1,980,352 (around New Year 2019) are missing from every table, about
-  2,100 to 2,200 beyond the usual rate, against 1,994 missing 2018 marks.
+  90% with an ABN, then 10.1% (FY2026). ASIC shows they have ABNs, and the ABNs are not added later.
+- **OQ13:** WIPO's own count of designations of Australia in 2018 (15,943) agrees with IP RAPID's Madrid marks
+  (15,836, 0.9933), not with the IP Report 2019 (about 17,830 implied). So the report's 2018 count is probably the odd
+  one out. Trade mark numbers 1,978,060 to 1,980,352 are missing from every table, but probably were never used.
+  WIPO's Madrid Monitor was not searched mark by mark: its terms forbid automated queries and bulk downloads.
 
 The three questions and the atlas's "What comes next" page are reworded (old wording kept); the observations are not
 revised (ADR 0026). **Next is the owner's call:** send the reworded questions; whether to adopt R5 (U34 compared across

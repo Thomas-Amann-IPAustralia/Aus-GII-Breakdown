@@ -6,7 +6,9 @@ Independent of the corpus and the lenses: it takes the current release's zip fro
 as Parquet (every column as text, as published) in `<work>`, and writes each check's table to
 `analysis/audit/output/recheck/`. `docs/recheck-oq6-oq7-oq13.md` quotes them. The ASIC company register
 (`asic/companies`, from the corpus) is the one other source, used only to ask whether companies without an ABN in IP
-RAPID have one.
+RAPID have one. WIPO's statistics (the API `wipo_ipstats` reads) give its own count of the designations of Australia
+in international registrations, by year, to set beside IP RAPID's Madrid marks (OQ13); the Madrid register itself
+(Madrid Monitor) forbids automated queries and bulk downloads, so it is not searched.
 """
 
 from __future__ import annotations
@@ -16,9 +18,12 @@ import subprocess
 from pathlib import Path
 
 import duckdb
+import pandas as pd
 
 from corpus import path as corpus_path
 from corpus.core import http_get
+from corpus.sources.wipo_ipstats import _get as wipo_get
+from corpus.sources.wipo_ipstats import _read as wipo_read
 
 PACKAGE = "https://data.gov.au/data/api/3/action/package_show?id=iprapid"
 MEMBERS = {
@@ -58,7 +63,7 @@ CREATE TABLE ao AS
 WITH f AS (
     SELECT ip_right_type, application_number, list(DISTINCT party_id) AS ids,
            bool_or(regexp_matches(upper(party_name), '\\bP(TY|ROPRIETARY)\\b')) AS pty,
-           any_value(party_name) AS name
+           min(party_name) AS name
     FROM p WHERE party_role_category = 'applicant' AND is_founding = 'true' AND country_code = 'au'
                  AND party_type = 'organisation'
     GROUP BY ALL),
@@ -119,7 +124,7 @@ CHECKS = {
         FROM tm WHERE app_d BETWEEN '2017-07-01' AND '2019-06-30' GROUP BY 1 ORDER BY 1""",
     "oq13_numbers_by_block": """
         SELECT num // 10000 * 10000 AS block_from, count(*) AS present, 10000 - count(*) AS missing,
-               count(*) FILTER (madrid) AS madrid, approx_quantile(app_d, 0.5) AS median_filing_date
+               count(*) FILTER (madrid) AS madrid, quantile_disc(app_d, 0.5) AS median_filing_date
         FROM tm WHERE num BETWEEN 1800000 AND 2079999 GROUP BY 1 ORDER BY 1""",
     "oq13_longest_gaps": """
         WITH s AS (SELECT num, lead(num) OVER (ORDER BY num) AS nx FROM tm WHERE num BETWEEN 1800000 AND 2140000)
@@ -202,6 +207,22 @@ def fetch(work: Path) -> None:
     zp.unlink()
 
 
+def wipo_designations() -> pd.DataFrame:
+    """WIPO's designations of Australia in registrations and subsequent designations (indicator 2023), by year.
+
+    Asked for by holder's country and summed: without the countries, the export packs them into one cell.
+    """
+    ind = 2023
+    lists = wipo_get("pmh-search/loadOffOrgClassList", indicator=ind).json()
+    origins = [c for c in (lists.get("pmhOriginList") or {}) if c != "ZZ"]
+    params = {"type": "PMH", "selectedTab": "madrid", "indicator": ind, "reportType": 4001, "fromYear": 2014}
+    params |= {"toYear": 2024, "pmhOffSelValues": "AU", "pmhOriSelValues": ",".join(origins)}
+    updated, df = wipo_read(wipo_get("pmh-search/downloadCsv", **params).content.decode("utf-8-sig"))
+    out = df.groupby("year", as_index=False).value.sum().rename(columns={"value": "wipo_designations_of_au"})
+    out["wipo_updated"] = updated
+    return out
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--work", type=Path, required=True, help="a directory for the release (about 2 GB)")
@@ -228,6 +249,15 @@ def main() -> None:
         df = con.execute(q).df()
         df.to_csv(OUT / f"{name}.csv", index=False)
         print(f"{name}: {len(df)} rows")
+    w = wipo_designations()
+    con.register("w", w)
+    df = con.execute("""
+        SELECT w.year, w.wipo_designations_of_au, r.madrid AS iprapid_madrid,
+               round(r.madrid / w.wipo_designations_of_au, 4) AS ratio, w.wipo_updated
+        FROM w JOIN (SELECT year(app_d) AS year, count(*) FILTER (madrid) AS madrid FROM tm GROUP BY 1) r USING (year)
+        ORDER BY 1""").df()
+    df.to_csv(OUT / "oq13_wipo_designations.csv", index=False)
+    print(f"oq13_wipo_designations: {len(df)} rows")
 
 
 if __name__ == "__main__":

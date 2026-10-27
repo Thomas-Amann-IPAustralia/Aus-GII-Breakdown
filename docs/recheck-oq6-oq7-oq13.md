@@ -6,8 +6,8 @@ pull from the IP RAPID data to ensure it's not just being misclassified". **Deci
 **Data.** IP RAPID's release of 26 October 2026 (`2026-10-26T00:34:12`), downloaded from data.gov.au and read
 as published (every column as text), without the corpus or the lenses: `application.csv` (4,371,313 rows),
 `application_links.csv` (3,869,594), `party_activity.csv` (12,530,473) and `application_events.csv` (49,390,311). The
-corpus's copy is a week older (19 October). The one other source is ASIC's company register (`asic/companies`), used
-only in R9. Script: `analysis/audit/recheck.py`; every table quoted is in `analysis/audit/output/recheck/`.
+corpus's copy is a week older (19 October). Two other sources are used, each in one place: ASIC's company register (`asic/companies`) in
+R14, and WIPO's statistics on Madrid designations (the API the corpus's `wipo_ipstats` reads) in R9. Script: `analysis/audit/recheck.py`; every table quoted is in `analysis/audit/output/recheck/`.
 
 Every observation here is **descriptive**: it describes what the register records, not why.
 
@@ -16,8 +16,8 @@ Every observation here is **descriptive**: it describes what the register record
 | | What Stage 1 said | Does it hold on the fresh release? | What changes |
 |---|---|---|---|
 | OQ6 | Trade mark expedite requests fell from about 1,400 a month to about 230 in November 2018 | **The numbers hold; the reading changes.** Almost the whole fall is one kind of mark: before the move between systems, 97% of marks claiming an overseas filing date (convention priority) carried an "expedited examination" event; after it, almost none do. Other marks barely changed | It is very likely a recording change. The question becomes narrower and easier to answer |
-| OQ7 | Fewer Australian organisations' applications carry an ABN since mid-2024 | **Holds, and is sharper.** The break is in July 2024, mostly in applicants new to IP Australia. Newly registered companies dropped from 89% to 10% with an ABN. The ABNs exist (ASIC's register has them). Two years on, they have not been filled in | Not a misclassification. "Added later" is unlikely; "not collected for new customers" is likely |
-| OQ13 | IP RAPID holds 1,994 fewer trade marks for 2018 than the IP Report 2019 counted, all Madrid | **Holds exactly.** A likely place for them: 2,292 application numbers issued around New Year 2019 (1,978,060 to 1,980,352) are missing from every table. Elsewhere, 3% to 7% of numbers are missing | The question can name the numbers |
+| OQ7 | Fewer Australian organisations' applications carry an ABN since mid-2024 | **Holds, and is sharper.** The break is in July 2024, mostly in applicants new to IP Australia. Newly registered companies dropped from about 90% to 10% with an ABN. The ABNs exist (ASIC's register has them). Two years on, they have not been filled in | Not a misclassification. "Added later" is unlikely; "not collected for new customers" is likely |
+| OQ13 | IP RAPID holds 1,994 fewer trade marks for 2018 than the IP Report 2019 counted, all Madrid | **Holds exactly, but WIPO sides with IP RAPID.** WIPO's own count of the Madrid designations of Australia in 2018 is 15,943, against IP RAPID's 15,836 (99.3%), with no 13% rise. A block of 2,292 application numbers from around New Year 2019 is missing from every table, but WIPO's count suggests these were not 2,000 real marks | The IP Report 2019's 2018 count, not IP RAPID, is probably the odd one out. The question asks what that count included |
 
 ## OQ6: trade mark expedite requests in November 2018
 
@@ -86,17 +86,36 @@ from the two blocks the gap below falls in (`oq13_numbers_by_block.csv`). These 
 2,140,000 is longer than 331 (`oq13_longest_gaps.csv`). Only one number in the range appears anywhere in IP RAPID, and
 no Australian trade mark links to any of the others (`oq13_gap_anywhere.csv`).
 
-**R8. What it means.** The two runs total 2,292 numbers. At the usual rate, 3% to 7%, about 70 to 160 of them would
-be missing, so roughly 2,100 to 2,200 are missing beyond the usual. That is close to the 1,994 marks IP RAPID lacks. It also falls at the year end, seven weeks after the records moved. The numbers alone cannot show that
-these were Madrid designations dated 2018. The new system may also have skipped a range of numbers it never used. So
-this is a lead: it tells IP Australia where to look.
+**R8. What the numbering gap could mean.** The two runs total 2,292 numbers. At the usual rate, 3% to 7%, about 70
+to 160 of them would be missing, so roughly 2,100 to 2,200 are missing beyond the usual. That is close to the 1,994
+marks IP RAPID lacks, and it falls at the year end, seven weeks after the records moved. But the numbers alone cannot
+show what they were, and R9 weighs against their being 2,000 Madrid marks. The likelier reading is a range the new
+system skipped.
 
-**What changes for the question.** OQ13 adds: "Were trade mark numbers 1,978,060 to 1,980,352 issued, and if so, why
-are they not in IP RAPID? Were they the 2018 Madrid designations counted in the IP Report 2019?"
+**R9. WIPO's own count agrees with IP RAPID, not with the IP Report 2019.** WIPO's statistics give the designations of
+Australia recorded in its international register each year, in new registrations and in later designations
+(indicator 6, data of October 2026; `oq13_wipo_designations.csv`). They were 15,780 in 2017, 15,943 in 2018 and 17,573
+in 2019. IP RAPID's Madrid marks are 0.9884 to 1.0121 of WIPO's count in every year from 2014 to 2024, apart from 2023
+(1.0662). For 2018 the ratio is 0.9933. The IP Report 2019's figures imply about 17,830 Madrid applications in 2018
+(IP RAPID's 15,836 plus the 1,994). That is 1.118 times WIPO's count, and a 13% rise that WIPO's count (+1.0%) does
+not show. Where IP Australia published a Madrid count that the audit could check (2015, 2020, 2021, 2023, 2024 and 2025), it
+agrees with IP RAPID within 0.1% (`analysis/audit/output/benchmark.csv`).
+
+**R10. What it means.** The 1,994 marks are probably not missing from IP RAPID. More likely, the IP Report 2019 counted
+2018 differently, or counted something extra. That report was prepared early in 2019, a few months after the records
+moved, so double counting during the move is one possibility. TM-Link, IP Australia's own trade mark data released in
+2020, has the same 2018 count as IP RAPID (77,468 marks, 15,807 Madrid), and has no records in the gap but one. WIPO's
+register itself (Madrid Monitor) could list the individual registrations, but its terms of use forbid automated
+queries and bulk downloads (sections 5 and 6), so it was not searched.
+
+**What changes for the question.** OQ13 becomes: "WIPO records 15,943 designations of Australia in 2018, and IP RAPID
+holds 15,836 Madrid marks, but the IP Report 2019 implies about 17,830 (+13%). What did the 2018 count in the IP Report
+2019 include, and does IP Australia still stand by 79,490? (And were trade mark numbers 1,978,060 to 1,980,352 ever
+issued?)"
 
 ## OQ7: ABNs on Australian organisations' applications
 
-**R9. The fall in ABNs holds, and it starts in July 2024.** Among trade marks filed by Australian organisations (the
+**R11. The fall in ABNs holds, and it starts in July 2024.** Among trade marks filed by Australian organisations (the
 founding applicant is an organisation in Australia), the share with an ABN is 84.0% to 85.8% from FY2020 to FY2024.
 It is 71.7% in FY2025, 59.8% in FY2026 and 54.0% so far in FY2027 (`oq7_abn_by_fy.csv`). Stage 1's U45 counted these
 slightly differently (84.1%, 71.4%, 59.9%), and the result is the same. By month of filing
@@ -104,7 +123,7 @@ slightly differently (84.1%, 71.4%, 59.9%), and the result is the same. By month
 August, 63.3% by June 2025 and 51.8% in October 2026. Designs fall from 88.9% (FY2024) to 77.9% (FY2026), and
 patents from 88.9% to 67.4%.
 
-**R10. It is not a misclassification of who files, or where the ABN is kept.**
+**R12. It is not a misclassification of who files, or where the ABN is kept.**
 
 - **Type of applicant:** organisations make up a nearly steady share of Australian trade mark filers: 35,314 of
   46,464 trade marks (76.0%) in FY2020, 37,108 of 49,872 (74.4%) in FY2024 and 42,477 of 59,342 (71.6%) in FY2026
@@ -117,26 +136,27 @@ patents from 88.9% to 67.4%.
 - **The same applicant elsewhere:** an applicant with no ABN on a recent application has none on any other
   application either.
 
-**R11. The fall is among applicants new to IP Australia.** Count an applicant as new if it first appears within 30
+**R13. The fall is among applicants new to IP Australia.** Count an applicant as new if it first appears within 30
 days of the filing (`oq7_abn_by_fy.csv`). For new applicants, the share of trade marks with an ABN was 80.0% to 83.0%
 from FY2022 to FY2024. It is 59.2% in FY2025, 42.5% in FY2026 and 37.1% in FY2027. For applicants seen before, it is
 86.9% to 88.5% in FY2020 to FY2024 and 77.7% in FY2026. Some of those applicants first appeared after July 2024 without
 an ABN. Patents and designs show the same split: new patent applicants 77.3% to 79.0% (FY2020 to FY2024), then 29.7%
 (FY2026).
 
-**R12. The companies have ABNs. IP RAPID does not hold them.** Matched by exact name to ASIC's register, among
+**R14. The companies have ABNs. IP RAPID does not hold them.** Matched by exact name to ASIC's register, among
 Australian proprietary companies ("Pty Ltd") filing trade marks (`oq7_tm_pty_in_asic.csv`):
 
-- **Matches:** 81.4% of the FY2026 trade marks with no ABN in IP RAPID belong to a company that ASIC lists with an ABN.
-- **New companies:** 75.5% of those companies were registered after 1 July 2024, against 5.3% for the companies whose
+- **Matches:** 80.0% of the FY2026 trade marks with no ABN in IP RAPID belong to a company that ASIC lists with an ABN.
+- **New companies:** 75.2% of those companies were registered after 1 July 2024, against 5.2% for the companies whose
   ABN IP RAPID does hold.
-- **By company age** (`oq7_tm_pty_by_company_age.csv`): companies under a year old at filing had an ABN on 89.1% to
-  90.4% of their trade marks in FY2022 to FY2024. In FY2025 it was 30.0%, in FY2026 10.3% and in FY2027 8.4%. For
-  older companies it was 91.8% to 92.1%, then 83.2% in FY2026.
+- **By company age** (`oq7_tm_pty_by_company_age.csv`): companies under a year old at filing had an ABN on 89.0% to
+  90.2% of their trade marks in FY2022 to FY2024. In FY2025 it was 29.8%, in FY2026 10.1% and in FY2027 8.2%. For
+  older companies it was 91.7% to 92.1%, then 83.2% in FY2026. Where an application has more than one Australian
+  company as founding applicant, the first name alphabetically is matched.
 
-**R13. It is not filled in later, at least within two years.** If ABNs were attached after filing, the oldest months
+**R15. It is not filled in later, at least within two years.** If ABNs were attached after filing, the oldest months
 would have recovered by now. They have not. Trade marks filed in July 2024 stand at 79.2% with an ABN, more than two
-years later, against 82.2% to 87.1% before (R9). Companies under a year old that filed in FY2025 stand at 30.0% (R12).
+years later, against 82.2% to 87.1% before (R11). Companies under a year old that filed in FY2025 stand at 29.8% (R14).
 
 **What it means.** The fall is not a misclassification. From about July 2024, new customer records at IP Australia
 mostly stop carrying an ABN, and the applicant record is not updated later. Newly registered companies are the
