@@ -13,7 +13,26 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-27, latest):** **The atlas's framing follows the audit** (ADR 0026). The owner clarified that only
+**Status (2026-10-27, latest):** **OQ6, OQ7 and OQ13 rechecked on a fresh IP RAPID release** (ADR 0027,
+`docs/recheck-oq6-oq7-oq13.md`), at the owner's request before taking them to IP Australia. `analysis/audit/recheck.py`
+reads the 26 October 2026 release raw from data.gov.au, without the corpus or lenses, and reproduces U34, U45 and D2.
+None is a misclassification in how we read the data, but two are now explained further:
+- **OQ6:** the expedite fall is almost all in marks claiming convention priority: 95.97% to 97.81% of them carried
+  the event to FY2018, against 0.06% to 0.16% since FY2020. Other marks: 4.81% to 6.11%, then 3.60% to 4.87%, no
+  break. This looks like recording.
+- **OQ7:** the ABN goes missing from July 2024 for applicants new to IP Australia. Companies under a year old: 89% to
+  90% with an ABN, then 10.1% (FY2026). ASIC shows they have ABNs, and the ABNs are not added later.
+- **OQ13:** WIPO's own count of designations of Australia in 2018 (15,943) agrees with IP RAPID's Madrid marks
+  (15,836, 0.9933), not with the IP Report 2019 (about 17,830 implied). So the report's 2018 count is probably the odd
+  one out. Trade mark numbers 1,978,060 to 1,980,352 are missing from every table, but probably were never used.
+  WIPO's Madrid Monitor was not searched mark by mark: its terms forbid automated queries and bulk downloads.
+
+The three questions and the atlas's "What comes next" page are reworded (old wording kept); the observations are not
+revised (ADR 0026). **Next is the owner's call:** send the reworded questions; whether to adopt R5 (U34 compared across
+2018 among marks without a priority claim); Stage 2. The corpus's IP RAPID is a week behind (19 October); `corpus run
+iprapid` refreshes it.
+
+Before that, the same day: **The atlas's framing follows the audit** (ADR 0026). The owner clarified that only
 the substantive analyses (the observations) stay unchanged for now, so the "What comes next" page now carries OQ5 and
 OQ7 as reworded (A10) and OQ12 to OQ14 (A8), drops U67's puzzle (closed by the audit), adds the audit's Stage 2 pair
 (expedited examination against years in force) and moves IP Australia's statistics out of the data worth adding. The

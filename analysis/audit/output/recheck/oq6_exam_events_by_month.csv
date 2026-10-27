@@ -1,0 +1,13 @@
+month,exam_first_adverse_report_sent,exam_outcome_adverse,exam_outcome_clear,exam_outcome_full_refusal,exam_outcome_intention_to_reject,exam_outcome_partial_refusal,exam_outcome_unknown_irda_refusal,exam_request,expedited_exam_request,taken_for_examination,under_examination_deferred,under_examination_extension_fees_not_required,under_examination_extension_fees_required,under_examination_general_provisions_for_extension
+2018-05,2524,2949,5270,227,0,175,4,6943,1273,0,0,0,0,0
+2018-06,2229,2599,4401,200,0,150,4,6231,1552,0,0,0,0,0
+2018-07,2503,3052,4743,141,0,123,1,6475,1548,0,0,0,0,0
+2018-08,2515,2995,5273,152,0,146,2,6407,1373,0,0,0,0,0
+2018-09,2187,2601,4640,202,0,145,1,5035,1383,0,0,0,0,0
+2018-10,2214,2706,4354,175,0,120,4,5188,1417,0,0,0,0,0
+2018-11,1629,2077,3710,137,1,99,0,1528,604,5073,1661,24288,1282,470
+2018-12,1386,1642,3198,117,0,97,0,0,240,0,0,0,0,0
+2019-01,1924,2041,4558,221,0,205,0,0,156,0,0,0,0,0
+2019-02,2268,2381,4709,244,0,210,0,0,294,0,0,0,0,0
+2019-03,2429,2468,4939,279,0,256,0,0,233,0,0,0,0,0
+2019-04,2409,2432,4916,353,0,237,0,0,217,0,0,0,0,0

@@ -1,0 +1,13 @@
+mark,priority,after_move,marks,pct_expedite
+"direct, Australian",False,False,109655,6.21
+"direct, Australian",False,True,125978,5.59
+"direct, Australian",True,False,549,86.52
+"direct, Australian",True,True,669,2.39
+"direct, overseas",False,False,26836,2.14
+"direct, overseas",False,True,28776,2.78
+"direct, overseas",True,False,7479,94.84
+"direct, overseas",True,True,8076,0.3
+madrid,False,False,15418,0.24
+madrid,False,True,19005,0.01
+madrid,True,False,21112,97.7
+madrid,True,True,26591,0.01
