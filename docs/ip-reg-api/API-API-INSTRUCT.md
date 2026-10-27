@@ -1,13 +1,5 @@
 # APIs at IP Australia
 
-## What are APIs?
-
-An application programming interface (API) is, in its simplest terms, a piece of software which is designed to fulfil a particular function, provides a clear and fixed contract which other software can use to interact with it, and has a standard address or *endpoint* where its implementation can be found. It is, for all intents and purposes, a user interface for machines.
-
-One analogy for an API is the simple act of going to a coffee shop to purchase a coffee - in this case, the barista can be likened to an API. First you need to go to where they are located - the coffee shop or, in this analogy, the API *endpoint*. Next you need to fulfil the general contract: tell the barista which of their services you want to use: make a coffee, provide further details as required: an espresso, and provide payment. Finally, the barista will perform some actions and fulfil their end of the contract returning you a nice cup of coffee. It's important to note here that as a consumer of their services you do not actually need to know anything about the actions they perform - the details of *how* they fulfil the contract are not important to you, the consumer, it is the contract that is important.
-
-## APIs at IP Australia
-
 IP Australia follows the defacto web standard by exposing APIs as [RESTful web services](https://en.wikipedia.org/wiki/Representational_state_transfer), allowing interchange of data using standard internet protocols and data structures that are independent of underlying technologies so that they can be utilised by all customers regardless of their programming language of choice or physical location.
 
 Each API is documented on our [API Exchange Portal](https://anypoint.mulesoft.com/exchange/portals/ip-australia-3/), where you will find details of the operations they provide and any other specific information needed to understand or invoke them. In addition to this, the API contract can be downloaded in [RAML](https://raml.org/) format - an API modelling language that is designed to be both machine and human readable.
