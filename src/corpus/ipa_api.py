@@ -20,8 +20,9 @@ What the client handles, as found on 27 October 2026 (ADR 0028):
 - The limit is 600 requests a minute for each API (headers `x-ratelimit-*`; the reset is in milliseconds). The
   client paces itself below it, across threads, and waits out a 429.
 - About half of production's patent requests answer 403 `{"error": "Invalid Client"}` or 500 at random, with a good
-  token: the same request answers 200 when sent again. The client retries those (and 5xx elsewhere) with backoff,
-  three times as often for production's patents.
+  token: the same request answers 200 when sent again. Those answers carry no rate-limit headers and do not count
+  toward the limit, so the client retries them at once (up to 24 times) without counting them; other 5xx are
+  retried with backoff. With 24 threads, production served about 630 patents a minute this way.
 - Searches return at most 10,000 numbers each (`count` is the true total); `ids` splits a date range until each
   part fits. Big searches sent several at a time can answer 500 for minutes; `ids` splits those too, so send
   searches two or three at a time. `page` (trade marks and designs) returns up to 100 whole records a call.
@@ -89,6 +90,12 @@ class _Pace:
                 pause = 60 - (now - self.calls[0])
             time.sleep(max(pause, 0.05))
 
+    def refund(self) -> None:
+        """Give back the last call: the server did not count it."""
+        with self.lock:
+            if self.calls:
+                self.calls.pop()
+
 
 class Client:
     """A session with one environment's APIs. Thread-safe: `get_many` and `page_all` run calls in parallel."""
@@ -100,6 +107,8 @@ class Client:
         self.tries, self.timeout = tries, timeout
         self.session = requests.Session()
         self.session.headers["User-Agent"] = UA
+        adapter = requests.adapters.HTTPAdapter(pool_connections=4, pool_maxsize=64)  # many threads, one host
+        self.session.mount("https://", adapter)
         self.pace = {right: _Pace(per_minute) for right in APIS}
         self._token, self._expires, self._lock = None, 0.0, threading.Lock()
         self.calls = 0  # sent, retries included
@@ -155,6 +164,12 @@ class Client:
                     time.sleep(min(float(reset) / 1000, 60) if reset else 10)
                     continue
             self.retries += 1
+            if r is not None and r.status_code in (403, 500) and "x-ratelimit-remaining" not in r.headers:
+                # production patents' random failures carry no rate-limit headers: the limit did not count them, and
+                # the next call usually succeeds, so retry at once
+                self.pace[right].refund()
+                time.sleep(0.05)
+                continue
             time.sleep(min(0.5 * 2**i, 20))
         raise CorpusError(f"{method} {url} kept failing after {tries} tries (last: {r and r.status_code})")
 

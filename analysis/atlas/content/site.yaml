@@ -443,11 +443,11 @@ next:
     - "AusTender's missing amendments (OQ3, small) and ABS TableBuilder (OQ4, on hold)."
   ipa:
     - What evidence supports IP Australia's reading that digital tools, including AI, drove the rise in provisional applications, and are the few very heavy filers part of it? (OQ5, {U8})
-    - Did the old system record trade marks claiming an overseas filing date as expedited, so that the November 2018 fall is a change in recording? (OQ6, {U34})
-    - What changed in July 2024, when new applicants stopped having an ABN in IP RAPID: how new customers are set up, or what IP RAPID publishes? (OQ7, {U45})
+    - IP Australia's register still records "Examination expedited" for every trade mark claiming an overseas filing date, but IP RAPID stopped publishing it in November 2018. What does it mean where no one asked, and could IP RAPID publish it? (OQ6, {U34})
+    - IP Australia's register holds a business number for most of the recent applications that have none in IP RAPID. Why does IP RAPID leave them out, and could it publish them? (OQ7, {U45})
     - What does IP Australia's figure of 55.6% of resident applications filed by individuals in 2022 count? (OQ12, {U13}, {U48})
-    - IP RAPID and WIPO's own count agree on 2018's Madrid trade marks, about 2,000 fewer than IP Australia's report: what did the report's 2018 count include? (OQ13, {U5})
-    - Could IP RAPID publish the origin IP Australia holds for the designs it leaves unknown? (OQ14, {U7})
+    - IP Australia's own register, IP RAPID and WIPO agree on 2018's trade marks, about 2,000 fewer than IP Australia's report: what did the report's 2018 count include? (OQ13, {U5})
+    - IP Australia's register holds the owner's country for most designs IP RAPID leaves without one. Could IP RAPID publish it? (OQ14, {U7})
   gaps_intro: >-
     All free to obtain. IP Australia's own published statistics, once on this list, now benchmark the lenses: see
     Checked against IP Australia.

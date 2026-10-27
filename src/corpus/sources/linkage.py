@@ -1,8 +1,9 @@
 """The ABN spine: one row per ABN that appears anywhere in the corpus, with what the business registers say about it.
 
 Built from the other sources (run it after them). Processed: `abn_spine` (repo), one row per ABN seen in IP RAPID's
-parties (an applicant or owner of any right, founding or current), IPLORD, the R&D Tax Incentive reports, AusTender
-suppliers or the corporate tax transparency reports, with:
+parties (an applicant or owner of any right, founding or current), IP Australia's register (an owner of a trade mark
+or design, by the ABN it gives or the one its ACN has in the ABR; ADR 0029), IPLORD, the R&D Tax Incentive reports,
+AusTender suppliers or the corporate tax transparency reports, with:
 
 - from the ABR: entity type, ABN status and the date it took effect, GST status and date, state, postcode, ACN, and
   whether the business is a deductible gift recipient;
@@ -10,8 +11,8 @@ suppliers or the corporate tax transparency reports, with:
 - `first_seen`, the earliest of the ABN status date (for an active ABN), GST registration and ASIC registration: a
   lower bound on the business's start, since the public ABR gives only the date of the current status;
 - flags for each source it appears in (`in_iprapid_patent` and so on: an applicant or owner of that right, founding or
-  current; `in_rdti`, `in_austender`, `in_ato_ctt`), and its first and last filing financial years by right type, as a
-  founding applicant, from `iprapid/applicant_year`;
+  current; `in_register`, `in_rdti`, `in_austender`, `in_ato_ctt`), and its first and last filing financial years by
+  right type, as a founding applicant, from `iprapid/applicant_year`;
 - `austender_contracts` and `austender_value`: the contracts it supplies, each counted once at its latest notice (the
   highest amendment, whose value is the contract's total), and credited to that notice's supplier. Summing every
   notice would count a contract once per amendment (ADR 0011).
@@ -41,6 +42,8 @@ def run(ctx: Ctx) -> None:
             "rdti/entities",
             "austender/contracts",
             "ato_ctt/entities",
+            "ipa_register/trade_marks",
+            "ipa_register/designs",
         ]
     }
     out = ctx.cache / "processed/abn_spine.parquet"
@@ -75,8 +78,15 @@ def run(ctx: Ctx) -> None:
       tender AS (SELECT supplier_abn AS abn, count(*) AS austender_contracts, sum(value) AS austender_value
                  FROM latest WHERE supplier_abn IS NOT NULL GROUP BY 1),
       ctt AS (SELECT DISTINCT abn FROM '{p["ato_ctt/entities"]}' WHERE abn IS NOT NULL),
+      acn_abn AS (SELECT acn, any_value(abn) AS abn FROM '{p["abr/abns"]}' WHERE acn IS NOT NULL GROUP BY 1
+                  HAVING count(*) = 1),
+      reg_owner AS (  -- owners in IP Australia's register (ADR 0029): the ABN it gives, else the one its ACN has
+        SELECT any_owner_abn, lpad(owner_acn, 9, '0') AS acn FROM '{p["ipa_register/trade_marks"]}'
+        UNION ALL SELECT any_owner_abn, lpad(owner_acn, 9, '0') FROM '{p["ipa_register/designs"]}'),
+      reg AS (SELECT DISTINCT coalesce(o.any_owner_abn, a.abn) AS abn FROM reg_owner o
+              LEFT JOIN acn_abn a USING (acn) WHERE coalesce(o.any_owner_abn, a.abn) IS NOT NULL),
       ids AS (SELECT abn FROM party UNION SELECT abn FROM ip UNION SELECT abn FROM lord UNION SELECT abn FROM rd
-              UNION SELECT abn FROM tender UNION SELECT abn FROM ctt),
+              UNION SELECT abn FROM tender UNION SELECT abn FROM ctt UNION SELECT abn FROM reg),
       abr AS (SELECT * FROM '{p["abr/abns"]}' WHERE abn IN (SELECT abn FROM ids)),
       co AS (SELECT * FROM '{p["asic/companies"]}')
       SELECT ids.abn,
@@ -91,6 +101,7 @@ def run(ctx: Ctx) -> None:
              coalesce(party.in_iprapid_trade_mark, false) AS in_iprapid_trade_mark,
              coalesce(party.in_iprapid_design, false) AS in_iprapid_design,
              coalesce(party.in_iprapid_pbr, false) AS in_iprapid_pbr,
+             reg.abn IS NOT NULL AS in_register,
              lord.abn IS NOT NULL AS in_iplord, rd.abn IS NOT NULL AS in_rdti,
              tender.abn IS NOT NULL AS in_austender, ctt.abn IS NOT NULL AS in_ato_ctt,
              ip.patent_first_fy, ip.patent_last_fy, ip.trade_mark_first_fy, ip.trade_mark_last_fy,
@@ -100,7 +111,7 @@ def run(ctx: Ctx) -> None:
       LEFT JOIN abr USING (abn)
       LEFT JOIN co ON co.acn = abr.acn
       LEFT JOIN party USING (abn) LEFT JOIN ip USING (abn) LEFT JOIN lord USING (abn) LEFT JOIN rd USING (abn)
-      LEFT JOIN tender USING (abn) LEFT JOIN ctt USING (abn)
+      LEFT JOIN tender USING (abn) LEFT JOIN ctt USING (abn) LEFT JOIN reg USING (abn)
       ORDER BY ids.abn
     ) TO '{out}' (FORMAT parquet, COMPRESSION zstd, COMPRESSION_LEVEL 9)""")
     rows = con.execute(f"SELECT count(*) FROM '{out}'").fetchone()[0]

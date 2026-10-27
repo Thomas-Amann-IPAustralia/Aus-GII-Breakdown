@@ -228,6 +228,22 @@ def _fy(col: str) -> str:
     return f"(year({col}) + CASE WHEN month({col}) >= 7 THEN 1 ELSE 0 END)"
 
 
+DROPPED_DIR = Path(__file__).resolve().parent / "dropped"
+
+
+def design_shells_sql() -> str:
+    """Design records with nothing in them (ADR 0029): no date, applicant or class in IP RAPID, and no owner in IP
+    Australia's register; numbered 1973 to 1982. They are dropped from the lenses, and listed with what IP RAPID
+    gives (status) in `analysis/eda/dropped/design_shells.csv`, written with the rights lens."""
+    return """
+        SELECT d.application_number, d.status
+        FROM {iprapid/design_rights} d
+        LEFT JOIN {ipa_register/designs} g USING (application_number)
+        WHERE d.application_date IS NULL AND coalesce(d.applicant_count, 0) = 0 AND d.main_class IS NULL
+          AND coalesce(g.owner_count, 0) = 0 AND g.filed_date IS NULL AND g.main_class IS NULL
+        ORDER BY 1"""
+
+
 def rights_sql() -> str:
     """One row per right. Origin comes from every current applicant (ADR 0009): Australian if any is in Australia,
     overseas if at least one has a known country and none is in Australia, else unknown (NULL). IP RAPID's own
@@ -427,6 +443,21 @@ def rights_sql() -> str:
         WHERE country_code = 'AU' AND kind_code <> 'S' AND au_application <> ''
         GROUP BY 1
     ),
+    acn_abn AS (  -- an ACN the ABR gives to exactly one ABN
+        SELECT acn, any_value(abn) AS abn FROM {{abr/abns}} WHERE acn IS NOT NULL GROUP BY 1 HAVING count(*) = 1
+    ),
+    reg AS (  -- IP Australia's register, as its APIs give it (ADR 0028, 0029): owners' identifiers and country, and
+              -- (trade marks) the register's own expedite events; for the gaps IP RAPID leaves, never instead of it
+        SELECT 'trade_mark' AS ip_right_type, application_number, found, owner_count, any_owner_abn,
+               lpad(owner_acn, 9, '0') AS owner_acn, owner_country, any_owner_in_australia, expedite_events,
+               expedite_date
+        FROM {{ipa_register/trade_marks}}
+        UNION ALL BY NAME
+        SELECT 'design' AS ip_right_type, application_number, found, owner_count, any_owner_abn,
+               lpad(owner_acn, 9, '0') AS owner_acn, owner_country, any_owner_in_australia
+        FROM {{ipa_register/designs}}
+    ),
+    shells AS ({design_shells_sql()}),
     dated AS (
         SELECT *,
                CASE WHEN applicant_country = 'au' THEN {_postcode("applicant_postcode")} END AS postcode_au,
@@ -434,6 +465,7 @@ def rights_sql() -> str:
                    AS registered,  -- one trade mark is dated 1 January 1901
                nullif(deemed_retired_date, DATE '1970-01-01') AS retired  -- all 1,282 were filed from 2013
         FROM r
+        WHERE NOT (ip_right_type = 'design' AND application_number IN (SELECT application_number FROM shells))
     )
     SELECT
         r.application_number,
@@ -483,6 +515,22 @@ def rights_sql() -> str:
             fs.state
         ) AS founder_state,
         f.founder_abn,
+        coalesce(reg.any_owner_abn, ra.abn) AS register_abn,
+        CASE WHEN reg.any_owner_abn IS NOT NULL THEN 'register' WHEN ra.abn IS NOT NULL THEN 'acn' END
+            AS register_abn_basis,
+        coalesce(
+            f.founder_abn,
+            -- the register's owner is the filer only while the right has not changed hands
+            CASE WHEN NOT coalesce(len(f.ids) > 0 AND len(h.ids) > 0 AND f.ids <> h.ids, false)
+                 THEN coalesce(reg.any_owner_abn, ra.abn) END
+        ) AS filer_abn,
+        r.any_applicant_abn IS NOT NULL OR coalesce(reg.any_owner_abn, ra.abn) IS NOT NULL AS has_abn_filled,
+        reg.owner_country AS register_country,
+        CASE WHEN a.applicants_au > 0 THEN true WHEN a.applicants_overseas > 0 THEN false
+             WHEN reg.owner_country IS NOT NULL THEN reg.any_owner_in_australia END AS australian_applicant_filled,
+        CASE WHEN r.ip_right_type = 'trade_mark' AND reg.found THEN reg.expedite_events IS NOT NULL END
+            AS register_expedited,
+        reg.expedite_date AS register_expedite_date,
         CASE WHEN r.ip_right_type = 'patent' AND coalesce(r.application_date, DATE '1900-01-01') < DATE '2002-07-01'
              THEN NULL  -- one set of applicants, entered when records moved between systems (ADR 0013)
              WHEN len(f.ids) > 0 AND len(h.ids) > 0 THEN f.ids <> h.ids END AS holder_changed,
@@ -546,6 +594,8 @@ def rights_sql() -> str:
     LEFT JOIN poa_state fs ON fs.poa_code = f.founder_postcode
     LEFT JOIN milestones m USING (ip_right_type, application_number)
     LEFT JOIN route rt USING (ip_right_type, application_number)
+    LEFT JOIN reg USING (ip_right_type, application_number)
+    LEFT JOIN acn_abn ra ON ra.acn = reg.owner_acn
     LEFT JOIN gp ON r.ip_right_type = 'patent' AND gp.application_number = r.application_number
     LEFT JOIN {{google_patents/families}} fam ON fam.family_id = gp.family_id
     LEFT JOIN {{google_patents_inventors/family_inventors}} inv ON inv.family_id = gp.family_id
@@ -554,14 +604,22 @@ def rights_sql() -> str:
 
 def firms_sql() -> str:
     return f"""
-    WITH ip AS (  -- applications by the filer: the first founding applicant with an ABN (ADR 0013, 0016)
-        SELECT founder_abn AS abn,
+    WITH ip AS (  -- applications by the filer: the first founding applicant with an ABN (ADR 0013, 0016), else the
+                  -- register's owner while the right has not changed hands (ADR 0029)
+        SELECT filer_abn AS abn,
                count(*) FILTER (patent_type = 'standard') AS n_patents_standard,
                count(*) FILTER (patent_type = 'provisional') AS n_patents_provisional,
                count(*) FILTER (patent_type = 'second_tier') AS n_patents_second_tier,
                count(*) FILTER (ip_right_type = 'trade_mark') AS n_trade_marks,
                count(*) FILTER (ip_right_type = 'design') AS n_designs
-        FROM {lens_table("rights")} WHERE founder_abn IS NOT NULL GROUP BY 1
+        FROM {lens_table("rights")} WHERE filer_abn IS NOT NULL GROUP BY 1
+    ),
+    first_filed AS (  -- each filer's first and last filing year, by type, from the filled filer ABN (ADR 0029)
+        SELECT filer_abn AS abn,
+               min(filing_fy) FILTER (patent_type = 'standard') AS patent_first_fy_filled,
+               min(filing_fy) FILTER (ip_right_type = 'trade_mark') AS trade_mark_first_fy_filled,
+               min(filing_fy) FILTER (ip_right_type = 'design') AS design_first_fy_filled
+        FROM {lens_table("rights")} WHERE filer_abn IS NOT NULL GROUP BY 1
     ),
     held AS (  -- rights held now: the first current applicant or owner with an ABN
         SELECT applicant_abn AS abn, count(*) AS n_held, count(*) FILTER (in_force) AS n_held_in_force
@@ -631,6 +689,8 @@ def firms_sql() -> str:
         s.in_iplord,  -- IPLORD (to FY2020) links 50,790 ABNs to IP that IP RAPID gives no ABN for (ADR 0016)
         s.in_rdti, s.in_austender, s.in_ato_ctt,
         s.patent_first_fy, s.trade_mark_first_fy, s.design_first_fy,
+        s.in_register,
+        ff.patent_first_fy_filled, ff.trade_mark_first_fy_filled, ff.design_first_fy_filled,
         s.ip_filed_total,
         coalesce(filed.ip_filed_weighted, 0) AS ip_filed_weighted,
         coalesce(ip.n_patents_standard, 0) AS n_patents_standard,
@@ -653,6 +713,7 @@ def firms_sql() -> str:
     LEFT JOIN rd USING (abn)
     LEFT JOIN tax USING (abn)
     LEFT JOIN filed USING (abn)
+    LEFT JOIN first_filed ff USING (abn)
     LEFT JOIN place ON place.poa_code = {_postcode("s.postcode")}
     """
 
@@ -1988,6 +2049,9 @@ def build(name: str) -> None:
     con = connect()
     con.execute(f"COPY ({resolve(LENSES[name]())}) TO '{tmp}' (FORMAT parquet, COMPRESSION zstd)")
     tmp.replace(out)
+    if name == "rights":  # the records the lens leaves out, recorded where they can be read
+        DROPPED_DIR.mkdir(exist_ok=True)
+        con.execute(f"COPY ({resolve(design_shells_sql())}) TO '{DROPPED_DIR / 'design_shells.csv'}' (HEADER)")
     rows = con.execute(f"SELECT count(*) FROM '{out}'").fetchall()[0][0]
     cols = len(con.sql(f"SELECT * FROM '{out}' LIMIT 0").columns)
     print(f"{name}: {rows:,} rows, {cols} columns, {out.stat().st_size / 1e6:.1f} MB, {time.time() - t0:.0f} s")

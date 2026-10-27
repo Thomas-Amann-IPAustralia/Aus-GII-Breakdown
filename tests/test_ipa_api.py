@@ -135,3 +135,51 @@ def test_the_committed_register_check_adds_up():
     assert g.loc[g.gap == "number_gap", "in_register"].item() == 1
     c = pd.read_csv(out / "completeness.csv")
     assert (c.both + c.iprapid_only == c.iprapid).all() and (c.both + c.register_only == c.register_search).all()
+
+
+def test_register_slices_split_a_range_until_each_part_is_under_the_cap(monkeypatch):
+    import datetime as dt
+
+    from corpus.sources import ipa_register
+
+    monkeypatch.setattr(ipa_register, "CAP", 10)
+    counts = {}  # records per day: 4 a day for 6 days
+
+    def count(client, right, a, b):
+        counts[(a, b)] = 4 * ((b - a).days + 1)
+        return counts[(a, b)]
+
+    monkeypatch.setattr(ipa_register, "_count", count)
+    got = ipa_register.slices(None, "design", dt.date(2020, 1, 1), dt.date(2020, 1, 6))
+    assert sum(n for *_, n in got) == 24 and all(n <= 10 for *_, n in got)
+    assert got[0][0] == dt.date(2020, 1, 1) and got[-1][1] == dt.date(2020, 1, 6)
+    assert all(b + dt.timedelta(days=1) == c for (_, b, _), (c, _, _) in zip(got, got[1:], strict=False))
+
+
+def test_a_budget_stops_new_work(monkeypatch):
+    from corpus.sources import ipa_register
+
+    monkeypatch.delenv("IPA_BUDGET_MINUTES", raising=False)
+    assert not ipa_register.Budget().over()
+    monkeypatch.setenv("IPA_BUDGET_MINUTES", "0")
+    assert ipa_register.Budget().over()
+
+
+def test_dropped_design_shells_are_recorded_and_left_out_of_the_lens():
+    """ADR 0029: the empty design records are listed in analysis/eda/dropped/ and are not in the rights lens."""
+    from pathlib import Path
+
+    import duckdb
+    from eda import data
+
+    shells = Path(__file__).resolve().parents[1] / "analysis/eda/dropped/design_shells.csv"
+    if not (data.LENS_DIR / "rights.parquet").exists() or not shells.exists():
+        pytest.skip("lens not built here (run: uv run python -m eda.build)")
+    con = duckdb.connect()
+    n = con.execute(f"SELECT count(*) FROM read_csv('{shells}', all_varchar = true)").fetchone()[0]
+    assert 11_000 < n < 11_200
+    kept = con.execute(f"""
+        SELECT count(*) FROM '{data.LENS_DIR / "rights.parquet"}' r
+        JOIN read_csv('{shells}', all_varchar = true) s USING (application_number)
+        WHERE r.ip_right_type = 'design'""").fetchone()[0]
+    assert kept == 0
