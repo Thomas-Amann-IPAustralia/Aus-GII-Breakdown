@@ -271,7 +271,11 @@ export function chartCard(spec, { origin = "query", compact = false } = {}) {
     tableBox.replaceChildren(tableNode(s));
     const how = origin === "quoted"
       ? "Drawn from the numbers quoted in the observation itself."
-      : "Redrawn from the lens table with the notebook's own query, and checked against every number the observation quotes.";
+      : origin === "audit" && s.origin === "record"
+        ? "Counted from the review's record, which gives each observation one verdict."
+        : origin === "audit"
+        ? "Drawn from the review's benchmark, which recounts IP Australia's published figures from Stage 1's data (analysis/audit)."
+        : "Redrawn from the lens table with the notebook's own query, and checked against every number the observation quotes.";
     foot.replaceChildren(...[
       s.source ? el("span", `Source: ${s.source}`) : null,
       s.note ? el("span", s.note) : null,

@@ -1,0 +1,196 @@
+measure,year,published,lens,ratio,difference,agrees,observations,source,page,note,lens_definition
+des_apps,2014,6596.0,6635.0,1.0059,39.0,True,U5 U25,ipr-2015,11,,design applications
+des_apps,2021,8110.0,8123.0,1.0016,13.0,True,U5 U25,ipr-2022,3,,design applications
+des_apps,2023,8776.0,8803.0,1.0031,27.0,True,U5 U25,ipr-2024,7,,design applications
+des_apps,2025,10296.0,10303.0,1.0007,7.0,True,U5 U6 U25,ipr-2026,57,,design applications
+des_apps_res,2014,2630.0,2342.0,0.8905,-288.0,False,U7 U13,ipr-2015,11,"total 6,596 less non-residents 3,966","designs, a founding applicant in Australia"
+des_apps_res,2021,2595.0,2331.0,0.8983,-264.0,False,U7 U13,ipr-2022,3,,"designs, a founding applicant in Australia"
+des_apps_res,2023,2652.0,2358.0,0.8891,-294.0,False,U7 U13,ipr-2024,7,,"designs, a founding applicant in Australia"
+des_apps_res,2025,3078.0,2653.0,0.8619,-425.0,False,U7 U13,ipr-2026,58,,"designs, a founding applicant in Australia"
+des_certified,2021,1377.0,1377.0,1.0,0.0,True,U32,ipr-2022,3,,"designs certified, by year of certification"
+des_certified,2023,1540.0,1540.0,1.0,0.0,True,U32,ipr-2024,7,,"designs certified, by year of certification"
+des_certified,2025,1448.0,1448.0,1.0,0.0,True,U32,ipr-2026,57,,"designs certified, by year of certification"
+pbr_apps,2018,384.0,384.0,1.0,0.0,True,U5 U25,ipr-2019,13,,plant breeder's rights applications
+pbr_apps,2021,297.0,297.0,1.0,0.0,True,U5 U25,ipr-2022,3,,plant breeder's rights applications
+pbr_apps,2023,296.0,296.0,1.0,0.0,True,U5 U25,ipr-2024,7,,plant breeder's rights applications
+pbr_apps,2024,282.0,280.0,0.9929,-2.0,True,U5 U25,ipr-2026,68,,plant breeder's rights applications
+pbr_apps,2025,264.0,264.0,1.0,0.0,True,U5 U25,ipr-2026,68,,plant breeder's rights applications
+pbr_apps_res,2021,124.0,129.0,1.0403,5.0,False,U7 U13,ipr-2022,3,,"plant breeder's rights, a founding applicant in Australia"
+pbr_apps_res,2023,145.0,146.0,1.0069,1.0,True,U7 U13,ipr-2024,7,,"plant breeder's rights, a founding applicant in Australia"
+pbr_apps_res,2024,100.0,100.0,1.0,0.0,True,U7 U13,ipr-2026,69,,"plant breeder's rights, a founding applicant in Australia"
+pbr_apps_res,2025,117.0,117.0,1.0,0.0,True,U7 U13,ipr-2026,69,,"plant breeder's rights, a founding applicant in Australia"
+pbr_registered,2018,222.0,222.0,1.0,0.0,True,U27,ipr-2019,13,,"plant breeder's rights registered, by year of registration"
+pbr_registered,2021,116.0,116.0,1.0,0.0,True,U27,ipr-2022,3,,"plant breeder's rights registered, by year of registration"
+pbr_registered,2023,290.0,290.0,1.0,0.0,True,U27,ipr-2024,7,,"plant breeder's rights registered, by year of registration"
+pbr_registered,2024,124.0,124.0,1.0,0.0,True,U27,ipr-2026,68,,"plant breeder's rights registered, by year of registration"
+pbr_registered,2025,169.0,169.0,1.0,0.0,True,U27,ipr-2026,68,,"plant breeder's rights registered, by year of registration"
+prov_apps,2014,5270.0,5268.0,0.9996,-2.0,True,U5 U8 U25,ipr-2015,10,,provisional applications
+prov_apps,2015,5343.0,5344.0,1.0002,1.0,True,U5 U8 U25,ipr-2016,9,,provisional applications
+prov_apps,2017,5182.0,5195.0,1.0025,13.0,True,U5 U8 U25,ipr-2018,9,,provisional applications
+prov_apps,2018,4954.0,4942.0,0.9976,-12.0,True,U5 U8 U25,ipr-2019,6,,provisional applications
+prov_apps,2019,4957.0,4958.0,1.0002,1.0,True,U5 U8 U25,ipr-2020,14,,provisional applications
+prov_apps,2020,4863.0,4863.0,1.0,0.0,True,U5 U8 U25,ipr-2021,6,,provisional applications
+prov_apps,2021,4297.0,4294.0,0.9993,-3.0,True,U5 U8 U25,ipr-2022,16,,provisional applications
+prov_apps,2022,4037.0,4036.0,0.9998,-1.0,True,U5 U8 U25,ipr-2023,20,,provisional applications
+prov_apps,2023,4244.0,4244.0,1.0,0.0,True,U5 U8 U25,ipr-2024,40,,provisional applications
+prov_apps,2024,4344.0,4340.0,0.9991,-4.0,True,U5 U8 U25,ipr-2025,27,"4,343 in ipr-2026, p21",provisional applications
+prov_apps,2025,6867.0,6874.0,1.001,7.0,True,U5 U8 U25,ipr-2026,21,,provisional applications
+prov_apps_res,2016,5142.0,5170.0,1.0054,28.0,True,U7 U13,ipr-2017,8,,"provisional, a founding applicant in Australia"
+prov_apps_res,2017,4952.0,4970.0,1.0036,18.0,True,U7 U13,ipr-2018,9,,"provisional, a founding applicant in Australia"
+prov_apps_res,2019,4739.0,4752.0,1.0027,13.0,True,U7 U13,ipr-2020,14,,"provisional, a founding applicant in Australia"
+prov_apps_res,2020,4620.0,4619.0,0.9998,-1.0,True,U7 U13,ipr-2021,6,,"provisional, a founding applicant in Australia"
+prov_apps_res,2021,4031.0,4028.0,0.9993,-3.0,True,U7 U13,ipr-2022,16,,"provisional, a founding applicant in Australia"
+prov_apps_res,2022,3755.0,3754.0,0.9997,-1.0,True,U7 U13,ipr-2023,20,,"provisional, a founding applicant in Australia"
+prov_apps_res,2023,3903.0,3901.0,0.9995,-2.0,True,U7 U13,ipr-2024,40,,"provisional, a founding applicant in Australia"
+prov_apps_res,2024,4009.0,4006.0,0.9993,-3.0,True,U7 U13,ipr-2025,27,,"provisional, a founding applicant in Australia"
+prov_individual_share,2024,33.0,34.08,,1.08,True,U8,ipr-2026,21,"per cent, 'around one-third'",per cent of provisionals whose first founding applicant is an individual
+prov_individual_share,2025,50.0,48.25,,-1.75,True,U8,ipr-2026,21,"per cent, 'close to half'",per cent of provisionals whose first founding applicant is an individual
+second_tier_apps,2015,1828.0,1952.0,1.0678,124.0,False,U67,ipr-2016,9,,innovation and petty patent applications
+second_tier_apps,2016,2322.0,2469.0,1.0633,147.0,False,U67,ipr-2017,9,,innovation and petty patent applications
+second_tier_apps,2017,1816.0,1947.0,1.0721,131.0,False,U67,ipr-2018,10,,innovation and petty patent applications
+second_tier_apps,2020,4585.0,4581.0,0.9991,-4.0,True,U25 U28,ipr-2022,16,including standard patents converted to innovation patents,innovation and petty patent applications
+second_tier_apps,2021,7844.0,7833.0,0.9986,-11.0,True,U25 U28,ipr-2022,16,including standard patents converted to innovation patents,innovation and petty patent applications
+second_tier_nonres_share,2016,54.0,53.22,,-0.78,True,U7 U67,ipr-2017,9,per cent of innovation patent applications from non-residents,per cent of second-tier applications (known origin) with founding applicants all overseas
+std_apps,2014,25947.0,26033.0,1.0033,86.0,True,U5 U25,ipr-2015,8,,standard patent applications
+std_apps,2015,28605.0,28701.0,1.0034,96.0,True,U5 U25,ipr-2016,8,,standard patent applications
+std_apps,2016,28394.0,28474.0,1.0028,80.0,True,U5 U25,ipr-2017,6,,standard patent applications
+std_apps,2017,28905.0,28995.0,1.0031,90.0,True,U5 U25,ipr-2018,7,,standard patent applications
+std_apps,2018,29957.0,29980.0,1.0008,23.0,True,U5 U25,ipr-2019,5,,standard patent applications
+std_apps,2019,29758.0,29802.0,1.0015,44.0,True,U5 U25,ipr-2020,7,,standard patent applications
+std_apps,2020,29293.0,29295.0,1.0001,2.0,True,U5 U25,ipr-2021,3,,standard patent applications
+std_apps,2021,32409.0,32399.0,0.9997,-10.0,True,U5 U25,ipr-2023,9,"first reported as 32,397 (ipr-2022, p5)",standard patent applications
+std_apps,2022,32264.0,32292.0,1.0009,28.0,True,U5 U25,ipr-2023,9,,standard patent applications
+std_apps,2023,31530.0,31538.0,1.0003,8.0,True,U5 U25,ipr-2026,20,"first reported as 31,515 (ipr-2024, p30)",standard patent applications
+std_apps,2024,30487.0,30472.0,0.9995,-15.0,True,U5 U25,ipr-2026,20,"first reported as 30,478 (ipr-2025, p18)",standard patent applications
+std_apps,2025,30348.0,30448.0,1.0033,100.0,True,U5 U6 U25,ipr-2026,20,,standard patent applications
+std_apps_aristocrat,2017,157.0,159.0,1.0127,2.0,True,U52,ipr-2018,11,"Aristocrat Technologies, standard applications including divisionals","standard, a founding applicant named Aristocrat Technologies Australia (its US company apart)"
+std_apps_aristocrat,2021,71.0,72.0,1.0141,1.0,True,U52,ipr-2022,10,"Aristocrat Technologies, standard applications including divisionals","standard, a founding applicant named Aristocrat Technologies Australia (its US company apart)"
+std_apps_aristocrat,2025,123.0,123.0,1.0,0.0,True,U52,ipr-2026,32,"Aristocrat Technologies, standard applications including divisionals","standard, a founding applicant named Aristocrat Technologies Australia (its US company apart)"
+std_apps_cn,2023,2459.0,2427.0,0.987,-32.0,True,U13 U70,ipr-2024,35,,"standard, first founding applicant in China"
+std_apps_cn,2025,2938.0,2962.0,1.0082,24.0,True,U13 U70,ipr-2026,23,,"standard, first founding applicant in China"
+std_apps_csiro,2017,45.0,48.0,1.0667,3.0,False,U52 U84,ipr-2018,11,,"standard, a founding applicant named CSIRO"
+std_apps_csiro,2021,52.0,52.0,1.0,0.0,True,U52 U84,ipr-2022,10,,"standard, a founding applicant named CSIRO"
+std_apps_direct,2019,8850.0,8870.0,1.0023,20.0,True,U89 U90,ipr-2020,8,direct = not through the PCT,"standard, not through the PCT"
+std_apps_direct,2020,8164.0,8240.0,1.0093,76.0,True,U89 U90,ipr-2021,3,direct = not through the PCT,"standard, not through the PCT"
+std_apps_nonres,2017,26403.0,26425.0,1.0008,22.0,True,U7 U13,ipr-2018,11,,"standard, founding applicants all overseas"
+std_apps_nonres,2019,27121.0,27134.0,1.0005,13.0,True,U7 U13,ipr-2020,8,,"standard, founding applicants all overseas"
+std_apps_nonres,2020,26894.0,26890.0,0.9999,-4.0,True,U7 U13,ipr-2021,4,,"standard, founding applicants all overseas"
+std_apps_nonres,2021,29401.0,29401.0,1.0,0.0,True,U7 U13,ipr-2022,6,,"standard, founding applicants all overseas"
+std_apps_nonres,2022,29770.0,29798.0,1.0009,28.0,True,U7 U13,ipr-2023,9,,"standard, founding applicants all overseas"
+std_apps_nonres,2023,28959.0,28973.0,1.0005,14.0,True,U7 U13,ipr-2024,7,,"standard, founding applicants all overseas"
+std_apps_nonres,2024,27909.0,27896.0,0.9995,-13.0,True,U7 U13,ipr-2026,22,,"standard, founding applicants all overseas"
+std_apps_nonres,2025,27538.0,27637.0,1.0036,99.0,True,U7 U13,ipr-2026,22,,"standard, founding applicants all overseas"
+std_apps_nonres_multi,2020,1811.0,2014.0,1.1121,203.0,False,U13,ipr-2021,4,non-resident applications with two or more applicants,"standard, overseas, two or more founding applicants"
+std_apps_pct,2020,21129.0,21055.0,0.9965,-74.0,True,U89 U90,ipr-2021,3,,"standard, through the PCT"
+std_apps_pct,2022,23685.0,23715.0,1.0013,30.0,True,U89 U90,ipr-2023,11,,"standard, through the PCT"
+std_apps_pct,2023,22929.0,22943.0,1.0006,14.0,True,U89 U90,ipr-2024,33,,"standard, through the PCT"
+std_apps_pct,2024,21219.0,21228.0,1.0004,9.0,True,U89 U90,ipr-2025,26,,"standard, through the PCT"
+std_apps_res,2014,1979.0,2028.0,1.0248,49.0,False,U7 U13,ipr-2015,9,,"standard, a founding applicant in Australia"
+std_apps_res,2015,2284.0,2343.0,1.0258,59.0,False,U7 U13,ipr-2017,7,,"standard, a founding applicant in Australia"
+std_apps_res,2016,2620.0,2673.0,1.0202,53.0,False,U7 U13,ipr-2017,7,,"standard, a founding applicant in Australia"
+std_apps_res,2017,2503.0,2570.0,1.0268,67.0,False,U7 U13,ipr-2018,11,,"standard, a founding applicant in Australia"
+std_apps_res,2018,2756.0,2784.0,1.0102,28.0,True,U7 U13,ipr-2020,8,,"standard, a founding applicant in Australia"
+std_apps_res,2019,2637.0,2668.0,1.0118,31.0,True,U7 U13,ipr-2020,8,,"standard, a founding applicant in Australia"
+std_apps_res,2021,2996.0,2998.0,1.0007,2.0,True,U7 U13,ipr-2022,5,,"standard, a founding applicant in Australia"
+std_apps_res,2022,2494.0,2494.0,1.0,0.0,True,U7 U13,ipr-2023,9,,"standard, a founding applicant in Australia"
+std_apps_res,2023,2556.0,2564.0,1.0031,8.0,True,U7 U13,ipr-2024,7,,"standard, a founding applicant in Australia"
+std_apps_res,2024,2578.0,2572.0,0.9977,-6.0,True,U7 U13,ipr-2026,22,,"standard, a founding applicant in Australia"
+std_apps_res,2025,2810.0,2810.0,1.0,0.0,True,U7 U13,ipr-2026,22,,"standard, a founding applicant in Australia"
+std_apps_us,2015,13781.0,13795.0,1.001,14.0,True,U13 U70,ipr-2016,8,,"standard, first founding applicant in the US"
+std_apps_us,2019,13125.0,13092.0,0.9975,-33.0,True,U13 U70,ipr-2020,8,,"standard, first founding applicant in the US"
+std_apps_us,2022,14735.0,14502.0,0.9842,-233.0,True,U13 U70,ipr-2023,11,"US applicants named on the application, including with co-applicants from elsewhere","standard, first founding applicant in the US"
+std_apps_us,2023,13872.0,13619.0,0.9818,-253.0,True,U13 U70,ipr-2024,35,,"standard, first founding applicant in the US"
+std_apps_us,2025,12374.0,12185.0,0.9847,-189.0,True,U13 U70,ipr-2026,23,,"standard, first founding applicant in the US"
+std_exam_to_accept_median_years,2020,1.3,1.23,,-0.07,True,U33,ipr-2025,9,"median years from the request for examination to acceptance, 'as of 2020 (latest complete data)'","median years from the request for examination to acceptance, by year of request"
+std_field_biotech,2021,3120.0,3119.0,0.9997,-1.0,True,U14,ipr-2022,9,,"standard, main WIPO field 15_biotechnology"
+std_field_biotech,2023,3006.0,3010.0,1.0013,4.0,True,U14,ipr-2024,32,,"standard, main WIPO field 15_biotechnology"
+std_field_biotech,2025,3073.0,3066.0,0.9977,-7.0,True,U14,ipr-2026,27,,"standard, main WIPO field 15_biotechnology"
+std_field_medtech,2021,3912.0,3899.0,0.9967,-13.0,True,U14,ipr-2022,9,,"standard, main WIPO field 13_medical_technology"
+std_field_medtech,2023,3690.0,3687.0,0.9992,-3.0,True,U14,ipr-2024,32,,"standard, main WIPO field 13_medical_technology"
+std_field_medtech,2025,3331.0,3266.0,0.9805,-65.0,True,U14,ipr-2026,27,,"standard, main WIPO field 13_medical_technology"
+std_field_pharma,2021,3982.0,3875.0,0.9731,-107.0,False,U14,ipr-2022,9,,"standard, main WIPO field 16_pharmaceuticals"
+std_field_pharma,2023,3945.0,3764.0,0.9541,-181.0,False,U14,ipr-2024,32,,"standard, main WIPO field 16_pharmaceuticals"
+std_field_pharma,2025,3715.0,3672.0,0.9884,-43.0,True,U14,ipr-2026,27,,"standard, main WIPO field 16_pharmaceuticals"
+std_grants,2014,19304.0,19299.0,0.9997,-5.0,True,U10 U27,ipr-2015,9,,"standard patents, by year of grant"
+std_grants,2015,23098.0,23094.0,0.9998,-4.0,True,U10 U27,ipr-2016,9,,"standard patents, by year of grant"
+std_grants,2016,23743.0,23744.0,1.0,1.0,True,U10 U27,ipr-2017,8,,"standard patents, by year of grant"
+std_grants,2017,22742.0,22740.0,0.9999,-2.0,True,U10 U27,ipr-2018,9,,"standard patents, by year of grant"
+std_grants,2018,17065.0,17064.0,0.9999,-1.0,True,U10 U27,ipr-2019,6,,"standard patents, by year of grant"
+std_grants,2021,17155.0,17155.0,1.0,0.0,True,U10 U27,ipr-2022,5,,"standard patents, by year of grant"
+std_grants,2022,16407.0,16406.0,0.9999,-1.0,True,U10 U27,ipr-2023,10,,"standard patents, by year of grant"
+std_grants,2023,15573.0,15573.0,1.0,0.0,True,U10 U27,ipr-2024,30,,"standard patents, by year of grant"
+std_grants,2024,19276.0,19276.0,1.0,0.0,True,U10 U27,ipr-2025,18,,"standard patents, by year of grant"
+std_grants,2025,19555.0,19555.0,1.0,0.0,True,U10 U27,ipr-2026,20,,"standard patents, by year of grant"
+std_grants_res,2018,905.0,942.0,1.0409,37.0,False,U10 U27,ipr-2020,8,,"standard patents granted, a founding applicant in Australia"
+std_grants_res,2019,829.0,865.0,1.0434,36.0,False,U10 U27,ipr-2020,8,,"standard patents granted, a founding applicant in Australia"
+std_grants_res,2021,1092.0,1092.0,1.0,0.0,True,U10 U27,ipr-2022,5,,"standard patents granted, a founding applicant in Australia"
+std_grants_res,2022,1064.0,1064.0,1.0,0.0,True,U10 U27,ipr-2023,10,,"standard patents granted, a founding applicant in Australia"
+std_grants_res,2023,1000.0,1000.0,1.0,0.0,True,U10 U27,ipr-2024,30,,"standard patents granted, a founding applicant in Australia"
+std_grants_res,2025,1224.0,1224.0,1.0,0.0,True,U10 U27,ipr-2026,5,,"standard patents granted, a founding applicant in Australia"
+std_pct_share,2022,73.4,73.44,,0.04,True,U89 U90,ipr-2023,11,per cent,per cent of standard applications through the PCT
+std_pct_share,2024,69.6,69.66,,0.06,True,U89 U90,ipr-2026,26,per cent,per cent of standard applications through the PCT
+std_pct_share,2025,66.7,66.36,,-0.34,True,U89 U90,ipr-2026,26,per cent,per cent of standard applications through the PCT
+std_res_individual_share,2022,55.6,20.65,,-34.95,False,U13 U48,ipr-2023,12,per cent: '55.6% of resident applications were filed by individuals rather than organisations' (base not stated),per cent of resident standard applications whose first founding applicant is an individual
+std_res_state_act,2021,85.0,80.0,0.9412,-5.0,False,U15,ipr-2022,15,,"standard, first founding applicant in Australia in ACT"
+std_res_state_act,2023,77.0,77.0,1.0,0.0,True,U15,ipr-2024,38,,"standard, first founding applicant in Australia in ACT"
+std_res_state_act,2025,70.0,68.0,0.9714,-2.0,False,U15,ipr-2026,33,,"standard, first founding applicant in Australia in ACT"
+std_res_state_nsw,2021,1119.0,1108.0,0.9902,-11.0,True,U15,ipr-2022,15,,"standard, first founding applicant in Australia in NSW"
+std_res_state_nsw,2023,1043.0,1004.0,0.9626,-39.0,False,U15,ipr-2024,38,,"standard, first founding applicant in Australia in NSW"
+std_res_state_nsw,2025,1152.0,1103.0,0.9575,-49.0,False,U15,ipr-2026,33,,"standard, first founding applicant in Australia in NSW"
+std_res_state_nt,2021,8.0,9.0,1.125,1.0,False,U15,ipr-2022,15,,"standard, first founding applicant in Australia in NT"
+std_res_state_nt,2023,3.0,3.0,1.0,0.0,True,U15,ipr-2024,38,,"standard, first founding applicant in Australia in NT"
+std_res_state_nt,2025,7.0,7.0,1.0,0.0,True,U15,ipr-2026,33,,"standard, first founding applicant in Australia in NT"
+std_res_state_qld,2021,528.0,517.0,0.9792,-11.0,False,U15,ipr-2022,15,,"standard, first founding applicant in Australia in QLD"
+std_res_state_qld,2023,474.0,453.0,0.9557,-21.0,False,U15,ipr-2024,38,,"standard, first founding applicant in Australia in QLD"
+std_res_state_qld,2025,511.0,491.0,0.9609,-20.0,False,U15,ipr-2026,33,,"standard, first founding applicant in Australia in QLD"
+std_res_state_sa,2021,152.0,152.0,1.0,0.0,True,U15,ipr-2022,15,,"standard, first founding applicant in Australia in SA"
+std_res_state_sa,2023,92.0,87.0,0.9457,-5.0,False,U15,ipr-2024,38,,"standard, first founding applicant in Australia in SA"
+std_res_state_sa,2025,131.0,124.0,0.9466,-7.0,False,U15,ipr-2026,33,,"standard, first founding applicant in Australia in SA"
+std_res_state_tas,2021,35.0,34.0,0.9714,-1.0,False,U15,ipr-2022,15,,"standard, first founding applicant in Australia in TAS"
+std_res_state_tas,2023,27.0,25.0,0.9259,-2.0,False,U15,ipr-2024,38,,"standard, first founding applicant in Australia in TAS"
+std_res_state_tas,2025,22.0,22.0,1.0,0.0,True,U15,ipr-2026,33,,"standard, first founding applicant in Australia in TAS"
+std_res_state_vic,2021,769.0,767.0,0.9974,-2.0,True,U15,ipr-2022,15,,"standard, first founding applicant in Australia in VIC"
+std_res_state_vic,2023,570.0,550.0,0.9649,-20.0,False,U15,ipr-2024,38,,"standard, first founding applicant in Australia in VIC"
+std_res_state_vic,2025,638.0,610.0,0.9561,-28.0,False,U15,ipr-2026,33,,"standard, first founding applicant in Australia in VIC"
+std_res_state_wa,2021,334.0,331.0,0.991,-3.0,True,U15,ipr-2022,15,,"standard, first founding applicant in Australia in WA"
+std_res_state_wa,2023,292.0,286.0,0.9795,-6.0,False,U15,ipr-2024,38,,"standard, first founding applicant in Australia in WA"
+std_res_state_wa,2025,305.0,298.0,0.977,-7.0,False,U15,ipr-2026,33,,"standard, first founding applicant in Australia in WA"
+tm_apps,2015,73188.0,73214.0,1.0004,26.0,True,U5 U25,ipr-2016,14,,trade mark applications
+tm_apps,2016,71344.0,71378.0,1.0005,34.0,True,U5 U25,ipr-2017,11,,trade mark applications
+tm_apps,2017,76594.0,76621.0,1.0004,27.0,True,U5 U25,ipr-2018,15,,trade mark applications
+tm_apps,2018,79490.0,77496.0,0.9749,-1994.0,False,U5 U25,ipr-2019,8,,trade mark applications
+tm_apps,2019,75622.0,75657.0,1.0005,35.0,True,U5 U25,ipr-2020,16,,trade mark applications
+tm_apps,2020,81702.0,81720.0,1.0002,18.0,True,U5 U25,ipr-2021,9,,trade mark applications
+tm_apps,2021,88725.0,88751.0,1.0003,26.0,True,U5 U25,ipr-2022,3,,trade mark applications
+tm_apps,2022,78832.0,78844.0,1.0002,12.0,True,U5 U25,ipr-2023,23,"residents 44,646 plus non-residents 34,186",trade mark applications
+tm_apps,2023,84476.0,84479.0,1.0,3.0,True,U5 U25,ipr-2024,7,,trade mark applications
+tm_apps,2024,85945.0,85947.0,1.0,2.0,True,U5 U25,ipr-2025,39,"Madrid 16,420 plus direct 69,525",trade mark applications
+tm_apps,2025,97345.0,97343.0,1.0,-2.0,True,U5 U6 U25,ipr-2026,38,,trade mark applications
+tm_apps_direct,2021,69113.0,69119.0,1.0001,6.0,True,U90,ipr-2022,20,,trade marks not through the Madrid system
+tm_apps_direct,2023,65919.0,65918.0,1.0,-1.0,True,U90,ipr-2024,50,,trade marks not through the Madrid system
+tm_apps_direct,2024,69525.0,69526.0,1.0,1.0,True,U90,ipr-2025,39,,trade marks not through the Madrid system
+tm_apps_direct,2025,80133.0,80131.0,1.0,-2.0,True,U90,ipr-2026,42,,trade marks not through the Madrid system
+tm_apps_madrid,2015,14451.0,14465.0,1.001,14.0,True,U90,ipr-2016,14,,trade marks through the Madrid system
+tm_apps_madrid,2020,16872.0,16889.0,1.001,17.0,True,U90,ipr-2021,12,,trade marks through the Madrid system
+tm_apps_madrid,2021,19612.0,19632.0,1.001,20.0,True,U90,ipr-2022,20,,trade marks through the Madrid system
+tm_apps_madrid,2023,18557.0,18561.0,1.0002,4.0,True,U90,ipr-2024,50,,trade marks through the Madrid system
+tm_apps_madrid,2024,16420.0,16421.0,1.0001,1.0,True,U90,ipr-2025,39,,trade marks through the Madrid system
+tm_apps_madrid,2025,17212.0,17212.0,1.0,0.0,True,U90,ipr-2026,42,,trade marks through the Madrid system
+tm_apps_res,2015,47081.0,47050.0,0.9993,-31.0,True,U7 U13,ipr-2016,15,"total 73,188 less non-residents 26,107","trade marks, a founding applicant in Australia"
+tm_apps_res,2019,44176.0,44192.0,1.0004,16.0,True,U7 U13,ipr-2020,17,,"trade marks, a founding applicant in Australia"
+tm_apps_res,2020,51662.0,51596.0,0.9987,-66.0,True,U7 U13,ipr-2021,9,residents named as applicants,"trade marks, a founding applicant in Australia"
+tm_apps_res,2021,53339.0,53239.0,0.9981,-100.0,True,U7 U13,ipr-2022,3,,"trade marks, a founding applicant in Australia"
+tm_apps_res,2022,44646.0,44590.0,0.9987,-56.0,True,U7 U13,ipr-2023,23,,"trade marks, a founding applicant in Australia"
+tm_apps_res,2023,49036.0,48965.0,0.9986,-71.0,True,U7 U13,ipr-2024,7,,"trade marks, a founding applicant in Australia"
+tm_apps_res,2025,55913.0,55759.0,0.9972,-154.0,True,U7 U13,ipr-2026,39,,"trade marks, a founding applicant in Australia"
+tm_in_force,2005,391450.0,367344.0,0.9384,-24106.0,False,U36,ipr-2019,16,marks in force,trade marks registered by 31 December and not ended by then
+tm_in_force,2017,635355.0,645872.0,1.0166,10517.0,True,U36,ipr-2019,16,marks in force,trade marks registered by 31 December and not ended by then
+tm_madrid_share,2018,22.0,20.43,,-1.57,False,U90,ipr-2019,9,per cent,per cent of trade marks through Madrid
+tm_madrid_share,2019,23.0,23.45,,0.45,True,U90,ipr-2020,19,per cent,per cent of trade marks through Madrid
+tm_madrid_share,2022,24.8,24.86,,0.06,True,U90,ipr-2023,25,per cent,per cent of trade marks through Madrid
+tm_madrid_share_of_overseas,2020,56.0,56.14,,0.14,True,U90,ipr-2021,12,per cent,per cent of overseas applicants' trade marks through Madrid
+tm_registered,2021,70607.0,70634.0,1.0004,27.0,True,U27,ipr-2022,3,,"trade marks registered, by the date the registration was entered (the timeline lens)"
+tm_registered,2023,62825.0,62870.0,1.0007,45.0,True,U27,ipr-2024,7,,"trade marks registered, by the date the registration was entered (the timeline lens)"
+tm_registered,2025,70614.0,70616.0,1.0,2.0,True,U27,ipr-2026,5,,"trade marks registered, by the date the registration was entered (the timeline lens)"
+tm_res_individual_share,2010,27.0,28.39,,1.39,False,U13,ipr-2017,36,"per cent of residents' trade mark applications by private applicants (table 3, from the IP Report 2016)",per cent of resident trade marks whose first founding applicant is an individual
+tm_res_individual_share,2015,28.0,26.29,,-1.71,False,U13,ipr-2017,36,"per cent of residents' trade mark applications by private applicants (table 3, from the IP Report 2016)",per cent of resident trade marks whose first founding applicant is an individual

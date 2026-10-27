@@ -1,0 +1,165 @@
+figure,year,value,definition
+des_apps_origin_unknown,2013,429.0,design applications with no founding applicant's country
+des_apps_origin_unknown,2014,384.0,design applications with no founding applicant's country
+des_apps_origin_unknown,2015,266.0,design applications with no founding applicant's country
+des_apps_origin_unknown,2016,443.0,design applications with no founding applicant's country
+des_apps_origin_unknown,2017,333.0,design applications with no founding applicant's country
+des_apps_origin_unknown,2018,322.0,design applications with no founding applicant's country
+des_apps_origin_unknown,2019,364.0,design applications with no founding applicant's country
+des_apps_origin_unknown,2020,376.0,design applications with no founding applicant's country
+des_apps_origin_unknown,2021,332.0,design applications with no founding applicant's country
+des_apps_origin_unknown,2022,313.0,design applications with no founding applicant's country
+des_apps_origin_unknown,2023,435.0,design applications with no founding applicant's country
+des_apps_origin_unknown,2024,554.0,design applications with no founding applicant's country
+des_apps_origin_unknown,2025,577.0,design applications with no founding applicant's country
+institutions_std_res_pct,2013,6.73,per cent of resident standard applications with a research institution among the founding applicants
+institutions_std_res_pct,2014,7.0,per cent of resident standard applications with a research institution among the founding applicants
+institutions_std_res_pct,2015,7.81,per cent of resident standard applications with a research institution among the founding applicants
+institutions_std_res_pct,2016,7.0,per cent of resident standard applications with a research institution among the founding applicants
+institutions_std_res_pct,2017,8.75,per cent of resident standard applications with a research institution among the founding applicants
+institutions_std_res_pct,2018,7.36,per cent of resident standard applications with a research institution among the founding applicants
+institutions_std_res_pct,2019,9.03,per cent of resident standard applications with a research institution among the founding applicants
+institutions_std_res_pct,2020,8.53,per cent of resident standard applications with a research institution among the founding applicants
+institutions_std_res_pct,2021,9.31,per cent of resident standard applications with a research institution among the founding applicants
+institutions_std_res_pct,2022,10.02,per cent of resident standard applications with a research institution among the founding applicants
+institutions_std_res_pct,2023,8.78,per cent of resident standard applications with a research institution among the founding applicants
+institutions_std_res_pct,2024,8.09,per cent of resident standard applications with a research institution among the founding applicants
+institutions_std_res_pct,2025,7.97,per cent of resident standard applications with a research institution among the founding applicants
+prov_new_filer_pct,2019,58.22,"per cent of provisional applicants (founding, by party) whose first patent application is that year"
+prov_new_filer_pct,2020,59.09,"per cent of provisional applicants (founding, by party) whose first patent application is that year"
+prov_new_filer_pct,2021,60.07,"per cent of provisional applicants (founding, by party) whose first patent application is that year"
+prov_new_filer_pct,2022,56.6,"per cent of provisional applicants (founding, by party) whose first patent application is that year"
+prov_new_filer_pct,2023,56.8,"per cent of provisional applicants (founding, by party) whose first patent application is that year"
+prov_new_filer_pct,2024,56.02,"per cent of provisional applicants (founding, by party) whose first patent application is that year"
+prov_new_filer_pct,2025,68.85,"per cent of provisional applicants (founding, by party) whose first patent application is that year"
+std_apps_res_lens,2013,3122.0,"resident standard applications, every year"
+std_apps_res_lens,2014,2028.0,"resident standard applications, every year"
+std_apps_res_lens,2015,2343.0,"resident standard applications, every year"
+std_apps_res_lens,2016,2673.0,"resident standard applications, every year"
+std_apps_res_lens,2017,2570.0,"resident standard applications, every year"
+std_apps_res_lens,2018,2784.0,"resident standard applications, every year"
+std_apps_res_lens,2019,2668.0,"resident standard applications, every year"
+std_apps_res_lens,2020,2403.0,"resident standard applications, every year"
+std_apps_res_lens,2021,2998.0,"resident standard applications, every year"
+std_apps_res_lens,2022,2494.0,"resident standard applications, every year"
+std_apps_res_lens,2023,2564.0,"resident standard applications, every year"
+std_apps_res_lens,2024,2572.0,"resident standard applications, every year"
+std_apps_res_lens,2025,2810.0,"resident standard applications, every year"
+std_exam_to_accept_median_years_lens,2013,1.86,"median years from the request for examination to acceptance, by year of request"
+std_exam_to_accept_median_years_lens,2014,1.24,"median years from the request for examination to acceptance, by year of request"
+std_exam_to_accept_median_years_lens,2015,1.15,"median years from the request for examination to acceptance, by year of request"
+std_exam_to_accept_median_years_lens,2016,1.12,"median years from the request for examination to acceptance, by year of request"
+std_exam_to_accept_median_years_lens,2017,1.3,"median years from the request for examination to acceptance, by year of request"
+std_exam_to_accept_median_years_lens,2018,1.19,"median years from the request for examination to acceptance, by year of request"
+std_exam_to_accept_median_years_lens,2019,1.19,"median years from the request for examination to acceptance, by year of request"
+std_exam_to_accept_median_years_lens,2020,1.23,"median years from the request for examination to acceptance, by year of request"
+std_exam_to_accept_median_years_lens,2021,1.44,"median years from the request for examination to acceptance, by year of request"
+std_exam_to_accept_median_years_lens,2022,1.55,"median years from the request for examination to acceptance, by year of request"
+std_exam_to_accept_median_years_lens,2023,1.45,"median years from the request for examination to acceptance, by year of request"
+std_exam_to_accept_median_years_lens,2024,1.44,"median years from the request for examination to acceptance, by year of request"
+std_exam_to_accept_median_years_lens,2025,1.08,"median years from the request for examination to acceptance, by year of request"
+std_grants_res_first_applicant_lens,2013,1106.0,standard patents granted whose first current applicant is in Australia (the older editions' residency)
+std_grants_res_first_applicant_lens,2014,1170.0,standard patents granted whose first current applicant is in Australia (the older editions' residency)
+std_grants_res_first_applicant_lens,2015,1592.0,standard patents granted whose first current applicant is in Australia (the older editions' residency)
+std_grants_res_first_applicant_lens,2016,1410.0,standard patents granted whose first current applicant is in Australia (the older editions' residency)
+std_grants_res_first_applicant_lens,2017,1172.0,standard patents granted whose first current applicant is in Australia (the older editions' residency)
+std_grants_res_first_applicant_lens,2018,900.0,standard patents granted whose first current applicant is in Australia (the older editions' residency)
+std_grants_res_first_applicant_lens,2019,833.0,standard patents granted whose first current applicant is in Australia (the older editions' residency)
+std_grants_res_first_applicant_lens,2020,943.0,standard patents granted whose first current applicant is in Australia (the older editions' residency)
+std_grants_res_first_applicant_lens,2021,1063.0,standard patents granted whose first current applicant is in Australia (the older editions' residency)
+std_grants_res_first_applicant_lens,2022,1035.0,standard patents granted whose first current applicant is in Australia (the older editions' residency)
+std_grants_res_first_applicant_lens,2023,954.0,standard patents granted whose first current applicant is in Australia (the older editions' residency)
+std_grants_res_first_applicant_lens,2024,1186.0,standard patents granted whose first current applicant is in Australia (the older editions' residency)
+std_grants_res_first_applicant_lens,2025,1191.0,standard patents granted whose first current applicant is in Australia (the older editions' residency)
+std_res_first_applicant_lens,2013,3024.0,standard applications whose first current applicant is in Australia (the older editions' residency)
+std_res_first_applicant_lens,2014,1988.0,standard applications whose first current applicant is in Australia (the older editions' residency)
+std_res_first_applicant_lens,2015,2295.0,standard applications whose first current applicant is in Australia (the older editions' residency)
+std_res_first_applicant_lens,2016,2624.0,standard applications whose first current applicant is in Australia (the older editions' residency)
+std_res_first_applicant_lens,2017,2518.0,standard applications whose first current applicant is in Australia (the older editions' residency)
+std_res_first_applicant_lens,2018,2733.0,standard applications whose first current applicant is in Australia (the older editions' residency)
+std_res_first_applicant_lens,2019,2597.0,standard applications whose first current applicant is in Australia (the older editions' residency)
+std_res_first_applicant_lens,2020,2355.0,standard applications whose first current applicant is in Australia (the older editions' residency)
+std_res_first_applicant_lens,2021,2954.0,standard applications whose first current applicant is in Australia (the older editions' residency)
+std_res_first_applicant_lens,2022,2452.0,standard applications whose first current applicant is in Australia (the older editions' residency)
+std_res_first_applicant_lens,2023,2520.0,standard applications whose first current applicant is in Australia (the older editions' residency)
+std_res_first_applicant_lens,2024,2532.0,standard applications whose first current applicant is in Australia (the older editions' residency)
+std_res_first_applicant_lens,2025,2762.0,standard applications whose first current applicant is in Australia (the older editions' residency)
+std_res_founder_individual_pct,2013,22.29,per cent of resident standard applications whose first founding applicant is an individual
+std_res_founder_individual_pct,2014,27.76,per cent of resident standard applications whose first founding applicant is an individual
+std_res_founder_individual_pct,2015,22.96,per cent of resident standard applications whose first founding applicant is an individual
+std_res_founder_individual_pct,2016,23.38,per cent of resident standard applications whose first founding applicant is an individual
+std_res_founder_individual_pct,2017,23.15,per cent of resident standard applications whose first founding applicant is an individual
+std_res_founder_individual_pct,2018,19.68,per cent of resident standard applications whose first founding applicant is an individual
+std_res_founder_individual_pct,2019,19.12,per cent of resident standard applications whose first founding applicant is an individual
+std_res_founder_individual_pct,2020,20.85,per cent of resident standard applications whose first founding applicant is an individual
+std_res_founder_individual_pct,2021,19.81,per cent of resident standard applications whose first founding applicant is an individual
+std_res_founder_individual_pct,2022,20.65,per cent of resident standard applications whose first founding applicant is an individual
+std_res_founder_individual_pct,2023,22.27,per cent of resident standard applications whose first founding applicant is an individual
+std_res_founder_individual_pct,2024,22.71,per cent of resident standard applications whose first founding applicant is an individual
+std_res_founder_individual_pct,2025,23.56,per cent of resident standard applications whose first founding applicant is an individual
+std_res_new_filer_pct,2019,28.4,"per cent of resident standard applicants (founding, by party) whose first patent application is that year"
+std_res_new_filer_pct,2020,28.87,"per cent of resident standard applicants (founding, by party) whose first patent application is that year"
+std_res_new_filer_pct,2021,32.25,"per cent of resident standard applicants (founding, by party) whose first patent application is that year"
+std_res_new_filer_pct,2022,25.4,"per cent of resident standard applicants (founding, by party) whose first patent application is that year"
+std_res_new_filer_pct,2023,32.52,"per cent of resident standard applicants (founding, by party) whose first patent application is that year"
+std_res_new_filer_pct,2024,32.77,"per cent of resident standard applicants (founding, by party) whose first patent application is that year"
+std_res_new_filer_pct,2025,35.4,"per cent of resident standard applicants (founding, by party) whose first patent application is that year"
+std_res_parties_individual_pct,2013,34.44,per cent of distinct founding applicants in Australia on standard applications who are individuals
+std_res_parties_individual_pct,2014,37.71,per cent of distinct founding applicants in Australia on standard applications who are individuals
+std_res_parties_individual_pct,2015,33.6,per cent of distinct founding applicants in Australia on standard applications who are individuals
+std_res_parties_individual_pct,2016,34.19,per cent of distinct founding applicants in Australia on standard applications who are individuals
+std_res_parties_individual_pct,2017,32.62,per cent of distinct founding applicants in Australia on standard applications who are individuals
+std_res_parties_individual_pct,2018,30.0,per cent of distinct founding applicants in Australia on standard applications who are individuals
+std_res_parties_individual_pct,2019,29.48,per cent of distinct founding applicants in Australia on standard applications who are individuals
+std_res_parties_individual_pct,2020,29.08,per cent of distinct founding applicants in Australia on standard applications who are individuals
+std_res_parties_individual_pct,2021,28.65,per cent of distinct founding applicants in Australia on standard applications who are individuals
+std_res_parties_individual_pct,2022,26.76,per cent of distinct founding applicants in Australia on standard applications who are individuals
+std_res_parties_individual_pct,2023,28.59,per cent of distinct founding applicants in Australia on standard applications who are individuals
+std_res_parties_individual_pct,2024,30.67,per cent of distinct founding applicants in Australia on standard applications who are individuals
+std_res_parties_individual_pct,2025,30.36,per cent of distinct founding applicants in Australia on standard applications who are individuals
+std_unclassified_lens,2013,115.0,"standard applications with no WIPO field (not yet classified, or no class)"
+std_unclassified_lens,2014,118.0,"standard applications with no WIPO field (not yet classified, or no class)"
+std_unclassified_lens,2015,156.0,"standard applications with no WIPO field (not yet classified, or no class)"
+std_unclassified_lens,2016,143.0,"standard applications with no WIPO field (not yet classified, or no class)"
+std_unclassified_lens,2017,142.0,"standard applications with no WIPO field (not yet classified, or no class)"
+std_unclassified_lens,2018,109.0,"standard applications with no WIPO field (not yet classified, or no class)"
+std_unclassified_lens,2019,123.0,"standard applications with no WIPO field (not yet classified, or no class)"
+std_unclassified_lens,2020,191.0,"standard applications with no WIPO field (not yet classified, or no class)"
+std_unclassified_lens,2021,158.0,"standard applications with no WIPO field (not yet classified, or no class)"
+std_unclassified_lens,2022,168.0,"standard applications with no WIPO field (not yet classified, or no class)"
+std_unclassified_lens,2023,238.0,"standard applications with no WIPO field (not yet classified, or no class)"
+std_unclassified_lens,2024,306.0,"standard applications with no WIPO field (not yet classified, or no class)"
+std_unclassified_lens,2025,1184.0,"standard applications with no WIPO field (not yet classified, or no class)"
+tm_apps_madrid_lens,2013,12127.0,"trade marks through Madrid, every year"
+tm_apps_madrid_lens,2014,11476.0,"trade marks through Madrid, every year"
+tm_apps_madrid_lens,2015,14465.0,"trade marks through Madrid, every year"
+tm_apps_madrid_lens,2016,12468.0,"trade marks through Madrid, every year"
+tm_apps_madrid_lens,2017,15844.0,"trade marks through Madrid, every year"
+tm_apps_madrid_lens,2018,15836.0,"trade marks through Madrid, every year"
+tm_apps_madrid_lens,2019,17742.0,"trade marks through Madrid, every year"
+tm_apps_madrid_lens,2020,16889.0,"trade marks through Madrid, every year"
+tm_apps_madrid_lens,2021,19632.0,"trade marks through Madrid, every year"
+tm_apps_madrid_lens,2022,19597.0,"trade marks through Madrid, every year"
+tm_apps_madrid_lens,2023,18561.0,"trade marks through Madrid, every year"
+tm_apps_madrid_lens,2024,16421.0,"trade marks through Madrid, every year"
+tm_apps_madrid_lens,2025,17212.0,"trade marks through Madrid, every year"
+tm_res_filers,2013,25215.0,distinct founding applicants of resident trade mark applications
+tm_res_filers,2014,26359.0,distinct founding applicants of resident trade mark applications
+tm_res_filers,2015,29710.0,distinct founding applicants of resident trade mark applications
+tm_res_filers,2016,29379.0,distinct founding applicants of resident trade mark applications
+tm_res_filers,2017,29645.0,distinct founding applicants of resident trade mark applications
+tm_res_filers,2018,29670.0,distinct founding applicants of resident trade mark applications
+tm_res_filers,2019,28897.0,distinct founding applicants of resident trade mark applications
+tm_res_filers,2020,33236.0,distinct founding applicants of resident trade mark applications
+tm_res_filers,2021,35045.0,distinct founding applicants of resident trade mark applications
+tm_res_filers,2022,29793.0,distinct founding applicants of resident trade mark applications
+tm_res_filers,2023,33139.0,distinct founding applicants of resident trade mark applications
+tm_res_filers,2024,32471.0,distinct founding applicants of resident trade mark applications
+tm_res_filers,2025,39054.0,distinct founding applicants of resident trade mark applications
+tm_res_new_filers,2019,19453.0,"trade mark applicants (founding, by party, a founding applicant in Australia) filing their first trade mark"
+tm_res_new_filers,2020,23003.0,"trade mark applicants (founding, by party, a founding applicant in Australia) filing their first trade mark"
+tm_res_new_filers,2021,24692.0,"trade mark applicants (founding, by party, a founding applicant in Australia) filing their first trade mark"
+tm_res_new_filers,2022,20473.0,"trade mark applicants (founding, by party, a founding applicant in Australia) filing their first trade mark"
+tm_res_new_filers,2023,23616.0,"trade mark applicants (founding, by party, a founding applicant in Australia) filing their first trade mark"
+tm_res_new_filers,2024,22838.0,"trade mark applicants (founding, by party, a founding applicant in Australia) filing their first trade mark"
+tm_res_new_filers,2025,28626.0,"trade mark applicants (founding, by party, a founding applicant in Australia) filing their first trade mark"
