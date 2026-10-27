@@ -9067,6 +9067,112 @@
    ],
    "run": "2026-10-22"
   },
+  "ipa_register": {
+   "files": {
+    "processed/designs": {
+     "bytes": 2532129,
+     "columns": [
+      "application_number",
+      "found",
+      "status",
+      "filed_date",
+      "registered_date",
+      "certified_date",
+      "published_date",
+      "ceased_date",
+      "lapsed_date",
+      "refused_date",
+      "withdrawn_date",
+      "revoked_date",
+      "priority_date",
+      "registered_until",
+      "main_class",
+      "convention",
+      "owner_count",
+      "owner_abn",
+      "owner_acn",
+      "owner_country",
+      "owner_state",
+      "owner_postcode",
+      "any_owner_abn",
+      "any_owner_in_australia"
+     ],
+     "describe": "Every design in the register",
+     "location": "repo",
+     "path": "data/processed/ipa_register/designs.parquet",
+     "rows": 269048,
+     "sha256": "fbb2472392ccf0a0f0d5ceacc7eba95ea39f65839b032000c9c3d4713126afc0"
+    },
+    "processed/owners": {
+     "bytes": 33582195,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "seq",
+      "name",
+      "abn",
+      "acn",
+      "country",
+      "state",
+      "postcode"
+     ],
+     "describe": "Current owners of every trade mark and design, named",
+     "key": "processed/ipa_register/owners.parquet",
+     "location": "r2",
+     "rows": 2702030,
+     "sha256": "49aad55f8884327506ecd0483c9781fca7904dac5d56190851109776d9292c67"
+    },
+    "processed/trade_marks": {
+     "bytes": 41488654,
+     "columns": [
+      "application_number",
+      "found",
+      "status_group",
+      "status_code",
+      "status_detail",
+      "lodgement_date",
+      "filing_date",
+      "priority_date",
+      "divisional_date",
+      "ir_notification_date",
+      "first_report_date",
+      "acceptance_date",
+      "entered_on_register_date",
+      "registered_from_date",
+      "renewal_due_date",
+      "lapsed_date",
+      "withdrawal_date",
+      "ir_number",
+      "kinds",
+      "classes",
+      "class_count",
+      "convention",
+      "series",
+      "history_events",
+      "expedite_events",
+      "expedite_date",
+      "owner_count",
+      "owner_abn",
+      "owner_acn",
+      "owner_country",
+      "owner_state",
+      "owner_postcode",
+      "any_owner_abn",
+      "any_owner_in_australia"
+     ],
+     "describe": "Every trade_mark in the register",
+     "location": "repo",
+     "path": "data/processed/ipa_register/trade_marks.parquet",
+     "rows": 2338036,
+     "sha256": "35184936b19bb023b247a0856cfd4092bb56ab108612e60698ed84ec9d103324"
+    }
+   },
+   "notes": [
+    "ipa_register: production register as at 2026-10-27",
+    "ipa_register: 0 calls, 0 retried"
+   ],
+   "run": "2026-10-27"
+  },
   "iplord": {
    "files": {
     "processed/iplord": {
@@ -9564,7 +9670,7 @@
   "linkage": {
    "files": {
     "processed/abn_spine": {
-     "bytes": 12892045,
+     "bytes": 14563274,
      "columns": [
       "abn",
       "entity_type",
@@ -9589,6 +9695,7 @@
       "in_iprapid_trade_mark",
       "in_iprapid_design",
       "in_iprapid_pbr",
+      "in_register",
       "in_iplord",
       "in_rdti",
       "in_austender",
@@ -9606,11 +9713,11 @@
      "describe": "One row per ABN in the corpus, with ABR and ASIC attributes",
      "location": "repo",
      "path": "data/processed/linkage/abn_spine.parquet",
-     "rows": 398450,
-     "sha256": "095f326f6de71d61836e1624aa4dcd9d6152d2f7b75cd41318cb7bda01be9f23"
+     "rows": 463279,
+     "sha256": "ff634fbc3667647ec151da45c30ada2c033aff8657bd45571f2c67b97c68cce4"
     }
    },
-   "run": "2026-10-25"
+   "run": "2026-10-27"
   },
   "mwm": {
    "files": {

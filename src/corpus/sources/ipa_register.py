@@ -30,6 +30,7 @@ from pathlib import Path
 
 import duckdb
 import pandas as pd
+import pyarrow.parquet as pq
 
 from .. import ipa_api
 from ..core import CorpusError, Ctx, path
@@ -38,6 +39,7 @@ from .ipa_api import flat, owners
 SEARCH = {"trade_mark": ("LODGEMENT_DATE", "trademarks", "number"), "design": ("FILED", "designs", "designNumber")}
 FIRST = dt.date(1900, 1, 1)
 CAP = 10_000
+OWNER_COLUMNS = ["ip_right_type", "application_number", "seq", "name", "abn", "acn", "country", "state", "postcode"]
 
 
 class Budget:
@@ -55,7 +57,7 @@ def _write(rows: list[dict], own: list[dict], dest: Path) -> None:
     dest.parent.mkdir(parents=True, exist_ok=True)
     tmp = dest.with_suffix(".tmp")
     pd.DataFrame(rows).to_parquet(tmp)
-    pd.DataFrame(own).to_parquet(tmp.with_suffix(".own.tmp"))
+    pd.DataFrame(own, columns=OWNER_COLUMNS).to_parquet(tmp.with_suffix(".own.tmp"))
     tmp.with_suffix(".own.tmp").replace(dest.with_name(dest.stem + ".owners.parquet"))
     tmp.replace(dest)  # last: a slice counts as done only when its rows file is in place
 
@@ -184,10 +186,11 @@ def _extra(right: str, rec: dict | None) -> dict:
 
 def _concat(files: list[Path]):
     """The cached parts as one Arrow table (columns matched by name: a part may lack an all-empty column)."""
+    files = [f for f in files if pq.read_metadata(f).num_columns > 0]  # a batch with no owners wrote no columns
     if not files:
         raise CorpusError("ipa_register: nothing in the cache to assemble")
     names = ", ".join(f"'{f}'" for f in files)
-    return duckdb.connect().execute(f"SELECT * FROM read_parquet([{names}], union_by_name = true)").arrow()
+    return duckdb.connect().execute(f"SELECT * FROM read_parquet([{names}], union_by_name = true)").to_arrow_table()
 
 
 def run(ctx: Ctx) -> None:
@@ -228,8 +231,8 @@ def run(ctx: Ctx) -> None:
         raise CorpusError("ipa_register: stopped before every record was in (IPA_BUDGET_MINUTES); run it again")
 
     reg = ctx.cache / "register"
-    con = duckdb.connect()
     for right, name in (("trade_mark", "trade_marks"), ("design", "designs")):
+        con = duckdb.connect()  # one each: DuckDB 2 will not reuse a connection with a result still open
         files = sorted((reg / right).glob("*_*.parquet")) + sorted((reg / f"{right}_undated").glob("*.parquet"))
         rows = [f for f in files if not f.name.endswith((".owners.parquet", ".inventors.parquet"))]
         con.register("t", _concat(rows))
@@ -237,17 +240,18 @@ def run(ctx: Ctx) -> None:
         df = con.execute(
             f"SELECT {', '.join(cols)} FROM t QUALIFY row_number() OVER (PARTITION BY application_number "
             "ORDER BY found DESC NULLS LAST) = 1 ORDER BY application_number"
-        ).arrow()
-        missing = con.execute("SELECT count(*) FROM t WHERE found IS NULL").fetchone()[0]
+        ).to_arrow_table()
+        missing = con.execute("SELECT count(*) FROM t WHERE found IS NULL").fetchall()[0][0]
         if missing:
             raise CorpusError(f"ipa_register: {missing:,} {right} records the register would not serve")
         ctx.table(df, name, describe=f"Every {right} in the register")
     own = []
     for sub in ("trade_mark", "design", "trade_mark_undated", "design_undated"):
         own += sorted((reg / sub).glob("*.owners.parquet"))
+    con = duckdb.connect()
     con.register("o", _concat(own))
     ctx.table(
-        con.execute("SELECT DISTINCT * FROM o ORDER BY ip_right_type, application_number, seq").arrow(),
+        con.execute("SELECT DISTINCT * FROM o ORDER BY ip_right_type, application_number, seq").to_arrow_table(),
         "owners",
         keep="r2",
         describe="Current owners of every trade mark and design, named",
