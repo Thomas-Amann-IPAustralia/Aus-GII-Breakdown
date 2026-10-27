@@ -27,6 +27,8 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Date of patent** | The date a patent's term runs from: the filing date of its complete application. For a PCT application it is the international filing date; for a divisional, usually the earlier application's. |
 | **Examination request** | A patent applicant must ask for examination (and pay for it) before the application is examined; a design's owner may ask for it after registration (see *Certification*). Trade marks are examined without being asked. |
 | **Expedited examination** | Examination brought forward at the applicant's request, for example because the invention is being copied or the applicant needs the right quickly. |
+| **Records migration (November 2018)** | IP Australia moved its trade mark records to a new system between 9 and 13 November 2018. Some events are recorded differently on either side of it: the ordinary examination request is not recorded for trade marks after it, and an "expedited examination" event that almost every mark claiming convention priority had before it is now almost never recorded (`docs/recheck-oq6-oq7-oq13.md`). |
+| **Application number** | The number IP Australia gives an application when it is received. Trade mark numbers are issued in order, so a run of numbers missing from IP RAPID points to records never created or not published. |
 | **Acceptance** | The decision that a patent or trade mark application meets the requirements. It is advertised, and then others may oppose it before the patent is granted or the mark registered. |
 | **Opposition** | A formal challenge by a third party to an application (or, for trade marks, a request to remove a mark that is not being used). |
 | **Assignment** | A transfer of ownership of a right, for example when a business sells its patents. |
@@ -63,6 +65,7 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | Term | Meaning |
 |---|---|
 | **ABN** | Australian Business Number: the identifier that joins IP Australia's data to the business registers, the R&D Tax Incentive, AusTender and the tax data. In the `firms` lens, one row is one ABN. |
+| **Party, party id** | In IP RAPID, a party is anyone named on an application (applicant, owner, attorney, opponent). Its party id stays the same across all its applications, and so does its ABN: a party with an ABN has it on all its records. |
 | **ABR** | The Australian Business Register, which holds every ABN. |
 | **ASIC** | The Australian Securities and Investments Commission, which registers companies. |
 | **GST-registered** | Registered for the Goods and Services Tax. This is compulsory at a turnover of $75,000 or more, so it is used as a rough marker of an actively trading business. |
