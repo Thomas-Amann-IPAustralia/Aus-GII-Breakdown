@@ -14,6 +14,11 @@ Reads `ipa_api` and `iprapid` from the corpus and writes to `analysis/audit/outp
   missing trade mark numbers (OQ13);
 - `expedite.csv`: for the sample, trade marks with an expedited-examination event in IP RAPID and in the register's
   own history, by financial year and convention priority claim (OQ6);
+- `inventors.csv`: for the patent sample, which have inventors in the register and in Google Patents (the corpus's
+  only other source of inventors), by type and decade;
+- `design_location.csv`: the designs the register leaves without a country: what each still has (an owner, an
+  attorney, an ABN, a postcode, a "Pty" name, a name another right gives a single country), and the year in their
+  number for those with no date;
 - `madrid.csv` (with `--live`, which asks the register): trade marks by year of lodgement and of filing, all and
   international registrations (Madrid), against IP RAPID's (OQ13).
 
@@ -49,7 +54,6 @@ def wilson(k, n, z: float = 1.96):
 def connect() -> duckdb.DuckDBPyConnection:
     con = duckdb.connect()
     for name, (src, table) in {
-        "app": ("iprapid", "application"),
         "tmr": ("iprapid", "trade_mark_rights"),
         "dr": ("iprapid", "design_rights"),
         "pr": ("iprapid", "patent_rights"),
@@ -60,6 +64,11 @@ def connect() -> duckdb.DuckDBPyConnection:
         "ds": ("ipa_api", "designs"),
         "pt": ("ipa_api", "patents"),
         "abr": ("abr", "abns"),
+        "party": ("iprapid", "party"),
+        "own": ("ipa_api", "owners"),
+        "gpm": ("google_patents", "members"),
+        "gpi": ("google_patents_inventors", "family_inventors"),
+        "app": ("iprapid", "application"),
     }.items():
         con.execute(f"CREATE VIEW {name} AS SELECT * FROM '{path(src, table)}'")
     con.execute("""
@@ -352,6 +361,70 @@ def gaps(con) -> pd.DataFrame:
     return pd.concat([abn, country, number], ignore_index=True).sort_values(["gap", "period"])
 
 
+def inventors(con) -> pd.DataFrame:
+    """Inventors in the register against Google Patents' (by the family the lens joins, ADR 0022), for the sample."""
+    return con.execute("""
+        WITH gp AS (SELECT au_application AS application_number, min(family_id) AS family_id FROM gpm
+                    WHERE country_code = 'AU' AND kind_code <> 'S' AND au_application <> '' GROUP BY 1),
+        j AS (SELECT x.ip_right_sub_type AS patent_type,
+                     CAST(10 * (year(x.application_date) // 10) AS VARCHAR) AS decade, a.inventor_count AS register,
+                     gp.family_id IS NOT NULL AS in_google, coalesce(i.inventors, 0) AS google
+              FROM pt a JOIN pr x USING (application_number) LEFT JOIN gp USING (application_number)
+              LEFT JOIN gpi i USING (family_id) WHERE a.found AND a.reasons LIKE '%sample%')
+        SELECT patent_type, coalesce(decade, 'no date') AS decade, count(*) AS records,
+               count(*) FILTER (register > 0) AS register_has, count(*) FILTER (in_google) AS in_google,
+               count(*) FILTER (google > 0) AS google_has,
+               count(*) FILTER (register > 0 AND google = 0) AS register_only,
+               count(*) FILTER (google > 0 AND register = 0) AS google_only,
+               count(*) FILTER (register = 0 AND google = 0) AS neither,
+               count(*) FILTER (register > 0 AND google > 0 AND register = google) AS same_count,
+               count(*) FILTER (register > 0 AND google > register) AS google_more,
+               count(*) FILTER (google > 0 AND register > google) AS register_more
+        FROM j GROUP BY ALL ORDER BY ALL
+    """).df()
+
+
+def design_location(con) -> pd.DataFrame:
+    """The OQ14 designs the register gives no country: what is left to locate them by. 'Name' clues match an owner's
+    or applicant's name, as written, to applicants on any right in IP RAPID that have one country."""
+    return con.execute("""
+        WITH rest AS (SELECT a.application_number, x.application_date, coalesce(x.applicant_count, 0) > 0
+                             OR coalesce(a.owner_count, 0) > 0 AS owned
+                      FROM ds a JOIN dr x USING (application_number)
+                      WHERE a.reasons LIKE '%country_gap%' AND a.owner_country IS NULL),
+        p AS (SELECT application_number, bool_or(party_role_category = 'applicant' AND abn IS NOT NULL) AS abn,
+                     bool_or(party_role_category = 'applicant' AND post_code IS NOT NULL) AS postcode,
+                     bool_or(party_role_category <> 'applicant') AS other_party
+              FROM party WHERE ip_right_type = 'design' GROUP BY 1),
+        nm AS (SELECT application_number, upper(trim(regexp_replace(name, '\\s+', ' ', 'g'))) AS nm
+               FROM own WHERE ip_right_type = 'design'
+               UNION SELECT application_number, upper(trim(regexp_replace(party_name, '\\s+', ' ', 'g')))
+               FROM party WHERE ip_right_type = 'design' AND party_role_category = 'applicant'),
+        ref AS (SELECT upper(trim(regexp_replace(party_name, '\\s+', ' ', 'g'))) AS nm,
+                       list(DISTINCT country_code) AS cs
+                FROM party WHERE country_code IS NOT NULL AND party_role_category = 'applicant' GROUP BY 1),
+        n AS (SELECT application_number, bool_or(len(ref.cs) = 1) AS name_one_country,
+                     bool_or(len(ref.cs) = 1 AND ref.cs[1] = 'au') AS name_au,
+                     bool_or(regexp_matches(nm, '\\bPTY\\b|PROPRIETARY')) AS pty
+              FROM nm LEFT JOIN ref USING (nm) GROUP BY 1)
+        SELECT CASE WHEN application_date IS NULL THEN 'no date, numbered ' || left(application_number, 4)
+                    ELSE CAST(10 * (year(application_date) // 10) AS VARCHAR) || 's' END AS period,
+               count(*) AS records, count(*) FILTER (NOT owned) AS no_owner_anywhere,
+               count(*) FILTER (NOT owned AND coalesce(p.other_party, false)) AS no_owner_but_attorney_or_other,
+               count(*) FILTER (owned) AS owner_without_country,
+               count(*) FILTER (owned AND coalesce(p.abn, false)) AS owner_abn,
+               count(*) FILTER (owned AND coalesce(p.postcode, false)) AS owner_postcode,
+               count(*) FILTER (owned AND coalesce(n.pty, false)) AS owner_pty_name,
+               count(*) FILTER (owned AND coalesce(n.name_one_country, false)) AS owner_name_one_country,
+               count(*) FILTER (owned AND coalesce(n.name_au, false)) AS owner_name_australia,
+               count(*) FILTER (owned AND (coalesce(p.abn, false) OR coalesce(p.postcode, false)
+                                           OR coalesce(n.pty, false) OR coalesce(n.name_one_country, false)))
+                   AS owner_any_clue
+        FROM rest LEFT JOIN p USING (application_number) LEFT JOIN n USING (application_number)
+        GROUP BY ALL ORDER BY ALL
+    """).df()
+
+
 def madrid(con, years=range(2012, 2026)) -> pd.DataFrame:
     """The register's counts of trade marks by year, all and Madrid, by two of its dates, beside IP RAPID's (by
     application date; Madrid: a `madrid_import` link)."""
@@ -384,7 +457,7 @@ def main(argv: list[str] | None = None) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     con = connect()
     steps = [("completeness", completeness), ("fields", fields), ("status", status), ("gaps", gaps)]
-    steps.append(("expedite", expedite))
+    steps += [("expedite", expedite), ("inventors", inventors), ("design_location", design_location)]
     for name, fn in steps + ([("madrid", madrid)] if a.live else []):
         df = fn(con)
         df.to_csv(OUT / f"{name}.csv", index=False, float_format="%.6g")

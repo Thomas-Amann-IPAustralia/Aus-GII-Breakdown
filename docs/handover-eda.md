@@ -25,7 +25,10 @@ the OQ7 marks, a country for 61.4% of the OQ14 designs (which reproduces IP Aust
 and "Examination expedited" on every priority-claiming mark since FY2020 (OQ6: U34's break is publication). Trade mark
 numbers 1,978,060 to 1,980,352 were never used. No lens or observation is changed. **Next is the owner's call:** OQ15
 (attach the fills to `rights`) and OQ16 (reword the request to IP Australia); then Stage 2. Production's patent API
-fails about half its calls at random; the client retries.
+fails about half its calls at random; the client retries. Added after the owner's questions (V15 to V17): the
+register names inventors where Google Patents has none (standard patents before 1970, provisionals since 2000;
+about 350,000 rights, projected, days of fetching); the undated designs are 1973 to 1982 shells; and of the designs
+still without a country, 15,154 of 15,730 have no owner on record anywhere.
 
 Before that, the same day: **OQ6, OQ7 and OQ13 rechecked on a fresh IP RAPID release** (ADR 0027,
 `docs/recheck-oq6-oq7-oq13.md`), at the owner's request before taking them to IP Australia. `analysis/audit/recheck.py`

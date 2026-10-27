@@ -157,6 +157,48 @@ Work Initiated"). Before it, IP RAPID's event came from the old system and the r
 U34's fall in November 2018 is a change in what IP RAPID publishes, not in how IP Australia examines. The sample is
 small for any one year (13 to 22 priority-claiming marks a year); the pattern holds in every year.
 
+## Added after the owner's questions (2026-10-27)
+
+**V15. Inventors: the register fills the two holes in Google Patents' coverage, and agrees with it elsewhere.** The
+corpus's inventors come from Google Patents (ADR 0022). For the patent sample (`inventors.csv`):
+
+- **Standard patents filed before 1970:** the register names inventors for 210 of 300; Google Patents for none (it
+  holds 9 of these patents, without inventors).
+- **Provisional applications filed since 2000:** the register for 167 of 183; Google Patents for 1 (provisionals are
+  not published). Before 2000 neither has any (123 of 123).
+- **Standard patents filed since 1970:** the register for 1,265 of 1,282, Google Patents for 1,230; the register
+  alone for 49, Google Patents alone for 14. Where both name inventors, the counts are the same for 1,129 and Google
+  Patents' larger for 87 (it counts the family's inventors across every office's publication); the register's is
+  never the larger.
+- **Innovation and petty patents:** the register for 55 of 55, Google Patents for 46.
+
+Over IP RAPID, the two holes are 283,917 standard patents filed before 1970 and 161,429 provisionals filed since
+2000. At the sample's rates the register would name inventors for roughly 200,000 and 150,000 of them (projected).
+Fetching them would take days: production's patent API answers about half its calls with an error, and the harvest
+fetched about 115 patents a minute (1,500 in about 13 minutes, from its log). The errors cost time, not accuracy: every sampled patent
+was fetched in the end. The register gives inventors' names only, no countries, so their places would have to come
+from elsewhere.
+
+**V16. The designs with no date are numbered 1973 to 1982 and are empty shells.** A design number begins with its
+year. IP RAPID has 11,126 undated designs without a country (`gaps.csv`); the register gives a country for 27. Of the
+other 11,099, 11,098 are numbered 1973 to 1982 (1,028 to 1,655 a year, but 63 in 1980 and 104 in 1982) and one
+2016, and none has an owner in either record (`design_location.csv`). (An earlier version of this page called them
+old without checking; their numbers bear it out.)
+
+**V17. Of the 15,730 designs the register leaves without a country, 15,154 have no owner on record at all.** By
+period (`design_location.csv`):
+
+- **No owner in IP RAPID or the register: 15,154.** 11,099 undated designs (V16), 1,350 from the 1970s, 2,703 from
+  the 1980s and 2 from the 2010s. 1,208 of them still have an attorney or other party on record (1,205 from the 1980s), but an
+  Australian attorney acts for foreign owners too, so it says nothing about where the owner was.
+- **An owner but no country: 576** (10 from the 1970s, 196 from the 1980s, 370 since). 275 have a clue: an ABN (86),
+  a postcode (26), "Pty" in the name (41), or a name that IP RAPID gives a single country on other rights (232, of
+  which 75 Australia). The last is a name match, so it is an inference, not a record.
+
+So the register's 61.4% (V13) is close to all that can be located from IP Australia's data. Of the rest, 96% are
+pre-1990 designs with no owner on record. They could only be traced from the published journals of the time, if at
+all.
+
 ## What it means
 
 1. **IP RAPID can be trusted as a copy of the register.** Its omissions are the week since the release and records
