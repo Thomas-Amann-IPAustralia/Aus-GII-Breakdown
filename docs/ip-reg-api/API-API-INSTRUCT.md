@@ -53,8 +53,9 @@ curl -X POST \
   https://example.com/api/messages \
   -H 'Content-Type: application/json' \
   -d '{ "recipient": "Fred", "sender": "Barney", "message": "Hi Fred" }'
-
+```
 ## Java (OkHttp)
+```Java
 OkHttpClient client = new OkHttpClient();
 
 MediaType mediaType = MediaType.parse("application/json");
