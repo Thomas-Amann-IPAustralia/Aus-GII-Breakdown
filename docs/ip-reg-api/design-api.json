@@ -1,0 +1,948 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Australian Design Search API",
+    "description": "Australian Design Search API.",
+    "version": "v1"
+  },
+  "paths": {
+    "/design": {},
+    "/design/{ipRightIdentifier}": {
+      "get": {
+        "operationId": "Search for Designs by ID",
+        "parameters": [
+          {
+            "name": "ipRightIdentifier",
+            "required": true,
+            "in": "path",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/ApiDesign"
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/NotFound"
+            }
+          }
+        },
+        "security": [
+          {
+            "security.oauth2_client_credentials": []
+          }
+        ]
+      }
+    },
+    "/search": {},
+    "/search/quick": {
+      "post": {
+        "operationId": "Design Quick Search",
+        "parameters": [
+          {
+            "x-amf-mediaType": "application/json",
+            "in": "body",
+            "name": "generated",
+            "schema": {
+              "$ref": "#/definitions/DesignApiQuickSearchRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/DesignApiQuickSearchResult"
+            }
+          }
+        },
+        "security": [
+          {
+            "security.oauth2_client_credentials": []
+          }
+        ]
+      }
+    },
+    "/search/advanced": {
+      "post": {
+        "operationId": "Design Advanced Search",
+        "description": "Search for Designs using the advanced search fields.",
+        "parameters": [
+          {
+            "x-amf-mediaType": "application/json",
+            "in": "body",
+            "name": "generated",
+            "schema": {
+              "description": "Design Advanced Search payload",
+              "type": "object",
+              "additionalProperties": true,
+              "required": [
+                "rows"
+              ],
+              "properties": {
+                "sort": {
+                  "$ref": "#/definitions/DesignApiQuickSearchSort"
+                },
+                "changedSinceDate": {
+                  "type": "string"
+                },
+                "filters": {
+                  "$ref": "#/definitions/DesignApiQuickSearchFilters"
+                },
+                "rows": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/DesignsApiAdvancedSearchRow"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/DesignApiAdvancedSearchResult"
+            }
+          }
+        },
+        "security": [
+          {
+            "security.oauth2_client_credentials": []
+          }
+        ]
+      }
+    },
+    "/page": {},
+    "/page/advanced": {
+      "post": {
+        "operationId": "Paged Advanced Search",
+        "description": "Returns a pageable list of Trade Marks with their details.",
+        "parameters": [
+          {
+            "x-amf-mediaType": "application/json",
+            "in": "body",
+            "name": "generated",
+            "schema": {
+              "description": "Design Advanced Paged Search payload",
+              "type": "object",
+              "additionalProperties": true,
+              "required": [
+                "pageSize",
+                "pageNumber",
+                "rows"
+              ],
+              "properties": {
+                "sort": {
+                  "$ref": "#/definitions/DesignApiQuickSearchSort"
+                },
+                "changedSinceDate": {
+                  "type": "string"
+                },
+                "filters": {
+                  "$ref": "#/definitions/DesignApiQuickSearchFilters"
+                },
+                "pageSize": {
+                  "type": "integer",
+                  "format": "int32",
+                  "minimum": 0,
+                  "maximum": 100
+                },
+                "pageNumber": {
+                  "type": "integer",
+                  "format": "int32",
+                  "minimum": 0
+                },
+                "rows": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/DesignsApiAdvancedSearchRow"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "x-amf-mediaType": "application/json",
+            "schema": {
+              "$ref": "#/definitions/DesignApiAdvancedSearchPageResult"
+            }
+          }
+        },
+        "security": [
+          {
+            "security.oauth2_client_credentials": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "ApiDesign": {
+      "x-oas-schema-title": "ApiDesign",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "awaitingExamination",
+        "awaitingFormalities",
+        "dates",
+        "designNumber",
+        "inGracePeriod",
+        "underExamination",
+        "underFormalities"
+      ],
+      "properties": {
+        "addressForService": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiParty"
+          }
+        },
+        "awaitingExamination": {
+          "type": "boolean"
+        },
+        "awaitingFormalities": {
+          "type": "boolean"
+        },
+        "classification": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiDetailLocarnoClassification"
+          }
+        },
+        "conventionDetails": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiInternationalRight"
+          }
+        },
+        "currentOwners": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiParty"
+          }
+        },
+        "dates": {
+          "$ref": "#/definitions/ApiDates"
+        },
+        "designNumber": {
+          "type": "string"
+        },
+        "designers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiParty"
+          }
+        },
+        "images": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "inGracePeriod": {
+          "type": "boolean"
+        },
+        "licensees": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiParty"
+          }
+        },
+        "mortgagees": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiParty"
+          }
+        },
+        "previousOwners": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "priorityDate": {
+          "type": "string",
+          "format": "date"
+        },
+        "productNames": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "registration": {
+          "type": "string"
+        },
+        "relatedDesigns": {
+          "$ref": "#/definitions/ApiRelatedDesigns"
+        },
+        "statementOfMonopoly": {
+          "type": "string"
+        },
+        "statementOfNewnessAndDistinctiveness": {
+          "type": "string"
+        },
+        "statementOfNovelty": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "underExamination": {
+          "type": "boolean"
+        },
+        "underFormalities": {
+          "type": "boolean"
+        }
+      }
+    },
+    "NotFound": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "error"
+      ],
+      "properties": {
+        "error": {
+          "example": "Design [201719765123123] not found",
+          "type": "string"
+        }
+      }
+    },
+    "DesignApiQuickSearchRequest": {
+      "x-oas-schema-title": "DesignApiQuickSearchRequest",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "query"
+      ],
+      "properties": {
+        "changedSinceDate": {
+          "type": "string"
+        },
+        "filters": {
+          "$ref": "#/definitions/DesignApiQuickSearchFilters"
+        },
+        "query": {
+          "type": "string"
+        },
+        "sort": {
+          "$ref": "#/definitions/DesignApiQuickSearchSort"
+        }
+      }
+    },
+    "DesignApiQuickSearchResult": {
+      "x-oas-schema-title": "DesignApiQuickSearchResult",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "aggregations",
+        "count",
+        "designNumbers",
+        "request"
+      ],
+      "properties": {
+        "aggregations": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": [
+            "CLASSIFICATION",
+            "STATUS"
+          ],
+          "properties": {
+            "CLASSIFICATION": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AggBucket"
+              }
+            },
+            "STATUS": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AggBucket"
+              }
+            }
+          }
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "designNumbers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "request": {
+          "$ref": "#/definitions/DesignApiQuickSearchRequest"
+        }
+      }
+    },
+    "DesignApiQuickSearchSort": {
+      "x-oas-schema-title": "DesignApiQuickSearchSort",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "direction": {
+          "enum": [
+            "ASCENDING",
+            "DESCENDING"
+          ],
+          "type": "string"
+        },
+        "field": {
+          "enum": [
+            "NUMBER",
+            "PRIORITY_DATE",
+            "PRODUCT",
+            "STATUS"
+          ],
+          "type": "string"
+        }
+      }
+    },
+    "DesignApiQuickSearchFilters": {
+      "x-oas-schema-title": "DesignApiQuickSearchFilters",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "classificationFilter": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "statusFilter": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "CERTIFIED",
+              "CEASED",
+              "REGISTERED"
+            ],
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DesignsApiAdvancedSearchRow": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "query"
+      ],
+      "properties": {
+        "op": {
+          "enum": [
+            "AND",
+            "OR",
+            "AND_NOT"
+          ],
+          "type": "string"
+        },
+        "query": {
+          "$ref": "#/definitions/DesignApiAdvancedSearch"
+        }
+      }
+    },
+    "DesignApiAdvancedSearchResult": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "aggregations",
+        "count",
+        "designNumbers",
+        "request"
+      ],
+      "properties": {
+        "aggregations": {
+          "type": "object",
+          "additionalProperties": true,
+          "patternProperties": {
+            "^.*$": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AggBucket"
+              }
+            }
+          }
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "designNumbers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "request": {
+          "$ref": "#/definitions/DesignApiAdvancedSearchRequest"
+        }
+      }
+    },
+    "DesignApiAdvancedSearchPageResult": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "aggregations",
+        "count",
+        "designs",
+        "request"
+      ],
+      "properties": {
+        "aggregations": {
+          "type": "object",
+          "additionalProperties": true,
+          "patternProperties": {
+            "^.*$": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/AggBucket"
+              }
+            }
+          }
+        },
+        "count": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "designs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiDesign"
+          }
+        },
+        "request": {
+          "$ref": "#/definitions/DesignApiAdvancedSearchPageRequest"
+        }
+      }
+    },
+    "ApiDates": {
+      "x-oas-schema-title": "ApiDates",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "ceased",
+        "certified",
+        "currentlyRegisteredUntil",
+        "filed",
+        "lapsed",
+        "maxRegistrationPeriodEnd",
+        "published",
+        "refused",
+        "registered",
+        "revoked",
+        "withdrawn"
+      ],
+      "properties": {
+        "ceased": {
+          "type": "string",
+          "format": "date"
+        },
+        "certified": {
+          "type": "string",
+          "format": "date"
+        },
+        "currentlyRegisteredUntil": {
+          "type": "string",
+          "format": "date"
+        },
+        "filed": {
+          "type": "string",
+          "format": "date"
+        },
+        "lapsed": {
+          "type": "string",
+          "format": "date"
+        },
+        "maxRegistrationPeriodEnd": {
+          "type": "string",
+          "format": "date"
+        },
+        "published": {
+          "type": "string",
+          "format": "date"
+        },
+        "refused": {
+          "type": "string",
+          "format": "date"
+        },
+        "registered": {
+          "type": "string",
+          "format": "date"
+        },
+        "revoked": {
+          "type": "string",
+          "format": "date"
+        },
+        "withdrawn": {
+          "type": "string",
+          "format": "date"
+        }
+      }
+    },
+    "ApiRelatedDesigns": {
+      "x-oas-schema-title": "ApiRelatedDesigns",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "additional",
+        "additionalFrom",
+        "convertedFrom",
+        "convertedTo",
+        "excluded",
+        "excludedFrom",
+        "multipleDesigns"
+      ],
+      "properties": {
+        "additional": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiRelatedRightView"
+          }
+        },
+        "additionalFrom": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiRelatedRightView"
+          }
+        },
+        "convertedFrom": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiRelatedRightView"
+          }
+        },
+        "convertedTo": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiRelatedRightView"
+          }
+        },
+        "excluded": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiRelatedRightView"
+          }
+        },
+        "excludedFrom": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiRelatedRightView"
+          }
+        },
+        "multipleDesigns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ApiRelatedRightView"
+          }
+        }
+      }
+    },
+    "ApiParty": {
+      "x-oas-schema-title": "ApiParty",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "abn",
+        "acnOrArbn",
+        "addressLineText",
+        "countryCode",
+        "name",
+        "partyCategory",
+        "postalCode",
+        "state",
+        "suburb"
+      ],
+      "properties": {
+        "abn": {
+          "type": "string"
+        },
+        "acnOrArbn": {
+          "type": "string"
+        },
+        "addressLineText": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "countryCode": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "partyCategory": {
+          "type": "string"
+        },
+        "postalCode": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "suburb": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiDetailLocarnoClassification": {
+      "x-oas-schema-title": "ApiDetailLocarnoClassification",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "code",
+        "text"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "ApiInternationalRight": {
+      "x-oas-schema-title": "ApiInternationalRight",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "country",
+        "date",
+        "number"
+      ],
+      "properties": {
+        "country": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "number": {
+          "type": "string"
+        }
+      }
+    },
+    "AggBucket": {
+      "x-oas-schema-title": "AggBucket",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "docCount",
+        "key"
+      ],
+      "properties": {
+        "docCount": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "key": {
+          "type": "string"
+        }
+      }
+    },
+    "DesignApiAdvancedSearch": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "applicationNumber": {
+          "type": "string"
+        },
+        "classification": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "date": {
+          "$ref": "#/definitions/DesignApiDateRange"
+        },
+        "designer": {
+          "type": "string"
+        },
+        "indicators": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "AWAITING_FORMALITIES",
+              "UNDER_FORMALITIES",
+              "AWAITING_EXAMINATION",
+              "UNDER_EXAMINATION",
+              "IN_GRACE_PERIOD"
+            ],
+            "type": "string"
+          }
+        },
+        "licensee": {
+          "type": "string"
+        },
+        "mortgagee": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "previousOwner": {
+          "type": "string"
+        },
+        "product": {
+          "type": "string"
+        },
+        "registrationNumber": {
+          "type": "string"
+        },
+        "statement": {
+          "type": "string"
+        },
+        "status": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "CEASED",
+              "CERTIFIED",
+              "CONVERTED",
+              "FILED",
+              "LAPSED",
+              "PUBLISHED",
+              "REFUSED",
+              "REGISTERED",
+              "REVOKED",
+              "WITHDRAWN"
+            ],
+            "type": "string"
+          }
+        }
+      }
+    },
+    "DesignApiAdvancedSearchRequest": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "rows"
+      ],
+      "properties": {
+        "changedSinceDate": {
+          "type": "string"
+        },
+        "filters": {
+          "$ref": "#/definitions/DesignApiQuickSearchFilters"
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DesignsApiAdvancedSearchRow"
+          }
+        },
+        "sort": {
+          "$ref": "#/definitions/DesignApiQuickSearchSort"
+        }
+      }
+    },
+    "DesignApiAdvancedSearchPageRequest": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "pageNumber",
+        "pageSize",
+        "rows"
+      ],
+      "properties": {
+        "changedSinceDate": {
+          "type": "string"
+        },
+        "filters": {
+          "$ref": "#/definitions/DesignApiQuickSearchFilters"
+        },
+        "pageNumber": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/DesignsApiAdvancedSearchRow"
+          }
+        },
+        "sort": {
+          "$ref": "#/definitions/DesignApiQuickSearchSort"
+        }
+      }
+    },
+    "ApiRelatedRightView": {
+      "x-oas-schema-title": "ApiRelatedRightView",
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "date",
+        "number"
+      ],
+      "properties": {
+        "date": {
+          "type": "string"
+        },
+        "number": {
+          "type": "string"
+        }
+      }
+    },
+    "DesignApiDateRange": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "PRIORITY",
+            "CERTIFIED",
+            "FILED",
+            "RENEWAL",
+            "MAX_PERIOD_OF_REG",
+            "PUBLISHED",
+            "REFUSED",
+            "REGISTERED",
+            "CEASING",
+            "REVOKED",
+            "WITHDRAWN",
+            "LAPSED"
+          ],
+          "type": "string"
+        }
+      }
+    }
+  }
+}
