@@ -49,6 +49,7 @@ Australia reported itself (2,322, from non-residents), so the gap is between IP 
 
 | # | Question | Answer | Date | Recorded in |
 |---|---|---|---|---|
+| A11 | Does "do not alter the atlas" (A9) cover its framing pages? | No: update the atlas with the changed wording; only the substantive analyses stay unchanged for now | 2026-10-27 | ADR 0026; handover |
 | A10 | Reword OQ5 and OQ7 to ask about what IP Australia's reports leave open? | Yes: OQ5 now asks for the evidence behind IP Australia's digital-tools reading and about the heavy filers; OQ7 asks only about the ABN data | 2026-10-27 | This page; handover |
 | A9 | How should the audit against IP Australia be shown? | Pushed to the repository and shown in the evidence atlas; at this stage neither the notebook nor the atlas's existing pages are altered | 2026-10-27 | ADR 0025; handover |
 | A8 | Add OQ12 to OQ14 (the audit's questions) to the request to IP Australia? | Yes | 2026-10-27 | This page; ADR 0024 |

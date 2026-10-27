@@ -31,5 +31,6 @@ the owner's, or Claude's, which the owner can overturn.
 | [0023](0023-evidence-atlas.md) | The evidence atlas: Stage 1's observations as plain-English web pages in `evidence/`, built by `analysis/atlas` from the notebook and hand-written content, with every stated number checked against the notebook and charts redrawn from the lens tables only when they reproduce the quoted numbers | 2026-10-27 | Claude (owner asked for an interface for non-technical readers) |
 | [0024](0024-audit-against-ip-australia.md) | Stage 1 audited against IP Australia's published figures and conclusions: a tested benchmark of 195 figures (155 agree), IP Australia's definitions for comparisons with it, design shares as lower bounds, 2018 trade marks flagged, U67's lead closed, U45's read as linking, the innovation closure's window widened | 2026-10-27 | Claude (owner asked for the audit) |
 | [0025](0025-audit-in-the-evidence-atlas.md) | The audit against IP Australia shown in the evidence atlas as a page of its own, built from the record and the benchmark with the numbers rule; the notebook and the atlas's existing pages unchanged | 2026-10-27 | Owner (show it, change nothing else yet), Claude (how) |
+| [0026](0026-atlas-framing-follows-the-audit.md) | The atlas's framing pages follow the audit (OQ5 and OQ7 reworded, OQ12 to OQ14 added, U67's puzzle closed, the audit's Stage 2 pair); the observations wait for the owner (supersedes item 5 of 0025) | 2026-10-27 | Owner (the clarification), Claude (the edits) |
 
-Next free number: 0026.
+Next free number: 0027.

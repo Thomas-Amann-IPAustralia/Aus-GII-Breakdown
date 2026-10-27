@@ -13,7 +13,14 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-27, latest):** **The audit is in the evidence atlas** (ADR 0025), as the owner asked: a page of its
+**Status (2026-10-27, latest):** **The atlas's framing follows the audit** (ADR 0026). The owner clarified that only
+the substantive analyses (the observations) stay unchanged for now, so the "What comes next" page now carries OQ5 and
+OQ7 as reworded (A10) and OQ12 to OQ14 (A8), drops U67's puzzle (closed by the audit), adds the audit's Stage 2 pair
+(expedited examination against years in force) and moves IP Australia's statistics out of the data worth adding. The
+observations in `atlas.json` are still byte for byte as Stage 1 left them; a pointer from each observation page to its
+verdict waits for the owner with the revision of the observations.
+
+Before that, the same day: **The audit is in the evidence atlas** (ADR 0025), as the owner asked: a page of its
 own, "Checked against IP Australia" (`#/audit`), built by `python -m atlas.build` from the audit's record
 (`docs/audit-ip-australia.md`, whose tables give each observation's verdict), the benchmark's outputs and plain English
 in `analysis/atlas/content/audit.yaml`, under the numbers rule. The notebook and every existing atlas page are
@@ -582,7 +589,7 @@ and every answer with its date. Nothing there blocks Stage 1. Add new questions 
   same age.
 - Corrections to the institutions link go in `analysis/eda/institutions/*.csv`; `uv run python -m eda.build
   institution_rights institutions` rebuilds both in seconds, and the tests check the link.
-- Next free ADR: 0026.
+- Next free ADR: 0027.
 - The atlas's audit page reads the record's tables (sections 5.1 and 5.2 of `docs/audit-ip-australia.md`): keep their
   layout, and after changing the record, the benchmark or `analysis/atlas/content/audit.yaml`, rerun
   `python -m atlas.build` and commit `evidence/data/` (ADR 0025).

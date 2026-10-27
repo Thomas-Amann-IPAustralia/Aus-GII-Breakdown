@@ -378,7 +378,7 @@ next:
     The pairs worth testing, from the leads Stage 1 found. Each will need its size, its interval, a correction for
     the number of pairs tested, and a second period or sample before it counts.
   leads:
-    - lead: The provisional rise, against policy and fee events, and IP Australia's own figures
+    - lead: The provisional rise, against policy and fee events, and IP Australia's reading of it (digital tools)
       ids: [U8]
       questions: [4]
     - lead: Before and after each policy change (two rushes, four steps, two pauses), with placebo dates
@@ -420,13 +420,16 @@ next:
     - lead: Australian research cited by patents, against Australian inventions that cite it
       ids: [U85]
       questions: [1, 4]
+    - lead: Expedited examination against how long patents are kept, as IP Australia's commissioned research found
+      ids: [U34, U36]
+      questions: [1, 4]
   puzzles_intro: >-
-    Things Stage 1 found that it cannot yet explain. They are kept in view, not explained away.
+    Things Stage 1 found that it cannot yet explain. They are kept in view, not explained away. One more, IP RAPID's
+    innovation patents in 2016 ({U67}), was closed by the review against IP Australia, which reported the rise itself.
   puzzles:
     - Australians' direct filing of standard patents rose to 28.3% in FY2026 ({U90}).
     - Trade mark expedite requests fell from about 1,400 to about 230 a month in November 2018 ({U34}, OQ6).
-    - Fewer recent applications are linked to the filer's business number since FY2025 ({U45}, OQ7).
-    - IP RAPID holds 1.331 times WIPO's count of utility models in 2016 ({U67}).
+    - Fewer recent applications are linked to the filer's business number since FY2025, though filing itself did not fall ({U45}, OQ7).
     - The World Bank's share of the labour force with advanced education steps up around 2010 ({U65}).
     - Plant breeder's rights change hands more often in recent years ({U17}).
     - Petty patents filed in FY1986 to FY1988 mostly have no acceptance recorded ({U32}).
@@ -439,14 +442,18 @@ next:
     - "**The fee history** (OQ2): fees are IP Australia's most direct lever and are not yet in the data; recommended before Stage 2."
     - "AusTender's missing amendments (OQ3, small) and ABS TableBuilder (OQ4, on hold)."
   ipa:
-    - Why did provisional applications from individuals double in FY2026? (OQ5, {U8})
+    - What evidence supports IP Australia's reading that digital tools, including AI, drove the rise in provisional applications, and are the few very heavy filers part of it? (OQ5, {U8})
     - Why did trade mark expedite requests fall in November 2018? (OQ6, {U34})
-    - Since FY2025, are ABNs attached to applications late, or collected less often? (OQ7, {U45})
-  gaps_intro: All free to obtain.
+    - Since mid-2024, is the filer's ABN added to the record later, or no longer collected or checked? (OQ7, {U45})
+    - What does IP Australia's figure of 55.6% of resident applications filed by individuals in 2022 count? (OQ12, {U13}, {U48})
+    - Why does IP RAPID hold about 2,000 fewer Madrid trade marks for 2018 than IP Australia's report? (OQ13, {U5})
+    - Could IP RAPID publish the origin IP Australia holds for the designs it leaves unknown? (OQ14, {U7})
+  gaps_intro: >-
+    All free to obtain. IP Australia's own published statistics, once on this list, now benchmark the lenses: see
+    Checked against IP Australia.
   gaps:
     - The Reserve Bank's cash and exchange rates and the ABS national accounts, for the timeline.
     - The ATO's statistics by postcode, for places.
-    - IP Australia's own published statistics, as a benchmark for the lenses.
     - A patent-to-industry crosswalk that includes services, so patents can reach service industries ({U75}).
     - WIPO's patent families by origin, to size the Australian inventions filed only abroad.
   after:
