@@ -34,5 +34,6 @@ the owner's, or Claude's, which the owner can overturn.
 | [0026](0026-atlas-framing-follows-the-audit.md) | The atlas's framing pages follow the audit (OQ5 and OQ7 reworded, OQ12 to OQ14 added, U67's puzzle closed, the audit's Stage 2 pair); the observations wait for the owner (supersedes item 5 of 0025) | 2026-10-27 | Owner (the clarification), Claude (the edits) |
 | [0027](0027-recheck-oq6-oq7-oq13.md) | OQ6, OQ7 and OQ13 rechecked on a fresh IP RAPID release, independent of the corpus; none a misclassification, the questions sharpened | 2026-10-27 | Owner (asked for the recheck), Claude (how) |
 | [0028](0028-ip-australia-register-apis.md) | A client and a corpus source (`ipa_api`) for IP Australia's register APIs, and IP RAPID checked against the register: complete and accurate; its gaps (ABNs, design origin, expedite events) are in publication; no lens changed yet | 2026-10-27 | Owner (access, the ask), Claude (how) |
+| [0029](0029-register-fills-and-provisionals.md) | IP Australia's register read whole (`ipa_register`, `ipa_provisionals`); its ABNs, design countries and expedite events fill the lenses beside IP RAPID's values; firms credited by the filled filer ABN; 11,098 empty design records dropped and listed; U7, U13, U34 and U45 restated (U99 to U104) | 2026-10-27 | Owner (A12, A13), Claude (how) |
 
-Next free number: 0029.
+Next free number: 0030.

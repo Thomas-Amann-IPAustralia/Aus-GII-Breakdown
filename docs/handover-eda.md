@@ -13,7 +13,20 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-27, latest):** **IP RAPID checked against IP Australia's live register** (ADR 0028,
+**Status (2026-10-27, latest):** **The register's fills are in the lenses** (ADR 0029), at the owner's decisions (A12:
+use the fills; A13: reword the request). `ipa_register` read every trade mark and design (2,338,036 and 269,048) and
+`ipa_provisionals` is reading every provisional with its inventors (about nine hours, in runs of under two hours:
+`IPA_BUDGET_MINUTES=112 uv run corpus run ipa_provisionals`, repeated until it saves; the cache is in
+`~/.cache/ipholmes/ipa_provisionals`). The rights lens has the filled columns beside IP RAPID's (`filer_abn`,
+`australian_applicant_filled`, `register_expedited` and others); firms are credited by `filer_abn` and the spine has
+463,279 ABNs; 11,098 empty design records are dropped (`analysis/eda/dropped/design_shells.csv`). Notebook 1.8.6
+(U99 to U104) restates U45 (ABN linking 92.3% to 90.9%, FY2024 to FY2026; first-time trade mark filers 19,730 in
+FY2026), U7 and U13 (designs 32.31% Australian, 0.007% unknown) and U34 (priority-claiming marks expedited every year);
+figures moved by the drop are corrected and the atlas follows (105 observations). OQ6, OQ7, OQ13 and OQ14 are
+reworded. **Next:** when the provisional harvest saves, attach its counts to `rights` (inventors, expected women and
+men for provisionals) and profile them (1.8.7); then the owner's call on Stage 2 and the gender analysis.
+
+Before that, the same day: **IP RAPID checked against IP Australia's live register** (ADR 0028,
 `docs/audit-ipa-api.md`), after the owner obtained API access (credentials in the environment: `IPA_API_*_DEV` is
 production, `IPA_API_*_TEST` the test host). The client is `src/corpus/ipa_api.py` (`python -m corpus.ipa_api get
 trade_mark 1000000`; guide in `docs/ip-reg-api/README.md`); the harvest is a corpus source, `ipa_api` (about two
