@@ -51,11 +51,12 @@ mediaType: application/json
         description: |
           Bad Request - the message body does not meet the requirements
           of the API.
-
+```
 
 The following sections show examples of invoking the send message API using differing technologies.
 
 ## curl
+```curl
 curl -X POST \
   https://example.com/api/messages \
   -H 'Content-Type: application/json' \
@@ -78,8 +79,9 @@ Request request = new Request.Builder()
     .build();
 
 Response response = client.newCall(request).execute();
-
+```
 ## C# (RestSharp)
+```C#
 var client = new RestClient("https://example.com/api/messages");
 var request = new RestRequest(Method.POST);
 
@@ -94,6 +96,7 @@ request.AddParameter(
 IRestResponse response = client.Execute(request);
 
 ## PHP (HttpRequest)
+```php
 <?php
 
 $request = new HttpRequest();
@@ -117,8 +120,10 @@ try {
 } catch (HttpException $ex) {
     echo $ex;
 }
+```
 
 ## JavaScript (jQuery)
+```JavaScript
 var settings = {
     "async": true,
     "crossDomain": true,
