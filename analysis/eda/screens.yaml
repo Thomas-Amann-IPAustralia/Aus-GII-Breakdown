@@ -1,0 +1,587 @@
+# Stage 2's screen: which columns of each lens are paired, and how (ADR 0030).
+#
+# Every column of a lens in variables.yaml is listed here, as one of:
+#   number    screened as a number (Spearman's rho with numbers, the rank correlation ratio with categories);
+#   category  screened as a category (Cramér's V with categories), its 20 most common values kept and the rest pooled;
+#   {skip: reason}  not screened itself, with the reason (an identifier, a date whose content is in another column...).
+# `derived` adds columns made in SQL from the lens (a milestone's presence, a gap between two dates, a share).
+# `groups` lists variables that are the same measure or are made from each other: pairs inside a group are screened
+# but marked "by construction" and never become leads (totals are not screened against their own parts).
+# `strata` screens each value separately (rights: each type of right). `discovery` and `replication` are the two
+# samples (SQL conditions, or `half` for a random half by a hash of the key); `sample` caps each stratum's rows.
+
+rights:
+  key: application_number
+  strata: {sql: "coalesce(patent_type, ip_right_type)", values: [standard, trade_mark, design, provisional, second_tier, pbr]}
+  discovery: "filing_fy BETWEEN 2010 AND 2019"
+  replication: "filing_fy BETWEEN 2000 AND 2009"
+  sample: 200000
+  columns:
+    application_number: {skip: identifier}
+    ip_right_type: {skip: the stratum}
+    ip_right_sub_type: category
+    patent_type: {skip: the stratum}
+    status: category
+    application_date: {skip: "the same as filing_fy, by day"}
+    earliest_filed_date: {skip: in years_before_application}
+    filing_fy: number
+    priority_date: {skip: in priority_claims and priority_office}
+    registered_date: {skip: in registered}
+    days_to_registration: number
+    retired_date: {skip: in years_in_force}
+    applicant_count: number
+    applicant_type: category
+    applicant_country: category
+    applicant_state: category
+    applicant_postcode: {skip: "a place: postcodes are the regions lens's unit"}
+    applicant_postcode_raw: {skip: "a place, uncleaned"}
+    applicant_countries: {skip: "a list of codes, counted in applicants_au and applicants_overseas"}
+    applicants_au: number
+    applicants_overseas: number
+    applicants_country_unknown: number
+    applicant_abn: {skip: identifier}
+    has_abn: category
+    australian_applicant: category
+    has_agent: category
+    main_class: category
+    main_area: category
+    class_count: number
+    founder_count: number
+    founder_type: category
+    founder_country: category
+    founding_australian: category
+    founder_postcode: {skip: "a place: postcodes are the regions lens's unit"}
+    founder_state: category
+    founder_abn: {skip: identifier}
+    register_abn: {skip: identifier}
+    register_abn_basis: category
+    filer_abn: {skip: identifier}
+    has_abn_filled: category
+    register_country: category
+    australian_applicant_filled: category
+    register_expedited: category
+    register_expedite_date: {skip: in register_expedited}
+    holder_changed: category
+    agent_id: {skip: "identifier (agent_name names the organisations)"}
+    agent_name: category
+    agent_clients: number
+    representation: category
+    date_of_patent: {skip: "the term's start, close to the filing date"}
+    exam_requested_date: {skip: in years_to_exam_request}
+    exam_expedited: category
+    accepted_date: {skip: in accepted}
+    certified_date: {skip: in certified}
+    opposed_date: {skip: in opposed}
+    assignment_count: number
+    first_assigned_date: {skip: in assignment_count}
+    term_extended_date: {skip: in term_extended}
+    in_force: category
+    years_in_force: number
+    filing_route: category
+    priority_claims: number
+    priority_office: category
+    australian_priority: category
+    divisional: category
+    pct_number: {skip: identifier}
+    pct_office: category
+    madrid_export: category
+    family_id: {skip: identifier}
+    family_priority_date: {skip: "the family's first priority, close to priority_date"}
+    family_offices: number
+    family_granted_us: category
+    family_citations: number
+    family_citations_5y: number
+    inventors: number
+    inventors_au: number
+    inventors_abroad: number
+    inventors_country_unknown: number
+    invented_in_australia: category
+    inventors_women_expected: {skip: in inventors_women_share}
+    inventors_men_expected: {skip: in inventors_women_share}
+    inventors_gender_unknown: number
+    register_inventors: number
+    register_inventors_women_expected: {skip: in register_inventors_women_share}
+    register_inventors_men_expected: {skip: in register_inventors_women_share}
+    register_inventors_gender_unknown: number
+  derived:
+    registered: {kind: category, sql: "registered_date IS NOT NULL", label: Registered or granted}
+    accepted: {kind: category, sql: "accepted_date IS NOT NULL", label: Accepted}
+    certified: {kind: category, sql: "certified_date IS NOT NULL", label: Certified}
+    opposed: {kind: category, sql: "opposed_date IS NOT NULL", label: Opposed}
+    term_extended: {kind: category, sql: "term_extended_date IS NOT NULL", label: Term extended}
+    years_to_exam_request:
+      kind: number
+      sql: "date_diff('day', application_date, exam_requested_date) / 365.25"
+      label: Years from application to examination request
+    years_before_application:
+      kind: number
+      sql: "date_diff('day', earliest_filed_date, application_date) / 365.25"
+      label: Years from earliest filing to application in Australia
+    inventors_women_share:
+      kind: number
+      sql: "inventors_women_expected / nullif(inventors_women_expected + inventors_men_expected, 0)"
+      label: Estimated share of women among the inventors
+    register_inventors_women_share:
+      kind: number
+      sql: "register_inventors_women_expected / nullif(register_inventors_women_expected + register_inventors_men_expected, 0)"
+      label: Estimated share of women among the register's inventors
+  groups:
+    origin: [australian_applicant, australian_applicant_filled, founding_australian, applicant_country, founder_country,
+             register_country, applicants_au, applicants_overseas, applicants_country_unknown, applicant_count,
+             applicant_state, founder_state]
+    applicant_type: [applicant_type, founder_type]
+    abn: [has_abn, has_abn_filled, register_abn_basis]
+    outcome: [status, in_force, registered, accepted, certified, years_in_force, days_to_registration]
+    representation: [has_agent, representation, agent_name, agent_clients]
+    route: [filing_route, priority_claims, priority_office, australian_priority, divisional, pct_office, madrid_export,
+            years_before_application]
+    family: [family_offices, family_granted_us, family_citations, family_citations_5y]
+    inventors: [inventors, inventors_au, inventors_abroad, inventors_country_unknown, invented_in_australia,
+                inventors_gender_unknown]
+    register_inventors: [register_inventors, register_inventors_gender_unknown]
+    expedite: [exam_expedited, register_expedited]
+    applicants: [applicant_count, founder_count]
+    ownership: [holder_changed, assignment_count]
+    class: [main_class, main_area]
+    age: [filing_fy, years_in_force, in_force, family_citations, status]
+
+firms:
+  key: abn
+  discovery: half
+  replication: half
+  sample: 200000
+  columns:
+    abn: {skip: identifier}
+    entity_type: category
+    entity_group: category
+    abn_active: category
+    gst_registered: category
+    state: category
+    postcode: {skip: "a place: postcodes are the regions lens's unit"}
+    remoteness: category
+    irsad_decile: number
+    asic_type: category
+    first_seen: {skip: in age_years}
+    age_years: number
+    age_basis: category
+    age_truncated: category
+    in_iprapid_patent: category
+    in_iprapid_trade_mark: category
+    in_iprapid_design: category
+    in_iplord: category
+    in_rdti: category
+    in_austender: category
+    in_ato_ctt: category
+    patent_first_fy: number
+    trade_mark_first_fy: number
+    design_first_fy: number
+    in_register: category
+    patent_first_fy_filled: number
+    trade_mark_first_fy_filled: number
+    design_first_fy_filled: number
+    ip_filed_total: number
+    ip_filed_weighted: number
+    n_patents_standard: number
+    n_patents_provisional: number
+    n_patents_second_tier: number
+    n_trade_marks: number
+    n_designs: number
+    n_held: number
+    n_held_in_force: number
+    rdti_years: number
+    rd_expenditure_mean: number
+    rd_latest: number
+    ato_ctt_years: number
+    total_income_latest: number
+    austender_contracts: number
+    austender_value: number
+  groups:
+    # each kind of IP with the totals made from it (but not with the other kinds: patents against trade marks is a
+    # real pair)
+    patents: [n_patents_standard, n_patents_provisional, n_patents_second_tier, in_iprapid_patent, patent_first_fy,
+              patent_first_fy_filled, ip_filed_total, ip_filed_weighted, n_held, n_held_in_force, in_iplord]
+    trade_marks: [n_trade_marks, in_iprapid_trade_mark, trade_mark_first_fy, trade_mark_first_fy_filled, in_register,
+                  ip_filed_total, ip_filed_weighted, n_held, n_held_in_force, in_iplord]
+    designs: [n_designs, in_iprapid_design, design_first_fy, design_first_fy_filled, in_register, ip_filed_total,
+              ip_filed_weighted, n_held, n_held_in_force, in_iplord]
+    rd: [in_rdti, rdti_years, rd_expenditure_mean, rd_latest]
+    tax: [in_ato_ctt, ato_ctt_years, total_income_latest]
+    contracts: [in_austender, austender_contracts, austender_value]
+    entity: [entity_type, entity_group, asic_type, age_basis]
+    # which register dates a business follows from its status: an inactive ABN has no GST registration and its age
+    # comes from another register
+    registration: [abn_active, gst_registered, age_basis, age_truncated]
+    # a first filing year is bounded by the business's age (a young business can only have filed recently), so these
+    # pairs are age-bound; how old firms are when they first file is a planned pair (2.4)
+    age: [age_years, age_basis, age_truncated, patent_first_fy, trade_mark_first_fy, design_first_fy,
+          patent_first_fy_filled, trade_mark_first_fy_filled, design_first_fy_filled]
+    place: [state, remoteness, irsad_decile]
+
+regions:
+  key: poa_code
+  discovery: half
+  replication: half
+  columns:
+    poa_code: {skip: identifier}
+    state: category
+    remoteness: category
+    share_major_cities: number
+    sa3_code: {skip: "an identifier, for pooling"}
+    sa3_name: {skip: "an identifier, for pooling"}
+    persons: number
+    irsad_score: number
+    irsad_decile: {skip: in irsad_score}
+    irsd_score: number
+    irsd_decile: {skip: in irsd_score}
+    ier_score: number
+    ier_decile: {skip: in ier_score}
+    ieo_score: number
+    ieo_decile: {skip: in ieo_score}
+    median_age: number
+    median_personal_income_weekly: number
+    median_household_income_weekly: number
+    median_rent_weekly: number
+    average_household_size: number
+    active_abns: number
+    active_gst_abns: number
+    patents_standard: {skip: "a count that grows with the area's size: in its rates"}
+    patents_provisional: {skip: "a count that grows with the area's size: in provisionals_per_10k_people"}
+    patents_second_tier: {skip: "a count that grows with the area's size: in second_tier_per_10k_people"}
+    trade_marks: {skip: "a count that grows with the area's size: in its rates"}
+    designs: {skip: "a count that grows with the area's size: in its rates"}
+    patents_standard_by_organisations: {skip: in patents_standard_per_1k_businesses}
+    trade_marks_by_organisations: {skip: in trade_marks_per_1k_businesses}
+    designs_by_organisations: {skip: in designs_per_1k_businesses}
+    ip_filing_firms: {skip: in ip_firms_per_1k_businesses}
+    rdti_firms: {skip: in rdti_firms_per_1k_businesses}
+    rdti_firms_no_ip: {skip: in missing_filer_share}
+    austender_suppliers: {skip: in suppliers_per_1k_businesses}
+    austender_contracts: {skip: "a count that grows with the area's size; suppliers_per_1k_businesses carries the measure"}
+    austender_value: {skip: "mostly where suppliers' head offices are (U62); suppliers_per_1k_businesses carries the measure"}
+    patents_standard_per_10k_people: number
+    trade_marks_per_10k_people: number
+    designs_per_10k_people: number
+    patents_standard_per_1k_businesses: number
+    trade_marks_per_1k_businesses: number
+    designs_per_1k_businesses: number
+  derived:
+    # rates made like the lens's own (ADR 0017): a year over FY2017-FY2026, empty where fewer than 10 would be
+    # expected at the national rate
+    provisionals_per_10k_people:
+      kind: number
+      label: "Provisional applications a year per 10,000 people"
+      sql: >-
+        CASE WHEN persons * (SELECT sum(patents_provisional) / sum(persons) FROM {lens/regions}) >= 10
+        THEN 1000 * patents_provisional / persons END
+    second_tier_per_10k_people:
+      kind: number
+      label: "Innovation and petty patent applications a year per 10,000 people"
+      sql: >-
+        CASE WHEN persons * (SELECT sum(patents_second_tier) / sum(persons) FROM {lens/regions}) >= 10
+        THEN 1000 * patents_second_tier / persons END
+    ip_firms_per_1k_businesses:
+      kind: number
+      label: "Active firms that have filed IP per 1,000 GST-registered businesses"
+      sql: >-
+        CASE WHEN active_gst_abns * (SELECT sum(ip_filing_firms) / sum(active_gst_abns) FROM {lens/regions}) >= 10
+        THEN 1000 * ip_filing_firms / active_gst_abns END
+    rdti_firms_per_1k_businesses:
+      kind: number
+      label: "R&D Tax Incentive claimants per 1,000 GST-registered businesses"
+      sql: >-
+        CASE WHEN active_gst_abns * (SELECT sum(rdti_firms) / sum(active_gst_abns) FROM {lens/regions}) >= 10
+        THEN 1000 * rdti_firms / active_gst_abns END
+    missing_filer_share:
+      kind: number
+      label: "Share of R&D Tax Incentive claimants that have never filed IP"
+      sql: "CASE WHEN rdti_firms >= 10 THEN rdti_firms_no_ip / rdti_firms END"
+    suppliers_per_1k_businesses:
+      kind: number
+      label: "Government suppliers per 1,000 GST-registered businesses"
+      sql: >-
+        CASE WHEN active_gst_abns * (SELECT sum(austender_suppliers) / sum(active_gst_abns) FROM {lens/regions}) >= 10
+        THEN 1000 * austender_suppliers / active_gst_abns END
+    businesses_per_person:
+      kind: number
+      label: "GST-registered businesses per person"
+      sql: "CASE WHEN persons >= 100 THEN active_gst_abns / persons END"
+  groups:
+    # the four SEIFA indexes are built from overlapping Census variables
+    seifa: [irsad_score, irsd_score, ier_score, ieo_score]
+    size: [persons, active_abns, active_gst_abns]
+    remoteness: [remoteness, share_major_cities]
+    patents: [patents_standard_per_10k_people, patents_standard_per_1k_businesses]
+    trade_marks: [trade_marks_per_10k_people, trade_marks_per_1k_businesses]
+    designs: [designs_per_10k_people, designs_per_1k_businesses]
+    businesses: [businesses_per_person, active_gst_abns, active_abns]
+
+national:
+  # The lens is long (country, year, indicator), so its screen pairs indicators across countries: each indicator in
+  # `indicators` becomes a column, averaged over 2016-2020 (discovery) and 2006-2010 (replication) for every country
+  # of a million people or more, and counts become ratios to people (U66).
+  key: iso3
+  discovery: "year BETWEEN 2016 AND 2020"
+  replication: "year BETWEEN 2006 AND 2010"
+  columns:
+    iso3: {skip: identifier}
+    country: {skip: "the country's name"}
+    year: {skip: "the screen is across countries within a period; changes over time are planned pairs"}
+    indicator: {skip: "each indicator becomes a column (indicators, below)"}
+    indicator_name: {skip: "each indicator becomes a column (indicators, below)"}
+    value: {skip: "each indicator becomes a column (indicators, below)"}
+    status: {skip: "the OECD's flag on a value"}
+    source: {skip: "the publisher, named with each indicator"}
+    entity: {skip: "countries only (former states and unknown origins are not countries in a period)"}
+    oecd: category
+    australia: {skip: "one country, marked in the planned pairs"}
+  indicators:
+    IP.PAT.RESD: per_million_people
+    IP.PAT.NRES: per_million_people
+    IP.TMK.RSCT: per_million_people
+    IP.TMK.NRCT: per_million_people
+    IP.IDS.RSCT: per_million_people
+    IP.IDS.NRCT: per_million_people
+    WIPO.PAT.APP: per_million_people
+    WIPO.PAT.GRANT: per_million_people
+    WIPO.TM.CLASS: per_million_people
+    WIPO.DES.COUNT: per_million_people
+    IP.JRN.ARTC.SC: per_million_people
+    IC.BUS.NREG: per_million_people
+    BM.GSR.ROYL.CD: per_person
+    BX.GSR.ROYL.CD: per_person
+    TX.VAL.TECH.CD: per_person
+    NY.GDP.MKTP.PP.KD: {skip: in NY.GDP.PCAP.PP.KD}
+    NY.GDP.PCAP.PP.KD: as_is
+    SP.POP.TOTL: as_is
+    BX.KLT.DINV.WD.GD.ZS: as_is
+    GB.XPD.RSDV.GD.ZS: as_is
+    IC.BUS.NDNS.ZS: as_is
+    NE.EXP.GNFS.ZS: as_is
+    NV.IND.MANF.ZS: as_is
+    OECD.MSTI.B: as_is
+    OECD.MSTI.G: as_is
+    SE.TER.ENRR: as_is
+    SL.TLF.ADVN.ZS: as_is
+    SP.POP.SCIE.RD.P6: as_is
+    SP.POP.TECH.RD.P6: as_is
+    TX.VAL.TECH.MF.ZS: as_is
+  groups:
+    # WIPO's filings by residents at every office include their filings at home (a total and its part)
+    patents: [IP.PAT.RESD, WIPO.PAT.APP]
+    trade_marks: [IP.TMK.RSCT, WIPO.TM.CLASS]
+    designs: [IP.IDS.RSCT, WIPO.DES.COUNT]
+    # the World Bank's GERD is the OECD's; business R&D is part of it
+    rd: [GB.XPD.RSDV.GD.ZS, OECD.MSTI.G, OECD.MSTI.B]
+    business_entry: [IC.BUS.NREG, IC.BUS.NDNS.ZS]
+    high_tech: [TX.VAL.TECH.CD, TX.VAL.TECH.MF.ZS]
+
+timeline:
+  # Pairs of monthly series are compared as changes: each quarter's total against the same quarter a year earlier
+  # (logarithms), July 1991 to June 2008 (discovery) against July 2008 on (replication); see section 5 of the notebook.
+  key: month
+  discovery: "quarters from 1991Q3 to 2008Q2"
+  replication: "quarters from 2008Q3"
+  columns:
+    month: {skip: "the time axis"}
+    year: {skip: "the time axis"}
+    month_of_year: {skip: "seasons, removed by comparing with the same quarter a year earlier"}
+    fy: {skip: "the time axis"}
+    days_in_month: {skip: "the calendar, removed by comparing quarters a year apart"}
+    patents_standard_au: number
+    patents_standard_overseas: number
+    patents_standard_origin_unknown: number
+    patents_provisional: number
+    patents_second_tier: number
+    trade_marks_au: number
+    trade_marks_overseas: number
+    trade_marks_origin_unknown: number
+    designs_au: number
+    designs_overseas: number
+    designs_origin_unknown: number
+    pbr_applications: number
+    patents_granted: number
+    trade_marks_registered: number
+    designs_registered: number
+    pbr_granted: number
+    patents_lapsed: number
+    trade_marks_lapsed: number
+    designs_lapsed: number
+    patents_ceased: number
+    trade_marks_ceased: number
+    designs_ceased: number
+    patents_expired: number
+    patent_oppositions: number
+    trade_mark_oppositions: number
+    patent_extensions_of_term: number
+    patent_assignments: number
+    trade_mark_assignments: number
+    cpi: number
+    policy_events: {skip: "the policy changes, studied one at a time with placebo dates (5.1)"}
+  groups: {}
+
+industries:
+  # 19 divisions: the screen compares divisions in FY2024 (the BERD survey's year) and again in FY2025, with each
+  # count made a ratio to the division's businesses (section 6 of the notebook). Business R&D exists for FY2024 only,
+  # so its pairs are held fixed in the second year, which tests the other member's stability only.
+  key: division
+  discovery: "fy = 2024"
+  replication: "fy = 2025"
+  columns:
+    division: {skip: identifier}
+    division_name: {skip: "the division's name"}
+    fy: {skip: "the time axis"}
+    patents_standard: {skip: in patents_per_1k_businesses}
+    patents_standard_au: {skip: in patents_au_per_1k_businesses and patents_au_share}
+    patents_second_tier: {skip: "innovation patents closed in 2021: too few by FY2024"}
+    trade_marks: {skip: in trade_marks_per_1k_businesses}
+    trade_marks_au: {skip: in trade_marks_au_per_1k_businesses and trade_marks_au_share}
+    businesses_start: {skip: "the denominator of the ratios; its size is in businesses"}
+    businesses_end: {skip: "as businesses_start"}
+    business_entries: {skip: in business_entry_rate}
+    business_exits: {skip: in business_exit_rate}
+    business_entry_rate: number
+    business_exit_rate: number
+    berd: {skip: in berd_per_business}
+    wpi_index: {skip: in wages_growth}
+    creative_gva: {skip: "in creative_gva_per_business"}
+  ratios:
+    businesses: "businesses at the start of the year"
+    patents_per_1k_businesses: "standard patent applications (expected) per 1,000 businesses"
+    patents_au_per_1k_businesses: "Australian applicants' standard patent applications per 1,000 businesses"
+    patents_au_share: "Australian applicants' share of standard patent applications"
+    trade_marks_per_1k_businesses: "trade mark applications per 1,000 businesses"
+    trade_marks_au_per_1k_businesses: "Australian applicants' trade mark applications per 1,000 businesses"
+    trade_marks_au_share: "Australian applicants' share of trade mark applications"
+    berd_per_business: "business R&D (FY2024) per business, $'000"
+    wages_growth: "the Wage Price Index's change over the five years to the year, %"
+    creative_gva_per_business: "cultural and creative value added per business, $m"
+  groups:
+    patents: [patents_per_1k_businesses, patents_au_per_1k_businesses, patents_au_share]
+    trade_marks: [trade_marks_per_1k_businesses, trade_marks_au_per_1k_businesses, trade_marks_au_share]
+    business_flows: [business_entry_rate, business_exit_rate]
+
+institutions:
+  # Institutions are compared over two seven-year periods (2017-2023, discovery; 2010-2016, replication; OpenAlex
+  # starts in 2010), each count summed over the period and made a ratio to the institution's research works, since
+  # every count grows with an institution's size; size itself is kept as works. Children (parent_ror) are kept as
+  # their own rows: their counts are their own, never added to the parent's (U81).
+  key: ror
+  discovery: "year BETWEEN 2017 AND 2023"
+  replication: "year BETWEEN 2010 AND 2016"
+  columns:
+    ror: {skip: identifier}
+    institution: {skip: "the institution's name"}
+    kind: category
+    parent_ror: {skip: "an identifier (whether the institution is part of another is has_parent)"}
+    state: category
+    established: number
+    ror_status: {skip: "two inactive institutions only"}
+    year: {skip: "the period (summed over)"}
+    works: number
+    citations: {skip: in citations_per_work}
+    works_patent_cited: {skip: in share_patent_cited}
+    patent_citations: {skip: in patent_citations_per_kwork}
+    patent_citations_au: {skip: in au_share_of_patent_citations}
+    arc_grants: {skip: in arc_grants_per_kwork}
+    arc_funding: {skip: "in arc_grants_per_kwork (funding follows grants)"}
+    arc_industry_grants: {skip: in arc_industry_share}
+    arc_industry_funding: {skip: "in arc_industry_share"}
+    nhmrc_grants: {skip: in nhmrc_grants_per_kwork}
+    nhmrc_funding: {skip: "in nhmrc_grants_per_kwork (funding follows grants)"}
+    patents_standard: {skip: in patents_per_kwork}
+    patents_standard_shared: {skip: in shared_patent_share}
+    patents_provisional: {skip: in provisionals_per_kwork}
+    patents_second_tier: {skip: "innovation patents closed in 2021; too few"}
+    trade_marks: {skip: in trade_marks_per_kwork}
+    designs: {skip: "too few (a handful a year)"}
+    patent_families: {skip: in families_per_kwork}
+    patent_families_us_granted: {skip: in us_granted_share}
+    patent_family_citations_5y: {skip: in family_citations_per_family}
+    contracts: {skip: in contracts_per_kwork}
+    contract_value: {skip: "in contracts_per_kwork (value follows contracts)"}
+  ratios:
+    has_parent: "part of another institution"
+    citations_per_work: "citations received per work"
+    share_patent_cited: "share of works cited by US patents"
+    patent_citations_per_kwork: "citations from US patents per 1,000 works"
+    au_share_of_patent_citations: "share of US patent citations from patents with Australian links"
+    arc_grants_per_kwork: "ARC grants per 1,000 works"
+    arc_industry_share: "share of ARC grants with industry partners"
+    nhmrc_grants_per_kwork: "NHMRC grants per 1,000 works"
+    patents_per_kwork: "standard patent applications per 1,000 works"
+    shared_patent_share: "share of standard patent applications filed with others"
+    provisionals_per_kwork: "provisional applications per 1,000 works"
+    trade_marks_per_kwork: "trade mark applications per 1,000 works"
+    families_per_kwork: "patent families per 1,000 works"
+    us_granted_share: "share of patent families granted in the US"
+    family_citations_per_family: "citations to patent families within five years, per family"
+    contracts_per_kwork: "government contracts per 1,000 works"
+  groups:
+    patents: [patents_per_kwork, families_per_kwork, provisionals_per_kwork]
+    patent_citations: [share_patent_cited, patent_citations_per_kwork, au_share_of_patent_citations]
+
+institution_rights:
+  # The institutions lens's IP detail: one row per right and institution. Its pairs are about how rights were matched
+  # and shared, screened over the two halves of the rows by a hash of the right and institution.
+  key: "application_number || ror"
+  discovery: half
+  replication: half
+  columns:
+    ip_right_type: category
+    application_number: {skip: identifier}
+    ror: {skip: "identifier (the institution's kind is in the institutions lens)"}
+    matched_by: category
+    country_unknown: category
+    shared: category
+    shared_with_institution: category
+  groups:
+    shared: [shared, shared_with_institution]
+
+# The long companion tables: their rows are indicators, so their columns are not paired with each other; each
+# indicator is screened against the lens's IP measures instead (ADR 0030).
+region_indicators:
+  # section 3.1: each indicator, in one period, against the areas' IP and R&D rates (ADR 0030)
+  columns:
+    poa_code: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    source: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    topic: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    indicator: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    label: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    period: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    value: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    unit: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    additive: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    method: {skip: "long format: each indicator is screened as a column (see the note above)"}
+national_indicators:
+  # sections 4.3 (cross-country indicators against residents' patenting) and 5.3 (Australia-only series as annual changes against Australians' filing)
+  columns:
+    iso3: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    country: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    entity: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    year: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    period: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    source: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    dataset: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    indicator: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    label: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    value: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    value_text: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    unit: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    status: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    oecd: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    australia: {skip: "long format: each indicator is screened as a column (see the note above)"}
+industry_indicators:
+  # section 6.3: each division-level indicator against Australians' filing per business
+  columns:
+    division: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    source: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    dataset: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    indicator: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    label: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    period: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    fy: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    value: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    value_text: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    unit: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    status: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    division_name: {skip: "long format: each indicator is screened as a column (see the note above)"}

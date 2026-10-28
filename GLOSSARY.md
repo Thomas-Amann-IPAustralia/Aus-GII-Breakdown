@@ -191,6 +191,23 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Effect size** | How big a difference or link is, as opposed to whether it is "significant". |
 | **95% interval** | The range that plausibly contains the true value. Rates use the Wilson interval, which behaves well for small groups and rates near 0% or 100%. |
 | **Mann-Whitney, Kruskal-Wallis** | Tests of whether groups differ (two groups, or more). They work on ranks, so a few extreme values can't drive the result. |
+| **Strength (of a pair)** | Stage 2's common scale for how closely two variables go together, from 0 (not at all) to 1 (one fully determines the other), whatever their kinds: the size of *Spearman rho* for two numbers, the *rank correlation ratio* for a number and a category, *Cramér's V* for two categories. For yes/no variables the three agree. By convention 0.1 is small, 0.3 moderate and 0.5 strong. |
+| **Cramér's V** | How far two categories go together beyond chance, from 0 to 1, from the chi-squared test. Here with Bergsma's correction, so that many categories or a small sample do not inflate it. |
+| **Rank correlation ratio** | How much of a number's spread (in ranks) the groups of a category account for, from 0 to 1: the square root of the Kruskal-Wallis *epsilon squared*. |
+| **Rank-biserial correlation** | For two groups: the chance that a member of the first has the higher value, minus the chance that a member of the second does (-1 to 1; 0 when neither tends to be higher). |
+| **Screen (Stage 2)** | Measuring every pair of a lens's variables on one scale, to find the pairs worth a closer look (`analysis/eda/screens.yaml`, ADR 0030). |
+| **Discovery and replication samples** | Two separate sets of rows: pairs are found in the first and must hold again in the second, which played no part in finding them (a second period, or the other random half). A pair that holds in both is unlikely to be chance or a quirk of one period. |
+| **Multiple comparisons, false discovery rate** | When hundreds of pairs are tested, some pass by chance. The Benjamini-Hochberg correction keeps the expected share of chance findings among those called findings below a set rate (here 5%); each pair's *q-value* is the rate at which it would just pass. |
+| **By construction** | Two variables tied by how they are made (two versions of one measure, or a total and its parts). Their association says nothing new, so the screen measures them but never counts them as leads. |
+| **Bootstrap interval** | A 95% interval found by recomputing a figure on many resamples of the data (drawn with replacement) and taking the middle 95% of the results. Where rows belong together (the inventors of one patent), whole groups are resampled. |
+| **Newcombe interval** | A 95% interval for the difference between two rates, built from each rate's Wilson interval, so it behaves well near 0% and 100%. |
+| **Percentile within field and year** | A patent's rank among the patents of the same technology field and year of filing, from 0 to 100 (50 is the typical one), so that fields and years with more citations do not dominate a comparison. Ties share their middle rank. |
+| **Simpson's paradox (composition effect)** | A link that appears, vanishes or reverses when groups are pooled, because the groups differ in size and level. Comparing within groups shows it. |
+| **Ecological association** | An association between places or countries, not between the people or firms in them: that areas with more graduates file more patents does not say that graduates file them. |
+| **Rate ratio (negative binomial model)** | How many times higher one group's rate is than another's (or per step of a scale such as IRSAD), from a model of counts that allows areas to differ more than chance would. 1.7 means 70% higher. |
+| **Prediction interval** | The range in which a single new case would fall, given a fitted line, 95% of the time. It is wider than the interval for the line itself, because single cases scatter around it. |
+| **Year-on-year change (log)** | A period's count against the same period a year earlier, as the difference of their logarithms: +0.1 is about 10% more. Comparing changes rather than levels keeps long trends and seasons from making unrelated series look linked. |
+| **Innovation-active business** | In the ABS's Business Characteristics Survey, a business that introduced, was developing or abandoned a new or improved good, service or process in the year. Most such innovation is never protected by IP. |
 | **Confounder** | A third factor that drives two things and makes them look linked. For example, firm size drives both R&D and patenting. |
 | **Partial correlation** | The link between two variables after removing what one or more other variables explain. |
 | **PCA** | Principal component analysis: it combines many related variables into a few summary measures. |
@@ -201,7 +218,7 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Moving average** | The average of the last few values (here, usually 12 months), redrawn each month. It smooths out seasons and one-off spikes. |
 | **Structural break** | A point where a series jumps or changes direction, for example when a rule changes. |
 | **Interrupted time series** | A way to measure a break: the series' trend and season before a change are used to estimate what would have happened without it, and compared with what did. |
-| **Placebo test** | Running the same analysis at a date when nothing happened. If it finds "breaks" there too, a break at the real date is less convincing. |
+| **Placebo test (placebo dates)** | Running the same analysis at dates when nothing happened. If it finds "breaks" there too, a break at the real date is less convincing. Stage 2 takes every month from five years before to five years after a change (leaving out the two years around it) and reports the share of those months with a spike or step as large. |
 | **STL decomposition** | A method that splits a series into its trend, its seasonal pattern and what is left over. |
 | **Spurious correlation** | A link with no real connection behind it. It is common between time series that all trend upward over the same years. |
 | **Multiple comparisons** | When many pairs are tested at once, some look strong by chance alone. Stage 2 corrects for the number of pairs screened, and keeps a lead only if it also holds in a second period or sample. |
