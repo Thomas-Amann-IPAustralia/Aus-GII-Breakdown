@@ -314,3 +314,63 @@ regions:
     trade_marks: [trade_marks_per_10k_people, trade_marks_per_1k_businesses]
     designs: [designs_per_10k_people, designs_per_1k_businesses]
     businesses: [businesses_per_person, active_gst_abns, active_abns]
+
+national:
+  # The lens is long (country, year, indicator), so its screen pairs indicators across countries: each indicator in
+  # `indicators` becomes a column, averaged over 2016-2020 (discovery) and 2006-2010 (replication) for every country
+  # of a million people or more, and counts become ratios to people (U66).
+  key: iso3
+  discovery: "year BETWEEN 2016 AND 2020"
+  replication: "year BETWEEN 2006 AND 2010"
+  columns:
+    iso3: {skip: identifier}
+    country: {skip: "the country's name"}
+    year: {skip: "the screen is across countries within a period; changes over time are planned pairs"}
+    indicator: {skip: "each indicator becomes a column (indicators, below)"}
+    indicator_name: {skip: "each indicator becomes a column (indicators, below)"}
+    value: {skip: "each indicator becomes a column (indicators, below)"}
+    status: {skip: "the OECD's flag on a value"}
+    source: {skip: "the publisher, named with each indicator"}
+    entity: {skip: "countries only (former states and unknown origins are not countries in a period)"}
+    oecd: category
+    australia: {skip: "one country, marked in the planned pairs"}
+  indicators:
+    IP.PAT.RESD: per_million_people
+    IP.PAT.NRES: per_million_people
+    IP.TMK.RSCT: per_million_people
+    IP.TMK.NRCT: per_million_people
+    IP.IDS.RSCT: per_million_people
+    IP.IDS.NRCT: per_million_people
+    WIPO.PAT.APP: per_million_people
+    WIPO.PAT.GRANT: per_million_people
+    WIPO.TM.CLASS: per_million_people
+    WIPO.DES.COUNT: per_million_people
+    IP.JRN.ARTC.SC: per_million_people
+    IC.BUS.NREG: per_million_people
+    BM.GSR.ROYL.CD: per_person
+    BX.GSR.ROYL.CD: per_person
+    TX.VAL.TECH.CD: per_person
+    NY.GDP.MKTP.PP.KD: {skip: in NY.GDP.PCAP.PP.KD}
+    NY.GDP.PCAP.PP.KD: as_is
+    SP.POP.TOTL: as_is
+    BX.KLT.DINV.WD.GD.ZS: as_is
+    GB.XPD.RSDV.GD.ZS: as_is
+    IC.BUS.NDNS.ZS: as_is
+    NE.EXP.GNFS.ZS: as_is
+    NV.IND.MANF.ZS: as_is
+    OECD.MSTI.B: as_is
+    OECD.MSTI.G: as_is
+    SE.TER.ENRR: as_is
+    SL.TLF.ADVN.ZS: as_is
+    SP.POP.SCIE.RD.P6: as_is
+    SP.POP.TECH.RD.P6: as_is
+    TX.VAL.TECH.MF.ZS: as_is
+  groups:
+    # WIPO's filings by residents at every office include their filings at home (a total and its part)
+    patents: [IP.PAT.RESD, WIPO.PAT.APP]
+    trade_marks: [IP.TMK.RSCT, WIPO.TM.CLASS]
+    designs: [IP.IDS.RSCT, WIPO.DES.COUNT]
+    # the World Bank's GERD is the OECD's; business R&D is part of it
+    rd: [GB.XPD.RSDV.GD.ZS, OECD.MSTI.G, OECD.MSTI.B]
+    business_entry: [IC.BUS.NREG, IC.BUS.NDNS.ZS]
+    high_tech: [TX.VAL.TECH.CD, TX.VAL.TECH.MF.ZS]

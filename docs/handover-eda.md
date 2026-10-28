@@ -52,12 +52,21 @@ instruction, 2026-10-28): leave `evidence/` and `analysis/atlas/` alone until th
   rate per standard deviation of IRSAD, remote areas far lower, both holding together and in SA3s (B29), and without
   each area's largest filer (B30); business mix: finance, property and professional services up, construction and
   transport down, manufacturing flat (B31, read with U47).
+- **Section 4, `national` (B32 to B35):** indicators screened across countries (2016-2020 against 2006-2010, counts
+  per million people; `screens.yaml` names each indicator's ratio): IP moves with R&D, research and income as one
+  development gradient, trade marks with commerce (B32); Australia's rank among OECD members (B33: patents middling,
+  trade marks and business entry near the top, business R&D 13th to 20th, manufacturing last); residents' patenting
+  rises about one for one with business R&D across members, Australia near its prediction in 2016-2020, but changes
+  in R&D barely go with changes in patenting (rho 0.165, B34); the cross-country attachments (GII values, OECD MSTI,
+  venture capital, well-being, SDG 9) screened against residents' patenting (B35). Australia-only sources (ABS,
+  BCARR, MWM, Closing the Gap) have no other country to pair with; they go to section 5 as annual changes. The OECD's
+  patent tables (counts of patents) and business demography cells are not screened (recorded in 4.3).
 - **Data gaps found:** firms' industry and size (the third factors most firm leads need; BLADE stays ruled out);
   whether Google Patents holds older Australian-only families fully (B11).
-- **Next:** section 4, `national` (Australia against OECD members as ratios to people and GDP, changes not levels;
-  screen indicator pairs across countries in a recent year, replicated in an earlier one), then `timeline` (the
-  provisional rise and the policy windows with placebo dates), `industries`, `institutions`, and the Stage 2 summary
-  (with `docs/stage-2-summary.md`, like Stage 1's).
+- **Next:** section 5, `timeline` (monthly series as changes: 12-month differences and the months around the 17
+  policy events with placebo dates; the provisional rise against policy and fee events; and the Australia-only annual
+  series of `national_indicators` against Australia's filings, as year-on-year changes), then `industries`,
+  `institutions`, and the Stage 2 summary (`docs/stage-2-summary.md`, like Stage 1's).
 
 **Status (2026-10-27):** **The register's fills are in the lenses** (ADR 0029), at the owner's decisions (A12:
 use the fills; A13: reword the request). `ipa_register` read every trade mark and design (2,338,036 and 269,048) and

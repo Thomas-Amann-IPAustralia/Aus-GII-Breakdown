@@ -356,7 +356,7 @@ def strength_interval(
     vals = []
     for _ in range(reps):
         i = rng.integers(0, len(x), len(x))
-        vals.append(association(x[i], y[i], kx, ky)["strength"])
+        vals.append(association(x[i], y[i], kx, ky, min_n=10)["strength"])
     lo, hi = np.nanpercentile(vals, [2.5, 97.5])
     return float(lo), float(hi)
 
