@@ -4,7 +4,7 @@ Research for IPAVentures (IP Australia): how Australia's IP system creates publi
 interventions could add the most. The goal and its five questions are in `docs/research-goal.md`. This repo holds the
 data corpus (`src/corpus/`, `data/`) and the analysis of it (`analysis/`).
 
-**Current phase: exploratory data analysis (EDA), Stage 1 of 3** (univariate, then bivariate, then multivariate). The
+**Current phase: exploratory data analysis (EDA), Stage 2 of 3** (univariate done; now bivariate, then multivariate). The
 plan is `docs/eda-plan.md`; status and open items are in `docs/handover-eda.md`. Don't start answering the five questions
 until Stage 3 is done and the owner says so.
 

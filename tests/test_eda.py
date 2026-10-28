@@ -121,6 +121,60 @@ def test_pair_stats_and_screening():
     assert (screen.iloc[0]["variable 1"], screen.iloc[0]["variable 2"]) == ("x", "y")
 
 
+def test_association_measures_share_one_scale():
+    rng = np.random.default_rng(4)
+    x = rng.normal(size=4000)
+    flag = (x + rng.normal(size=4000) > 0).astype(float)
+    df = pd.DataFrame({"x": x, "y": x + rng.normal(size=4000), "flag": flag, "cat": np.where(flag > 0, "a", "b")})
+    df.loc[:9, "cat"] = None
+    p = bi.prepare(df, {"x": "number", "y": "number", "flag": "number", "cat": "category"})
+    assert p.attrs["levels"]["cat"] == ["a", "b"] and (p.cat == -1).sum() == 10
+    rho = bi.association(p.x.to_numpy(), p.flag.to_numpy(), "number", "number")
+    eta = bi.association(p.x.to_numpy(), p.cat.to_numpy(), "number", "category")
+    # a yes/no as a number (Spearman) and as a category (rank eta) give the same strength
+    assert eta["strength"] == pytest.approx(rho["strength"], abs=0.01) and eta["n"] == 3990
+    v = bi.association(p.cat.to_numpy(), p.cat.to_numpy(), "category", "category")
+    assert v["strength"] == pytest.approx(1.0, abs=1e-3)
+    noise = bi.association(rng.integers(0, 5, 4000), rng.integers(0, 4, 4000), "category", "category")
+    assert noise["strength"] < 0.05
+
+
+def test_fdr_matches_benjamini_hochberg():
+    from statsmodels.stats.multitest import multipletests
+
+    p = pd.Series([0.01, 0.04, 0.03, 0.2, np.nan, 0.001])
+    q = bi.fdr(p)
+    assert np.isnan(q[4]) and np.allclose(q.dropna(), multipletests(p.dropna(), method="fdr_bh")[1])
+
+
+def test_screen_and_replicate_find_the_real_pair():
+    rng = np.random.default_rng(5)
+
+    def sample(n):
+        z = rng.normal(size=n)
+        return pd.DataFrame({"a": z, "b": z + rng.normal(size=n), "c": rng.normal(size=n), "d": z * 2})
+
+    kinds = {c: "number" for c in "abcd"}
+    groups = {"same": ["a", "d"]}
+    one, two = (bi.screen(bi.prepare(sample(3000), kinds), groups=groups) for _ in range(2))
+    m = bi.replicate(one, two).set_index(["variable 1", "variable 2"])
+    assert m.loc[("a", "b"), "verdict"] == "lead" and m.loc[("a", "d"), "verdict"] == "by construction"
+    assert m.loc[("a", "c"), "verdict"] in ("negligible", "not significant")
+    assert bi.third_factors(one, "b", "d") == ["a"]
+    assert bi.size_word(0.35) == "moderate"
+
+
+def test_effect_sizes_for_planned_pairs():
+    d, lo, hi = bi.rate_difference(60, 100, 30, 100)
+    assert d == pytest.approx(0.3) and lo < 0.3 < hi and lo > 0.15
+    rr, lo, hi = bi.rate_ratio(200, 1000, 100, 1000)
+    assert rr == pytest.approx(2) and lo < 2 < hi
+    md, lo, hi = bi.median_difference(pd.Series(range(100, 200)), pd.Series(range(100)))
+    assert md == 100 and lo <= 100 <= hi
+    h = bi.split_half(pd.Series([str(i) for i in range(1000)]))
+    assert 0.4 < h.mean() < 0.6 and h.equals(bi.split_half(pd.Series([str(i) for i in range(1000)])))
+
+
 def test_wilson_interval_matches_known_value():
     low, high = bi.wilson(np.array([5]), np.array([10]))
     assert low[0] == pytest.approx(0.2366, abs=1e-4) and high[0] == pytest.approx(0.7634, abs=1e-4)
@@ -613,3 +667,27 @@ def test_institutions_carry_their_sources():
                  AS full_grid""").iloc[0]
     assert 0.999 < r.arc_share <= 1 and 0.995 < r.nhmrc_share <= 1
     assert r.lens_ip == r.linked_ip and bool(r.full_grid)
+
+
+def test_the_screen_covers_every_column_of_each_screened_lens():
+    reg = style.register()
+    for lens, spec in bi.screens().items():
+        assert set(spec["columns"]) == set(reg[lens]), f"{lens}: screens.yaml and variables.yaml differ"
+        for c, k in spec["columns"].items():
+            assert k in ("number", "category") or (isinstance(k, dict) and k.get("skip")), f"{lens}.{c}: {k}"
+        kinds = bi.screen_kinds(lens)
+        for g, members in spec.get("groups", {}).items():
+            assert set(members) <= set(kinds), f"{lens} group {g} names a column not screened"
+        for c, d in spec.get("derived", {}).items():
+            assert d["kind"] in ("number", "category") and d["sql"] and d["label"], f"{lens}.{c}"
+
+
+def test_ratio_by_and_survival_interval():
+    df = pd.DataFrame({"g": ["a"] * 200 + ["b"] * 200, "w": [1.0, 0.0] * 200, "k": [1.0] * 400})
+    r = bi.ratio_by(df, "g", "w", "k")
+    assert r.loc["a", "ratio"] == pytest.approx(0.5) and r.loc["a", "low"] < 0.5 < r.loc["a", "high"]
+    counts = pd.DataFrame({"g": ["x"] * 3, "t": [1, 2, 3], "ended": [10, 10, 10], "unfinished": [0, 0, 70]})
+    km = uni.kaplan_meier(counts, by="g")
+    s = bi.survival_with_interval(km, 2.5, by="g")
+    assert s.loc["x", "in force"] == pytest.approx(0.8) and s.loc["x", "low"] < 0.8 < s.loc["x", "high"]
+    assert bi.survival_with_interval(km, 9, by="g").empty

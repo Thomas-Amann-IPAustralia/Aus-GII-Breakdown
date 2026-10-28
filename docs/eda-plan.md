@@ -20,9 +20,12 @@ profiled (U80 to U87, ADR 0021): 130 research institutions by ROR and year, link
 through a reviewed list of names and ABNs, with OpenAlex, patent citations, NHMRC grants and patent families, and
 the detail in `institution_rights`. The last three `rights` attachments, the links, Google Patents and the
 inventors, are built and profiled (U88 to U98, ADR 0022). **Stage 1 is complete:** every lens and attachment has its
-profile, summarised in `docs/stage-1-summary.md` (and section 9 of the notebook). This plan says what the exploratory
+profile, summarised in `docs/stage-1-summary.md` (and section 9 of the notebook). **Stage 2 has begun (2026-10-28,
+A14)**, with the method of ADR 0030 (a screen of every pair of each lens, set in `analysis/eda/screens.yaml`, then the
+planned pairs of the Stage 1 summary's section 7): the `rights` lens (B1 to B19) and the `firms` lens (B20 to B26) are
+done in `02_bivariate.ipynb`; the other five lenses follow in the same order as Stage 1. This plan says what the exploratory
 data analysis (EDA) covers, where each dataset fits, what each part needs before it starts, and which gaps are worth
-filling. Decisions are in `docs/adr/` (0002 to 0022); terms are in `GLOSSARY.md`.
+filling. Decisions are in `docs/adr/` (0002 to 0030); terms are in `GLOSSARY.md`.
 
 ## Why an EDA first
 
@@ -229,7 +232,7 @@ outcomes for small businesses are a limit of this research, stated wherever it b
 | Stage | Notebook | Asks | Main tools (`analysis/eda/`) | Finished when |
 |---|---|---|---|---|
 | 1. Univariate | `analysis/notebooks/01_univariate.ipynb` | What does each variable look like on its own: completeness, shape, outliers, quirks? | `univariate`: `overview`, `describe`, `distribution`, `bin_check`, `counts`, `missing`, `over_time`, `monthly` | Every variable of every lens, and of every attachment, has its profile. The notable ones have numbered observations. Exclusions and transformations are decided and recorded. |
-| 2. Bivariate | `02_bivariate.ipynb` | Which pairs move together, in what shape, how strongly, for whom? | `bivariate`: `screen_pairs`, `pair_stats`, `scatter_trend`, `binned_summary`, `compare_groups`, `rate_by`, `rate_chart` | Every pair within each lens has been screened. Each lead has its size and interval, survives a correction for the number of pairs tested, and holds in a second period or sample. Candidate third factors are listed. |
+| 2. Bivariate | `02_bivariate.ipynb` | Which pairs move together, in what shape, how strongly, for whom? | `bivariate`: `run_screen` (with `screens.yaml`), `replicate`, `distinct_leads`, `leads_table`, `strength_map`; `rate_by`, `rate_difference`, `median_difference`, `ratio_by`, `survival_with_interval`, `compare_groups`, `dot_chart` | Every pair within each lens has been screened. Each lead has its size and interval, survives a correction for the number of pairs tested, and holds in a second period or sample. Candidate third factors are listed. |
 | 3. Multivariate | `03_multivariate.ipynb` | Do the signals survive other factors? What structure and segments exist? | `multivariate`: `corr_heatmap`, `pca`, `scree`, `vif`, `partial_corr`, `clusters`, `assign` | A table of early signals (evidence, strength, question, next step) and a table of data gaps (why, possible source, cost). |
 
 Every variable gets the systematic profile. Written observations are kept for what is notable, so that breadth does not

@@ -35,5 +35,6 @@ the owner's, or Claude's, which the owner can overturn.
 | [0027](0027-recheck-oq6-oq7-oq13.md) | OQ6, OQ7 and OQ13 rechecked on a fresh IP RAPID release, independent of the corpus; none a misclassification, the questions sharpened | 2026-10-27 | Owner (asked for the recheck), Claude (how) |
 | [0028](0028-ip-australia-register-apis.md) | A client and a corpus source (`ipa_api`) for IP Australia's register APIs, and IP RAPID checked against the register: complete and accurate; its gaps (ABNs, design origin, expedite events) are in publication; no lens changed yet | 2026-10-27 | Owner (access, the ask), Claude (how) |
 | [0029](0029-register-fills-and-provisionals.md) | IP Australia's register read whole (`ipa_register`, `ipa_provisionals`); its ABNs, design countries and expedite events fill the lenses beside IP RAPID's values; firms credited by the filled filer ABN; 11,098 empty design records dropped and listed; U7, U13, U34 and U45 restated (U99 to U104) | 2026-10-27 | Owner (A12, A13), Claude (how) |
+| [0030](0030-stage-2-method.md) | Stage 2's method: every pair of a lens screened on one scale (rho, the rank correlation ratio, Cramér's V), a lead only if at least 0.1, past a false discovery rate of 5%, held in a second period or half, and not by construction (`screens.yaml`); then the planned pairs with intervals in two periods | 2026-10-28 | Claude (owner asked for Stage 2, A14) |
 
-Next free number: 0030.
+Next free number: 0031.

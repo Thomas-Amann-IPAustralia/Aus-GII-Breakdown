@@ -2,6 +2,7 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
+**The owner's decisions (2026-10-28):** begin Stage 2 (A14); update the website only once all of Stage 2 is finished.
 **The owner's decisions (2026-10-26):** address the three remaining `rights` attachments (done: the links, Google
 Patents and the inventors); before that, complete the `institutions` lens (done: core, its IP detail and every source
 mapped to it); before that, go on to the `industries` lens (done: core and attachments); before that, commence the
@@ -13,7 +14,47 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-27, latest):** **The register's fills are in the lenses** (ADR 0029), at the owner's decisions (A12:
+**Status (2026-10-28, latest): Stage 2 has begun** (A14), in `analysis/notebooks/02_bivariate.ipynb`, with the method
+of ADR 0030. **The website (evidence atlas) is not to be updated until all of Stage 2 is finished** (the owner's
+instruction, 2026-10-28): leave `evidence/` and `analysis/atlas/` alone until then.
+- **Method:** each lens section screens every pair of its variables on one 0-to-1 scale (|Spearman rho|, the rank
+  correlation ratio, bias-corrected Cramér's V), set column by column in `analysis/eda/screens.yaml` (a test checks
+  it names every column of `variables.yaml`); a lead must be at least 0.1, pass a Benjamini-Hochberg false discovery
+  rate of 5%, hold again in a replication sample (a second decade for `rights`, the other hash half of the key for
+  `firms` and `regions`) and not be "by construction" (the yaml's `groups`). Then the planned pairs of
+  `docs/stage-1-summary.md` section 7, each with intervals, in two periods or halves, third factors named. Helpers in
+  `analysis/eda/bivariate.py` (`run_screen`, `replicate`, `distinct_leads`, `leads_table`, `rate_difference`,
+  `ratio_by`, `survival_with_interval`, `dot_chart`); terms in `GLOSSARY.md`.
+- **How the notebook is made:** I generated it from section files (cells as text) and executed it whole with
+  `nbconvert` (about 7 minutes for sections 1 and 2; the screens are seconds, the full-sample bootstrap intervals
+  minutes). A later session can edit the notebook's cells directly; keep each observation's numbers on the page.
+- **Section 1, `rights` (B1 to B19):** 223 distinct leads over six types, the decades agreeing (rho 0.859). Mechanics
+  and quirks recorded (B2, B3: IP RAPID gives no origin for designs never registered; the register fills it). Signals:
+  standard patents filed alone are granted about 36 points less often (Australian individuals, both decades, also among
+  those examined; B6) and trade marks about 23 to 24 points (B6); Australian organisations keep granted patents longer
+  than overseas ones, within fields too (B8); lone filers and Australian individuals renew trade marks and designs
+  least (B10); Australians' lower citations are mostly narrower reach (B12); expedited patents last longer only for
+  overseas organisations, the pooled link being Simpson's paradox (B13); one patent in seven made in Australia is
+  filed from overseas (B16); women among inventors vary by field (4.2% to 26.9%, order stable; B17) and, on
+  provisionals, organisations' inventors include about 5 points more women than individuals' (B18); the patents that
+  move overseas are the wider and granted ones (B19). Not replicated: the origin gap in time to grant (B7), organisations'
+  lone-filing gap (B6).
+- **Section 2, `firms` (B20 to B26):** looked within groups that entered the lens through another door (R&D
+  claimants, government suppliers, large taxpayers), because the lens's own make-up drives several screen leads (B21).
+  Filing IP goes with company form, age and cities, and with advantaged postcodes for suppliers only (B22); R&D spend
+  goes only weakly with patenting (rho 0.12), and missing filers are mostly young private companies (B23); suppliers
+  with IP win more and larger contracts within each entity group (B24); firms file a first trade mark at about 2
+  years, a first patent at about 4.6 (B25); the youngest firms' patents move overseas most (B26, small numbers).
+- **Data gaps found:** firms' industry and size (the third factors most firm leads need; BLADE stays ruled out);
+  whether Google Patents holds older Australian-only families fully (B11).
+- **Next:** section 3, `regions`. Plan: screen the core columns over hash halves of postal areas (rates only where 10
+  or more applications are expected); screen every `region_indicators` indicator (one period each; counts per 1,000
+  people) against the IP rates, not against each other (ADR 0030, rejected options); then the planned pairs: area
+  rates against advantage, remoteness, the Census and business mix, with negative binomial models for counts (U52,
+  U53), and missing filers by place. Then `national`, `timeline` (the provisional rise and the policy windows with
+  placebo dates), `industries`, `institutions`, and the Stage 2 summary.
+
+**Status (2026-10-27):** **The register's fills are in the lenses** (ADR 0029), at the owner's decisions (A12:
 use the fills; A13: reword the request). `ipa_register` read every trade mark and design (2,338,036 and 269,048) and
 `ipa_provisionals` is reading every provisional with its inventors (about nine hours, in runs of under two hours:
 `IPA_BUDGET_MINUTES=112 uv run corpus run ipa_provisionals`, repeated until it saves; the cache is in
