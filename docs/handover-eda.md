@@ -81,7 +81,9 @@ instruction, 2026-10-28): leave `evidence/` and `analysis/atlas/` alone until th
   patents with Australian links. The IP detail (`institution_rights`) is screened in halves.
 - **Section 8 and `docs/stage-2-summary.md`:** the signals carried to Stage 3, what is recorded but not carried, third
   factors and data gaps.
-- **Next is the owner's call:** (1) whether and when to update the evidence atlas with Stage 2 (the owner asked that
+- **Next (the owner's decision, 2026-10-28, A15): fill the data gaps, in a fresh session,** from
+  `docs/data-gaps-brief.md` (every gap, its source, its lens and what done means; A1 the fee history first). Still the
+  owner's call: (1) whether and when to update the evidence atlas with Stage 2 (the owner asked that
   the website wait until Stage 2 was finished; it is now, and the atlas would need Stage 2 pages built the way Stage
   1's were, ADR 0023); (2) Stage 3; (3) whether to add OQ18 to the request to IP Australia.
 
