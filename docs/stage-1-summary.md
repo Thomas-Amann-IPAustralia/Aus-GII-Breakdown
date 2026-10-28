@@ -588,7 +588,28 @@ Reports (2015 to 2026), its economic research papers and notes, as the Econ repo
 
 ---
 
-## 11. Where to find things
+## 11. IP Australia's register (added 2026-10-27, ADR 0028 and 0029)
+
+IP RAPID was checked against IP Australia's live register, read through its APIs (`docs/audit-ipa-api.md`): it is
+complete to within a week and its fields agree with the register's for nearly every record of a random sample. Its
+gaps are in what it publishes, and the register fills them beside IP RAPID's own values (notebook 1.8.6, U99 to U104):
+
+- **U45 restated (U100, U101):** with the register's business numbers, 92.3% of Australian organisations' trade marks
+  have a filer's ABN in FY2024, 91.4% in FY2025 and 90.9% in FY2026 (IP RAPID: 84.1%, 71.4%, 59.9%); firms filing
+  their first trade mark number 14,728, 15,818 and 19,730. Firm-level filing by year is now compared to FY2026.
+- **U7 and U13 restated (U102):** designs filed FY2017 to FY2026 are 32.31% Australian with 0.007% of unknown origin
+  (IP RAPID: 30.05% with 5.062%).
+- **U34 restated (U103):** trade marks claiming convention priority carry an expedite event in every year, in IP RAPID
+  to FY2018 and in the register from FY2019 (97.82% in FY2018 and 99.55% in FY2020 in either record).
+- **U104:** 11,098 empty design records, numbered 1973 to 1982, are dropped and listed.
+
+- **Provisionals' inventors (1.8.7, U105 to U107):** the register holds every provisional IP RAPID does (264,250 of
+  264,260 numbers; the gaps in the numbering were never used) and names 181,469 inventors, from FY2003 (98.53% to
+  100% of provisionals to FY2023; 76.38% to 84.69% since FY2024, a lead). An estimated 21.24% of inventors on
+  Australian organisations' provisionals filed FY2017 to FY2026 are women, and 15.57% on individuals'; 14.56% in
+  FY2026. These are the data for the research owner's gender analysis.
+
+## 12. Where to find things
 
 | What | Where |
 |---|---|

@@ -13,7 +13,40 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-27, latest):** **OQ6, OQ7 and OQ13 rechecked on a fresh IP RAPID release** (ADR 0027,
+**Status (2026-10-27, latest):** **The register's fills are in the lenses** (ADR 0029), at the owner's decisions (A12:
+use the fills; A13: reword the request). `ipa_register` read every trade mark and design (2,338,036 and 269,048) and
+`ipa_provisionals` is reading every provisional with its inventors (about nine hours, in runs of under two hours:
+`IPA_BUDGET_MINUTES=112 uv run corpus run ipa_provisionals`, repeated until it saves; the cache is in
+`~/.cache/ipholmes/ipa_provisionals`). The rights lens has the filled columns beside IP RAPID's (`filer_abn`,
+`australian_applicant_filled`, `register_expedited` and others); firms are credited by `filer_abn` and the spine has
+463,279 ABNs; 11,098 empty design records are dropped (`analysis/eda/dropped/design_shells.csv`). Notebook 1.8.6
+(U99 to U104) restates U45 (ABN linking 92.3% to 90.9%, FY2024 to FY2026; first-time trade mark filers 19,730 in
+FY2026), U7 and U13 (designs 32.31% Australian, 0.007% unknown) and U34 (priority-claiming marks expedited every year);
+figures moved by the drop are corrected and the atlas follows (105 observations). OQ6, OQ7, OQ13 and OQ14 are
+reworded. The provisional harvest is done too (`ipa_provisionals`: 264,260 numbers, 181,469 inventors; five runs, one
+container restart, resumed from the cache): `rights` has `register_inventors` and its expected women and men, profiled
+in 1.8.7 (U105 to U107; atlas 108 observations). **The owner agreed (2026-10-28, A14):** Stage 2 and the gender analysis go ahead (provisionals from FY2003, each
+year's coverage shown); OQ17 (provisionals' missing inventors since FY2024) joins the request to IP Australia; the
+branch goes to a pull request, and the atlas is published when it merges. **Next:** Stage 2.
+
+Before that, the same day: **IP RAPID checked against IP Australia's live register** (ADR 0028,
+`docs/audit-ipa-api.md`), after the owner obtained API access (credentials in the environment: `IPA_API_*_DEV` is
+production, `IPA_API_*_TEST` the test host). The client is `src/corpus/ipa_api.py` (`python -m corpus.ipa_api get
+trade_mark 1000000`; guide in `docs/ip-reg-api/README.md`); the harvest is a corpus source, `ipa_api` (about two
+hours); the comparison is `python -m audit.api_check --live` (seconds, plus the live yearly counts). Findings (V1 to
+V14): IP RAPID is complete to within the week since its release and its fields agree with the register's in 99.7% to
+100% of a random sample of every right; Madrid marks are dated by IP Australia's notification and PCT patents by
+national phase entry, by definition. Its gaps are in what it publishes: the register holds an ABN or ACN for 83.8% of
+the OQ7 marks, a country for 61.4% of the OQ14 designs (which reproduces IP Australia's resident design counts, D1),
+and "Examination expedited" on every priority-claiming mark since FY2020 (OQ6: U34's break is publication). Trade mark
+numbers 1,978,060 to 1,980,352 were never used. No lens or observation is changed. **Next is the owner's call:** OQ15
+(attach the fills to `rights`) and OQ16 (reword the request to IP Australia); then Stage 2. Production's patent API
+fails about half its calls at random; the client retries. Added after the owner's questions (V15 to V17): the
+register names inventors where Google Patents has none (standard patents before 1970, provisionals since 2000;
+about 350,000 rights, projected, days of fetching); the undated designs are 1973 to 1982 shells; and of the designs
+still without a country, 15,154 of 15,730 have no owner on record anywhere.
+
+Before that, the same day: **OQ6, OQ7 and OQ13 rechecked on a fresh IP RAPID release** (ADR 0027,
 `docs/recheck-oq6-oq7-oq13.md`), at the owner's request before taking them to IP Australia. `analysis/audit/recheck.py`
 reads the 26 October 2026 release raw from data.gov.au, without the corpus or lenses, and reproduces U34, U45 and D2.
 None is a misclassification in how we read the data, but two are now explained further:

@@ -361,9 +361,9 @@ questions:
   - id: OQ12
     text: What does IP Australia's "55.6% of resident applications were filed by individuals" (2022) count? (D3)
   - id: OQ13
-    text: Why does IP RAPID hold about 2,000 fewer Madrid trade marks for 2018 than IP Australia's report counted? (D2)
+    text: What did IP Australia's report count for 2018's trade marks, about 2,000 more than IP RAPID, WIPO and IP Australia's own register? (D2; reworded after the register check)
   - id: OQ14
-    text: Could IP RAPID publish the origin IP Australia holds for the designs it now leaves unknown? (D1)
+    text: IP Australia's register holds the owner's country for most designs IP RAPID leaves unknown; could IP RAPID publish it? (D1; reworded after the register check)
 
 limits:
   - title: Not independent

@@ -1,0 +1,13 @@
+gap,period,records,in_register,filled,filled_in_abr,with_acn,abn_from_acn,filled_either,filled_au,register_no_owner,iprapid_no_applicant
+abn_control,FY2023,5899,5899,2502,2494,3494,1031,3533,,,
+abn_gap,FY2025,11443,11443,5811,5804,6677,3354,9165,,,
+abn_gap,FY2026,16888,16888,9655,9647,9430,4742,14397,,,
+abn_gap,FY2027,6304,6304,3749,3747,3510,1730,5479,,,
+country_gap,1970s,1366,1366,6,,,,,6,1350,1350
+country_gap,1980s,6218,6218,3319,,,,,3079,2703,2703
+country_gap,1990s,8675,8675,8544,,,,,7839,0,23
+country_gap,2000s,5408,5408,5332,,,,,4500,0,0
+country_gap,2010s,3317,3317,3153,,,,,2560,2,2
+country_gap,2020s,4638,4638,4637,,,,,2867,0,0
+country_gap,,11126,11126,27,,,,,19,11099,11099
+number_gap,1978060 to 1980352,2292,1,,,,,,,,

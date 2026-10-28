@@ -57,6 +57,112 @@ no inventors, only applicants, owners, agents and other parties.
 
 - Note: iprapid: release of 2026-10-19T00:32:40.599789
 
+## IP Australia's register APIs (trade mark, patent and design search), for checking IP RAPID and filling its gaps (`ipa_api`)
+
+IP Australia. Tier 1; questions 1, 2, 3, 4. Licence: IP Australia API terms (client credentials, held by the owner). Source: https://anypoint.mulesoft.com/exchange/portals/ip-australia-3/
+
+IP Australia's register APIs: the live records behind IP RAPID, to check it against and to fill its gaps (ADR 0028).
+
+The client is `corpus.ipa_api` (production; credentials in the environment). A run takes:
+
+- `numbers`: every trade mark and design number the APIs' searches find, by year of lodgement (trade marks) or filing
+  (designs), and whether the record changed after the IP RAPID release in the corpus. Patents cannot be listed: the
+  patent search ignores fields and returns at most 5,000 numbers.
+- records, fetched one by one, for these targets (a right can have several; `reasons` lists them):
+  - `sample`: a random sample of IP RAPID's applications (seed 2026): 3,000 trade marks, 2,000 designs and 2,000
+    patents, to check IP RAPID field by field;
+  - `abn_gap`: trade marks filed from July 2024 whose first current applicant is an Australian organisation with no
+    ABN in IP RAPID (OQ7); `abn_control`: the same in FY2023, before the change;
+  - `country_gap`: designs with no applicant country in IP RAPID (OQ14);
+  - `number_gap`: trade mark numbers 1,978,060 to 1,980,352, missing from IP RAPID (OQ13);
+  - `api_only`, `iprapid_only`: numbers one side has and the other's searches do not find.
+
+Raw: the records as the API sent them, gzipped JSON lines by right (R2: they hold individuals' names and addresses).
+Processed: `trade_marks`, `designs` and `patents`, one row per number fetched (whether found, status, dates, the
+first current owner's ABN, ACN, country, state and postcode, classes), without names (repo); `owners`, one row per
+right and current owner with names, as the API gives them (R2).
+
+A run takes about two hours (600 requests a minute per API). Records already fetched today are kept if a run is
+interrupted, so running it again the same day carries on.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `designs` | 42,708 | repo (0.5 MB) | `application_number`, `reasons`, `found`, `status`, `filed_date`, `registered_date`, `certified_date`, `published_date`, `ceased_date`, `lapsed_date`, `refused_date`, `withdrawn_date`, `revoked_date`, `priority_date` … |
+| `numbers` | 2,594,082 | repo (3.3 MB) | `ip_right_type`, `application_number`, `year`, `changed_since_release`, `date_type` |
+| `owners` | 80,200 | R2 (1.4 MB) | `ip_right_type`, `application_number`, `seq`, `name`, `abn`, `acn`, `country`, `state`, `postcode` |
+| `patents` | 2,000 | repo (0.1 MB) | `application_number`, `reasons`, `found`, `patent_type`, `status_code`, `filed_date`, `priority_date`, `opi_date`, `acceptance_published_date`, `sealing_date`, `expiry_date`, `inforce_to_date`, `main_ipc`, `ipc_subclasses` … |
+| `trade_marks` | 49,909 | repo (1.3 MB) | `application_number`, `reasons`, `found`, `status_group`, `status_code`, `status_detail`, `lodgement_date`, `filing_date`, `priority_date`, `divisional_date`, `ir_notification_date`, `first_report_date`, `acceptance_date`, `entered_on_register_date` … |
+
+- Note: ipa_api: production register as at 2026-10-27; compared with the IP RAPID release of 2026-10-19
+- Note: ipa_api: 0 calls, 0 retried (production patents answer 403 at random)
+
+## IP Australia's register, whole (every trade mark and design), through its APIs (`ipa_register`)
+
+IP Australia. Tier 1; questions 1, 2, 3, 4. Licence: IP Australia API terms (client credentials, held by the owner). Source: https://anypoint.mulesoft.com/exchange/portals/ip-australia-3/
+
+IP Australia's register, whole: every trade mark and design record, read through the register APIs
+(`corpus.ipa_api`; ADR 0029).
+
+`ipa_api` checked IP RAPID against the register from a sample and a few targets (ADR 0028). This source takes every
+trade mark and design, so the gaps the register fills (owners' ABNs and ACNs, design owners' countries, the
+register's expedite events) are filled for every year alike. Provisional patent applications, with their inventors,
+are `ipa_provisionals`.
+
+Every record a date search finds (by lodgement and filing date) is taken a page of 100 at a time, the range split
+until each part is under the 10,000-record cap; and, by number, the records the searches cannot find (IP RAPID's
+numbers with no date in the register). About 2.6 million records; under three hours.
+
+Raw responses are not kept (2.3 million trade mark records are about 25 GB): each slice is flattened as it arrives
+(`ipa_api.flat`, the same fields the audit uses) and kept in the cache, so an interrupted run carries on where it
+stopped, on any later day, and `IPA_BUDGET_MINUTES` stops a run cleanly after that long (for runs in parts).
+
+Processed:
+- `trade_marks`, `designs` (no names): one row per record: status, dates, classes, the first current owner's ABN, ACN,
+  country, state and postcode, any owner's ABN, and (trade marks) the register's expedite events.
+- `owners` (R2, names as the register gives them): every current owner of every trade mark and design.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `designs` | 269,048 | repo (2.5 MB) | `application_number`, `found`, `status`, `filed_date`, `registered_date`, `certified_date`, `published_date`, `ceased_date`, `lapsed_date`, `refused_date`, `withdrawn_date`, `revoked_date`, `priority_date`, `registered_until` … |
+| `owners` | 2,702,030 | R2 (33.6 MB) | `ip_right_type`, `application_number`, `seq`, `name`, `abn`, `acn`, `country`, `state`, `postcode` |
+| `trade_marks` | 2,338,036 | repo (41.5 MB) | `application_number`, `found`, `status_group`, `status_code`, `status_detail`, `lodgement_date`, `filing_date`, `priority_date`, `divisional_date`, `ir_notification_date`, `first_report_date`, `acceptance_date`, `entered_on_register_date`, `registered_from_date` … |
+
+- Note: ipa_register: production register as at 2026-10-27
+- Note: ipa_register: 0 calls, 0 retried
+
+## Every provisional patent application in IP Australia's register, with its inventors, through its APIs (`ipa_provisionals`)
+
+IP Australia. Tier 1; questions 1, 2, 3. Licence: IP Australia API terms (client credentials, held by the owner). Source: https://anypoint.mulesoft.com/exchange/portals/ip-australia-3/
+
+Every provisional patent application in IP Australia's register, with its inventors, read through the patent API
+(`corpus.ipa_api`; ADR 0029).
+
+Provisional applications are never published, so Google Patents (the corpus's other source of inventors) holds almost
+none; the register names their inventors from about 2000 (ADR 0028, V15). The patent search cannot list patents, so
+each is fetched by number:
+
+- every provisional IP RAPID holds;
+- numbers past each of the last two years' highest, until 300 in a row are not found (filed after the release);
+- a probe of 300 numbers missing inside IP RAPID's yearly sequences (they run YYYY90NNNN): on 27 October 2026 a probe
+  of 360 found none in the register, so the gaps are numbers never used, and only a probe is kept, as evidence.
+
+Production's patent API fails about half its calls at random, but those calls are not counted toward the limit
+(ADR 0028), so with 24 threads the run takes about 540 records a minute: about eight hours for 264,000. Batches are
+kept in the cache, so an interrupted run carries on, on any later day; `IPA_BUDGET_MINUTES` stops it cleanly.
+
+Processed:
+- `provisionals` (no names): one row per number asked: whether the register has it, its status and status events,
+  dates, title, first IPC mark, numbers of applicants and representatives, its inventors and their expected women and
+  men, and whether IP RAPID has it (`in_iprapid`).
+- `inventors` (R2, names as the register gives them): one row per provisional and inventor, with the given name used
+  and the estimated chance that the inventor is a woman, by the World Gender-Name Dictionary as
+  `google_patents_inventors` does (ADR 0022). The register gives no inventor's country, so the first applicant's
+  country in IP RAPID stands in for it (`country_basis` = `applicant`); with none, the name alone decides.
+- `applicants` (R2, names): each provisional's applicants as the register names them.
+- `gap_probe`: the probed numbers and whether the register has them.
+
+*Not ingested yet: see the status in `docs/data-plan.md`.*
+
 ## Intellectual Property Longitudinal Research Data (IPLORD) 2020 (`iplord`)
 
 IP Australia. Tier 1; questions 2, 3. Licence: CC BY 4.0. Source: https://data.gov.au/data/dataset/intellectual-property-longitudinal-research-data-2020
@@ -1054,8 +1160,9 @@ built here from abr, asic, iprapid, iplord, rdti, austender and ato_ctt. Tier 1;
 The ABN spine: one row per ABN that appears anywhere in the corpus, with what the business registers say about it.
 
 Built from the other sources (run it after them). Processed: `abn_spine` (repo), one row per ABN seen in IP RAPID's
-parties (an applicant or owner of any right, founding or current), IPLORD, the R&D Tax Incentive reports, AusTender
-suppliers or the corporate tax transparency reports, with:
+parties (an applicant or owner of any right, founding or current), IP Australia's register (an owner of a trade mark
+or design, by the ABN it gives or the one its ACN has in the ABR; ADR 0029), IPLORD, the R&D Tax Incentive reports,
+AusTender suppliers or the corporate tax transparency reports, with:
 
 - from the ABR: entity type, ABN status and the date it took effect, GST status and date, state, postcode, ACN, and
   whether the business is a deductible gift recipient;
@@ -1063,8 +1170,8 @@ suppliers or the corporate tax transparency reports, with:
 - `first_seen`, the earliest of the ABN status date (for an active ABN), GST registration and ASIC registration: a
   lower bound on the business's start, since the public ABR gives only the date of the current status;
 - flags for each source it appears in (`in_iprapid_patent` and so on: an applicant or owner of that right, founding or
-  current; `in_rdti`, `in_austender`, `in_ato_ctt`), and its first and last filing financial years by right type, as a
-  founding applicant, from `iprapid/applicant_year`;
+  current; `in_register`, `in_rdti`, `in_austender`, `in_ato_ctt`), and its first and last filing financial years by
+  right type, as a founding applicant, from `iprapid/applicant_year`;
 - `austender_contracts` and `austender_value`: the contracts it supplies, each counted once at its latest notice (the
   highest amendment, whose value is the contract's total), and credited to that notice's supplier. Summing every
   notice would count a contract once per amendment (ADR 0011).
@@ -1074,4 +1181,4 @@ applicants that IP Australia matched to the ABR; foreign applicants and many ind
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `abn_spine` | 398,450 | repo (12.9 MB) | `abn`, `entity_type`, `entity_type_text`, `abn_status`, `abn_status_from`, `gst_status`, `gst_status_from`, `state`, `postcode`, `acn`, `dgr`, `name`, `asic_registered`, `asic_deregistered` … |
+| `abn_spine` | 463,279 | repo (14.6 MB) | `abn`, `entity_type`, `entity_type_text`, `abn_status`, `abn_status_from`, `gst_status`, `gst_status_from`, `state`, `postcode`, `acn`, `dgr`, `name`, `asic_registered`, `asic_deregistered` … |

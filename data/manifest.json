@@ -8809,6 +8809,190 @@
    ],
    "run": "2026-10-25"
   },
+  "ipa_api": {
+   "files": {
+    "processed/designs": {
+     "bytes": 476763,
+     "columns": [
+      "application_number",
+      "reasons",
+      "found",
+      "status",
+      "filed_date",
+      "registered_date",
+      "certified_date",
+      "published_date",
+      "ceased_date",
+      "lapsed_date",
+      "refused_date",
+      "withdrawn_date",
+      "revoked_date",
+      "priority_date",
+      "registered_until",
+      "main_class",
+      "convention",
+      "owner_count",
+      "owner_abn",
+      "owner_acn",
+      "owner_country",
+      "owner_state",
+      "owner_postcode",
+      "any_owner_abn",
+      "any_owner_in_australia",
+      "fetched"
+     ],
+     "describe": "API records of designs fetched, without names",
+     "location": "repo",
+     "path": "data/processed/ipa_api/designs.parquet",
+     "rows": 42708,
+     "sha256": "efe640c6154521e37e11b5412f84c0639a1a980cba8ee43a9c0044bc29e8cf6f"
+    },
+    "processed/numbers": {
+     "bytes": 3257132,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "year",
+      "changed_since_release",
+      "date_type"
+     ],
+     "describe": "Every trade mark and design number the APIs' searches find, by year",
+     "location": "repo",
+     "path": "data/processed/ipa_api/numbers.parquet",
+     "rows": 2594082,
+     "sha256": "4f53e7d12cfb6f2cf5be9473a9ae942946d7a6396a139102bc8d9348e076095d"
+    },
+    "processed/owners": {
+     "bytes": 1374101,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "seq",
+      "name",
+      "abn",
+      "acn",
+      "country",
+      "state",
+      "postcode"
+     ],
+     "describe": "Each fetched right's current owners, named",
+     "key": "processed/ipa_api/owners.parquet",
+     "location": "r2",
+     "rows": 80200,
+     "sha256": "e7ef57dbb8bd99d86c18bbd6078d1ccc85433fe3dab7a0fb80f36305f777cee9"
+    },
+    "processed/patents": {
+     "bytes": 87755,
+     "columns": [
+      "application_number",
+      "reasons",
+      "found",
+      "patent_type",
+      "status_code",
+      "filed_date",
+      "priority_date",
+      "opi_date",
+      "acceptance_published_date",
+      "sealing_date",
+      "expiry_date",
+      "inforce_to_date",
+      "main_ipc",
+      "ipc_subclasses",
+      "ipc_count",
+      "pct",
+      "pct_number",
+      "pct_national_phase_date",
+      "convention_countries",
+      "inventor_count",
+      "representative_count",
+      "extensions_of_term",
+      "owner_count",
+      "owner_abn",
+      "owner_acn",
+      "owner_country",
+      "owner_state",
+      "owner_postcode",
+      "any_owner_abn",
+      "any_owner_in_australia",
+      "fetched"
+     ],
+     "describe": "API records of patents fetched, without names",
+     "location": "repo",
+     "path": "data/processed/ipa_api/patents.parquet",
+     "rows": 2000,
+     "sha256": "a4c50a76d278ed68ab1720945c9fcd990169931eebb9034ef4e0e42f68136bb0"
+    },
+    "processed/trade_marks": {
+     "bytes": 1306745,
+     "columns": [
+      "application_number",
+      "reasons",
+      "found",
+      "status_group",
+      "status_code",
+      "status_detail",
+      "lodgement_date",
+      "filing_date",
+      "priority_date",
+      "divisional_date",
+      "ir_notification_date",
+      "first_report_date",
+      "acceptance_date",
+      "entered_on_register_date",
+      "registered_from_date",
+      "renewal_due_date",
+      "lapsed_date",
+      "withdrawal_date",
+      "ir_number",
+      "kinds",
+      "classes",
+      "class_count",
+      "convention",
+      "series",
+      "history_events",
+      "expedite_events",
+      "expedite_date",
+      "owner_count",
+      "owner_abn",
+      "owner_acn",
+      "owner_country",
+      "owner_state",
+      "owner_postcode",
+      "any_owner_abn",
+      "any_owner_in_australia",
+      "fetched"
+     ],
+     "describe": "API records of trade_marks fetched, without names",
+     "location": "repo",
+     "path": "data/processed/ipa_api/trade_marks.parquet",
+     "rows": 49909,
+     "sha256": "e8f2e6b5d349c6a4089f39356d3d5e60c46fb37439c1756f7ca9b08de2c38692"
+    },
+    "raw/design.jsonl.gz": {
+     "bytes": 4406817,
+     "key": "raw/ipa_api/design.jsonl.gz",
+     "location": "r2",
+     "sha256": "5be638f2ff073be4dd41ee4b1081985f9af1f010d3d1ac3cd0fe7a45fffb3f5a"
+    },
+    "raw/patent.jsonl.gz": {
+     "bytes": 4039500,
+     "key": "raw/ipa_api/patent.jsonl.gz",
+     "location": "r2",
+     "sha256": "e411f2a86fde07150ff7ce5b7488302a1654a7d34eb5f2a7890d519e0a739878"
+    },
+    "raw/trade_mark.jsonl.gz": {
+     "bytes": 27885579,
+     "key": "raw/ipa_api/trade_mark.jsonl.gz",
+     "location": "r2",
+     "sha256": "0eefa3040871b8637645e7a422cfccf5ecfc0bf9f85b2672a84771cfea46ceca"
+    }
+   },
+   "notes": [
+    "ipa_api: production register as at 2026-10-27; compared with the IP RAPID release of 2026-10-19",
+    "ipa_api: 0 calls, 0 retried (production patents answer 403 at random)"
+   ],
+   "run": "2026-10-27"
+  },
   "ipa_fees": {
    "files": {
     "processed/fees": {
@@ -8882,6 +9066,207 @@
     "ipa_fees: no tables on https://www.ipaustralia.gov.au/about-us/accountability-and-reporting/fee-review-2023-24"
    ],
    "run": "2026-10-22"
+  },
+  "ipa_provisionals": {
+   "files": {
+    "processed/applicants": {
+     "bytes": 2412018,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "seq",
+      "name",
+      "abn",
+      "acn",
+      "country",
+      "state",
+      "postcode"
+     ],
+     "describe": "Provisionals' applicants as the register names them",
+     "key": "processed/ipa_provisionals/applicants.parquet",
+     "location": "r2",
+     "rows": 296507,
+     "sha256": "eb7861486d804205ff5ff770b33b9db0c2536f9dba7b7ac02d34c5bc0a303d99"
+    },
+    "processed/gap_probe": {
+     "bytes": 3314,
+     "columns": [
+      "application_number",
+      "in_register"
+     ],
+     "describe": "Numbers missing inside IP RAPID's provisional sequences, probed: whether the register has them",
+     "location": "repo",
+     "path": "data/processed/ipa_provisionals/gap_probe.parquet",
+     "rows": 300,
+     "sha256": "3624d8b1959f4e1b089524d09b686eb84a1355fde05da1dc222b138b917bc3f7"
+    },
+    "processed/inventors": {
+     "bytes": 1761878,
+     "columns": [
+      "application_number",
+      "seq",
+      "name",
+      "country_code",
+      "country_basis",
+      "given_name",
+      "p_female",
+      "p_female_basis"
+     ],
+     "describe": "Provisionals' inventors as the register names them, with gender",
+     "key": "processed/ipa_provisionals/inventors.parquet",
+     "location": "r2",
+     "rows": 181469,
+     "sha256": "953394e3edcb7a515df2eb21e6371fc414741fc0dbf69dfa8b5e16f4843e6325"
+    },
+    "processed/provisionals": {
+     "bytes": 4956828,
+     "columns": [
+      "application_number",
+      "found",
+      "patent_type",
+      "status_code",
+      "filed_date",
+      "priority_date",
+      "opi_date",
+      "acceptance_published_date",
+      "sealing_date",
+      "expiry_date",
+      "inforce_to_date",
+      "main_ipc",
+      "ipc_subclasses",
+      "ipc_count",
+      "pct",
+      "pct_number",
+      "pct_national_phase_date",
+      "convention_countries",
+      "representative_count",
+      "extensions_of_term",
+      "title",
+      "status_events",
+      "inventors",
+      "women_expected",
+      "men_expected",
+      "gender_unknown",
+      "in_iprapid"
+     ],
+     "describe": "Every provisional the register holds, with its inventors' count and expected gender",
+     "location": "repo",
+     "path": "data/processed/ipa_provisionals/provisionals.parquet",
+     "rows": 264260,
+     "sha256": "29d297aae27a86741b4fa597ba4a30957e5f89e6cdcbd2665e73bea17e955a97"
+    }
+   },
+   "notes": [
+    "ipa_provisionals: production register as at 2026-10-27",
+    "ipa_provisionals: 22,262 calls, 2 retried"
+   ],
+   "run": "2026-10-28"
+  },
+  "ipa_register": {
+   "files": {
+    "processed/designs": {
+     "bytes": 2532129,
+     "columns": [
+      "application_number",
+      "found",
+      "status",
+      "filed_date",
+      "registered_date",
+      "certified_date",
+      "published_date",
+      "ceased_date",
+      "lapsed_date",
+      "refused_date",
+      "withdrawn_date",
+      "revoked_date",
+      "priority_date",
+      "registered_until",
+      "main_class",
+      "convention",
+      "owner_count",
+      "owner_abn",
+      "owner_acn",
+      "owner_country",
+      "owner_state",
+      "owner_postcode",
+      "any_owner_abn",
+      "any_owner_in_australia"
+     ],
+     "describe": "Every design in the register",
+     "location": "repo",
+     "path": "data/processed/ipa_register/designs.parquet",
+     "rows": 269048,
+     "sha256": "fbb2472392ccf0a0f0d5ceacc7eba95ea39f65839b032000c9c3d4713126afc0"
+    },
+    "processed/owners": {
+     "bytes": 33582195,
+     "columns": [
+      "ip_right_type",
+      "application_number",
+      "seq",
+      "name",
+      "abn",
+      "acn",
+      "country",
+      "state",
+      "postcode"
+     ],
+     "describe": "Current owners of every trade mark and design, named",
+     "key": "processed/ipa_register/owners.parquet",
+     "location": "r2",
+     "rows": 2702030,
+     "sha256": "49aad55f8884327506ecd0483c9781fca7904dac5d56190851109776d9292c67"
+    },
+    "processed/trade_marks": {
+     "bytes": 41488654,
+     "columns": [
+      "application_number",
+      "found",
+      "status_group",
+      "status_code",
+      "status_detail",
+      "lodgement_date",
+      "filing_date",
+      "priority_date",
+      "divisional_date",
+      "ir_notification_date",
+      "first_report_date",
+      "acceptance_date",
+      "entered_on_register_date",
+      "registered_from_date",
+      "renewal_due_date",
+      "lapsed_date",
+      "withdrawal_date",
+      "ir_number",
+      "kinds",
+      "classes",
+      "class_count",
+      "convention",
+      "series",
+      "history_events",
+      "expedite_events",
+      "expedite_date",
+      "owner_count",
+      "owner_abn",
+      "owner_acn",
+      "owner_country",
+      "owner_state",
+      "owner_postcode",
+      "any_owner_abn",
+      "any_owner_in_australia"
+     ],
+     "describe": "Every trade_mark in the register",
+     "location": "repo",
+     "path": "data/processed/ipa_register/trade_marks.parquet",
+     "rows": 2338036,
+     "sha256": "35184936b19bb023b247a0856cfd4092bb56ab108612e60698ed84ec9d103324"
+    }
+   },
+   "notes": [
+    "ipa_register: production register as at 2026-10-27",
+    "ipa_register: 0 calls, 0 retried"
+   ],
+   "run": "2026-10-27"
   },
   "iplord": {
    "files": {
@@ -9380,7 +9765,7 @@
   "linkage": {
    "files": {
     "processed/abn_spine": {
-     "bytes": 12892045,
+     "bytes": 14563274,
      "columns": [
       "abn",
       "entity_type",
@@ -9405,6 +9790,7 @@
       "in_iprapid_trade_mark",
       "in_iprapid_design",
       "in_iprapid_pbr",
+      "in_register",
       "in_iplord",
       "in_rdti",
       "in_austender",
@@ -9422,11 +9808,11 @@
      "describe": "One row per ABN in the corpus, with ABR and ASIC attributes",
      "location": "repo",
      "path": "data/processed/linkage/abn_spine.parquet",
-     "rows": 398450,
-     "sha256": "095f326f6de71d61836e1624aa4dcd9d6152d2f7b75cd41318cb7bda01be9f23"
+     "rows": 463279,
+     "sha256": "ff634fbc3667647ec151da45c30ada2c033aff8657bd45571f2c67b97c68cce4"
     }
    },
-   "run": "2026-10-25"
+   "run": "2026-10-27"
   },
   "mwm": {
    "files": {

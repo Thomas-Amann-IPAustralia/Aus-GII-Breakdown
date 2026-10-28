@@ -1,0 +1,53 @@
+ip_right_type,iprapid,register,changed_since_release,n,agrees
+design,ceased,Ceased,False,1361,True
+design,certified,Certified,False,76,True
+design,certified,Certified,True,2,True
+design,filed,Filed,False,9,True
+design,filed,Registered,True,2,False
+design,lapsed,Lapsed,False,128,True
+design,refused,Refused,False,23,True
+design,registered,Registered,False,378,True
+design,registered,Registered,True,3,True
+design,registered,Ceased,False,1,False
+design,revoked,Revoked,False,2,True
+design,withdrawn,Withdrawn,False,15,True
+patent,accepted,ACCEPTED,,7,True
+patent,accepted,GRANTED,,1,False
+patent,ceased,CEASED,,491,True
+patent,certified,CERTIFIED,,2,True
+patent,converted,CONVERTED,,1,True
+patent,expired,EXPIRED,,116,True
+patent,filed,FILED,,108,True
+patent,filed,LAPSED,,1,False
+patent,granted,GRANTED,,196,True
+patent,granted,CEASED,,1,False
+patent,lapsed,LAPSED,,627,True
+patent,refused,REFUSED,,1,True
+patent,unknown,UNKNOWN,,435,True
+patent,withdrawn,WITHDRAWN,,13,True
+trade_mark,accepted,PENDING: Accepted,False,37,True
+trade_mark,accepted,PENDING: Accepted,True,4,True
+trade_mark,accepted,REGISTERED: Registered,True,1,False
+trade_mark,cancelled,REMOVED: Cancelled,False,28,True
+trade_mark,ceased,REMOVED: Removed - Not renewed,False,735,True
+trade_mark,ceased,REMOVED: Ceased - Not renewed,False,68,True
+trade_mark,ceased,REMOVED: Removed - Not renewed,True,2,True
+trade_mark,ex_parte_refused,REFUSED: Rejected,False,1,True
+trade_mark,inter_partes_refused,REFUSED: Refused,False,2,True
+trade_mark,lapsed,NEVER_REGISTERED: Lapsed,False,647,True
+trade_mark,lapsed,NEVER_REGISTERED: Not protected,False,36,True
+trade_mark,linked,NEVER_REGISTERED: Linked,False,11,True
+trade_mark,protected,REGISTERED: Registered,False,1012,True
+trade_mark,protected,REGISTERED: Protected,False,258,True
+trade_mark,protected,REGISTERED: Registered,True,15,True
+trade_mark,protected,REGISTERED: Protected,True,5,True
+trade_mark,protected,REMOVED: Removed,True,1,False
+trade_mark,protected,REMOVED: Removed - Not renewed,True,1,False
+trade_mark,published,PENDING: Published,False,46,True
+trade_mark,published,PENDING: Published,True,5,True
+trade_mark,published,PENDING: Accepted,True,2,True
+trade_mark,published,NEVER_REGISTERED: Lapsed,True,1,False
+trade_mark,refused,REFUSED: Refused,False,1,True
+trade_mark,removed,REMOVED: Removed,False,19,True
+trade_mark,removed,REMOVED: Ceased,False,2,True
+trade_mark,withdrawn,NEVER_REGISTERED: Withdrawn,False,58,True

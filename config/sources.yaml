@@ -14,6 +14,33 @@ sources:
     licence: CC BY 4.0
     coverage: Every application from 1904 to the current weekly release (patents, trade marks, designs, plant breeder's rights)
 
+  - id: ipa_api
+    title: IP Australia's register APIs (trade mark, patent and design search), for checking IP RAPID and filling its gaps
+    publisher: IP Australia
+    tier: 1
+    questions: [1, 2, 3, 4]
+    url: https://anypoint.mulesoft.com/exchange/portals/ip-australia-3/
+    licence: IP Australia API terms (client credentials, held by the owner)
+    coverage: The live register; every trade mark and design number, and records for a sample and IP RAPID's gaps (ADR 0028)
+
+  - id: ipa_register
+    title: IP Australia's register, whole (every trade mark and design), through its APIs
+    publisher: IP Australia
+    tier: 1
+    questions: [1, 2, 3, 4]
+    url: https://anypoint.mulesoft.com/exchange/portals/ip-australia-3/
+    licence: IP Australia API terms (client credentials, held by the owner)
+    coverage: The live register; fills for IP RAPID's gaps (ABNs, design origin, expedite events) in every year (ADR 0029)
+
+  - id: ipa_provisionals
+    title: Every provisional patent application in IP Australia's register, with its inventors, through its APIs
+    publisher: IP Australia
+    tier: 1
+    questions: [1, 2, 3]
+    url: https://anypoint.mulesoft.com/exchange/portals/ip-australia-3/
+    licence: IP Australia API terms (client credentials, held by the owner)
+    coverage: Every provisional IP RAPID holds and any filed since; inventors' names and estimated gender (ADR 0029)
+
   - id: iplord
     title: Intellectual Property Longitudinal Research Data (IPLORD) 2020
     publisher: IP Australia
