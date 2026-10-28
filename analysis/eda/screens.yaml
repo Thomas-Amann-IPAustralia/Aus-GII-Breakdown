@@ -374,3 +374,88 @@ national:
     rd: [GB.XPD.RSDV.GD.ZS, OECD.MSTI.G, OECD.MSTI.B]
     business_entry: [IC.BUS.NREG, IC.BUS.NDNS.ZS]
     high_tech: [TX.VAL.TECH.CD, TX.VAL.TECH.MF.ZS]
+
+timeline:
+  # Pairs of monthly series are compared as changes: each quarter's total against the same quarter a year earlier
+  # (logarithms), July 1991 to June 2008 (discovery) against July 2008 on (replication); see section 5 of the notebook.
+  key: month
+  discovery: "quarters from 1991Q3 to 2008Q2"
+  replication: "quarters from 2008Q3"
+  columns:
+    month: {skip: "the time axis"}
+    year: {skip: "the time axis"}
+    month_of_year: {skip: "seasons, removed by comparing with the same quarter a year earlier"}
+    fy: {skip: "the time axis"}
+    days_in_month: {skip: "the calendar, removed by comparing quarters a year apart"}
+    patents_standard_au: number
+    patents_standard_overseas: number
+    patents_standard_origin_unknown: number
+    patents_provisional: number
+    patents_second_tier: number
+    trade_marks_au: number
+    trade_marks_overseas: number
+    trade_marks_origin_unknown: number
+    designs_au: number
+    designs_overseas: number
+    designs_origin_unknown: number
+    pbr_applications: number
+    patents_granted: number
+    trade_marks_registered: number
+    designs_registered: number
+    pbr_granted: number
+    patents_lapsed: number
+    trade_marks_lapsed: number
+    designs_lapsed: number
+    patents_ceased: number
+    trade_marks_ceased: number
+    designs_ceased: number
+    patents_expired: number
+    patent_oppositions: number
+    trade_mark_oppositions: number
+    patent_extensions_of_term: number
+    patent_assignments: number
+    trade_mark_assignments: number
+    cpi: number
+    policy_events: {skip: "the policy changes, studied one at a time with placebo dates (5.1)"}
+  groups: {}
+
+industries:
+  # 19 divisions: the screen compares divisions in FY2024 (the BERD survey's year) and again in FY2025, with each
+  # count made a ratio to the division's businesses (section 6 of the notebook). Business R&D exists for FY2024 only,
+  # so its pairs are held fixed in the second year, which tests the other member's stability only.
+  key: division
+  discovery: "fy = 2024"
+  replication: "fy = 2025"
+  columns:
+    division: {skip: identifier}
+    division_name: {skip: "the division's name"}
+    fy: {skip: "the time axis"}
+    patents_standard: {skip: in patents_per_1k_businesses}
+    patents_standard_au: {skip: in patents_au_per_1k_businesses and patents_au_share}
+    patents_second_tier: {skip: "innovation patents closed in 2021: too few by FY2024"}
+    trade_marks: {skip: in trade_marks_per_1k_businesses}
+    trade_marks_au: {skip: in trade_marks_au_per_1k_businesses and trade_marks_au_share}
+    businesses_start: {skip: "the denominator of the ratios; its size is in businesses"}
+    businesses_end: {skip: "as businesses_start"}
+    business_entries: {skip: in business_entry_rate}
+    business_exits: {skip: in business_exit_rate}
+    business_entry_rate: number
+    business_exit_rate: number
+    berd: {skip: in berd_per_business}
+    wpi_index: {skip: in wages_growth}
+    creative_gva: {skip: "in creative_gva_per_business"}
+  ratios:
+    businesses: "businesses at the start of the year"
+    patents_per_1k_businesses: "standard patent applications (expected) per 1,000 businesses"
+    patents_au_per_1k_businesses: "Australian applicants' standard patent applications per 1,000 businesses"
+    patents_au_share: "Australian applicants' share of standard patent applications"
+    trade_marks_per_1k_businesses: "trade mark applications per 1,000 businesses"
+    trade_marks_au_per_1k_businesses: "Australian applicants' trade mark applications per 1,000 businesses"
+    trade_marks_au_share: "Australian applicants' share of trade mark applications"
+    berd_per_business: "business R&D (FY2024) per business, $'000"
+    wages_growth: "the Wage Price Index's change over the five years to the year, %"
+    creative_gva_per_business: "cultural and creative value added per business, $m"
+  groups:
+    patents: [patents_per_1k_businesses, patents_au_per_1k_businesses, patents_au_share]
+    trade_marks: [trade_marks_per_1k_businesses, trade_marks_au_per_1k_businesses, trade_marks_au_share]
+    business_flows: [business_entry_rate, business_exit_rate]

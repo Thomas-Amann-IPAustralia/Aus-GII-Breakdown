@@ -61,12 +61,17 @@ instruction, 2026-10-28): leave `evidence/` and `analysis/atlas/` alone until th
   venture capital, well-being, SDG 9) screened against residents' patenting (B35). Australia-only sources (ABS,
   BCARR, MWM, Closing the Gap) have no other country to pair with; they go to section 5 as annual changes. The OECD's
   patent tables (counts of patents) and business demography cells are not screened (recorded in 4.3).
+- **Section 5, `timeline` (B36 to B39):** series compared as quarterly year-on-year log changes (1991Q3-2008Q2
+  against 2008Q3 on): one lead only (trade mark registrations × oppositions), no common cycle (B36); the eight policy
+  candidates of U28 against placebo months five years either side: both rushes, three steps and the 1995 pauses are
+  outside every placebo, Australians' designs after the 2003 Act and the 1991 commencement month are not (B37); FY2025
+  provisionals followed by an Australian complete application within 12 months fell (individuals 6.66%, against 12% to
+  19%), but Australian filers' priority claims are thinning in the latest years too, so late recording is possible
+  (B38, proposed OQ18); Australia-only annual series give context, not signals (B39).
 - **Data gaps found:** firms' industry and size (the third factors most firm leads need; BLADE stays ruled out);
   whether Google Patents holds older Australian-only families fully (B11).
-- **Next:** section 5, `timeline` (monthly series as changes: 12-month differences and the months around the 17
-  policy events with placebo dates; the provisional rise against policy and fee events; and the Australia-only annual
-  series of `national_indicators` against Australia's filings, as year-on-year changes), then `industries`,
-  `institutions`, and the Stage 2 summary (`docs/stage-2-summary.md`, like Stage 1's).
+- **Next:** section 6, `industries` (drafted), section 7, `institutions`, then the Stage 2 summary
+  (`docs/stage-2-summary.md`, like Stage 1's, and section 8 of the notebook).
 
 **Status (2026-10-27):** **The register's fills are in the lenses** (ADR 0029), at the owner's decisions (A12:
 use the fills; A13: reword the request). `ipa_register` read every trade mark and design (2,338,036 and 269,048) and

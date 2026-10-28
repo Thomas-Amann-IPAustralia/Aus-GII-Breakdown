@@ -23,8 +23,8 @@ inventors, are built and profiled (U88 to U98, ADR 0022). **Stage 1 is complete:
 profile, summarised in `docs/stage-1-summary.md` (and section 9 of the notebook). **Stage 2 has begun (2026-10-28,
 A14)**, with the method of ADR 0030 (a screen of every pair of each lens, set in `analysis/eda/screens.yaml`, then the
 planned pairs of the Stage 1 summary's section 7): the `rights` lens (B1 to B19), the `firms` lens (B20 to B26), the
-`regions` lens (B27 to B31) and the `national` lens (B32 to B35) are done in `02_bivariate.ipynb`; the other three
-lenses follow in the same order as Stage 1. This plan says what the exploratory
+`regions` lens (B27 to B31) the `national` lens (B32 to B35) and the `timeline` (B36 to B39) are done in
+`02_bivariate.ipynb`; `industries` and `institutions` follow in the same order as Stage 1. This plan says what the exploratory
 data analysis (EDA) covers, where each dataset fits, what each part needs before it starts, and which gaps are worth
 filling. Decisions are in `docs/adr/` (0002 to 0030); terms are in `GLOSSARY.md`.
 

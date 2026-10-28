@@ -675,7 +675,7 @@ def test_the_screen_covers_every_column_of_each_screened_lens():
         assert set(spec["columns"]) == set(reg[lens]), f"{lens}: screens.yaml and variables.yaml differ"
         for c, k in spec["columns"].items():
             assert k in ("number", "category") or (isinstance(k, dict) and k.get("skip")), f"{lens}.{c}: {k}"
-        kinds = set(bi.screen_kinds(lens)) | set(spec.get("indicators", {}))
+        kinds = set(bi.screen_kinds(lens)) | set(spec.get("indicators", {})) | set(spec.get("ratios", {}))
         for g, members in spec.get("groups", {}).items():
             assert set(members) <= kinds, f"{lens} group {g} names a column not screened"
         for code, how in spec.get("indicators", {}).items():
