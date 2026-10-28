@@ -45,14 +45,19 @@ instruction, 2026-10-28): leave `evidence/` and `analysis/atlas/` alone until th
   goes only weakly with patenting (rho 0.12), and missing filers are mostly young private companies (B23); suppliers
   with IP win more and larger contracts within each entity group (B24); firms file a first trade mark at about 2
   years, a first patent at about 4.6 (B25); the youngest firms' patents move overseas most (B26, small numbers).
+- **Section 3, `regions` (B27 to B31):** the lens's own pairs (IP measures move together, and with the education and
+  occupation index IEO most, B27); every one of 6,406 attached indicators screened against six IP and R&D rates
+  (24,792 of 38,217 pairs are leads, along one gradient of advantage, education and business density, B28); negative
+  binomial models (started from a Poisson fit, which they need to converge): 1.7 to 1.9 times the standard patent
+  rate per standard deviation of IRSAD, remote areas far lower, both holding together and in SA3s (B29), and without
+  each area's largest filer (B30); business mix: finance, property and professional services up, construction and
+  transport down, manufacturing flat (B31, read with U47).
 - **Data gaps found:** firms' industry and size (the third factors most firm leads need; BLADE stays ruled out);
   whether Google Patents holds older Australian-only families fully (B11).
-- **Next:** section 3, `regions`. Plan: screen the core columns over hash halves of postal areas (rates only where 10
-  or more applications are expected); screen every `region_indicators` indicator (one period each; counts per 1,000
-  people) against the IP rates, not against each other (ADR 0030, rejected options); then the planned pairs: area
-  rates against advantage, remoteness, the Census and business mix, with negative binomial models for counts (U52,
-  U53), and missing filers by place. Then `national`, `timeline` (the provisional rise and the policy windows with
-  placebo dates), `industries`, `institutions`, and the Stage 2 summary.
+- **Next:** section 4, `national` (Australia against OECD members as ratios to people and GDP, changes not levels;
+  screen indicator pairs across countries in a recent year, replicated in an earlier one), then `timeline` (the
+  provisional rise and the policy windows with placebo dates), `industries`, `institutions`, and the Stage 2 summary
+  (with `docs/stage-2-summary.md`, like Stage 1's).
 
 **Status (2026-10-27):** **The register's fills are in the lenses** (ADR 0029), at the owner's decisions (A12:
 use the fills; A13: reword the request). `ipa_register` read every trade mark and design (2,338,036 and 269,048) and
