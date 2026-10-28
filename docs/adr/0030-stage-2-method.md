@@ -49,8 +49,14 @@ pairs worth a proper look (`docs/stage-1-summary.md`, section 7).
 9. **New helpers for the planned pairs:** `rate_difference` (Newcombe's interval), `median_difference` and
    `ratio_by` (bootstrap, resampling whole units such as patents), `rate_ratio`, `survival_with_interval` (a
    survival curve's value at a year with Greenwood's interval) and `dot_chart`.
-10. **The notebook is generated, then executed whole.** Its sections are run top to bottom by `nbconvert`, as Stage 1's
-    were, and committed with outputs. The rights section takes about seven minutes.
+10. **The notebook is executed whole and reproducibly.** Its sections are run top to bottom by `nbconvert`, as Stage
+    1's were, and committed with outputs (about nine minutes in all). Samples are chosen by a hash of the key, queries
+    that feed a bootstrap are ordered, and `median_difference` and `ratio_by` sort their inputs, so two runs give the
+    same numbers (checked for sections 1 and 2; DuckDB returns unordered rows otherwise).
+11. **Lenses with few units or long formats are screened in their own way** (`screens.yaml` says how for each):
+    countries, divisions and institutions as ratios to people, businesses or works in two periods; the timeline as
+    quarterly year-on-year changes in two periods; the companion tables' indicators against the IP measures only. A
+    test checks that every lens table has its entry.
 
 **Rejected.**
 - Pearson's r with dummy-coded categories: one coefficient per category, on scales that do not compare.

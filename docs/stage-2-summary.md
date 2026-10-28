@@ -1,0 +1,108 @@
+# Stage 2 summary: two variables at a time
+
+**Status (2026-10-28):** Stage 2 of the exploratory data analysis is complete, in
+`analysis/notebooks/02_bivariate.ipynb` (observations B1 to B46; section 8 is the short version of this document).
+The method is ADR 0030. Every observation is an association (observational) or a description: none is a cause.
+The evidence atlas (`evidence/`) is not yet updated for Stage 2; the owner decides when.
+
+## 1. In brief
+
+- **The screen found what Stage 1 led us to expect, and sorted it.** Every pair of every lens was measured on one
+  0-to-1 scale; a pair counts as a lead only if it is at least small (0.1), survives the correction for the number of
+  pairs, holds in a second decade or half, and is not two versions of one measure. Most leads are the mechanics of the
+  IP system or one broad gradient of development (income, education, R&D, business density) that runs through places
+  and countries alike. The signals below are what is left once those are set aside.
+- **Representation matters for outcomes.** Australian individuals' standard patents filed without an attorney are
+  granted about 36 points less often, in both decades and among examined applications too; lone filers' trade marks
+  and designs are renewed far less (B6, B10). The direction of cause is open: an abandoned application may never
+  appoint an attorney.
+- **Value made here is often owned or used elsewhere.** One patent in seven made in Australia is filed from overseas
+  (B16); the Australian patents that move overseas are the wide, granted ones and young firms' (B19, B26); 3% to 5% of
+  the US patents citing Australian research have Australian links (B46).
+- **Australian organisations' patents are narrower but kept longer** than overseas organisations', within fields too;
+  their lower citations are mostly the narrower reach (B8, B11, B12).
+- **Where filing happens** follows advantage (1.7 to 1.9 times the standard patent rate per standard deviation of
+  IRSAD), remoteness and business mix, not one firm (B29 to B31); among firms, company form, age and cities, with R&D
+  spend linked only weakly to patenting and missing filers mostly young private companies (B22, B23).
+- **Across countries** IP follows R&D and income; Australia's business R&D fell from 13th to 20th in the OECD, its
+  patenting near what that predicts; within a decade, changes in R&D barely move patenting (B33, B34).
+- **Policy leaves clean breaks:** two rushes, three steps and the 1995 pauses are far outside placebo dates (B37), the
+  starting points for Q5's natural experiments.
+- **Women among inventors** vary by field (4.2% in civil engineering to 26.9% in biotechnology) more than by filer;
+  on provisionals, organisations' inventors include about 5 points more women than individuals' (B17, B18).
+
+## 2. How it was done
+
+- **One scale** (`bi.association`): |Spearman's rho| for two numbers, the rank correlation ratio for a number and a
+  category, bias-corrected Cramér's V for two categories. For a yes/no variable all three are |rho|.
+- **Four tests for a lead** (`bi.replicate`): strength 0.1 or more; Benjamini-Hochberg false discovery rate under 5%;
+  the same again, same direction, in a replication sample; not related by construction (`screens.yaml`'s groups).
+- **Samples:** rights by decade (FY2010-19 against FY2000-09), within each type of right; firms, places and
+  institution rights by hash halves; countries by period (2016-20 against 2006-10); the timeline as quarterly
+  year-on-year changes by period; divisions FY2024 against FY2025; institutions 2017-23 against 2010-16, as rates per
+  1,000 works.
+- **Companion tables** (`region_indicators`, `national_indicators`, `industry_indicators`): each indicator against the
+  lens's IP measures, not against every other indicator (millions of pairs that serve no question).
+- **Planned pairs** (the Stage 1 summary's section 7): each in the units that mean something, with intervals (Wilson,
+  Newcombe, bootstrap that resamples whole patents, Greenwood for survival curves, negative binomial models for area
+  counts), in two periods, with third factors named.
+- **Reproducible:** sampling by hash, bootstraps on sorted inputs with fixed seeds; two full runs agree number for
+  number. The notebook takes about ten minutes.
+
+## 3. What each lens shows
+
+| Lens | Observations | Distinct leads | What stands out |
+|---|---|---|---|
+| `rights` | B1 to B19 | 223 over six types | Representation and outcomes; lifetimes and reach by origin; expedite as composition; inventions owned abroad; gender by field |
+| `firms` | B20 to B26 | 33 | Who files among R&D claimants and suppliers; missing filers; contracts; age at first filing; young firms' patents moving abroad |
+| `regions` | B27 to B31 | 124 (75 on IP); 24,792 indicator pairs | One gradient of advantage, education and business density; negative binomial ratios; not one firm's; business mix |
+| `national` | B32 to B35 | 188 (134 on IP); 225 attachments | Development gradient; Australia's OECD ranks; R&D and patenting in levels and changes |
+| `timeline` | B36 to B39 | 1 | No common cycle; policy breaks against placebos; provisional follow-up; Australia-only series give context only |
+| `industries` | B40 to B43 | 4 | Trade marks follow business R&D; patents in 8 divisions only; survey innovation is not IP |
+| `institutions` | B44 to B46 | 18 (plus 3 in the IP detail) | Kind sorts measures; universities' patenting follows size and patent-cited research; little Australian use of cited research |
+
+## 4. Carried to Stage 3
+
+The signals in section 1, each with its candidate third factors: the filer (origin and type), family reach, the route
+of filing, the technology field, selection at grant, firm size and industry, business density and mix, education,
+income, and the kind of institution. Stage 3 tests whether each signal survives these together (`multi.partial_corr`,
+models), and reduces the place and country gradients to a few components (`multi.pca`) before reading any indicator
+as a driver.
+
+## 5. Recorded, not carried
+
+- **Mechanics** (B2): PCT receiving offices, where inventions are made, examination timing, Google Patents' inventor
+  countries, the trade mark expedite recording (U103).
+- **A record quirk** (B3): IP RAPID gives no origin for designs never registered; the register's fill covers them.
+- **Did not hold in a second period:** the origin gap in time to grant (B7), organisations' lone-filing gap (B6), the
+  pooled expedite link (B13), trade mark expedites and renewal (B14).
+- **Screens with no lead beyond the expected:** the timeline's changes (B36), Australia-only annual series (B39),
+  division-level survey indicators (B43).
+
+## 6. Open items and data gaps
+
+- **For IP Australia, proposed (OQ18):** whether priority claims and associated provisionals are recorded late in IP
+  RAPID (B38, U90).
+- **Data worth adding:** firms' size and industry (the third factors most firm leads need; BLADE stays ruled out),
+  ALP's crosswalk with services (B41), the fee history (R3, OQ2), and a check of Google Patents' coverage of older
+  Australian-only families (B11).
+- **Still open:** a sector review of the institutions link (OQ11), which B44 to B46 rest on.
+
+## 7. What Stage 2 cannot tell you
+
+- **Causes.** Every pair has candidate third factors, and some may run backwards (representation and abandonment,
+  B6). Effects need the designs that follow Stage 3.
+- **Individuals from places or countries.** Section 3's and 4's pairs are between areas and countries (ecological).
+- **Value.** Lifetimes, reach and citations are signs of private value, not public value (the research goal's Q1).
+- **Small units.** Industries (19) and OECD members (36) give wide intervals; their pairs are leads at most.
+
+## 8. Index of observations
+
+B1 to B4 the rights screen; B5 to B7 filing alone and grant; B8 to B10 lifetimes; B11, B12 reach and citations; B13,
+B14 expedited examination; B15, B16 routes and invention; B17, B18 gender; B19 rights moving overseas. B20, B21 the
+firms screen; B22 who files; B23 R&D and missing filers; B24 contracts and income; B25 age at first filing; B26 young
+firms' patents abroad. B27 the places screen; B28 attached indicators; B29 advantage and remoteness; B30 the largest
+filer; B31 business mix. B32 the countries screen; B33 Australia among OECD members; B34 R&D and patenting; B35
+attachments. B36 the timeline screen; B37 policy breaks; B38 provisional follow-up; B39 Australian against overseas,
+and Australia-only series. B40 the industries screen; B41 IP per business; B42 innovation and IP; B43 attachments. B44
+the institutions screen; B45 universities; B46 Australian use of cited research.

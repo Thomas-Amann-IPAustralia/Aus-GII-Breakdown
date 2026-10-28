@@ -671,6 +671,7 @@ def test_institutions_carry_their_sources():
 
 def test_the_screen_covers_every_column_of_each_screened_lens():
     reg = style.register()
+    assert set(bi.screens()) == set(reg), "every lens table needs its entry in screens.yaml (Stage 2 screens them all)"
     for lens, spec in bi.screens().items():
         assert set(spec["columns"]) == set(reg[lens]), f"{lens}: screens.yaml and variables.yaml differ"
         for c, k in spec["columns"].items():

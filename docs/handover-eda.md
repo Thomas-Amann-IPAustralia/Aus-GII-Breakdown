@@ -14,7 +14,7 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-28, latest): Stage 2 has begun** (A14), in `analysis/notebooks/02_bivariate.ipynb`, with the method
+**Status (2026-10-28, latest): Stage 2 is complete** (A14; B1 to B46, `docs/stage-2-summary.md`), in `analysis/notebooks/02_bivariate.ipynb`, with the method
 of ADR 0030. **The website (evidence atlas) is not to be updated until all of Stage 2 is finished** (the owner's
 instruction, 2026-10-28): leave `evidence/` and `analysis/atlas/` alone until then.
 - **Method:** each lens section screens every pair of its variables on one 0-to-1 scale (|Spearman rho|, the rank
@@ -70,8 +70,20 @@ instruction, 2026-10-28): leave `evidence/` and `analysis/atlas/` alone until th
   (B38, proposed OQ18); Australia-only annual series give context, not signals (B39).
 - **Data gaps found:** firms' industry and size (the third factors most firm leads need; BLADE stays ruled out);
   whether Google Patents holds older Australian-only families fully (B11).
-- **Next:** section 6, `industries` (drafted), section 7, `institutions`, then the Stage 2 summary
-  (`docs/stage-2-summary.md`, like Stage 1's, and section 8 of the notebook).
+- **Section 6, `industries` (B40 to B43):** 19 divisions, FY2024 against FY2025: trade marks per business follow
+  business R&D per business (0.709; 0.682) and fall where a division has many small businesses; patents reach 8
+  divisions only (the crosswalk excludes services), so R&D and patenting go together only loosely (0.465, interval
+  wide); the business survey's innovation-active share does not consistently go with filing; one of 2,157 division
+  indicators passes the correction.
+- **Section 7, `institutions` (B44 to B46):** 2017-23 against 2010-16, as rates per 1,000 works: the kind of
+  institution sorts most measures; universities' patents per work follow size (0.743; 0.732), patent-cited research
+  and ARC success, not industry-partnered grants; 3% to 5% of US patent citations to Australian research come from
+  patents with Australian links. The IP detail (`institution_rights`) is screened in halves.
+- **Section 8 and `docs/stage-2-summary.md`:** the signals carried to Stage 3, what is recorded but not carried, third
+  factors and data gaps.
+- **Next is the owner's call:** (1) whether and when to update the evidence atlas with Stage 2 (the owner asked that
+  the website wait until Stage 2 was finished; it is now, and the atlas would need Stage 2 pages built the way Stage
+  1's were, ADR 0023); (2) Stage 3; (3) whether to add OQ18 to the request to IP Australia.
 
 **Status (2026-10-27):** **The register's fills are in the lenses** (ADR 0029), at the owner's decisions (A12:
 use the fills; A13: reword the request). `ipa_register` read every trade mark and design (2,338,036 and 269,048) and

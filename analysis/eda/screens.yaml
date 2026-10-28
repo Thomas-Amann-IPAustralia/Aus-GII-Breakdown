@@ -459,3 +459,129 @@ industries:
     patents: [patents_per_1k_businesses, patents_au_per_1k_businesses, patents_au_share]
     trade_marks: [trade_marks_per_1k_businesses, trade_marks_au_per_1k_businesses, trade_marks_au_share]
     business_flows: [business_entry_rate, business_exit_rate]
+
+institutions:
+  # Institutions are compared over two seven-year periods (2017-2023, discovery; 2010-2016, replication; OpenAlex
+  # starts in 2010), each count summed over the period and made a ratio to the institution's research works, since
+  # every count grows with an institution's size; size itself is kept as works. Children (parent_ror) are kept as
+  # their own rows: their counts are their own, never added to the parent's (U81).
+  key: ror
+  discovery: "year BETWEEN 2017 AND 2023"
+  replication: "year BETWEEN 2010 AND 2016"
+  columns:
+    ror: {skip: identifier}
+    institution: {skip: "the institution's name"}
+    kind: category
+    parent_ror: {skip: "an identifier (whether the institution is part of another is has_parent)"}
+    state: category
+    established: number
+    ror_status: {skip: "two inactive institutions only"}
+    year: {skip: "the period (summed over)"}
+    works: number
+    citations: {skip: in citations_per_work}
+    works_patent_cited: {skip: in share_patent_cited}
+    patent_citations: {skip: in patent_citations_per_kwork}
+    patent_citations_au: {skip: in au_share_of_patent_citations}
+    arc_grants: {skip: in arc_grants_per_kwork}
+    arc_funding: {skip: "in arc_grants_per_kwork (funding follows grants)"}
+    arc_industry_grants: {skip: in arc_industry_share}
+    arc_industry_funding: {skip: "in arc_industry_share"}
+    nhmrc_grants: {skip: in nhmrc_grants_per_kwork}
+    nhmrc_funding: {skip: "in nhmrc_grants_per_kwork (funding follows grants)"}
+    patents_standard: {skip: in patents_per_kwork}
+    patents_standard_shared: {skip: in shared_patent_share}
+    patents_provisional: {skip: in provisionals_per_kwork}
+    patents_second_tier: {skip: "innovation patents closed in 2021; too few"}
+    trade_marks: {skip: in trade_marks_per_kwork}
+    designs: {skip: "too few (a handful a year)"}
+    patent_families: {skip: in families_per_kwork}
+    patent_families_us_granted: {skip: in us_granted_share}
+    patent_family_citations_5y: {skip: in family_citations_per_family}
+    contracts: {skip: in contracts_per_kwork}
+    contract_value: {skip: "in contracts_per_kwork (value follows contracts)"}
+  ratios:
+    has_parent: "part of another institution"
+    citations_per_work: "citations received per work"
+    share_patent_cited: "share of works cited by US patents"
+    patent_citations_per_kwork: "citations from US patents per 1,000 works"
+    au_share_of_patent_citations: "share of US patent citations from patents with Australian links"
+    arc_grants_per_kwork: "ARC grants per 1,000 works"
+    arc_industry_share: "share of ARC grants with industry partners"
+    nhmrc_grants_per_kwork: "NHMRC grants per 1,000 works"
+    patents_per_kwork: "standard patent applications per 1,000 works"
+    shared_patent_share: "share of standard patent applications filed with others"
+    provisionals_per_kwork: "provisional applications per 1,000 works"
+    trade_marks_per_kwork: "trade mark applications per 1,000 works"
+    families_per_kwork: "patent families per 1,000 works"
+    us_granted_share: "share of patent families granted in the US"
+    family_citations_per_family: "citations to patent families within five years, per family"
+    contracts_per_kwork: "government contracts per 1,000 works"
+  groups:
+    patents: [patents_per_kwork, families_per_kwork, provisionals_per_kwork]
+    patent_citations: [share_patent_cited, patent_citations_per_kwork, au_share_of_patent_citations]
+
+institution_rights:
+  # The institutions lens's IP detail: one row per right and institution. Its pairs are about how rights were matched
+  # and shared, screened over the two halves of the rows by a hash of the right and institution.
+  key: "application_number || ror"
+  discovery: half
+  replication: half
+  columns:
+    ip_right_type: category
+    application_number: {skip: identifier}
+    ror: {skip: "identifier (the institution's kind is in the institutions lens)"}
+    matched_by: category
+    country_unknown: category
+    shared: category
+    shared_with_institution: category
+  groups:
+    shared: [shared, shared_with_institution]
+
+# The long companion tables: their rows are indicators, so their columns are not paired with each other; each
+# indicator is screened against the lens's IP measures instead (ADR 0030).
+region_indicators:
+  # section 3.1: each indicator, in one period, against the areas' IP and R&D rates (ADR 0030)
+  columns:
+    poa_code: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    source: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    topic: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    indicator: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    label: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    period: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    value: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    unit: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    additive: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    method: {skip: "long format: each indicator is screened as a column (see the note above)"}
+national_indicators:
+  # sections 4.3 (cross-country indicators against residents' patenting) and 5.3 (Australia-only series as annual changes against Australians' filing)
+  columns:
+    iso3: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    country: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    entity: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    year: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    period: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    source: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    dataset: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    indicator: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    label: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    value: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    value_text: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    unit: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    status: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    oecd: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    australia: {skip: "long format: each indicator is screened as a column (see the note above)"}
+industry_indicators:
+  # section 6.3: each division-level indicator against Australians' filing per business
+  columns:
+    division: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    source: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    dataset: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    indicator: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    label: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    period: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    fy: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    value: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    value_text: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    unit: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    status: {skip: "long format: each indicator is screened as a column (see the note above)"}
+    division_name: {skip: "long format: each indicator is screened as a column (see the note above)"}

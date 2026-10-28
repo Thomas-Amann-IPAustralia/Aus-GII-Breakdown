@@ -5,7 +5,7 @@ needs an account or a request (`CLAUDE.md`). Each says why it matters, what Clau
 changes. **Nothing here blocks Stage 1**; the work carries on around each one.
 
 When a question is answered, move it to **Answered** with the date and the answer, and record it where it applies (an
-ADR, the handover or the plan). Number new questions from the next free one: **OQ19**.
+ADR, the handover or the plan). Number new questions from the next free one: **OQ20**.
 
 ## Open: for you to answer
 
@@ -15,6 +15,7 @@ ADR, the handover or the plan). Number new questions from the next free one: **O
 | OQ3 | Should the missing AusTender amendments be fetched? Amendments after August 2019 to contracts that had ended by then are not in the corpus | A sample suggests under 1% of contract value; the harvester exists (`austender._harvest_by_id`); it takes about a day of running, at no cost | Not now: the effect is small. Fetch it if Stage 2 leans on contract values | The completeness of `austender_value` |
 | OQ4 | TableBuilder: only if a question needs owner-managers by sex or Indigenous status for each postal area, would you register as a private user? | It needs an account in your name; the free Basic version may not have the variables (`docs/tablebuilder-owner-managers.md`) | Hold until the `regions` profile shows a need | One more `regions` attachment |
 | OQ11 | The `institutions` lens is built (ADR 0021) on a reviewed link: 130 institutions, 116 extra names (former names, predecessors, commercialisation companies, misspellings) and 146 ABNs, in `analysis/eda/institutions/`. Should someone who knows the sector (IPAVentures, or IP Australia's own research team) check it? | It decides which IP counts as a university's: UNSW files 96.5% of its patents through NewSouth Innovations, Newcastle 72.8% through Newcastle Innovation (U81). A missed company or merger moves an institution's counts | A half-hour check of the three CSV files by someone in the sector, before Stage 2 compares institutions; in particular each university's companies, and which medical research institutes and health services belong | Corrections to the link; the lens rebuilds in seconds |
+| OQ19 | Stage 2 is complete (B1 to B46, `docs/stage-2-summary.md`). Should the evidence atlas now get Stage 2's pages, and should Stage 3 begin? | You asked that the website wait until Stage 2 was finished. Stage 2's pages would be built as Stage 1's were (ADR 0023: every number checked against the notebook) | Build the atlas pages first (a review of Stage 2 in plain English is the easiest way to check it), then Stage 3 | When the atlas is updated and published; when Stage 3 starts |
 
 ## Open: for IP Australia (you are asking)
 
