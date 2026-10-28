@@ -5,7 +5,7 @@ needs an account or a request (`CLAUDE.md`). Each says why it matters, what Clau
 changes. **Nothing here blocks Stage 1**; the work carries on around each one.
 
 When a question is answered, move it to **Answered** with the date and the answer, and record it where it applies (an
-ADR, the handover or the plan). Number new questions from the next free one: **OQ17**.
+ADR, the handover or the plan). Number new questions from the next free one: **OQ18**.
 
 ## Open: for you to answer
 
@@ -30,6 +30,7 @@ audit against IP Australia's published figures and were added to the same reques
 | OQ12 | What does IP Australia's "In 2022, 55.6% of resident applications were filed by individuals rather than organisations" (ipr-2023 p12) count? | The lens gives 20.65% of 2022's resident standard applications with an individual as first founding applicant, and 26.76% of their applicants (U13, U48); no base reproduces 55.6% (the audit, D3) | U13 and U48 stand on the lens's evidence, recorded as disputed |
 | OQ13 | IP Australia's register counts 78,643 trade marks lodged in 2018 (77,726 by filing date), IP RAPID 77,496 and WIPO 15,943 Madrid designations against IP RAPID's 15,836; the IP Report 2019 counted 79,490. What did the report's 2018 count include, and does IP Australia still stand by it? **Reworded (2026-10-27, OQ16, the register check, ADR 0028 V10, V11):** the question about trade mark numbers 1,978,060 to 1,980,352 is dropped, as the register shows they were not used (1 of 2,292 exists). Was (recheck and WIPO, ADR 0027): what did the 2018 count in the IP Report 2019 include, and were those numbers ever used? Earlier: why does IP RAPID hold about 2,000 fewer trade marks filed in 2018 than the IP Report 2019 counted? | V11: neither of the register's dates gives 79,490 (lodgement date 847 short). Every other year from 2015 to 2025 agrees with IP Australia within 0.05% (D2); WIPO: R9 | 2018 is flagged in trade mark series |
 | OQ14 | IP Australia's register holds the owner's country for 61% of the designs IP RAPID leaves without one, and for nearly all filed since 1990. Could IP RAPID publish it? **Reworded (2026-10-27, OQ16, the register check, ADR 0028 V13).** Was: could IP RAPID publish the applicant origin IP Australia holds for designs it now leaves unknown? | V13: the register gives a country for 25,018 of 40,748, Australia for 20,870; for 2021, 2023 and 2025 the lens plus the register's Australians (2,601, 2,660, 3,078) matches IP Australia's resident counts (2,595, 2,652, 3,078). The rest have no owner on record anywhere (V17) | Design origin filled from the register in the lenses (ADR 0029); the empty 1973 to 1982 shells dropped |
+| OQ17 | Your register names the inventors of 98.5% to 100% of provisional applications filed FY2003 to FY2023, but of only 78.79% (FY2024), 76.38% (FY2025) and 84.69% (FY2026). Are inventors added to a provisional later, or no longer recorded for some (for example those filed through a particular channel)? **Added (2026-10-28, A14)** | U106: 181,469 inventors in the register's records of 264,250 provisionals (ADR 0029) | The gender analysis shows each year's inventor coverage beside its figure |
 
 **The register check (2026-10-27, ADR 0028, `docs/audit-ipa-api.md`)** found what IP Australia holds for OQ6, OQ7,
 OQ13 and OQ14; at the owner's word (A13) those four now ask why IP RAPID leaves it out and whether it could publish
@@ -53,6 +54,7 @@ Australia reported itself (2,322, from non-residents), so the gap is between IP 
 
 | # | Question | Answer | Date | Recorded in |
 |---|---|---|---|---|
+| A14 | Go ahead with Stage 2 and the gender analysis (provisionals from FY2003, each year's coverage shown); add the provisional-inventor lead to the request (OQ17; the unrequested "Examination expedited" is already OQ6); open a pull request so the branch, and the atlas with it, can be published | Agreed to all | 2026-10-28 | This page (OQ17); handover |
 | A13 | OQ16: reword the request to IP Australia to ask why IP RAPID leaves out what its register holds (the expedite event since November 2018, ABNs and ACNs, design applicants' countries), and drop the number-gap half of OQ13? | Yes | 2026-10-27 | This page (OQ6, OQ7, OQ13, OQ14); ADR 0029; the atlas |
 | A12 | OQ15: attach the gaps the register fills to the lenses? | Yes, as suggested: new columns beside IP RAPID's, never replacing them, and U45, the design shares (U7, U13) and U34 restated. Also: harvest every provisional with its inventors (gender analysis to come), drop the design records with no information (recorded), and make no guesses about the remaining designs' origin | 2026-10-27 | ADR 0029; the notebook; handover |
 | A11 | Does "do not alter the atlas" (A9) cover its framing pages? | No: update the atlas with the changed wording; only the substantive analyses stay unchanged for now | 2026-10-27 | ADR 0026; handover |
