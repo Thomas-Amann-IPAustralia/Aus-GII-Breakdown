@@ -9,7 +9,7 @@ repo, or R2 when large). Source: WIPO statistics database; cite WIPO.
 Processed:
 - `office_origin`: one row per indicator, filing office, applicant's origin, breakdown (field of technology or class,
   where the indicator has one) and year. Resident filings are those where office and origin are the same; an
-  origin's total is the sum over offices.
+  origin's total is the sum over offices. Patent families by origin (indicators 20 and 22) have no office.
 - `office`: indicators reported by office only (rights in force, examiners, pendency, oppositions).
 - `pmh`: PCT applications by origin, Madrid applications by country of holder and Hague applications by origin; and
   the share of women among the inventors named in PCT applications, by origin (a percentage, from WIPO's names).
@@ -40,6 +40,8 @@ IPS = [
     ("patent", 23, 15),  # total grants
     ("patent", 15, 15),  # in force
     ("patent", 21, 15),  # foreign-oriented patent families by origin and destination office
+    ("patent", 20, 13),  # patent families by origin (every family, domestic-only ones included; gap A4)
+    ("patent", 22, 13),  # foreign-oriented patent families by origin
     ("patent", 17, 15),  # publications by field of technology
     ("patent", 25, 15),  # publications relating to renewable energy
     ("patent", 26, 15),  # publications for AI-related technology
@@ -58,6 +60,7 @@ IPS = [
     ("industrial", 92, 15),  # applications by Locarno class
     ("industrial", 63, 11),  # registrations in force
 ]
+BY_ORIGIN = (15, 13)  # report types with an origin: by office and origin (15), by origin only (13; no office)
 # (tab, indicator, the list of codes to ask for): PCT by origin, Madrid by holder, Hague by origin
 PMH = [
     ("pct", 1001, "ori"),
@@ -136,7 +139,7 @@ def _ips(ctx: Ctx) -> tuple[pd.DataFrame, pd.DataFrame]:
         params = {"type": "IPS", "selectedTab": tab, "indicator": ind, "reportType": rp, "fromYear": 1980}
         params["toYear"] = _get("ips-search/to-year").json()
         params["ipsOffSelValues"] = ",".join(offices)
-        if rp == 15:
+        if rp in BY_ORIGIN:
             params["ipsOriSelValues"] = ",".join(origins)
         if lists.get("ipsTechList"):
             params["ipsTechSelValues"] = ",".join(lists["ipsTechList"])
@@ -159,14 +162,14 @@ def _ips(ctx: Ctx) -> tuple[pd.DataFrame, pd.DataFrame]:
                 "office": df["Office"] if "Office" in df else None,
             }
         )
-        if rp == 15:
+        if rp in BY_ORIGIN:
             by_name = {v: k for k, v in origins.items()}
             out["origin"] = df["Origin"]
             out["origin_code"] = df["Origin"].map(by_name)
         extra = [c for c in dims if c not in ("Office", "Office (Code)", "Origin", "Origin (Code)")]
         out["breakdown"] = df[extra].astype(str).agg("; ".join, axis=1) if extra else None
         out["year"], out["value"], out["last_updated"] = df["year"], df["value"], updated
-        (both if rp == 15 else office_only).append(out)
+        (both if rp in BY_ORIGIN else office_only).append(out)
     return pd.concat(both, ignore_index=True), pd.concat(office_only, ignore_index=True)
 
 

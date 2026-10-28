@@ -13,7 +13,7 @@
 | `industries` | ANZSIC division and financial year | `rights`, classification, concordances, CABEE, BERD, WPI |
 | `institution_rights` | IP right and research institution that filed it | `iprapid/party`, `ror`, the reviewed link |
 | `institutions` | Research institution (ROR) and year | OpenAlex, ARC, NHMRC, `institution_rights`, AusTender |
-| `timeline` | Month, for Australia (IP Australia's whole register) | `rights`, `iprapid/events`, `policy_events` |
+| `timeline` | Month, for Australia (IP Australia's register) | `rights`, events, `policy_events`, fees, RBA |
 
 `regions` also reads `austender`; `region_indicators` holds its attachments, long (ADR 0018), as do
 `national_indicators` (ADR 0019) and `industry_indicators` (ADR 0020). `institutions` reads the reviewed link from
@@ -647,6 +647,14 @@ def firms_sql() -> str:
         SELECT abn, count(*) AS ato_ctt_years, arg_max(income, income_year) AS total_income_latest
         FROM tax_year GROUP BY 1
     ),
+    wgea AS (  -- employers of 100 or more (WGEA), their latest report (gap A3, ADR 0032)
+        SELECT abn, max(reporting_year) AS wgea_year,
+               arg_max(employees, reporting_year) AS wgea_employees,
+               arg_max(employer_size, reporting_year) AS wgea_size_band,
+               arg_max(lpad(anzsic_code, 4, '0'), reporting_year) AS wgea_anzsic_class,
+               arg_max(women / nullif(employees, 0), reporting_year) AS wgea_women_share
+        FROM {{wgea/employers}} WHERE anzsic_code ~ '^[0-9]+$' GROUP BY 1
+    ),
     filed AS (  -- applications as a founding applicant, a shared one split equally (IPLORD's weighting)
         SELECT applicant_id AS abn, sum(filed_weighted) AS ip_filed_weighted FROM {{iprapid/applicant_year}}
         WHERE applicant_id_type = 'abn' GROUP BY 1
@@ -712,7 +720,13 @@ def firms_sql() -> str:
         coalesce(tax.ato_ctt_years, 0) AS ato_ctt_years,
         tax.total_income_latest,
         s.austender_contracts,
-        s.austender_value
+        s.austender_value,
+        wgea.wgea_year,
+        wgea.wgea_employees,
+        wgea.wgea_size_band,
+        {_division_of("wgea.wgea_anzsic_class")} AS wgea_division,
+        wgea.wgea_anzsic_class,
+        wgea.wgea_women_share
     FROM {{linkage/abn_spine}} s
     LEFT JOIN ip USING (abn)
     LEFT JOIN held USING (abn)
@@ -720,6 +734,7 @@ def firms_sql() -> str:
     LEFT JOIN tax USING (abn)
     LEFT JOIN filed USING (abn)
     LEFT JOIN first_filed ff USING (abn)
+    LEFT JOIN wgea USING (abn)
     LEFT JOIN place ON place.poa_code = {_postcode("s.postcode")}
     """
 
@@ -1485,6 +1500,18 @@ def _ip_by_division() -> str:
         JOIN {{concordances/ipc4_anzsic}} a USING (ipc4)
         GROUP BY 1, 2, 3
     ),
+    ipc_svc AS (  -- the same, through ALP's crosswalk including services (a labelled comparison, gap A2)
+        SELECT DISTINCT c.application_number, coalesce(p.ipc_to, left(c.classification, 4)) AS ipc4
+        FROM {{iprapid/classification}} c LEFT JOIN pred p ON p.ipc_from = left(c.classification, 4)
+        WHERE c.ip_right_type = 'patent' AND c.classification_system = 'ipc_mark' AND c.is_current
+          AND coalesce(p.ipc_to, left(c.classification, 4)) IN (SELECT ipc4 FROM {{concordances/ipc4_anzsic_services}})
+    ),
+    ip_pat_svc AS (
+        SELECT i.application_number, {_division_of("a.anzsic")} AS division, sum(a.weight / i.n) AS share
+        FROM (SELECT *, count(*) OVER (PARTITION BY application_number) AS n FROM ipc_svc) i
+        JOIN {{concordances/ipc4_anzsic_services}} a USING (ipc4)
+        GROUP BY 1, 2
+    ),
     nice AS (
         SELECT DISTINCT application_number, lpad(trim(classification), 2, '0') AS nice
         FROM {{iprapid/classification}}
@@ -1528,6 +1555,14 @@ def industries_sql() -> str:
         FROM ip_pat p JOIN r ON r.ip_right_type = 'patent' AND r.application_number = p.application_number
         GROUP BY 1, 2
     ),
+    pat_svc AS (
+        SELECT p.division, r.filing_fy AS fy,
+               sum(p.share) FILTER (r.patent_type = 'standard') AS patents_standard_with_services,
+               sum(p.share) FILTER (r.patent_type = 'standard' AND r.australian_applicant)
+                   AS patents_standard_au_with_services
+        FROM ip_pat_svc p JOIN r ON r.ip_right_type = 'patent' AND r.application_number = p.application_number
+        GROUP BY 1, 2
+    ),
     tm AS (
         SELECT t.division, r.filing_fy AS fy, sum(t.share) AS trade_marks,
                sum(t.share) FILTER (r.australian_applicant) AS trade_marks_au
@@ -1561,6 +1596,15 @@ def industries_sql() -> str:
           AND industry IN (SELECT division FROM divs)
         GROUP BY 1, 2
     ),
+    gva AS (  -- gross value added by division (gap B2): chain volume, original, the financial year's four quarters
+        SELECT industry AS division,
+               CAST(left(time_period, 4) AS INTEGER) + (right(time_period, 1) IN ('3', '4'))::INT AS fy,
+               CASE WHEN count(*) = 4 THEN sum(value) END AS gva_cvm
+        FROM {{abs_national_accounts/ana_ind_gva}}
+        WHERE data_item_label = 'Gross domestic product' AND measure_label = 'Chain volume measures'
+          AND adjustment_type = '10' AND industry IN (SELECT division FROM divs)
+        GROUP BY 1, 2
+    ),
     creative AS (  -- the cultural and creative industries' value added by division, the newer release (2015-16 on)
         SELECT n.division, a.fy_end AS fy, a.value AS creative_gva
         FROM {{bcarr_creative/activity}} a JOIN names n ON n.name = {_norm("a.series")}
@@ -1571,11 +1615,15 @@ def industries_sql() -> str:
            coalesce(pat.patents_standard, 0) AS patents_standard,
            coalesce(pat.patents_standard_au, 0) AS patents_standard_au,
            coalesce(pat.patents_second_tier, 0) AS patents_second_tier,
+           coalesce(pat_svc.patents_standard_with_services, 0) AS patents_standard_with_services,
+           coalesce(pat_svc.patents_standard_au_with_services, 0) AS patents_standard_au_with_services,
            coalesce(tm.trade_marks, 0) AS trade_marks, coalesce(tm.trade_marks_au, 0) AS trade_marks_au,
-           cabee.* EXCLUDE (division, fy), berd.berd, wpi.wpi_index, creative.creative_gva
+           cabee.* EXCLUDE (division, fy), berd.berd, wpi.wpi_index, creative.creative_gva, gva.gva_cvm
     FROM grid g
-    LEFT JOIN pat USING (division, fy) LEFT JOIN tm USING (division, fy) LEFT JOIN cabee USING (division, fy)
+    LEFT JOIN pat USING (division, fy) LEFT JOIN pat_svc USING (division, fy) LEFT JOIN tm USING (division, fy)
+    LEFT JOIN cabee USING (division, fy)
     LEFT JOIN berd USING (division, fy) LEFT JOIN wpi USING (division, fy) LEFT JOIN creative USING (division, fy)
+    LEFT JOIN gva USING (division, fy)
     ORDER BY g.division, g.fy
     """
 
@@ -1942,6 +1990,82 @@ def institutions_sql() -> str:
     """
 
 
+# The fee history (`frl_fees/key_fees`, ADR 0031): each key fee in force on the first day of the month, in dollars of
+# the day, empty before the right's fee history begins (patents May 1991, trade marks July 1989, designs April 1982,
+# plant breeder's rights December 1994). (column, SQL over that month's fees). A fee no longer charged counts 0 in the
+# sums. `_real` columns are in dollars of the latest quarter the CPI reaches, deflated by the CPI of the month's
+# quarter.
+TIMELINE_FEES = [
+    ("fee_patent_provisional", "max(amount_aud) FILTER (fee = 'provisional_filing')"),
+    ("fee_patent_filing", "max(amount_aud) FILTER (fee = 'standard_filing')"),
+    ("fee_patent_examination", "max(amount_aud) FILTER (fee = 'standard_examination')"),
+    ("fee_patent_grant", "coalesce(sum(amount_aud) FILTER (fee IN ('acceptance', 'sealing')), 0)"),
+    (
+        "fee_patent_to_grant",
+        "sum(amount_aud) FILTER (fee IN ('standard_filing', 'standard_examination', 'acceptance', 'sealing'))",
+    ),
+    ("fee_patent_renewals", "sum(amount_aud) FILTER (fee = 'standard_renewal' AND anniversary <= 19)"),
+    ("fee_patent_second_tier_filing", "max(amount_aud) FILTER (fee IN ('petty_filing', 'innovation_filing'))"),
+    ("fee_tm_filing", "max(amount_aud) FILTER (fee = 'filing')"),
+    ("fee_tm_registration", "coalesce(max(amount_aud) FILTER (fee = 'registration'), 0)"),
+    ("fee_tm_to_register", "sum(amount_aud) FILTER (fee IN ('filing', 'registration'))"),
+    ("fee_tm_renewal", "max(amount_aud) FILTER (fee = 'renewal')"),
+    ("fee_design_filing", "max(amount_aud) FILTER (fee = 'filing')"),
+    ("fee_design_examination", "max(amount_aud) FILTER (fee = 'examination')"),
+    (
+        "fee_design_renewal",
+        "coalesce(max(amount_aud) FILTER (fee = 'renewal'), max(amount_aud) FILTER (fee = 'extension_1'))",
+    ),
+    ("fee_pbr_application", "max(amount_aud) FILTER (fee = 'application')"),
+    ("fee_pbr_examination", "max(amount_aud) FILTER (fee = 'examination')"),
+    ("fee_pbr_grant", "max(amount_aud) FILTER (fee = 'grant')"),
+    ("fee_pbr_to_grant", "sum(amount_aud) FILTER (fee IN ('application', 'examination', 'grant'))"),
+    ("fee_pbr_annual", "max(amount_aud) FILTER (fee = 'annual')"),
+]
+TIMELINE_FEES_REAL = [
+    "fee_patent_to_grant",
+    "fee_patent_renewals",
+    "fee_tm_to_register",
+    "fee_tm_renewal",
+    "fee_design_filing",
+    "fee_pbr_to_grant",
+]
+
+
+# State final demand's states, as the national accounts name them (gap B2)
+STATES = [
+    ("nsw", "New South Wales"),
+    ("vic", "Victoria"),
+    ("qld", "Queensland"),
+    ("sa", "South Australia"),
+    ("wa", "Western Australia"),
+    ("tas", "Tasmania"),
+    ("nt", "Northern Territory"),
+    ("act", "Australian Capital Territory"),
+]
+
+
+def _fees_sql(months: str) -> str:
+    """One row per month, a column per fee (`TIMELINE_FEES`), each right's from its own fees."""
+    rights = {"patent": "fee_patent_", "trade_mark": "fee_tm_", "design": "fee_design_", "pbr": "fee_pbr_"}
+    parts = []
+    for right, prefix in rights.items():
+        cols = ",\n            ".join(f"{expr} AS {c}" for c, expr in TIMELINE_FEES if c.startswith(prefix))
+        parts.append(f"""
+        {right} AS (
+            SELECT m.month, {cols}
+            FROM {months} m JOIN {{frl_fees/key_fees}} k
+              ON k."right" = '{right}' AND k.start <= m.month AND (k."end" IS NULL OR k."end" > m.month)
+            GROUP BY m.month
+        )""")
+    joins = " ".join(f"LEFT JOIN {r} USING (month)" for r in rights)
+    return (
+        ",".join(parts)
+        + f""",
+        fees AS (SELECT m.month, {", ".join(c for c, _ in TIMELINE_FEES)} FROM {months} m {joins})"""
+    )
+
+
 def timeline_sql() -> str:
     """One row per month. A series is empty before its records become continuous (the 9-in-12 rule, or
     `TIMELINE_START_OVERRIDE`) and in the final months the register has not finished recording (`TIMELINE_LAG`), so
@@ -1984,20 +2108,49 @@ def timeline_sql() -> str:
             {counts(TIMELINE_EVENTS)}
         FROM e WHERE event_date {window} GROUP BY 1
     ),
-    policy AS (
-        SELECT CAST(date_trunc('month', date) AS DATE) AS month, string_agg(id, ', ' ORDER BY date) AS policy_events
+    policy AS (  -- the fee changes are a column of their own (ADR 0031)
+        SELECT CAST(date_trunc('month', date) AS DATE) AS month,
+            string_agg(id, ', ' ORDER BY date) FILTER (lever <> 'fees') AS policy_events,
+            string_agg(DISTINCT rights, ', ' ORDER BY rights) FILTER (lever = 'fees') AS fee_changes
         FROM {{policy_events/events}} GROUP BY 1
-    ),
+    ),{_fees_sql("months")},
     cpi AS (  -- all groups, Australia (weighted average of the eight capitals), original, quarterly
         SELECT make_date(CAST(left(time_period, 4) AS INTEGER), 3 * CAST(right(time_period, 1) AS INTEGER), 1) AS month,
                value AS cpi
         FROM {{abs_prices/cpi}}
         WHERE index = '10001' AND region = '50' AND measure = '1' AND adjustment_type = '10' AND frequency = 'Q'
     ),
+    cpi_base AS (SELECT arg_max(cpi, month) AS base FROM cpi WHERE month <= DATE '{TIMELINE_END}'),
+    ana AS (  -- national accounts (gap B2): quarterly, seasonally adjusted, in each quarter's last month as the CPI
+        SELECT make_date(CAST(left(time_period, 4) AS INTEGER), 3 * CAST(right(time_period, 1) AS INTEGER), 1) AS month,
+            max(value) FILTER (measure_label = 'Chain volume measures') AS gdp_cvm,
+            max(value) FILTER (measure_label = 'Current prices') AS gdp_current
+        FROM {{abs_national_accounts/ana_agg}}
+        WHERE data_item_label = 'Gross domestic product' AND adjustment_type = '20' GROUP BY 1
+    ),
+    sfd AS (
+        SELECT make_date(CAST(left(time_period, 4) AS INTEGER), 3 * CAST(right(time_period, 1) AS INTEGER), 1) AS month,
+            {", ".join(f"max(value) FILTER (region_label = '{name}') AS sfd_{code}" for code, name in STATES)}
+        FROM {{abs_national_accounts/ana_sfd}}
+        WHERE data_item_label = 'STATE FINAL DEMAND' AND measure_label = 'Chain volume measures'
+          AND sector_label = 'All sectors' AND adjustment_type = '20' GROUP BY 1
+    ),
+    rba AS (  -- the RBA's monthly tables (gap B1): each month's value as the RBA dates it (its last business day)
+        SELECT CAST(date_trunc('month', date) AS DATE) AS month,
+            max(value) FILTER (series_id = 'FIRMMCRT') AS cash_rate_target,
+            max(value) FILTER (series_id = 'FIRMMCRI') AS cash_rate_interbank,
+            max(value) FILTER (series_id = 'FXRUSD') AS aud_usd,
+            max(value) FILTER (series_id = 'FXRTWI') AS aud_twi
+        FROM {{rba/series}} WHERE series_id IN ('FIRMMCRT', 'FIRMMCRI', 'FXRUSD', 'FXRTWI') GROUP BY 1
+    ),
     j AS (
-        SELECT months.month, apps.* EXCLUDE (month), events.* EXCLUDE (month), policy.policy_events, cpi.cpi
+        SELECT months.month, apps.* EXCLUDE (month), events.* EXCLUDE (month), policy.policy_events,
+            policy.fee_changes, cpi.cpi, fees.* EXCLUDE (month), q.cpi AS cpi_quarter, rba.* EXCLUDE (month),
+            ana.* EXCLUDE (month), sfd.* EXCLUDE (month)
         FROM months LEFT JOIN apps USING (month) LEFT JOIN events USING (month) LEFT JOIN policy USING (month)
-        LEFT JOIN cpi USING (month)
+        LEFT JOIN cpi USING (month) LEFT JOIN fees USING (month) LEFT JOIN rba USING (month) LEFT JOIN ana USING (month)
+        LEFT JOIN sfd USING (month)
+        LEFT JOIN cpi q ON q.month = make_date(year(months.month), 3 * quarter(months.month), 1)
     ),
     nz AS (
         SELECT month, count(*) OVER w AS months_ahead,
@@ -2013,8 +2166,13 @@ def timeline_sql() -> str:
         day(last_day(j.month)) AS days_in_month,
         {kept},
         j.cpi,
-        j.policy_events
-    FROM j CROSS JOIN f
+        j.policy_events,
+        {", ".join(f"j.{c}" for c, _ in TIMELINE_FEES)},
+        {", ".join(f"round(j.{c} * b.base / j.cpi_quarter, 2) AS {c}_real" for c in TIMELINE_FEES_REAL)},
+        j.fee_changes,
+        j.cash_rate_target, j.cash_rate_interbank, j.aud_usd, j.aud_twi,
+        j.gdp_cvm, j.gdp_current, {", ".join(f"j.sfd_{code}" for code, _ in STATES)}
+    FROM j CROSS JOIN f CROSS JOIN cpi_base b
     ORDER BY j.month
     """
 

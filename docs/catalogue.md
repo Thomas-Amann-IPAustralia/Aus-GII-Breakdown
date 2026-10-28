@@ -161,7 +161,15 @@ Processed:
 - `applicants` (R2, names): each provisional's applicants as the register names them.
 - `gap_probe`: the probed numbers and whether the register has them.
 
-*Not ingested yet: see the status in `docs/data-plan.md`.*
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `applicants` | 296,507 | R2 (2.4 MB) | `ip_right_type`, `application_number`, `seq`, `name`, `abn`, `acn`, `country`, `state`, `postcode` |
+| `gap_probe` | 300 | repo (0.0 MB) | `application_number`, `in_register` |
+| `inventors` | 181,469 | R2 (1.8 MB) | `application_number`, `seq`, `name`, `country_code`, `country_basis`, `given_name`, `p_female`, `p_female_basis` |
+| `provisionals` | 264,260 | repo (5.0 MB) | `application_number`, `found`, `patent_type`, `status_code`, `filed_date`, `priority_date`, `opi_date`, `acceptance_published_date`, `sealing_date`, `expiry_date`, `inforce_to_date`, `main_ipc`, `ipc_subclasses`, `ipc_count` … |
+
+- Note: ipa_provisionals: production register as at 2026-10-27
+- Note: ipa_provisionals: 22,262 calls, 2 retried
 
 ## Intellectual Property Longitudinal Research Data (IPLORD) 2020 (`iplord`)
 
@@ -322,7 +330,8 @@ Classification concordances: patents and trade marks to technologies, industries
 Raw (repo): `ipc-technology-35.csv`, WIPO's 35 technology fields (Schmoch 2008) as IP Australia reproduces them in
 the IPLORD 2020 dictionary (Annex A), transcribed here, with G01B to G01M restored to Measurement as in WIPO's
 table;
-the ALP crosswalks (Lybbert and Zolas, version 2209 for IPC excluding services, and the Nice crosswalk version 2305);
+the ALP crosswalks (Lybbert and Zolas, version 2209 for IPC excluding services and, as a labelled comparison, the
+same version including services; and the Nice crosswalk version 2305);
 the ABS correspondence ISIC Rev. 4 to ANZSIC 2006; and the WIPO IPC Green Inventory, taken from the tree embedded in
 its web app. Processed:
 
@@ -331,17 +340,21 @@ its web app. Processed:
 - `patent_fields`: each IP RAPID patent application's technology fields, from its current IPC marks, with `weight`
   (1/n over its n distinct fields, so each application sums to 1).
 - `alp_ipc4_isic4`, `alp_nice_isic4`: the probability-weighted links from IPC subclass, and from Nice class, to ISIC
-  Rev. 4 four-digit classes.
+  Rev. 4 four-digit classes. `alp_ipc4_isic4_services`: ALP's full IPC crosswalk, which also links patents to service
+  industries (the authors recommend the version without; the analysis uses it as a comparison, gap A2).
 - `isic4_anzsic`: ISIC Rev. 4 class to ANZSIC 2006 class (`partial` where the ABS marks the link as partial).
-- `ipc4_anzsic`, `nice_anzsic`: the ALP weights carried through to ANZSIC 2006 classes (an ISIC class's weight split
-  equally over the ANZSIC classes it links to fully, or over its partial links where it has no full one; ADR 0020).
+- `ipc4_anzsic`, `nice_anzsic`, `ipc4_anzsic_services`: the ALP weights carried through to ANZSIC 2006 classes (an
+  ISIC class's weight split equally over the ANZSIC classes it links to fully, or over its partial links where it has
+  no full one; ADR 0020).
 - `ipc_green_inventory`: the Green Inventory's topics, each with its IPC references, one row per reference.
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
 | `alp_ipc4_isic4` | 3,098 | repo (0.0 MB) | `ipc4`, `isic4`, `weight` |
+| `alp_ipc4_isic4_services` | 3,244 | repo (0.0 MB) | `ipc4`, `isic4`, `weight` |
 | `alp_nice_isic4` | 453 | repo (0.0 MB) | `nice`, `isic4`, `weight` |
 | `ipc4_anzsic` | 6,883 | repo (0.1 MB) | `ipc4`, `anzsic`, `anzsic_title`, `weight` |
+| `ipc4_anzsic_services` | 7,105 | repo (0.1 MB) | `ipc4`, `anzsic`, `anzsic_title`, `weight` |
 | `ipc_green_inventory` | 346 | repo (0.0 MB) | `level`, `topic`, `title`, `ipc_raw`, `ipc` |
 | `ipc_technology` | 369 | repo (0.0 MB) | `field_no`, `field`, `sector`, `ipc_prefix`, `groups`, `except_groups`, `except_prefix`, `unless_also` |
 | `isic4_anzsic` | 1,138 | repo (0.0 MB) | `isic4`, `anzsic`, `anzsic_title`, `partial` |
@@ -349,6 +362,7 @@ its web app. Processed:
 | `patent_fields` | 1,909,193 | repo (5.8 MB) | `application_number`, `field_no`, `weight`, `field`, `sector` |
 
 - Note: concordances: nice_anzsic: 0.0% of ALP weight is on ISIC classes the ABS table lacks
+- Note: concordances: ipc4_anzsic_services: 0.0% of ALP weight is on ISIC classes the ABS table lacks
 
 ## World Gender-Name Dictionary 2.0 (`wgnd`)
 
@@ -566,7 +580,7 @@ repo, or R2 when large). Source: WIPO statistics database; cite WIPO.
 Processed:
 - `office_origin`: one row per indicator, filing office, applicant's origin, breakdown (field of technology or class,
   where the indicator has one) and year. Resident filings are those where office and origin are the same; an
-  origin's total is the sum over offices.
+  origin's total is the sum over offices. Patent families by origin (indicators 20 and 22) have no office.
 - `office`: indicators reported by office only (rights in force, examiners, pendency, oppositions).
 - `pmh`: PCT applications by origin, Madrid applications by country of holder and Hague applications by origin; and
   the share of women among the inventors named in PCT applications, by origin (a percentage, from WIPO's names).
@@ -1148,10 +1162,86 @@ Raw: `events.yaml` (repo; compiled here, with `verify` marking details to confir
 HTML (repo, gzipped). Processed: `events` (date, rights, lever, event, source, verify) and `policy_register` (policy
 id, title, status, priority, tags, issue summary, comments and URL, as IP Australia publishes them).
 
+`events` also holds every change to a right's key fees, from `frl_fees/fee_changes` (lever "fees", id
+`fees-<right>-<date>`; ADR 0031), so `frl_fees` runs first; `corpus reprocess policy_events` adds them again after it.
+
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `events` | 17 | repo (0.0 MB) | `id`, `date`, `rights`, `lever`, `event`, `source`, `verify` |
+| `events` | 56 | repo (0.0 MB) | `id`, `date`, `rights`, `lever`, `event`, `source`, `verify` |
 | `policy_register` | 155 | repo (0.1 MB) | `policy_id`, `title`, `status`, `priority`, `tags`, `issue_summary`, `comments`, `url` |
+
+## The history of IP Australia's official fees, from the fee regulations on the Federal Register of Legislation (`frl_fees`)
+
+Office of Parliamentary Counsel (Federal Register of Legislation). Tier 2; questions 4, 5. Licence: CC BY 4.0. Source: https://www.legislation.gov.au/
+
+The history of IP Australia's official fees, from every version of the fee regulations on the Federal Register of
+Legislation: the Patents Regulations 1991 (Schedule 7), the Trade Marks Regulations under the 1955 Act (Schedule 2)
+and the Trade Marks Regulations 1995 (Schedule 9), the Designs Regulations 1982 (Schedule 2) and 2004 (Schedule 4),
+and the Plant Breeder's Rights Regulations 1994 (the Schedule). ADR 0031.
+
+Read from the Register's public API (https://api.prod.legislation.gov.au/v1): each title's versions (start and end
+dates, the amending instruments behind each), and each compilation's text as EPUB (XHTML). The Register holds no text
+for some versions, mostly before 1999 (it holds the regulations as made and compilations from 1999 on); for those, the
+key fees come from the amending instruments, read by hand into `gaps.yaml` (repo) and, where an instrument replaces a
+whole fee schedule, from its tables by the same rules as a compilation. The current fees (`ipa_fees`) are IP
+Australia's own list; a test checks the latest version here against it.
+
+Raw: `versions.json` (every version of each title, repo), `gaps.yaml` (repo, compiled here) and the EPUBs, one zip
+per title and one of the amending instruments (R2). Processed:
+- `versions`: one row per version of each title: start, end, the compilation's register id, whether the Register
+  holds its text, and the instruments that made it.
+- `schedule_rows`: every row of the fee schedule of every compilation with text, as published: item, the matter
+  (with the item's words before each paragraph), the fee as written and `amount_aud` (its first dollar amount).
+- `key_fees`: the fees that matter for the questions, one row per fee and spell at one amount: right, fee,
+  anniversary (patent renewals), start and end (exclusive), `amount_aud`, the version or instrument that set it, and
+  `basis` (`compilation` or `amendment`). Each is the base fee for one right, one class or one design, paid the
+  cheapest way the schedule offers ("preferred", "approved" or electronic means, the goods and services pick list),
+  without surcharges for extra claims, pages, classes or late payment.
+- `fee_changes`: one row per right and date on which any key fee changed, listing the changes.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `fee_changes` | 39 | repo (0.0 MB) | `right`, `date`, `fees_changed`, `changes`, `source` |
+| `key_fees` | 285 | repo (0.0 MB) | `right`, `fee`, `anniversary`, `start`, `end`, `amount_aud`, `source`, `basis`, `title_id` |
+| `schedule_rows` | 8,612 | repo (0.0 MB) | `title_id`, `right`, `start`, `row`, `part`, `item`, `matter`, `fee_text`, `amount_aud` |
+| `versions` | 281 | repo (0.0 MB) | `title_id`, `title`, `right`, `start`, `end`, `register_id`, `compilation`, `has_text`, `amended_by` |
+
+## Workplace Gender Equality Agency public data (employers with 100+ staff, by ABN, with industry and size) (`wgea`)
+
+Workplace Gender Equality Agency. Tier 2; questions 2, 3. Licence: CC BY 3.0 AU. Source: https://data.gov.au/data/dataset/wgea-dataset
+
+Workplace Gender Equality Agency (WGEA) public data: every private-sector employer with 100 or more employees, by
+ABN, with its industry (ANZSIC class) and its size, as reported each year (gap A3: firms' size and industry, free).
+
+Q2, Q3 (who files IP, by size and industry): WGEA is the only free source found that gives firm-level industry and
+size by ABN (ADR 0032). It covers employers of 100 or more, so it says nothing of small firms. Raw: the public data
+files for 2022-23, 2023-24 and 2024-25 (zips, R2), as published on data.gov.au (CC BY 3.0 AU). Processed:
+
+- `employers`: one row per reporting year and ABN: the employer's and its corporate group's names, the size band as
+  WGEA publishes it (for 2022-23, the submission group's; from 2023-24, the employer's), its ANZSIC class (code and
+  the names of its division, subdivision, group and class), and its workforce: employees (the sum of the workforce
+  composition's headcounts), women and managers. In 2022-23 a submission group reports under its primary ABN only.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `employers` | 20,790 | repo (0.5 MB) | `reporting_year`, `abn`, `employer_name`, `corporate_group_name`, `employer_size`, `anzsic_code`, `anzsic_division`, `anzsic_subdivision`, `anzsic_group`, `anzsic_class`, `employees`, `women`, `managers` |
+
+## Reserve Bank of Australia statistical tables (cash rate and exchange rates, monthly) (`rba`)
+
+Reserve Bank of Australia. Tier 3; questions 4, 5. Licence: CC BY 4.0. Source: https://www.rba.gov.au/statistics/tables/
+
+Reserve Bank of Australia statistical tables: the cash rate (F1.1) and exchange rates (F11), monthly (gap B1).
+
+Context for the timeline (Q4, Q5): the cost of money and the dollar's value move filing from overseas and investment
+in R&D, so a policy or fee change is read beside them. Raw: each table as published (repo): `f1.1-data.csv` (money
+market rates, monthly from 1969; the cash rate target from 1990), `f11-data.csv` (exchange rates, end of month, from
+2010) and `f11hist-1969-2009.xls` (the same, July 1969 to December 2009). Processed: `series`, long: table, series
+id, title, description, units, frequency, date (the day the RBA gives: a month's last business day or its end) and
+value. Licence: CC BY 4.0 (RBA).
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `series` | 13,993 | repo (0.1 MB) | `table`, `series_id`, `title`, `description`, `units`, `frequency`, `date`, `value` |
 
 ## The ABN spine (every ABN in the corpus, with ABR and ASIC attributes and source flags) (`linkage`)
 

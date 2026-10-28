@@ -105,4 +105,22 @@ firms' patents abroad. B27 the places screen; B28 attached indicators; B29 advan
 filer; B31 business mix. B32 the countries screen; B33 Australia among OECD members; B34 R&D and patenting; B35
 attachments. B36 the timeline screen; B37 policy breaks; B38 provisional follow-up; B39 Australian against overseas,
 and Australia-only series. B40 the industries screen; B41 IP per business; B42 innovation and IP; B43 attachments. B44
-the institutions screen; B45 universities; B46 Australian use of cited research.
+the institutions screen; B45 universities; B46 Australian use of cited research. B47 to
+B49 fee changes (added after Stage 2); B50, B51 firms' size and industry; B52 the dollar and the cash rate; B53, B54
+the crosswalk with services.
+
+## 9. Data gaps filled after Stage 2 (2026-10-28, A15)
+
+- **Fees (B47 to B49; ADR 0031).** Changes in the fees to obtain a right rarely moved filing beyond placebo months:
+  of 34 pairs after changes of 10% or more, 4 rushes and 3 steps beyond 95% of placebos, about what chance gives;
+  the clear breaks are the 1995 and 2003 Acts. Across the larger changes, bigger rises go with smaller steps (rho
+  -0.306, interval -0.646 to 0.080). Patent cessations rose beyond every placebo month after the September 2002
+  renewal rise (0.353 in logs); no other renewal change, including October 2020's 42.82%, did. Carried to Stage 3: the
+  sharper test is each right's renewal at the anniversary a fee changed.
+- **Size and industry (B50, B51; ADR 0032).** Among employers of 100 or more, the largest are 22 points (14.6 to
+  30.3) more likely than the smallest to have filed a standard patent; industry sorts patenting far more (manufacturing
+  0.395, accommodation 0.006); R&D spend's weak link to patenting holds within size bands (0.105 to 0.253).
+- **The cash rate and the dollar (B52).** No consistent sign for the dollar against overseas filing; the cash rate
+  rises with overseas filing in booms, a cycle to allow for in before-and-after comparisons.
+- **The crosswalk with services (B53, B54).** Patents per business follow business R&D per business across divisions
+  (0.739, interval 0.38 to 0.89; 0.465 without services); 16 screen leads against 8. Stage 3 reports both crosswalks.

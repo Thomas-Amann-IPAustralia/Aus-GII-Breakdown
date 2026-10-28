@@ -609,7 +609,26 @@ gaps are in what it publishes, and the register fills them beside IP RAPID's own
   Australian organisations' provisionals filed FY2017 to FY2026 are women, and 15.57% on individuals'; 14.56% in
   FY2026. These are the data for the research owner's gender analysis.
 
-## 12. Where to find things
+## 12. Data gaps filled after Stage 2 (2026-10-28, A15)
+
+At the owner's request (A15, `docs/data-gaps-brief.md`), each gap filled is a corpus source attached to a lens and
+profiled here before its pairs go to Stage 2:
+
+- **The history of official fees (gap A1; `frl_fees`, ADR 0031; notebook 5.7, U108 to U111).** Every version of the
+  fee regulations on the Federal Register of Legislation, from 1982 (designs), 1989 (trade marks), 1991 (patents) and
+  1994 (plant breeder's rights); today's agree with IP Australia's website. In real terms a trade mark costs 250
+  dollars of June 2026 against 944 in 1990, a standard patent's filing to grant 1,250 against 2,261 in 1995, and
+  keeping a patent for its full term 16,550 against 16,140. Fees changed on 39 dates, nearly always upwards; patent
+  renewals have moved towards the last years (the 19th anniversary's fee 8.94 times the 5th's).
+- **Firms' size and industry (gap A3; `wgea`, ADR 0032; notebook 2.6, U112).** For employers of 100 or more only:
+  7,126 firms in the lens, 4.05% of its standard patent filers but 18.41% of its standard patents. Nothing free covers
+  smaller firms.
+- **The cash rate and the dollar (gap B1; `rba`; notebook 5.8, U113).** Monthly and complete, from 1969 (the dollar)
+  and 1990 (the cash rate target).
+- **ALP's crosswalk with services (gap A2; `concordances`; notebook 6.5, U114).** Patents reach all 19 divisions, and
+  manufacturing's share of applications falls from 90.63% to 79.67%; the recommended crosswalk stays the main measure.
+
+## 13. Where to find things
 
 | What | Where |
 |---|---|

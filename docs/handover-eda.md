@@ -14,7 +14,30 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-28, latest): Stage 2 is complete** (A14; B1 to B46, `docs/stage-2-summary.md`), in `analysis/notebooks/02_bivariate.ipynb`, with the method
+**Status (2026-10-28, latest): filling the data gaps** (A15, `docs/data-gaps-brief.md`), in its order. Done so far:
+- **A1, the fee history** (ADR 0031): `frl_fees` reads every version of the fee regulations from the Federal
+  Register's API (EPUB tables of 160 compilations; `gaps.yaml` holds the 1980s and 1990s from the amending
+  instruments, every one listed and checked); `key_fees` (23 fees, 49 series, 285 spells), `fee_changes` (39). A test
+  checks today's against `ipa_fees`. Attached: the timeline's `fee_*` columns (nominal; six costs also real, June 2026
+  dollars) and `fee_changes`; `policy_events/events` gains each change (lever "fees"), kept out of the timeline's
+  `policy_events` column so Stage 1's 17 changes are unchanged. Notebook 1, 5.7 (U108 to U111); notebook 2, 5.4 (B47
+  to B49): fee changes rarely moved filing or lapsing beyond placebo months; the exception is patent cessations after
+  the September 2002 renewal rise.
+- **A2, ALP's crosswalk with services**: `concordances` adds `alp_ipc4_isic4_services` and `ipc4_anzsic_services`;
+  `industries` adds `patents_standard_with_services` and `patents_standard_au_with_services` beside the main counts.
+  U114 (6.5); B53, B54 (6.4): patents reach all 19 divisions and follow business R&D per business (0.739).
+- **A3, firms' size and industry** (ADR 0032): `wgea` (WGEA's public data, employers of 100 or more, by ABN, with
+  ANZSIC class and size); `firms` adds `wgea_*` (7,126 firms). U112 (2.6); B50, B51 (2.6). Nothing free covers small
+  firms: OQ20 asks the owner whether to pursue it.
+- **B1, the RBA's cash rate and exchange rates**: `rba`; the timeline adds four columns. U113 (5.8); B52 (5.5).
+- **Notebooks:** re-run whole after each addition; no earlier output changed except row order in two unordered
+  tables of notebook 1 (sections 1.8.4 and 7.4) and a float tie (industries overview, 700 or 699 distinct; the
+  regions overview's 1.0% or 0.9%), none quoted. Sections after an addition are renumbered (summaries move down one).
+- **Next:** A4 (WIPO families by origin are fetched by `wipo_ipstats`, indicators 20 and 22; the coverage check has a
+  first result: patents with a non-US foreign priority appear "Australia only" in Google Patents 2.0% to 5.5% of the
+  time before 2005, 0.8% to 0.9% after; 10.5% of FY2000-04 patents have no Google family), then B2 to B11.
+
+**Status (2026-10-28): Stage 2 is complete** (A14; B1 to B46, `docs/stage-2-summary.md`), in `analysis/notebooks/02_bivariate.ipynb`, with the method
 of ADR 0030. **The website (evidence atlas) is not to be updated until all of Stage 2 is finished** (the owner's
 instruction, 2026-10-28): leave `evidence/` and `analysis/atlas/` alone until then.
 - **Method:** each lens section screens every pair of its variables on one 0-to-1 scale (|Spearman rho|, the rank

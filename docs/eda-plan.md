@@ -112,7 +112,8 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 | `arc_grants`, `nhmrc_grants` | institutions, timeline | Grants and funding per institution and year (ARC names matched to ROR) | Done (ADR 0021, U83): ARC by the year funding starts, NHMRC by round (F41), names matched to ROR; industry-partner schemes apart |
 | `ror` (added 2026-10-26) | institutions | Every Australian ROR record, with names, aliases and relationships: the lens's key | Done (ADR 0021): from ROR's data dump |
 | `policy_events` | timeline | Policy changes per month; the policy register is reference | Done (ADR 0011): B7 (every date checked against the Federal Register); (ADR 0014) the 1995 term change added: 17 events. Profiled one at a time (U28) |
-| `ipa_fees` | timeline, rights | The fee in force each month, and fees per right, once the fee history exists | R3 |
+| `ipa_fees` | timeline, rights | Today's fees: the check on the fee history's latest version (ADR 0031) | Done: a test compares them |
+| `frl_fees` | timeline, `policy_events` | Each key fee in force each month (`fee_*`), and each change as an event (ADR 0031) | Done: U108 to U111, B47 to B49 |
 | `wgnd` | reference | The name-gender dictionary behind `google_patents_inventors` | — |
 | `evidence`, `wine_gi` | reference | The literature register; the GI list (for certification marks) | — |
 
