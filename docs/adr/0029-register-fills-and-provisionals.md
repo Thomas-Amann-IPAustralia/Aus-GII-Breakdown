@@ -47,7 +47,11 @@ filling every year alike needs every record.
 8. **Provisionals' inventors and gender.** `ipa_provisionals/inventors` (R2, names) carries each inventor's given name
    and estimated chance of being a woman by the method of ADR 0022 (the World Gender-Name Dictionary). The register
    gives no inventor's country, so the first applicant's country in IP RAPID stands in (`country_basis` =
-   `applicant`). The per-provisional counts (`provisionals`, repo) are attached to the lens when the harvest ends.
+   `applicant`). The per-provisional counts (`provisionals`, repo) are in the `rights` lens as `register_inventors`,
+   `register_inventors_women_expected`, `register_inventors_men_expected` and `register_inventors_gender_unknown`
+   (notebook 1.8.7, U105 to U107): 181,469 inventors, named from FY2003; an estimated 21.24% women on Australian
+   organisations' provisionals and 15.57% on individuals' (FY2017 to FY2026). The harvest took five runs over about nine
+   hours (one container restart, resumed from the cache).
 
 **Consequences.** U45's lead and U34's puzzle are explained as publication, not behaviour (U100, U101, U103), and the
 request to IP Australia now asks why IP RAPID leaves these out (OQ6, OQ7, OQ13, OQ14 reworded). The filled ABN series

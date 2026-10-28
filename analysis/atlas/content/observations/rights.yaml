@@ -5,7 +5,7 @@
   about: data
   headline: The rights table has one row per right, and its columns are complete where they should be
   statement: >-
-    The table holds 4,356,908 rights in 82 columns, and no right appears twice. Core facts (type, status, applicant
+    The table holds 4,356,908 rights in 86 columns, and no right appears twice. Core facts (type, status, applicant
     counts) are 100% filled; the application date 98.83%. Whether the applicant is Australian is known for 86.59% of
     rights.
   figures:
@@ -2180,3 +2180,122 @@
     The list is kept (analysis/eda/dropped/design_shells.csv), so the drop can be reversed.
   terms: [design-shell, register]
   related: [U1, U3, U99]
+
+- id: U105
+  lens: rights
+  attachment: IP Australia's register
+  about: data
+  headline: IP Australia's register holds every provisional application IP RAPID does, and nothing more but the newest
+  statement: >-
+    Of 264,260 provisional application numbers asked, IP Australia's [[register|register]] holds 264,250: 264,014
+    that IP RAPID also has and 236 filed since IP RAPID's release. None of 300 numbers missing from IP RAPID's yearly
+    sequences is in the register, so those numbers were never used.
+  figures:
+    - value: "264,250"
+      label: provisional applications in the register
+    - value: "0 of 300"
+      label: missing numbers that turned out to exist
+  points:
+    - "10 numbers are not found in the register."
+  questions:
+    - q: 1
+      how: A count of provisional applications from IP RAPID is complete, so it can be relied on.
+  sources: [ipa_provisionals, iprapid]
+  prep:
+    - what: Every provisional is asked for by number, as the register's patent search cannot list them.
+      why: It is the only way to read every provisional.
+  steps:
+    - Ask the register for every provisional number IP RAPID has, and for numbers past each recent year's last one.
+    - Probe a random 300 of the numbers missing inside IP RAPID's yearly sequences.
+  assumptions:
+    - A number the register does not know was never used.
+  limits:
+    - The register is as it stood in October 2026.
+  next: >-
+    Provisional counts by year come from IP RAPID; the register adds their inventors ({U106}).
+  terms: [provisional, register]
+  related: [U106, U107]
+
+- id: U106
+  lens: rights
+  attachment: IP Australia's register
+  about: data
+  headline: Provisional applications' inventors are named from FY2003, though since FY2024 a fifth have none
+  statement: >-
+    IP Australia's register names 181,469 inventors on [[provisional|provisional applications]], which Google Patents
+    never sees. 98.53% to 100% of those filed FY2003 to FY2023 name at least one, and none filed before FY2003 does.
+    Since FY2024 fewer do: 78.79% (FY2024), 76.38% (FY2025) and 84.69% (FY2026).
+  figures:
+    - value: "181,469"
+      label: inventors named on provisional applications
+  points:
+    - "A provisional names 1.18 to 1.58 inventors on average, by year: many are filed by one person."
+    - "Whether inventors are added later, or are no longer recorded for some provisionals, the data cannot say."
+  questions:
+    - q: 2
+      how: Who invents, including the many inventions that are never followed by a full patent.
+  sources: [ipa_provisionals]
+  prep:
+    - what: The inventors are taken as the register names them on each provisional.
+      why: Provisionals are never published, so no other source has their inventors.
+  steps:
+    - Count, for each year, the provisionals naming at least one inventor, and how many they name.
+  assumptions:
+    - The register's inventors are the provisional's inventors as filed.
+  limits:
+    - Coverage since FY2024 is lower, for reasons not yet known.
+  next: >-
+    The gender analysis uses provisionals from FY2003, with each year's coverage beside its figure.
+  terms: [provisional, register]
+  related: [U105, U107, U95]
+
+- id: U107
+  lens: rights
+  attachment: IP Australia's register
+  about: system
+  headline: About one inventor in five on provisional applications is estimated to be a woman
+  statement: >-
+    Of the inventors named on provisional applications filed FY2017 to FY2026, an estimated 21.24% are women on those
+    filed by Australian organisations and 15.57% on those filed by Australian individuals. By year the share rose from
+    19.1% (FY2003) to 24.38% (FY2012), fell to 16.83% (FY2014), recovered to 22.08% (FY2023) and was 14.56% in FY2026.
+  figures:
+    - value: "21.24%"
+      label: estimated women among inventors on Australian organisations' provisionals, FY2017 to FY2026
+    - value: "14.56%"
+      label: estimated women among provisionals' inventors in FY2026
+  points:
+    - "It is an expected count from names, not a record of anyone's gender. All but 2.97% of inventors have an
+      estimate."
+    - "FY2026 is the year provisional filing by individuals doubled ({U8}), and individuals' provisionals have a lower
+      share of women."
+    - "The step from FY2012 to FY2014 comes with more inventors per provisional (1.22 to 1.37); its cause is not known."
+  questions:
+    - q: 2
+      how: A measure of gender among inventors that includes provisional applications, which the patent data leave out.
+  sources: [ipa_provisionals, wgnd, iprapid]
+  chart:
+    type: bar
+    horizontal: true
+    title: Estimated women among provisional applications' inventors
+    subtitle: Provisionals filed FY2017 to FY2026, by who filed them
+    x: {type: category, values: [Australian organisations, Australian individuals, Overseas organisations, Overseas individuals]}
+    y: {name: "% estimated to be women", min: 0, format: pct, digits: 2}
+    series:
+      - name: Estimated women
+        data: [21.24, 15.57, 9.52, 21.76]
+    source: IP Australia's register; WIPO World Gender-Name Dictionary; IP RAPID (lens rights)
+  prep:
+    - what: Each inventor's chance of being a woman is estimated from the given name and the first applicant's country.
+      why: The register gives no inventor's country, and the applicant's is the nearest stand-in.
+  steps:
+    - Estimate each named inventor's chance of being a woman with WIPO's name dictionary.
+    - Add the chances up by year and by who filed, and divide by the inventors with an estimate.
+  assumptions:
+    - The applicant's country is the inventor's, which is likely for Australian filers.
+  limits:
+    - The method was checked against WIPO's figures only for patents, so these estimates are less tested.
+  next: >-
+    The research owner's gender analysis compares provisionals with standard patents, by field and filer.
+  terms: [gender-estimate, provisional, register]
+  related: [U98, U106, U8]
+

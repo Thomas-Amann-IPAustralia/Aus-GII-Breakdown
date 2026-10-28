@@ -23,8 +23,10 @@ use the fills; A13: reword the request). `ipa_register` read every trade mark an
 (U99 to U104) restates U45 (ABN linking 92.3% to 90.9%, FY2024 to FY2026; first-time trade mark filers 19,730 in
 FY2026), U7 and U13 (designs 32.31% Australian, 0.007% unknown) and U34 (priority-claiming marks expedited every year);
 figures moved by the drop are corrected and the atlas follows (105 observations). OQ6, OQ7, OQ13 and OQ14 are
-reworded. **Next:** when the provisional harvest saves, attach its counts to `rights` (inventors, expected women and
-men for provisionals) and profile them (1.8.7); then the owner's call on Stage 2 and the gender analysis.
+reworded. The provisional harvest is done too (`ipa_provisionals`: 264,260 numbers, 181,469 inventors; five runs, one
+container restart, resumed from the cache): `rights` has `register_inventors` and its expected women and men, profiled
+in 1.8.7 (U105 to U107; atlas 108 observations). **Next is the owner's call:** Stage 2, and the gender analysis
+(provisionals from FY2003 with the year's coverage beside each figure; coverage since FY2024 is a lead).
 
 Before that, the same day: **IP RAPID checked against IP Australia's live register** (ADR 0028,
 `docs/audit-ipa-api.md`), after the owner obtained API access (credentials in the environment: `IPA_API_*_DEV` is

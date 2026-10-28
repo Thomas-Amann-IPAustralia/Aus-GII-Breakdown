@@ -88,6 +88,10 @@ rights:
   inventors_women_expected: {label: Expected number of women among the inventors, kind: numeric, note: "the sum of each inventor's estimated probability of being a woman, from their first name and country (WIPO's World Gender-Name Dictionary): an expected count for groups, not anyone's stated gender (ADR 0022 checks it against WIPO's published shares by country)"}
   inventors_men_expected: {label: Expected number of men among the inventors, kind: numeric}
   inventors_gender_unknown: {label: Inventors with no gender estimate, kind: count, note: "initials, or names the dictionary lacks"}
+  register_inventors: {label: Inventors named in IP Australia's register (provisionals), kind: count, note: "provisional applications only: the inventors the register names (ipa_provisionals, ADR 0029). Google Patents holds almost no provisionals, so `inventors` is empty for them; the register names inventors from about 2002. 0 where it names none"}
+  register_inventors_women_expected: {label: Expected number of women among the register's inventors, kind: numeric, note: "the sum of each inventor's estimated chance of being a woman, from the given name and the first applicant's country in IP RAPID (the register gives no inventor's country), by the World Gender-Name Dictionary (ADR 0022, 0029); inventors with no estimate add nothing (count them in register_inventors_gender_unknown)"}
+  register_inventors_men_expected: {label: Expected number of men among the register's inventors, kind: numeric, note: "as register_inventors_women_expected"}
+  register_inventors_gender_unknown: {label: Register's inventors with no gender estimate, kind: count}
 
 firms:
   abn: {label: ABN, kind: id}

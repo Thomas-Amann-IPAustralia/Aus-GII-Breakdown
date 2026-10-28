@@ -583,7 +583,11 @@ def rights_sql() -> str:
         CASE WHEN inv.inventors_au > 0 THEN true WHEN inv.inventors_abroad > 0 THEN false END AS invented_in_australia,
         inv.women_expected AS inventors_women_expected,
         inv.men_expected AS inventors_men_expected,
-        inv.gender_unknown AS inventors_gender_unknown
+        inv.gender_unknown AS inventors_gender_unknown,
+        pv.inventors AS register_inventors,
+        pv.women_expected AS register_inventors_women_expected,
+        pv.men_expected AS register_inventors_men_expected,
+        pv.gender_unknown AS register_inventors_gender_unknown
     FROM dated r
     LEFT JOIN applicants a USING (ip_right_type, application_number)
     LEFT JOIN agents g USING (ip_right_type, application_number)
@@ -599,6 +603,8 @@ def rights_sql() -> str:
     LEFT JOIN gp ON r.ip_right_type = 'patent' AND gp.application_number = r.application_number
     LEFT JOIN {{google_patents/families}} fam ON fam.family_id = gp.family_id
     LEFT JOIN {{google_patents_inventors/family_inventors}} inv ON inv.family_id = gp.family_id
+    LEFT JOIN {{ipa_provisionals/provisionals}} pv
+        ON r.ip_right_sub_type = 'provisional' AND pv.application_number = r.application_number AND pv.found
     """
 
 

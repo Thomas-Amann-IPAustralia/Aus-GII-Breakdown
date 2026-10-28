@@ -603,8 +603,11 @@ gaps are in what it publishes, and the register fills them beside IP RAPID's own
   to FY2018 and in the register from FY2019 (97.82% in FY2018 and 99.55% in FY2020 in either record).
 - **U104:** 11,098 empty design records, numbered 1973 to 1982, are dropped and listed.
 
-Every provisional application is being read from the register with its inventors, for a gender analysis; its profile
-will be section 1.8.7.
+- **Provisionals' inventors (1.8.7, U105 to U107):** the register holds every provisional IP RAPID does (264,250 of
+  264,260 numbers; the gaps in the numbering were never used) and names 181,469 inventors, from FY2003 (98.53% to
+  100% of provisionals to FY2023; 76.38% to 84.69% since FY2024, a lead). An estimated 21.24% of inventors on
+  Australian organisations' provisionals filed FY2017 to FY2026 are women, and 15.57% on individuals'; 14.56% in
+  FY2026. These are the data for the research owner's gender analysis.
 
 ## 12. Where to find things
 
