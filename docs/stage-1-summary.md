@@ -609,7 +609,53 @@ gaps are in what it publishes, and the register fills them beside IP RAPID's own
   Australian organisations' provisionals filed FY2017 to FY2026 are women, and 15.57% on individuals'; 14.56% in
   FY2026. These are the data for the research owner's gender analysis.
 
-## 12. Where to find things
+## 12. Data gaps filled after Stage 2 (2026-10-28, A15)
+
+At the owner's request (A15, `docs/data-gaps-brief.md`), each gap filled is a corpus source attached to a lens and
+profiled here before its pairs go to Stage 2:
+
+- **The history of official fees (gap A1; `frl_fees`, ADR 0031; notebook 5.7, U108 to U111).** Every version of the
+  fee regulations on the Federal Register of Legislation, from 1982 (designs), 1989 (trade marks), 1991 (patents) and
+  1994 (plant breeder's rights); today's agree with IP Australia's website. In real terms a trade mark costs 250
+  dollars of June 2026 against 944 in 1990, a standard patent's filing to grant 1,250 against 2,261 in 1995, and
+  keeping a patent for its full term 16,550 against 16,140. Fees changed on 39 dates, nearly always upwards; patent
+  renewals have moved towards the last years (the 19th anniversary's fee 8.94 times the 5th's).
+- **Firms' size and industry (gap A3; `wgea`, ADR 0032; notebook 2.6, U112).** For employers of 100 or more only:
+  7,126 firms in the lens, 4.05% of its standard patent filers but 18.41% of its standard patents. Nothing free covers
+  smaller firms.
+- **The cash rate and the dollar (gap B1; `rba`; notebook 5.8, U113).** Monthly and complete, from 1969 (the dollar)
+  and 1990 (the cash rate target).
+- **ALP's crosswalk with services (gap A2; `concordances`; notebook 6.5, U114).** Patents reach all 19 divisions, and
+  manufacturing's share of applications falls from 90.63% to 79.67%; the recommended crosswalk stays the main measure.
+- **Patent families by origin, and Google Patents' coverage (gap A4; `wipo_ipstats`; notebook 4.5, U115).** WIPO
+  counts 61.73% to 66.37% of Australian-origin families filed in more than one office in every five years since 2000;
+  Google Patents' links show far fewer for older years (14.91% for 2000 to 2004), and Australian applicants' PCT
+  patents appear "Australia only" 74.92% of the time in FY2000 to FY2004 against about 12% after FY2010. Family
+  measures for Australian applicants are read from FY2010 on (OQ21 asks whether to repair the older links).
+- **The national accounts (gap B2; `abs_national_accounts`; notebook 5.9, U116).** GDP quarterly from 1959, state
+  final demand from 1985, value added by division for every year of the industries lens.
+- **Individuals' incomes by postcode (gap B3; `ato_postcode`; notebook 3.6, U117).** Twelve income years, 2,558 of the
+  2,641 postal areas in 2023-24; individuals with business income rose from 8.59% to 10.36%.
+- **The Census over time (gap B6; `abs_census_tsp`; notebook 3.7, U118).** 2011, 2016 and 2021 on 2021 areas,
+  apportioned from SA2s; the 2021 count is within 66 people of the published one. For change only; 2021 levels come
+  from the profile published for postal areas.
+- **Business characteristics, 2024-25 (gap B4; `abs_bcs_cubes`; notebook 6.6, U119).** A third survey year for 17
+  divisions (no 2023-24 release); businesses with any innovation activity 51.9% (2020-21), 45.7% and 45.6% (2024-25).
+- **Not filled from here:** court judgments after 10 March 2025 (gap B5): no newer corpus release, and the Federal
+  Court's site refuses this environment (OQ22).
+- **Supplementary GII values (gap B7; `abs_schools` and the ABS's R&D surveys, ADR 0033; notebook 4.6, U120).** Four of
+  the six blanks filled beside the GII, never in it: researchers per million 4,870 (OECD median 5,320); GERD financed
+  by business 51.78% (49.5%); research talent in business 33.91% (52.99%, only 16.7% of members lower); secondary
+  pupil-teacher ratio 11.7 (11.02).
+- **OpenAlex's citation filter (gap B8; `audit.openalex_filter`; notebook 7.7, U121).** About 5.6% more patent-cited
+  Australian works exist than the harvest holds (3.5% to 8.3%): 2.4% for want of a scholarly citation, 2.9% under
+  merged ids. No re-harvest; a lower bound in Stage 3.
+- **Research commercialisation (gap B9; `nsrc`; notebook 7.8, U122).** 2000 to 2015 for 82 institutions: disclosures
+  548 to 1,705 a year, licence income $97.3 million to $354.1 million, CSIRO 42.3% of it.
+- **The PBS with Section 100 (gap B11; `pbs/monthly`; notebook 5.10, U123).** Section 100 is about 30% of the PBS's
+  government cost ($6.33 billion in FY2026); the yearly CSVs leave it out.
+
+## 13. Where to find things
 
 | What | Where |
 |---|---|

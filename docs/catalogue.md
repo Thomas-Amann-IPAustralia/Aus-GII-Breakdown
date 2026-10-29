@@ -161,7 +161,15 @@ Processed:
 - `applicants` (R2, names): each provisional's applicants as the register names them.
 - `gap_probe`: the probed numbers and whether the register has them.
 
-*Not ingested yet: see the status in `docs/data-plan.md`.*
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `applicants` | 296,507 | R2 (2.4 MB) | `ip_right_type`, `application_number`, `seq`, `name`, `abn`, `acn`, `country`, `state`, `postcode` |
+| `gap_probe` | 300 | repo (0.0 MB) | `application_number`, `in_register` |
+| `inventors` | 181,469 | R2 (1.8 MB) | `application_number`, `seq`, `name`, `country_code`, `country_basis`, `given_name`, `p_female`, `p_female_basis` |
+| `provisionals` | 264,260 | repo (5.0 MB) | `application_number`, `found`, `patent_type`, `status_code`, `filed_date`, `priority_date`, `opi_date`, `acceptance_published_date`, `sealing_date`, `expiry_date`, `inforce_to_date`, `main_ipc`, `ipc_subclasses`, `ipc_count` … |
+
+- Note: ipa_provisionals: production register as at 2026-10-27
+- Note: ipa_provisionals: 22,262 calls, 2 retried
 
 ## Intellectual Property Longitudinal Research Data (IPLORD) 2020 (`iplord`)
 
@@ -322,7 +330,8 @@ Classification concordances: patents and trade marks to technologies, industries
 Raw (repo): `ipc-technology-35.csv`, WIPO's 35 technology fields (Schmoch 2008) as IP Australia reproduces them in
 the IPLORD 2020 dictionary (Annex A), transcribed here, with G01B to G01M restored to Measurement as in WIPO's
 table;
-the ALP crosswalks (Lybbert and Zolas, version 2209 for IPC excluding services, and the Nice crosswalk version 2305);
+the ALP crosswalks (Lybbert and Zolas, version 2209 for IPC excluding services and, as a labelled comparison, the
+same version including services; and the Nice crosswalk version 2305);
 the ABS correspondence ISIC Rev. 4 to ANZSIC 2006; and the WIPO IPC Green Inventory, taken from the tree embedded in
 its web app. Processed:
 
@@ -331,17 +340,21 @@ its web app. Processed:
 - `patent_fields`: each IP RAPID patent application's technology fields, from its current IPC marks, with `weight`
   (1/n over its n distinct fields, so each application sums to 1).
 - `alp_ipc4_isic4`, `alp_nice_isic4`: the probability-weighted links from IPC subclass, and from Nice class, to ISIC
-  Rev. 4 four-digit classes.
+  Rev. 4 four-digit classes. `alp_ipc4_isic4_services`: ALP's full IPC crosswalk, which also links patents to service
+  industries (the authors recommend the version without; the analysis uses it as a comparison, gap A2).
 - `isic4_anzsic`: ISIC Rev. 4 class to ANZSIC 2006 class (`partial` where the ABS marks the link as partial).
-- `ipc4_anzsic`, `nice_anzsic`: the ALP weights carried through to ANZSIC 2006 classes (an ISIC class's weight split
-  equally over the ANZSIC classes it links to fully, or over its partial links where it has no full one; ADR 0020).
+- `ipc4_anzsic`, `nice_anzsic`, `ipc4_anzsic_services`: the ALP weights carried through to ANZSIC 2006 classes (an
+  ISIC class's weight split equally over the ANZSIC classes it links to fully, or over its partial links where it has
+  no full one; ADR 0020).
 - `ipc_green_inventory`: the Green Inventory's topics, each with its IPC references, one row per reference.
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
 | `alp_ipc4_isic4` | 3,098 | repo (0.0 MB) | `ipc4`, `isic4`, `weight` |
+| `alp_ipc4_isic4_services` | 3,244 | repo (0.0 MB) | `ipc4`, `isic4`, `weight` |
 | `alp_nice_isic4` | 453 | repo (0.0 MB) | `nice`, `isic4`, `weight` |
 | `ipc4_anzsic` | 6,883 | repo (0.1 MB) | `ipc4`, `anzsic`, `anzsic_title`, `weight` |
+| `ipc4_anzsic_services` | 7,105 | repo (0.1 MB) | `ipc4`, `anzsic`, `anzsic_title`, `weight` |
 | `ipc_green_inventory` | 346 | repo (0.0 MB) | `level`, `topic`, `title`, `ipc_raw`, `ipc` |
 | `ipc_technology` | 369 | repo (0.0 MB) | `field_no`, `field`, `sector`, `ipc_prefix`, `groups`, `except_groups`, `except_prefix`, `unless_also` |
 | `isic4_anzsic` | 1,138 | repo (0.0 MB) | `isic4`, `anzsic`, `anzsic_title`, `partial` |
@@ -349,6 +362,7 @@ its web app. Processed:
 | `patent_fields` | 1,909,193 | repo (5.8 MB) | `application_number`, `field_no`, `weight`, `field`, `sector` |
 
 - Note: concordances: nice_anzsic: 0.0% of ALP weight is on ISIC classes the ABS table lacks
+- Note: concordances: ipc4_anzsic_services: 0.0% of ALP weight is on ISIC classes the ABS table lacks
 
 ## World Gender-Name Dictionary 2.0 (`wgnd`)
 
@@ -410,18 +424,20 @@ AusTender contract notices: Australian Government contracts by supplier (with AB
 
 Three parts. The Department of Finance's cumulative file of notices published to 30 August 2019 (from July 2007). The
 OCDS API's notices by the date they were published, from 1 July 2019 (weekly windows of 100-notice pages, about three
-seconds a page, fetched four at a time and cached as each finishes, so a rerun resumes). And, because that query
-returns amendments only for contracts published from July 2019, every release the API holds for each contract in the
-bulk file still running on its last day (its latest end date on or after 30 August 2019), asked by id: their later
-amendments are nowhere else. That is 44,461 contracts, of which 10,800 were published in July and August 2019 and so
-come from the other query too. Raw: the bulk file and the API's responses as gzipped JSON lines, one file per
-query (R2). Processed: `contracts`, one row per notice (parent or amendment) with: `cn_id` (the notice's own id: the
-contract's, such as CN123, or an amendment's, such as CN123-A2), `parent_cn_id`, `amendment` (0 for the contract's
-first notice, n for its nth amendment), `published`, `published_batch`, `signed`, `start`, `end`, `value` (AUD),
-`value_jump`, `description`, `unspsc`, `agency`, `supplier_name`, `supplier_abn`, `supplier_postcode`,
-`supplier_state`, `supplier_country`, `procurement_method`, `source` (bulk or api). Where both parts hold a notice, the
-API's row is kept; a release the API returned twice is kept once. `supplier_name` is blank where the ABR records the
-supplier's ABN as an individual (a sole trader).
+seconds a page, fetched four at a time and cached as each finishes, so a rerun resumes). And, because that query returns
+amendments only for contracts published from July 2019, every release the API holds for each contract in the bulk file
+still running on its last day (its latest end date on or after 30 August 2019), asked by id: their later amendments are
+nowhere else. That is 44,461 contracts, of which 10,800 were published in July and August 2019 and so come from the
+other query too. And (gap B10) the same for every contract that ended in the four years before then (from September
+2015): 234,313, of which a sample found 5% to 8% with amendments published later; older contracts' late amendments (1.6%
+in the sample) are left out. Raw: the bulk file and the API's responses as gzipped JSON lines, one file per query (R2).
+Processed: `contracts`, one row per notice (parent or amendment) with: `cn_id` (the notice's own id: the contract's,
+such as CN123, or an amendment's, such as CN123-A2), `parent_cn_id`, `amendment` (0 for the contract's first notice, n
+for its nth amendment), `published`, `published_batch`, `signed`, `start`, `end`, `value` (AUD), `value_jump`,
+`description`, `unspsc`, `agency`, `supplier_name`, `supplier_abn`, `supplier_postcode`, `supplier_state`,
+`supplier_country`, `procurement_method`, `source` (bulk or api). Where both parts hold a notice, the API's row is kept;
+a release the API returned twice is kept once. `supplier_name` is blank where the ABR records the supplier's ABN as an
+individual (a sole trader).
 
 An amendment's `value` is the contract's new total, not the change (in the bulk file each amendment's value is the
 parent's plus every change so far). So a contract's value is that of its latest notice (the highest `amendment`), and
@@ -566,7 +582,7 @@ repo, or R2 when large). Source: WIPO statistics database; cite WIPO.
 Processed:
 - `office_origin`: one row per indicator, filing office, applicant's origin, breakdown (field of technology or class,
   where the indicator has one) and year. Resident filings are those where office and origin are the same; an
-  origin's total is the sum over offices.
+  origin's total is the sum over offices. Patent families by origin (indicators 20 and 22) have no office.
 - `office`: indicators reported by office only (rights in force, examiners, pendency, oppositions).
 - `pmh`: PCT applications by origin, Madrid applications by country of holder and Hague applications by origin; and
   the share of women among the inventors named in PCT applications, by origin (a percentage, from WIPO's names).
@@ -577,7 +593,7 @@ unchanged (delete the folder to fetch every export afresh).
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
 | `office` | 8,401 | repo (0.0 MB) | `right`, `indicator_id`, `indicator`, `office_code`, `office`, `breakdown`, `year`, `value`, `last_updated` |
-| `office_origin` | 5,061,559 | repo (7.4 MB) | `right`, `indicator_id`, `indicator`, `office_code`, `office`, `origin`, `origin_code`, `breakdown`, `year`, `value`, `last_updated` |
+| `office_origin` | 5,073,138 | repo (7.4 MB) | `right`, `indicator_id`, `indicator`, `office_code`, `office`, `origin`, `origin_code`, `breakdown`, `year`, `value`, `last_updated` |
 | `pmh` | 10,165 | repo (0.0 MB) | `system`, `indicator_id`, `indicator`, `origin_code`, `origin`, `year`, `value`, `last_updated` |
 
 ## TM-Link, trade marks linked across offices (`tmlink`)
@@ -633,13 +649,21 @@ medicines, which can be followed through patent expiry and IP RAPID's pharmaceut
 Raw: every file on the date-of-supply page (R2). Processed: `supply` (every row of the yearly CSVs, July 2020 on:
 month, item, drug type, patient category, pharmacy type, script type, prescriptions and the patient, government and
 total cost; R2), `item_month` (prescriptions and costs by item and month, summed over the breakdowns; repo) and
-`item_drug_map` (item code to drug name, form and strength, and ATC code; repo). The xlsx summary (from July 2022)
-and the older date-of-processing zip (to January 2018) are kept raw only.
+`item_drug_map` (item code to drug name, form and strength, and ATC code; repo). The older date-of-processing zip (to
+January 2018) is kept raw only.
+
+The yearly CSVs are by pharmacy type and hold only Section 85 (the general schedule) and the Repatriation PBS. The
+workbook of monthly totals (`dos-jul-2022-to-...xlsx`, one sheet a financial year from July 2022) also holds Section
+100, the highly specialised drugs and chemotherapy dispensed through hospitals, about 30% of the government's cost
+(gap B11). Processed: `monthly`, every row of the workbook: month, item, ATC code, drug name, patient category,
+section (`drug_type`: Section 85, Section 100, RPBS or Unknown), script type, prescriptions and the patient,
+government, retail mark-up, total and net patient costs. The workbook and the CSVs are never added together.
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
 | `item_drug_map` | 12,187 | repo (0.2 MB) | `item_code`, `drug_name`, `form_strength`, `atc5_code` |
 | `item_month` | 279,371 | repo (5.3 MB) | `month`, `item_code`, `prescriptions`, `patient_contribution`, `government_contribution`, `total_cost` |
+| `monthly` | 1,160,293 | repo (25.7 MB) | `month`, `item_code`, `atc5_code`, `drug_name`, `patient_category`, `drug_type`, `script_type`, `prescriptions`, `patient_contribution`, `government_contribution`, `retail_markup`, `total_cost`, `patient_net_contribution` |
 | `supply` | 2,146,679 | R2 (38.8 MB) | `MONTH_OF_SUPPLY`, `ITEM_CODE`, `DRUG_TYPE`, `PATIENT_CAT`, `PHRMCY_TYPE`, `SCRIPT_TYPE`, `PRESCRIPTIONS`, `PATIENT_CONTRIB`, `GOVT_CONTRIB`, `TOTAL_COST`, `RETAIL_MARKUP`, `PATIENT_NET_CONTRIB` |
 
 ## Australian Register of Therapeutic Goods (ARTG) (`tga`)
@@ -890,6 +914,30 @@ status; G50 field of study; G54 industry of employment; G60 occupation.
 | `sa2_g50` | 2,472 | repo (1.2 MB) | `SA2_CODE_2021`, `M_NatPhyl_Scn_15_24`, `M_NatPhyl_Scn_25_34`, `M_NatPhyl_Scn_35_44`, `M_NatPhyl_Scn_45_54`, `M_NatPhyl_Scn_55_64`, `M_NatPhyl_Scn_65_74`, `M_NatPhyl_Scn_75_84`, `M_NatPhyl_Scn_85ov`, `M_NatPhyl_Scn_Tot`, `M_InfoTech_15_24`, `M_InfoTech_25_34`, `M_InfoTech_35_44`, `M_InfoTech_45_54` … |
 | `sa2_g54` | 2,472 | repo (1.6 MB) | `SA2_CODE_2021`, `M_Ag_For_Fshg_15_19`, `M_Ag_For_Fshg_20_24`, `M_Ag_For_Fshg_25_34`, `M_Ag_For_Fshg_35_44`, `M_Ag_For_Fshg_45_54`, `M_Ag_For_Fshg_55_64`, `M_Ag_For_Fshg_65_74`, `M_Ag_For_Fshg_75_84`, `M_Ag_For_Fshg_85ov`, `M_Ag_For_Fshg_Tot`, `M_Mining_15_19`, `M_Mining_20_24`, `M_Mining_25_34` … |
 | `sa2_g60` | 2,472 | repo (0.9 MB) | `SA2_CODE_2021`, `M15_19_Managers`, `M15_19_Professionals`, `M15_19_TechnicTrades_Wrs`, `M15_19_CommunPersnlSvc_W`, `M15_19_ClericalAdminis_W`, `M15_19_Sales_W`, `M15_19_Mach_oper_drivers`, `M15_19_Labourers`, `M15_19_Occu_ID_NS`, `M15_19_Tot`, `M20_24_Managers`, `M20_24_Professionals`, `M20_24_TechnicTrades_W` … |
+
+## 2021 Census Time Series Profile (2011, 2016 and 2021 Censuses, by SA2) (`abs_census_tsp`)
+
+Australian Bureau of Statistics. Tier 2; questions 2, 5. Licence: CC BY 4.0. Source: https://www.abs.gov.au/census/find-census-data/datapacks
+
+2021 Census Time Series Profile (TSP) for SA2s: the 2011, 2016 and 2021 Censuses on 2021 boundaries (gap B6).
+
+For Q2 and Q5: how each area's people, incomes, education and work changed over the decade, beside its IP. The 2021
+General Community Profile (`abs_census`) is one Census; the Time Series Profile gives the same characteristics for
+three Censuses on the same 2021 areas, so change can be read without boundary breaks. The ABS publishes it for SA2s
+and larger areas, not for postal areas, so the regions lens apportions it from SA2s (ADR 0018's method). Raw: the
+DataPack (short headers; R2). CC BY 4.0.
+
+Processed:
+- `cells`: long, one row per SA2, table, indicator and Census year: the indicator is the DataPack's short name
+  without its year (`Tot_persons_P` for `Tot_persons_C11_P`), the label its long name without the year.
+
+Tables (`TABLES`): T01 selected person characteristics; T02 medians and averages; T29 selected labour force,
+education and migration characteristics; T34 industry of employment; T35 occupation. The age-by-sex tables (T28,
+T31 to T33) are left out: they are large and the lens's questions need their totals only, which T01 and T29 carry.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `cells` | 1,727,928 | repo (3.2 MB) | `sa2_code`, `table`, `indicator`, `census_year`, `value`, `label` |
 
 ## Social Health Atlas of Australia, by Population Health Area and socioeconomic quintile (`phidu`)
 
@@ -1148,10 +1196,182 @@ Raw: `events.yaml` (repo; compiled here, with `verify` marking details to confir
 HTML (repo, gzipped). Processed: `events` (date, rights, lever, event, source, verify) and `policy_register` (policy
 id, title, status, priority, tags, issue summary, comments and URL, as IP Australia publishes them).
 
+`events` also holds every change to a right's key fees, from `frl_fees/fee_changes` (lever "fees", id
+`fees-<right>-<date>`; ADR 0031), so `frl_fees` runs first; `corpus reprocess policy_events` adds them again after it.
+
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
-| `events` | 17 | repo (0.0 MB) | `id`, `date`, `rights`, `lever`, `event`, `source`, `verify` |
+| `events` | 56 | repo (0.0 MB) | `id`, `date`, `rights`, `lever`, `event`, `source`, `verify` |
 | `policy_register` | 155 | repo (0.1 MB) | `policy_id`, `title`, `status`, `priority`, `tags`, `issue_summary`, `comments`, `url` |
+
+## The history of IP Australia's official fees, from the fee regulations on the Federal Register of Legislation (`frl_fees`)
+
+Office of Parliamentary Counsel (Federal Register of Legislation). Tier 2; questions 4, 5. Licence: CC BY 4.0. Source: https://www.legislation.gov.au/
+
+The history of IP Australia's official fees, from every version of the fee regulations on the Federal Register of
+Legislation: the Patents Regulations 1991 (Schedule 7), the Trade Marks Regulations under the 1955 Act (Schedule 2)
+and the Trade Marks Regulations 1995 (Schedule 9), the Designs Regulations 1982 (Schedule 2) and 2004 (Schedule 4),
+and the Plant Breeder's Rights Regulations 1994 (the Schedule). ADR 0031.
+
+Read from the Register's public API (https://api.prod.legislation.gov.au/v1): each title's versions (start and end
+dates, the amending instruments behind each), and each compilation's text as EPUB (XHTML). The Register holds no text
+for some versions, mostly before 1999 (it holds the regulations as made and compilations from 1999 on); for those, the
+key fees come from the amending instruments, read by hand into `gaps.yaml` (repo) and, where an instrument replaces a
+whole fee schedule, from its tables by the same rules as a compilation. The current fees (`ipa_fees`) are IP
+Australia's own list; a test checks the latest version here against it.
+
+Raw: `versions.json` (every version of each title, repo), `gaps.yaml` (repo, compiled here) and the EPUBs, one zip
+per title and one of the amending instruments (R2). Processed:
+- `versions`: one row per version of each title: start, end, the compilation's register id, whether the Register
+  holds its text, and the instruments that made it.
+- `schedule_rows`: every row of the fee schedule of every compilation with text, as published: item, the matter
+  (with the item's words before each paragraph), the fee as written and `amount_aud` (its first dollar amount).
+- `key_fees`: the fees that matter for the questions, one row per fee and spell at one amount: right, fee,
+  anniversary (patent renewals), start and end (exclusive), `amount_aud`, the version or instrument that set it, and
+  `basis` (`compilation` or `amendment`). Each is the base fee for one right, one class or one design, paid the
+  cheapest way the schedule offers ("preferred", "approved" or electronic means, the goods and services pick list),
+  without surcharges for extra claims, pages, classes or late payment.
+- `fee_changes`: one row per right and date on which any key fee changed, listing the changes.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `fee_changes` | 39 | repo (0.0 MB) | `right`, `date`, `fees_changed`, `changes`, `source` |
+| `key_fees` | 285 | repo (0.0 MB) | `right`, `fee`, `anniversary`, `start`, `end`, `amount_aud`, `source`, `basis`, `title_id` |
+| `schedule_rows` | 8,612 | repo (0.0 MB) | `title_id`, `right`, `start`, `row`, `part`, `item`, `matter`, `fee_text`, `amount_aud` |
+| `versions` | 281 | repo (0.0 MB) | `title_id`, `title`, `right`, `start`, `end`, `register_id`, `compilation`, `has_text`, `amended_by` |
+
+## Workplace Gender Equality Agency public data (employers with 100+ staff, by ABN, with industry and size) (`wgea`)
+
+Workplace Gender Equality Agency. Tier 2; questions 2, 3. Licence: CC BY 3.0 AU. Source: https://data.gov.au/data/dataset/wgea-dataset
+
+Workplace Gender Equality Agency (WGEA) public data: every private-sector employer with 100 or more employees, by
+ABN, with its industry (ANZSIC class) and its size, as reported each year (gap A3: firms' size and industry, free).
+
+Q2, Q3 (who files IP, by size and industry): WGEA is the only free source found that gives firm-level industry and
+size by ABN (ADR 0032). It covers employers of 100 or more, so it says nothing of small firms. Raw: the public data
+files for 2022-23, 2023-24 and 2024-25 (zips, R2), as published on data.gov.au (CC BY 3.0 AU). Processed:
+
+- `employers`: one row per reporting year and ABN: the employer's and its corporate group's names, the size band as
+  WGEA publishes it (for 2022-23, the submission group's; from 2023-24, the employer's), its ANZSIC class (code and
+  the names of its division, subdivision, group and class), and its workforce: employees (the sum of the workforce
+  composition's headcounts), women and managers. In 2022-23 a submission group reports under its primary ABN only.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `employers` | 20,790 | repo (0.5 MB) | `reporting_year`, `abn`, `employer_name`, `corporate_group_name`, `employer_size`, `anzsic_code`, `anzsic_division`, `anzsic_subdivision`, `anzsic_group`, `anzsic_class`, `employees`, `women`, `managers` |
+
+## Reserve Bank of Australia statistical tables (cash rate and exchange rates, monthly) (`rba`)
+
+Reserve Bank of Australia. Tier 3; questions 4, 5. Licence: CC BY 4.0. Source: https://www.rba.gov.au/statistics/tables/
+
+Reserve Bank of Australia statistical tables: the cash rate (F1.1) and exchange rates (F11), monthly (gap B1).
+
+Context for the timeline (Q4, Q5): the cost of money and the dollar's value move filing from overseas and investment
+in R&D, so a policy or fee change is read beside them. Raw: each table as published (repo): `f1.1-data.csv` (money
+market rates, monthly from 1969; the cash rate target from 1990), `f11-data.csv` (exchange rates, end of month, from
+2010) and `f11hist-1969-2009.xls` (the same, July 1969 to December 2009). Processed: `series`, long: table, series
+id, title, description, units, frequency, date (the day the RBA gives: a month's last business day or its end) and
+value. Licence: CC BY 4.0 (RBA).
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `series` | 13,993 | repo (0.1 MB) | `table`, `series_id`, `title`, `description`, `units`, `frequency`, `date`, `value` |
+
+## Australian National Accounts (GDP, state final demand, value added by industry), quarterly (`abs_national_accounts`)
+
+Australian Bureau of Statistics. Tier 3; questions 1, 4. Licence: CC BY 4.0. Source: https://www.abs.gov.au/statistics/economy/national-accounts
+
+Australian National Accounts (ABS Data API): GDP, state final demand and gross value added by industry, quarterly
+(gap B2).
+
+Context for the timeline and the industries lens (Q1, Q4): IP filing over time read beside the economy's size and
+cycle, by state and by industry. Flows, in the raw tidy form of the ABS sources (a code and a label for every
+dimension, then `value`, the unit and the observation status):
+
+- `ANA_AGG`: key aggregates (GDP and its per-person and price measures), quarterly from 1959.
+- `ANA_SFD`: state final demand by state, quarterly.
+- `ANA_IND_GVA`: gross value added by ANZSIC division, quarterly.
+
+Raw: each flow's CSV (repo, gzipped, or R2 when large). Processed: one table per flow, named after it in lower case.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `ana_agg` | 23,976 | repo (0.1 MB) | `flow`, `measure`, `measure_label`, `data_item`, `data_item_label`, `adjustment_type`, `adjustment_type_label`, `region`, `region_label`, `frequency`, `frequency_label`, `time_period`, `unit_of_measure`, `unit_of_measure_label` … |
+| `ana_ind_gva` | 66,201 | repo (0.2 MB) | `flow`, `measure`, `measure_label`, `data_item`, `data_item_label`, `sector`, `sector_label`, `adjustment_type`, `adjustment_type_label`, `industry`, `industry_label`, `region`, `region_label`, `frequency` … |
+| `ana_sfd` | 562,740 | repo (1.0 MB) | `flow`, `measure`, `measure_label`, `data_item`, `data_item_label`, `sector`, `sector_label`, `adjustment_type`, `adjustment_type_label`, `region`, `region_label`, `frequency`, `frequency_label`, `time_period` … |
+
+## ATO taxation statistics, individuals by postcode (Table 6), every income year from 2012-13 (`ato_postcode`)
+
+Australian Taxation Office. Tier 2; questions 2, 4. Licence: CC BY 2.5 AU. Source: https://data.gov.au/data/organization/australiantaxationoffice
+
+ATO taxation statistics, individuals by postcode (Individuals Table 6), every income year from 2012-13 (gap B3).
+
+For Q2 and Q4: what people in each postcode earn and how many run a business, year by year, beside its IP (the
+regions lens over time, and a denominator for individual applicants). Each year's Table 6 lists, for every postcode
+with enough individuals, about 80 items as a count and an amount: individuals lodging, taxable income, salary and
+wages, business income and losses, and so on. Raw: each year's workbook (R2). Processed: `items`, long: income year,
+state, postcode, item (as the ATO names it in the latest year, without its footnote numbers; names that drift in
+case or punctuation between years are made one), `unit` (`no.` or `$`) and value. The
+sheet read is the one for all individuals (6B; from 2018-19 6A splits taxable from non-taxable). Licence: CC BY 2.5
+AU (ATO).
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `items` | 4,735,620 | repo (16.7 MB) | `income_year`, `state`, `postcode`, `item`, `unit`, `value` |
+
+## ABS Characteristics of Australian Business, data cubes of the releases after the API's flows (2024-25) (`abs_bcs_cubes`)
+
+Australian Bureau of Statistics. Tier 2; questions 2, 3. Licence: CC BY 4.0. Source: https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business
+
+ABS Characteristics of Australian Business, the latest release's data cubes (gap B4).
+
+The ABS Data API's business characteristics flows (`abs_bcs`) stop at 2023; later releases are published as data
+cubes only. This reads every cube of each release named in `RELEASES` (the ABS published 2024-25 after 2021-22, with
+no 2023-24 release page): innovation activity, collaboration, finance and barriers, business profile and
+performance, skills, ICT and cyber security, by industry division and employment size. Raw: each cube (repo).
+Processed: `cubes`, every table long (see `_abs_cube.read_cube`: every published cell, with its unit where a row
+states one, and its row in the sheet), with `release` and `cube`.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `cubes` | 29,312 | repo (0.1 MB) | `sheet`, `title`, `section`, `row`, `column`, `unit`, `value`, `value_text`, `sheet_row`, `release`, `cube` |
+
+## ABS Schools, Table 53a (FTE student to FTE teaching staff ratios, 2006 to the latest year) (`abs_schools`)
+
+Australian Bureau of Statistics. Tier 3; questions 1. Licence: CC BY 4.0. Source: https://www.abs.gov.au/statistics/people/education/schools/latest-release
+
+ABS Schools: full-time equivalent student to teaching staff ratios, 2006 to the latest year (gap B7).
+
+For the GII's indicator 2.1.5 (pupil-teacher ratio, secondary), blank for Australia in GII 2026 (F17): a supplementary
+observation from Australia's own statistics, labelled as such beside the official release (ADR 0033). Raw: Table 53a
+of the latest Schools release (repo). Processed: `ratios`, long: year, state or territory, school affiliation
+(government, non-government, Catholic, independent, all), school level (primary, secondary, all) and the ratio. The
+ABS's sort prefixes ("a NSW", "b Secondary School") are dropped, and the level's case made one. Licence: CC BY 4.0
+(ABS).
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `ratios` | 2,700 | repo (0.0 MB) | `year`, `state`, `affiliation`, `level`, `ratio` |
+
+## National Survey of Research Commercialisation, unit records 2000 to 2015 (`nsrc`)
+
+Department of Industry, Science and Resources. Tier 2; questions 2, 4. Licence: CC BY 2.5 AU. Source: https://data.gov.au/data/dataset/national-survey-of-research-commercialisation-nsrc-2000-2015-unit-record-data
+
+National Survey of Research Commercialisation (NSRC), unit records, 2000 to 2015 (gap B9).
+
+For Q2 and Q4: how much universities and research institutes commercialised their research (invention disclosures,
+licences, options and assignments (LOAs) and their income, start-ups, consultancies and contracts), beside the patents
+the `institutions` lens counts for them. The Department of Industry, Science and Resources ran the survey of
+Australian universities, medical research institutes and publicly funded research agencies; the unit record file on
+data.gov.au holds every participant's answers for each year, 2000 to 2015 (CC BY 2.5 AU). Raw: the CSV as published
+(repo). Processed: `responses`, one row per year and institution as named in the survey, with the survey's questions
+as columns (`q1_research_expenditure` ... `q18b_research_students`; money in Australian dollars). Questions first
+asked in 2014 (skills training) are empty before then, and a participant that left a question unanswered has an
+empty value.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `responses` | 1,193 | repo (0.1 MB) | `year`, `institution_name`, `q1_research_expenditure`, `q2a_number_of_total_commercialisation_staff_fte`, `q2b_number_of_dedicated_commercialisation_staff_fte`, `q3a_cost_total_commercialisation_staff`, `q3b_cost_dedicated_commercialisation_staff`, `q4_ipr_protection_external_fees_and_legal_costs`, `q5_number_of_invention_disclosures_received`, `q6a_number_of_mtas_entered_into`, `q6b_income_dervied_from_mtas_executed`, `q7_total_number_of_loas_executed`, `q8_total_number_of_loas_active`, `q9_number_of_active_loas_yielding_income` … |
 
 ## The ABN spine (every ABN in the corpus, with ABR and ASIC attributes and source flags) (`linkage`)
 

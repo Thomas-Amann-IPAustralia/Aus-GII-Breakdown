@@ -1,0 +1,70 @@
+# The key fees in the versions of each fee regulation that the Federal Register of Legislation holds no text for.
+# Compiled here (2026-10-28) by reading each amending instrument the Register lists for those versions; ADR 0031.
+# Every other version is read from its compilation. Instruments that changed no key fee are listed under `checked`.
+#
+# For each title, `entries` are applied in date order to the state before them:
+#   parse: substitute  - the instrument replaces the fee schedule (or the Part holding the key fees): its key fees,
+#                        read from its tables by the same rules as a compilation, replace the title's
+#   parse: update      - its key fees, read the same way, are added or replace those of the same name
+#   changes            - fees set by hand from the instrument's "omit ..., substitute ..." items; null ends a fee;
+#                        a patent renewal is named with its anniversary (standard_renewal_3)
+# `date` is when the amendment commenced (its commencement clause), `instrument` the Register's id, `provision` where
+# the change is made.
+
+titles:
+  F1996B02697:  # Patents Regulations 1991
+    # Compilation 39 (C2004H02603, from 1 March 2001) already shows the innovation patent fees of SR 2001 No. 98,
+    # which commenced on 24 May 2001; it differs from compilation 37A in nothing else, so it is not read.
+    skip_compilations: [2001-03-01]
+    entries:
+      - {date: 1992-07-01, instrument: F1996B02699, provision: "SR 1992 No. 148, reg 6: Schedule 7 substituted", parse: substitute}
+      - {date: 1993-07-01, instrument: F1996B02700, provision: "reg 7: Schedule 7 Parts 1 to 3 substituted", parse: substitute}
+      - date: 1994-10-01
+        instrument: F1996B02705
+        provision: "SR 1994 No. 317, reg 8: Schedule 7 Part 2, items 2, 3, 4 and 15"
+        changes: {petty_filing: 280, standard_filing: 280, standard_examination: 405, sealing: 295}
+      - {date: 1998-01-01, instrument: F1997B02834, provision: "reg 13: Schedule 7 Part 2 substituted", parse: substitute}
+      - date: 1998-11-01
+        instrument: F1998B00280
+        provision: "SR 1998 No. 264, subregs 7.1, 7.2 and 7.4: Schedule 7 Part 2, item 4 ($350 to $290); item 7 (a) and (b), the 3rd and 4th anniversaries, omitted; item 12 (sealing) omitted"
+        changes: {standard_examination: 290, sealing: null, standard_renewal_3: null, standard_renewal_4: null}
+      - date: 2001-05-24
+        instrument: F2001B00155
+        provision: "SR 2001 No. 98, Schedule 1: innovation patent items inserted (petty patents end with the Patents Amendment (Innovation Patents) Act 2000)"
+        parse: update
+        changes: {petty_filing: null}
+    checked: [F1996B02707, F1996B02698, F1996B02701, F1996B02702, F1996B02703, F1996B02704, F1996B02706, F1996B02708,
+              F1996B02709, F1996B02710, F1996B00241, F1997B02678, F1998B00042, F1998B00052, F1998B00131, F1998B00224,
+              F1998B00238, F1998B00307, F1998B00359, F1999B00177, F1999B00264, F1999B00355, F2000B00341, F2001B00582,
+              F2003B00224, F2002B00326, F2009L04297]
+  C1958L00048:  # Trade Marks Regulations (under the Trade Marks Act 1955), from the 1989 schedule
+    entries:
+      - {date: 1989-07-01, instrument: C2004L06317, provision: "SR 1989 No. 94, reg 2: Schedule 2 (fees) substituted", parse: substitute}
+      - {date: 1991-05-01, instrument: C2004L06321, provision: "reg 3: Schedule 2 substituted", parse: substitute}
+      - {date: 1992-07-01, instrument: C2004L06323, provision: "reg 6: Schedule 2 substituted", parse: substitute}
+      - {date: 1993-07-01, instrument: C2004L06324, provision: "SR 1993 No. 117, reg 4: Schedule 2 substituted", parse: substitute}
+    checked: [C2004L06318, C2004L06319, C2004L06320, C2004L06322, C2004L06325, C2004L06326, C2004L06327, C2004L06328]
+  F1996B00084:  # Trade Marks Regulations 1995
+    entries:
+      - {date: 1997-12-09, instrument: F1997B02835, provision: "reg 6: Schedule 9 substituted", parse: substitute}
+    checked: [F1996B00085, F1996B00086, F1996B00220, F1998B00239, F1998B00281, F1998B00360, F1998B00363, F1999B00179,
+              F2001B00326]
+  F1996B00970:  # Designs Regulations 1982
+    entries:
+      - date: 1984-10-01
+        instrument: F1996B00971
+        provision: "SR 1984 No. 256, reg 3: Schedule 2, items 1 and 4"
+        changes: {filing: 60, extension_1: 30, extension_2: 60, extension_3: 80}
+      - {date: 1986-10-01, instrument: F1996B00972, provision: "SR 1986 No. 263, reg 3: Schedule 2 substituted", parse: substitute}
+      - {date: 1988-07-01, instrument: F1996B00973, provision: "SR 1988 No. 103, reg 2: Schedule 2 substituted", parse: substitute}
+      - {date: 1989-07-01, instrument: F1996B00974, provision: "SR 1989 No. 95, reg 2: Schedule 2 substituted", parse: substitute}
+      - {date: 1991-05-01, instrument: F1996B00979, provision: "SR 1991 No. 65, reg 4: Schedule 2 substituted", parse: substitute}
+      - {date: 1992-07-01, instrument: F1996B00981, provision: "SR 1992 No. 149, reg 6: Schedule 2 substituted", parse: substitute}
+      - {date: 1993-07-01, instrument: F1996B00984, provision: "SR 1993 No. 114, reg 4: Schedule 2 substituted", parse: substitute}
+    checked: [F1996B00975, F1996B00976, F1996B00977, F1996B00978, F1996B00980, F1996B00983, F1996B01010, F1996B00985,
+              F1996B00986, F1996B00987, F1996B00988, F1996B00989, F1996B00595, F1997B02833, F1998B00240, F1998B00361,
+              F1998B00364, F1999B00180, F2002B00168]
+  F1996B02512:  # Plant Breeder's Rights Regulations 1994
+    entries:
+      - {date: 1995-01-01, instrument: F1996B02513, provision: "SR 1994 No. 353, reg 3: the Schedule (fees) substituted", parse: substitute}
+    checked: [F1996B02514]

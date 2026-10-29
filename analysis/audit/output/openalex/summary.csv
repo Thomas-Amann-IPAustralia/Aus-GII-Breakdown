@@ -1,0 +1,21 @@
+measure,value
+patent-cited works (Reliance on Science),5106527.0
+US patent citations to them,34825379.0
+"in the harvest (Australian, cited at least once)",103644.0
+US patent citations to works in the harvest,614148.0
+outside the harvest,5002883.0
+sampled from outside,20000.0
+Australian in the sample,23.0
+of which no scholarly citation,10.0
+of which returned under another id (merged),12.0
+patent citations of the sample,154131.0
+patent citations of the Australian works found (asked ids),24.0
+estimated patent-cited works outside the harvest: Australian,5753.31545
+"  95% interval, low: Australian",3647.1084701585596
+"  95% interval, high: Australian",8632.798026579048
+estimated patent-cited works outside the harvest: no scholarly citation,2501.4415
+"  95% interval, low: no scholarly citation",1199.5384293136558
+"  95% interval, high: no scholarly citation",4600.239980327901
+estimated patent-cited works outside the harvest: merged,3001.7298
+"  95% interval, low: merged",1551.0375900824768
+"  95% interval, high: merged",5243.417874528935

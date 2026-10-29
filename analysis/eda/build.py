@@ -13,7 +13,7 @@
 | `industries` | ANZSIC division and financial year | `rights`, classification, concordances, CABEE, BERD, WPI |
 | `institution_rights` | IP right and research institution that filed it | `iprapid/party`, `ror`, the reviewed link |
 | `institutions` | Research institution (ROR) and year | OpenAlex, ARC, NHMRC, `institution_rights`, AusTender |
-| `timeline` | Month, for Australia (IP Australia's whole register) | `rights`, `iprapid/events`, `policy_events` |
+| `timeline` | Month, for Australia (IP Australia's register) | `rights`, events, `policy_events`, fees, RBA |
 
 `regions` also reads `austender`; `region_indicators` holds its attachments, long (ADR 0018), as do
 `national_indicators` (ADR 0019) and `industry_indicators` (ADR 0020). `institutions` reads the reviewed link from
@@ -647,6 +647,14 @@ def firms_sql() -> str:
         SELECT abn, count(*) AS ato_ctt_years, arg_max(income, income_year) AS total_income_latest
         FROM tax_year GROUP BY 1
     ),
+    wgea AS (  -- employers of 100 or more (WGEA), their latest report (gap A3, ADR 0032)
+        SELECT abn, max(reporting_year) AS wgea_year,
+               arg_max(employees, reporting_year) AS wgea_employees,
+               arg_max(employer_size, reporting_year) AS wgea_size_band,
+               arg_max(lpad(anzsic_code, 4, '0'), reporting_year) AS wgea_anzsic_class,
+               arg_max(women / nullif(employees, 0), reporting_year) AS wgea_women_share
+        FROM {{wgea/employers}} WHERE anzsic_code ~ '^[0-9]+$' GROUP BY 1
+    ),
     filed AS (  -- applications as a founding applicant, a shared one split equally (IPLORD's weighting)
         SELECT applicant_id AS abn, sum(filed_weighted) AS ip_filed_weighted FROM {{iprapid/applicant_year}}
         WHERE applicant_id_type = 'abn' GROUP BY 1
@@ -712,7 +720,13 @@ def firms_sql() -> str:
         coalesce(tax.ato_ctt_years, 0) AS ato_ctt_years,
         tax.total_income_latest,
         s.austender_contracts,
-        s.austender_value
+        s.austender_value,
+        wgea.wgea_year,
+        wgea.wgea_employees,
+        wgea.wgea_size_band,
+        {_division_of("wgea.wgea_anzsic_class")} AS wgea_division,
+        wgea.wgea_anzsic_class,
+        wgea.wgea_women_share
     FROM {{linkage/abn_spine}} s
     LEFT JOIN ip USING (abn)
     LEFT JOIN held USING (abn)
@@ -720,6 +734,7 @@ def firms_sql() -> str:
     LEFT JOIN tax USING (abn)
     LEFT JOIN filed USING (abn)
     LEFT JOIN first_filed ff USING (abn)
+    LEFT JOIN wgea USING (abn)
     LEFT JOIN place ON place.poa_code = {_postcode("s.postcode")}
     """
 
@@ -927,7 +942,7 @@ def regions_sql() -> str:
     """
 
 
-# The regions lens's attachments (ADR 0018): every value of five area sources, one row per postal area, source,
+# The regions lens's attachments (ADR 0018): every value of seven area sources, one row per postal area, source,
 # indicator and period, in `region_indicators`. A count published for SA2s (or PHIDU's PHAs) is split among postal areas
 # by the share of the area's 2021 residents living in each (by mesh block; an area with no residents is split by its
 # mesh blocks); a level (a median, mean, rate or percentage) is averaged over the areas overlapping a postal area,
@@ -948,6 +963,14 @@ CENSUS_TABLES = {
     "G54": "Industry of employment by age by sex",
     "G60": "Occupation by age by sex",
 }
+# The Census Time Series Profile's tables (`abs_census_tsp`, gap B6), apportioned from SA2s
+CENSUS_TSP_TABLES = {
+    "T01": "Selected person characteristics",
+    "T02": "Medians and averages",
+    "T29": "Selected labour force, education and migration characteristics",
+    "T34": "Industry of employment",
+    "T35": "Occupation",
+}
 # A Data by Region item is a level, not a count that can be split or summed, if its unit is one or its label says so
 DBR_LEVEL_UNITS = ("PCT", "DECILE", "QUARTILE", "YR", "RATE", "PSNS_PER_SQKM", "ML_PER_HA")
 LEVEL_WORDS = "median|mean|average"
@@ -966,6 +989,7 @@ def region_indicators_sql() -> str:
         for t in CENSUS_TABLES
     )
     topics = " ".join(f"WHEN '{t}' THEN '{t}: {name}'" for t, name in CENSUS_TABLES.items())
+    tsp_topics = " ".join(f"WHEN '{t}' THEN 'Census time series {t}: {name}'" for t, name in CENSUS_TSP_TABLES.items())
     dbr_level = ", ".join(f"'{u}'" for u in DBR_LEVEL_UNITS)
     return f"""
     WITH places AS (SELECT poa_code FROM {lens_table("regions")}),
@@ -1032,10 +1056,21 @@ def region_indicators_sql() -> str:
         FROM {{phidu/indicators}}
         WHERE area_type = 'pha' AND measure NOT LIKE '%C.I.%' AND value IS NOT NULL
     ),
+    tsp AS (  -- the Census Time Series Profile: 2011, 2016 and 2021 on 2021 SA2s (gap B6)
+        SELECT sa2_code AS area, "table" || '.' || indicator AS indicator, label,
+               CAST(census_year AS VARCHAR) AS period,
+               CASE WHEN indicator ILIKE 'pcnt%' THEN 'percent' WHEN "table" <> 'T02' THEN 'people' END AS unit,
+               CASE WHEN "table" = 'T02' OR indicator ILIKE 'pcnt%' THEN 'level' ELSE 'count' END AS kind,
+               CASE "table" {tsp_topics} END AS topic,
+               -- as the 2021 profile, 0 for a median or average with no one to describe (ADR 0010)
+               CASE WHEN "table" = 'T02' THEN nullif(value, 0) ELSE value END AS value
+        FROM {{abs_census_tsp/cells}}
+    ),
     split AS (  -- SA2 and PHA values to postal areas
         SELECT 'data_by_region' AS source, 'sa2' AS kind_of_area, * FROM dbr
         UNION ALL SELECT 'cabee', 'sa2', * FROM cabee
         UNION ALL SELECT 'phidu', 'pha', * FROM phidu
+        UNION ALL SELECT 'census_tsp', 'sa2', * FROM tsp
     ),
     apportioned AS (
         SELECT w.poa_code, s.source, any_value(s.topic) AS topic, s.indicator, any_value(s.label) AS label, s.period,
@@ -1053,11 +1088,19 @@ def region_indicators_sql() -> str:
         FROM {{cer/installations}}
         WHERE postcode IN (SELECT poa_code FROM places) AND value IS NOT NULL
         GROUP BY postcode, technology, series, left(month, 4)
+    ),
+    ato AS (  -- individuals' tax statistics by postcode, every income year from 2012-13 (gap B3): counts and sums
+        SELECT postcode AS poa_code, 'ato_postcode' AS source, 'ATO individuals (Table 6)' AS topic,
+               item || '|' || unit AS indicator, item || CASE unit WHEN '$' THEN ' ($)' ELSE ' (number)' END AS label,
+               income_year AS period, value, 'count' AS kind, 'direct' AS method,
+               CASE unit WHEN '$' THEN 'AUD' ELSE 'individuals' END AS unit
+        FROM {{ato_postcode/items}} WHERE postcode IN (SELECT poa_code FROM places)
     )
     SELECT poa_code, source, topic, indicator, label, period, value, unit, kind = 'count' AS additive, method
     FROM (SELECT * FROM census
           UNION ALL SELECT poa_code, source, topic, indicator, label, period, value, kind, method, unit FROM apportioned
-          UNION ALL SELECT poa_code, source, topic, indicator, label, period, value, kind, method, unit FROM cer)
+          UNION ALL SELECT poa_code, source, topic, indicator, label, period, value, kind, method, unit FROM cer
+          UNION ALL SELECT poa_code, source, topic, indicator, label, period, value, kind, method, unit FROM ato)
     """
 
 
@@ -1207,6 +1250,67 @@ def _oecd_flow_sql(flow: str, iso: str) -> str:
                concat_ws(', ', {unit}) AS unit, nullif(concat_ws('; ', {status or "NULL"}), '') AS status
         FROM {{oecd/{flow}}}
         WHERE {" AND ".join(where)}"""
+
+
+# Supplementary observations for four of the six GII 2026 indicators blank for Australia (F17, gap B7; ADR 0033), from
+# Australia's own statistics, labelled as such and never put into the GII's own rows. The R&D surveys cover different
+# years (business 2023-24, higher education 2024, government and private non-profit 2024-25), as the ABS publishes
+# them; their sum stands in for gross expenditure on R&D (GERD) and its researchers. Researchers in higher education
+# are academic staff and postgraduate students (the OECD's definition; other staff are support). The two left blank:
+# 4.1.3 (microfinance loans; no Australian series) and 6.1.3 (utility models by origin per PPP$ GDP; the GII's
+# denominator could not be rebuilt from WIPO's counts, so a value would not be comparable).
+GII_SUPP_RD = {
+    "berd_own": "ABS.BERD.81040DO001.Table_1.22.source_of_funds|own_funds|000",
+    "berd_other_business": "ABS.BERD.81040DO001.Table_1.23.source_of_funds|other_business|000",
+    "berd": "ABS.BERD.81040DO001.Table_1.43.type_of_activity|total_expenditure_on_r_d|000",
+    "berd_researchers": "ABS.BERD.81040DO009.Table_1.13.types_of_resources|researchers|pye",
+    "goverd_business": "ABS.GOVERD_PNP.GPNPDC01.Table_1.20.source_of_funds|business|total_a_000",
+    "goverd": "ABS.GOVERD_PNP.GPNPDC01.Table_1.41.type_of_activity|total_expenditure_on_r_d_a|total_a_000",
+    "goverd_researchers": "ABS.GOVERD_PNP.GPNPDC04.Table_1.7.type_of_resource|researchers|total_a_pye",
+    "pnp_business": "ABS.GOVERD_PNP.GPNPDC05.Table_1.19.source_of_funds|business|000",
+    "pnp": "ABS.GOVERD_PNP.GPNPDC05.Table_1.40.type_of_activity|total_expenditure_on_r_d_a|000",
+    "pnp_researchers": "ABS.GOVERD_PNP.GPNPDC09.Table_1.6.type_of_resource|researchers|pye",
+    "herd_business": "ABS.HERD.HERDDC01.Table 1.23.australian_competitive_funds|business|col2",
+    "herd": "ABS.HERD.HERDDC01.Table 1.41.location_b|total_expenditure_on_r_d_a|col2",
+    "herd_academic": "ABS.HERD.HERDDC01.Table 1.43.human_resources_devoted_to_r_d|academic_staff|col2",
+    "herd_postgraduate": "ABS.HERD.HERDDC01.Table 1.45.human_resources_devoted_to_r_d|postgraduate_students|col2",
+}
+GII_SUPP_PERIOD = "business 2023-24, higher education 2024, government and private non-profit 2024-25"
+
+
+def _gii_supplementary_sql() -> str:
+    cols = ",\n               ".join(f"max(value) FILTER (indicator = '{c}') AS {k}" for k, c in GII_SUPP_RD.items())
+    researchers = "berd_researchers + goverd_researchers + pnp_researchers + herd_academic + herd_postgraduate"
+    status = "'supplementary (not in the GII): ' || "
+    return f"""
+        WITH r AS (
+            SELECT {cols}
+            FROM abs_nat WHERE source = 'abs'
+        ),
+        pop AS (SELECT value FROM {{wdi/panel}} WHERE iso3 = 'AUS' AND indicator = 'SP.POP.TOTL' AND year = 2024)
+        SELECT 'AUS', 'Australia', 2024, '{GII_SUPP_PERIOD}', 'gii_supplementary', 'gii_2026', 'GIISUP.2.3.1',
+               'Researchers, FTE/mn pop. (supplementary: four ABS R&D surveys, World Bank population)',
+               1e6 * ({researchers}) / pop.value, NULL, 'researchers per million people',
+               {status}'researchers in person-years of effort, each sector in its own survey year; population 2024'
+        FROM r, pop
+        UNION ALL
+        SELECT 'AUS', 'Australia', 2024, '{GII_SUPP_PERIOD}', 'gii_supplementary', 'gii_2026', 'GIISUP.5.1.5',
+               'GERD financed by business, % (supplementary: business funds in four ABS R&D surveys)',
+               100 * (berd_own + berd_other_business + goverd_business + pnp_business + herd_business)
+                 / (berd + goverd + pnp + herd), NULL, '%',
+               {status}'business funds in each sector, joint business-government funds of government R&D left out'
+        FROM r
+        UNION ALL
+        SELECT 'AUS', 'Australia', 2024, '{GII_SUPP_PERIOD}', 'gii_supplementary', 'gii_2026', 'GIISUP.5.3.6',
+               'Research talent, % in businesses (supplementary: four ABS R&D surveys)',
+               100 * berd_researchers / ({researchers}), NULL, '%',
+               {status}'researchers in person-years of effort, each sector in its own survey year'
+        FROM r
+        UNION ALL
+        SELECT 'AUS', 'Australia', year, CAST(year AS VARCHAR), 'gii_supplementary', 'gii_2026', 'GIISUP.2.1.5',
+               'Pupil-teacher ratio, secondary (supplementary: ABS Schools, FTE students per FTE teaching staff)',
+               value, NULL, 'ratio', {status}'FTE students per FTE teaching staff, all affiliations (UIS counts heads)'
+        FROM abs_nat WHERE indicator = 'ABS.SCHOOLS.T53A.all_affiliations.secondary_school'"""
 
 
 def national_indicators_sql() -> str:
@@ -1360,10 +1464,18 @@ def national_indicators_sql() -> str:
         FROM {{bcarr_creative/activity}}
         WHERE NOT (table_title LIKE '%by industry division' OR table_title IN ('Specialised activity',
                    'Support activity', 'Embedded activity', 'In-scope cultural and creative industry subdivisions'))
+        UNION ALL
+        SELECT 'AUS', 'Australia', year, CAST(year AS VARCHAR), 'abs', 'schools',
+               'ABS.SCHOOLS.T53A.' || {_slug("affiliation")} || '.' || {_slug("level")},
+               'FTE student to FTE teaching staff ratio: ' || affiliation || ', ' || level, ratio, NULL, 'ratio', NULL
+        FROM {{abs_schools/ratios}} WHERE state = 'Aust.'
+    ),
+    gii_supp AS ({_gii_supplementary_sql()}
     ),
     u AS (
         SELECT * FROM oecd UNION ALL SELECT * FROM wipo UNION ALL SELECT * FROM gii
         UNION ALL SELECT * FROM mwm UNION ALL SELECT * FROM ctg UNION ALL SELECT * FROM abs_nat
+        UNION ALL SELECT * FROM gii_supp
     )
     SELECT u.iso3, coalesce(n.name, p.name, u.place_name) AS country, coalesce(p.kind, 'country') AS entity,
            u.year, u.period, u.source, u.dataset, u.indicator, u.label, u.value, u.value_text, u.unit, u.status,
@@ -1485,6 +1597,18 @@ def _ip_by_division() -> str:
         JOIN {{concordances/ipc4_anzsic}} a USING (ipc4)
         GROUP BY 1, 2, 3
     ),
+    ipc_svc AS (  -- the same, through ALP's crosswalk including services (a labelled comparison, gap A2)
+        SELECT DISTINCT c.application_number, coalesce(p.ipc_to, left(c.classification, 4)) AS ipc4
+        FROM {{iprapid/classification}} c LEFT JOIN pred p ON p.ipc_from = left(c.classification, 4)
+        WHERE c.ip_right_type = 'patent' AND c.classification_system = 'ipc_mark' AND c.is_current
+          AND coalesce(p.ipc_to, left(c.classification, 4)) IN (SELECT ipc4 FROM {{concordances/ipc4_anzsic_services}})
+    ),
+    ip_pat_svc AS (
+        SELECT i.application_number, {_division_of("a.anzsic")} AS division, sum(a.weight / i.n) AS share
+        FROM (SELECT *, count(*) OVER (PARTITION BY application_number) AS n FROM ipc_svc) i
+        JOIN {{concordances/ipc4_anzsic_services}} a USING (ipc4)
+        GROUP BY 1, 2
+    ),
     nice AS (
         SELECT DISTINCT application_number, lpad(trim(classification), 2, '0') AS nice
         FROM {{iprapid/classification}}
@@ -1528,6 +1652,14 @@ def industries_sql() -> str:
         FROM ip_pat p JOIN r ON r.ip_right_type = 'patent' AND r.application_number = p.application_number
         GROUP BY 1, 2
     ),
+    pat_svc AS (
+        SELECT p.division, r.filing_fy AS fy,
+               sum(p.share) FILTER (r.patent_type = 'standard') AS patents_standard_with_services,
+               sum(p.share) FILTER (r.patent_type = 'standard' AND r.australian_applicant)
+                   AS patents_standard_au_with_services
+        FROM ip_pat_svc p JOIN r ON r.ip_right_type = 'patent' AND r.application_number = p.application_number
+        GROUP BY 1, 2
+    ),
     tm AS (
         SELECT t.division, r.filing_fy AS fy, sum(t.share) AS trade_marks,
                sum(t.share) FILTER (r.australian_applicant) AS trade_marks_au
@@ -1561,6 +1693,15 @@ def industries_sql() -> str:
           AND industry IN (SELECT division FROM divs)
         GROUP BY 1, 2
     ),
+    gva AS (  -- gross value added by division (gap B2): chain volume, original, the financial year's four quarters
+        SELECT industry AS division,
+               CAST(left(time_period, 4) AS INTEGER) + (right(time_period, 1) IN ('3', '4'))::INT AS fy,
+               CASE WHEN count(*) = 4 THEN sum(value) END AS gva_cvm
+        FROM {{abs_national_accounts/ana_ind_gva}}
+        WHERE data_item_label = 'Gross domestic product' AND measure_label = 'Chain volume measures'
+          AND adjustment_type = '10' AND industry IN (SELECT division FROM divs)
+        GROUP BY 1, 2
+    ),
     creative AS (  -- the cultural and creative industries' value added by division, the newer release (2015-16 on)
         SELECT n.division, a.fy_end AS fy, a.value AS creative_gva
         FROM {{bcarr_creative/activity}} a JOIN names n ON n.name = {_norm("a.series")}
@@ -1571,11 +1712,15 @@ def industries_sql() -> str:
            coalesce(pat.patents_standard, 0) AS patents_standard,
            coalesce(pat.patents_standard_au, 0) AS patents_standard_au,
            coalesce(pat.patents_second_tier, 0) AS patents_second_tier,
+           coalesce(pat_svc.patents_standard_with_services, 0) AS patents_standard_with_services,
+           coalesce(pat_svc.patents_standard_au_with_services, 0) AS patents_standard_au_with_services,
            coalesce(tm.trade_marks, 0) AS trade_marks, coalesce(tm.trade_marks_au, 0) AS trade_marks_au,
-           cabee.* EXCLUDE (division, fy), berd.berd, wpi.wpi_index, creative.creative_gva
+           cabee.* EXCLUDE (division, fy), berd.berd, wpi.wpi_index, creative.creative_gva, gva.gva_cvm
     FROM grid g
-    LEFT JOIN pat USING (division, fy) LEFT JOIN tm USING (division, fy) LEFT JOIN cabee USING (division, fy)
+    LEFT JOIN pat USING (division, fy) LEFT JOIN pat_svc USING (division, fy) LEFT JOIN tm USING (division, fy)
+    LEFT JOIN cabee USING (division, fy)
     LEFT JOIN berd USING (division, fy) LEFT JOIN wpi USING (division, fy) LEFT JOIN creative USING (division, fy)
+    LEFT JOIN gva USING (division, fy)
     ORDER BY g.division, g.fy
     """
 
@@ -1715,6 +1860,25 @@ def industry_indicators_sql() -> str:
                                FROM {{abs_cabee/cubes}} WHERE cube = '8165DC04' AND anzsic_subdivision_code IS NOT NULL)
           USING (subdivision)
     ),
+    bcs_cubes AS (  -- business characteristics, the data cubes after the API's flows (2024-25; gap B4): industry rows.
+        -- Tables "by innovation status" repeat their rows in blocks (all businesses, innovation-active, not
+        -- innovation-active), each opened by a 'Total' row that names it; the block joins the indicator
+        SELECT CASE WHEN {_norm("b.row")} IN ('total', 'all industries') THEN 'TOTAL' ELSE n.division END AS division,
+               'bcs_cubes' AS source, regexp_extract(b.cube, 'BCSDC\\d+') AS dataset,
+               'BCSC.' || regexp_extract(b.cube, 'BCSDC\\d+') || '.' || b.sheet || '.' ||
+                 coalesce({_slug("b.block")} || '|', '') || {_slug('b."column"')} AS indicator,
+               b.title || ': ' || coalesce(b.block || ', ', '') || b."column" AS label, b.release AS period,
+               CAST(left(b.release, 4) AS INTEGER) + 1 AS fy, b.value, b.value_text,
+               coalesce(nullif(regexp_extract(b."column", '\\| ([^|]+)$', 1), ''), b.unit) AS unit,
+               NULL::VARCHAR AS status
+        FROM (SELECT *, last_value(CASE WHEN {_norm("row")} = 'total' THEN section END IGNORE NULLS)
+                          OVER (PARTITION BY cube, sheet ORDER BY sheet_row
+                                RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS block
+              FROM {{abs_bcs_cubes/cubes}}) b
+        LEFT JOIN names n ON n.name = {_norm("b.row")}
+        WHERE (b.section = 'Industry' AND n.division IS NOT NULL)
+           OR ({_norm("b.row")} IN ('total', 'all industries') AND (b.section IS NULL OR b.section = b.block))
+    ),
     wpi AS (  -- the Wage Price Index by industry, quarterly (a quarter is never spread over months or years)
         SELECT CASE industry WHEN 'TOT' THEN 'TOTAL' ELSE industry END AS division, 'wpi' AS source,
                'wpi' AS dataset, 'WPI.' || measure || '.' || index || '.' || sector || '.' || adjustment_type
@@ -1729,7 +1893,7 @@ def industry_indicators_sql() -> str:
     SELECT u.*, d.division_name
     FROM (SELECT * FROM cabee_national UNION ALL SELECT * FROM cabee_cubes UNION ALL SELECT * FROM bcs
           UNION ALL SELECT * FROM berd UNION ALL SELECT * FROM creative UNION ALL SELECT * FROM wpi
-          UNION ALL SELECT * FROM ip) u
+          UNION ALL SELECT * FROM ip UNION ALL SELECT * FROM bcs_cubes) u
     LEFT JOIN divs d USING (division)
     """
 
@@ -1739,6 +1903,9 @@ def industry_indicators_sql() -> str:
 # they appear under beyond ROR's own (former names, commercialisation companies, misspellings) and their ABNs.
 INSTITUTIONS_DIR = Path(__file__).resolve().parent / "institutions"
 OPENALEX_FROM = 2010  # OpenAlex gives an institution's works and citations by year for 2010 on
+# An NSRC participant's name, as given or without a closing parenthesis ("Commonwealth Scientific and Industrial
+# Research Organisation (CSIRO)", "The University of Newcastle ( Newcastle Innovation)")
+NSRC_NAME = "regexp_replace(r.institution_name, '\\s*\\([^)]*\\)\\s*$', '')"
 # The ARC's schemes for research with industry partners. The ARC's 'Linkage' program also holds the Centres of
 # Excellence, infrastructure (LIEF), Special Research Initiatives and the learned academies' projects
 ARC_INDUSTRY_SCHEMES = (
@@ -1830,7 +1997,7 @@ def institutions_sql() -> str:
     lo, hi = INSTITUTIONS_YEARS
     industry = "g.scheme_name IN (" + ", ".join(f"'{x}'" for x in ARC_INDUSTRY_SCHEMES) + ")"
     return f"""
-    WITH {_institution_names(("arc", "nhmrc"))},
+    WITH {_institution_names(("arc", "nhmrc", "nsrc"))},
     grid AS (
         SELECT i.ror, y.year FROM inst i CROSS JOIN (SELECT unnest(range({lo}, {hi + 1})) AS year) y
     ),
@@ -1905,6 +2072,19 @@ def institutions_sql() -> str:
         SELECT a.ror, year(c.first_published) AS year, count(*) AS contracts, sum(c.value) AS contract_value
         FROM contracts c JOIN inst_abns a USING (abn) GROUP BY 1, 2
     ),
+    nsrc AS (  -- the NSRC, 2000 to 2015 (gap B9): matched by name; an institution not surveyed that year has none
+        SELECT n.ror, r.year, sum(r.q1_research_expenditure) AS nsrc_research_expenditure,
+               sum(r.q2b_number_of_dedicated_commercialisation_staff_fte) AS nsrc_commercialisation_staff,
+               sum(r.q5_number_of_invention_disclosures_received) AS nsrc_invention_disclosures,
+               sum(r.q7_total_number_of_loas_executed) AS nsrc_licences_executed,
+               sum(r.q10_total_value_of_income_yielded_from_active_loas) AS nsrc_licence_income,
+               sum(r.q14_number_of_startup_companies_created) AS nsrc_startups_created
+        FROM {{nsrc/responses}} r
+        JOIN (SELECT DISTINCT r.institution_name, n.ror FROM {{nsrc/responses}} r
+              JOIN inst_names n ON n.key IN ({_name_key("r.institution_name")}, {_name_key(NSRC_NAME)})) n
+          USING (institution_name)
+        GROUP BY 1, 2
+    ),
     o AS (SELECT ror, state, established, status FROM {{ror/organisations}})
     SELECT g.ror, i.institution, i.kind, nullif(i.parent_ror, '') AS parent_ror, upper(o.state) AS state,
            o.established, o.status AS ror_status, g.year,
@@ -1930,16 +2110,94 @@ def institutions_sql() -> str:
            coalesce(families.patent_families_us_granted, 0) AS patent_families_us_granted,
            coalesce(families.patent_family_citations_5y, 0) AS patent_family_citations_5y,
            CASE WHEN g.year >= 2005 THEN coalesce(tender.contracts, 0) END AS contracts,
-           CASE WHEN g.year >= 2005 THEN coalesce(tender.contract_value, 0) END AS contract_value
+           CASE WHEN g.year >= 2005 THEN coalesce(tender.contract_value, 0) END AS contract_value,
+           nsrc.nsrc_research_expenditure, nsrc.nsrc_commercialisation_staff, nsrc.nsrc_invention_disclosures,
+           nsrc.nsrc_licences_executed, nsrc.nsrc_licence_income, nsrc.nsrc_startups_created
     FROM grid g
     JOIN inst i USING (ror)
     LEFT JOIN o USING (ror)
     LEFT JOIN oa USING (ror)
     LEFT JOIN works USING (ror, year) LEFT JOIN cited USING (ror, year) LEFT JOIN arc USING (ror, year)
     LEFT JOIN nhmrc USING (ror, year) LEFT JOIN ip USING (ror, year) LEFT JOIN families USING (ror, year)
-    LEFT JOIN tender USING (ror, year)
+    LEFT JOIN tender USING (ror, year) LEFT JOIN nsrc USING (ror, year)
     ORDER BY g.ror, g.year
     """
+
+
+# The fee history (`frl_fees/key_fees`, ADR 0031): each key fee in force on the first day of the month, in dollars of
+# the day, empty before the right's fee history begins (patents May 1991, trade marks July 1989, designs April 1982,
+# plant breeder's rights December 1994). (column, SQL over that month's fees). A fee no longer charged counts 0 in the
+# sums. `_real` columns are in dollars of the latest quarter the CPI reaches, deflated by the CPI of the month's
+# quarter.
+TIMELINE_FEES = [
+    ("fee_patent_provisional", "max(amount_aud) FILTER (fee = 'provisional_filing')"),
+    ("fee_patent_filing", "max(amount_aud) FILTER (fee = 'standard_filing')"),
+    ("fee_patent_examination", "max(amount_aud) FILTER (fee = 'standard_examination')"),
+    ("fee_patent_grant", "coalesce(sum(amount_aud) FILTER (fee IN ('acceptance', 'sealing')), 0)"),
+    (
+        "fee_patent_to_grant",
+        "sum(amount_aud) FILTER (fee IN ('standard_filing', 'standard_examination', 'acceptance', 'sealing'))",
+    ),
+    ("fee_patent_renewals", "sum(amount_aud) FILTER (fee = 'standard_renewal' AND anniversary <= 19)"),
+    ("fee_patent_second_tier_filing", "max(amount_aud) FILTER (fee IN ('petty_filing', 'innovation_filing'))"),
+    ("fee_tm_filing", "max(amount_aud) FILTER (fee = 'filing')"),
+    ("fee_tm_registration", "coalesce(max(amount_aud) FILTER (fee = 'registration'), 0)"),
+    ("fee_tm_to_register", "sum(amount_aud) FILTER (fee IN ('filing', 'registration'))"),
+    ("fee_tm_renewal", "max(amount_aud) FILTER (fee = 'renewal')"),
+    ("fee_design_filing", "max(amount_aud) FILTER (fee = 'filing')"),
+    ("fee_design_examination", "max(amount_aud) FILTER (fee = 'examination')"),
+    (
+        "fee_design_renewal",
+        "coalesce(max(amount_aud) FILTER (fee = 'renewal'), max(amount_aud) FILTER (fee = 'extension_1'))",
+    ),
+    ("fee_pbr_application", "max(amount_aud) FILTER (fee = 'application')"),
+    ("fee_pbr_examination", "max(amount_aud) FILTER (fee = 'examination')"),
+    ("fee_pbr_grant", "max(amount_aud) FILTER (fee = 'grant')"),
+    ("fee_pbr_to_grant", "sum(amount_aud) FILTER (fee IN ('application', 'examination', 'grant'))"),
+    ("fee_pbr_annual", "max(amount_aud) FILTER (fee = 'annual')"),
+]
+TIMELINE_FEES_REAL = [
+    "fee_patent_to_grant",
+    "fee_patent_renewals",
+    "fee_tm_to_register",
+    "fee_tm_renewal",
+    "fee_design_filing",
+    "fee_pbr_to_grant",
+]
+
+
+# State final demand's states, as the national accounts name them (gap B2)
+STATES = [
+    ("nsw", "New South Wales"),
+    ("vic", "Victoria"),
+    ("qld", "Queensland"),
+    ("sa", "South Australia"),
+    ("wa", "Western Australia"),
+    ("tas", "Tasmania"),
+    ("nt", "Northern Territory"),
+    ("act", "Australian Capital Territory"),
+]
+
+
+def _fees_sql(months: str) -> str:
+    """One row per month, a column per fee (`TIMELINE_FEES`), each right's from its own fees."""
+    rights = {"patent": "fee_patent_", "trade_mark": "fee_tm_", "design": "fee_design_", "pbr": "fee_pbr_"}
+    parts = []
+    for right, prefix in rights.items():
+        cols = ",\n            ".join(f"{expr} AS {c}" for c, expr in TIMELINE_FEES if c.startswith(prefix))
+        parts.append(f"""
+        {right} AS (
+            SELECT m.month, {cols}
+            FROM {months} m JOIN {{frl_fees/key_fees}} k
+              ON k."right" = '{right}' AND k.start <= m.month AND (k."end" IS NULL OR k."end" > m.month)
+            GROUP BY m.month
+        )""")
+    joins = " ".join(f"LEFT JOIN {r} USING (month)" for r in rights)
+    return (
+        ",".join(parts)
+        + f""",
+        fees AS (SELECT m.month, {", ".join(c for c, _ in TIMELINE_FEES)} FROM {months} m {joins})"""
+    )
 
 
 def timeline_sql() -> str:
@@ -1984,20 +2242,56 @@ def timeline_sql() -> str:
             {counts(TIMELINE_EVENTS)}
         FROM e WHERE event_date {window} GROUP BY 1
     ),
-    policy AS (
-        SELECT CAST(date_trunc('month', date) AS DATE) AS month, string_agg(id, ', ' ORDER BY date) AS policy_events
+    policy AS (  -- the fee changes are a column of their own (ADR 0031)
+        SELECT CAST(date_trunc('month', date) AS DATE) AS month,
+            string_agg(id, ', ' ORDER BY date) FILTER (lever <> 'fees') AS policy_events,
+            string_agg(DISTINCT rights, ', ' ORDER BY rights) FILTER (lever = 'fees') AS fee_changes
         FROM {{policy_events/events}} GROUP BY 1
-    ),
+    ),{_fees_sql("months")},
     cpi AS (  -- all groups, Australia (weighted average of the eight capitals), original, quarterly
         SELECT make_date(CAST(left(time_period, 4) AS INTEGER), 3 * CAST(right(time_period, 1) AS INTEGER), 1) AS month,
                value AS cpi
         FROM {{abs_prices/cpi}}
         WHERE index = '10001' AND region = '50' AND measure = '1' AND adjustment_type = '10' AND frequency = 'Q'
     ),
+    cpi_base AS (SELECT arg_max(cpi, month) AS base FROM cpi WHERE month <= DATE '{TIMELINE_END}'),
+    ana AS (  -- national accounts (gap B2): quarterly, seasonally adjusted, in each quarter's last month as the CPI
+        SELECT make_date(CAST(left(time_period, 4) AS INTEGER), 3 * CAST(right(time_period, 1) AS INTEGER), 1) AS month,
+            max(value) FILTER (measure_label = 'Chain volume measures') AS gdp_cvm,
+            max(value) FILTER (measure_label = 'Current prices') AS gdp_current
+        FROM {{abs_national_accounts/ana_agg}}
+        WHERE data_item_label = 'Gross domestic product' AND adjustment_type = '20' GROUP BY 1
+    ),
+    sfd AS (
+        SELECT make_date(CAST(left(time_period, 4) AS INTEGER), 3 * CAST(right(time_period, 1) AS INTEGER), 1) AS month,
+            {", ".join(f"max(value) FILTER (region_label = '{name}') AS sfd_{code}" for code, name in STATES)}
+        FROM {{abs_national_accounts/ana_sfd}}
+        WHERE data_item_label = 'STATE FINAL DEMAND' AND measure_label = 'Chain volume measures'
+          AND sector_label = 'All sectors' AND adjustment_type = '20' GROUP BY 1
+    ),
+    rba AS (  -- the RBA's monthly tables (gap B1): each month's value as the RBA dates it (its last business day)
+        SELECT CAST(date_trunc('month', date) AS DATE) AS month,
+            max(value) FILTER (series_id = 'FIRMMCRT') AS cash_rate_target,
+            max(value) FILTER (series_id = 'FIRMMCRI') AS cash_rate_interbank,
+            max(value) FILTER (series_id = 'FXRUSD') AS aud_usd,
+            max(value) FILTER (series_id = 'FXRTWI') AS aud_twi
+        FROM {{rba/series}} WHERE series_id IN ('FIRMMCRT', 'FIRMMCRI', 'FXRUSD', 'FXRTWI') GROUP BY 1
+    ),
+    pbs AS (  -- the PBS's monthly workbook (gap B11), July 2022 on: every section, and Section 100 apart
+        SELECT strptime(month, '%Y%m')::DATE AS month, sum(prescriptions) AS pbs_prescriptions,
+            sum(government_contribution) AS pbs_government_cost,
+            sum(prescriptions) FILTER (drug_type = 'Section 100') AS pbs_s100_prescriptions,
+            sum(government_contribution) FILTER (drug_type = 'Section 100') AS pbs_s100_government_cost
+        FROM {{pbs/monthly}} GROUP BY 1
+    ),
     j AS (
-        SELECT months.month, apps.* EXCLUDE (month), events.* EXCLUDE (month), policy.policy_events, cpi.cpi
+        SELECT months.month, apps.* EXCLUDE (month), events.* EXCLUDE (month), policy.policy_events,
+            policy.fee_changes, cpi.cpi, fees.* EXCLUDE (month), q.cpi AS cpi_quarter, rba.* EXCLUDE (month),
+            ana.* EXCLUDE (month), sfd.* EXCLUDE (month), pbs.* EXCLUDE (month)
         FROM months LEFT JOIN apps USING (month) LEFT JOIN events USING (month) LEFT JOIN policy USING (month)
-        LEFT JOIN cpi USING (month)
+        LEFT JOIN cpi USING (month) LEFT JOIN fees USING (month) LEFT JOIN rba USING (month) LEFT JOIN ana USING (month)
+        LEFT JOIN sfd USING (month) LEFT JOIN pbs USING (month)
+        LEFT JOIN cpi q ON q.month = make_date(year(months.month), 3 * quarter(months.month), 1)
     ),
     nz AS (
         SELECT month, count(*) OVER w AS months_ahead,
@@ -2013,8 +2307,14 @@ def timeline_sql() -> str:
         day(last_day(j.month)) AS days_in_month,
         {kept},
         j.cpi,
-        j.policy_events
-    FROM j CROSS JOIN f
+        j.policy_events,
+        {", ".join(f"j.{c}" for c, _ in TIMELINE_FEES)},
+        {", ".join(f"round(j.{c} * b.base / j.cpi_quarter, 2) AS {c}_real" for c in TIMELINE_FEES_REAL)},
+        j.fee_changes,
+        j.cash_rate_target, j.cash_rate_interbank, j.aud_usd, j.aud_twi,
+        j.gdp_cvm, j.gdp_current, {", ".join(f"j.sfd_{code}" for code, _ in STATES)},
+        j.pbs_prescriptions, j.pbs_government_cost, j.pbs_s100_prescriptions, j.pbs_s100_government_cost
+    FROM j CROSS JOIN f CROSS JOIN cpi_base b
     ORDER BY j.month
     """
 

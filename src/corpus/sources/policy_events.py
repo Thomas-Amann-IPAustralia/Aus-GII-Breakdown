@@ -4,6 +4,9 @@ register, an inventory of the levers already proposed and where each stands.
 Raw: `events.yaml` (repo; compiled here, with `verify` marking details to confirm) and each policy register page's
 HTML (repo, gzipped). Processed: `events` (date, rights, lever, event, source, verify) and `policy_register` (policy
 id, title, status, priority, tags, issue summary, comments and URL, as IP Australia publishes them).
+
+`events` also holds every change to a right's key fees, from `frl_fees/fee_changes` (lever "fees", id
+`fees-<right>-<date>`; ADR 0031), so `frl_fees` runs first; `corpus reprocess policy_events` adds them again after it.
 """
 
 from __future__ import annotations
@@ -49,7 +52,26 @@ def _events(ctx: Ctx) -> None:
         raise CorpusError("policy_events: an event id is used twice in events.yaml")
     events["date"] = pd.to_datetime(events["date"]).dt.date
     events["rights"] = events["rights"].map(lambda r: ",".join(r))
+    events = pd.concat([events, _fee_events()], ignore_index=True)
     ctx.table(events.sort_values("date").reset_index(drop=True), "events", describe="Dated changes to the IP system")
+
+
+def _fee_events() -> pd.DataFrame:
+    """Each date on which a right's key fees changed, as an event (from the fee regulations' history)."""
+    from ..core import load
+
+    c = load("frl_fees", "fee_changes")
+    return pd.DataFrame(
+        {
+            "id": "fees-" + c["right"].str.replace("_", "-") + "-" + c["date"].astype(str),
+            "date": c["date"],
+            "rights": c["right"],
+            "lever": "fees",
+            "event": "Key fees change: " + c["changes"],
+            "source": "https://www.legislation.gov.au/ (" + c["source"].where(c["source"] != "", "see frl_fees") + ")",
+            "verify": False,
+        }
+    )
 
 
 def reprocess(ctx: Ctx, tables: list[str] | None = None) -> None:

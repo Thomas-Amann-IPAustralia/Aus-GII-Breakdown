@@ -565,6 +565,116 @@
    },
    "run": "2026-10-22"
   },
+  "abs_bcs_cubes": {
+   "files": {
+    "processed/cubes": {
+     "bytes": 68738,
+     "columns": [
+      "sheet",
+      "title",
+      "section",
+      "row",
+      "column",
+      "unit",
+      "value",
+      "value_text",
+      "sheet_row",
+      "release",
+      "cube"
+     ],
+     "describe": "ABS business characteristics cubes, long",
+     "location": "repo",
+     "path": "data/processed/abs_bcs_cubes/cubes.parquet",
+     "rows": 29312,
+     "sha256": "6e3a46e2c73fceb88f0e49c1709c842409279dfa4c388ae8f3478ed02616d4a7"
+    },
+    "raw/BCSDC01_2024-25.xlsx": {
+     "bytes": 187969,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC01_2024-25.xlsx",
+     "sha256": "b567d65e86f996e0ff9aa627771e207787820e551ffb9fa2c84429f90a8ef403",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC01_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC02_2024-25.xlsx": {
+     "bytes": 69978,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC02_2024-25.xlsx",
+     "sha256": "e97f690436a8087656da8b59ce78eb2423fcf325594fe7de25b53a27fd068eec",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC02_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC03_2024-25.xlsx": {
+     "bytes": 65350,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC03_2024-25.xlsx",
+     "sha256": "f2c395a5b318d8ffb5af69a362f17cdab3eb57c88f1b4cb25ddd6ee3532ac93f",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC03_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC04_2024-25.xlsx": {
+     "bytes": 82259,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC04_2024-25.xlsx",
+     "sha256": "a42ee2c7cf415d26ae41de4ede9268f88d5c6b7bc4461cad2d5af23a79e5a302",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC04_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC05_2024-25.xlsx": {
+     "bytes": 53098,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC05_2024-25.xlsx",
+     "sha256": "c2a70d3745f898e3a782d58fc3af114c774eaffcbc1f5818fac8b162c03626d9",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC05_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC06_2024-25.xlsx": {
+     "bytes": 1416932,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC06_2024-25.xlsx",
+     "sha256": "54bba9e9cc98f2a6a9bee478cffba836557e753a5b5cb77525f5397cb550e23a",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC06_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC07_2024-25.xlsx": {
+     "bytes": 43905,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC07_2024-25.xlsx",
+     "sha256": "d732e637301e021ea4c67adaa7af977d8b565d8ce8e2943283d8bad4c5be3b5f",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC07_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC08_2024-25.xlsx": {
+     "bytes": 287365,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC08_2024-25.xlsx",
+     "sha256": "efe29ef65eb20642dca52e48c12adbf61760c9f8b784d82bcf9751cf03535781",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC08_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC09_2024-25.xlsx": {
+     "bytes": 1373964,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC09_2024-25.xlsx",
+     "sha256": "db774e9c4d00a65eef7c9387be146083d1e26baa583a34a1f834e3bc8a068794",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC09_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC10_2024-25.xlsx": {
+     "bytes": 52926,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC10_2024-25.xlsx",
+     "sha256": "370488875f85828ce279c4f6a3f03132aabcec558863a565c9f13750655478f1",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC10_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC11_2024-25.xlsx": {
+     "bytes": 50521,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC11_2024-25.xlsx",
+     "sha256": "741f38e720940b814239a7e1f677b85b1f7c0efdb9866e66bb8f3b483b5c7bd4",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC11_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC12_2024-25.xlsx": {
+     "bytes": 47794,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC12_2024-25.xlsx",
+     "sha256": "fc0001987ceeed766e16f14406ce6cf502f9ac6e60a026a5f0520abf1bf3e2eb",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC12_2024%E2%80%9325.xlsx"
+    }
+   },
+   "run": "2026-10-28"
+  },
   "abs_cabee": {
    "files": {
     "processed/cubes": {
@@ -7024,6 +7134,34 @@
    },
    "run": "2026-10-22"
   },
+  "abs_census_tsp": {
+   "files": {
+    "processed/cells": {
+     "bytes": 3162309,
+     "columns": [
+      "sa2_code",
+      "table",
+      "indicator",
+      "census_year",
+      "value",
+      "label"
+     ],
+     "describe": "Census Time Series Profile (2011, 2016, 2021), by SA2, long",
+     "location": "repo",
+     "path": "data/processed/abs_census_tsp/cells.parquet",
+     "rows": 1727928,
+     "sha256": "120bc83e2f277d944f825b5667a7d588cef5c8050dbb6e0baf31db9d9c24b76a"
+    },
+    "raw/2021_TSP_SA2_for_AUS_short-header.zip": {
+     "bytes": 45974093,
+     "key": "raw/abs_census_tsp/2021_TSP_SA2_for_AUS_short-header.zip",
+     "location": "r2",
+     "sha256": "ed48b8aa15bae8960ae333fec069368726bc3e083acb6d16d05f38203ea00f06",
+     "url": "https://www.abs.gov.au/census/find-census-data/datapacks/download/2021_TSP_SA2_for_AUS_short-header.zip"
+    }
+   },
+   "run": "2026-10-28"
+  },
   "abs_labour": {
    "files": {
     "processed/lf": {
@@ -7106,6 +7244,128 @@
     }
    },
    "run": "2026-10-25"
+  },
+  "abs_national_accounts": {
+   "files": {
+    "processed/ana_agg": {
+     "bytes": 79423,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "data_item",
+      "data_item_label",
+      "adjustment_type",
+      "adjustment_type_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "unit_of_multiplier",
+      "unit_of_multiplier_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "Australian National Accounts Key Aggregates",
+     "location": "repo",
+     "path": "data/processed/abs_national_accounts/ana_agg.parquet",
+     "rows": 23976,
+     "sha256": "73214c55cbe7614aa7a5c2507c4ec55cff1eded6dbd51613178b0892f1ca6c0a"
+    },
+    "processed/ana_ind_gva": {
+     "bytes": 169676,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "data_item",
+      "data_item_label",
+      "sector",
+      "sector_label",
+      "adjustment_type",
+      "adjustment_type_label",
+      "industry",
+      "industry_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "unit_of_multiplier",
+      "unit_of_multiplier_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "Australian National Accounts - Production of Gross Domestic Product (GDP (P))",
+     "location": "repo",
+     "path": "data/processed/abs_national_accounts/ana_ind_gva.parquet",
+     "rows": 66201,
+     "sha256": "0032ed90e541e544434bdde879330e2e8351d2b0f8c829d8b22a6b2eb4a7fa07"
+    },
+    "processed/ana_sfd": {
+     "bytes": 988624,
+     "columns": [
+      "flow",
+      "measure",
+      "measure_label",
+      "data_item",
+      "data_item_label",
+      "sector",
+      "sector_label",
+      "adjustment_type",
+      "adjustment_type_label",
+      "region",
+      "region_label",
+      "frequency",
+      "frequency_label",
+      "time_period",
+      "unit_of_measure",
+      "unit_of_measure_label",
+      "unit_of_multiplier",
+      "unit_of_multiplier_label",
+      "observation_status",
+      "observation_status_label",
+      "observation_comment",
+      "value"
+     ],
+     "describe": "Australian National Accounts - State Final Demand",
+     "location": "repo",
+     "path": "data/processed/abs_national_accounts/ana_sfd.parquet",
+     "rows": 562740,
+     "sha256": "40b0498f6fef9eb3bbd61090de9afa91f2dd636f5a8bed344897bb7546d3342b"
+    },
+    "raw/ANA_AGG.csv.gz": {
+     "bytes": 144979,
+     "key": "raw/abs_national_accounts/ANA_AGG.csv.gz",
+     "location": "r2",
+     "sha256": "02a262cbe732158c14f71277462b5895fcfee800f2f25774b6c4cdd94d9d7a0b",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,ANA_AGG/all"
+    },
+    "raw/ANA_IND_GVA.csv.gz": {
+     "bytes": 397726,
+     "key": "raw/abs_national_accounts/ANA_IND_GVA.csv.gz",
+     "location": "r2",
+     "sha256": "99418b35aea6248467a2d9ec9ba6879b70b7bc9f85d9fa8b330ea4040632f75e",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,ANA_IND_GVA/all"
+    },
+    "raw/ANA_SFD.csv.gz": {
+     "bytes": 3212188,
+     "key": "raw/abs_national_accounts/ANA_SFD.csv.gz",
+     "location": "r2",
+     "sha256": "c772c44dbf99d8d75fbb4b44be980db898d7fb0d82de7c9c9114c44c36bb94cc",
+     "url": "https://data.api.abs.gov.au/rest/data/ABS,ANA_SFD/all"
+    }
+   },
+   "run": "2026-10-28"
   },
   "abs_prices": {
    "files": {
@@ -7759,6 +8019,33 @@
    },
    "run": "2026-10-22"
   },
+  "abs_schools": {
+   "files": {
+    "processed/ratios": {
+     "bytes": 6352,
+     "columns": [
+      "year",
+      "state",
+      "affiliation",
+      "level",
+      "ratio"
+     ],
+     "describe": "ABS Schools Table 53a: FTE student to FTE teaching staff ratios, long",
+     "location": "repo",
+     "path": "data/processed/abs_schools/ratios.parquet",
+     "rows": 2700,
+     "sha256": "88e9dd66eb2366c84b97e0f5110d89aaaaf285d6d3bdacff2723554e1b44b3fe"
+    },
+    "raw/schools_table_53a.xlsx": {
+     "bytes": 103622,
+     "location": "repo",
+     "path": "data/raw/abs_schools/schools_table_53a.xlsx",
+     "sha256": "84bb296f69fbe025f5731ae345bce44cb5e16db7c4e7649f6c6a09394ce9ad17",
+     "url": "https://www.abs.gov.au/statistics/people/education/schools/2025/Table%2053a%20Full-time%20equivalent%20%28FTE%29%20student%20to%20%28FTE%29%20teaching%20staff%20ratios%2C%202006-2025.xlsx"
+    }
+   },
+   "run": "2026-10-29"
+  },
   "arc_grants": {
    "files": {
     "processed/grants": {
@@ -7973,6 +8260,111 @@
     }
    },
    "run": "2026-10-22"
+  },
+  "ato_postcode": {
+   "files": {
+    "processed/items": {
+     "bytes": 16720395,
+     "columns": [
+      "income_year",
+      "state",
+      "postcode",
+      "item",
+      "unit",
+      "value"
+     ],
+     "describe": "ATO individuals by postcode: Table 6 items, every income year, long",
+     "location": "repo",
+     "path": "data/processed/ato_postcode/items.parquet",
+     "rows": 4735620,
+     "sha256": "0657fd5ef6adc7bf1252b6535c185afcbdc88e5aea595dac11b384f2d0d32ccd"
+    },
+    "raw/ts13individual06.xlsx": {
+     "bytes": 7619463,
+     "key": "raw/ato_postcode/ts13individual06.xlsx",
+     "location": "r2",
+     "sha256": "dd42fc5310ce20f76ecf2b152fe5a7d136c9ff432fbb308902bb45daa3dfe12d",
+     "url": "https://data.gov.au/data/dataset/e29ef9ca-0d1a-47ec-9e9b-14a79a941511/resource/fa6fda82-a70d-4f4c-bb00-203ffc4d20af/download/taxstats2013individual06_selected-items-by-taxable-status-postcode.xlsx"
+    },
+    "raw/ts14individual06.xlsx": {
+     "bytes": 7732148,
+     "key": "raw/ato_postcode/ts14individual06.xlsx",
+     "location": "r2",
+     "sha256": "241a6ca2452268a70e7d6e84021c6a726c3bd7f77d2ec9e20a7d74438ef1967f",
+     "url": "https://data.gov.au/data/dataset/25e81c18-2083-4abe-81b6-0f530053c63f/resource/942c9a30-baf2-4432-9513-1395fbef7edf/download/taxstats2014individual06taxablestatuspostcode.xlsx"
+    },
+    "raw/ts15individual06.xlsx": {
+     "bytes": 8011243,
+     "key": "raw/ato_postcode/ts15individual06.xlsx",
+     "location": "r2",
+     "sha256": "92c162e2d5d0df07e2fe25e79919ec43d87d8aebd63c171b96ad54941c73e0d5",
+     "url": "https://data.gov.au/data/dataset/5c99cfed-254d-40a6-af1c-47412b7de6fe/resource/12443334-2273-4e0f-a2e1-c9d0c1d8213b/download/taxstats2015individual06taxablestatusstateterritorypostcode.xlsx"
+    },
+    "raw/ts16individual06.xlsx": {
+     "bytes": 8564244,
+     "key": "raw/ato_postcode/ts16individual06.xlsx",
+     "location": "r2",
+     "sha256": "81b5dfb45c41f2c2c4405862f023ae382f8c3aa30bf94638459cef577c1d6f88",
+     "url": "https://data.gov.au/data/dataset/d170213c-4391-4d10-ac24-b0c11768da3f/resource/8c86b6d5-0485-4387-b12b-ad26a9da2033/download/taxstats2016individual06taxablestatusstateterritorypostcodetaxableincome.xlsx"
+    },
+    "raw/ts17individual06.xlsx": {
+     "bytes": 9147216,
+     "key": "raw/ato_postcode/ts17individual06.xlsx",
+     "location": "r2",
+     "sha256": "eb8c70b57286c154aa25f2ac25881e530f876df748bb74bbc0edfe0dd8a763b3",
+     "url": "https://data.gov.au/data/dataset/540e3eac-f2df-48d1-9bc0-fbe8dfec641f/resource/41d19b90-1984-46be-b82c-0a51efc3983d/download/ts17individual06taxablestatusstatepostcode.xlsx"
+    },
+    "raw/ts18individual06.xlsx": {
+     "bytes": 8394013,
+     "key": "raw/ato_postcode/ts18individual06.xlsx",
+     "location": "r2",
+     "sha256": "17bd9a1c45894f68bf256d3b0b8c18e60c3ee8fb66ce23da6d7bff8a3a9e7bdd",
+     "url": "https://data.gov.au/data/dataset/23b8c299-a85b-4fc0-a07d-5ed14e23a103/resource/ec5dba66-e3d1-47ed-b762-33b27d40484e/download/ts18individual06taxablestatusstatepostcode.xlsx"
+    },
+    "raw/ts19individual06.xlsx": {
+     "bytes": 8140745,
+     "key": "raw/ato_postcode/ts19individual06.xlsx",
+     "location": "r2",
+     "sha256": "570b11c147a61dae334aeccdf0f51a147850c67d5f0b3c5a8fa74f4f27c58b09",
+     "url": "https://data.gov.au/data/dataset/2805b28d-2c3b-47e2-87c3-50aacc6ea212/resource/3580e8f5-57ac-4848-9db0-48ba0c4a8a65/download/ts19individual06taxablestatusstateterritorypostcode.xlsx"
+    },
+    "raw/ts20individual06.xlsx": {
+     "bytes": 8130810,
+     "key": "raw/ato_postcode/ts20individual06.xlsx",
+     "location": "r2",
+     "sha256": "455d2a52567ea279bab52b2862fd92cd40520caa437c43c692ad2c0124acf196",
+     "url": "https://data.gov.au/data/dataset/f1a2c3d5-98d0-46b7-8b8c-742e65c6afa7/resource/3e49a39a-5b01-44b7-b67e-ce056ef6548c/download/ts20individual06taxablestatusstateterritorypostcode.xlsx"
+    },
+    "raw/ts21individual06.xlsx": {
+     "bytes": 8336234,
+     "key": "raw/ato_postcode/ts21individual06.xlsx",
+     "location": "r2",
+     "sha256": "84864becd939bc27b2364ab958bd689f56a038869d94c9287ab6b1d9c6753b9b",
+     "url": "https://data.gov.au/data/dataset/07b51b39-254a-4177-8b4c-497f17eddb80/resource/fa05bac8-079d-4eba-bd4d-779466e45f02/download/ts21individual06taxablestatusstateterritorypostcode.xlsx"
+    },
+    "raw/ts22individual06.xlsx": {
+     "bytes": 8345770,
+     "key": "raw/ato_postcode/ts22individual06.xlsx",
+     "location": "r2",
+     "sha256": "00d1df972edc02af9d61d9968d586c7292dc7785f75e35242699af4ad3833b3d",
+     "url": "https://data.gov.au/data/dataset/4be150cc-8f84-46b8-8c61-55ff1d48a700/resource/43d41d1d-4e39-45df-b693-a06255779cff/download/ts22individual06taxablestatusstatesa4postcode.xlsx"
+    },
+    "raw/ts23individual06.xlsx": {
+     "bytes": 8235702,
+     "key": "raw/ato_postcode/ts23individual06.xlsx",
+     "location": "r2",
+     "sha256": "66ea25be77395d3dea98819eb0d83328baa20c6fadf7fb37c4ca32db7ed12442",
+     "url": "https://data.gov.au/data/dataset/03326c3f-c0d3-4af4-afc7-c6ccc0a02223/resource/9ab2e787-6447-468f-9d83-c6294d4ec919/download/ts23individual06taxablestatusstatesa4postcode.xlsx"
+    },
+    "raw/ts24individual06.xlsx": {
+     "bytes": 8228086,
+     "key": "raw/ato_postcode/ts24individual06.xlsx",
+     "location": "r2",
+     "sha256": "cc4609be0e7035381dd3da2e65986d7c4dc42b70367b0ec2985c0803054821c9",
+     "url": "https://data.gov.au/data/dataset/faea4485-f407-457d-97f8-3f0822ccd654/resource/9d8577b7-a096-4758-9b3b-0649f3b83de7/download/ts24individual06taxablestatusstatesa4postcode.xlsx"
+    }
+   },
+   "run": "2026-10-29"
   },
   "austender": {
    "files": {
@@ -8302,6 +8694,19 @@
      "rows": 3098,
      "sha256": "7040a3ee275d8bb877f07c4ddac567ac0e94722ea44b5db1801801ba5d30aab5"
     },
+    "processed/alp_ipc4_isic4_services": {
+     "bytes": 38615,
+     "columns": [
+      "ipc4",
+      "isic4",
+      "weight"
+     ],
+     "describe": "ALP: IPC subclass to ISIC Rev. 4 class, with services, weights",
+     "location": "repo",
+     "path": "data/processed/concordances/alp_ipc4_isic4_services.parquet",
+     "rows": 3244,
+     "sha256": "002dc960c0d081ad3049ed54e72f37852e6ef05c3562371c20ef6301345716ab"
+    },
     "processed/alp_nice_isic4": {
      "bytes": 7594,
      "columns": [
@@ -8328,6 +8733,20 @@
      "path": "data/processed/concordances/ipc4_anzsic.parquet",
      "rows": 6883,
      "sha256": "41b1437e674357e972024e8dc4b1f224f1fefc18f83c60206ac41695f9d8cd9f"
+    },
+    "processed/ipc4_anzsic_services": {
+     "bytes": 59523,
+     "columns": [
+      "ipc4",
+      "anzsic",
+      "anzsic_title",
+      "weight"
+     ],
+     "describe": "ipc4 to ANZSIC 2006 class, ALP weights carried through ISIC Rev. 4",
+     "location": "repo",
+     "path": "data/processed/concordances/ipc4_anzsic_services.parquet",
+     "rows": 7105,
+     "sha256": "dacc70d54a41c9c5c630ae9f2c6e4cb2088ee5806d4b58f54c1682017f4e5042"
     },
     "processed/ipc_green_inventory": {
      "bytes": 14391,
@@ -8412,6 +8831,13 @@
      "sha256": "0cb8189f39197a3cbe910a4b3f4c1915eee9080ea2660cc5a460d35609d0922c",
      "url": "https://drive.google.com/uc?export=download&id=1wsIflv45zCyLNvB1mcSWGS6vhfNC_qxv"
     },
+    "raw/alp-ipc-v2209.zip": {
+     "bytes": 4966102,
+     "location": "repo",
+     "path": "data/raw/concordances/alp-ipc-v2209.zip",
+     "sha256": "a2fe26f36a0d11e66d60f4477052973999d8a210f7fe165536ee49fe75b0ab1e",
+     "url": "https://drive.google.com/uc?export=download&id=16YDRz7G8IaKGA1T7g32GP3ajrNBySbZE"
+    },
     "raw/alp-trademark-v2305.zip": {
      "bytes": 399251,
      "location": "repo",
@@ -8439,9 +8865,10 @@
     }
    },
    "notes": [
-    "concordances: nice_anzsic: 0.0% of ALP weight is on ISIC classes the ABS table lacks"
+    "concordances: nice_anzsic: 0.0% of ALP weight is on ISIC classes the ABS table lacks",
+    "concordances: ipc4_anzsic_services: 0.0% of ALP weight is on ISIC classes the ABS table lacks"
    ],
-   "reprocessed": "2026-10-26",
+   "reprocessed": "2026-10-28",
    "run": "2026-10-22"
   },
   "ctg": {
@@ -8608,6 +9035,137 @@
     "2,666 IP decisions; corpus collected to 2025-03-10"
    ],
    "run": "2026-10-22"
+  },
+  "frl_fees": {
+   "files": {
+    "processed/fee_changes": {
+     "bytes": 7683,
+     "columns": [
+      "right",
+      "date",
+      "fees_changed",
+      "changes",
+      "source"
+     ],
+     "describe": "Each date on which a right's key fees changed",
+     "location": "repo",
+     "path": "data/processed/frl_fees/fee_changes.parquet",
+     "rows": 39,
+     "sha256": "347e1897e5292a9fb9a01fa4aba5192622e3e7c895cd946cd6499aeb2a215b44"
+    },
+    "processed/key_fees": {
+     "bytes": 7471,
+     "columns": [
+      "right",
+      "fee",
+      "anniversary",
+      "start",
+      "end",
+      "amount_aud",
+      "source",
+      "basis",
+      "title_id"
+     ],
+     "describe": "The key fees of each right, one row per spell at one amount",
+     "location": "repo",
+     "path": "data/processed/frl_fees/key_fees.parquet",
+     "rows": 285,
+     "sha256": "21aa85d40f420d0a7e917b7b8c03c96b34f45a8c1f07ca597d098bf9f19f32bf"
+    },
+    "processed/schedule_rows": {
+     "bytes": 36719,
+     "columns": [
+      "title_id",
+      "right",
+      "start",
+      "row",
+      "part",
+      "item",
+      "matter",
+      "fee_text",
+      "amount_aud"
+     ],
+     "describe": "Every fee schedule row of every compilation with text",
+     "location": "repo",
+     "path": "data/processed/frl_fees/schedule_rows.parquet",
+     "rows": 8612,
+     "sha256": "3766669bf783bfb15eddf45dfe4abcf84877102f9874c2e53204ea0345d16b9f"
+    },
+    "processed/versions": {
+     "bytes": 9147,
+     "columns": [
+      "title_id",
+      "title",
+      "right",
+      "start",
+      "end",
+      "register_id",
+      "compilation",
+      "has_text",
+      "amended_by"
+     ],
+     "describe": "Every version of the fee regulations on the Federal Register",
+     "location": "repo",
+     "path": "data/processed/frl_fees/versions.parquet",
+     "rows": 281,
+     "sha256": "d2a9c01df26a072cc0253487388ef53a6d61c62cd59e528a7c8686a4d29dd8e4"
+    },
+    "raw/F1996B00084.zip": {
+     "bytes": 6623093,
+     "key": "raw/frl_fees/F1996B00084.zip",
+     "location": "r2",
+     "sha256": "300025c72a7e05bce13361218181124c0d46db038073e89a874ae03d9f5c18cc",
+     "url": "https://api.prod.legislation.gov.au/v1"
+    },
+    "raw/F1996B00970.zip": {
+     "bytes": 372337,
+     "key": "raw/frl_fees/F1996B00970.zip",
+     "location": "r2",
+     "sha256": "b407b1331979965d9b2bf41718d7f613f826370c445f691aa3ddc3d5b9b0cbd8",
+     "url": "https://api.prod.legislation.gov.au/v1"
+    },
+    "raw/F1996B02512.zip": {
+     "bytes": 453555,
+     "key": "raw/frl_fees/F1996B02512.zip",
+     "location": "r2",
+     "sha256": "ea61c4486a05afd1c09a193b3a155daf60a9565abd5f5785fc037a9de3cd10a8",
+     "url": "https://api.prod.legislation.gov.au/v1"
+    },
+    "raw/F1996B02697.zip": {
+     "bytes": 16542283,
+     "key": "raw/frl_fees/F1996B02697.zip",
+     "location": "r2",
+     "sha256": "11c0371f1ac6d3d43585640890b6a0b5991da3ff4e69861fae9fc4a20762064c",
+     "url": "https://api.prod.legislation.gov.au/v1"
+    },
+    "raw/F2004B00136.zip": {
+     "bytes": 1496902,
+     "key": "raw/frl_fees/F2004B00136.zip",
+     "location": "r2",
+     "sha256": "53a1b486c434e0e8e93f122f2105d50d32f5a987cc5c64b1b005b0d7ffa956fd",
+     "url": "https://api.prod.legislation.gov.au/v1"
+    },
+    "raw/amending_instruments.zip": {
+     "bytes": 331899,
+     "key": "raw/frl_fees/amending_instruments.zip",
+     "location": "r2",
+     "sha256": "4f7ec112c8dd6932898cbeedc500a7d4f4c625e4aa670bae3e79c2112a903406",
+     "url": "https://api.prod.legislation.gov.au/v1"
+    },
+    "raw/gaps.yaml": {
+     "bytes": 5717,
+     "location": "repo",
+     "path": "data/raw/frl_fees/gaps.yaml",
+     "sha256": "60bf7c187572cb559423f8ebe22273c6786447314399342708ee586fe8863d63"
+    },
+    "raw/versions.json": {
+     "bytes": 279193,
+     "location": "repo",
+     "path": "data/raw/frl_fees/versions.json",
+     "sha256": "1a9a284263af880edba2b3465af449eda196c5c8a4609e83f3f7d0c4336116c0"
+    }
+   },
+   "run": "2026-10-28"
   },
   "gii": {
    "files": {
@@ -10283,6 +10841,60 @@
     }
    },
    "run": "2026-10-22"
+  },
+  "nsrc": {
+   "files": {
+    "processed/responses": {
+     "bytes": 74018,
+     "columns": [
+      "year",
+      "institution_name",
+      "q1_research_expenditure",
+      "q2a_number_of_total_commercialisation_staff_fte",
+      "q2b_number_of_dedicated_commercialisation_staff_fte",
+      "q3a_cost_total_commercialisation_staff",
+      "q3b_cost_dedicated_commercialisation_staff",
+      "q4_ipr_protection_external_fees_and_legal_costs",
+      "q5_number_of_invention_disclosures_received",
+      "q6a_number_of_mtas_entered_into",
+      "q6b_income_dervied_from_mtas_executed",
+      "q7_total_number_of_loas_executed",
+      "q8_total_number_of_loas_active",
+      "q9_number_of_active_loas_yielding_income",
+      "q10_total_value_of_income_yielded_from_active_loas",
+      "q11_value_reported_income_paid_to_other_institutions_or_entitites",
+      "q12_value_of_research_commercialisation_equity_holdings",
+      "q13a_no_start_ups_dependent_upon_licensing_assigment_for_initiation",
+      "q13b_no_of_start_ups_dependent_upon_licensing_assigment_for_initiation_institution_held_equity",
+      "q14_number_of_startup_companies_created",
+      "q15a_number_of_consultancies_undertaken",
+      "q15b_number_of_contracts_undertaken",
+      "q15c_number_of_research_collaborations",
+      "q15d_number_of_direct_sales_transactions",
+      "q16a_total_gross_contracted_value_of_consultancies",
+      "q16b_total_gross_contracted_value_of_contracts",
+      "q16c_total_gross_value_of_research_collaborations",
+      "q16d_value_of_direct_sales_transactions",
+      "q17_offering_industry_skills_training_to_academic_researchers_or_research_students",
+      "q18a_number_of_academic_researchers",
+      "q18b_number_of_research_students",
+      "total_number_of_partcipants_that_completed_training_in_industry_skills"
+     ],
+     "describe": "NSRC unit records: one row per year and institution, 2000 to 2015",
+     "location": "repo",
+     "path": "data/processed/nsrc/responses.parquet",
+     "rows": 1193,
+     "sha256": "c0b426e366192b5d489f5b375963124caaf1e530e20b2658fcdd1ffec40b31d5"
+    },
+    "raw/2000-2015-nsrc-unit-record-data.csv": {
+     "bytes": 189353,
+     "location": "repo",
+     "path": "data/raw/nsrc/2000-2015-nsrc-unit-record-data.csv",
+     "sha256": "1ff572ec372ce9742260f78f05c557b361e2c8defdcf9841526d5cfebece9c2e",
+     "url": "https://data.gov.au/data/dataset/b12433aa-f1f1-4d85-9605-f13b9c362358/resource/7710dda7-727b-4f31-8325-abd0d35c0d4d/download/2000-2015-nsrc-unit-record-data.csv"
+    }
+   },
+   "run": "2026-10-29"
   },
   "oecd": {
    "files": {
@@ -12626,6 +13238,29 @@
      "rows": 279371,
      "sha256": "43e06605dac8f3e4e0b3db2438c865a7e332b71782238e7ca127d6a5e8ea8020"
     },
+    "processed/monthly": {
+     "bytes": 25687049,
+     "columns": [
+      "month",
+      "item_code",
+      "atc5_code",
+      "drug_name",
+      "patient_category",
+      "drug_type",
+      "script_type",
+      "prescriptions",
+      "patient_contribution",
+      "government_contribution",
+      "retail_markup",
+      "total_cost",
+      "patient_net_contribution"
+     ],
+     "describe": "PBS monthly totals by item, section and patient category, July 2022 on",
+     "location": "repo",
+     "path": "data/processed/pbs/monthly.parquet",
+     "rows": 1160293,
+     "sha256": "055ae47d682239512375fdc937aa43455dec89b254a61728d65f69c0813ab58c"
+    },
     "processed/supply": {
      "bytes": 38803639,
      "columns": [
@@ -12712,6 +13347,7 @@
      "url": "https://www.pbs.gov.au/statistics/dos-and-dop/files/pbs-item-drug-map.csv"
     }
    },
+   "reprocessed": "2026-10-29",
    "run": "2026-10-22"
   },
   "phidu": {
@@ -12783,7 +13419,7 @@
   "policy_events": {
    "files": {
     "processed/events": {
-     "bytes": 7007,
+     "bytes": 8981,
      "columns": [
       "id",
       "date",
@@ -12796,8 +13432,8 @@
      "describe": "Dated changes to the IP system",
      "location": "repo",
      "path": "data/processed/policy_events/events.parquet",
-     "rows": 17,
-     "sha256": "43e92d875f1666653390be1329f2abffc6b457664cd8f6d69c2d1b181ada1032"
+     "rows": 56,
+     "sha256": "17da7ae35677d30b1e06e1d2fec4eb996ca152e59f2bb5e74a68f60bb68abec7"
     },
     "processed/policy_register": {
      "bytes": 72513,
@@ -12831,8 +13467,52 @@
      "url": "https://www.ipaustralia.gov.au/sitemap.xml"
     }
    },
-   "reprocessed": "2026-10-25",
+   "reprocessed": "2026-10-28",
    "run": "2026-10-22"
+  },
+  "rba": {
+   "files": {
+    "processed/series": {
+     "bytes": 68136,
+     "columns": [
+      "table",
+      "series_id",
+      "title",
+      "description",
+      "units",
+      "frequency",
+      "date",
+      "value"
+     ],
+     "describe": "RBA cash rate and exchange rates, monthly, long",
+     "location": "repo",
+     "path": "data/processed/rba/series.parquet",
+     "rows": 13993,
+     "sha256": "e4e61dca220a535cf0da91b95e73e4ea7bdba30e2b9f0dbf7c38c705a37100de"
+    },
+    "raw/f1.1-data.csv": {
+     "bytes": 43862,
+     "location": "repo",
+     "path": "data/raw/rba/f1.1-data.csv",
+     "sha256": "d6d68d8ec1b55cf87d1e74bac7582b1efb3c626e8608a582900301714ed725f9",
+     "url": "https://www.rba.gov.au/statistics/tables/csv/f1.1-data.csv"
+    },
+    "raw/f11-data.csv": {
+     "bytes": 34083,
+     "location": "repo",
+     "path": "data/raw/rba/f11-data.csv",
+     "sha256": "d48965be657c09b6b104c7e15f90bbaca7836b4a812055929dd47cfd09881a97",
+     "url": "https://www.rba.gov.au/statistics/tables/csv/f11-data.csv"
+    },
+    "raw/f11hist-1969-2009.xls": {
+     "bytes": 190464,
+     "location": "repo",
+     "path": "data/raw/rba/f11hist-1969-2009.xls",
+     "sha256": "96d3219a9249a3949dcf02dc7e8044045a2437fa8e36121d4e3f8ccf6042cda6",
+     "url": "https://www.rba.gov.au/statistics/tables/xls-hist/f11hist-1969-2009.xls"
+    }
+   },
+   "run": "2026-10-28"
   },
   "rdti": {
    "files": {
@@ -13412,6 +14092,55 @@
    },
    "run": "2026-10-25"
   },
+  "wgea": {
+   "files": {
+    "processed/employers": {
+     "bytes": 539386,
+     "columns": [
+      "reporting_year",
+      "abn",
+      "employer_name",
+      "corporate_group_name",
+      "employer_size",
+      "anzsic_code",
+      "anzsic_division",
+      "anzsic_subdivision",
+      "anzsic_group",
+      "anzsic_class",
+      "employees",
+      "women",
+      "managers"
+     ],
+     "describe": "WGEA employers (100+ staff): ABN, ANZSIC class, size band, headcounts",
+     "location": "repo",
+     "path": "data/processed/wgea/employers.parquet",
+     "rows": 20790,
+     "sha256": "8723fba451d2ae246501fa655a09c47b126095faefbdd7406334b5a302bb1f90"
+    },
+    "raw/wgea_public_dataset_2023.zip": {
+     "bytes": 24107678,
+     "key": "raw/wgea/wgea_public_dataset_2023.zip",
+     "location": "r2",
+     "sha256": "4bfde753e7496134dab88350cd8ae7004c80d0d5fa5a51fd11037cbfe28d348d",
+     "url": "https://data.gov.au/data/dataset/4d35cd80-2538-4705-82f3-d0d18e823d98/resource/4f716314-5de2-425b-aef2-6501c0be076f/download/wgea_public_dataset_2023.zip"
+    },
+    "raw/wgea_public_dataset_2024.zip": {
+     "bytes": 67501600,
+     "key": "raw/wgea/wgea_public_dataset_2024.zip",
+     "location": "r2",
+     "sha256": "ad7ad1a52cd70a66832f3544322c92b4545d1950cf900da56e9cac1bc1e982d7",
+     "url": "https://data.gov.au/data/dataset/4d35cd80-2538-4705-82f3-d0d18e823d98/resource/f12cc138-44a8-45fc-9ba7-97ee5dadd683/download/wgea_public_dataset_2024.zip"
+    },
+    "raw/wgea_public_dataset_2025.zip": {
+     "bytes": 74406050,
+     "key": "raw/wgea/wgea_public_dataset_2025.zip",
+     "location": "r2",
+     "sha256": "54e16a58362a8a2927eb27cad5a764fb4c47c59fb9a0f5c6f9cfbda7be35e59e",
+     "url": "https://data.gov.au/data/dataset/4d35cd80-2538-4705-82f3-d0d18e823d98/resource/380faa66-1126-4020-8b89-496821290624/download/wgea_public_dataset_2025.zip"
+    }
+   },
+   "run": "2026-10-28"
+  },
   "wgnd": {
    "files": {
     "processed/name_gender": {
@@ -13605,7 +14334,7 @@
      "sha256": "3cad2d26046329213ca63dc0936b053c91a8582b769c4b6d8f88f658a6d2f4ae"
     },
     "processed/office_origin": {
-     "bytes": 7397956,
+     "bytes": 7420122,
      "columns": [
       "right",
       "indicator_id",
@@ -13622,8 +14351,8 @@
      "describe": "WIPO indicators by filing office and applicant's origin, long",
      "location": "repo",
      "path": "data/processed/wipo_ipstats/office_origin.parquet",
-     "rows": 5061559,
-     "sha256": "5c8096c0a2ec4a1d61bf4031bba08bc73abdd3db7466d8a337e61f1a0f2bece9"
+     "rows": 5073138,
+     "sha256": "8ec316c7094f40dec48b2e071439b32a126190b48d60db679d6a4c24d6078188"
     },
     "processed/pmh": {
      "bytes": 29342,
@@ -13741,12 +14470,26 @@
      "sha256": "d13969fcb6581f6dee5f4b6080d5e6b30f1f1da179bdb82fef5a4e4125bd9da9",
      "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 17 15)"
     },
+    "raw/patent_20_13.csv.gz": {
+     "bytes": 13006,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_20_13.csv.gz",
+     "sha256": "cd0f73b48770889a2e00da21b77c966cdebbc60dc3bda2e564515c3883f7c876",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 20 13)"
+    },
     "raw/patent_21_15.csv.gz": {
      "bytes": 228048,
      "location": "repo",
      "path": "data/raw/wipo_ipstats/patent_21_15.csv.gz",
      "sha256": "4a71e427e9d16a4487e1df1d096e876ba7c37d50b230a0b08ac9ec4064f3dbc9",
      "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 21 15)"
+    },
+    "raw/patent_22_13.csv.gz": {
+     "bytes": 11636,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_22_13.csv.gz",
+     "sha256": "be9b161a237878a03de92af15b74967e52643a47f9be5147beca3801e9c54aac",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 22 13)"
     },
     "raw/patent_23_15.csv.gz": {
      "bytes": 158295,
@@ -13833,7 +14576,7 @@
      "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (utility 70 15)"
     }
    },
-   "run": "2026-10-26"
+   "run": "2026-10-28"
   }
  }
 }

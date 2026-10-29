@@ -195,6 +195,12 @@ firms:
     total_income_latest: number
     austender_contracts: number
     austender_value: number
+    wgea_year: {skip: "the WGEA attachment (employers of 100 or more, gap A3): analysed among the firms it covers, 2.6"}
+    wgea_employees: {skip: "as wgea_year"}
+    wgea_size_band: {skip: "as wgea_year"}
+    wgea_division: {skip: "as wgea_year"}
+    wgea_anzsic_class: {skip: "as wgea_year"}
+    wgea_women_share: {skip: "as wgea_year"}
   groups:
     # each kind of IP with the totals made from it (but not with the other kinds: patents against trade marks is a
     # real pair)
@@ -417,6 +423,50 @@ timeline:
     trade_mark_assignments: number
     cpi: number
     policy_events: {skip: "the policy changes, studied one at a time with placebo dates (5.1)"}
+    fee_patent_provisional: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_patent_filing: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_patent_examination: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_patent_grant: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_patent_to_grant: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_patent_renewals: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_patent_second_tier_filing: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_tm_filing: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_tm_registration: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_tm_to_register: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_tm_renewal: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_design_filing: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_design_examination: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_design_renewal: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_pbr_application: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_pbr_examination: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_pbr_grant: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_pbr_to_grant: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_pbr_annual: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_patent_to_grant_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_patent_renewals_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_tm_to_register_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_tm_renewal_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_design_filing_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_pbr_to_grant_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    fee_changes: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
+    cash_rate_target: {skip: "the RBA attachment (gap B1): context for the policy and fee changes, read beside them (5.6); not a filing series"}
+    cash_rate_interbank: {skip: "as cash_rate_target"}
+    aud_usd: {skip: "as cash_rate_target"}
+    aud_twi: {skip: "as cash_rate_target"}
+    gdp_cvm: {skip: "the national accounts (gap B2): the economy's size and cycle, read beside filing (5.5)"}
+    gdp_current: {skip: "as gdp_cvm"}
+    sfd_nsw: {skip: "as gdp_cvm"}
+    sfd_vic: {skip: "as gdp_cvm"}
+    sfd_qld: {skip: "as gdp_cvm"}
+    sfd_sa: {skip: "as gdp_cvm"}
+    sfd_wa: {skip: "as gdp_cvm"}
+    sfd_tas: {skip: "as gdp_cvm"}
+    sfd_nt: {skip: "as gdp_cvm"}
+    sfd_act: {skip: "as gdp_cvm"}
+    pbs_prescriptions: {skip: "added after Stage 2 (gap B11; July 2022 on): its own section"}
+    pbs_government_cost: {skip: "added after Stage 2 (gap B11): its own section"}
+    pbs_s100_prescriptions: {skip: "added after Stage 2 (gap B11): its own section"}
+    pbs_s100_government_cost: {skip: "added after Stage 2 (gap B11): its own section"}
   groups: {}
 
 industries:
@@ -433,6 +483,8 @@ industries:
     patents_standard: {skip: in patents_per_1k_businesses}
     patents_standard_au: {skip: in patents_au_per_1k_businesses and patents_au_share}
     patents_second_tier: {skip: "innovation patents closed in 2021: too few by FY2024"}
+    patents_standard_with_services: {skip: "the crosswalk with services: screened in its own run in place of patents_standard (6.4, gap A2)"}
+    patents_standard_au_with_services: {skip: "as patents_standard_with_services"}
     trade_marks: {skip: in trade_marks_per_1k_businesses}
     trade_marks_au: {skip: in trade_marks_au_per_1k_businesses and trade_marks_au_share}
     businesses_start: {skip: "the denominator of the ratios; its size is in businesses"}
@@ -444,6 +496,7 @@ industries:
     berd: {skip: in berd_per_business}
     wpi_index: {skip: in wages_growth}
     creative_gva: {skip: "in creative_gva_per_business"}
+    gva_cvm: {skip: "the national accounts (gap B2): screened in its own run as value added per business (6.4)"}
   ratios:
     businesses: "businesses at the start of the year"
     patents_per_1k_businesses: "standard patent applications (expected) per 1,000 businesses"
@@ -499,6 +552,12 @@ institutions:
     patent_family_citations_5y: {skip: in family_citations_per_family}
     contracts: {skip: in contracts_per_kwork}
     contract_value: {skip: "in contracts_per_kwork (value follows contracts)"}
+    nsrc_research_expenditure: {skip: "added after Stage 2 (gap B9; 2000 to 2015, so none in the discovery period): its own section"}
+    nsrc_commercialisation_staff: {skip: "added after Stage 2 (gap B9): its own section"}
+    nsrc_invention_disclosures: {skip: "added after Stage 2 (gap B9): its own section"}
+    nsrc_licences_executed: {skip: "added after Stage 2 (gap B9): its own section"}
+    nsrc_licence_income: {skip: "added after Stage 2 (gap B9): its own section"}
+    nsrc_startups_created: {skip: "added after Stage 2 (gap B9): its own section"}
   ratios:
     has_parent: "part of another institution"
     citations_per_work: "citations received per work"

@@ -105,4 +105,44 @@ firms' patents abroad. B27 the places screen; B28 attached indicators; B29 advan
 filer; B31 business mix. B32 the countries screen; B33 Australia among OECD members; B34 R&D and patenting; B35
 attachments. B36 the timeline screen; B37 policy breaks; B38 provisional follow-up; B39 Australian against overseas,
 and Australia-only series. B40 the industries screen; B41 IP per business; B42 innovation and IP; B43 attachments. B44
-the institutions screen; B45 universities; B46 Australian use of cited research.
+the institutions screen; B45 universities; B46 Australian use of cited research. B47 to
+B49 fee changes (added after Stage 2); B50, B51 firms' size and industry; B52 the dollar and the cash rate; B53, B54
+the crosswalk with services; B55 B11 again (families' coverage); B56 GDP and states' demand; B57 value added by
+division; B58 incomes by postcode; B59 change between Censuses; B60 innovation in 2024-25; B61 the GII's blanks; B62
+the NSRC.
+
+## 9. Data gaps filled after Stage 2 (2026-10-28, A15)
+
+- **Fees (B47 to B49; ADR 0031).** Changes in the fees to obtain a right rarely moved filing beyond placebo months:
+  of 34 pairs after changes of 10% or more, 4 rushes and 3 steps beyond 95% of placebos, about what chance gives;
+  the clear breaks are the 1995 and 2003 Acts. Across the larger changes, bigger rises go with smaller steps (rho
+  -0.306, interval -0.646 to 0.080). Patent cessations rose beyond every placebo month after the September 2002
+  renewal rise (0.353 in logs); no other renewal change, including October 2020's 42.82%, did. Carried to Stage 3: the
+  sharper test is each right's renewal at the anniversary a fee changed.
+- **Size and industry (B50, B51; ADR 0032).** Among employers of 100 or more, the largest are 22 points (14.6 to
+  30.3) more likely than the smallest to have filed a standard patent; industry sorts patenting far more (manufacturing
+  0.395, accommodation 0.006); R&D spend's weak link to patenting holds within size bands (0.105 to 0.253).
+- **The cash rate and the dollar (B52).** No consistent sign for the dollar against overseas filing; the cash rate
+  rises with overseas filing in booms, a cycle to allow for in before-and-after comparisons.
+- **The crosswalk with services (B53, B54).** Patents per business follow business R&D per business across divisions
+  (0.739, interval 0.38 to 0.89; 0.465 without services); 16 screen leads against 8. Stage 3 reports both crosswalks.
+- **B11 again (B55).** Most of the fall in Australian organisations' "Australia only" patents is a gap in older
+  records: through the PCT, 63.43% to 11.53% between decades (a fall of 51.9 points, 50.6 to 53.1), while WIPO's
+  share of families filed abroad held at about 64%. Family measures for Australian applicants from FY2010 only.
+- **The economy (B56, B57).** Real GDP's growth goes with overseas applicants' patenting (0.159 to 2008, 0.373
+  after), not with Australians'; the states' demand tracks neither. Across divisions, value added per business goes
+  with trade marks per business (0.591; 0.572) and business R&D (0.693; 0.677), with patents only through the
+  crosswalk with services (0.581).
+- **Incomes by postcode (B58).** Taxable income per individual goes with filing (trade marks 0.472; 0.498), the share
+  running a business much less (0.194; 0.211); individuals' own filing per 1,000 individuals with business income
+  rises from 3.84 in the most disadvantaged tenth of areas to 11.03 in the most advantaged. The advantage gradient
+  is not explained by the number of people in business.
+- **Change between Censuses (B59).** Areas that gained graduates or income from 2011 to 2021 did not gain filing
+  (rho -0.124 to -0.008, the same sign in both halves): levels go together, changes do not.
+- **Innovation in 2024-25 (B60).** B42 holds in a third survey: innovating divisions file more trade marks per
+  business (0.262), not more patents (-0.325), over 17 divisions with wide intervals.
+- **The GII's blanks (B61).** Across OECD members, business-financed R&D goes with patents per GDP (rho 0.78) and
+  so does the share of researchers in business (0.67); Australia ranks 17th of 38 on the first, 28th on patents and
+  31st of 37 on researchers in business.
+- **Commercialisation (B62).** Across institutions, per research dollar, invention disclosures go with standard patents
+  (0.617; 0.615) and patents with licence income (0.593; 0.525) in both 2004-2009 and 2010-2015.

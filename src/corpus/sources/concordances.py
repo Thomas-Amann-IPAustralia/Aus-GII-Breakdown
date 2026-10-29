@@ -3,7 +3,8 @@
 Raw (repo): `ipc-technology-35.csv`, WIPO's 35 technology fields (Schmoch 2008) as IP Australia reproduces them in
 the IPLORD 2020 dictionary (Annex A), transcribed here, with G01B to G01M restored to Measurement as in WIPO's
 table;
-the ALP crosswalks (Lybbert and Zolas, version 2209 for IPC excluding services, and the Nice crosswalk version 2305);
+the ALP crosswalks (Lybbert and Zolas, version 2209 for IPC excluding services and, as a labelled comparison, the
+same version including services; and the Nice crosswalk version 2305);
 the ABS correspondence ISIC Rev. 4 to ANZSIC 2006; and the WIPO IPC Green Inventory, taken from the tree embedded in
 its web app. Processed:
 
@@ -12,10 +13,12 @@ its web app. Processed:
 - `patent_fields`: each IP RAPID patent application's technology fields, from its current IPC marks, with `weight`
   (1/n over its n distinct fields, so each application sums to 1).
 - `alp_ipc4_isic4`, `alp_nice_isic4`: the probability-weighted links from IPC subclass, and from Nice class, to ISIC
-  Rev. 4 four-digit classes.
+  Rev. 4 four-digit classes. `alp_ipc4_isic4_services`: ALP's full IPC crosswalk, which also links patents to service
+  industries (the authors recommend the version without; the analysis uses it as a comparison, gap A2).
 - `isic4_anzsic`: ISIC Rev. 4 class to ANZSIC 2006 class (`partial` where the ABS marks the link as partial).
-- `ipc4_anzsic`, `nice_anzsic`: the ALP weights carried through to ANZSIC 2006 classes (an ISIC class's weight split
-  equally over the ANZSIC classes it links to fully, or over its partial links where it has no full one; ADR 0020).
+- `ipc4_anzsic`, `nice_anzsic`, `ipc4_anzsic_services`: the ALP weights carried through to ANZSIC 2006 classes (an
+  ISIC class's weight split equally over the ANZSIC classes it links to fully, or over its partial links where it has
+  no full one; ADR 0020).
 - `ipc_green_inventory`: the Green Inventory's topics, each with its IPC references, one row per reference.
 """
 
@@ -32,6 +35,7 @@ from ..core import CorpusError, Ctx, http_get, path, raw_path, unzip_member, unz
 
 ALP_IPC = "https://drive.google.com/uc?export=download&id=1wsIflv45zCyLNvB1mcSWGS6vhfNC_qxv"
 ALP_NICE = "https://drive.google.com/uc?export=download&id=1P1NQ4tfggVOu_CtLxTXCKTr9yzoyeniP"
+ALP_IPC_FULL = "https://drive.google.com/uc?export=download&id=16YDRz7G8IaKGA1T7g32GP3ajrNBySbZE"  # with services
 ISIC_ANZSIC = (
     "https://www.abs.gov.au/statistics/classifications/australian-and-new-zealand-standard-industrial-classification-"
     "anzsic/2006-revision-2-0/correspondences/isic-rev-4-anzsic-2006"
@@ -108,7 +112,7 @@ def _ipc_refs(s: str) -> list[str]:
     return out
 
 
-def _crosswalks(ctx: Ctx, zi, zn, html_path) -> None:
+def _crosswalks(ctx: Ctx, zi, zn, html_path, zf) -> None:
     """The ALP crosswalks (IPC subclass and Nice class to ISIC Rev. 4) and the ABS's ISIC Rev. 4 to ANZSIC 2006
     correspondence, and the ALP weights carried through to ANZSIC classes.
 
@@ -120,10 +124,16 @@ def _crosswalks(ctx: Ctx, zi, zn, html_path) -> None:
     work = ctx.cache / "work"
     member = next((m for m in unzip_names(zi) if m.endswith("ipc4_to_isic_rev4_4_excl_service.txt")), None)
     nmember = next((m for m in unzip_names(zn) if re.search(r"nice_to_ISIC_Rev4_4\.txt$", m)), None)
-    if not member or not nmember:
+    fmember = next((m for m in unzip_names(zf) if m.endswith("ISIC_Rev4/ipc4_to_isic_rev4_4.txt")), None)
+    if not member or not nmember or not fmember:
         raise CorpusError("concordances: the ALP zips no longer hold the IPC4 or Nice to ISIC Rev. 4 files")
     alp = pd.read_csv(unzip_member(zi, member, work), dtype={"ipc4": str, "isic_rev4_4": str})
     alp.columns = ["ipc4", "isic4", "weight"]
+    full = pd.read_csv(unzip_member(zf, fmember, work), dtype={"ipc4": str, "isic_rev4_4": str})
+    full.columns = ["ipc4", "isic4", "weight"]
+    ctx.table(
+        full, "alp_ipc4_isic4_services", describe="ALP: IPC subclass to ISIC Rev. 4 class, with services, weights"
+    )
     nice = pd.read_csv(unzip_member(zn, nmember, work), dtype=str)
     nice.columns = ["nice", "isic4", "weight"]
     nice["weight"] = nice["weight"].astype(float)
@@ -145,7 +155,11 @@ def _crosswalks(ctx: Ctx, zi, zn, html_path) -> None:
     has_full = ia.groupby("isic4")["partial"].transform(lambda p: (~p).any())
     split = ia[~ia["partial"] | ~has_full].copy()
     split["share"] = 1 / split.groupby("isic4")["anzsic"].transform("count")
-    for name, df, key in (("ipc4_anzsic", alp, "ipc4"), ("nice_anzsic", nice, "nice")):
+    for name, df, key in (
+        ("ipc4_anzsic", alp, "ipc4"),
+        ("nice_anzsic", nice, "nice"),
+        ("ipc4_anzsic_services", full, "ipc4"),
+    ):
         x = df.merge(split, on="isic4", how="left")
         x["weight"] = x["weight"] * x["share"].fillna(1)
         x = x.groupby([key, "anzsic", "anzsic_title"], dropna=False, as_index=False)["weight"].sum()
@@ -164,7 +178,9 @@ def reprocess(ctx: Ctx, tables: list[str] | None = None) -> None:
     )
     for f, url in ((zi, ALP_IPC), (zn, ALP_NICE), (html, None)):
         ctx.keep_raw(f, url=url)
-    _crosswalks(ctx, zi, zn, html)
+    zf = ctx.raw / "alp-ipc-v2209.zip"  # fetched once, when the comparison with services was added (gap A2)
+    zf = ctx.keep_raw(zf, url=ALP_IPC_FULL) if zf.exists() else ctx.fetch(ALP_IPC_FULL, zf.name, keep="repo")
+    _crosswalks(ctx, zi, zn, html, zf)
 
 
 def run(ctx: Ctx) -> None:
@@ -216,8 +232,9 @@ def run(ctx: Ctx) -> None:
     # ALP crosswalks, and ISIC Rev. 4 to ANZSIC 2006
     zi = ctx.fetch(ALP_IPC, "alp-ipc-excl-service-v2209.zip", keep="repo")
     zn = ctx.fetch(ALP_NICE, "alp-trademark-v2305.zip", keep="repo")
+    zf = ctx.fetch(ALP_IPC_FULL, "alp-ipc-v2209.zip", keep="repo")
     html = http_get(ISIC_ANZSIC).text
-    _crosswalks(ctx, zi, zn, ctx.raw_text("isic-rev-4-anzsic-2006.html", html))
+    _crosswalks(ctx, zi, zn, ctx.raw_text("isic-rev-4-anzsic-2006.html", html), zf)
 
     # IPC Green Inventory
     page = http_get(GREEN + "home").text

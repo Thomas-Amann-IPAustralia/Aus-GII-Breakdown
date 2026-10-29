@@ -486,3 +486,195 @@ def test_inventor_given_names_and_gender_estimates():
         ("ROSSI ANDREA", 0.0, "country"),
         ("SMITH ANDREA", 0.93, "country"),
     ]
+
+
+def test_fee_schedules_split_cells_and_keep_the_items_words():
+    from corpus.sources.frl_fees import anniversary, flatten, money
+
+    assert [money(s) for s in ("$1 000 less any amount", "$1,250", "$250 for each class", "1000", "$12.50", "nil")] == [
+        1000.0,
+        1250.0,
+        250.0,
+        1000.0,
+        12.5,
+        None,
+    ]
+    assert anniversary("Continuation fee ... for: / (h) the tenth anniversary / (i) the eleventh anniversary") == 11
+    assert anniversary("Renewal fee for: / (a) the 4th anniversary: / (ii) fee paid by another means") == 4
+    blocks = [
+        ("p", "Part 2—General fees"),
+        ("tr", [["Item"], ["Matter"], ["Fee"]]),
+        (
+            "tr",
+            [
+                ["1"],
+                ["Filing an application to register a trade mark:", "(a) in a single class", "(b) more"],
+                ["$200", "$200 plus $150 for each additional class"],
+            ],
+        ),
+        ("tr", [["2"], ["Renewal of registration:"], []]),
+        ("tr", [[], ["(a) fee paid by preferred means;"], ["$400"], []]),
+        ("tr", [["3"], ["Renewal fee for:"], []]),  # "(i)" after "(h)": a numeral under it, then the next letter
+        ("tr", [[], ["(h) the 11th anniversary:"], []]),
+        ("tr", [[], ["(i) fee paid by preferred means;"], ["$645"]]),
+        ("tr", [[], ["(i) the 12th anniversary:"], []]),
+        ("tr", [[], ["(i) fee paid by preferred means;"], ["$780"]]),
+    ]
+    rows = flatten(blocks)
+    assert [(r["item"], r["matter"], r["amount_aud"]) for r in rows] == [
+        ("1", "Filing an application to register a trade mark: / (a) in a single class", 200.0),
+        ("1", "Filing an application to register a trade mark: / (b) more", 200.0),
+        ("2", "Renewal of registration: / (a) fee paid by preferred means;", 400.0),
+        ("3", "Renewal fee for: / (h) the 11th anniversary: / (i) fee paid by preferred means;", 645.0),
+        ("3", "Renewal fee for: / (i) the 12th anniversary: / (i) fee paid by preferred means;", 780.0),
+    ]
+
+
+def test_key_fees_are_the_base_fee_paid_the_cheapest_way():
+    from corpus.sources.frl_fees import key_fees
+
+    item = "Filing a request for a standard patent accompanied by a complete specification:"
+    renew = (
+        "Continuation fee under paragraph 142(2)(d) of the Act, or renewal fee under paragraph 143(a) of the Act, for:"
+    )
+    rows = pd.DataFrame(
+        {
+            "matter": [
+                f"{item} / (a) by preferred means;",
+                f"{item} / (b) by another means",
+                f"{item} / (c) if the specification includes a nucleotide sequence filed by electronic means",
+                f"{renew} / (a) the fourth anniversary: / (i) fee paid by preferred means;",
+                f"{renew} / (a) the fourth anniversary: / (ii) fee paid by another means;",
+                f"{renew} / (a) the fourth anniversary: / and, in addition, if the fee is paid within 6 months after",
+            ],
+            "amount_aud": [400.0, 600.0, 1000.0, 300.0, 350.0, 100.0],
+        }
+    ).assign(right="patent")
+    assert key_fees(rows) == {("standard_filing", 0): 400.0, ("standard_renewal", 4): 300.0}
+    accept = "Acceptance of a patent request and complete specification under section 49 of the Act:"
+    rows = pd.DataFrame(
+        {
+            "matter": [
+                f"{accept} / (a) if the specification does not contain more than 20 claims at acceptance;",
+                f"{accept} / (b) if the specification contains more than 20 claims at acceptance",
+            ],
+            "amount_aud": [250.0, 250.0],
+        }
+    ).assign(right="patent")
+    assert key_fees(rows) == {("acceptance", 0): 250.0}
+
+
+def test_fee_history_ends_at_ip_australias_current_fees():
+    """The latest version of each fee regulation gives the fees IP Australia's website lists (ADR 0031)."""
+    from corpus.core import load
+
+    key = load("frl_fees", "key_fees")
+    now = key[key["end"].isna()].assign(a=lambda d: d["anniversary"].fillna(0).astype(int))
+    got = {(r.right, r.fee, r.a): r.amount_aud for r in now.itertuples()}
+    site = load("ipa_fees", "fees").dropna(subset=["amount_aud"])
+
+    def listed(right, heading, row, column=None):
+        s = site[(site["right"] == right) & site["heading"].str.contains(heading) & (site["row"] == row)]
+        s = s[s["column"].str.contains(column)] if column else s
+        assert len(s) == 1, (right, heading, row)
+        return s["amount_aud"].iloc[0]
+
+    want = {
+        ("patent", "provisional_filing", 0): listed("patent", "Provisional patent", "Provisional patent application"),
+        ("patent", "standard_filing", 0): listed("patent", "Standard patent", "Standard patent application"),
+        ("patent", "standard_examination", 0): listed("patent", "Fees", "Examination request"),
+        ("trade_mark", "filing", 0): listed(
+            "trade_mark", "Standard application", "Trade mark application with picklist"
+        ),
+        ("design", "filing", 0): listed(
+            "design", "1. Application", "First design identified in the application at the time of filing"
+        ),
+        ("design", "examination", 0): listed(
+            "design", "2. Examination", "Request to examine a registered design - by registered owner"
+        ),
+        ("design", "renewal", 0): listed("design", "3. Renewal", "Renewal of registration"),
+        ("pbr", "application", 0): listed(
+            "pbr", "Application part 1", "Application part 1 (submitted via online services)"
+        ),
+        ("pbr", "examination", 0): listed("pbr", "Fees", "Examination - single application"),
+        **{
+            ("patent", "standard_renewal", n): listed(
+                "renewals", "Standard patent renewal", f"{n}th anniversary", "online"
+            )
+            for n in range(4, 20)
+        },
+    }
+    assert {k: got.get(k) for k in want} == want
+    assert key.groupby(["right", "fee", "anniversary"], dropna=False)["end"].apply(lambda e: e.isna().sum() <= 1).all()
+
+
+def test_ato_postcode_items_take_units_from_headers_and_one_name_across_years():
+    from corpus.sources.ato_postcode import harmonise, items
+
+    def year(cols, rows, y):
+        df = pd.DataFrame(rows, columns=cols, dtype=str)
+        return items(df, y)
+
+    # 2013-14 names the count of individuals without its unit; footnote numbers end some names
+    a = year(["State/Territory1", "Postcode", "Number of individuals", "Taxable income or loss3 $"],
+             [["NSW", "2000", "10", "500"], ["Total", "Total", "10", "500"]], 2014)  # fmt: skip
+    b = year(["State/ Territory1", "Postcode", "Individuals no.", "Taxable income or loss3 no.",
+              "Taxable income or loss3 $"], [["VIC", "3000", "20", "19", "900"]], 2024)  # fmt: skip
+    out = harmonise(pd.concat([a, b], ignore_index=True))
+    assert set(out["postcode"]) == {"2000", "3000"}  # the total row is not a postcode
+    assert set(zip(out["item"], out["unit"], strict=True)) == {
+        ("Individuals", "no."), ("Taxable income or loss", "$"), ("Taxable income or loss", "no.")
+    }  # fmt: skip
+    assert out.loc[out.item.eq("Individuals"), "income_year"].tolist() == ["2013-14", "2023-24"]
+
+
+def test_census_time_series_cells_lose_their_year_in_every_spelling():
+    from corpus.sources.abs_census_tsp import labels, long_table
+
+    df = pd.DataFrame(
+        {
+            "SA2_CODE_2021": ["101021007"],
+            "Tot_persons_C11_P": [10],
+            "Tot_persons_C21_P": [12],
+            "Med_age_persns_C2016": [40],
+            "Brthplace_Aust_2011_Ce_P": [7],
+        }
+    )
+    t = long_table(df, "T01")
+    assert sorted(zip(t["indicator"], t["census_year"], strict=True)) == [
+        ("Brthplace_Aust_P", 2011), ("Med_age_persns", 2016), ("Tot_persons_P", 2011), ("Tot_persons_P", 2021)
+    ]  # fmt: skip
+    meta = pd.DataFrame(
+        [["Cell descriptors", None, None], ["Sequential", "Short", "Long"],
+         ["T1", "Tot_persons_C11_P", "Total_persons_2011_Census_Persons"],
+         ["T2", "Med_age_persns_C2011", "Median_age_of_persons_Census_year_2011"]]
+    )  # fmt: skip
+    assert labels(meta) == {"Tot_persons_P": "Total persons Persons", "Med_age_persns": "Median age of persons"}
+
+
+def test_school_ratios_drop_sort_prefixes_and_make_the_level_one_case():
+    from corpus.sources.abs_schools import ratios
+
+    raw = pd.DataFrame(
+        [["Table 53a", None, None, None, None], ["Year", "State/Territory", "Affiliation", "School Level", "Ratio"],
+         ["2025", "i Aust.", "e All Affiliations", "b Secondary School", "11.7"],
+         ["2024", "i Aust.", "e All Affiliations", "b Secondary school", "11.7"]]
+    )  # fmt: skip
+    r = ratios(raw)
+    assert r.level.tolist() == ["Secondary school", "Secondary school"] and set(r.state) == {"Aust."}
+    assert r.ratio.tolist() == [11.7, 11.7] and r.year.tolist() == [2025, 2024]
+
+
+def test_nsrc_responses_start_at_the_year_row_and_read_numbers():
+    from corpus.sources.nsrc import responses
+
+    text = (
+        ",,\nNSRC 2000-2015 Unit Record Data,,\nNote: x,,\n"
+        "Year,Institution Name,Q1 Research Expenditure,Q5 Number of invention disclosures received\n"
+        '2004,The University of Queensland,"$1,200,000",15\n2000,CSIRO,,7\n,,,\n'
+    )
+    r = responses(text)
+    assert list(r.columns) == ["year", "institution_name", "q1_research_expenditure",
+                               "q5_number_of_invention_disclosures_received"]  # fmt: skip
+    assert r.q1_research_expenditure.tolist()[0] == 1_200_000 and pd.isna(r.q1_research_expenditure.tolist()[1])
+    assert r.year.tolist() == [2004, 2000]

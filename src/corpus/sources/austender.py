@@ -2,18 +2,20 @@
 
 Three parts. The Department of Finance's cumulative file of notices published to 30 August 2019 (from July 2007). The
 OCDS API's notices by the date they were published, from 1 July 2019 (weekly windows of 100-notice pages, about three
-seconds a page, fetched four at a time and cached as each finishes, so a rerun resumes). And, because that query
-returns amendments only for contracts published from July 2019, every release the API holds for each contract in the
-bulk file still running on its last day (its latest end date on or after 30 August 2019), asked by id: their later
-amendments are nowhere else. That is 44,461 contracts, of which 10,800 were published in July and August 2019 and so
-come from the other query too. Raw: the bulk file and the API's responses as gzipped JSON lines, one file per
-query (R2). Processed: `contracts`, one row per notice (parent or amendment) with: `cn_id` (the notice's own id: the
-contract's, such as CN123, or an amendment's, such as CN123-A2), `parent_cn_id`, `amendment` (0 for the contract's
-first notice, n for its nth amendment), `published`, `published_batch`, `signed`, `start`, `end`, `value` (AUD),
-`value_jump`, `description`, `unspsc`, `agency`, `supplier_name`, `supplier_abn`, `supplier_postcode`,
-`supplier_state`, `supplier_country`, `procurement_method`, `source` (bulk or api). Where both parts hold a notice, the
-API's row is kept; a release the API returned twice is kept once. `supplier_name` is blank where the ABR records the
-supplier's ABN as an individual (a sole trader).
+seconds a page, fetched four at a time and cached as each finishes, so a rerun resumes). And, because that query returns
+amendments only for contracts published from July 2019, every release the API holds for each contract in the bulk file
+still running on its last day (its latest end date on or after 30 August 2019), asked by id: their later amendments are
+nowhere else. That is 44,461 contracts, of which 10,800 were published in July and August 2019 and so come from the
+other query too. And (gap B10) the same for every contract that ended in the four years before then (from September
+2015): 234,313, of which a sample found 5% to 8% with amendments published later; older contracts' late amendments (1.6%
+in the sample) are left out. Raw: the bulk file and the API's responses as gzipped JSON lines, one file per query (R2).
+Processed: `contracts`, one row per notice (parent or amendment) with: `cn_id` (the notice's own id: the contract's,
+such as CN123, or an amendment's, such as CN123-A2), `parent_cn_id`, `amendment` (0 for the contract's first notice, n
+for its nth amendment), `published`, `published_batch`, `signed`, `start`, `end`, `value` (AUD), `value_jump`,
+`description`, `unspsc`, `agency`, `supplier_name`, `supplier_abn`, `supplier_postcode`, `supplier_state`,
+`supplier_country`, `procurement_method`, `source` (bulk or api). Where both parts hold a notice, the API's row is kept;
+a release the API returned twice is kept once. `supplier_name` is blank where the ABR records the supplier's ABN as an
+individual (a sole trader).
 
 An amendment's `value` is the contract's new total, not the change (in the bulk file each amendment's value is the
 parent's plus every change so far). So a contract's value is that of its latest notice (the highest `amendment`), and
@@ -59,6 +61,8 @@ BULK_TO = "2019-08-30"  # the bulk file's last publish date
 API_FROM = dt.date(2019, 7, 1)
 RAW_PUBLISHED = "austender-api-releases.jsonl.gz"  # findByDates/contractPublished, weekly windows from API_FROM
 RAW_BY_ID = "austender-api-by-id-releases.jsonl.gz"  # findById, for the bulk file's contracts running at BULK_TO
+RAW_ENDED = "austender-api-by-id-ended-releases.jsonl.gz"  # findById, those that ended from ENDED_FROM to BULK_TO
+ENDED_FROM = "2015-09-01"  # four years back: later amendments to older contracts are rare (gap B10, OQ3)
 # Not used: findByDates/contractLastModified. Its record begins in May 2023, and each window from July 2023 pages back
 # through thousands of older contracts and their releases: in two hours, four workers finished none of them.
 
@@ -116,6 +120,15 @@ def _running(bulk: pd.DataFrame) -> list[str]:
     can have amendments published after it."""
     end = bulk.groupby("parent_cn_id")["end"].max()
     return sorted(end[end >= BULK_TO].index)
+
+
+def _ended(bulk: pd.DataFrame) -> list[str]:
+    """The bulk file's contracts that ended in the four years before its last day (latest end date from ENDED_FROM,
+    before BULK_TO): amendments published after it to these are in neither the bulk file nor the query by date (gap
+    B10). A sample found them for 5% to 8% of these contracts and 1.6% of those that ended earlier
+    (`analysis/audit/austender_amendments.py`)."""
+    end = bulk.groupby("parent_cn_id")["end"].max()
+    return sorted(end[(end >= ENDED_FROM) & (end < BULK_TO)].index)
 
 
 def _amendment(r: dict) -> int | None:
@@ -277,13 +290,13 @@ def _harvest(ctx: Ctx, until: dt.date | None = None) -> Path:
     return _keep(ctx, files, RAW_PUBLISHED, f"{API}/findByDates/contractPublished")
 
 
-def _harvest_by_id(ctx: Ctx, ids: list[str], batch: int = 500) -> Path:
+def _harvest_by_id(ctx: Ctx, ids: list[str], batch: int = 500, name: str = RAW_BY_ID) -> Path:
     """Every release of each contract in `ids`, asked by id, in cached batches (eight at a time)."""
     batches = [(ctx.cache, ids[i : i + batch]) for i in range(0, len(ids), batch)]
     with ThreadPoolExecutor(max_workers=8) as ex:
         files = list(ex.map(_contracts, batches))
     ctx.log(f"API by id: {len(ids)} contracts")
-    return _keep(ctx, files, RAW_BY_ID, f"{API}/findById")
+    return _keep(ctx, files, name, f"{API}/findById")
 
 
 def run(ctx: Ctx) -> None:
@@ -292,12 +305,13 @@ def run(ctx: Ctx) -> None:
     if not bulk_url:
         raise CorpusError(f"austender: no resource named '{BULK_NAME}' on data.gov.au")
     bulk = _bulk(ctx.fetch(bulk_url, BULK_FILE, keep="r2")).assign(source="bulk")
-    _build(ctx, _api([_harvest(ctx), _harvest_by_id(ctx, _running(bulk))]), bulk)
+    by_id = [_harvest_by_id(ctx, _running(bulk)), _harvest_by_id(ctx, _ended(bulk), name=RAW_ENDED)]
+    _build(ctx, _api([_harvest(ctx), *by_id]), bulk)
 
 
 def reprocess(ctx: Ctx, tables: list[str] | None = None) -> None:
     """`contracts` again from the stored raw files (the API's releases from both queries and the bulk file, in R2)."""
     files = read_manifest()["sources"]["austender"]["files"]
-    api = _api([raw_path("austender", name) for name in (RAW_PUBLISHED, RAW_BY_ID) if f"raw/{name}" in files])
+    api = _api([raw_path("austender", n) for n in (RAW_PUBLISHED, RAW_BY_ID, RAW_ENDED) if f"raw/{n}" in files])
     bulk = _bulk(raw_path("austender", BULK_FILE)).assign(source="bulk")
     _build(ctx, api, bulk)

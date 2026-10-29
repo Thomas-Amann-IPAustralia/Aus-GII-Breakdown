@@ -297,6 +297,14 @@ sources:
     url: https://www.abs.gov.au/census/find-census-data/datapacks
     licence: CC BY 4.0
 
+  - id: abs_census_tsp
+    title: 2021 Census Time Series Profile (2011, 2016 and 2021 Censuses, by SA2)
+    publisher: Australian Bureau of Statistics
+    tier: 2
+    questions: [2, 5]
+    url: https://www.abs.gov.au/census/find-census-data/datapacks
+    licence: CC BY 4.0
+
   - id: phidu
     title: Social Health Atlas of Australia, by Population Health Area and socioeconomic quintile
     publisher: PHIDU, Torrens University Australia
@@ -369,6 +377,70 @@ sources:
     questions: [4, 5]
     url: https://www.legislation.gov.au/
     licence: CC BY 4.0 (compiled here)
+
+  - id: frl_fees
+    title: The history of IP Australia's official fees, from the fee regulations on the Federal Register of Legislation
+    publisher: Office of Parliamentary Counsel (Federal Register of Legislation)
+    tier: 2
+    questions: [4, 5]
+    url: https://www.legislation.gov.au/
+    licence: CC BY 4.0
+
+  - id: wgea
+    title: Workplace Gender Equality Agency public data (employers with 100+ staff, by ABN, with industry and size)
+    publisher: Workplace Gender Equality Agency
+    tier: 2
+    questions: [2, 3]
+    url: https://data.gov.au/data/dataset/wgea-dataset
+    licence: CC BY 3.0 AU
+
+  - id: rba
+    title: Reserve Bank of Australia statistical tables (cash rate and exchange rates, monthly)
+    publisher: Reserve Bank of Australia
+    tier: 3
+    questions: [4, 5]
+    url: https://www.rba.gov.au/statistics/tables/
+    licence: CC BY 4.0
+
+  - id: abs_national_accounts
+    title: Australian National Accounts (GDP, state final demand, value added by industry), quarterly
+    publisher: Australian Bureau of Statistics
+    tier: 3
+    questions: [1, 4]
+    url: https://www.abs.gov.au/statistics/economy/national-accounts
+    licence: CC BY 4.0
+
+  - id: ato_postcode
+    title: ATO taxation statistics, individuals by postcode (Table 6), every income year from 2012-13
+    publisher: Australian Taxation Office
+    tier: 2
+    questions: [2, 4]
+    url: https://data.gov.au/data/organization/australiantaxationoffice
+    licence: CC BY 2.5 AU
+
+  - id: abs_bcs_cubes
+    title: ABS Characteristics of Australian Business, data cubes of the releases after the API's flows (2024-25)
+    publisher: Australian Bureau of Statistics
+    tier: 2
+    questions: [2, 3]
+    url: https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business
+    licence: CC BY 4.0
+
+  - id: abs_schools
+    title: ABS Schools, Table 53a (FTE student to FTE teaching staff ratios, 2006 to the latest year)
+    publisher: Australian Bureau of Statistics
+    tier: 3
+    questions: [1]
+    url: https://www.abs.gov.au/statistics/people/education/schools/latest-release
+    licence: CC BY 4.0
+
+  - id: nsrc
+    title: National Survey of Research Commercialisation, unit records 2000 to 2015
+    publisher: Department of Industry, Science and Resources
+    tier: 2
+    questions: [2, 4]
+    url: https://data.gov.au/data/dataset/national-survey-of-research-commercialisation-nsrc-2000-2015-unit-record-data
+    licence: CC BY 2.5 AU
 
   # Derived ------------------------------------------------------------------------------------------------------------
   - id: linkage

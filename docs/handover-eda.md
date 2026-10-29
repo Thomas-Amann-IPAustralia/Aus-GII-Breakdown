@@ -14,7 +14,73 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-28, latest): Stage 2 is complete** (A14; B1 to B46, `docs/stage-2-summary.md`), in `analysis/notebooks/02_bivariate.ipynb`, with the method
+**Status (2026-10-29, latest): filling the data gaps** (A15, `docs/data-gaps-brief.md`), in its order. Done so far:
+- **A1, the fee history** (ADR 0031): `frl_fees` reads every version of the fee regulations from the Federal
+  Register's API (EPUB tables of 160 compilations; `gaps.yaml` holds the 1980s and 1990s from the amending
+  instruments, every one listed and checked); `key_fees` (23 fees, 49 series, 285 spells), `fee_changes` (39). A test
+  checks today's against `ipa_fees`. Attached: the timeline's `fee_*` columns (nominal; six costs also real, June 2026
+  dollars) and `fee_changes`; `policy_events/events` gains each change (lever "fees"), kept out of the timeline's
+  `policy_events` column so Stage 1's 17 changes are unchanged. Notebook 1, 5.7 (U108 to U111); notebook 2, 5.4 (B47
+  to B49): fee changes rarely moved filing or lapsing beyond placebo months; the exception is patent cessations after
+  the September 2002 renewal rise.
+- **A2, ALP's crosswalk with services**: `concordances` adds `alp_ipc4_isic4_services` and `ipc4_anzsic_services`;
+  `industries` adds `patents_standard_with_services` and `patents_standard_au_with_services` beside the main counts.
+  U114 (6.5); B53, B54 (6.4): patents reach all 19 divisions and follow business R&D per business (0.739).
+- **A3, firms' size and industry** (ADR 0032): `wgea` (WGEA's public data, employers of 100 or more, by ABN, with
+  ANZSIC class and size); `firms` adds `wgea_*` (7,126 firms). U112 (2.6); B50, B51 (2.6). Nothing free covers small
+  firms: OQ20 asks the owner whether to pursue it.
+- **B1, the RBA's cash rate and exchange rates**: `rba`; the timeline adds four columns. U113 (5.8); B52 (5.5).
+- **A4, families by origin and Google Patents' coverage**: `wipo_ipstats` adds indicators 20 and 22 (families by
+  origin, all and foreign-oriented). U115 (4.5); B55 (1.8): older Australian families' filings abroad are linked
+  incompletely (PCT route "Australia only" 63.43% in FY2000 to FY2009, 11.53% after), so family measures for
+  Australian applicants are read from FY2010 on. OQ21 asks whether to repair the older links (EPO OPS needs an
+  account).
+- **B2, the national accounts**: `abs_national_accounts` (key aggregates, state final demand, value added by
+  industry). The timeline adds `gdp_cvm`, `gdp_current`, `sfd_<state>`; industries adds `gva_cvm`. U116 (5.9); B56
+  (5.6), B57 (6.5).
+- **B3, ATO individuals by postcode**: `ato_postcode` (Table 6, 2012-13 to 2023-24; a unit-less "Number of
+  individuals" in some years is read as a count). In `region_indicators` as `ato_postcode`. U117 (3.6); B58 (3.5).
+- **B4, business characteristics 2024-25**: `abs_bcs_cubes` (every cube; the ABS published no 2023-24 release). In
+  `industry_indicators` as `bcs_cubes`; tables by innovation status keep their block in the indicator. U119 (6.6);
+  B60 (6.6).
+- **B5, court judgments after 10 March 2025: not filled.** The legal corpus has no newer release, the Federal Court's
+  pages refuse this environment (403; AustLII too), and its RSS feed holds only titles and catchwords from January
+  2026. OQ22 asks the owner.
+- **B6, the Census time series**: `abs_census_tsp` (T01, T02, T29, T34, T35 for SA2s, 2011, 2016, 2021), apportioned
+  to postal areas in `region_indicators` as `census_tsp`. U118 (3.7); B59 (3.6).
+- **B7, supplementary GII values** (ADR 0033): `abs_schools` (Table 53a) and the ABS's four R&D surveys give four of
+  the six indicators the GII leaves blank for Australia, as `gii_supplementary` rows in `national_indicators`, never
+  in the GII's own rows. U120 (4.6); B61 (4.4). Microfinance (4.1.3) and utility models (6.1.3) stay blank.
+- **B8, OpenAlex's "cited at least once" filter**: `audit.openalex_filter` samples 20,000 patent-cited works outside
+  the harvest (about 200 OpenAlex calls, free). About 5.6% more patent-cited Australian works exist (3.5% to 8.3%),
+  2.4% lost to the filter and 2.9% to merged ids. Not worth a re-harvest. U121 (7.7).
+- **B9, the NSRC**: `nsrc` (unit records 2000 to 2015, free on data.gov.au; no request needed), joined by name to the
+  institutions lens (`nsrc_*`; six aliases in `names.csv`, source nsrc). U122 (7.8); B62 (7.3).
+- **B10, the missing AusTender amendments: measured and coded, not yet harvested.** `audit.austender_amendments`
+  sampled 500 contracts in each end-date band: 7.6% of those that ended in the year before 30 August 2019 have
+  amendments the corpus lacks (7.2%, 5.4% and 1.6% in earlier bands), and their value is heavy-tailed (one contract
+  adds $88 million), so OQ3's "under 1% of value" does not hold for recent contracts (ADR 0034). `austender` now also
+  asks by id for every contract that ended in the four years before then (`_ended`, 234,313; raw `RAW_ENDED`), but
+  the harvest takes about nine hours at 7 to 8 a second and a cloud session's container does not keep it running
+  while the session is idle: the first attempt stopped after 8,000. To finish: run it where it can go uninterrupted
+  (`uv run corpus run austender`, or only this part with `austender._harvest_by_id(ctx, austender._ended(bulk),
+  name=austender.RAW_ENDED)`, saving the context, then `uv run corpus reprocess austender`); it caches by batch, so a
+  rerun on the same machine resumes. Then `uv run corpus run linkage`, rebuild `firms`, `regions` and
+  `institutions`, re-run the notebooks, and check the observations that quote AusTender numbers.
+- **B11, the PBS with Section 100**: `pbs/monthly` (the monthly workbook, July 2022 on, every section); the timeline
+  gains `pbs_*`. Section 100 is about 30% of the government's cost. U123 (5.10). No Stage 2 pair (waits for OQ8).
+- **Notebooks:** re-run whole after each addition; no earlier output changed except row order in two unordered
+  tables of notebook 1 (sections 1.8.4 and 7.4) and a float tie (industries overview, 700 or 699 distinct; the
+  regions overview's 1.0% or 0.9%), none quoted. Stage 1's overviews of the attachments (3.5, 4.4, 6.4) and Stage
+  2's B28 and B39 screens leave out the sources added after Stage 2, so their outputs and the observations quoting them stand;
+  the new sources have their own sections. Sections after an addition are renumbered (summaries move down one). The
+  A4 and A2 sections of notebook 1 were moved before their lens's summary (each summary had shared a cell with the
+  last observations), and three summary tables of notebook 2 whose new rows had been appended after their closing
+  text were repaired.
+- **Next:** finish B10 (above: a nine-hour harvest that needs an uninterrupted run); then the gaps are done except
+  B5 (OQ22). The owner's items: OQ20, OQ21, OQ22.
+
+**Status (2026-10-28): Stage 2 is complete** (A14; B1 to B46, `docs/stage-2-summary.md`), in `analysis/notebooks/02_bivariate.ipynb`, with the method
 of ADR 0030. **The website (evidence atlas) is not to be updated until all of Stage 2 is finished** (the owner's
 instruction, 2026-10-28): leave `evidence/` and `analysis/atlas/` alone until then.
 - **Method:** each lens section screens every pair of its variables on one 0-to-1 scale (|Spearman rho|, the rank
@@ -513,17 +579,19 @@ and BLADE stays ruled out.
 - **Seven lenses and four companion tables are built** (`analysis/eda/build.py`), in about two minutes:
   - `rights`: 4,368,006 rows, 74 columns (29 core, 12 from the parties, 11 from the events, 8 from the links, 6 from
     Google Patents, 8 from the inventors);
-  - `firms`: 398,450 rows, 40 columns (ADR 0016: `n_held`, `n_held_in_force`, `in_iplord`);
+  - `firms`: 398,450 rows, 50 columns (ADR 0016: `n_held`, `n_held_in_force`, `in_iplord`; ADR 0032: `wgea_*`);
   - `regions`: 2,641 rows, 42 columns (ADR 0017, 0018);
-  - `region_indicators`: 22,511,923 rows, 10 columns, 173 MB (the `regions` lens's attachments, long; ADR 0018);
+  - `region_indicators`: 28,960,234 rows, 10 columns, 206 MB (the `regions` lens's attachments, long; ADR 0018;
+    the ATO and the Census time series added for gaps B3 and B6);
   - `national`: 135,597 rows, 11 columns (ADR 0019: `entity`);
-  - `national_indicators`: 41,218,170 rows, 15 columns, 264 MB (the `national` lens's attachments, long; ADR 0019,
+  - `national_indicators`: 41,229,749 rows, 15 columns, 264 MB (the `national` lens's attachments, long; ADR 0019,
     0020, 0022);
-  - `industries`: 703 rows, 17 columns (ADR 0020);
-  - `industry_indicators`: 1,409,875 rows, 12 columns, 8 MB (the `industries` lens's attachments, long; ADR 0020);
+  - `industries`: 703 rows, 20 columns (ADR 0020; the crosswalk with services and value added, gaps A2 and B2);
+  - `industry_indicators`: 1,425,157 rows, 12 columns, 8 MB (the `industries` lens's attachments, long; ADR 0020;
+    the 2024-25 business characteristics cubes added for gap B4);
   - `institutions`: 4,810 rows, 30 columns (ADR 0021);
   - `institution_rights`: 31,528 rows, 7 columns (the `institutions` lens's IP, one row per right and institution);
-  - `timeline`: 1,473 months, 35 columns.
+  - `timeline`: 1,473 months, 75 columns (fees, the RBA and the national accounts added for gaps A1, B1 and B2).
 
   Every planned lens is built (ADR 0007). Every table has a lens to attach to; the map is in `docs/eda-plan.md`.
 - **The lenses' repairs (ADR 0010):**
