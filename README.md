@@ -6,9 +6,10 @@ builds it, the plan that chose it, and the analysis of it (`analysis/`), which s
 in three stages (`docs/eda-plan.md`). Terms are explained in `GLOSSARY.md`; decisions are recorded in `docs/adr/`.
 
 - **`docs/research-goal.md`**: the five core questions.
-- **The evidence atlas** (`evidence/`, on the repository's GitHub Pages site): every Stage 1 observation in plain
-  English for readers who are not data scientists, each traced back to its source, its storage, its preparation and the
-  reasoning behind it, with the lens it was made under and the research questions it serves (ADR 0023).
+- **The evidence atlas** (`evidence/`, on the repository's GitHub Pages site): every Stage 1 and Stage 2 observation
+  in plain English for readers who are not data scientists, each traced back to its source, its storage, its
+  preparation and the reasoning behind it, with the lens it was made under and the research questions it serves (ADR
+  0023, 0035).
 - **`docs/stage-1-summary.md`**: what the first stage of the analysis (each variable on its own) set out to do, how it was
   done, what it found and what it hands to the next stage.
 - **`docs/data-plan.md`**: which data serve which question, what was dropped and why, how non-financial public value is

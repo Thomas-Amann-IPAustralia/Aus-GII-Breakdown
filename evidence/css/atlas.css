@@ -221,6 +221,7 @@ a.id:hover { border-color: var(--teal); color: var(--teal); }
 .meta { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: .78rem; color: var(--muted); }
 .strength { font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 750; border-radius: 6px; padding: 3px 8px; background: var(--obs); color: var(--obs-ink); border: 1px solid color-mix(in srgb, var(--obs-line) 45%, transparent); }
 .about { font-size: .74rem; color: var(--muted); }
+.stagechip { background: transparent; border: 1px solid var(--line-strong); font-weight: 600; padding: 2px 9px; }
 
 /* observation cards (lists) */
 .cards { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); }

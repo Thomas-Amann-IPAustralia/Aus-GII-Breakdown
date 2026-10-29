@@ -2,7 +2,8 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**The owner's decisions (2026-10-28):** begin Stage 2 (A14); update the website only once all of Stage 2 is finished.
+**The owner's decision (2026-10-29, A16):** update the website with all of Stage 2's findings and changes (done, ADR
+0035). **(2026-10-28):** begin Stage 2 (A14); update the website only once all of Stage 2 is finished.
 **The owner's decisions (2026-10-26):** address the three remaining `rights` attachments (done: the links, Google
 Patents and the inventors); before that, complete the `institutions` lens (done: core, its IP detail and every source
 mapped to it); before that, go on to the `industries` lens (done: core and attachments); before that, commence the
@@ -14,7 +15,21 @@ asked for the `firms` lens next. They will try to find out from IP Australia why
 mark expedite requests fell in November 2018 (U34). Earlier: the events attachment (B5) before `firms`; N01 and N06
 settled (ADR 0010).
 
-**Status (2026-10-29, latest): filling the data gaps** (A15, `docs/data-gaps-brief.md`), in its order. Done so far:
+**Status (2026-10-29, latest): Stage 2 is in the evidence atlas** (ADR 0035, A16). `analysis/atlas` now reads both
+notebooks (`notebook.read_all`; each observation carries `stage`), and Stage 2's plain English is in
+`analysis/atlas/content/observations/stage2/<lens>.yaml` under the same numbers rule; the sixteen Stage 1 observations
+added while filling the gaps (U108 to U123) are in the Stage 1 files. 186 pages (124 Stage 1, 62 Stage 2); 30 of
+Stage 2's have quoted charts, 31 the notebook's own. The site shows the stage everywhere (a filter, chips, lens pages
+grouped by stage, Stage 2's evidence first on question pages), the overview has "What Stage 2 found", and the
+limits, lenses and "What comes next" pages follow `docs/stage-2-summary.md` (Stage 3's tests, OQ18 and OQ20 to OQ22,
+the gaps filled and those left). Corrections found on the way: the published "What comes next" page did not render
+(OQ13's item read as a YAML mapping; quoted, and a test checks those lists); U23's "17th" figure was no longer on its
+notebook page (reworded); the rights lens page still gave the count before the design shells were dropped (now
+4,356,908 rights, 86 columns). Every page was loaded in a headless browser (no console errors, no horizontal scroll
+at phone width). Tests: `tests/test_atlas.py` runs again (6 tests). **Next, the owner's call:** publish (merge to the
+branch Pages serves) and Stage 3 (OQ19); B10's harvest is still to finish.
+
+**Status (2026-10-29, earlier): filling the data gaps** (A15, `docs/data-gaps-brief.md`), in its order. Done so far:
 - **A1, the fee history** (ADR 0031): `frl_fees` reads every version of the fee regulations from the Federal
   Register's API (EPUB tables of 160 compilations; `gaps.yaml` holds the 1980s and 1990s from the amending
   instruments, every one listed and checked); `key_fees` (23 fees, 49 series, 285 spells), `fee_changes` (39). A test
@@ -774,7 +789,8 @@ and every answer with its date. Nothing there blocks Stage 1. Add new questions 
 - `region_indicators` is 22.5 million rows: always filter by `source` and `indicator` in SQL, never load it whole.
 - `national_indicators` is 41 million rows: always filter by `source`, `dataset` and `indicator` in SQL.
 - When an observation changes, change its plain English in `analysis/atlas/content/` too and rebuild the atlas; the
-  tests fail until `evidence/data/atlas.json` is in step. Stage 2's observations get pages the same way.
+  tests fail until `evidence/data/atlas.json` is in step. Stage 2's pages are in `analysis/atlas/content/observations/stage2/`
+  (ADR 0035): a new B observation needs its entry there before the tests pass.
 - Compare WIPO's series by country from 1995 only (U64), and filter `entity = 'country'` for comparisons between
   countries.
 - `industry_indicators`: filter by `source` and `indicator`; never add `TOTAL` to the divisions.
@@ -783,7 +799,7 @@ and every answer with its date. Nothing there blocks Stage 1. Add new questions 
   same age.
 - Corrections to the institutions link go in `analysis/eda/institutions/*.csv`; `uv run python -m eda.build
   institution_rights institutions` rebuilds both in seconds, and the tests check the link.
-- Next free ADR: 0027.
+- Next free ADR: 0036.
 - The atlas's audit page reads the record's tables (sections 5.1 and 5.2 of `docs/audit-ip-australia.md`): keep their
   layout, and after changing the record, the benchmark or `analysis/atlas/content/audit.yaml`, rerun
   `python -m atlas.build` and commit `evidence/data/` (ADR 0025).

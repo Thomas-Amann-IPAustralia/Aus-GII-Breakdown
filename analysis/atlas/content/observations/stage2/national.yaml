@@ -1,0 +1,249 @@
+# Stage 2, the national lens (section 4 of the bivariate notebook). Markup and rules as in ../firms.yaml. Pairs here
+# are between countries ([[ecological]]).
+
+- id: B32
+  lens: national
+  about: system
+  headline: Across countries, IP filing moves with R&D, research and income as one development gradient, and holds over a decade
+  statement: >-
+    Across 160 countries of a million people or more (2016 to 2020), residents' patent applications per million
+    people go with business R&D as a share of GDP (rank correlation 0.844), researchers per million (0.837) and GDP
+    per person (0.769). Residents' trade marks go with GDP per person (0.797) and tertiary enrolment (0.804), and much
+    less with R&D: trade marks follow commerce, patents follow research.
+  figures:
+    - value: "0.844"
+      label: residents' patents per million with business R&D share of GDP
+    - value: "0.797"
+      label: residents' trade marks per million with GDP per person
+    - value: "188"
+      label: distinct leads, 134 involving IP or royalties
+  points:
+    - "Each held in 2006 to 2010 (for example 0.827 and 0.868)."
+    - "Patents also go with journal articles (0.817), royalty receipts per person (0.782) and high-technology exports
+      per person (0.755). Manufacturing's share of GDP goes only weakly with residents' patenting (0.201)."
+    - "**Nothing about IP is unrelated to development**, which is why these are leads for Stage 3's components, not
+      drivers."
+  questions:
+    - q: 1
+      how: Sets Australia's IP in the pattern every country follows, the baseline for judging whether it does well or badly.
+    - q: 3
+      how: R&D and income are the broad conditions for patenting across countries.
+  sources: [wdi, wipo_ipstats, oecd, gii]
+  prep:
+    - what: Each indicator as a ratio to people or GDP, averaged over 2016 to 2020 and 2006 to 2010, for countries of
+        a million people or more.
+      why: Ratios make countries of different size comparable, and two periods give a [[replication]].
+  steps:
+    - Screen every pair of indicators across countries in the later period, and check each in the earlier one.
+    - Read which indicators go with residents' patents and trade marks.
+  assumptions:
+    - Each source's indicator means the same thing in every country.
+  limits:
+    - Between countries, not firms or people; business R&D is measured for OECD members only.
+  next: >-
+    Stage 3 reduces the development gradient to a few components before reading any indicator as a driver.
+  terms: [screen, gerd, ecological, wipo]
+  related: [B33, B34, B35]
+
+- id: B33
+  lens: national
+  about: system
+  headline: Among OECD members, Australia is near the top for new businesses, trade marks and research, the middle for patents, and near the bottom for manufacturing
+  statement: >-
+    In 2016 to 2020 Australia ranked 20th of 36 OECD members for residents' patents per million people (103, against a
+    median of 111), 2nd for patent applications from non-residents, 6th for residents' trade marks, 4th for new
+    business density and journal articles, and 36th of 36 for manufacturing's share of GDP. Its business R&D fell from
+    13th to 20th.
+  figures:
+    - value: "20th of 36"
+      label: residents' patents per million people
+    - value: "13th → 20th"
+      label: business R&D as a share of GDP, 2006 to 2010 against 2016 to 2020
+    - value: "36th of 36"
+      label: manufacturing's share of GDP
+  points:
+    - "Business R&D: 1.27% of GDP, then 0.928% (the median 1%). GERD: 2.13% (11th), then 1.79% (18th)."
+    - "Residents' patents: 125 per million (19th of 35), then 103. Trade marks: 3,090 then 3,320 per million."
+    - "Royalties: receipts $36.4 then $76.3 a person (20th of 36); payments $135 then $201 (10th)."
+    - "Exports 33rd of 36 both times; high-technology exports $197 and $220 a person, 29th and 30th."
+  questions:
+    - q: 1
+      how: Places Australia's IP activity among comparable countries, as ratios to people and GDP.
+    - q: 4
+      how: Falling business R&D, not rising or falling patenting, is what moved Australia's position.
+  sources: [wdi, wipo_ipstats, oecd]
+  chart:
+    type: bar
+    horizontal: true
+    title: Australia's rank among OECD members, 2016 to 2020
+    subtitle: 1 is the highest value among members with data
+    x: {type: category, values: [Patent applications from non-residents, New business density, Journal articles, Residents' trade marks, Business R&D, Residents' patents, Manufacturing share of GDP]}
+    y: {name: Rank (1 = highest), min: 0}
+    series:
+      - name: Rank
+        data: [2, 4, 4, 6, 20, 20, 36]
+    source: World Bank WDI; WIPO IP Statistics; OECD (lens national)
+  prep:
+    - what: Australia's rank among OECD members with a value, in each period.
+      why: Ranks are easy to read and not moved by one member's extreme value.
+  steps:
+    - Average each indicator over each period, as a ratio to people or GDP.
+    - Rank Australia among the members with a value.
+  assumptions:
+    - The OECD's 38 members are the right comparison group (not all have every indicator).
+  limits:
+    - Descriptive; a rank says nothing about why.
+  next: >-
+    {B34} asks whether Australia patents what its R&D would predict.
+  terms: [oecd-median, gerd]
+  related: [B34, B61, U66]
+
+- id: B34
+  lens: national
+  about: system
+  headline: Across OECD members patenting rises with business R&D almost one for one, but changes in R&D barely go with changes in patenting
+  statement: >-
+    Across 36 members, residents' patents per person rise with business R&D (rank correlation 0.853; a slope of 1.151
+    on log scales). Australia filed 103.3 applications per million people in 2016 to 2020, about what its R&D predicts
+    (98.46). But across members the change in patenting over the decade goes with the change in business R&D at only
+    0.165.
+  figures:
+    - value: "0.853"
+      label: business R&D with residents' patents, across members
+    - value: "104.9%"
+      label: Australia's patenting against what its R&D predicts (2016 to 2020)
+    - value: "0.165"
+      label: change in R&D with change in patenting
+  points:
+    - "In 2006 to 2010 Australia filed 125 against 226.3 predicted (55.22%). The [[prediction-interval|prediction
+      intervals]] are wide (17 to 580), so Australia is within the members' range in both periods: its change in
+      position came from falling R&D, not rising patenting."
+    - "23 members' residents filed less over the decade. Australia's patenting fell (a log change of -0.083) as its
+      business R&D fell by 0.34 points of GDP."
+    - "**So** the strong link is between countries' levels, which share a long history; within a decade the two do not
+      move together."
+  questions:
+    - q: 4
+      how: Raising R&D would not, on this evidence, raise patenting quickly.
+    - q: 5
+      how: Tempers projections that tie patenting outcomes to R&D spending within a policy horizon.
+  sources: [oecd, wipo_ipstats, wdi]
+  chart:
+    type: bar
+    title: Australia's patenting against what its business R&D predicts
+    subtitle: Residents' patent applications per million people
+    x: {type: category, values: [2006 to 2010, 2016 to 2020]}
+    y: {name: Applications per million people, min: 0}
+    series:
+      - name: Actual
+        data: [125, 103.3]
+      - name: Predicted from business R&D
+        data: [226.3, 98.46]
+        colour: muted
+    source: OECD; WIPO IP Statistics (lens national)
+  prep:
+    - what: A line fitted across members on log scales, of patents per person on business R&D as a share of GDP.
+      why: On log scales, the slope says how patenting scales with R&D.
+  steps:
+    - Fit the line across members in each period, and predict Australia's patenting from its R&D.
+    - Relate members' changes in R&D to their changes in patenting.
+  assumptions:
+    - Residents' patent applications count invention in the same way across members.
+  limits:
+    - Wide intervals with 34 to 36 members; between countries, not firms.
+  next: >-
+    Carried to Stage 3; {B61} adds the share of researchers in business.
+  terms: [log-scale, prediction-interval, log-change]
+  related: [B33, B61]
+
+- id: B35
+  lens: national
+  about: system
+  headline: About half the cross-country attachments go with residents' patenting, again along development
+  statement: >-
+    Of 485 cross-country indicators measured, 225 are leads with residents' patenting. The strongest are researchers
+    per million people (0.856), GERD financed by business (0.841) and knowledge-intensive employment (0.814). Women's
+    share of researchers goes the other way (-0.647), as does the higher-education sector's share of researchers.
+  figures:
+    - value: "225 of 485"
+      label: cross-country indicators that are leads
+    - value: "0.856"
+      label: researchers per million people (GII)
+    - value: "-0.647"
+      label: women's share of researchers
+  points:
+    - "64 of 79 GII indicator values, 83 of 145 OECD R&D statistics, 66 of 231 well-being indicators, 6 of 8 venture
+      capital series."
+    - "Later-stage venture investment 0.642; household disposable income 0.695; difficulty making ends meet -0.748."
+    - "Where research is done more in business, patenting is higher, and business research employs fewer women: a
+      [[third-factor]] pattern to test, not a gender finding."
+  questions:
+    - q: 3
+      how: Business research, venture capital and knowledge-intensive jobs are the conditions that go with patenting across countries.
+  sources: [gii, oecd, wdi, wipo_ipstats]
+  prep:
+    - what: Each indicator of the companion table (`national_indicators`) against residents' patenting only.
+      why: As for places, indicator-to-indicator pairs would serve no question.
+  steps:
+    - Measure each indicator against residents' patents per person, in two halves of the economies.
+    - Keep those past the threshold and correction in both.
+  assumptions:
+    - The GII's and OECD's indicators are comparable across members, as published.
+  limits:
+    - The same development gradient runs through most of them.
+  next: >-
+    Stage 3's components, as for {B32}.
+  terms: [gii, gerd, ecological]
+  related: [B32, B61]
+
+- id: B61
+  lens: national
+  about: system
+  headline: Across OECD members, business-financed R&D and business researchers go with patenting; Australia finances R&D like a middling member but patents like a low one
+  statement: >-
+    Across 36 or 37 members, patents per unit of GDP go with GERD financed by business (rank correlation 0.78) and
+    with the share of researchers in business (0.67). With its supplementary values, Australia ranks 17th of 38 on
+    business financing but 28th on patents per GDP, and 31st of 37 on researchers in business.
+  figures:
+    - value: "0.78"
+      label: business-financed R&D with patents per GDP
+    - value: "17th against 28th"
+      label: Australia on business financing against patents per GDP
+    - value: "31st of 37"
+      label: Australia on the share of researchers in business
+  points:
+    - "Researchers per million people with patents per GDP: 0.723. Australia ranks 23rd on researchers."
+    - "{B34}'s gap holds with the supplementary values; the low share of researchers working in business is a
+      candidate reason, beside industry mix."
+  questions:
+    - q: 3
+      how: Where researchers work (business or university) may be a condition for how much research becomes patents.
+    - q: 4
+      how: Points to researchers in business, not R&D funding alone, as the place to look.
+  sources: [gii, abs_schools, abs_rd_vc]
+  chart:
+    type: bar
+    horizontal: true
+    title: Australia's rank among OECD members on the GII's research measures
+    subtitle: Including Australia's supplementary values; 1 is the highest
+    x: {type: category, values: [GERD financed by business, Researchers per million people, Patents by origin per GDP, Researchers in business]}
+    y: {name: Rank (1 = highest), min: 0}
+    series:
+      - name: Rank
+        data: [17, 23, 28, 31]
+    source: GII 2026; Australia's supplementary values from the ABS (lens national)
+  prep:
+    - what: Four of the six GII indicators blank for Australia filled from Australia's own statistics ({U120}), kept
+        apart from the GII's own rows.
+      why: Australia's blanks would otherwise drop it from these comparisons.
+  steps:
+    - Relate each GII research measure to patents by origin per GDP across members, with intervals.
+    - Rank Australia on each, with its supplementary values.
+  assumptions:
+    - The supplementary values are close to how the GII would measure them; each differs as {U120} records.
+  limits:
+    - Never used to recalculate a GII score or rank.
+  next: >-
+    Carried to Stage 3 with industry mix.
+  terms: [gii, gerd]
+  related: [B34, U120]

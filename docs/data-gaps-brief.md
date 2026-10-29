@@ -16,7 +16,7 @@ data is, and what "done" means. All sources are free unless marked; anything mar
   the evidence rules: every number on the page, each observation labelled.
 - **Never add two sources for one measure**: one is the main measure, the other a labelled comparison (for example
   the crosswalk with services beside the one without).
-- **The website is not updated** (`evidence/`, `analysis/atlas/`) until the owner answers OQ19.
+- **The website is not updated** (`evidence/`, `analysis/atlas/`) until the owner answers OQ19. (Answered 2026-10-29, A16: updated, ADR 0035.)
 - Record the non-obvious choices in ADRs (next free number: **0031**), keep the handover current, commit and push to
   the session's branch, one gap per commit.
 - Running the notebooks: `uv run jupyter nbconvert --to notebook --execute --inplace analysis/notebooks/02_bivariate.ipynb`

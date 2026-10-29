@@ -72,7 +72,7 @@ nominal:
   short: >-
     Nominal dollars are as recorded at the time. Real dollars are adjusted for inflation, so that amounts from
     different years can be compared fairly.
-  more: Stage 1 shows money as recorded; Stage 2 adjusts it with the Consumer Price Index ({U30}).
+  more: Money is shown as recorded unless a page says otherwise; the official fees are also shown in June 2026 dollars, adjusted with the Consumer Price Index ({U30}, {U109}).
 share-of-known:
   group: stats
   title: Share among known values
@@ -140,7 +140,10 @@ correlation:
   short: >-
     How closely two measures move together, from −1 (one rises as the other falls) through 0 (no pattern) to +1
     (they rise together). Spearman's version compares ranks rather than values.
-  more: A correlation is a pattern, not a cause. Stage 1 uses it only to check that two sources agree.
+  more: >-
+    A correlation is a pattern, not a cause. Stage 1 uses it only to check that two sources agree; Stage 2 uses
+    Spearman's version to measure how strongly pairs of measures go together. As a rough guide, 0.1 is small, 0.3
+    moderate and 0.5 or more strong.
 ratio:
   group: stats
   title: Ratio (as a check)
@@ -580,3 +583,135 @@ bcs:
   group: research
   title: Business Characteristics Survey
   short: An ABS survey of businesses' innovation, barriers and finance, published by industry and size.
+
+# ------------------------------------------------------------------------------------------------- Stage 2
+screen:
+  group: stats
+  title: Screen (of every pair)
+  short: >-
+    Stage 2's first step in each lens: every pair of measures is measured on one scale from 0 (unrelated) to 1
+    (perfectly related), whatever kind of measure each is, so that nothing is chosen by hand before it is looked at.
+  more: >-
+    Two numbers are compared by Spearman's rank correlation, a number and a category by a rank version of the
+    correlation ratio, and two categories by a corrected Cramér's V. For a yes/no measure all three give the same
+    answer, so their strengths can be set side by side (ADR 0030).
+lead:
+  group: stats
+  title: Lead
+  short: >-
+    A pair of measures worth following up. In Stage 2 a pair is a lead only if it passes four tests: it is at least
+    small (a strength of 0.1), survives the correction for the number of pairs tested, holds again in a second period
+    or sample, and is not two versions of one measure.
+  more: A lead is a pattern to explain, not an explanation. Stage 3 tests whether it survives other factors.
+replication:
+  group: stats
+  title: Replication (a second sample)
+  short: >-
+    Checking a pattern again on different data: rights filed a decade earlier, or the other random half of the firms
+    or places. A pattern that appears in one sample only may be chance or a quirk of that period.
+interval:
+  group: stats
+  title: Interval (95%)
+  short: >-
+    A range around a number that shows how precisely it is known. If the study were repeated many times, ranges built
+    this way would hold the true value 95 times in 100. A narrow interval means a precise estimate.
+  more: >-
+    Stage 2 uses intervals suited to each measure: Wilson's for a share, Newcombe's for a difference between two
+    shares, Greenwood's for a survival curve, and the bootstrap for medians and correlations.
+bootstrap:
+  group: stats
+  title: Bootstrap
+  short: >-
+    A way to find an interval by resampling: draw the data again many times at random (with replacement), recompute
+    the number each time, and see how much it moves. Stage 2 resamples whole patents or firms, not single records.
+percentage-point:
+  group: stats
+  title: Percentage point
+  short: >-
+    The difference between two percentages. A grant rate of 40.8% against 4.9% is a gap of 35.9 percentage points
+    ("points"), not 35.9%.
+third-factor:
+  group: stats
+  title: Third factor (confounder)
+  short: >-
+    Something else that could make two measures go together without one causing the other. Firm size could explain
+    why firms with IP also win larger contracts. Stage 2 names the candidates; Stage 3 holds them steady.
+simpsons-paradox:
+  group: stats
+  title: Simpson's paradox
+  short: >-
+    When a pattern in pooled data disappears or reverses within every group, because the groups' mix changed.
+    Expedited patents look longer-lived overall only because more of them came from the filers who keep patents
+    longest.
+ecological:
+  group: stats
+  title: Between places, not people (ecological)
+  short: >-
+    A link measured across areas or countries describes the areas, not the people or firms in them. Areas with more
+    graduates file more, but that does not show that graduates are the ones who file.
+standard-deviation:
+  group: stats
+  title: Standard deviation
+  short: >-
+    A measure of how spread out values are around their average. About two-thirds of areas lie within one standard
+    deviation of the average advantage score, so "per standard deviation" means a typical step up or down.
+rate-ratio:
+  group: stats
+  title: Rate ratio
+  short: >-
+    How many times higher one rate is than another. A rate ratio of 1.7 per step of advantage means each step goes
+    with 1.7 times as many filings per person; 1 means no difference.
+log-change:
+  group: stats
+  title: Change in logs
+  short: >-
+    A way to measure proportional change: a change of 0.1 in logs is about a 10% rise, and -0.1 about a 10% fall.
+    It makes a change of the same proportion the same size in a large series and a small one.
+prediction-interval:
+  group: stats
+  title: Prediction interval
+  short: >-
+    The range within which a single new case (one country) would be expected to fall, given the pattern across the
+    others. It is wider than the interval for the pattern itself, because single cases vary.
+observational:
+  group: stats
+  title: Observational evidence
+  short: >-
+    Two things are seen to go together in data that were not designed to test a cause. Other explanations remain
+    possible. Most of Stage 2's observations are of this kind.
+official-fees:
+  group: ip
+  title: Official fees
+  short: >-
+    The fees IP Australia charges to file, examine, register and renew a right, set in regulations. They do not
+    include attorneys' fees, which are often larger.
+cash-rate:
+  group: research
+  title: Cash rate
+  short: >-
+    The interest rate on overnight loans between banks, which the Reserve Bank of Australia targets to steer the
+    economy. It rises in booms and falls in downturns, so it tracks the business cycle.
+gdp:
+  group: research
+  title: GDP and value added
+  short: >-
+    Gross domestic product: the value of everything produced in Australia in a period. Value added is the same
+    measure for one industry. "Real" or "chain volume" figures remove the effect of rising prices.
+wgea:
+  group: places
+  title: WGEA
+  short: >-
+    The Workplace Gender Equality Agency. Employers of 100 or more report to it each year, and it publishes each
+    one's size band and industry by ABN: the only free source of firms' size and industry.
+nsrc:
+  group: research
+  title: National Survey of Research Commercialisation (NSRC)
+  short: >-
+    A survey of universities, research agencies and medical research institutes, 2000 to 2015: invention
+    disclosures, patents, licences, start-ups and licence income.
+asic:
+  group: places
+  title: ASIC
+  short: >-
+    The Australian Securities and Investments Commission, which registers companies. Its register gives a company's
+    registration date, one of the dates used to estimate a firm's age.

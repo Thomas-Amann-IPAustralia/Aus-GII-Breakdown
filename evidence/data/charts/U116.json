@@ -1,0 +1,1 @@
+{"id":"U116","type":"bar","title":"Real GDP growth","subtitle":"Median yearly growth, by period","x":{"type":"category","values":["1960 to 1989","1990 to 2019","2020 to 2026"]},"y":{"name":"% a year","min":0,"format":"pct","digits":2},"series":[{"name":"Median growth","data":[3.98,3.01,2.14]}],"source":"ABS Australian National Accounts (lens timeline)"}

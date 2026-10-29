@@ -61,8 +61,8 @@
       label: trade marks never registered, early 1981 against early 1983
     - value: "Fifteen"
       label: series given a later start
-    - value: "17th"
-      label: policy change added (the 20-year patent term)
+    - value: "16 → 20 years"
+      label: the patent term from 1 July 1995, the policy change added
   points:
     - "**Designs:** 0.4% and 0.7% never registered in the second half of 1985, then 26.3% in the first quarter of 1986."
     - "**Batches.** Patent cessations were dated in batches to April 1995: 29.8% of the 104 months from September 1986
@@ -399,3 +399,330 @@
     Every money series is adjusted in Stage 2.
   terms: [cpi, nominal]
   related: [U46, U62]
+
+- id: U108
+  lens: timeline
+  about: data
+  headline: The official fees are read from every version of the fee regulations, and today's agree with IP Australia's website
+  statement: >-
+    Six sets of regulations have 281 versions on the Federal Register of Legislation; 160 are read (8,612 rows of
+    fee schedules), and the gaps come from the amending instruments. The fees run from 1982 for designs, 1989 for
+    trade marks, 1991 for patents and 1994 for plant breeder's rights, in 49 series of 23 fees.
+  figures:
+    - value: "281"
+      label: versions of the fee regulations
+    - value: "49"
+      label: fee series (23 fees)
+    - value: "8 of 8"
+      label: fees compared that agree with IP Australia's pages today
+  points:
+    - "Today's fees: $400 to file a standard patent, $550 to examine it, $250 for a trade mark class from the pick
+      list, $2,000 to examine a plant variety."
+    - "Where the Register holds no text (most designs and patents versions before 1999), the fees come from the
+      amending instruments: 94 of the 285 spells at one amount."
+    - "The fee columns join the timeline, and each change joins the policy register (lever \"fees\"), kept apart from
+      Stage 1's 17 policy changes."
+  questions:
+    - q: 4
+      how: Fees are IP Australia's most direct lever; this is their full history.
+    - q: 5
+      how: Each fee change is a candidate natural experiment ({B47} to {B49}).
+  sources: [frl_fees, ipa_fees]
+  notebook_charts: [0]
+  prep:
+    - what: Every compilation's fee schedule read from the Register's EPUB files, with the 1980s and 1990s filled
+        from the amending instruments by hand (ADR 0031).
+      why: The Register holds the text of only 163 of the versions.
+  steps:
+    - Read every version's fee schedule into one row per fee and date.
+    - Fill the versions without text from the instruments that amended them.
+    - Check the latest amounts against IP Australia's fee pages.
+  assumptions:
+    - A fee applies from the date its regulation commenced.
+  limits:
+    - Official fees only; attorneys' fees, often larger, are not recorded.
+  next: >-
+    Stage 2 tests filing and lapsing around each change ({B47} to {B49}).
+  terms: [official-fees]
+  related: [U109, U110, U111, B47]
+
+- id: U109
+  lens: timeline
+  about: system
+  headline: In real terms a trade mark costs about a quarter of what it did in 1990, and keeping a patent for its full term costs what it did in 1995
+  statement: >-
+    In dollars of June 2026, a trade mark (one class, filing and registration) cost 944 in January 1990 and 250 now. A
+    standard patent's filing, examination and grant fell from 2,261 (January 1995) to 1,250. Its renewals for the
+    full term cost 16,140 in January 1995, 11,992 in January 2010 and 16,550 now.
+  figures:
+    - value: "944 → 250"
+      label: a trade mark, June 2026 dollars
+    - value: "2,261 → 1,250"
+      label: a standard patent's filing, examination and grant
+    - value: "16,140 → 16,550"
+      label: a patent's renewals for the full term
+  points:
+    - "A trade mark's renewal: 1,141 to 400."
+    - "A plant breeder's right: 4,615 (January 1995) to 2,900. A design's filing: 210 (January 1990), 309 (January
+      2010), 200 now."
+    - "In dollars of the day, a patent's full-term renewals rose from 6,995 to 16,550."
+  questions:
+    - q: 4
+      how: Getting a right has become much cheaper in real terms; keeping a patent has not.
+    - q: 2
+      how: Lower costs to obtain a right bear on who can afford to file.
+  sources: [frl_fees, abs_prices]
+  chart:
+    type: bar
+    horizontal: true
+    title: What rights cost in real terms
+    subtitle: Official fees in dollars of June 2026, at the start of the series and now
+    x: {type: category, values: [Trade mark (one class), "Standard patent: filing to grant", "Standard patent: renewals, full term", Plant breeder's right]}
+    y: {name: June 2026 dollars, min: 0, format: money}
+    series:
+      - name: Earliest (1990 or 1995)
+        data: [944, 2261, 16140, 4615]
+        colour: muted
+      - name: June 2026
+        data: [250, 1250, 16550, 2900]
+    source: Federal Register of Legislation (fee regulations); ABS CPI (lens timeline)
+    note: Trade marks from January 1990; patents and plant breeder's rights from January 1995.
+  prep:
+    - what: Each fee deflated by the quarterly Consumer Price Index to June 2026 dollars.
+      why: Prices in dollars of the day are not comparable over 36 years.
+  steps:
+    - Sum the fees that make up each cost (for example filing, examination and grant).
+    - Deflate by the CPI.
+  assumptions:
+    - The CPI is the right measure of what a dollar buys for filers.
+  limits:
+    - Official fees only.
+  next: >-
+    Stage 2 tests whether changes in cost moved filing or lapsing ({B47}, {B49}).
+  terms: [official-fees, cpi, nominal]
+  related: [U108, U110, B49]
+
+- id: U110
+  lens: timeline
+  about: system
+  headline: The fees changed on 39 dates, nearly always upwards; trade marks were cut repeatedly
+  statement: >-
+    Counting each right apart, the fees changed on 39 dates: patents on 14, trade marks 10, designs 11 and plant
+    breeder's rights 4. Of the amounts that changed, 209 rose and 26 fell.
+  figures:
+    - value: "39"
+      label: dates on which fees changed
+    - value: "209 against 26"
+      label: amounts that rose against fell
+  points:
+    - "Every changed fee fell on six dates: patents in January and November 1998 (the sealing fee abolished,
+      examination $350 to $290), trade marks in December 1997, November 1998, July 2002 and March 2007."
+    - "In October 2016 the trade mark registration fee was abolished and the filing fee rose from $120 to $250."
+  questions:
+    - q: 5
+      how: Lists the fee changes available as natural experiments.
+  sources: [frl_fees]
+  chart:
+    type: bar
+    horizontal: true
+    title: Dates on which official fees changed, by right
+    subtitle: Each right counted apart
+    x: {type: category, values: [Patents, Designs, Trade marks, Plant breeder's rights]}
+    y: {name: Dates, min: 0}
+    series:
+      - name: Dates with a change
+        data: [14, 11, 10, 4]
+    source: Federal Register of Legislation (fee regulations) (lens timeline)
+  prep:
+    - what: The fee series of {U108}, compared version to version.
+      why: A change is a date on which any amount differs from the version before.
+  steps:
+    - Find each date on which a right's fees changed, and whether each amount rose or fell.
+  assumptions:
+    - As {U108}.
+  limits:
+    - Counts changes, not their size; {U109} gives the size.
+  next: >-
+    Stage 2 tests each change of 10% or more ({B47}).
+  terms: [official-fees]
+  related: [U108, U109, B47]
+
+- id: U111
+  lens: timeline
+  about: system
+  headline: A standard patent's renewal fees have moved towards its last years
+  statement: >-
+    The renewal fee at a patent's 19th anniversary was 4.69 times the 5th's in January 1992 and 8.94 times in June
+    2026. The share of the full term's renewals paid from the 15th anniversary rose from 48.7% to 62.1%.
+  figures:
+    - value: "4.69 → 8.94"
+      label: the 19th anniversary's fee against the 5th's
+    - value: "48.7% → 62.1%"
+      label: of full-term renewals paid from the 15th anniversary
+  points:
+    - "5.56 in January 2003 and 3.6 in January 2010."
+    - "The first renewal fell due at the 3rd anniversary to October 1998, the 5th from November 1998 and the 4th from
+      July 2012."
+  questions:
+    - q: 4
+      how: Renewal fees now weigh most on old patents, which bears on how long owners keep them.
+  sources: [frl_fees]
+  chart:
+    type: bar
+    title: The last renewal fee against an early one
+    subtitle: A standard patent's fee at the 19th anniversary, as a multiple of the 5th's
+    x: {type: category, values: [January 1992, January 2003, January 2010, June 2026]}
+    y: {name: Times the 5th anniversary's fee, min: 0, format: ratio}
+    series:
+      - name: Ratio
+        data: [4.69, 5.56, 3.6, 8.94]
+    source: Federal Register of Legislation (fee regulations) (lens timeline)
+  prep:
+    - what: Patent renewals by anniversary, one series each.
+      why: Renewal fees differ by the patent's age.
+  steps:
+    - Compare the 19th anniversary's fee with the 5th's at four dates.
+    - Find the share of the full term's renewals paid from the 15th anniversary.
+  assumptions:
+    - As {U108}.
+  limits:
+    - Describes the fee schedule, not owners' response to it.
+  next: >-
+    Stage 2 tests filing and lapsing around each change ({B47} to {B49}).
+  terms: [renewal, official-fees]
+  related: [U109, B49]
+
+- id: U113
+  lens: timeline
+  about: data
+  headline: The Reserve Bank's cash rate and exchange rates are complete and monthly
+  statement: >-
+    The cash rate target runs from August 1990 (434 months), the interbank cash rate from May 1976, the dollar in US
+    dollars from July 1969 and its trade-weighted index from May 1970, with no month missing. The cash rate target
+    was 14% (September 1990), 0.1% (December 2020) and 4.36% (September 2026).
+  figures:
+    - value: "434"
+      label: months of the cash rate target
+    - value: "14% → 0.1% → 4.36%"
+      label: the cash rate target, 1990, 2020 and 2026
+    - value: "0.826 → 1.095 → 0.698"
+      label: the dollar in US dollars
+  points:
+    - "Read as monthly averages (the cash rates) and month-end values (the dollar), as the RBA gives them."
+  questions:
+    - q: 5
+      how: The cycle and the dollar's value are context for any before-and-after comparison of policy.
+  sources: [rba]
+  prep:
+    - what: The RBA's statistical tables joined to the timeline by month.
+      why: The timeline is monthly.
+  steps:
+    - Read each series, and check that no month is missing.
+  assumptions:
+    - The RBA's series are consistent over time.
+  limits:
+    - Context, not a measure of IP.
+  next: >-
+    Stage 2 relates them to filing from overseas ({B52}).
+  terms: [cash-rate]
+  related: [B52]
+
+- id: U116
+  lens: timeline
+  about: data
+  headline: The national accounts are complete and quarterly; real growth has slowed decade by decade
+  statement: >-
+    GDP has 268 quarters (September 1959 to June 2026) and each state's final demand 164, from September 1985. Real
+    GDP grew a median 3.98% a year from 1960 to 1989, 3.01% from 1990 to 2019 and 2.14% from 2020 to 2026. In FY2025
+    mining added the most value (12.59%), then health care (9.5%).
+  figures:
+    - value: "3.98% → 3.01% → 2.14%"
+      label: median real GDP growth a year, by period
+    - value: "-5.85%"
+      label: the June quarter 2020
+    - value: "12.59%"
+      label: mining's share of value added (FY2025)
+  points:
+    - "Professional services 8.49%, finance 8.42%, manufacturing 6.12%, arts and recreation 0.89%."
+    - "GDP and the states' demand join the timeline quarterly; value added joins the industries lens by financial
+      year."
+  questions:
+    - q: 1
+      how: The economy's size and mix, against which IP's contribution is later read.
+    - q: 5
+      how: Growth is context for before-and-after comparisons.
+  sources: [abs_national_accounts]
+  chart:
+    type: bar
+    title: Real GDP growth
+    subtitle: Median yearly growth, by period
+    x: {type: category, values: [1960 to 1989, 1990 to 2019, 2020 to 2026]}
+    y: {name: "% a year", min: 0, format: pct, digits: 2}
+    series:
+      - name: Median growth
+        data: [3.98, 3.01, 2.14]
+    source: ABS Australian National Accounts (lens timeline)
+  prep:
+    - what: Key aggregates, state final demand and value added by industry from the ABS.
+      why: GDP and demand are the economy's measures of activity; value added is by industry.
+  steps:
+    - Read each series and join it at its own frequency.
+    - Summarise growth by period and value added by division.
+  assumptions:
+    - Chain volume measures are real growth.
+  limits:
+    - Context, not a measure of IP.
+  next: >-
+    Stage 2 sets them beside filing ({B56}, {B57}).
+  terms: [gdp]
+  related: [B56, B57]
+
+- id: U123
+  lens: timeline
+  about: data
+  headline: Section 100 is about 30% of the PBS's government cost and rising; the corpus's yearly files leave it out
+  statement: >-
+    From FY2023 to FY2026, the government's PBS cost rose from $17.04 billion to $20.5 billion; Section 100's share was
+    29.94% to 30.88%, from 1.06% to 1.41% of prescriptions. The yearly files by pharmacy type hold $11.94 billion to
+    $14.17 billion of the same years: the difference is Section 100.
+  figures:
+    - value: "29.94% to 30.88%"
+      label: Section 100's share of the government's PBS cost
+    - value: "1.06% to 1.41%"
+      label: its share of prescriptions
+  points:
+    - "In FY2026 Section 100's largest costs are cancer immunotherapies and a cystic fibrosis treatment: pembrolizumab
+      $0.665 billion (10.5%), nivolumab $0.458 billion (7.241%)."
+    - "The timeline gains four PBS columns from July 2022; the yearly files' series stays apart, never added."
+    - "The medicine case study (OQ8) is where these are used; Stage 2 has no pair for them."
+  questions:
+    - q: 1
+      how: Medicines under patent are one place where IP's public cost and benefit meet; this sizes the spending.
+  sources: [pbs]
+  chart:
+    type: bar
+    title: Section 100's share of the PBS
+    subtitle: FY2023 to FY2026, lowest and highest
+    x: {type: category, values: [Share of government cost, Share of prescriptions]}
+    y: {name: "%", min: 0, max: 40, format: pct, digits: 2}
+    series:
+      - name: Lowest
+        data: [29.94, 1.06]
+        colour: muted
+      - name: Highest
+        data: [30.88, 1.41]
+    source: PBS monthly report (lens timeline)
+  prep:
+    - what: The PBS's monthly workbook, every section, from July 2022.
+      why: The yearly files by pharmacy type leave out Section 100.
+  steps:
+    - Read each month's prescriptions and cost by section.
+    - Compare with the yearly files.
+  assumptions:
+    - The monthly report and the yearly files count the same prescriptions where they overlap.
+  limits:
+    - 48 months, and no medicine patents linked yet.
+  next: >-
+    Used in the medicine case study, after Stage 3.
+  terms: []
+  related: []

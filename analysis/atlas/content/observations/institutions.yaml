@@ -369,3 +369,95 @@
     Stage 2 can place them through the institutions' locations (ROR) if regional results are sensitive to them.
   terms: [postal-area]
   related: [U49, U81]
+
+- id: U121
+  lens: institutions
+  about: data
+  headline: The harvest's "cited at least once" filter drops few patent-cited Australian works
+  statement: >-
+    A sample of 20,000 of the 5,002,883 patent-cited works outside the harvest found 23 Australian ones. Scaled up,
+    about 5,753 patent-cited Australian works are missing (5.6% of those found; interval 3.5% to 8.3%), 2,501 of them
+    for want of a scholarly citation (2.4%) and most of the rest under merged OpenAlex ids.
+  figures:
+    - value: "5.6%"
+      label: patent-cited Australian works missing (3.5% to 8.3%)
+    - value: "2.4%"
+      label: lost to the filter itself
+    - value: "103,644"
+      label: Australian works in the harvest
+  points:
+    - "10 of the 23 were never cited by another paper; 12 are held under another id (a merged record)."
+    - "**Decision:** no re-harvest. An undercount of a few per cent spread over the institutions does not change their
+      order or {B45} and {B46}; Stage 3 notes it as a [[lower-bound]]."
+  questions:
+    - q: 1
+      how: Confirms the measure of research used by inventors is close to complete.
+  sources: [reliance_on_science, openalex_works]
+  prep:
+    - what: A random sample of patent-cited works not in the harvest, looked up in OpenAlex (about 200 calls, free).
+      why: Measures what the harvest's filter leaves out without fetching everything.
+  steps:
+    - Sample works cited by US patents that the harvest does not hold.
+    - Look each up, and count the Australian ones and why each was missed.
+    - Scale up with an interval.
+  assumptions:
+    - The sample is random, so its share of Australian works represents the rest.
+  limits:
+    - A small count (23) gives a wide interval.
+  next: >-
+    Stage 3 reads institutions' patent-cited works as lower bounds.
+  terms: [openalex, lower-bound, interval]
+  related: [B45, B46]
+
+- id: U122
+  lens: institutions
+  about: data
+  headline: The NSRC adds sixteen years of research commercialisation; licence income is lumpy and concentrated, and start-ups fell after 2007
+  statement: >-
+    The National Survey of Research Commercialisation adds 2000 to 2015 for 82 of the lens's institutions. Invention
+    disclosures rose from 548 (2000) to 1,705 (2011); start-ups ran 46 to 64 a year in 2000 to 2002 and 10 to 42 from
+    2008. CSIRO alone earned 42.3% of the licence income.
+  figures:
+    - value: "548 → 1,705"
+      label: invention disclosures, 2000 to 2011
+    - value: "42.3%"
+      label: of licence income earned by CSIRO
+    - value: "$97.3 million → $354.1 million"
+      label: licence income, 2000 to 2012
+  points:
+    - "Universities have 78.4% of the disclosures and 72.7% of the start-ups but 42% of the licence income; public
+      research agencies 43.2% of the income from 8.6% of the disclosures."
+    - "The University of Queensland earned $377.9 million (15.8%), the Brien Holden Vision Institute $163.5 million
+      (6.9%)."
+    - "Licence income swings from year to year ($140.4 million in 2011)."
+  questions:
+    - q: 1
+      how: Licence income and start-ups are direct measures of research IP turning into value.
+    - q: 2
+      how: Shows how concentrated that value is among a few institutions.
+  sources: [nsrc, ror]
+  chart:
+    type: bar
+    horizontal: true
+    title: Who earned the licence income, 2000 to 2015
+    subtitle: Share of all licence income reported to the NSRC by institutions in the lens
+    x: {type: category, values: [CSIRO, University of Queensland, Brien Holden Vision Institute]}
+    y: {name: "% of licence income", min: 0, format: pct, digits: 1}
+    series:
+      - name: Share of licence income
+        data: [42.3, 15.8, 6.9]
+    source: National Survey of Research Commercialisation (lens institutions)
+  prep:
+    - what: The NSRC's unit records joined to the lens by the participant's name (six aliases added).
+      why: The survey names institutions, not ROR records.
+  steps:
+    - Match each participant to an institution in the lens.
+    - Summarise disclosures, licences, start-ups and income by year and by kind of institution.
+  assumptions:
+    - Each participant's answers cover the institution as the lens defines it.
+  limits:
+    - Ends in 2015, before Stage 2's discovery period; dollars of the day.
+  next: >-
+    Stage 2 relates its measures to patenting ({B62}).
+  terms: [nsrc, commercialisation-company]
+  related: [B62]

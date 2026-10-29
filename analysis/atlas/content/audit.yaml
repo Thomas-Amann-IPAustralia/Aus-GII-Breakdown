@@ -303,7 +303,8 @@ conclusions:
     strength: Research commissioned by IP Australia; an association.
     adds: >-
       {U34} (expedited requests, 1.87% to 10.31%) and {U36} (years in force) are the same two measures: a pair for
-      Stage 2 that would repeat the finding with open data.
+      Stage 2 that would repeat the finding with open data. Stage 2 found it holds for overseas organisations only;
+      pooled, it is a change in who asks ({B13}).
   - id: C4
     claim: The innovation patent did not meet its goal of serving small businesses.
     strength: IP Australia's and the Productivity Commission's research.
@@ -351,7 +352,7 @@ changes:
   - Innovation patent counts include standard patents converted into innovation patents, as IP Australia's later reports do ({U67}).
   - Stage 2's look at the innovation patent's closure includes Australians' standard patents in 2021 and 2022 ({U28}).
   - From FY2025, first-time filers are counted by applicant as well as by ABN ({U45}).
-  - "A new pair for Stage 2: expedited examination against how long patents are kept (C3)."
+  - "A new pair for Stage 2: expedited examination against how long patents are kept (C3). Done: it holds for overseas organisations only ({B13})."
   - Any comparison with IP Australia's figures counts calendar years, and Australian applications the way IP Australia does.
 
 questions_intro: >-

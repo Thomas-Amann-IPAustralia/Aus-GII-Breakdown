@@ -1,0 +1,321 @@
+# Stage 2, the industries lens (section 6 of the bivariate notebook). Markup and rules as in ../firms.yaml. With 19
+# divisions, intervals are wide and only very strong pairs can pass.
+
+- id: B40
+  lens: industries
+  about: system
+  headline: Across industries, trade marks per business go with business R&D per business; patents' pairs are held back by the crosswalk
+  statement: >-
+    Across 19 ANZSIC divisions, trade marks per 1,000 businesses rise with business R&D per business (rank
+    correlation 0.709 in FY2024; 0.682 in FY2025) and fall with the number of businesses in the division (-0.675).
+    Standard patents per business against business R&D reach 0.465, which 19 divisions cannot separate from chance.
+  figures:
+    - value: "0.709"
+      label: trade marks per business with business R&D per business
+    - value: "-0.675"
+      label: trade marks per business with the number of businesses
+    - value: "0.465"
+      label: standard patents per business with business R&D (did not pass)
+  points:
+    - "Divisions of many small traders (construction, agriculture, property) file few marks per business."
+    - "Where R&D is high, more of a division's trade marks come from overseas (-0.644; -0.623)."
+    - "8 leads (4 distinct); 27 pairs below the correction."
+  questions:
+    - q: 3
+      how: Industries that do more R&D per business file more trade marks per business, a first industry-level condition.
+  sources: [iprapid, concordances, abs_cabee, abs_rd_vc]
+  prep:
+    - what: Rights spread over industries by published probabilities (expected counts, {U74}), per 1,000 businesses
+        from CABEE; business R&D from the ABS (FY2024 only).
+      why: No right or firm in the corpus has an industry of its own.
+  steps:
+    - Screen every pair across the 19 divisions in FY2024, and check in FY2025.
+  assumptions:
+    - The crosswalk's probabilities place each class's rights in the right industries.
+  limits:
+    - Without services in the crosswalk, 11 divisions have no patents, which weighs on every patent pair ({B53}).
+  next: >-
+    Redone with the crosswalk that includes services in {B53}.
+  terms: [crosswalk, expected-count, anzsic, cabee]
+  related: [B41, B53]
+
+- id: B41
+  lens: industries
+  about: system
+  headline: Patents reach 8 of 19 industries; within them, manufacturing and utilities file most per business
+  statement: >-
+    Through the main crosswalk, standard patent applications per 1,000 businesses in FY2024 are 314.6 in
+    manufacturing, 180.6 in utilities and 38.27 in mining, and none in 11 divisions, because the crosswalk sends no
+    patent class to services. Trade marks reach every division, from 530.4 per 1,000 businesses in manufacturing to
+    1.687 in rental, hiring and real estate.
+  figures:
+    - value: "314.6"
+      label: manufacturing's standard patents per 1,000 businesses
+    - value: "8 of 19"
+      label: divisions the main crosswalk gives any patents
+    - value: "$144,300"
+      label: business R&D per business in mining, the highest
+  points:
+    - "Australians' patents: manufacturing 23.65 and utilities 17.51 per 1,000 businesses."
+    - "Business R&D per business: mining $144,300, utilities $56,310, manufacturing $56,130."
+    - "Business R&D with patents per business 0.465 (interval 0.04 to 0.77); with Australians' trade marks 0.609 (0.23
+      to 0.87). The intervals are wide and the zeros weigh on them."
+  questions:
+    - q: 3
+      how: Shows which industries file, the base for any industry-level reading of conditions for value.
+    - q: 4
+      how: Patent-related interventions would reach few industries; trade marks reach all.
+  sources: [iprapid, concordances, abs_cabee, abs_rd_vc]
+  chart:
+    type: bar
+    horizontal: true
+    title: Standard patent applications per 1,000 businesses, by industry
+    subtitle: FY2024, through the main crosswalk (no services), divisions with any patents
+    x: {type: category, values: [Manufacturing, "Electricity, gas, water and waste", Mining, Public administration, Agriculture, Construction, Other services, Professional services]}
+    y: {name: "Applications per 1,000 businesses", min: 0}
+    series:
+      - name: Standard patents per 1,000 businesses
+        data: [314.6, 180.6, 38.27, 8.762, 3.618, 0.734, 0.221, 0.022]
+    source: IP RAPID; ALP crosswalk; ABS CABEE (lens industries)
+    note: The other 11 divisions have none through this crosswalk.
+  prep:
+    - what: Expected counts per 1,000 businesses, and business R&D per business, by division.
+      why: Ratios to businesses compare divisions of very different size.
+  steps:
+    - Compute each division's patents, trade marks and business R&D per business.
+    - Rank-correlate them over the 19 divisions, with intervals.
+  assumptions:
+    - CABEE's count of businesses is the right denominator for each division.
+  limits:
+    - Services get no patents in the main crosswalk ({U75}).
+  next: >-
+    Redone through the crosswalk with services in {B54}.
+  terms: [crosswalk, expected-count, anzsic]
+  related: [B40, B54, U75]
+
+- id: B42
+  lens: industries
+  about: system
+  headline: An industry's share of innovating businesses does not consistently go with its filing
+  statement: >-
+    The share of businesses with any innovation activity runs from 34.8% to 61.6% across divisions (2021). Against
+    Australians' trade marks per business the rank correlation is 0.33 (2021) and 0.556 (2023); against standard
+    patents -0.406 and -0.104, over 17 divisions with intervals spanning almost the whole scale.
+  figures:
+    - value: "34.8% to 61.6%"
+      label: businesses innovating, across divisions (2021)
+    - value: "0.33 and 0.556"
+      label: innovating share with trade marks per business
+    - value: "-0.406 and -0.104"
+      label: with standard patents per business
+  points:
+    - "Innovating, as the survey asks it (new goods, services or processes), is common in every division, while filing
+      is concentrated in a few: the survey's innovation is not what IP measures."
+  questions:
+    - q: 3
+      how: Innovation and IP are different things; most innovation does not lead to IP.
+  sources: [abs_bcs, iprapid, concordances, abs_cabee]
+  prep:
+    - what: The Business Characteristics Survey's innovation-active share by division ({U79}).
+      why: The only industry-level measure of innovation outside IP.
+  steps:
+    - Relate the innovating share to filing per business over 17 divisions, in two survey years.
+  assumptions:
+    - The survey's sampling error is small enough at division level (it often is not, {U79}).
+  limits:
+    - 17 divisions; wide intervals.
+  next: >-
+    Repeated with the 2024-25 survey in {B60}.
+  terms: [bcs, anzsic]
+  related: [B60, U79]
+
+- id: B43
+  lens: industries
+  about: system
+  headline: Of 2,157 industry-level indicators, none goes with filing once their number is allowed for, except one survey item
+  statement: >-
+    4,270 pairs over 12 to 19 divisions were measured; 19 reach a rank correlation of 0.7 or more, but only one passes
+    the correction: the share of businesses whose ideas for innovation come from within the business or its group
+    goes with Australians' trade marks per business (0.877, 17 divisions).
+  figures:
+    - value: "2,157"
+      label: division-level indicators
+    - value: "1"
+      label: passes the correction
+    - value: "0.877"
+      label: ideas from within the business with trade marks per business
+  points:
+    - "With 19 units this screen can only find very strong pairs; the industries lens's evidence is mostly descriptive
+      ({B41})."
+  questions:
+    - q: 3
+      how: Finds no industry-level indicator that reliably goes with filing, beside R&D.
+  sources: [abs_bcs, iprapid, abs_labour]
+  prep:
+    - what: Each indicator in the companion table (`industry_indicators`) against Australians' filing only.
+      why: As for places and countries.
+  steps:
+    - Measure each indicator covering 12 or more divisions against filing, and apply the correction across all pairs.
+  assumptions:
+    - Indicators covering fewer than 12 divisions are too few to measure.
+  limits:
+    - Very few units; only very strong links can pass.
+  next: >-
+    Not carried as pairs.
+  terms: [multiple-testing, bcs]
+  related: [B40, B42]
+
+- id: B53
+  lens: industries
+  about: system
+  headline: With the crosswalk that includes services, patents per business follow business R&D per business across industries
+  statement: >-
+    Through ALP's crosswalk with services, standard patents per 1,000 businesses go with business R&D per business at
+    0.739 (FY2025: 0.749), and Australians' patents at 0.761. Without services both were 0.465. The screen finds 16
+    leads (6 distinct), against 8 (4) without.
+  figures:
+    - value: "0.739"
+      label: patents per business with business R&D per business, with services
+    - value: "0.465"
+      label: the same without services
+    - value: "16 against 8"
+      label: leads with and without services
+  points:
+    - "Patents per business with trade marks per business 0.746; with the number of businesses in the division -0.639:
+      divisions of many small businesses file few patents per business, as they do trade marks ({B40})."
+  questions:
+    - q: 3
+      how: Industries that do more R&D per business patent more per business, once services can have patents.
+  sources: [iprapid, concordances, abs_cabee, abs_rd_vc]
+  prep:
+    - what: Patents spread over industries through ALP's crosswalk with services ({U114}), beside the main measure.
+      why: The main crosswalk gives services no patents, holding back every patent pair.
+  steps:
+    - Repeat {B40}'s screen with the patent ratios through the crosswalk with services.
+  assumptions:
+    - The full crosswalk's service weights are sound (its authors recommend the version without them).
+  limits:
+    - 19 divisions; the main measure stays the recommended crosswalk.
+  next: >-
+    Stage 3 reports both crosswalks.
+  terms: [crosswalk, anzsic]
+  related: [B40, B54, U114]
+
+- id: B54
+  lens: industries
+  about: system
+  headline: Through the crosswalk with services every industry has patents, and the R&D link's interval no longer reaches near zero
+  statement: >-
+    Through the crosswalk with services, FY2024 patents per 1,000 businesses are 280.5 in manufacturing, 176.4 in
+    utilities, 46.55 in information media (none without services) and 0.43 in professional services. Business R&D per
+    business goes with patents per business at 0.739 (interval 0.38 to 0.89), against 0.465 (0.04 to 0.77) without.
+  figures:
+    - value: "0.38 to 0.89"
+      label: interval for the R&D link, with services
+    - value: "0.04 to 0.77"
+      label: without services
+    - value: "46.55"
+      label: information media's patents per 1,000 businesses, with services
+  points:
+    - "Mining 38.26, public administration 11.07, arts and recreation 5.442, health care 4.56, wholesale trade 4.372,
+      finance 1.297."
+    - "Australians' patents: 0.761 (0.40 to 0.90)."
+    - "**For Stage 3:** the R&D signal ({B40}, {B41}) is stronger than Stage 2 could first show."
+  questions:
+    - q: 3
+      how: Strengthens R&D as an industry-level condition for patenting.
+  sources: [iprapid, concordances, abs_cabee, abs_rd_vc]
+  chart:
+    type: range
+    title: How sure the R&D link is, without and with services
+    subtitle: 95% interval for the strength of business R&D per business with patents per business, FY2024
+    x: {type: category, values: [Main crosswalk (no services), With services]}
+    y: {name: Strength of the link, min: 0, max: 1, format: ratio}
+    series:
+      - name: 95% interval
+        data: [[0.04, 0.77], [0.38, 0.89]]
+    source: IP RAPID; ALP crosswalks; ABS CABEE; ABS BERD (lens industries)
+  prep:
+    - what: The counts with services beside the main ones, never added to them.
+      why: Two sources for one measure are kept apart.
+  steps:
+    - Repeat {B41} through the crosswalk with services, with intervals.
+  assumptions:
+    - As {B53}.
+  limits:
+    - Still 19 units.
+  next: >-
+    Stage 3 reports both crosswalks, the recommended one as the main measure.
+  terms: [crosswalk, interval]
+  related: [B41, B53, U114]
+
+- id: B57
+  lens: industries
+  about: system
+  headline: Industries that add more value per business file more trade marks per business and spend more on R&D
+  statement: >-
+    Across 19 divisions in FY2024, value added per business goes with trade marks per 1,000 businesses (0.591) and
+    business R&D per business (0.693). With standard patents per business it is 0.262 through the main crosswalk and
+    0.581 through the one with services.
+  figures:
+    - value: "0.693"
+      label: value added per business with business R&D per business
+    - value: "0.591"
+      label: with trade marks per business
+    - value: "0.262 against 0.581"
+      label: with patents, main crosswalk against with services
+  points:
+    - "FY2025: 0.572 and 0.677; Australians' trade marks 0.496 (0.481)."
+  questions:
+    - q: 1
+      how: Industries that use IP more also add more value per business, a link between IP and economic output (not a cause).
+    - q: 3
+      how: Value added, R&D and trade marks move together across industries.
+  sources: [abs_national_accounts, iprapid, concordances, abs_cabee, abs_rd_vc]
+  prep:
+    - what: Value added by division from the national accounts ({U116}), per business.
+      why: A measure of what each industry produces.
+  steps:
+    - Relate value added per business to filing and R&D per business, in two years.
+  assumptions:
+    - Chain volume value added compares divisions fairly.
+  limits:
+    - 19 units; mining's high value added comes from resources, not IP.
+  next: >-
+    Carried to Stage 3 with both crosswalks.
+  terms: [gdp, crosswalk]
+  related: [B53, U116]
+
+- id: B60
+  lens: industries
+  about: system
+  headline: The 2024-25 survey repeats the finding; innovating industries file more trade marks per business, not more patents
+  statement: >-
+    The share of businesses with any innovation activity runs from 27.6% to 59.4% across divisions (median 49.0%).
+    Against Australians' trade marks per business the rank correlation is 0.262; against their standard patents
+    -0.325. Over the three surveys, trade marks 0.33, 0.556 and 0.262; patents -0.406, -0.104 and -0.325: the signs
+    hold, the intervals span most of the scale.
+  figures:
+    - value: "0.262"
+      label: innovating share with trade marks per business (2024-25)
+    - value: "-0.325"
+      label: with standard patents per business
+  points:
+    - "Intervals 0.02 to 0.74 and 0.03 to 0.76 (for the strength)."
+  questions:
+    - q: 3
+      how: A third survey confirms that innovation as surveyed is not what patents measure.
+  sources: [abs_bcs_cubes, iprapid, concordances, abs_cabee]
+  prep:
+    - what: The 2024-25 survey's data cubes ({U119}).
+      why: The ABS published no 2023-24 release, so this is the third survey year.
+  steps:
+    - Repeat {B42} with the 2024-25 survey.
+  assumptions:
+    - The cubes' innovation-active share is the same measure as the earlier surveys'.
+  limits:
+    - 17 divisions.
+  next: >-
+    Not carried as a signal.
+  terms: [bcs]
+  related: [B42, U119]

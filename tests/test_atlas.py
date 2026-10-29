@@ -1,4 +1,5 @@
-"""The evidence atlas (analysis/atlas): its pages are built from the notebook and checked against it."""
+"""The evidence atlas (analysis/atlas): its pages are built from the Stage 1 and Stage 2 notebooks and checked against
+them."""
 
 import json
 
@@ -6,24 +7,20 @@ import pytest
 from atlas import build, notebook
 
 
-def _pending() -> list[str]:
-    """Notebook observations the committed atlas does not have yet: those added while the website waits for the
-    owner (OQ19; the data-gaps brief keeps `evidence/` and `analysis/atlas/` as they are until then)."""
-    committed = {o["id"] for o in json.loads((build.DATA / "atlas.json").read_text(encoding="utf-8"))["observations"]}
-    return [o.id for o in notebook.read() if o.id not in committed]
-
-
 @pytest.fixture(scope="module")
 def atlas():
-    pending = _pending()
-    if pending:
-        pytest.skip(f"the atlas waits for OQ19; the notebook has {len(pending)} newer observations ({pending[0]} on)")
     # strict: a missing observation, an unquoted number, an unknown term or source, or an undrawn chart fails here
     return build.build(strict=True, write=False)
 
 
 def test_every_notebook_observation_has_a_page(atlas):
-    assert [o["id"] for o in atlas["observations"]] == [o.id for o in notebook.read()]
+    assert [o["id"] for o in atlas["observations"]] == [o.id for o in notebook.read_all()]
+
+
+def test_each_observation_carries_its_stage(atlas):
+    stages = {o["id"]: o["stage"] for o in atlas["observations"]}
+    assert {i[0] for i, s in stages.items() if s == 1} == {"U"} and {i[0] for i, s in stages.items() if s == 2} == {"B"}
+    assert set(atlas["notebooks"]) == {"1", "2"}
 
 
 def test_committed_pages_are_in_step_with_the_notebook_and_content(atlas):
@@ -55,3 +52,10 @@ def test_numbers_rule_catches_a_number_the_notebook_does_not_show():
     ok = {"headline": "4,368,006 rights", "statement": "53.5% are trade marks", "figures": [], "points": []}
     assert build.check_numbers(ok, nb) == []
     assert build.check_numbers({**ok, "points": ["about 4.4 million"]}, nb) == ["4.4"]
+
+
+def test_site_lists_of_text_hold_only_text(atlas):
+    # A colon followed by a space turns an unquoted YAML list item into a mapping, which the page cannot render
+    site = atlas["site"]
+    lists = [site["limits"]["assumptions"]] + [site["next"][k] for k in ("puzzles", "owner", "ipa", "gaps", "after")]
+    assert all(isinstance(x, str) for xs in lists for x in xs)

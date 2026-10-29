@@ -368,3 +368,57 @@
     Stage 2 works at the level of places (the regions lens), comparing filing rates with advantage and remoteness.
   terms: [irsad, remoteness]
   related: [U51, U54, U62]
+
+- id: U112
+  lens: firms
+  about: data
+  headline: Size and industry are now known for employers of 100 or more, few of the filers but a large share of their IP
+  statement: >-
+    WGEA's public data give a size band and industry for 7,126 firms in the lens. They are 1.59% of its IP filers and
+    4.05% of its standard patent filers, but filed 18.41% of its standard patents and 12.29% of its trade marks.
+  figures:
+    - value: "7,126"
+      label: firms in the lens with a WGEA report
+    - value: "4.05%"
+      label: of standard patent filers
+    - value: "18.41%"
+      label: of the lens's standard patents
+  points:
+    - "WGEA covers 8,240 employers in 2024-25, with 5,291,033 employees (median 238)."
+    - "Size bands: 3,599 firms under 250 employees, 1,654 of 250 to 499, 892 of 500 to 999, 838 of 1,000 to 4,999 and
+      137 of 5,000 or more."
+    - "Large employers are a different mix from businesses as a whole: manufacturing 12.42% of them against 3.47% of
+      businesses; construction 5.46% against 17.16%."
+    - "Firms under 100 employees still have no size or industry: no free firm-level source holds them (ADR 0032)."
+  questions:
+    - q: 3
+      how: Size and industry are the third factors most firm leads need; now available for large employers.
+    - q: 2
+      how: Shows how much of the IP large employers file, against how few of the filers they are.
+  sources: [wgea, linkage]
+  chart:
+    type: bar
+    horizontal: true
+    title: Large employers' share of the firms lens
+    subtitle: Firms with a WGEA report, as a share of filers and of what they filed
+    x: {type: category, values: [IP filers, Standard patent filers, Standard patents filed, Trade marks filed]}
+    y: {name: "% of the lens", min: 0, format: pct, digits: 2}
+    series:
+      - name: Firms with a WGEA report
+        data: [1.59, 4.05, 18.41, 12.29]
+    source: WGEA public data; IP RAPID (lens firms)
+  prep:
+    - what: WGEA's employer reports joined to the lens by ABN, with each firm's size band and ANZSIC class.
+      why: WGEA is the only free source of size and industry by ABN.
+  steps:
+    - Join WGEA's reports to the lens by ABN.
+    - Count the covered firms and their share of filers and filings.
+    - Compare their industries with all businesses (CABEE).
+  assumptions:
+    - The latest report's size and industry stand for the firm.
+  limits:
+    - Employers of 100 or more only; read among the firms covered, never as the whole lens.
+  next: >-
+    Stage 2 reads size and industry among large employers ({B50}, {B51}); OQ20 asks about small firms.
+  terms: [wgea, anzsic, abn]
+  related: [B50, B51]

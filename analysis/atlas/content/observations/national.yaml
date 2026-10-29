@@ -470,3 +470,111 @@
     Projections are filtered out by status; monthly copies are never added to the ABS's.
   terms: [attachment]
   related: [U68]
+
+- id: U115
+  lens: national
+  about: data
+  headline: WIPO counts more Australian patent families than reach IP Australia; Google Patents holds older families' filings abroad incompletely
+  statement: >-
+    WIPO counts 16,726 patent families with an Australian applicant first filed in 2015 to 2019; IP RAPID's Australian
+    applicants account for 14,057 of them (84.04%). WIPO's share filed in more than one office holds steady (64.73%),
+    while Google Patents shows 14.91% filed abroad for 2000 to 2004 families and 45.91% for 2015 to 2019.
+  figures:
+    - value: "84.04%"
+      label: of WIPO's Australian families that reach IP Australia (2015 to 2019)
+    - value: "64.73%"
+      label: WIPO's share filed in more than one office
+    - value: "74.92% → 13.93%"
+      label: Australian PCT patents shown "Australia only", FY2000 to FY2004 against after FY2010
+  points:
+    - "2000 to 2004: 21,047 WIPO families, 13,518 in IP RAPID (64.23%), 66.37% filed in more than one office."
+    - "So about one Australian family in six in recent years never reaches IP Australia (an upper bound)."
+    - "Australian applicants' PCT patents' US grants double at the same break (18.23% and 21.95% to 44.17% and 53.05%)."
+    - "**Decision:** for Australian applicants, family measures are read from FY2010 on (OQ21 asks whether to repair
+      the older links)."
+  questions:
+    - q: 1
+      how: Shows how fully the family measures of value can be trusted for Australian applicants, and from when.
+  sources: [wipo_ipstats, google_patents, iprapid]
+  chart:
+    type: bar
+    title: Australian families filed in more than one office
+    subtitle: WIPO against Google Patents, families first filed in two periods
+    x: {type: category, values: [2000 to 2004, 2015 to 2019]}
+    y: {name: "% of families", min: 0, max: 100, format: pct, digits: 2}
+    series:
+      - name: WIPO
+        data: [66.37, 64.73]
+      - name: Google Patents
+        data: [14.91, 45.91]
+        colour: muted
+    source: WIPO IP Statistics (indicators 20 and 22); Google Patents; IP RAPID (lens national)
+  prep:
+    - what: WIPO's patent families by origin (all, and foreign-oriented) joined to the national lens.
+      why: An independent count of Australians' families, to check Google Patents' coverage.
+  steps:
+    - Compare WIPO's and Google Patents' counts of Australian families, and their shares filed abroad.
+    - Check standard patents that must have a filing abroad (a priority outside Australia and the US).
+  assumptions:
+    - A family with a priority from another office must have a published filing abroad.
+  limits:
+    - WIPO and Google count families differently, so the shares are bounds.
+  next: >-
+    Stage 2 tests whether {B11}'s fall is practice or records ({B55}).
+  terms: [patent-family, wipo, pct]
+  related: [B55, B11]
+
+- id: U120
+  lens: national
+  about: data
+  headline: Four of the GII's six blanks for Australia can be filled approximately; Australia's researchers sit outside business more than almost any member's
+  statement: >-
+    Supplementary values, kept apart from the GII's rows, fill four indicators. Australia's research talent in
+    business is 33.91% of researchers, against an OECD median of 52.99%; only 16.7% of members are lower. GERD
+    financed by business is 51.78%, against a median of 49.5%.
+  figures:
+    - value: "33.91%"
+      label: researchers working in business (median 52.99%)
+    - value: "51.78%"
+      label: GERD financed by business (median 49.5%)
+    - value: "4,870"
+      label: researchers per million people (median 5,320)
+  points:
+    - "Pupil-teacher ratio, secondary: 11.7 students per teacher (2025), against a median of 11.02."
+    - "Microfinance loans and utility models by origin stay blank: no Australian series, and the GII's utility model
+      counts could not be reproduced (ADR 0033)."
+    - "Read beside the GII, never used to recalculate a score or rank."
+  questions:
+    - q: 1
+      how: Completes Australia's place on the GII's research measures.
+    - q: 3
+      how: Where researchers work is a candidate condition for how much research becomes invention ({B61}).
+  sources: [abs_schools, abs_rd_vc, gii]
+  chart:
+    type: bar
+    title: Australia's supplementary values against the OECD median
+    subtitle: Two of the four GII indicators filled from Australia's own statistics
+    x: {type: category, values: [Researchers in business, GERD financed by business]}
+    y: {name: "%", min: 0, max: 60, format: pct, digits: 2}
+    series:
+      - name: Australia
+        data: [33.91, 51.78]
+      - name: OECD median
+        data: [52.99, 49.5]
+        colour: muted
+    source: ABS (schools and R&D surveys); GII 2026 (lens national)
+  prep:
+    - what: Each value computed from the ABS's schools and R&D surveys, with its period and how it differs from the
+        GII's definition.
+      why: The GII leaves these blank for Australia.
+  steps:
+    - Compute each value as close to the GII's definition as the ABS's tables allow.
+    - Compare with the GII's values for OECD members.
+  assumptions:
+    - Combining the ABS's sector surveys (business 2023-24, higher education 2024, government 2024-25) approximates one year.
+  limits:
+    - Approximate; never part of the GII's own rows.
+  next: >-
+    Stage 2 relates them to patenting across members ({B61}).
+  terms: [gii, gerd, oecd-median]
+  related: [B61]

@@ -1,0 +1,193 @@
+# Stage 2, the institutions lens (section 7 of the bivariate notebook). Markup and rules as in ../firms.yaml. The link
+# from institutions to their IP is reviewed by the analyst, not yet by someone in the sector (OQ11).
+
+- id: B44
+  lens: institutions
+  about: system
+  headline: Across research institutions the kind of institution sorts most measures, and research that patents cite goes with the institution's own patenting
+  statement: >-
+    Across 112 institutions with 100 or more works (2017 to 2023), universities win far more ARC grants per 1,000
+    works than medical research institutes, which have the most citations from US patents per work. The share of an
+    institution's works cited by US patents rises with its own provisionals per 1,000 works (0.583) and with the
+    citations its works receive (0.529).
+  figures:
+    - value: "0.583"
+      label: works cited by US patents with the institution's own provisionals per work
+    - value: "21.41% against 5.69%"
+      label: institutions' patents against trade marks filed with others
+    - value: "18"
+      label: distinct leads
+  points:
+    - "43 universities, 42 medical research institutes and 11 public research agencies."
+    - "NHMRC grants per work go with standard patents per work (0.338; 0.367). Larger institutions win more ARC grants
+      per work (0.803) and file somewhat more standard patents per work (0.269)."
+    - "10.98% of the institutions' patents are filed with another research institution, against 3.5% of their trade
+      marks."
+  questions:
+    - q: 1
+      how: Institutions whose research is used by inventors also file more themselves.
+    - q: 3
+      how: The kind of institution is the first condition to hold steady in any comparison.
+  sources: [ror, openalex, openalex_works, reliance_on_science, arc_grants, nhmrc_grants, iprapid]
+  prep:
+    - what: Each institution's measures as rates per 1,000 works, in 2017 to 2023 and 2010 to 2016.
+      why: Rates make institutions of different size comparable, and two periods give a [[replication]].
+  steps:
+    - Screen every pair across institutions in the later period, and check in the earlier one.
+  assumptions:
+    - The reviewed link of names and ABNs to institutions is sound (OQ11 asks for a sector review).
+  limits:
+    - Medical research institutes are many and small; kind dominates.
+  next: >-
+    Universities are looked at alone in {B45}.
+  terms: [ror, openalex, citations, screen]
+  related: [B45, B46, U85]
+
+- id: B45
+  lens: institutions
+  about: system
+  headline: Larger, more cited universities file more patents per work; industry-partner grants do not go with joint filing
+  statement: >-
+    Across 43 universities (2017 to 2023), size goes with patents per 1,000 works at 0.743, the share of works cited by
+    US patents at 0.632 and ARC grants per work at 0.637. The share of ARC grants with industry partners does not go
+    with the share of patents filed with others (0.127, then -0.074).
+  figures:
+    - value: "0.743"
+      label: size (works) with patents per 1,000 works
+    - value: "0.632"
+      label: share of works cited by US patents with patents per work
+    - value: "0.127 and -0.074"
+      label: industry-partner grants with joint filing
+  points:
+    - "The earlier period agrees: 0.732, 0.759 and 0.628. Citations per work 0.417 and 0.619."
+    - "**As changes** between the periods, growth in works goes with the change in patents per work at only 0.111: the
+      levels' links are about which universities are research-intensive, not what changes within them."
+    - "[[third-factor|Third factors]]: research intensity, medical schools, and the commercialisation companies that
+      file for the largest universities ({U83})."
+  questions:
+    - q: 3
+      how: Research scale and research that inventors draw on are conditions for universities' patenting.
+    - q: 4
+      how: Industry-partnered research does not show up as joint IP, a gap between collaboration and ownership.
+  sources: [openalex, openalex_works, reliance_on_science, arc_grants, iprapid, ror]
+  chart:
+    type: bar
+    horizontal: true
+    title: What goes with universities' patents per 1,000 works
+    subtitle: Rank correlation across universities, two periods
+    x: {type: category, values: [Size (works), Share of works cited by US patents, "ARC grants per 1,000 works", Citations per work]}
+    y: {name: Rank correlation, min: 0, max: 1, format: ratio}
+    series:
+      - name: 2017 to 2023
+        data: [0.743, 0.632, 0.637, 0.417]
+      - name: 2010 to 2016
+        data: [0.732, 0.759, 0.628, 0.619]
+        colour: muted
+    source: OpenAlex; Reliance on Science; ARC; IP RAPID (lens institutions)
+  prep:
+    - what: Universities only, with intervals for each strength.
+      why: Kind of institution dominates the pooled screen ({B44}).
+  steps:
+    - Relate each research measure to patents per work across universities, in two periods.
+    - Relate the changes between periods.
+  assumptions:
+    - A university's IP includes its commercialisation companies' (the link counts them).
+  limits:
+    - 43 universities; wide intervals.
+  next: >-
+    Carried to Stage 3 with research intensity and medical schools.
+  terms: [commercialisation-company, citations, openalex]
+  related: [B44, B46, B62]
+
+- id: B46
+  lens: institutions
+  about: system
+  headline: Few US patents citing Australian research have Australian links, whichever institutions patent most
+  statement: >-
+    For institutions with 1,000 or more works, the median share of their US patent citations coming from patents
+    with an Australian applicant or inventor is 3.252% in 2017 to 2023 (82 institutions) and 5.482% in 2010 to 2016.
+    It does not consistently follow the institution's own patenting (0.298, then 0.165).
+  figures:
+    - value: "3.252%"
+      label: median share of US patent citations with an Australian link (2017 to 2023)
+    - value: "5.482%"
+      label: the same, 2010 to 2016
+  points:
+    - "Against the share of works cited by patents: 0.361, then 0.082."
+    - "Australian research is used mostly by inventions owned and made elsewhere ({U85}, {U96})."
+  questions:
+    - q: 1
+      how: Value created by Australian research is mostly captured by inventions owned and made abroad.
+    - q: 4
+      how: Shows how little of Australia's cited research is turned into invention here.
+  sources: [reliance_on_science, openalex_works, google_patents_inventors, iprapid, ror]
+  prep:
+    - what: Each US patent citing an institution's work, with whether the patent has an Australian applicant or
+        inventor.
+      why: Separates use of the research in Australia from use abroad.
+  steps:
+    - Find each institution's share of citing patents with an Australian link.
+    - Relate it to the institution's own patenting, in two periods.
+  assumptions:
+    - A patent's applicant or inventor country shows where the invention is owned or made.
+  limits:
+    - US patents only; a lower bound on use of the research abroad and here.
+  next: >-
+    Carried to Stage 3 as a signal for Q1, beside {B16} and {B19}.
+  terms: [citations, openalex]
+  related: [B16, B19, U85]
+
+- id: B62
+  lens: institutions
+  about: system
+  headline: Institutions with more invention disclosures per research dollar file more patents, and those that file more earn more licence income
+  statement: >-
+    Across 66 institutions with $10 million or more of research spend (2004 to 2009), per $ million, invention
+    disclosures go with standard patents at 0.617 (0.615 in 2010 to 2015), and patents with licence income at 0.593
+    (0.525). Patents per disclosure fell from 0.161 to 0.134.
+  figures:
+    - value: "0.617"
+      label: disclosures with standard patents, per research dollar
+    - value: "0.593"
+      label: patents with licence income
+    - value: "0.161 → 0.134"
+      label: patents per disclosure
+  points:
+    - "Disclosures with provisionals 0.555 and 0.694; patents with licences 0.535 and 0.436; with start-ups 0.349 and
+      0.513; licences with income 0.555 and 0.544."
+    - "**For Stage 3:** an institution's patents are a fair sign of its commercialisation at this level (an
+      association; size is removed by the ratios, field mix is not)."
+  questions:
+    - q: 1
+      how: Patents go with licensing and licence income, one route by which research IP produces value.
+    - q: 3
+      how: Disclosure, patenting and licensing move together, a chain of conditions to test further.
+  sources: [nsrc, iprapid, ror]
+  chart:
+    type: bar
+    horizontal: true
+    title: Commercialisation measures per research dollar, related across institutions
+    subtitle: Rank correlation, 2004 to 2009 and 2010 to 2015
+    x: {type: category, values: [Disclosures with patents, Patents with licence income, Licences with income, Patents with start-ups]}
+    y: {name: Rank correlation, min: 0, max: 1, format: ratio}
+    series:
+      - name: 2004 to 2009
+        data: [0.617, 0.593, 0.555, 0.349]
+      - name: 2010 to 2015
+        data: [0.615, 0.525, 0.544, 0.513]
+        colour: muted
+    source: National Survey of Research Commercialisation; IP RAPID (lens institutions)
+  prep:
+    - what: The NSRC's disclosures, licences, start-ups and income ({U122}), as ratios per $ million of research
+        spend.
+      why: Removes the institutions' size.
+  steps:
+    - Relate each pair of commercialisation measures across institutions, in two periods, with intervals.
+  assumptions:
+    - The NSRC's answers are comparable across institutions and years.
+  limits:
+    - Ends in 2015, before Stage 2's other periods; dollars of the day.
+  next: >-
+    Carried to Stage 3.
+  terms: [nsrc, commercialisation-company]
+  related: [B45, U122]
