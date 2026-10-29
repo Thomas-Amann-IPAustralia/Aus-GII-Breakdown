@@ -1,6 +1,6 @@
 // The evidence atlas: one page, routed by the address's #fragment, reading evidence/data/atlas.json (built by
 // analysis/atlas/build.py) and each chart's JSON on demand. All text reaches the page as text nodes; the light markup
-// in the content (**bold**, [[term]], {U44}, `code`) is turned into elements here, never parsed as HTML.
+// in the content (**bold**, [[term]], {U44}, {B6}, `code`) is turned into elements here, never parsed as HTML.
 
 import { el, initTheme } from "../../assets/js/util.js";
 import { chartCard, sweep } from "./charts.js";
@@ -16,7 +16,7 @@ const lensColour = (l) => `var(--l-${l})`;
 
 // ------------------------------------------------------------------------------------------------ text markup
 
-const TOKEN = /\*\*(.+?)\*\*|\[\[([^\]|]+)(?:\|([^\]]+))?\]\]|\{(U\d+)\}|`([^`]+)`|(OQ\d+)/g;
+const TOKEN = /\*\*(.+?)\*\*|\[\[([^\]|]+)(?:\|([^\]]+))?\]\]|\{([UB]\d+)\}|`([^`]+)`|(OQ\d+)/g;
 /** Inline markup to nodes. */
 function inline(text) {
   const out = [];
@@ -76,12 +76,16 @@ function qChip(q) {
 function strengthBadge(s) {
   return el("span.strength", { title: "How strong the evidence is: see How to read an observation" }, s);
 }
+const STAGE_NAME = { 1: "each variable on its own", 2: "pairs of variables" };
+function stageChip(o) {
+  return el("span.chip.stagechip", { title: `Stage ${o.stage}: ${STAGE_NAME[o.stage]}` }, `Stage ${o.stage}`);
+}
 function aboutLabel(o) {
   return el("span.about", o.about === "data" ? "About the data" : "About the IP system");
 }
 function ocard(o) {
   const a = el("a.ocard", { href: `#/${o.id}` },
-    el("div.meta", el("span.id", o.id), lensChip(o.lens, false), aboutLabel(o)),
+    el("div.meta", el("span.id", o.id), lensChip(o.lens, false), stageChip(o), aboutLabel(o)),
     el("h3", o.headline),
     el("p", trim(plain(o.statement), 190)),
     el("div.meta", (o.questions || []).map((q) => el("span.chip.qchip", `Q${q.q}`)), o.chart ? el("span.chip", "Chart") : null));
@@ -96,7 +100,7 @@ function lower(s) {
 /** Markup removed, for short summaries. */
 function plain(s) {
   return String(s ?? "").replace(/\[\[[^\]|]+\|([^\]]+)\]\]/g, "$1").replace(/\[\[([^\]]+)\]\]/g, (_, k) => A.glossary[k]?.title?.toLowerCase() || k)
-    .replace(/\*\*/g, "").replace(/\{(U\d+)\}/g, "$1").replace(/`/g, "");
+    .replace(/\*\*/g, "").replace(/\{([UB]\d+)\}/g, "$1").replace(/`/g, "");
 }
 function trim(s, n) {
   const t = String(s).replace(/\s+/g, " ").trim();
@@ -206,7 +210,7 @@ function home() {
       ...paras(S.hero.lead, "lead"),
       el("div.row", { style: { marginTop: "18px" } },
         el("a.btn.primary", { href: "#/observations" }, "Browse all observations", icon("arrow")),
-        el("a.btn", { href: "#/limits" }, "What Stage 1 cannot tell you"))),
+        el("a.btn", { href: "#/limits" }, "What the analysis cannot tell you yet"))),
     metrics);
 
   const banner = el("div.banner", icon("info"), el("div", ...paras(S.banner)));
@@ -223,11 +227,13 @@ function home() {
       el("div.row", el("a.btn.primary", { href: `#/${f.id}` }, "Follow this observation back to its data", icon("arrow")))),
     el("div.feature-viz", chartSlot(f.chart, { compact: true })));
 
-  const ten = el("ol.ten", { style: { listStyle: "none", padding: 0 } }, S.ten.map((t, i) => el("li.tenitem",
+  const tenList = (items) => el("ol.ten", { style: { listStyle: "none", padding: 0 } }, items.map((t, i) => el("li.tenitem",
     el("span.n", String(i + 1).padStart(2, "0")),
     el("h3", t.title),
     ...paras(t.text),
     el("div.meta", t.ids.map(obsLink)))));
+  const ten = tenList(S.ten);
+  const found2 = S.stage2 ? tenList(S.stage2.items) : null;
 
   const lensTiles = el("div.lens-tiles", LENS_ORDER.filter((l) => A.lenses[l]).map((l) => {
     const L = A.lenses[l];
@@ -247,12 +253,13 @@ function home() {
 
   const anatomy = el("div.anatomy", S.reading.parts.map((p) => el(`div.a-${p.kind}`, el("strong", p.title), ...paras(p.text))));
   const scale = el("div.grid.g4", S.reading.strengths.map((s) => el(`div.card.flat`, { style: s.now ? { borderColor: "var(--obs-line)", background: "var(--obs)" } : {} },
-    el("h3", s.name, s.now ? el("span.chip", { style: { marginLeft: "8px" } }, "Stage 1") : null), ...paras(s.text))));
+    el("h3", s.name, ...(s.stages || []).map((n) => el("span.chip", { style: { marginLeft: "8px" } }, `Stage ${n}`))), ...paras(s.text))));
 
   show(hero, banner,
     section("Where this sits in the research", S.journey_intro, journey),
     section("Start with one observation", S.featured.intro, feature),
-    section("Ten things most worth knowing", S.ten_intro, ten),
+    found2 ? section(S.stage2.title, S.stage2.intro, found2) : null,
+    section(S.ten_title || "Ten things most worth knowing", S.ten_intro, ten),
     section("Explore by lens", "A lens is the unit being described: an IP right, a firm, a place, a country, a month, an industry or a research institution.", lensTiles),
     section("Explore by research question", "The five questions the research will answer after Stage 3. Every observation says which of them it moves closer to, and how.", qTiles),
     section("How to read an observation", S.reading.intro, anatomy, el("h3", { style: { margin: "22px 0 10px" } }, "How strong is the evidence?"), ...paras(S.reading.strength_intro, "muted"), scale));
@@ -261,7 +268,7 @@ function home() {
 function observationsPage(params) {
   setCrumbs([{ label: "Overview", href: "#/" }, { label: "Observations" }]);
   setNav("observations");
-  const st = { lens: params.get("lens") || "all", q: params.get("q") || "all", about: params.get("about") || "all", s: params.get("s") || "" };
+  const st = { lens: params.get("lens") || "all", q: params.get("q") || "all", about: params.get("about") || "all", stage: params.get("stage") || "all", s: params.get("s") || "" };
   const results = el("div");
   const count = el("p.result-count", { "aria-live": "polite" });
 
@@ -283,6 +290,12 @@ function observationsPage(params) {
     b.addEventListener("click", () => { st.about = k; [...about.children].forEach((c) => c.setAttribute("aria-pressed", String(c === b))); update(); });
     about.append(b);
   }
+  const stageSeg = el("div.seg", { role: "group", "aria-label": "Stage" });
+  for (const [k, name] of [["all", "Both stages"], ["1", "Stage 1"], ["2", "Stage 2"]]) {
+    const b = el("button", { type: "button", "aria-pressed": String(st.stage === k), title: k === "all" ? null : `Stage ${k}: ${STAGE_NAME[k]}` }, name);
+    b.addEventListener("click", () => { st.stage = k; [...stageSeg.children].forEach((c) => c.setAttribute("aria-pressed", String(c === b))); update(); });
+    stageSeg.append(b);
+  }
   const search = el("input", { type: "search", placeholder: "Search the observations", "aria-label": "Search the observations", value: st.s });
   search.addEventListener("input", () => { st.s = search.value; update(); });
 
@@ -292,6 +305,7 @@ function observationsPage(params) {
       (st.lens === "all" || o.lens === st.lens) &&
       (st.q === "all" || o.questions.some((x) => String(x.q) === st.q)) &&
       (st.about === "all" || o.about === st.about) &&
+      (st.stage === "all" || String(o.stage) === st.stage) &&
       words.every((w) => `${o.id} ${o.headline} ${o.statement} ${(o.points || []).join(" ")}`.toLowerCase().includes(w)));
     count.textContent = `${list.length} of ${A.observations.length} observations`;
     const groups = LENS_ORDER.map((l) => [l, list.filter((o) => o.lens === l)]).filter(([, g]) => g.length);
@@ -303,14 +317,15 @@ function observationsPage(params) {
     if (st.lens !== "all") p.set("lens", st.lens);
     if (st.q !== "all") p.set("q", st.q);
     if (st.about !== "all") p.set("about", st.about);
+    if (st.stage !== "all") p.set("stage", st.stage);
     if (st.s) p.set("s", st.s);
     history.replaceState(null, "", `#/observations${p.toString() ? `?${p}` : ""}`);
   }
   show(
-    el("div.eyebrow", "Stage 1 · every observation"),
+    el("div.eyebrow", "Stages 1 and 2 · every observation"),
     el("h1", "Observations"),
     ...paras(A.site.observations_intro, "lead"),
-    el("div.filters", lensBar, el("div.filter-row", qSel, about, search), count),
+    el("div.filters", lensBar, el("div.filter-row", qSel, stageSeg, about, search), count),
     results);
   update();
 }
@@ -357,7 +372,7 @@ function observationPage(id) {
   document.title = `${o.id}: ${o.headline} · Evidence atlas`;
 
   const head = el("header.obs-head",
-    el("div.meta", el("span.id", o.id), lensChip(o.lens), el("span", o.section.replace(/`/g, "")), strengthBadge(o.strength), aboutLabel(o)),
+    el("div.meta", el("span.id", o.id), lensChip(o.lens), stageChip(o), el("span", o.section.replace(/`/g, "")), strengthBadge(o.strength), aboutLabel(o)),
     el("h1", o.headline));
   const box = el("section.obs-box", { "aria-label": `Observation ${o.id}` },
     el("div.obs-label", icon("eye"), `Observation ${o.id} · ${o.strength}`),
@@ -368,7 +383,8 @@ function observationPage(id) {
 
   const why = el("section.block",
     el("h2", icon("compass"), "How this moves the research forward"),
-    el("p.block-intro", "Stage 1 answers none of the five questions. This is how the observation prepares the ground for them."),
+    el("p.block-intro", o.stage === 1 ? "Stage 1 answers none of the five questions. This is how the observation prepares the ground for them."
+      : "Stage 2 answers none of the five questions either: it finds which measures go together. This is how the association prepares the ground for them."),
     el("div.qlist", o.questions.map((q) => {
       const Q = A.questions.find((x) => x.id === q.q);
       return el("div.qitem", el("a.qn", { href: `#/question/${q.q}` }, `Q${q.q}`), el("div", el("h3", Q.title), el("p", inline(q.how))));
@@ -413,10 +429,10 @@ function observationPage(id) {
     el("details.more",
       el("summary", icon("book"), "For analysts: the notebook's own words and charts"),
       el("div",
-        el("p.small.muted", inline(`Quoted from section ${o.section.replace(/`/g, "")} of the Stage 1 notebook. Reading it is optional: everything above says the same in plain English.`)),
+        el("p.small.muted", inline(`Quoted from section ${o.section.replace(/`/g, "")} of the Stage ${o.stage} notebook. Reading it is optional: everything above says the same in plain English.`)),
         notebookMarkdown(o.original),
         ...nbCharts.map((c) => el("figure.nbimg", el("img", { src: c.src, alt: `A chart from the notebook, above observation ${o.id}`, loading: "lazy", decoding: "async" }), el("figcaption", "The chart as drawn in the notebook."))),
-        el("p.small", el("a", { href: A.notebook, rel: "noopener noreferrer", target: "_blank" }, "Open the notebook on GitHub"), " · the code that builds every lens is in analysis/eda/build.py."))));
+        el("p.small", el("a", { href: A.notebooks?.[o.stage] || A.notebook, rel: "noopener noreferrer", target: "_blank" }, "Open the notebook on GitHub"), " · the code that builds every lens is in analysis/eda/build.py."))));
 
   const related = (o.related || []).filter((r) => byId[r]);
   const rel = related.length ? el("section.block", el("h2", "Related observations"), el("div.cards", related.map((r) => ocard(byId[r])))) : null;
@@ -435,10 +451,10 @@ function observationPage(id) {
           el("dt", "Lens"), el("dd", lensChip(o.lens)),
           el("dt", "Unit"), el("dd", L.unit),
           el("dt", "About"), el("dd", o.about === "data" ? "The data themselves" : "The IP system"),
-          el("dt", "Stage"), el("dd", "1 of 3 (each variable on its own)")),
+          el("dt", "Stage"), el("dd", `${o.stage} of 3 (${STAGE_NAME[o.stage]})`)),
         el("h2", { style: { marginTop: "14px" } }, "Strength of evidence"),
         el("div.scale", ["descriptive", "observational", "causal", "projected"].map((s) => el(`span${s === o.strength ? ".on" : ""}`, s === o.strength ? `${s} (this observation)` : s))),
-        el("p.small.muted", { style: { marginTop: "8px" } }, "Descriptive: what the data show, not why. Stronger kinds need Stages 2 and 3."))),
+        el("p.small.muted", { style: { marginTop: "8px" } }, o.strength === "descriptive" ? "Descriptive: what the data show, not why." : "Observational: two measures go together; other explanations remain, and it is not a cause.", " Causal claims need designs that come after Stage 3."))),
     terms.length ? el("section", el("h2", "Explainers"), ...terms.map((t) => el("div.explainer", el("h3", icon("info"), A.glossary[t].title), ...paras(A.glossary[t].short)))) : null);
 
   show(el("div.obs-page",
@@ -480,7 +496,13 @@ function lensPage(l) {
     L.repairs?.length ? section("Repairs made before any observation", "Problems found while profiling, fixed in the lens and recorded in a decision record. Each says why.",
       el("div.prep", L.repairs.map((p) => el("div.prepitem", el("p", inline(p.what)), el("p.why", el("strong", "Why"), ...inline(p.why), p.adr ? el("span.muted", ` (ADR ${p.adr})`) : null))))) : "",
     L.limits?.length ? section("Limits of this lens", null, el("div.notes", L.limits.map((x) => note("limit", x)))) : "",
-    section(`Its ${obs.length} observations`, null, ...sections.flatMap((s) => [el("h3", { style: { margin: "18px 0 10px" } }, s.replace(/`/g, "")), el("div.cards", obs.filter((o) => o.section === s).map(ocard))])));
+    section(`Its ${obs.length} observations`, null, ...[1, 2].flatMap((n) => {
+      const mine = obs.filter((o) => o.stage === n);
+      if (!mine.length) return [];
+      const secs = sections.filter((s) => mine.some((o) => o.section === s));
+      return [el("h2", { style: { margin: "26px 0 4px" } }, `Stage ${n}: ${STAGE_NAME[n]}`),
+        ...secs.flatMap((s) => [el("h3", { style: { margin: "18px 0 10px" } }, s.replace(/`/g, "")), el("div.cards", mine.filter((o) => o.section === s).map(ocard))])];
+    })));
 }
 
 function questionsPage() {
@@ -502,13 +524,14 @@ function questionPage(id) {
   setCrumbs([{ label: "Research questions", href: "#/questions" }, { label: `Question ${q.id}` }]);
   setNav("questions");
   const bearing = A.observations.filter((o) => o.questions.some((x) => x.q === q.id));
-  const items = bearing.map((o) => el("div.qitem", obsLink(o.id), el("div", el("h3", el("a", { href: `#/${o.id}` }, o.headline)), el("p", inline(o.questions.find((x) => x.q === q.id).how)))));
+  const items = (n) => bearing.filter((o) => o.stage === n).map((o) => el("div.qitem", obsLink(o.id), el("div", el("h3", el("a", { href: `#/${o.id}` }, o.headline)), el("p", inline(o.questions.find((x) => x.q === q.id).how)))));
   const leads = A.site.next.leads.filter((l) => l.questions.includes(q.id));
   show(
     el("div.eyebrow", `Question ${q.id} of 5`), el("h1", q.title), ...paras(q.text, "lead"),
     q.sub?.length ? section("What the research goal asks under it", null, el("ul.prose", q.sub.map((s) => el("li", s)))) : "",
-    section("What Stage 1 found that bears on it", "Descriptive observations only: groundwork, not answers.", el("div.qlist", items), editorialNote("These links are the analyst's guide to where each observation may help. They are not findings.")),
-    section("What Stage 2 will test for it", "Pairs of variables to relate, each needing its size, its uncertainty and a second sample before it counts.",
+    section("What Stage 2 found that bears on it", "Pairs of measures that go together, held in a second period or sample: associations, not answers.", el("div.qlist", items(2)), editorialNote("These links are the analyst's guide to where each observation may help. They are not findings.")),
+    section("What Stage 1 found that bears on it", "Descriptive observations: groundwork, not answers.", el("div.qlist", items(1))),
+    section(A.site.next.leads_title, "Signals carried from Stage 2, each to be tested with its third factors held steady.",
       el("div.qlist", leads.map((l) => el("div.qitem", el("span.qn", "Lead"), el("div", el("h3", inline(l.lead)), el("p", "From ", ...l.ids.flatMap((x, i) => [i ? ", " : "", obsLink(x)]))))))),
     q.reach?.length ? section("What is out of reach for now", null, el("div.notes", q.reach.map((x) => note("limit", x)))) : "");
 }
@@ -575,7 +598,7 @@ function limitsPage() {
   setNav("limits");
   const Lm = A.site.limits;
   show(el("div.eyebrow", "Honesty"), el("h1", "Limits and assumptions"), ...paras(Lm.intro, "lead"),
-    section("What Stage 1 cannot tell you", null, el("div.notes", Lm.cannot.map((x) => el("div.note.limit", icon("alert"), el("div", el("span.tag", x.title), ...paras(x.text)))))),
+    section(Lm.cannot_title, null, el("div.notes", Lm.cannot.map((x) => el("div.note.limit", icon("alert"), el("div", el("span.tag", x.title), ...paras(x.text)))))),
     section("Assumptions made across the work", "Each observation also lists its own. These hold everywhere.", el("div.notes", Lm.assumptions.map((x) => note("assume", x)))),
     section("Where the data are weakest", Lm.weak_intro, el("div.notes", Lm.weak.map((x) => el("div.note.limit", icon("link"), el("div", el("span.tag", x.title), ...paras(x.text)))))),
     section("Corrections made along the way", Lm.corrections_intro, el("div.tablewrap", el("table.data", el("thead", el("tr", el("th", "When"), el("th", "What was wrong"), el("th", "Now"))),
@@ -589,11 +612,11 @@ function nextPage() {
   const stages = el("div.grid.g3", N.stages.map((s) => el("div.card", { style: s.now ? { borderColor: "var(--obs-line)" } : {} },
     el("div.meta", el("span.chip", s.when)), el("h2", { style: { marginTop: "8px" } }, s.name), el("p", el("strong", "Asks: "), inline(s.asks)),
     ...paras(s.how, "small"), el("p.small", el("strong", "For example: "), inline(s.example)), el("p.small", el("strong", "What it adds: "), inline(s.adds)), el("p.small.muted", el("strong", "Finished when: "), inline(s.done)))));
-  const leads = el("div.tablewrap", el("table.data", el("thead", el("tr", el("th", "What Stage 2 will relate"), el("th", "From"), el("th", "Questions"))),
+  const leads = el("div.tablewrap", el("table.data", el("thead", el("tr", el("th", N.leads_head), el("th", "From"), el("th", "Questions"))),
     el("tbody", N.leads.map((l) => el("tr", el("td", inline(l.lead)), el("td", l.ids.flatMap((x, i) => [i ? " " : "", obsLink(x)])), el("td", l.questions.map(qChip)))))));
   show(el("div.eyebrow", "The road ahead"), el("h1", "What comes next"), ...paras(N.intro, "lead"),
     section("Three stages, then the questions", null, stages),
-    section("What Stage 2 will test", N.leads_intro, leads),
+    section(N.leads_title, N.leads_intro, leads),
     section("Puzzles kept in view", N.puzzles_intro, el("div.notes", N.puzzles.map((p) => el("div.note.next", icon("flag"), el("div", el("span.tag", "Unexplained"), el("p", inline(p))))))),
     section("Questions waiting on someone else", N.open_intro, el("div.grid.g2",
       el("div.card.flat", el("h3", "For the research owner"), el("ul", N.owner.map((x) => el("li", inline(x))))),
@@ -704,7 +727,7 @@ function route() {
   const parts = path.split("/").filter(Boolean);
   document.title = "Evidence atlas";
   if (!parts.length) home();
-  else if (/^U\d+$/.test(parts[0]) && byId[parts[0]]) observationPage(parts[0]);
+  else if (/^[UB]\d+$/.test(parts[0]) && byId[parts[0]]) observationPage(parts[0]);
   else if (parts[0] === "observations") observationsPage(params);
   else if (parts[0] === "lenses") lensesPage();
   else if (parts[0] === "lens" && A.lenses[parts[1]]) lensPage(parts[1]);
@@ -735,7 +758,7 @@ $("#jump").addEventListener("keydown", (e) => {
   if (e.key !== "Enter") return;
   const v = e.target.value.trim();
   e.target.value = "";
-  if (/^u\d+$/i.test(v) && byId[v.toUpperCase()]) location.hash = `#/${v.toUpperCase()}`;
+  if (/^[ub]\d+$/i.test(v) && byId[v.toUpperCase()]) location.hash = `#/${v.toUpperCase()}`;
   else location.hash = `#/observations?s=${encodeURIComponent(v)}`;
 });
 
@@ -747,4 +770,4 @@ fetch("data/atlas.json").then((r) => r.json()).then((atlas) => {
   $("#foot-asat").textContent = `as at ${longDate(A.built)}`;
   addEventListener("hashchange", route);
   route();
-}).catch(() => { show(el("p", "The evidence could not be loaded. If you opened this file from disk, serve the folder over http instead.")); });
+}).catch((e) => { console.error(e?.stack || e); show(el("p", "The evidence could not be loaded. If you opened this file from disk, serve the folder over http instead.")); });

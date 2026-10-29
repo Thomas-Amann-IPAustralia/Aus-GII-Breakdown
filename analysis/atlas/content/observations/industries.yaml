@@ -292,3 +292,103 @@
     Stage 2 sets innovation beside IP by industry.
   terms: [bcs, cabee, attachment]
   related: [U73, U77]
+
+- id: U114
+  lens: industries
+  about: data
+  headline: Through ALP's crosswalk with services, patents reach all 19 industries and manufacturing's share falls from 90.63% to 79.67%
+  statement: >-
+    The full crosswalk sends 5.15% of its weight to service industries; the recommended one, which the lens uses,
+    none. With services, standard patent applications (FY2016 to FY2025) reach 19 divisions instead of 8, and
+    manufacturing's share falls from 90.63% to 79.67%.
+  figures:
+    - value: "8 → 19"
+      label: divisions with patents, without and with services
+    - value: "90.63% → 79.67%"
+      label: manufacturing's share of standard patents
+    - value: "5.15%"
+      label: of the full crosswalk's weight sent to services
+  points:
+    - "The totals agree (301,515 and 301,513 expected applications)."
+    - "Information media gains 3.96% of applications, health care 2.94%, wholesale trade 1.48%, professional services
+      0.53% (from 0.03%)."
+    - "Australians' applications: manufacturing 87.61% to 75.04%."
+    - "The crosswalk without services stays the main measure; the counts with services sit beside it, never added."
+  questions:
+    - q: 3
+      how: Lets industry-level patent pairs include services, which most of the economy is.
+  sources: [concordances, iprapid]
+  chart:
+    type: bar
+    title: Manufacturing's share of standard patent applications
+    subtitle: FY2016 to FY2025, through ALP's crosswalk without and with services
+    x: {type: category, values: [All applications, Australians' applications]}
+    y: {name: "% of applications", min: 0, max: 100, format: pct, digits: 2}
+    series:
+      - name: Without services
+        data: [90.63, 87.61]
+        colour: muted
+      - name: With services
+        data: [79.67, 75.04]
+    source: IP RAPID; ALP crosswalks (lens industries)
+  prep:
+    - what: ALP's crosswalk with services, from IPC classes to ISIC and then ANZSIC, added beside the main one.
+      why: The main crosswalk gives services no patents ({U75}).
+  steps:
+    - Spread standard patent applications over divisions through both crosswalks.
+    - Compare the totals and each division's share.
+  assumptions:
+    - ALP's service weights are sound, though its authors recommend the version without them.
+  limits:
+    - Expected counts, not counts of firms in each industry.
+  next: >-
+    Stage 2 redoes the industry pairs with both ({B53}, {B54}).
+  terms: [crosswalk, expected-count, anzsic]
+  related: [B53, B54, U75]
+
+- id: U119
+  lens: industries
+  about: data
+  headline: The 2024-25 business survey adds a third year of innovation by industry; the share of innovating businesses has not recovered
+  statement: >-
+    12 data cubes with 849 indicators for 17 divisions. Businesses with any innovation activity: 51.9% (2020-21),
+    45.7% (2022-23) and 45.6% (2024-25). In 2024-25 from 27.6% in transport, postal and warehousing to 59.4% in
+    retail.
+  figures:
+    - value: "51.9% → 45.6%"
+      label: businesses with any innovation activity, 2020-21 to 2024-25
+    - value: "849"
+      label: indicators in 12 data cubes
+  points:
+    - "Professional services fell from 60.2% to 44.4% and administrative services from 53.5% to 36.3% over the three
+      surveys."
+    - "The ABS published no 2023-24 release, and the survey leaves out public administration and education."
+    - "Each is a sample estimate, so differences of a few points are not reliable ({U79})."
+  questions:
+    - q: 3
+      how: A third survey year to set innovation beside IP by industry ({B60}).
+  sources: [abs_bcs_cubes]
+  chart:
+    type: bar
+    title: Businesses with any innovation activity
+    subtitle: All businesses, by survey year
+    x: {type: category, values: [2020-21, 2022-23, 2024-25]}
+    y: {name: "% of businesses", min: 0, max: 60, format: pct, digits: 1}
+    series:
+      - name: Innovation-active
+        data: [51.9, 45.7, 45.6]
+    source: ABS Business Characteristics Survey, data cubes (lens industries)
+  prep:
+    - what: The survey's data cubes joined to the industries lens's companion table, beside the API's flows, never
+        added to them.
+      why: The cubes hold the 2024-25 release the API does not.
+  steps:
+    - Read every cube, and keep each table's block (all, innovation-active, not) in the indicator.
+  assumptions:
+    - The cubes' definitions match the earlier releases'.
+  limits:
+    - Sample estimates; small differences are not reliable.
+  next: >-
+    Stage 2 repeats {B42} with it ({B60}).
+  terms: [bcs, anzsic]
+  related: [B60, U79]

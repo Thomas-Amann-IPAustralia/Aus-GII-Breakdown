@@ -5,8 +5,10 @@
 
 The pages (`evidence/index.html`) read only what this writes. Three kinds of input meet here:
 - the plain-English layer in `analysis/atlas/content/` (written for readers who are not data scientists);
-- the notebook itself (`analysis/notebooks/01_univariate.ipynb`): each observation's own words and the charts above
-  it, read by `atlas.notebook`, so the pages quote the notebook instead of copying it;
+- the notebooks themselves (`analysis/notebooks/01_univariate.ipynb` for Stage 1, `02_bivariate.ipynb` for Stage
+  2): each observation's own words and the charts above it, read by `atlas.notebook`, so the pages quote the notebook
+  instead of copying it. Stage 1's plain English is in `content/observations/`, Stage 2's in
+  `content/observations/stage2/`, one file per lens in each;
 - the corpus's records of where each source came from and where it is kept (`config/sources.yaml`,
   `data/manifest.json`).
 
@@ -57,9 +59,13 @@ OBS_FIELDS = {
 OPTIONAL = {"chart", "notebook_charts", "related", "terms", "attachment", "featured"}
 
 # A number: digits with optional thousands commas and decimals (1,439,947; 0.2686; 55.3). Observation and question
-# references ({U44}, Q2), and glossary markup, are removed before numbers are read.
+# references ({U44}, {B6}, Q2), and glossary markup, are removed before numbers are read.
 _NUMBER = re.compile(r"(?<![\w.])\d[\d,]*(?:\.\d+)?")
-_REFS = re.compile(r"\{U\d+\}|\bQ[1-5]\b|\bU\d+\b|\bADR \d{4}\b|\bFY(?=\d)|\[\[[^\]|]+\|?|\]\]")
+_REFS = re.compile(r"\{[UB]\d+\}|\bQ[1-5]\b|\b[UB]\d+\b|\bOQ\d+\b|\bADR \d{4}\b|\bFY(?=\d)|\[\[[^\]|]+\|?|\]\]")
+_ID = re.compile(r"\{([UB]\d+)\}")
+NOTEBOOK_URLS = {
+    stage: f"{REPO}/blob/main/{path.relative_to(ROOT).as_posix()}" for stage, path in notebook.NOTEBOOKS.items()
+}
 
 
 def numbers(text: str) -> set[str]:
@@ -170,8 +176,10 @@ def notebook_charts(nb: notebook.Observation, pick: list[int] | None, write: boo
 def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tuple[list[dict], list[str]]:
     """Every observation's plain-English layer joined to the notebook, and the problems found on the way."""
     problems, out = [], []
-    for lens in LENSES:
-        path = CONTENT / "observations" / f"{lens}.yaml"
+    paths = [CONTENT / "observations" / f"{lens}.yaml" for lens in LENSES]
+    paths += [CONTENT / "observations" / "stage2" / f"{lens}.yaml" for lens in LENSES]
+    for path in paths:
+        lens = path.stem
         if not path.exists():
             continue
         for o in yaml.safe_load(path.read_text(encoding="utf-8")) or []:
@@ -188,6 +196,8 @@ def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tu
             if o.get("lens") != lens:
                 problems.append(f"{oid}: lens '{o.get('lens')}' in {path.name}")
             nb = nbs[oid]
+            if (path.parent.name == "stage2") != (nb.stage == 2):
+                problems.append(f"{oid}: a Stage {nb.stage} observation in {path.relative_to(CONTENT)}")
             if not problems or not any(p.startswith(f"{oid}:") for p in problems):
                 missing = check_numbers(o, nb)
                 if missing:
@@ -202,6 +212,7 @@ def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tu
             elif isinstance(chart, str):
                 o["chart"], o["chart_origin"] = chart, "query"
             o["strength"] = nb.strength
+            o["stage"] = nb.stage
             o["section"] = nb.section
             o["chapter"] = nb.chapter
             o["original"] = nb.text
@@ -220,13 +231,14 @@ def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tu
 
 def build(strict: bool = True, write: bool = True) -> dict:
     """Join everything into atlas.json; with write=False, only return it for the tests."""
-    nbs = {o.id: o for o in notebook.read()}
+    nbs = {o.id: o for o in notebook.read_all()}
     obs, problems = observations(nbs, write)
     site = load_yaml("site.yaml")
     atlas = {
         "built": site["as_at"],
         "repo": REPO,
-        "notebook": f"{REPO}/blob/main/analysis/notebooks/01_univariate.ipynb",
+        "notebook": NOTEBOOK_URLS[1],
+        "notebooks": {str(k): v for k, v in NOTEBOOK_URLS.items()},
         "site": site,
         "lenses": load_yaml("lenses.yaml"),
         "questions": load_yaml("questions.yaml"),
@@ -239,7 +251,7 @@ def build(strict: bool = True, write: bool = True) -> dict:
     atlas["audit"], more = audit.page(write)
     problems += more
     ids = {o["id"] for o in obs}
-    for ref in sorted(set(re.findall(r"\{(U\d+)\}", json.dumps(atlas, ensure_ascii=False)))):
+    for ref in sorted(set(_ID.findall(json.dumps(atlas, ensure_ascii=False)))):
         if ref not in nbs:
             problems.append(f"a reference to {ref}, which is not an observation")
     terms = set(atlas["glossary"])

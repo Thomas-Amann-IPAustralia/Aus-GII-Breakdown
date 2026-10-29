@@ -1,0 +1,404 @@
+# Stage 2, the timeline lens (section 5 of the bivariate notebook). Markup and rules as in ../firms.yaml.
+
+- id: B36
+  lens: timeline
+  about: system
+  headline: As changes, the monthly series hardly move together; the one pair that holds is the trade mark process itself
+  statement: >-
+    Every pair of monthly series was screened as quarterly year-on-year changes, in two periods. Only one pair is a
+    lead: trade mark registrations and trade mark oppositions (rank correlation 0.658; 0.588), because more marks
+    reaching the end of examination means more to register and more to oppose.
+  figures:
+    - value: "1"
+      label: lead among the monthly series
+    - value: "0.658"
+      label: trade mark registrations with oppositions
+    - value: "178"
+      label: pairs that are negligible
+  points:
+    - "68 quarters in the first period and 72 in the second; 198 pairs below the correction, 28 measured in too few
+      quarters."
+    - "Australians' and overseas applicants' filings do not move together; nor do filings and the CPI, nor filings and
+      the events that follow them a year or more later."
+    - "Each series' changes are driven by its own events (rushes, pauses, rule changes), not a common cycle, which is
+      why policy changes are read one by one ({B37})."
+  questions:
+    - q: 5
+      how: Shows there is no common cycle to strip out, so each policy change can be read against its own series.
+  sources: [iprapid, abs_prices]
+  prep:
+    - what: Each monthly series turned into year-on-year changes by quarter.
+      why: Levels of almost any two growing series go together; changes do not unless they are linked.
+  steps:
+    - Screen every pair of series' changes in each period.
+    - Keep pairs past the threshold and correction in both.
+  assumptions:
+    - Quarterly changes smooth the monthly noise without hiding real links.
+  limits:
+    - A link that takes longer than a year to show would be missed.
+  next: >-
+    The policy changes are tested one by one in {B37}.
+  terms: [screen, growth-rate, cpi]
+  related: [B37, B39]
+
+- id: B37
+  lens: timeline
+  about: system
+  headline: The two rushes, three of four steps and both 1995 pauses are far outside anything seen at placebo dates
+  statement: >-
+    For each policy change, the size of the spike or step in filing was compared with the same measure at up to 72
+    [[placebo]] months. The rush before Raising the Bar (a spike of 1.476 in logs for Australians' standard patents),
+    the innovation patent's closure (1.459), the 20-year term, the extension of term regime and the Trade Marks Act
+    1995 were all larger than every placebo month (0%).
+  figures:
+    - value: "0%"
+      label: of placebo months as large as the two rushes
+    - value: "4.39 times"
+      label: Australians' usual month, in the rush before Raising the Bar
+    - value: "93.06%"
+      label: of placebo months as large as the 1991 pause's step (ordinary)
+  points:
+    - "**Steps:** the 20-year term (July 1995), patent expiries -3.937; extension of term (January 1999) 2.419; the
+      innovation patent's introduction (May 2001), second-tier applications 0.531; the Designs Act 2003, overseas
+      applicants' designs 0.292. All 0% of placebos."
+    - "**Not beyond the ordinary:** Australians' designs after the Designs Act (0.063, 29.17%) and the Patents Act 1990
+      (April 1991), whose pause came two months after commencement."
+    - "**Pauses:** the Trade Marks Act 1995 (January 1996), registrations -7.205 and Australians' applications -0.712,
+      both 0%."
+  questions:
+    - q: 5
+      how: These six changes give clean breaks for the natural experiments Q5 needs, each beside series it should not have moved.
+    - q: 4
+      how: Shows which kinds of policy change visibly move filing.
+  sources: [iprapid, policy_events]
+  prep:
+    - what: For each change, the spike (the change month against the year before) and the step (the year after
+        against the year before), in logs.
+      why: Logs make a change of the same proportion the same size in a large and a small series.
+  steps:
+    - Measure each change's spike and step in the series it should move.
+    - Repeat at up to 72 placebo months from five years either side.
+    - Report the share of placebo months with a change at least as large.
+  assumptions:
+    - Placebo months show how large an ordinary month-to-month change can be.
+  limits:
+    - A placebo test shows a break is unusual, not what caused it; other events in the same window can contribute.
+  next: >-
+    Carried to Stage 3 and the question designs as the starting points for [[natural-experiment|natural experiments]].
+  terms: [placebo, natural-experiment, raising-the-bar, log-change]
+  related: [B36, B47, U28]
+
+- id: B38
+  lens: timeline
+  about: data
+  headline: Provisionals filed in FY2025 were followed up less often, individuals' by about half, but late recording cannot be ruled out
+  statement: >-
+    6.66% of Australian individuals' provisionals filed in FY2025 were followed by an Australian complete application
+    within 12 months, against 12.24% to 18.76% in FY2018 to FY2024; organisations' 9.49%. But Australian filers'
+    standard patents claiming an Australian application also fell, to 40.48% in FY2026, so if claims are recorded
+    late, both would fall whatever applicants did.
+  figures:
+    - value: "6.66%"
+      label: individuals' FY2025 provisionals followed up within 12 months
+    - value: "12.24% to 18.76%"
+      label: the same, FY2018 to FY2024
+    - value: "55.31% → 40.48%"
+      label: Australians' standard patents claiming an Australian application, FY2018 to FY2026
+  points:
+    - "Organisations: 9.49% in FY2025, against 10.63% to 20.68% before."
+    - "Claims were 55.31% to 60.61% in FY2018 to FY2023, then 53.53%, 49.15% and 40.48%, the same pattern {U90} read
+      as a rise in direct filing."
+    - "The individuals' fall is the larger (12.25% to 6.66%, against 12.05% to 9.49%), which fits the surge in
+      individuals' provisionals ({U8}) being ones not pursued; but this is a lead, not a finding."
+    - "It adds a question for IP Australia (OQ18): whether priority claims are recorded when an application is filed or
+      only later."
+  questions:
+    - q: 4
+      how: If real, many recent provisionals lead nowhere, a possible point for guidance to new filers.
+    - q: 2
+      how: Individuals' provisionals are followed up least.
+  sources: [iprapid]
+  chart:
+    type: bar
+    title: Provisionals followed by an Australian complete application within 12 months
+    subtitle: Australian filers' provisionals filed in FY2024 and FY2025
+    x: {type: category, values: [Individuals, Organisations]}
+    y: {name: "% followed up", min: 0, max: 20, format: pct, digits: 2}
+    series:
+      - name: FY2024
+        data: [12.25, 12.05]
+        colour: muted
+      - name: FY2025
+        data: [6.66, 9.49]
+    source: IP Australia, IP RAPID (lens rights, read monthly)
+  prep:
+    - what: Each provisional linked to any later complete application claiming it, from IP RAPID's links.
+      why: A provisional lapses after 12 months unless a complete application claims it.
+  steps:
+    - For each year's provisionals, find the share claimed by an Australian complete application within 12 months, with intervals.
+    - Check the share of standard patents claiming an Australian application in the same years.
+  assumptions:
+    - The links record every claim; for the latest years this may not hold.
+  limits:
+    - Late recording would produce the same fall; OQ18 asks IP Australia.
+  next: >-
+    Read as a lead only for FY2024 on, until IP Australia answers.
+  terms: [provisional, priority]
+  related: [U8, U90, B15]
+
+- id: B39
+  lens: timeline
+  about: system
+  headline: Australians' and overseas applicants' filings do not move together, and no Australia-only annual series moves with Australians' filing
+  statement: >-
+    As quarterly changes, Australians' and overseas applicants' trade marks go together only weakly (0.332, then
+    0.137), and designs and standard patents not at all. Of 568 pairs of an Australia-only annual series with
+    Australians' filing, only 4 pass the correction, and all four are other counts of the same filings.
+  figures:
+    - value: "4 of 568"
+      label: pairs with Australia-only annual series that pass the correction
+    - value: "0.636"
+      label: the World Bank's residents' patent applications with IP RAPID's, over 44 years
+  points:
+    - "336 series with 8 or more years of changes. 54 pairs reach 0.5 or more, but on short series (9 to 14 years),
+      which the correction does not let through."
+    - "Overseas filings follow the PCT's 30-month delay and foreign cycles ({U6})."
+    - "**So** the Australia-only sources add context, not year-to-year signals about filing."
+  questions:
+    - q: 5
+      how: Australia-only economic series are for the context of Stage 3's designs, not for pairing with filing.
+  sources: [iprapid, mwm, wdi]
+  prep:
+    - what: Each annual series for Australia alone (Measuring What Matters, BCARR and others) as year-on-year changes.
+      why: Annual series need changes, as the monthly ones do.
+  steps:
+    - Relate Australians' and overseas applicants' changes, in two periods.
+    - Relate each annual series' changes to Australians' filing, with the correction for 568 pairs.
+  assumptions:
+    - Eight years of changes is the least that can show a link.
+  limits:
+    - Short series cannot show any but very strong links.
+  next: >-
+    Not carried as pairs; used as context in Stage 3.
+  terms: [multiple-testing, growth-rate]
+  related: [B36]
+
+- id: B47
+  lens: timeline
+  about: system
+  headline: Changes in the fees to obtain a right rarely moved filing beyond what placebo months show; the clear breaks are new Acts
+  statement: >-
+    18 fee changes of 10% or more (12 rises, 6 cuts) were tested against placebo months: 34 pairs of change and
+    filing series. Filing rushed beyond 95% of its placebo months 4 times and stepped 3 times, against about 1.7 of
+    each expected by chance. The clearest breaks came with the Trade Marks Act 1995 and the Designs Act 2003.
+  figures:
+    - value: "34"
+      label: pairs of a fee change and a filing series
+    - value: "4 and 3"
+      label: rushes and steps beyond 95% of placebos
+    - value: "1.7"
+      label: of each expected by chance
+  points:
+    - "The Trade Marks Act 1995 (January 1996, the cost of a trade mark up 36.59%): Australians' applications -0.315 in
+      logs (2.778% of placebos as large), the pause of {B37}."
+    - "The Designs Act 2003 (June 2004, a design's filing fee up 122.2%): overseas applicants' designs rose (a rush of
+      0.369, 0%)."
+    - "Breaks the way a price would point: overseas applicants' standard patents after the 15.31% cut of January 1998,
+      and their trade marks after the 40.48% cut of October 2016 (a step of 0.175, 2.778%); Australians' trade marks
+      did not move then (-0.035, 63.89%)."
+    - "Windows can hold other changes: July 2012's patent step includes the rush before Raising the Bar."
+  questions:
+    - q: 4
+      how: At the national level, official fees have been a weak lever on filing, IP Australia's most direct lever.
+    - q: 5
+      how: Fee changes are candidate natural experiments, but most are small and some are confounded with Acts.
+  sources: [frl_fees, iprapid, policy_events]
+  chart:
+    type: bar
+    title: Fee changes of 10% or more followed by an unusual move in filing
+    subtitle: Of 34 pairs of a change and a filing series, beyond 95% of placebo months
+    x: {type: category, values: [Rushes, Steps]}
+    y: {name: Pairs, min: 0}
+    series:
+      - name: Found
+        data: [4, 3]
+      - name: Expected by chance
+        data: [1.7, 1.7]
+        colour: muted
+    source: Federal Register of Legislation (fee regulations); IP RAPID (lens timeline)
+  prep:
+    - what: The cost of obtaining each right in each month, read from every version of the fee regulations ({U108}).
+      why: A change in the fee is dated by the regulation that made it.
+  steps:
+    - Take each month in which the cost of obtaining a right changed by 10% or more.
+    - Measure the rush and step in filing around it, as {B37} does for policy changes.
+    - Compare each with up to 72 placebo months, and count those beyond 95% of them.
+  assumptions:
+    - Filers respond to the official fee, not the attorney's fee (not recorded), which is often larger.
+  limits:
+    - Several changes coincide with new Acts, so a break cannot be put down to the price alone.
+  next: >-
+    {B48} relates the size of each change to the size of the step; {B49} tests renewal fees.
+  terms: [official-fees, placebo, log-change]
+  related: [B48, B49, U108, U110]
+
+- id: B48
+  lens: timeline
+  about: system
+  headline: Bigger fee rises go with smaller steps in filing, but the interval includes no link
+  statement: >-
+    Across the 34 pairs, the change in the fees to obtain a right and the step in filing that follows have a rank
+    correlation of -0.306 (95% interval -0.646 to 0.080). The direction is a price's, but the size cannot be told from
+    no association with 18 changes, several confounded with Acts.
+  figures:
+    - value: "-0.306"
+      label: fee change with the step in filing
+    - value: "-0.646 to 0.080"
+      label: the 95% interval, which includes no link
+  points:
+    - "A bootstrap interval, resampling the pairs."
+  questions:
+    - q: 5
+      how: Too few fee changes to estimate how filing responds to price; a sharper test is needed.
+  sources: [frl_fees, iprapid]
+  prep:
+    - what: The 34 pairs of {B47}, each with the size of its fee change and its step.
+      why: Relates the size of a price change to the size of the response.
+  steps:
+    - Rank the fee changes and the steps, and correlate them.
+    - Bootstrap the pairs for an interval.
+  assumptions:
+    - Each pair is an independent test (several share a change).
+  limits:
+    - 18 changes; Acts confound some.
+  next: >-
+    Not a lead; the right-level test in Stage 3 is sharper.
+  terms: [correlation, bootstrap, interval]
+  related: [B47, B49]
+
+- id: B49
+  lens: timeline
+  about: system
+  headline: Patent cessations rose beyond every placebo month after the 2002 renewal rise; no other change to renewal fees did
+  statement: >-
+    After renewal fees for the full term rose 16.17% in September 2002, patent cessations in months 7 to 18 rose
+    0.353 in logs, more than at any of 72 placebo months. No other renewal change moved cessations beyond the
+    ordinary, including October 2020's rise of 42.82% (0.114, 31.25% of placebos as large).
+  figures:
+    - value: "0.353"
+      label: rise in patent cessations after September 2002, in logs
+    - value: "0%"
+      label: of placebo months as large
+    - value: "42.82%"
+      label: October 2020's renewal rise, with no unusual move
+  points:
+    - "July 2012's rise of 15.12%: 0.069 (66.67%)."
+    - "Trade marks: the 40% cut of November 1998 and the 33.33% rise of November 2016 show nothing beyond the ordinary."
+    - "Designs: no change beyond the ordinary, including July 2004 ($55 to $275, when the 2003 Act's renewal replaced the
+      first extension)."
+    - "**For Q4 and Q5:** at the national level fee changes have been a weak lever on how many rights are kept, apart
+      from 2002; the sharper test is each right's renewal at the anniversary a fee changed."
+  questions:
+    - q: 4
+      how: Renewal fees have rarely changed how many rights are kept, nationally.
+    - q: 5
+      how: The 2002 rise is a candidate natural experiment for the effect of renewal fees on keeping patents.
+  sources: [frl_fees, iprapid]
+  chart:
+    type: bar
+    horizontal: true
+    title: Patent cessations after changes in renewal fees
+    subtitle: Change in cessations in months 7 to 18 after each change (logs), against its share of placebo months as large
+    x: {type: category, values: [September 2002 (+16.17%), July 2012 (+15.12%), October 2020 (+42.82%)]}
+    y: {name: Change in cessations (logs), min: 0, format: ratio}
+    series:
+      - name: Change in cessations
+        data: [0.353, 0.069, 0.114]
+    source: Federal Register of Legislation (fee regulations); IP RAPID (lens timeline)
+  prep:
+    - what: The cost of keeping each right for its full term ({U109}), and monthly cessations.
+      why: Owners decide at each renewal whether to keep paying.
+  steps:
+    - Take each change in renewal fees.
+    - Measure the change in cessations 7 to 18 months later, against placebo months.
+  assumptions:
+    - Owners respond within a year and a half, when renewals at the new fee fall due.
+  limits:
+    - National counts mix rights of every age; the right-level test is sharper.
+  next: >-
+    Carried to Stage 3 as the right-level test of renewal at each anniversary a fee changed.
+  terms: [renewal, cease, placebo, official-fees]
+  related: [B47, B8, U109, U111]
+
+- id: B52
+  lens: timeline
+  about: system
+  headline: The dollar's value does not go consistently with filing from overseas; interest rates and overseas filing rise together in booms
+  statement: >-
+    As yearly changes by quarter, the dollar against overseas applicants' standard patents is -0.213 before 2008 and
+    0.259 after: the sign flips. The cash rate rises with overseas applicants' trade marks (0.416 and 0.201) and
+    designs (0.194 and 0.342). Australians' filing barely moves with either.
+  figures:
+    - value: "-0.213 then 0.259"
+      label: the dollar with overseas standard patents, before and after 2008
+    - value: "0.416 and 0.201"
+      label: the cash rate with overseas trade marks
+  points:
+    - "A dearer dollar goes with more overseas designs, not fewer (0.187 and 0.198): a shared cycle, not a price."
+    - "Australians' filing: -0.165 to 0.231 over the ten pairs."
+    - "**For Stage 3:** the business cycle, here in the [[cash-rate]], is a [[third-factor]] for any before-and-after
+      comparison; the exchange rate is not a usable price signal at this resolution."
+  questions:
+    - q: 5
+      how: Identifies the cycle that before-and-after comparisons of policy must allow for.
+  sources: [rba, iprapid]
+  prep:
+    - what: The RBA's cash rate and exchange rates ({U113}) as yearly changes by quarter.
+      why: Matches the timeline screen's form.
+  steps:
+    - Relate each RBA series to each filing series, before and after mid-2008.
+  assumptions:
+    - Monthly averages (cash rate) and month-end values (dollar) stand for the quarter.
+  limits:
+    - Two periods of 68 and 72 quarters; the cycle may differ again.
+  next: >-
+    The cycle is a third factor in Stage 3.
+  terms: [cash-rate, growth-rate]
+  related: [B56, B37, U113]
+
+- id: B56
+  lens: timeline
+  about: system
+  headline: Real GDP goes with overseas applicants' patenting, more strongly since 2008; the states' demand does not track Australians' filing
+  statement: >-
+    As yearly changes by quarter, real GDP goes with overseas applicants' standard patents at 0.159 to mid-2008 and
+    0.373 after; with Australians' standard patents at -0.075 and 0.194. Of 16 pairs of a state's final demand with
+    Australians' filing, two keep their sign at 0.1 or more in both periods, about what chance gives.
+  figures:
+    - value: "0.159 → 0.373"
+      label: real GDP with overseas applicants' standard patents
+    - value: "Two of 16"
+      label: state demand pairs that hold their sign
+  points:
+    - "Overseas applicants' trade marks and designs: 0.05 to 0.227. Australians' trade marks 0.207 and -0.202."
+    - "The two that hold are the Northern Territory's (patents 0.168 and 0.164, trade marks -0.189 and -0.3)."
+    - "**So** the cycle ({B52}) and real growth go with filing from overseas, not from here."
+  questions:
+    - q: 1
+      how: Overseas applicants' filing in Australia tracks the Australian economy, a sign they file for the market here.
+    - q: 5
+      how: Growth is another third factor for before-and-after comparisons.
+  sources: [abs_national_accounts, iprapid]
+  prep:
+    - what: GDP and each state's final demand from the national accounts ({U116}), quarterly.
+      why: The timeline holds them in each quarter's last month.
+  steps:
+    - Relate yearly changes in GDP and states' demand to filing, in two periods.
+  assumptions:
+    - Chain volume GDP measures real growth.
+  limits:
+    - Two periods; small links.
+  next: >-
+    Carried to Stage 3 as a third factor.
+  terms: [gdp, growth-rate]
+  related: [B52, U116]

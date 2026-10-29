@@ -3,7 +3,7 @@
 **Status (2026-10-28):** Stage 2 of the exploratory data analysis is complete, in
 `analysis/notebooks/02_bivariate.ipynb` (observations B1 to B46; section 8 is the short version of this document).
 The method is ADR 0030. Every observation is an association (observational) or a description: none is a cause.
-The evidence atlas (`evidence/`) is not yet updated for Stage 2; the owner decides when.
+The evidence atlas (`evidence/`) has Stage 2's pages (ADR 0035, 2026-10-29); they go live when the branch is published.
 
 ## 1. In brief
 

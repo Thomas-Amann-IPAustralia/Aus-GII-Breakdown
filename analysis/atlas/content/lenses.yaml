@@ -26,14 +26,14 @@ corpus:
 rights:
   name: IP rights
   unit: One row per IP right
-  rows: 4,368,006 rights
+  rows: 4,356,908 rights
   facts:
-    - value: "4,368,006"
+    - value: "4,356,908"
       label: patents, trade marks, designs and plant breeder's rights
     - value: "1904 to 2026"
       label: the years the register covers
-    - value: "74"
-      label: columns, after five attachments
+    - value: "86"
+      label: columns, after five attachments and the register's fills
   description: >-
     Every patent, trade mark, design and plant breeder's right in IP Australia's open register, IP RAPID, from the
     first application in February 1904 to October 2026. Each row says what the right is, who filed it and who holds
@@ -44,8 +44,10 @@ rights:
 
     Five **attachments** add those last groups of columns from other tables: the parties (who filed, who holds, who
     represents them), the events (each milestone and the right's lifetime), the links (the route into Australia),
-    Google Patents (the worldwide family) and the inventors.
-  sources: [iprapid, google_patents, google_patents_inventors, wgnd, abs_regions]
+    Google Patents (the worldwide family) and the inventors. IP Australia's own register fills what IP RAPID leaves
+    out (business numbers, design owners' countries, the inventors of provisional applications), in columns beside
+    IP RAPID's, never replacing them.
+  sources: [iprapid, ipa_register, ipa_provisionals, google_patents, google_patents_inventors, wgnd, abs_regions]
   questions: [1, 2]
   repairs:
     - what: Where a right's applicants have no country recorded, its origin is "unknown", not "overseas".
@@ -105,12 +107,19 @@ timeline:
       label: monthly series of applications and events
     - value: "17"
       label: dated policy changes
+    - value: "26"
+      label: official fee columns, from every version of the fee regulations
   description: >-
     IP Australia's whole register month by month: applications of each type from Australian, overseas and
     unknown applicants; what happened to rights (grants, lapses, cessations, expiries, oppositions, sales,
     extensions of term) as counts of events; the Consumer Price Index each quarter; and the month each of 17 IP
     policy changes took effect.
-  sources: [iprapid, policy_events, abs_prices]
+
+
+    Added after Stage 2: the official fees in force each month (and each change to them), the Reserve Bank's cash
+    rate and exchange rates, GDP and each state's final demand from the national accounts, and the PBS's monthly
+    cost with Section 100.
+  sources: [iprapid, policy_events, abs_prices, frl_fees, ipa_fees, rba, abs_national_accounts, pbs]
   questions: [1, 4, 5]
   repairs:
     - what: Each series starts only where its records become continuous and complete; earlier months are empty, not
@@ -137,14 +146,15 @@ firms:
   facts:
     - value: "398,450"
       label: ABNs that used one of five schemes
-    - value: "40"
+    - value: "50"
       label: columns
   description: >-
     Every Australian Business Number that appears in IP Australia's data, the R&D Tax Incentive, AusTender (government
     contracts) or the ATO's tax transparency reports, with what the business is, where it is registered, how old it
     is on the record, the IP it filed and holds, its R&D claims, its large-company income and its contracts. It is the
-    businesses that used a scheme, not every business in Australia.
-  sources: [linkage, abr, asic, iprapid, iplord, rdti, austender, ato_ctt, abs_regions]
+    businesses that used a scheme, not every business in Australia. For employers of 100 or more, WGEA's reports add
+    a size band and an industry; smaller firms have neither.
+  sources: [linkage, abr, asic, iprapid, iplord, rdti, austender, ato_ctt, wgea, abs_regions]
   questions: [2, 3, 4]
   repairs:
     - what: Applications are credited to the business that filed them, not the one that holds them now.
@@ -173,14 +183,15 @@ regions:
       label: postal areas
     - value: "25,365,506"
       label: people (2021 Census geography)
-    - value: "22.5 million"
-      label: attached values from five more sources
+    - value: "7"
+      label: more sources in the companion table of area values
   description: >-
     Every Australian postal area (the ABS's version of a postcode) with its people, businesses, remoteness,
     socio-economic indexes, Census medians, the IP filed from it over FY2017 to FY2026, its R&D claimants and its
-    government contracts. A long companion table holds every value of five more area sources: the Census, Data by
-    Region, business counts (CABEE), PHIDU's health and social atlas, and the Clean Energy Regulator.
-  sources: [abs_regions, abs_census, abr, iprapid, rdti, austender, abs_cabee, phidu, cer, linkage]
+    government contracts. A long companion table holds every value of seven more area sources: the Census, Data by
+    Region, business counts (CABEE), PHIDU's health and social atlas, the Clean Energy Regulator, the ATO's
+    statistics by postcode and the Census time series (2011, 2016 and 2021).
+  sources: [abs_regions, abs_census, abr, iprapid, rdti, austender, abs_cabee, phidu, cer, ato_postcode, abs_census_tsp, linkage]
   questions: [2, 4]
   repairs:
     - what: Applications are counted at the filer's postcode, not the current holder's.
@@ -209,14 +220,15 @@ national:
       label: core indicators
     - value: "229"
       label: places
-    - value: "41.2 million"
+    - value: "41 million"
       label: attached values (GII, OECD, WIPO and more)
   description: >-
     Thirty indicators for every country, 1960 to 2025: IP filings, royalties, R&D, researchers, GDP and exports from
     the World Bank; filings by residents of each country at every office from WIPO; and the OECD's R&D intensity. A
     long companion table holds every value of the Global Innovation Index 2026, 24 OECD datasets, WIPO's other tables,
-    Measuring What Matters and Closing the Gap.
-  sources: [wdi, wipo_ipstats, oecd, gii, mwm, ctg]
+    Measuring What Matters and Closing the Gap, with supplementary values for four GII indicators blank for
+    Australia, kept apart from the GII's own.
+  sources: [wdi, wipo_ipstats, oecd, gii, mwm, ctg, abs_schools, abs_rd_vc]
   questions: [1, 4]
   repairs:
     - what: WIPO's filings by residents of former states (such as the Soviet Union) and of unknown origin are kept,
@@ -240,14 +252,15 @@ industries:
       label: industry divisions
     - value: "FY1990 to FY2026"
       label: 37 financial years
-    - value: "1.4 million"
-      label: attached values from the ABS and BCARR
+    - value: "2"
+      label: patent crosswalks, without services (the main one) and with
   description: >-
     The 19 divisions of the Australian and New Zealand industry classification: IP applications assigned to
     industries through published crosswalks, businesses and their entries and exits, business R&D, wages and the
-    creative industries' value added. No firm in the corpus has an industry, so IP reaches industries only through
-    what it protects: a patent's technology classes and a trade mark's classes of goods and services.
-  sources: [iprapid, concordances, abs_cabee, abs_rd_vc, abs_prices, bcarr_creative, abs_bcs]
+    creative industries' value added, value added by division from the national accounts, and three business surveys
+    of innovation. Few firms in the corpus have an industry, so IP reaches industries only through what it protects:
+    a patent's technology classes and a trade mark's classes of goods and services.
+  sources: [iprapid, concordances, abs_cabee, abs_rd_vc, abs_prices, bcarr_creative, abs_bcs, abs_bcs_cubes, abs_national_accounts]
   questions: [2, 3, 4]
   repairs:
     - what: Each right is split over industries by probabilities (an "expected count"), so a division's count is a sum
@@ -281,8 +294,9 @@ institutions:
     research output and citations, the citations US patents make to their work, their ARC and NHMRC grants, the IP
     they file in Australia, those patents' families abroad and their government contracts. The link from an
     institution to its rights, grants and contracts is a reviewed list of names (including commercialisation
-    companies) and ABNs.
-  sources: [ror, openalex, openalex_works, reliance_on_science, arc_grants, nhmrc_grants, iprapid, google_patents, austender]
+    companies) and ABNs. The National Survey of Research Commercialisation adds disclosures, licences, start-ups and
+    licence income for 2000 to 2015.
+  sources: [ror, openalex, openalex_works, reliance_on_science, arc_grants, nhmrc_grants, iprapid, google_patents, austender, nsrc]
   questions: [1, 2, 3]
   repairs:
     - what: Institutions are linked to rights, grants and contracts through a reviewed list of 116 extra names and 146

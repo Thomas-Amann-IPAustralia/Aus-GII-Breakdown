@@ -37,4 +37,10 @@ the owner's, or Claude's, which the owner can overturn.
 | [0029](0029-register-fills-and-provisionals.md) | IP Australia's register read whole (`ipa_register`, `ipa_provisionals`); its ABNs, design countries and expedite events fill the lenses beside IP RAPID's values; firms credited by the filled filer ABN; 11,098 empty design records dropped and listed; U7, U13, U34 and U45 restated (U99 to U104) | 2026-10-27 | Owner (A12, A13), Claude (how) |
 | [0030](0030-stage-2-method.md) | Stage 2's method: every pair of a lens screened on one scale (rho, the rank correlation ratio, Cramér's V), a lead only if at least 0.1, past a false discovery rate of 5%, held in a second period or half, and not by construction (`screens.yaml`); then the planned pairs with intervals in two periods | 2026-10-28 | Claude (owner asked for Stage 2, A14) |
 
-Next free number: 0031.
+| [0031](0031-fee-history.md) | The history of official fees, from every version of the fee regulations on the Federal Register of Legislation, with the gaps filled from the amending instruments; joined to the timeline and the policy register | 2026-10-28 | Claude (owner asked for the data gaps, A15) |
+| [0032](0032-firm-size-and-industry.md) | Firms' size and industry from WGEA, for employers of 100 or more; nothing free for smaller firms | 2026-10-28 | Claude (owner asked for the data gaps, A15) |
+| [0033](0033-gii-supplementary-observations.md) | Supplementary values for the GII indicators blank for Australia, kept beside the official release, never in its rows | 2026-10-29 | Claude (owner asked for the data gaps, A15) |
+| [0034](0034-austender-amendments-to-ended-contracts.md) | AusTender amendments published after August 2019 to contracts that had ended by then: measured, and fetched by id | 2026-10-29 | Claude (owner asked for the data gaps, A15) |
+| [0035](0035-stage-2-in-the-evidence-atlas.md) | Stage 2 in the evidence atlas: both notebooks read, Stage 2's plain English in its own folder under the same numbers rule, quoted charts, the stage shown on every page; three corrections | 2026-10-29 | Owner (A16), Claude (how) |
+
+Next free number: 0036.

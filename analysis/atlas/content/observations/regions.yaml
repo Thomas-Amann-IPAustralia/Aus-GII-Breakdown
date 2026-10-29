@@ -622,3 +622,80 @@
     Stage 2 adjusts values for inflation and compares with areas' IP.
   terms: [austender, nominal]
   related: [U46, U47]
+
+- id: U117
+  lens: regions
+  about: data
+  headline: The ATO's statistics by postcode reach nearly every postal area in twelve income years, and more people have business income
+  statement: >-
+    The ATO's individual statistics cover 12 income years (2012-13 to 2023-24) and 2,536 to 2,561 postal areas a
+    year. In 2023-24, 2,558 of the lens's 2,641 areas have values, holding 99.98% of its people. Individuals with
+    business income rose from 8.59% to 10.36% of those lodging.
+  figures:
+    - value: "99.98%"
+      label: of the lens's people in areas with values (2023-24)
+    - value: "8.59% → 10.36%"
+      label: individuals lodging with business income
+    - value: "$699 billion → $1,289 billion"
+      label: taxable income, dollars of the day
+  points:
+    - "Individuals lodging rose from 12,631,735 to 16,408,689."
+    - "The ATO leaves out postcodes with too few individuals."
+    - "Its items join the places lens's companion table as published (counts and sums, never averaged)."
+  questions:
+    - q: 2
+      how: Adds incomes and business owners by place, to set beside where filing happens.
+  sources: [ato_postcode]
+  prep:
+    - what: The ATO's Table 6 by postcode and income year; an item labelled only "Number of individuals" in some
+        years is read as a count.
+      why: The ATO's labels vary between releases.
+  steps:
+    - Read every year's table, and check its postcodes against the lens's postal areas.
+    - Count the coverage and summarise the national totals.
+  assumptions:
+    - A postcode's individuals live in its postal area.
+  limits:
+    - Dollars of the day; small postcodes are suppressed.
+  next: >-
+    Stage 2 relates incomes and business owners to filing ({B58}).
+  terms: [postal-area, nominal]
+  related: [B58]
+
+- id: U118
+  lens: regions
+  about: data
+  headline: The Census time series reaches every postal area in 2011, 2016 and 2021, and its 2021 count matches the published one
+  statement: >-
+    233 indicators from five Census tables, for all 2,641 postal areas in each of three Censuses (apportioned from
+    2021 SA2s). People: 21,458,812 (2011), 23,355,492 (2016) and 25,369,757 (2021), against 25,369,823 published for
+    postal areas in 2021, a difference of 66.
+  figures:
+    - value: "66"
+      label: people difference from the published 2021 count
+    - value: "18.84% → 26.32%"
+      label: people 15 and over with a bachelor degree or higher, 2011 to 2021
+    - value: "$609.4 → $840.5"
+      label: median weekly personal income (weighted average of areas' medians)
+  points:
+    - "Graduates were 21.98% in 2016; median income $692.6."
+    - "The time series is for change between Censuses; for 2021 levels the profile published for postal areas is used.
+      The two are never added together."
+  questions:
+    - q: 2
+      how: Lets change in education and income be set beside change in filing ({B59}).
+  sources: [abs_census_tsp, abs_census]
+  prep:
+    - what: Each Census's SA2 values apportioned to 2021 postal areas.
+      why: Areas' boundaries change between Censuses; apportioning puts all three on one map.
+  steps:
+    - Apportion each table to postal areas.
+    - Check the 2021 total against the count the ABS published for postal areas.
+  assumptions:
+    - People are spread within an SA2 as the apportioning assumes.
+  limits:
+    - The income measure averages areas' medians, weighted by residents; it is not a national median.
+  next: >-
+    Stage 2 compares change between Censuses with change in filing ({B59}).
+  terms: [census, postal-area, median]
+  related: [B59]
