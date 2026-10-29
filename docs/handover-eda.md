@@ -56,15 +56,17 @@ settled (ADR 0010).
   2.4% lost to the filter and 2.9% to merged ids. Not worth a re-harvest. U121 (7.7).
 - **B9, the NSRC**: `nsrc` (unit records 2000 to 2015, free on data.gov.au; no request needed), joined by name to the
   institutions lens (`nsrc_*`; six aliases in `names.csv`, source nsrc). U122 (7.8); B62 (7.3).
-- **B10, the missing AusTender amendments: in progress.** `audit.austender_amendments` sampled 500 contracts in each
-  end-date band: 7.6% of those that ended in the year before 30 August 2019 have amendments the corpus lacks (7.2%,
-  5.4% and 1.6% in earlier bands), and their value is heavy-tailed (one contract adds $88 million), so OQ3's "under 1%
-  of value" does not hold for recent contracts (ADR 0034). `austender` now also asks by id for every contract that
-  ended in the four years before then (234,313, about nine hours at 7 to 8 a second; raw `RAW_ENDED`), cached by
-  batch so a rerun resumes. `uv run corpus run austender` does everything; to harvest only these, call
-  `austender._harvest_by_id(ctx, austender._ended(bulk), name=austender.RAW_ENDED)`, save the context, then
-  `uv run corpus reprocess austender`. Once done: `uv run corpus run linkage` (the firms' contract totals), rebuild
-  `firms`, `regions` and `institutions`, re-run the notebooks, and check the observations that quote AusTender numbers.
+- **B10, the missing AusTender amendments: measured and coded, not yet harvested.** `audit.austender_amendments`
+  sampled 500 contracts in each end-date band: 7.6% of those that ended in the year before 30 August 2019 have
+  amendments the corpus lacks (7.2%, 5.4% and 1.6% in earlier bands), and their value is heavy-tailed (one contract
+  adds $88 million), so OQ3's "under 1% of value" does not hold for recent contracts (ADR 0034). `austender` now also
+  asks by id for every contract that ended in the four years before then (`_ended`, 234,313; raw `RAW_ENDED`), but
+  the harvest takes about nine hours at 7 to 8 a second and a cloud session's container does not keep it running
+  while the session is idle: the first attempt stopped after 8,000. To finish: run it where it can go uninterrupted
+  (`uv run corpus run austender`, or only this part with `austender._harvest_by_id(ctx, austender._ended(bulk),
+  name=austender.RAW_ENDED)`, saving the context, then `uv run corpus reprocess austender`); it caches by batch, so a
+  rerun on the same machine resumes. Then `uv run corpus run linkage`, rebuild `firms`, `regions` and
+  `institutions`, re-run the notebooks, and check the observations that quote AusTender numbers.
 - **B11, the PBS with Section 100**: `pbs/monthly` (the monthly workbook, July 2022 on, every section); the timeline
   gains `pbs_*`. Section 100 is about 30% of the government's cost. U123 (5.10). No Stage 2 pair (waits for OQ8).
 - **Notebooks:** re-run whole after each addition; no earlier output changed except row order in two unordered
@@ -75,7 +77,8 @@ settled (ADR 0010).
   A4 and A2 sections of notebook 1 were moved before their lens's summary (each summary had shared a cell with the
   last observations), and three summary tables of notebook 2 whose new rows had been appended after their closing
   text were repaired.
-- **Next:** finish B10 (above); then the gaps are done except B5 (OQ22). The owner's items: OQ20, OQ21, OQ22.
+- **Next:** finish B10 (above: a nine-hour harvest that needs an uninterrupted run); then the gaps are done except
+  B5 (OQ22). The owner's items: OQ20, OQ21, OQ22.
 
 **Status (2026-10-28): Stage 2 is complete** (A14; B1 to B46, `docs/stage-2-summary.md`), in `analysis/notebooks/02_bivariate.ipynb`, with the method
 of ADR 0030. **The website (evidence atlas) is not to be updated until all of Stage 2 is finished** (the owner's

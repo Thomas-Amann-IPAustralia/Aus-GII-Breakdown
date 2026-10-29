@@ -36,4 +36,6 @@ API's batch release date (27 April 2023), so their true dates are unknown.
 3. The lenses that use AusTender (`firms`, `regions`, `institutions`) are rebuilt, and the observations quoting their
    contract counts or values are checked against the re-run notebooks.
 
-**Consequences.** Recorded in the handover once the harvest and the re-run are done.
+**Consequences.** The code is in place; the harvest has not been completed (a cloud session's container stops it
+when idle; the first attempt reached 8,000 contracts). Until it is, the corpus lacks these amendments, as before.
+The handover says how to finish it.
