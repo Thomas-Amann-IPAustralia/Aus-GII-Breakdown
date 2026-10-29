@@ -49,6 +49,10 @@ def items(df: pd.DataFrame, year: int) -> pd.DataFrame:
     """Long: one row per postcode and item, its unit read from the header's last word."""
     state = next(c for c in df.columns if c.lower().startswith("state"))
     pc = next(c for c in df.columns if c.lower() == "postcode")
+    # some years name a count without its unit ("Number of individuals", 2013-14)
+    df = df.rename(
+        columns={c: f"{c} no." for c in df.columns if c.startswith("Number of individuals") and not c.endswith("no.")}
+    )
     cols = [c for c in df.columns if re.search(r"(no\.|\$)$", c)]
     long = df.melt(id_vars=[state, pc], value_vars=cols, var_name="header", value_name="value")
     long = long[long[pc].astype(str).str.fullmatch(r"\d{3,4}")]

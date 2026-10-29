@@ -591,7 +591,7 @@ unchanged (delete the folder to fetch every export afresh).
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
 | `office` | 8,401 | repo (0.0 MB) | `right`, `indicator_id`, `indicator`, `office_code`, `office`, `breakdown`, `year`, `value`, `last_updated` |
-| `office_origin` | 5,061,559 | repo (7.4 MB) | `right`, `indicator_id`, `indicator`, `office_code`, `office`, `origin`, `origin_code`, `breakdown`, `year`, `value`, `last_updated` |
+| `office_origin` | 5,073,138 | repo (7.4 MB) | `right`, `indicator_id`, `indicator`, `office_code`, `office`, `origin`, `origin_code`, `breakdown`, `year`, `value`, `last_updated` |
 | `pmh` | 10,165 | repo (0.0 MB) | `system`, `indicator_id`, `indicator`, `origin_code`, `origin`, `year`, `value`, `last_updated` |
 
 ## TM-Link, trade marks linked across offices (`tmlink`)
@@ -904,6 +904,30 @@ status; G50 field of study; G54 industry of employment; G60 occupation.
 | `sa2_g50` | 2,472 | repo (1.2 MB) | `SA2_CODE_2021`, `M_NatPhyl_Scn_15_24`, `M_NatPhyl_Scn_25_34`, `M_NatPhyl_Scn_35_44`, `M_NatPhyl_Scn_45_54`, `M_NatPhyl_Scn_55_64`, `M_NatPhyl_Scn_65_74`, `M_NatPhyl_Scn_75_84`, `M_NatPhyl_Scn_85ov`, `M_NatPhyl_Scn_Tot`, `M_InfoTech_15_24`, `M_InfoTech_25_34`, `M_InfoTech_35_44`, `M_InfoTech_45_54` … |
 | `sa2_g54` | 2,472 | repo (1.6 MB) | `SA2_CODE_2021`, `M_Ag_For_Fshg_15_19`, `M_Ag_For_Fshg_20_24`, `M_Ag_For_Fshg_25_34`, `M_Ag_For_Fshg_35_44`, `M_Ag_For_Fshg_45_54`, `M_Ag_For_Fshg_55_64`, `M_Ag_For_Fshg_65_74`, `M_Ag_For_Fshg_75_84`, `M_Ag_For_Fshg_85ov`, `M_Ag_For_Fshg_Tot`, `M_Mining_15_19`, `M_Mining_20_24`, `M_Mining_25_34` … |
 | `sa2_g60` | 2,472 | repo (0.9 MB) | `SA2_CODE_2021`, `M15_19_Managers`, `M15_19_Professionals`, `M15_19_TechnicTrades_Wrs`, `M15_19_CommunPersnlSvc_W`, `M15_19_ClericalAdminis_W`, `M15_19_Sales_W`, `M15_19_Mach_oper_drivers`, `M15_19_Labourers`, `M15_19_Occu_ID_NS`, `M15_19_Tot`, `M20_24_Managers`, `M20_24_Professionals`, `M20_24_TechnicTrades_W` … |
+
+## 2021 Census Time Series Profile (2011, 2016 and 2021 Censuses, by SA2) (`abs_census_tsp`)
+
+Australian Bureau of Statistics. Tier 2; questions 2, 5. Licence: CC BY 4.0. Source: https://www.abs.gov.au/census/find-census-data/datapacks
+
+2021 Census Time Series Profile (TSP) for SA2s: the 2011, 2016 and 2021 Censuses on 2021 boundaries (gap B6).
+
+For Q2 and Q5: how each area's people, incomes, education and work changed over the decade, beside its IP. The 2021
+General Community Profile (`abs_census`) is one Census; the Time Series Profile gives the same characteristics for
+three Censuses on the same 2021 areas, so change can be read without boundary breaks. The ABS publishes it for SA2s
+and larger areas, not for postal areas, so the regions lens apportions it from SA2s (ADR 0018's method). Raw: the
+DataPack (short headers; R2). CC BY 4.0.
+
+Processed:
+- `cells`: long, one row per SA2, table, indicator and Census year: the indicator is the DataPack's short name
+  without its year (`Tot_persons_P` for `Tot_persons_C11_P`), the label its long name without the year.
+
+Tables (`TABLES`): T01 selected person characteristics; T02 medians and averages; T29 selected labour force,
+education and migration characteristics; T34 industry of employment; T35 occupation. The age-by-sex tables (T28,
+T31 to T33) are left out: they are large and the lens's questions need their totals only, which T01 and T29 carry.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `cells` | 1,727,928 | repo (3.2 MB) | `sa2_code`, `table`, `indicator`, `census_year`, `value`, `label` |
 
 ## Social Health Atlas of Australia, by Population Health Area and socioeconomic quintile (`phidu`)
 
@@ -1242,6 +1266,65 @@ value. Licence: CC BY 4.0 (RBA).
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
 | `series` | 13,993 | repo (0.1 MB) | `table`, `series_id`, `title`, `description`, `units`, `frequency`, `date`, `value` |
+
+## Australian National Accounts (GDP, state final demand, value added by industry), quarterly (`abs_national_accounts`)
+
+Australian Bureau of Statistics. Tier 3; questions 1, 4. Licence: CC BY 4.0. Source: https://www.abs.gov.au/statistics/economy/national-accounts
+
+Australian National Accounts (ABS Data API): GDP, state final demand and gross value added by industry, quarterly
+(gap B2).
+
+Context for the timeline and the industries lens (Q1, Q4): IP filing over time read beside the economy's size and
+cycle, by state and by industry. Flows, in the raw tidy form of the ABS sources (a code and a label for every
+dimension, then `value`, the unit and the observation status):
+
+- `ANA_AGG`: key aggregates (GDP and its per-person and price measures), quarterly from 1959.
+- `ANA_SFD`: state final demand by state, quarterly.
+- `ANA_IND_GVA`: gross value added by ANZSIC division, quarterly.
+
+Raw: each flow's CSV (repo, gzipped, or R2 when large). Processed: one table per flow, named after it in lower case.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `ana_agg` | 23,976 | repo (0.1 MB) | `flow`, `measure`, `measure_label`, `data_item`, `data_item_label`, `adjustment_type`, `adjustment_type_label`, `region`, `region_label`, `frequency`, `frequency_label`, `time_period`, `unit_of_measure`, `unit_of_measure_label` … |
+| `ana_ind_gva` | 66,201 | repo (0.2 MB) | `flow`, `measure`, `measure_label`, `data_item`, `data_item_label`, `sector`, `sector_label`, `adjustment_type`, `adjustment_type_label`, `industry`, `industry_label`, `region`, `region_label`, `frequency` … |
+| `ana_sfd` | 562,740 | repo (1.0 MB) | `flow`, `measure`, `measure_label`, `data_item`, `data_item_label`, `sector`, `sector_label`, `adjustment_type`, `adjustment_type_label`, `region`, `region_label`, `frequency`, `frequency_label`, `time_period` … |
+
+## ATO taxation statistics, individuals by postcode (Table 6), every income year from 2012-13 (`ato_postcode`)
+
+Australian Taxation Office. Tier 2; questions 2, 4. Licence: CC BY 2.5 AU. Source: https://data.gov.au/data/organization/australiantaxationoffice
+
+ATO taxation statistics, individuals by postcode (Individuals Table 6), every income year from 2012-13 (gap B3).
+
+For Q2 and Q4: what people in each postcode earn and how many run a business, year by year, beside its IP (the
+regions lens over time, and a denominator for individual applicants). Each year's Table 6 lists, for every postcode
+with enough individuals, about 80 items as a count and an amount: individuals lodging, taxable income, salary and
+wages, business income and losses, and so on. Raw: each year's workbook (R2). Processed: `items`, long: income year,
+state, postcode, item (as the ATO names it in the latest year, without its footnote numbers; names that drift in
+case or punctuation between years are made one), `unit` (`no.` or `$`) and value. The
+sheet read is the one for all individuals (6B; from 2018-19 6A splits taxable from non-taxable). Licence: CC BY 2.5
+AU (ATO).
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `items` | 4,735,620 | repo (16.7 MB) | `income_year`, `state`, `postcode`, `item`, `unit`, `value` |
+
+## ABS Characteristics of Australian Business, data cubes of the releases after the API's flows (2024-25) (`abs_bcs_cubes`)
+
+Australian Bureau of Statistics. Tier 2; questions 2, 3. Licence: CC BY 4.0. Source: https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business
+
+ABS Characteristics of Australian Business, the latest release's data cubes (gap B4).
+
+The ABS Data API's business characteristics flows (`abs_bcs`) stop at 2023; later releases are published as data
+cubes only. This reads every cube of each release named in `RELEASES` (the ABS published 2024-25 after 2021-22, with
+no 2023-24 release page): innovation activity, collaboration, finance and barriers, business profile and
+performance, skills, ICT and cyber security, by industry division and employment size. Raw: each cube (repo).
+Processed: `cubes`, every table long (see `_abs_cube.read_cube`: every published cell, with its unit where a row
+states one, and its row in the sheet), with `release` and `cube`.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `cubes` | 29,312 | repo (0.1 MB) | `sheet`, `title`, `section`, `row`, `column`, `unit`, `value`, `value_text`, `sheet_row`, `release`, `cube` |
 
 ## The ABN spine (every ABN in the corpus, with ABR and ASIC attributes and source flags) (`linkage`)
 

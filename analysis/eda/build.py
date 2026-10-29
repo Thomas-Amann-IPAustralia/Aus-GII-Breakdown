@@ -942,7 +942,7 @@ def regions_sql() -> str:
     """
 
 
-# The regions lens's attachments (ADR 0018): every value of five area sources, one row per postal area, source,
+# The regions lens's attachments (ADR 0018): every value of seven area sources, one row per postal area, source,
 # indicator and period, in `region_indicators`. A count published for SA2s (or PHIDU's PHAs) is split among postal areas
 # by the share of the area's 2021 residents living in each (by mesh block; an area with no residents is split by its
 # mesh blocks); a level (a median, mean, rate or percentage) is averaged over the areas overlapping a postal area,
@@ -963,6 +963,14 @@ CENSUS_TABLES = {
     "G54": "Industry of employment by age by sex",
     "G60": "Occupation by age by sex",
 }
+# The Census Time Series Profile's tables (`abs_census_tsp`, gap B6), apportioned from SA2s
+CENSUS_TSP_TABLES = {
+    "T01": "Selected person characteristics",
+    "T02": "Medians and averages",
+    "T29": "Selected labour force, education and migration characteristics",
+    "T34": "Industry of employment",
+    "T35": "Occupation",
+}
 # A Data by Region item is a level, not a count that can be split or summed, if its unit is one or its label says so
 DBR_LEVEL_UNITS = ("PCT", "DECILE", "QUARTILE", "YR", "RATE", "PSNS_PER_SQKM", "ML_PER_HA")
 LEVEL_WORDS = "median|mean|average"
@@ -981,6 +989,7 @@ def region_indicators_sql() -> str:
         for t in CENSUS_TABLES
     )
     topics = " ".join(f"WHEN '{t}' THEN '{t}: {name}'" for t, name in CENSUS_TABLES.items())
+    tsp_topics = " ".join(f"WHEN '{t}' THEN 'Census time series {t}: {name}'" for t, name in CENSUS_TSP_TABLES.items())
     dbr_level = ", ".join(f"'{u}'" for u in DBR_LEVEL_UNITS)
     return f"""
     WITH places AS (SELECT poa_code FROM {lens_table("regions")}),
@@ -1047,10 +1056,21 @@ def region_indicators_sql() -> str:
         FROM {{phidu/indicators}}
         WHERE area_type = 'pha' AND measure NOT LIKE '%C.I.%' AND value IS NOT NULL
     ),
+    tsp AS (  -- the Census Time Series Profile: 2011, 2016 and 2021 on 2021 SA2s (gap B6)
+        SELECT sa2_code AS area, "table" || '.' || indicator AS indicator, label,
+               CAST(census_year AS VARCHAR) AS period,
+               CASE WHEN indicator ILIKE 'pcnt%' THEN 'percent' WHEN "table" <> 'T02' THEN 'people' END AS unit,
+               CASE WHEN "table" = 'T02' OR indicator ILIKE 'pcnt%' THEN 'level' ELSE 'count' END AS kind,
+               CASE "table" {tsp_topics} END AS topic,
+               -- as the 2021 profile, 0 for a median or average with no one to describe (ADR 0010)
+               CASE WHEN "table" = 'T02' THEN nullif(value, 0) ELSE value END AS value
+        FROM {{abs_census_tsp/cells}}
+    ),
     split AS (  -- SA2 and PHA values to postal areas
         SELECT 'data_by_region' AS source, 'sa2' AS kind_of_area, * FROM dbr
         UNION ALL SELECT 'cabee', 'sa2', * FROM cabee
         UNION ALL SELECT 'phidu', 'pha', * FROM phidu
+        UNION ALL SELECT 'census_tsp', 'sa2', * FROM tsp
     ),
     apportioned AS (
         SELECT w.poa_code, s.source, any_value(s.topic) AS topic, s.indicator, any_value(s.label) AS label, s.period,
@@ -1068,11 +1088,19 @@ def region_indicators_sql() -> str:
         FROM {{cer/installations}}
         WHERE postcode IN (SELECT poa_code FROM places) AND value IS NOT NULL
         GROUP BY postcode, technology, series, left(month, 4)
+    ),
+    ato AS (  -- individuals' tax statistics by postcode, every income year from 2012-13 (gap B3): counts and sums
+        SELECT postcode AS poa_code, 'ato_postcode' AS source, 'ATO individuals (Table 6)' AS topic,
+               item || '|' || unit AS indicator, item || CASE unit WHEN '$' THEN ' ($)' ELSE ' (number)' END AS label,
+               income_year AS period, value, 'count' AS kind, 'direct' AS method,
+               CASE unit WHEN '$' THEN 'AUD' ELSE 'individuals' END AS unit
+        FROM {{ato_postcode/items}} WHERE postcode IN (SELECT poa_code FROM places)
     )
     SELECT poa_code, source, topic, indicator, label, period, value, unit, kind = 'count' AS additive, method
     FROM (SELECT * FROM census
           UNION ALL SELECT poa_code, source, topic, indicator, label, period, value, kind, method, unit FROM apportioned
-          UNION ALL SELECT poa_code, source, topic, indicator, label, period, value, kind, method, unit FROM cer)
+          UNION ALL SELECT poa_code, source, topic, indicator, label, period, value, kind, method, unit FROM cer
+          UNION ALL SELECT poa_code, source, topic, indicator, label, period, value, kind, method, unit FROM ato)
     """
 
 
@@ -1763,6 +1791,25 @@ def industry_indicators_sql() -> str:
                                FROM {{abs_cabee/cubes}} WHERE cube = '8165DC04' AND anzsic_subdivision_code IS NOT NULL)
           USING (subdivision)
     ),
+    bcs_cubes AS (  -- business characteristics, the data cubes after the API's flows (2024-25; gap B4): industry rows.
+        -- Tables "by innovation status" repeat their rows in blocks (all businesses, innovation-active, not
+        -- innovation-active), each opened by a 'Total' row that names it; the block joins the indicator
+        SELECT CASE WHEN {_norm("b.row")} IN ('total', 'all industries') THEN 'TOTAL' ELSE n.division END AS division,
+               'bcs_cubes' AS source, regexp_extract(b.cube, 'BCSDC\\d+') AS dataset,
+               'BCSC.' || regexp_extract(b.cube, 'BCSDC\\d+') || '.' || b.sheet || '.' ||
+                 coalesce({_slug("b.block")} || '|', '') || {_slug('b."column"')} AS indicator,
+               b.title || ': ' || coalesce(b.block || ', ', '') || b."column" AS label, b.release AS period,
+               CAST(left(b.release, 4) AS INTEGER) + 1 AS fy, b.value, b.value_text,
+               coalesce(nullif(regexp_extract(b."column", '\\| ([^|]+)$', 1), ''), b.unit) AS unit,
+               NULL::VARCHAR AS status
+        FROM (SELECT *, last_value(CASE WHEN {_norm("row")} = 'total' THEN section END IGNORE NULLS)
+                          OVER (PARTITION BY cube, sheet ORDER BY sheet_row
+                                RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS block
+              FROM {{abs_bcs_cubes/cubes}}) b
+        LEFT JOIN names n ON n.name = {_norm("b.row")}
+        WHERE (b.section = 'Industry' AND n.division IS NOT NULL)
+           OR ({_norm("b.row")} IN ('total', 'all industries') AND (b.section IS NULL OR b.section = b.block))
+    ),
     wpi AS (  -- the Wage Price Index by industry, quarterly (a quarter is never spread over months or years)
         SELECT CASE industry WHEN 'TOT' THEN 'TOTAL' ELSE industry END AS division, 'wpi' AS source,
                'wpi' AS dataset, 'WPI.' || measure || '.' || index || '.' || sector || '.' || adjustment_type
@@ -1777,7 +1824,7 @@ def industry_indicators_sql() -> str:
     SELECT u.*, d.division_name
     FROM (SELECT * FROM cabee_national UNION ALL SELECT * FROM cabee_cubes UNION ALL SELECT * FROM bcs
           UNION ALL SELECT * FROM berd UNION ALL SELECT * FROM creative UNION ALL SELECT * FROM wpi
-          UNION ALL SELECT * FROM ip) u
+          UNION ALL SELECT * FROM ip UNION ALL SELECT * FROM bcs_cubes) u
     LEFT JOIN divs d USING (division)
     """
 

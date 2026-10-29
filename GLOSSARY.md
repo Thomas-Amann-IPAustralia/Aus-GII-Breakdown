@@ -130,6 +130,13 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **WGEA (Workplace Gender Equality Agency)** | The agency to which every private employer of 100 or more reports each year, by ABN, its industry (ANZSIC class), its size and its workforce. Its public data give the firms lens size and industry for those employers only. |
 | **Cash rate** | The interest rate on overnight loans between banks, which the Reserve Bank targets to set monetary policy. High in booms, low in downturns, so it marks the business cycle. |
 | **Trade-weighted index** | The Australian dollar's value against a basket of trading partners' currencies, weighted by trade (May 1970 = 100). |
+| **Gross domestic product (GDP)** | The value of everything produced in Australia in a period, after taking out what was used up in producing it. The national accounts give it each quarter. |
+| **Chain volume (real) measure** | A national accounts series with price changes taken out, so that it moves only with the quantity produced. Its dollars are those of a reference year; *current prices* are dollars of the day. |
+| **Gross value added** | An industry's contribution to GDP: the value of what it produces less what it buys in from other industries. Summed over industries (with taxes on products) it gives GDP. |
+| **State final demand** | Spending in a state by households, businesses and governments on consumption and investment. It leaves out trade with other states and countries, so it is the nearest the national accounts come to a state's economy each quarter. |
+| **Taxable income** | Income less allowable deductions, on which income tax is worked out. The ATO's statistics by postcode give each postcode's individuals' total, and how many had business income. |
+| **Census Time Series Profile** | Census tables for three Censuses (2011, 2016 and 2021) recast on 2021 areas, so that change can be read without boundary changes. The ABS publishes it for SA2s and larger areas, not postal areas. |
+| **Patent families by origin (WIPO)** | WIPO's count of patent families by the applicant's country, at any office, and how many were filed at more than one office (*foreign-oriented*). An independent check on the families Google Patents links to Australian patents. |
 
 ## The analysis
 

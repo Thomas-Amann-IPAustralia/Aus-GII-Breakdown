@@ -107,7 +107,8 @@ attachments. B36 the timeline screen; B37 policy breaks; B38 provisional follow-
 and Australia-only series. B40 the industries screen; B41 IP per business; B42 innovation and IP; B43 attachments. B44
 the institutions screen; B45 universities; B46 Australian use of cited research. B47 to
 B49 fee changes (added after Stage 2); B50, B51 firms' size and industry; B52 the dollar and the cash rate; B53, B54
-the crosswalk with services.
+the crosswalk with services; B55 B11 again (families' coverage); B56 GDP and states' demand; B57 value added by
+division; B58 incomes by postcode; B59 change between Censuses; B60 innovation in 2024-25.
 
 ## 9. Data gaps filled after Stage 2 (2026-10-28, A15)
 
@@ -124,3 +125,18 @@ the crosswalk with services.
   rises with overseas filing in booms, a cycle to allow for in before-and-after comparisons.
 - **The crosswalk with services (B53, B54).** Patents per business follow business R&D per business across divisions
   (0.739, interval 0.38 to 0.89; 0.465 without services); 16 screen leads against 8. Stage 3 reports both crosswalks.
+- **B11 again (B55).** Most of the fall in Australian organisations' "Australia only" patents is a gap in older
+  records: through the PCT, 63.43% to 11.53% between decades (a fall of 51.9 points, 50.6 to 53.1), while WIPO's
+  share of families filed abroad held at about 64%. Family measures for Australian applicants from FY2010 only.
+- **The economy (B56, B57).** Real GDP's growth goes with overseas applicants' patenting (0.159 to 2008, 0.373
+  after), not with Australians'; the states' demand tracks neither. Across divisions, value added per business goes
+  with trade marks per business (0.591; 0.572) and business R&D (0.693; 0.677), with patents only through the
+  crosswalk with services (0.581).
+- **Incomes by postcode (B58).** Taxable income per individual goes with filing (trade marks 0.472; 0.498), the share
+  running a business much less (0.194; 0.211); individuals' own filing per 1,000 individuals with business income
+  rises from 3.84 in the most disadvantaged tenth of areas to 11.03 in the most advantaged. The advantage gradient
+  is not explained by the number of people in business.
+- **Change between Censuses (B59).** Areas that gained graduates or income from 2011 to 2021 did not gain filing
+  (rho -0.124 to -0.008, the same sign in both halves): levels go together, changes do not.
+- **Innovation in 2024-25 (B60).** B42 holds in a third survey: innovating divisions file more trade marks per
+  business (0.262), not more patents (-0.325), over 17 divisions with wide intervals.

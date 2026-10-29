@@ -565,6 +565,116 @@
    },
    "run": "2026-10-22"
   },
+  "abs_bcs_cubes": {
+   "files": {
+    "processed/cubes": {
+     "bytes": 68738,
+     "columns": [
+      "sheet",
+      "title",
+      "section",
+      "row",
+      "column",
+      "unit",
+      "value",
+      "value_text",
+      "sheet_row",
+      "release",
+      "cube"
+     ],
+     "describe": "ABS business characteristics cubes, long",
+     "location": "repo",
+     "path": "data/processed/abs_bcs_cubes/cubes.parquet",
+     "rows": 29312,
+     "sha256": "6e3a46e2c73fceb88f0e49c1709c842409279dfa4c388ae8f3478ed02616d4a7"
+    },
+    "raw/BCSDC01_2024-25.xlsx": {
+     "bytes": 187969,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC01_2024-25.xlsx",
+     "sha256": "b567d65e86f996e0ff9aa627771e207787820e551ffb9fa2c84429f90a8ef403",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC01_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC02_2024-25.xlsx": {
+     "bytes": 69978,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC02_2024-25.xlsx",
+     "sha256": "e97f690436a8087656da8b59ce78eb2423fcf325594fe7de25b53a27fd068eec",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC02_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC03_2024-25.xlsx": {
+     "bytes": 65350,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC03_2024-25.xlsx",
+     "sha256": "f2c395a5b318d8ffb5af69a362f17cdab3eb57c88f1b4cb25ddd6ee3532ac93f",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC03_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC04_2024-25.xlsx": {
+     "bytes": 82259,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC04_2024-25.xlsx",
+     "sha256": "a42ee2c7cf415d26ae41de4ede9268f88d5c6b7bc4461cad2d5af23a79e5a302",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC04_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC05_2024-25.xlsx": {
+     "bytes": 53098,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC05_2024-25.xlsx",
+     "sha256": "c2a70d3745f898e3a782d58fc3af114c774eaffcbc1f5818fac8b162c03626d9",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC05_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC06_2024-25.xlsx": {
+     "bytes": 1416932,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC06_2024-25.xlsx",
+     "sha256": "54bba9e9cc98f2a6a9bee478cffba836557e753a5b5cb77525f5397cb550e23a",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC06_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC07_2024-25.xlsx": {
+     "bytes": 43905,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC07_2024-25.xlsx",
+     "sha256": "d732e637301e021ea4c67adaa7af977d8b565d8ce8e2943283d8bad4c5be3b5f",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC07_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC08_2024-25.xlsx": {
+     "bytes": 287365,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC08_2024-25.xlsx",
+     "sha256": "efe29ef65eb20642dca52e48c12adbf61760c9f8b784d82bcf9751cf03535781",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC08_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC09_2024-25.xlsx": {
+     "bytes": 1373964,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC09_2024-25.xlsx",
+     "sha256": "db774e9c4d00a65eef7c9387be146083d1e26baa583a34a1f834e3bc8a068794",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC09_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC10_2024-25.xlsx": {
+     "bytes": 52926,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC10_2024-25.xlsx",
+     "sha256": "370488875f85828ce279c4f6a3f03132aabcec558863a565c9f13750655478f1",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC10_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC11_2024-25.xlsx": {
+     "bytes": 50521,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC11_2024-25.xlsx",
+     "sha256": "741f38e720940b814239a7e1f677b85b1f7c0efdb9866e66bb8f3b483b5c7bd4",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC11_2024%E2%80%9325.xlsx"
+    },
+    "raw/BCSDC12_2024-25.xlsx": {
+     "bytes": 47794,
+     "location": "repo",
+     "path": "data/raw/abs_bcs_cubes/BCSDC12_2024-25.xlsx",
+     "sha256": "fc0001987ceeed766e16f14406ce6cf502f9ac6e60a026a5f0520abf1bf3e2eb",
+     "url": "https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business/2024-25/BCSDC12_2024%E2%80%9325.xlsx"
+    }
+   },
+   "run": "2026-10-28"
+  },
   "abs_cabee": {
    "files": {
     "processed/cubes": {
@@ -7024,6 +7134,34 @@
    },
    "run": "2026-10-22"
   },
+  "abs_census_tsp": {
+   "files": {
+    "processed/cells": {
+     "bytes": 3162309,
+     "columns": [
+      "sa2_code",
+      "table",
+      "indicator",
+      "census_year",
+      "value",
+      "label"
+     ],
+     "describe": "Census Time Series Profile (2011, 2016, 2021), by SA2, long",
+     "location": "repo",
+     "path": "data/processed/abs_census_tsp/cells.parquet",
+     "rows": 1727928,
+     "sha256": "120bc83e2f277d944f825b5667a7d588cef5c8050dbb6e0baf31db9d9c24b76a"
+    },
+    "raw/2021_TSP_SA2_for_AUS_short-header.zip": {
+     "bytes": 45974093,
+     "key": "raw/abs_census_tsp/2021_TSP_SA2_for_AUS_short-header.zip",
+     "location": "r2",
+     "sha256": "ed48b8aa15bae8960ae333fec069368726bc3e083acb6d16d05f38203ea00f06",
+     "url": "https://www.abs.gov.au/census/find-census-data/datapacks/download/2021_TSP_SA2_for_AUS_short-header.zip"
+    }
+   },
+   "run": "2026-10-28"
+  },
   "abs_labour": {
    "files": {
     "processed/lf": {
@@ -8099,7 +8237,7 @@
   "ato_postcode": {
    "files": {
     "processed/items": {
-     "bytes": 16709961,
+     "bytes": 16720395,
      "columns": [
       "income_year",
       "state",
@@ -8111,8 +8249,8 @@
      "describe": "ATO individuals by postcode: Table 6 items, every income year, long",
      "location": "repo",
      "path": "data/processed/ato_postcode/items.parquet",
-     "rows": 4730496,
-     "sha256": "e8f5e8233966b964434b9809e89c90533e8b208ae220c4681327c76c27932f78"
+     "rows": 4735620,
+     "sha256": "0657fd5ef6adc7bf1252b6535c185afcbdc88e5aea595dac11b384f2d0d32ccd"
     },
     "raw/ts13individual06.xlsx": {
      "bytes": 7619463,
@@ -8199,7 +8337,7 @@
      "url": "https://data.gov.au/data/dataset/faea4485-f407-457d-97f8-3f0822ccd654/resource/9d8577b7-a096-4758-9b3b-0649f3b83de7/download/ts24individual06taxablestatusstatesa4postcode.xlsx"
     }
    },
-   "run": "2026-10-28"
+   "run": "2026-10-29"
   },
   "austender": {
    "files": {
@@ -14091,7 +14229,7 @@
      "sha256": "3cad2d26046329213ca63dc0936b053c91a8582b769c4b6d8f88f658a6d2f4ae"
     },
     "processed/office_origin": {
-     "bytes": 7397956,
+     "bytes": 7420122,
      "columns": [
       "right",
       "indicator_id",
@@ -14108,8 +14246,8 @@
      "describe": "WIPO indicators by filing office and applicant's origin, long",
      "location": "repo",
      "path": "data/processed/wipo_ipstats/office_origin.parquet",
-     "rows": 5061559,
-     "sha256": "5c8096c0a2ec4a1d61bf4031bba08bc73abdd3db7466d8a337e61f1a0f2bece9"
+     "rows": 5073138,
+     "sha256": "8ec316c7094f40dec48b2e071439b32a126190b48d60db679d6a4c24d6078188"
     },
     "processed/pmh": {
      "bytes": 29342,
@@ -14227,12 +14365,26 @@
      "sha256": "d13969fcb6581f6dee5f4b6080d5e6b30f1f1da179bdb82fef5a4e4125bd9da9",
      "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 17 15)"
     },
+    "raw/patent_20_13.csv.gz": {
+     "bytes": 13006,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_20_13.csv.gz",
+     "sha256": "cd0f73b48770889a2e00da21b77c966cdebbc60dc3bda2e564515c3883f7c876",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 20 13)"
+    },
     "raw/patent_21_15.csv.gz": {
      "bytes": 228048,
      "location": "repo",
      "path": "data/raw/wipo_ipstats/patent_21_15.csv.gz",
      "sha256": "4a71e427e9d16a4487e1df1d096e876ba7c37d50b230a0b08ac9ec4064f3dbc9",
      "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 21 15)"
+    },
+    "raw/patent_22_13.csv.gz": {
+     "bytes": 11636,
+     "location": "repo",
+     "path": "data/raw/wipo_ipstats/patent_22_13.csv.gz",
+     "sha256": "be9b161a237878a03de92af15b74967e52643a47f9be5147beca3801e9c54aac",
+     "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (patent 22 13)"
     },
     "raw/patent_23_15.csv.gz": {
      "bytes": 158295,
@@ -14319,7 +14471,7 @@
      "url": "https://api.ipstatsdc.deda.prd.web1.wipo.int/api/v1/public/ips-search/downloadCsv (utility 70 15)"
     }
    },
-   "run": "2026-10-26"
+   "run": "2026-10-28"
   }
  }
 }

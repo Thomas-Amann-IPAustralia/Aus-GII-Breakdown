@@ -297,6 +297,14 @@ sources:
     url: https://www.abs.gov.au/census/find-census-data/datapacks
     licence: CC BY 4.0
 
+  - id: abs_census_tsp
+    title: 2021 Census Time Series Profile (2011, 2016 and 2021 Censuses, by SA2)
+    publisher: Australian Bureau of Statistics
+    tier: 2
+    questions: [2, 5]
+    url: https://www.abs.gov.au/census/find-census-data/datapacks
+    licence: CC BY 4.0
+
   - id: phidu
     title: Social Health Atlas of Australia, by Population Health Area and socioeconomic quintile
     publisher: PHIDU, Torrens University Australia
@@ -409,6 +417,14 @@ sources:
     questions: [2, 4]
     url: https://data.gov.au/data/organization/australiantaxationoffice
     licence: CC BY 2.5 AU
+
+  - id: abs_bcs_cubes
+    title: ABS Characteristics of Australian Business, data cubes of the releases after the API's flows (2024-25)
+    publisher: Australian Bureau of Statistics
+    tier: 2
+    questions: [2, 3]
+    url: https://www.abs.gov.au/statistics/industry/technology-and-innovation/characteristics-australian-business
+    licence: CC BY 4.0
 
   # Derived ------------------------------------------------------------------------------------------------------------
   - id: linkage

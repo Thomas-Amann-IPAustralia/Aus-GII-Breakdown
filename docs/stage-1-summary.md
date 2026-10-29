@@ -627,6 +627,22 @@ profiled here before its pairs go to Stage 2:
   and 1990 (the cash rate target).
 - **ALP's crosswalk with services (gap A2; `concordances`; notebook 6.5, U114).** Patents reach all 19 divisions, and
   manufacturing's share of applications falls from 90.63% to 79.67%; the recommended crosswalk stays the main measure.
+- **Patent families by origin, and Google Patents' coverage (gap A4; `wipo_ipstats`; notebook 4.5, U115).** WIPO
+  counts 61.73% to 66.37% of Australian-origin families filed in more than one office in every five years since 2000;
+  Google Patents' links show far fewer for older years (14.91% for 2000 to 2004), and Australian applicants' PCT
+  patents appear "Australia only" 74.92% of the time in FY2000 to FY2004 against about 12% after FY2010. Family
+  measures for Australian applicants are read from FY2010 on (OQ21 asks whether to repair the older links).
+- **The national accounts (gap B2; `abs_national_accounts`; notebook 5.9, U116).** GDP quarterly from 1959, state
+  final demand from 1985, value added by division for every year of the industries lens.
+- **Individuals' incomes by postcode (gap B3; `ato_postcode`; notebook 3.6, U117).** Twelve income years, 2,558 of the
+  2,641 postal areas in 2023-24; individuals with business income rose from 8.59% to 10.36%.
+- **The Census over time (gap B6; `abs_census_tsp`; notebook 3.7, U118).** 2011, 2016 and 2021 on 2021 areas,
+  apportioned from SA2s; the 2021 count is within 66 people of the published one. For change only; 2021 levels come
+  from the profile published for postal areas.
+- **Business characteristics, 2024-25 (gap B4; `abs_bcs_cubes`; notebook 6.6, U119).** A third survey year for 17
+  divisions (no 2023-24 release); businesses with any innovation activity 51.9% (2020-21), 45.7% and 45.6% (2024-25).
+- **Not filled from here:** court judgments after 10 March 2025 (gap B5): no newer corpus release, and the Federal
+  Court's site refuses this environment (OQ22).
 
 ## 13. Where to find things
 

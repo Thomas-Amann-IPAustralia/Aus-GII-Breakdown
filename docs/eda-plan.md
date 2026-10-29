@@ -58,11 +58,11 @@ All lenses are built by `uv run python -m eda.build`, and every column is descri
 | Lens | One row per | Status | Main questions |
 |---|---|---|---|
 | `rights` | IP right | Built: 4,368,006 rows, 74 columns | Q1, Q2 |
-| `firms` | ABN in any IP, R&D, procurement or tax source | Built: 398,450 rows, 40 columns | Q2, Q3, Q4 |
-| `regions` | Postal area | Built: 2,641 rows, 42 columns; its attachments in `region_indicators` (postal area, source, indicator and period: 22,511,923 rows) | Q2, Q4 |
-| `national` | Country, year and indicator | Built: 135,597 rows, 11 columns; its attachments in `national_indicators` (place, source, indicator and period: 41,218,170 rows) | Q1, Q4 (context) |
-| `timeline` | Month, for Australia (Jan 1904 to Sep 2026) | Built: 1,473 | Q1, Q4, Q5 |
-| `industries` | ANZSIC division and financial year | Built: 703 rows (FY1990 to FY2026), 17 columns; its attachments in `industry_indicators` (division, source, indicator and period: 1,409,875 rows) | Q2, Q3, Q4 |
+| `firms` | ABN in any IP, R&D, procurement or tax source | Built: 398,450 rows, 50 columns | Q2, Q3, Q4 |
+| `regions` | Postal area | Built: 2,641 rows, 42 columns; its attachments in `region_indicators` (postal area, source, indicator and period: 28,960,234 rows) | Q2, Q4 |
+| `national` | Country, year and indicator | Built: 135,597 rows, 11 columns; its attachments in `national_indicators` (place, source, indicator and period: 41,229,749 rows) | Q1, Q4 (context) |
+| `timeline` | Month, for Australia (Jan 1904 to Sep 2026) | Built: 1,473 rows, 75 columns | Q1, Q4, Q5 |
+| `industries` | ANZSIC division and financial year | Built: 703 rows (FY1990 to FY2026), 20 columns; its attachments in `industry_indicators` (division, source, indicator and period: 1,425,157 rows) | Q2, Q3, Q4 |
 | `institutions` | Australian research institution (ROR) and calendar year | Built: 4,810 rows (130 institutions, 1990 to 2026), 30 columns; its IP in `institution_rights` (right and institution: 31,528 rows) | Q1, Q2, Q3 |
 
 **Rules for time.**
@@ -103,10 +103,10 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 | `bcarr_creative` | industries, national | Cultural and creative activity by industry and domain | Done (ADR 0020, U78, U79): value added by division in `industries` (newer release), both releases by industry in `industry_indicators` and by domain in `national_indicators`, never spliced |
 | `abs_labour` (added 2026-10-25) | timeline, national | The Labour Force Survey: employment, unemployment and participation by sex and state, monthly from 1978; owner-managers and employees by sex, monthly from 1991 (the denominator for who runs businesses) | — |
 | `abs_prices` (added 2026-10-25) | timeline, industries | CPI (quarterly from 1948), living costs by household type, wages (also by industry) and property prices: background, and the deflator for every money series (fees, R&D, contracts, medicine costs) | Quarterly CPI attached to the timeline (ADR 0010); the WPI by industry in `industries` and `industry_indicators` (ADR 0020) |
-| `wdi`, `wipo_ipstats`, `gii`, `oecd`, `mwm`, `ctg` | national | Country-year indicators: every OECD flow (one indicator per named breakdown); GII 2026; WIPO's filings at IP Australia by origin country, 1980–2024 (an independent view of which nations use the system); Australian annual series (Measuring What Matters, Closing the Gap) | Done (ADR 0010, 0011): F02 and F15 (A8: trade marks, OECD R&D); F01 (B10: IP tax regimes' values). Done (ADR 0019, U63 to U72): former states and unknown origins kept; every value of the GII, the OECD flows, WIPO's other tables, Measuring What Matters and Closing the Gap in `national_indicators`; Closing the Gap's "Aus Gov" and Measuring What Matters' stacked tables repaired. Compare WIPO by country from 1995 (U64) |
+| `wdi`, `wipo_ipstats`, `gii`, `oecd`, `mwm`, `ctg` | national | Country-year indicators: every OECD flow (one indicator per named breakdown); GII 2026; WIPO's filings at IP Australia by origin country, 1980–2024 (an independent view of which nations use the system); Australian annual series (Measuring What Matters, Closing the Gap) | Done (ADR 0010, 0011): F02 and F15 (A8: trade marks, OECD R&D); F01 (B10: IP tax regimes' values). Done (ADR 0019, U63 to U72): former states and unknown origins kept; every value of the GII, the OECD flows, WIPO's other tables, Measuring What Matters and Closing the Gap in `national_indicators`; Closing the Gap's "Aus Gov" and Measuring What Matters' stacked tables repaired. Compare WIPO by country from 1995 (U64). WIPO's families by origin (indicators 20 and 22) added for gap A4: U115, B55 |
 | `pbs` | timeline; medicines | Prescriptions, and government and patient costs, per month. Items are linked to ingredients for the medicine strand. | B9 (Section 100) |
 | `tga` | own unit | ARTG entries; sponsors per ingredient (competition); joins PBS and extension-of-term patents by ingredient | — |
-| `fedcourt` | timeline; text | IP judgments per month by right; variables derived from the text later | — |
+| `fedcourt` | timeline; text | IP judgments per month by right; variables derived from the text later | To 10 March 2025; nothing newer is reachable from here (gap B5, OQ22) |
 | `google_patents`, `google_patents_inventors` | rights, firms, institutions | Per Australian application: family size, offices, US grant, forward citations (with a follow-up flag); inventors by country and their estimated gender (expected counts, from `wgnd`) | B4. In `institutions` (ADR 0021, U85): the families of the institutions' Australian applications. Done for `rights` (ADR 0022, U92 to U98): family reach, US grant and citations (five-year count only where complete); inventors' countries and expected women and men, the gender estimates checked against WIPO's shares (levels for inventors in Australia only). Left: F07 |
 | `openalex`, `openalex_works`, `reliance_on_science` | institutions, rights | Output, citations and patent-cited works per institution; science cited by Australian-linked patent families | Done for `institutions` (ADR 0021, U82, U85): works and citations from 2010, US patent citations by publication year. F37 test still to do |
 | `arc_grants`, `nhmrc_grants` | institutions, timeline | Grants and funding per institution and year (ARC names matched to ROR) | Done (ADR 0021, U83): ARC by the year funding starts, NHMRC by round (F41), names matched to ROR; industry-partner schemes apart |
@@ -114,6 +114,12 @@ needs before its Stage 1 section; codes are the review's IDs (A1–A8, B1–B12,
 | `policy_events` | timeline | Policy changes per month; the policy register is reference | Done (ADR 0011): B7 (every date checked against the Federal Register); (ADR 0014) the 1995 term change added: 17 events. Profiled one at a time (U28) |
 | `ipa_fees` | timeline, rights | Today's fees: the check on the fee history's latest version (ADR 0031) | Done: a test compares them |
 | `frl_fees` | timeline, `policy_events` | Each key fee in force each month (`fee_*`), and each change as an event (ADR 0031) | Done: U108 to U111, B47 to B49 |
+| `wgea` (added 2026-10-28, gap A3) | firms | Size band, headcount and ANZSIC class of every private employer of 100 or more, by ABN (ADR 0032) | Done: U112, B50, B51 |
+| `rba` (added 2026-10-28, gap B1) | timeline | The cash rate and exchange rates, monthly | Done: U113, B52 |
+| `abs_national_accounts` (added 2026-10-28, gap B2) | timeline, industries | GDP and state final demand, quarterly; value added by division | Done: U116, B56, B57 |
+| `ato_postcode` (added 2026-10-29, gap B3) | regions (`region_indicators`) | Individuals' income, business income and deductions by postcode, income years 2012-13 to 2023-24 | Done: U117, B58 |
+| `abs_bcs_cubes` (added 2026-10-29, gap B4) | industries (`industry_indicators`) | The business characteristics survey's 2024-25 data cubes (the ABS published no 2023-24 release) | Done: U119, B60 |
+| `abs_census_tsp` (added 2026-10-29, gap B6) | regions (`region_indicators`) | The 2011, 2016 and 2021 Censuses on 2021 SA2s, apportioned to postal areas | Done: U118, B59 |
 | `wgnd` | reference | The name-gender dictionary behind `google_patents_inventors` | — |
 | `evidence`, `wine_gi` | reference | The literature register; the GI list (for certification marks) | — |
 

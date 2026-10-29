@@ -606,3 +606,47 @@ def test_fee_history_ends_at_ip_australias_current_fees():
     }
     assert {k: got.get(k) for k in want} == want
     assert key.groupby(["right", "fee", "anniversary"], dropna=False)["end"].apply(lambda e: e.isna().sum() <= 1).all()
+
+
+def test_ato_postcode_items_take_units_from_headers_and_one_name_across_years():
+    from corpus.sources.ato_postcode import harmonise, items
+
+    def year(cols, rows, y):
+        df = pd.DataFrame(rows, columns=cols, dtype=str)
+        return items(df, y)
+
+    # 2013-14 names the count of individuals without its unit; footnote numbers end some names
+    a = year(["State/Territory1", "Postcode", "Number of individuals", "Taxable income or loss3 $"],
+             [["NSW", "2000", "10", "500"], ["Total", "Total", "10", "500"]], 2014)  # fmt: skip
+    b = year(["State/ Territory1", "Postcode", "Individuals no.", "Taxable income or loss3 no.",
+              "Taxable income or loss3 $"], [["VIC", "3000", "20", "19", "900"]], 2024)  # fmt: skip
+    out = harmonise(pd.concat([a, b], ignore_index=True))
+    assert set(out["postcode"]) == {"2000", "3000"}  # the total row is not a postcode
+    assert set(zip(out["item"], out["unit"], strict=True)) == {
+        ("Individuals", "no."), ("Taxable income or loss", "$"), ("Taxable income or loss", "no.")
+    }  # fmt: skip
+    assert out.loc[out.item.eq("Individuals"), "income_year"].tolist() == ["2013-14", "2023-24"]
+
+
+def test_census_time_series_cells_lose_their_year_in_every_spelling():
+    from corpus.sources.abs_census_tsp import labels, long_table
+
+    df = pd.DataFrame(
+        {
+            "SA2_CODE_2021": ["101021007"],
+            "Tot_persons_C11_P": [10],
+            "Tot_persons_C21_P": [12],
+            "Med_age_persns_C2016": [40],
+            "Brthplace_Aust_2011_Ce_P": [7],
+        }
+    )
+    t = long_table(df, "T01")
+    assert sorted(zip(t["indicator"], t["census_year"], strict=True)) == [
+        ("Brthplace_Aust_P", 2011), ("Med_age_persns", 2016), ("Tot_persons_P", 2011), ("Tot_persons_P", 2021)
+    ]  # fmt: skip
+    meta = pd.DataFrame(
+        [["Cell descriptors", None, None], ["Sequential", "Short", "Long"],
+         ["T1", "Tot_persons_C11_P", "Total_persons_2011_Census_Persons"],
+         ["T2", "Med_age_persns_C2011", "Median_age_of_persons_Census_year_2011"]]
+    )  # fmt: skip
+    assert labels(meta) == {"Tot_persons_P": "Total persons Persons", "Med_age_persns": "Median age of persons"}
