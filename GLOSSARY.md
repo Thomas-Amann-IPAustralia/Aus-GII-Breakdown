@@ -137,6 +137,13 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Taxable income** | Income less allowable deductions, on which income tax is worked out. The ATO's statistics by postcode give each postcode's individuals' total, and how many had business income. |
 | **Census Time Series Profile** | Census tables for three Censuses (2011, 2016 and 2021) recast on 2021 areas, so that change can be read without boundary changes. The ABS publishes it for SA2s and larger areas, not postal areas. |
 | **Patent families by origin (WIPO)** | WIPO's count of patent families by the applicant's country, at any office, and how many were filed at more than one office (*foreign-oriented*). An independent check on the families Google Patents links to Australian patents. |
+| **Supplementary value (GII)** | A value this project worked out from Australia's own statistics for a GII indicator the GII leaves blank for Australia. It sits beside the GII's rows, labelled, and never changes a GII score or rank (ADR 0033). |
+| **Research talent in business** | The GII's share of a country's researchers who work in business enterprises, as opposed to universities, government or non-profits. |
+| **NSRC (National Survey of Research Commercialisation)** | The Australian Government's survey of universities, medical research institutes and public research agencies, 2000 to 2015: invention disclosures, licences, licence income, start-ups and other commercialisation. |
+| **Invention disclosure** | A researcher's report to their institution of an invention that might be protected or commercialised; the first step before a patent application. |
+| **Licence, option or assignment (LOA)** | An agreement letting another party use (licence), consider using (option) or own (assignment) an institution's intellectual property. |
+| **Section 100 (PBS)** | The part of the Pharmaceutical Benefits Scheme for medicines supplied through special arrangements, mostly in hospitals: highly specialised drugs and chemotherapy. About 30% of the PBS's government cost; Section 85 is the general schedule dispensed by community pharmacies. |
+| **Merged record (OpenAlex)** | Two OpenAlex records found to describe one work are merged, and the old identifier then leads to the new one. A dataset that kept the old identifier no longer matches the new record directly. |
 
 ## The analysis
 

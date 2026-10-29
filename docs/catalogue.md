@@ -424,18 +424,20 @@ AusTender contract notices: Australian Government contracts by supplier (with AB
 
 Three parts. The Department of Finance's cumulative file of notices published to 30 August 2019 (from July 2007). The
 OCDS API's notices by the date they were published, from 1 July 2019 (weekly windows of 100-notice pages, about three
-seconds a page, fetched four at a time and cached as each finishes, so a rerun resumes). And, because that query
-returns amendments only for contracts published from July 2019, every release the API holds for each contract in the
-bulk file still running on its last day (its latest end date on or after 30 August 2019), asked by id: their later
-amendments are nowhere else. That is 44,461 contracts, of which 10,800 were published in July and August 2019 and so
-come from the other query too. Raw: the bulk file and the API's responses as gzipped JSON lines, one file per
-query (R2). Processed: `contracts`, one row per notice (parent or amendment) with: `cn_id` (the notice's own id: the
-contract's, such as CN123, or an amendment's, such as CN123-A2), `parent_cn_id`, `amendment` (0 for the contract's
-first notice, n for its nth amendment), `published`, `published_batch`, `signed`, `start`, `end`, `value` (AUD),
-`value_jump`, `description`, `unspsc`, `agency`, `supplier_name`, `supplier_abn`, `supplier_postcode`,
-`supplier_state`, `supplier_country`, `procurement_method`, `source` (bulk or api). Where both parts hold a notice, the
-API's row is kept; a release the API returned twice is kept once. `supplier_name` is blank where the ABR records the
-supplier's ABN as an individual (a sole trader).
+seconds a page, fetched four at a time and cached as each finishes, so a rerun resumes). And, because that query returns
+amendments only for contracts published from July 2019, every release the API holds for each contract in the bulk file
+still running on its last day (its latest end date on or after 30 August 2019), asked by id: their later amendments are
+nowhere else. That is 44,461 contracts, of which 10,800 were published in July and August 2019 and so come from the
+other query too. And (gap B10) the same for every contract that ended in the four years before then (from September
+2015): 234,313, of which a sample found 5% to 8% with amendments published later; older contracts' late amendments (1.6%
+in the sample) are left out. Raw: the bulk file and the API's responses as gzipped JSON lines, one file per query (R2).
+Processed: `contracts`, one row per notice (parent or amendment) with: `cn_id` (the notice's own id: the contract's,
+such as CN123, or an amendment's, such as CN123-A2), `parent_cn_id`, `amendment` (0 for the contract's first notice, n
+for its nth amendment), `published`, `published_batch`, `signed`, `start`, `end`, `value` (AUD), `value_jump`,
+`description`, `unspsc`, `agency`, `supplier_name`, `supplier_abn`, `supplier_postcode`, `supplier_state`,
+`supplier_country`, `procurement_method`, `source` (bulk or api). Where both parts hold a notice, the API's row is kept;
+a release the API returned twice is kept once. `supplier_name` is blank where the ABR records the supplier's ABN as an
+individual (a sole trader).
 
 An amendment's `value` is the contract's new total, not the change (in the bulk file each amendment's value is the
 parent's plus every change so far). So a contract's value is that of its latest notice (the highest `amendment`), and
@@ -647,13 +649,21 @@ medicines, which can be followed through patent expiry and IP RAPID's pharmaceut
 Raw: every file on the date-of-supply page (R2). Processed: `supply` (every row of the yearly CSVs, July 2020 on:
 month, item, drug type, patient category, pharmacy type, script type, prescriptions and the patient, government and
 total cost; R2), `item_month` (prescriptions and costs by item and month, summed over the breakdowns; repo) and
-`item_drug_map` (item code to drug name, form and strength, and ATC code; repo). The xlsx summary (from July 2022)
-and the older date-of-processing zip (to January 2018) are kept raw only.
+`item_drug_map` (item code to drug name, form and strength, and ATC code; repo). The older date-of-processing zip (to
+January 2018) is kept raw only.
+
+The yearly CSVs are by pharmacy type and hold only Section 85 (the general schedule) and the Repatriation PBS. The
+workbook of monthly totals (`dos-jul-2022-to-...xlsx`, one sheet a financial year from July 2022) also holds Section
+100, the highly specialised drugs and chemotherapy dispensed through hospitals, about 30% of the government's cost
+(gap B11). Processed: `monthly`, every row of the workbook: month, item, ATC code, drug name, patient category,
+section (`drug_type`: Section 85, Section 100, RPBS or Unknown), script type, prescriptions and the patient,
+government, retail mark-up, total and net patient costs. The workbook and the CSVs are never added together.
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
 | `item_drug_map` | 12,187 | repo (0.2 MB) | `item_code`, `drug_name`, `form_strength`, `atc5_code` |
 | `item_month` | 279,371 | repo (5.3 MB) | `month`, `item_code`, `prescriptions`, `patient_contribution`, `government_contribution`, `total_cost` |
+| `monthly` | 1,160,293 | repo (25.7 MB) | `month`, `item_code`, `atc5_code`, `drug_name`, `patient_category`, `drug_type`, `script_type`, `prescriptions`, `patient_contribution`, `government_contribution`, `retail_markup`, `total_cost`, `patient_net_contribution` |
 | `supply` | 2,146,679 | R2 (38.8 MB) | `MONTH_OF_SUPPLY`, `ITEM_CODE`, `DRUG_TYPE`, `PATIENT_CAT`, `PHRMCY_TYPE`, `SCRIPT_TYPE`, `PRESCRIPTIONS`, `PATIENT_CONTRIB`, `GOVT_CONTRIB`, `TOTAL_COST`, `RETAIL_MARKUP`, `PATIENT_NET_CONTRIB` |
 
 ## Australian Register of Therapeutic Goods (ARTG) (`tga`)
@@ -1325,6 +1335,43 @@ states one, and its row in the sheet), with `release` and `cube`.
 | Table | Rows | Where | Columns |
 |---|---:|---|---|
 | `cubes` | 29,312 | repo (0.1 MB) | `sheet`, `title`, `section`, `row`, `column`, `unit`, `value`, `value_text`, `sheet_row`, `release`, `cube` |
+
+## ABS Schools, Table 53a (FTE student to FTE teaching staff ratios, 2006 to the latest year) (`abs_schools`)
+
+Australian Bureau of Statistics. Tier 3; questions 1. Licence: CC BY 4.0. Source: https://www.abs.gov.au/statistics/people/education/schools/latest-release
+
+ABS Schools: full-time equivalent student to teaching staff ratios, 2006 to the latest year (gap B7).
+
+For the GII's indicator 2.1.5 (pupil-teacher ratio, secondary), blank for Australia in GII 2026 (F17): a supplementary
+observation from Australia's own statistics, labelled as such beside the official release (ADR 0033). Raw: Table 53a
+of the latest Schools release (repo). Processed: `ratios`, long: year, state or territory, school affiliation
+(government, non-government, Catholic, independent, all), school level (primary, secondary, all) and the ratio. The
+ABS's sort prefixes ("a NSW", "b Secondary School") are dropped, and the level's case made one. Licence: CC BY 4.0
+(ABS).
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `ratios` | 2,700 | repo (0.0 MB) | `year`, `state`, `affiliation`, `level`, `ratio` |
+
+## National Survey of Research Commercialisation, unit records 2000 to 2015 (`nsrc`)
+
+Department of Industry, Science and Resources. Tier 2; questions 2, 4. Licence: CC BY 2.5 AU. Source: https://data.gov.au/data/dataset/national-survey-of-research-commercialisation-nsrc-2000-2015-unit-record-data
+
+National Survey of Research Commercialisation (NSRC), unit records, 2000 to 2015 (gap B9).
+
+For Q2 and Q4: how much universities and research institutes commercialised their research (invention disclosures,
+licences, options and assignments (LOAs) and their income, start-ups, consultancies and contracts), beside the patents
+the `institutions` lens counts for them. The Department of Industry, Science and Resources ran the survey of
+Australian universities, medical research institutes and publicly funded research agencies; the unit record file on
+data.gov.au holds every participant's answers for each year, 2000 to 2015 (CC BY 2.5 AU). Raw: the CSV as published
+(repo). Processed: `responses`, one row per year and institution as named in the survey, with the survey's questions
+as columns (`q1_research_expenditure` ... `q18b_research_students`; money in Australian dollars). Questions first
+asked in 2014 (skills training) are empty before then, and a participant that left a question unanswered has an
+empty value.
+
+| Table | Rows | Where | Columns |
+|---|---:|---|---|
+| `responses` | 1,193 | repo (0.1 MB) | `year`, `institution_name`, `q1_research_expenditure`, `q2a_number_of_total_commercialisation_staff_fte`, `q2b_number_of_dedicated_commercialisation_staff_fte`, `q3a_cost_total_commercialisation_staff`, `q3b_cost_dedicated_commercialisation_staff`, `q4_ipr_protection_external_fees_and_legal_costs`, `q5_number_of_invention_disclosures_received`, `q6a_number_of_mtas_entered_into`, `q6b_income_dervied_from_mtas_executed`, `q7_total_number_of_loas_executed`, `q8_total_number_of_loas_active`, `q9_number_of_active_loas_yielding_income` … |
 
 ## The ABN spine (every ABN in the corpus, with ABR and ASIC attributes and source flags) (`linkage`)
 

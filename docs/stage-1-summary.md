@@ -643,6 +643,17 @@ profiled here before its pairs go to Stage 2:
   divisions (no 2023-24 release); businesses with any innovation activity 51.9% (2020-21), 45.7% and 45.6% (2024-25).
 - **Not filled from here:** court judgments after 10 March 2025 (gap B5): no newer corpus release, and the Federal
   Court's site refuses this environment (OQ22).
+- **Supplementary GII values (gap B7; `abs_schools` and the ABS's R&D surveys, ADR 0033; notebook 4.6, U120).** Four of
+  the six blanks filled beside the GII, never in it: researchers per million 4,870 (OECD median 5,320); GERD financed
+  by business 51.78% (49.5%); research talent in business 33.91% (52.99%, only 16.7% of members lower); secondary
+  pupil-teacher ratio 11.7 (11.02).
+- **OpenAlex's citation filter (gap B8; `audit.openalex_filter`; notebook 7.7, U121).** About 5.6% more patent-cited
+  Australian works exist than the harvest holds (3.5% to 8.3%): 2.4% for want of a scholarly citation, 2.9% under
+  merged ids. No re-harvest; a lower bound in Stage 3.
+- **Research commercialisation (gap B9; `nsrc`; notebook 7.8, U122).** 2000 to 2015 for 82 institutions: disclosures
+  548 to 1,705 a year, licence income $97.3 million to $354.1 million, CSIRO 42.3% of it.
+- **The PBS with Section 100 (gap B11; `pbs/monthly`; notebook 5.10, U123).** Section 100 is about 30% of the PBS's
+  government cost ($6.33 billion in FY2026); the yearly CSVs leave it out.
 
 ## 13. Where to find things
 

@@ -375,6 +375,18 @@ def test_national_indicators_hold_each_source_once():
     assert r.au_2024 == src.au_2024 and r.au_rank == src.au_rank
 
 
+def test_gii_supplementary_values_are_whole_and_apart():
+    """Every supplementary value (ADR 0033) is computed (a missing ABS cell would leave it empty), is Australia's, is
+    labelled in its status, and shares no indicator code with the GII's own rows."""
+    att = _built("national_indicators")
+    r = data.sql(f"""
+        SELECT count(DISTINCT indicator) AS indicators, count(*) FILTER (value IS NULL) AS empty,
+               bool_and(iso3 = 'AUS') AS australia, bool_and(status LIKE 'supplementary (not in the GII)%') AS labelled,
+               bool_and(indicator LIKE 'GIISUP.%') AS own_codes
+        FROM read_parquet('{att}') WHERE source = 'gii_supplementary'""").iloc[0]
+    assert r.indicators == 4 and r.empty == 0 and r.australia and r.labelled and r.own_codes
+
+
 def test_rights_origin_is_three_valued_and_patents_are_typed():
     p = data.LENS_DIR / "rights.parquet"
     if not p.exists():
@@ -640,7 +652,7 @@ def test_institution_link_is_consistent():
     assert set(names.ror) <= set(inst.ror) and set(abns.ror) <= set(inst.ror)
     assert set(inst.parent_ror.dropna()) <= set(inst.ror)
     assert not abns.abn.duplicated().any() and abns.abn.str.fullmatch(r"\d{11}").all()
-    assert set(names.source) <= {"any", "iprapid", "arc", "nhmrc"}
+    assert set(names.source) <= {"any", "iprapid", "arc", "nhmrc", "nsrc"}
     for sources in (("iprapid",), ("arc", "nhmrc")):
         q = f"WITH {build._institution_names(sources)} SELECT key FROM inst_names GROUP BY 1 HAVING count(*) > 1"
         assert data.sql(q).empty, sources

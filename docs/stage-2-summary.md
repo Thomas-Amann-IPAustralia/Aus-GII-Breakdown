@@ -108,7 +108,8 @@ and Australia-only series. B40 the industries screen; B41 IP per business; B42 i
 the institutions screen; B45 universities; B46 Australian use of cited research. B47 to
 B49 fee changes (added after Stage 2); B50, B51 firms' size and industry; B52 the dollar and the cash rate; B53, B54
 the crosswalk with services; B55 B11 again (families' coverage); B56 GDP and states' demand; B57 value added by
-division; B58 incomes by postcode; B59 change between Censuses; B60 innovation in 2024-25.
+division; B58 incomes by postcode; B59 change between Censuses; B60 innovation in 2024-25; B61 the GII's blanks; B62
+the NSRC.
 
 ## 9. Data gaps filled after Stage 2 (2026-10-28, A15)
 
@@ -140,3 +141,8 @@ division; B58 incomes by postcode; B59 change between Censuses; B60 innovation i
   (rho -0.124 to -0.008, the same sign in both halves): levels go together, changes do not.
 - **Innovation in 2024-25 (B60).** B42 holds in a third survey: innovating divisions file more trade marks per
   business (0.262), not more patents (-0.325), over 17 divisions with wide intervals.
+- **The GII's blanks (B61).** Across OECD members, business-financed R&D goes with patents per GDP (rho 0.78) and
+  so does the share of researchers in business (0.67); Australia ranks 17th of 38 on the first, 28th on patents and
+  31st of 37 on researchers in business.
+- **Commercialisation (B62).** Across institutions, per research dollar, invention disclosures go with standard patents
+  (0.617; 0.615) and patents with licence income (0.593; 0.525) in both 2004-2009 and 2010-2015.

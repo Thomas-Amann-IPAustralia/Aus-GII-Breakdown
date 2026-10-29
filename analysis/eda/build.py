@@ -1252,6 +1252,67 @@ def _oecd_flow_sql(flow: str, iso: str) -> str:
         WHERE {" AND ".join(where)}"""
 
 
+# Supplementary observations for four of the six GII 2026 indicators blank for Australia (F17, gap B7; ADR 0033), from
+# Australia's own statistics, labelled as such and never put into the GII's own rows. The R&D surveys cover different
+# years (business 2023-24, higher education 2024, government and private non-profit 2024-25), as the ABS publishes
+# them; their sum stands in for gross expenditure on R&D (GERD) and its researchers. Researchers in higher education
+# are academic staff and postgraduate students (the OECD's definition; other staff are support). The two left blank:
+# 4.1.3 (microfinance loans; no Australian series) and 6.1.3 (utility models by origin per PPP$ GDP; the GII's
+# denominator could not be rebuilt from WIPO's counts, so a value would not be comparable).
+GII_SUPP_RD = {
+    "berd_own": "ABS.BERD.81040DO001.Table_1.22.source_of_funds|own_funds|000",
+    "berd_other_business": "ABS.BERD.81040DO001.Table_1.23.source_of_funds|other_business|000",
+    "berd": "ABS.BERD.81040DO001.Table_1.43.type_of_activity|total_expenditure_on_r_d|000",
+    "berd_researchers": "ABS.BERD.81040DO009.Table_1.13.types_of_resources|researchers|pye",
+    "goverd_business": "ABS.GOVERD_PNP.GPNPDC01.Table_1.20.source_of_funds|business|total_a_000",
+    "goverd": "ABS.GOVERD_PNP.GPNPDC01.Table_1.41.type_of_activity|total_expenditure_on_r_d_a|total_a_000",
+    "goverd_researchers": "ABS.GOVERD_PNP.GPNPDC04.Table_1.7.type_of_resource|researchers|total_a_pye",
+    "pnp_business": "ABS.GOVERD_PNP.GPNPDC05.Table_1.19.source_of_funds|business|000",
+    "pnp": "ABS.GOVERD_PNP.GPNPDC05.Table_1.40.type_of_activity|total_expenditure_on_r_d_a|000",
+    "pnp_researchers": "ABS.GOVERD_PNP.GPNPDC09.Table_1.6.type_of_resource|researchers|pye",
+    "herd_business": "ABS.HERD.HERDDC01.Table 1.23.australian_competitive_funds|business|col2",
+    "herd": "ABS.HERD.HERDDC01.Table 1.41.location_b|total_expenditure_on_r_d_a|col2",
+    "herd_academic": "ABS.HERD.HERDDC01.Table 1.43.human_resources_devoted_to_r_d|academic_staff|col2",
+    "herd_postgraduate": "ABS.HERD.HERDDC01.Table 1.45.human_resources_devoted_to_r_d|postgraduate_students|col2",
+}
+GII_SUPP_PERIOD = "business 2023-24, higher education 2024, government and private non-profit 2024-25"
+
+
+def _gii_supplementary_sql() -> str:
+    cols = ",\n               ".join(f"max(value) FILTER (indicator = '{c}') AS {k}" for k, c in GII_SUPP_RD.items())
+    researchers = "berd_researchers + goverd_researchers + pnp_researchers + herd_academic + herd_postgraduate"
+    status = "'supplementary (not in the GII): ' || "
+    return f"""
+        WITH r AS (
+            SELECT {cols}
+            FROM abs_nat WHERE source = 'abs'
+        ),
+        pop AS (SELECT value FROM {{wdi/panel}} WHERE iso3 = 'AUS' AND indicator = 'SP.POP.TOTL' AND year = 2024)
+        SELECT 'AUS', 'Australia', 2024, '{GII_SUPP_PERIOD}', 'gii_supplementary', 'gii_2026', 'GIISUP.2.3.1',
+               'Researchers, FTE/mn pop. (supplementary: four ABS R&D surveys, World Bank population)',
+               1e6 * ({researchers}) / pop.value, NULL, 'researchers per million people',
+               {status}'researchers in person-years of effort, each sector in its own survey year; population 2024'
+        FROM r, pop
+        UNION ALL
+        SELECT 'AUS', 'Australia', 2024, '{GII_SUPP_PERIOD}', 'gii_supplementary', 'gii_2026', 'GIISUP.5.1.5',
+               'GERD financed by business, % (supplementary: business funds in four ABS R&D surveys)',
+               100 * (berd_own + berd_other_business + goverd_business + pnp_business + herd_business)
+                 / (berd + goverd + pnp + herd), NULL, '%',
+               {status}'business funds in each sector, joint business-government funds of government R&D left out'
+        FROM r
+        UNION ALL
+        SELECT 'AUS', 'Australia', 2024, '{GII_SUPP_PERIOD}', 'gii_supplementary', 'gii_2026', 'GIISUP.5.3.6',
+               'Research talent, % in businesses (supplementary: four ABS R&D surveys)',
+               100 * berd_researchers / ({researchers}), NULL, '%',
+               {status}'researchers in person-years of effort, each sector in its own survey year'
+        FROM r
+        UNION ALL
+        SELECT 'AUS', 'Australia', year, CAST(year AS VARCHAR), 'gii_supplementary', 'gii_2026', 'GIISUP.2.1.5',
+               'Pupil-teacher ratio, secondary (supplementary: ABS Schools, FTE students per FTE teaching staff)',
+               value, NULL, 'ratio', {status}'FTE students per FTE teaching staff, all affiliations (UIS counts heads)'
+        FROM abs_nat WHERE indicator = 'ABS.SCHOOLS.T53A.all_affiliations.secondary_school'"""
+
+
 def national_indicators_sql() -> str:
     """The national lens's attachments, long (ADR 0019): one row per country, source, indicator and period, holding
     every value of the GII, every OECD flow, WIPO's other tables, Measuring What Matters and Closing the Gap."""
@@ -1403,10 +1464,18 @@ def national_indicators_sql() -> str:
         FROM {{bcarr_creative/activity}}
         WHERE NOT (table_title LIKE '%by industry division' OR table_title IN ('Specialised activity',
                    'Support activity', 'Embedded activity', 'In-scope cultural and creative industry subdivisions'))
+        UNION ALL
+        SELECT 'AUS', 'Australia', year, CAST(year AS VARCHAR), 'abs', 'schools',
+               'ABS.SCHOOLS.T53A.' || {_slug("affiliation")} || '.' || {_slug("level")},
+               'FTE student to FTE teaching staff ratio: ' || affiliation || ', ' || level, ratio, NULL, 'ratio', NULL
+        FROM {{abs_schools/ratios}} WHERE state = 'Aust.'
+    ),
+    gii_supp AS ({_gii_supplementary_sql()}
     ),
     u AS (
         SELECT * FROM oecd UNION ALL SELECT * FROM wipo UNION ALL SELECT * FROM gii
         UNION ALL SELECT * FROM mwm UNION ALL SELECT * FROM ctg UNION ALL SELECT * FROM abs_nat
+        UNION ALL SELECT * FROM gii_supp
     )
     SELECT u.iso3, coalesce(n.name, p.name, u.place_name) AS country, coalesce(p.kind, 'country') AS entity,
            u.year, u.period, u.source, u.dataset, u.indicator, u.label, u.value, u.value_text, u.unit, u.status,
@@ -1834,6 +1903,9 @@ def industry_indicators_sql() -> str:
 # they appear under beyond ROR's own (former names, commercialisation companies, misspellings) and their ABNs.
 INSTITUTIONS_DIR = Path(__file__).resolve().parent / "institutions"
 OPENALEX_FROM = 2010  # OpenAlex gives an institution's works and citations by year for 2010 on
+# An NSRC participant's name, as given or without a closing parenthesis ("Commonwealth Scientific and Industrial
+# Research Organisation (CSIRO)", "The University of Newcastle ( Newcastle Innovation)")
+NSRC_NAME = "regexp_replace(r.institution_name, '\\s*\\([^)]*\\)\\s*$', '')"
 # The ARC's schemes for research with industry partners. The ARC's 'Linkage' program also holds the Centres of
 # Excellence, infrastructure (LIEF), Special Research Initiatives and the learned academies' projects
 ARC_INDUSTRY_SCHEMES = (
@@ -1925,7 +1997,7 @@ def institutions_sql() -> str:
     lo, hi = INSTITUTIONS_YEARS
     industry = "g.scheme_name IN (" + ", ".join(f"'{x}'" for x in ARC_INDUSTRY_SCHEMES) + ")"
     return f"""
-    WITH {_institution_names(("arc", "nhmrc"))},
+    WITH {_institution_names(("arc", "nhmrc", "nsrc"))},
     grid AS (
         SELECT i.ror, y.year FROM inst i CROSS JOIN (SELECT unnest(range({lo}, {hi + 1})) AS year) y
     ),
@@ -2000,6 +2072,19 @@ def institutions_sql() -> str:
         SELECT a.ror, year(c.first_published) AS year, count(*) AS contracts, sum(c.value) AS contract_value
         FROM contracts c JOIN inst_abns a USING (abn) GROUP BY 1, 2
     ),
+    nsrc AS (  -- the NSRC, 2000 to 2015 (gap B9): matched by name; an institution not surveyed that year has none
+        SELECT n.ror, r.year, sum(r.q1_research_expenditure) AS nsrc_research_expenditure,
+               sum(r.q2b_number_of_dedicated_commercialisation_staff_fte) AS nsrc_commercialisation_staff,
+               sum(r.q5_number_of_invention_disclosures_received) AS nsrc_invention_disclosures,
+               sum(r.q7_total_number_of_loas_executed) AS nsrc_licences_executed,
+               sum(r.q10_total_value_of_income_yielded_from_active_loas) AS nsrc_licence_income,
+               sum(r.q14_number_of_startup_companies_created) AS nsrc_startups_created
+        FROM {{nsrc/responses}} r
+        JOIN (SELECT DISTINCT r.institution_name, n.ror FROM {{nsrc/responses}} r
+              JOIN inst_names n ON n.key IN ({_name_key("r.institution_name")}, {_name_key(NSRC_NAME)})) n
+          USING (institution_name)
+        GROUP BY 1, 2
+    ),
     o AS (SELECT ror, state, established, status FROM {{ror/organisations}})
     SELECT g.ror, i.institution, i.kind, nullif(i.parent_ror, '') AS parent_ror, upper(o.state) AS state,
            o.established, o.status AS ror_status, g.year,
@@ -2025,14 +2110,16 @@ def institutions_sql() -> str:
            coalesce(families.patent_families_us_granted, 0) AS patent_families_us_granted,
            coalesce(families.patent_family_citations_5y, 0) AS patent_family_citations_5y,
            CASE WHEN g.year >= 2005 THEN coalesce(tender.contracts, 0) END AS contracts,
-           CASE WHEN g.year >= 2005 THEN coalesce(tender.contract_value, 0) END AS contract_value
+           CASE WHEN g.year >= 2005 THEN coalesce(tender.contract_value, 0) END AS contract_value,
+           nsrc.nsrc_research_expenditure, nsrc.nsrc_commercialisation_staff, nsrc.nsrc_invention_disclosures,
+           nsrc.nsrc_licences_executed, nsrc.nsrc_licence_income, nsrc.nsrc_startups_created
     FROM grid g
     JOIN inst i USING (ror)
     LEFT JOIN o USING (ror)
     LEFT JOIN oa USING (ror)
     LEFT JOIN works USING (ror, year) LEFT JOIN cited USING (ror, year) LEFT JOIN arc USING (ror, year)
     LEFT JOIN nhmrc USING (ror, year) LEFT JOIN ip USING (ror, year) LEFT JOIN families USING (ror, year)
-    LEFT JOIN tender USING (ror, year)
+    LEFT JOIN tender USING (ror, year) LEFT JOIN nsrc USING (ror, year)
     ORDER BY g.ror, g.year
     """
 
@@ -2190,13 +2277,20 @@ def timeline_sql() -> str:
             max(value) FILTER (series_id = 'FXRTWI') AS aud_twi
         FROM {{rba/series}} WHERE series_id IN ('FIRMMCRT', 'FIRMMCRI', 'FXRUSD', 'FXRTWI') GROUP BY 1
     ),
+    pbs AS (  -- the PBS's monthly workbook (gap B11), July 2022 on: every section, and Section 100 apart
+        SELECT strptime(month, '%Y%m')::DATE AS month, sum(prescriptions) AS pbs_prescriptions,
+            sum(government_contribution) AS pbs_government_cost,
+            sum(prescriptions) FILTER (drug_type = 'Section 100') AS pbs_s100_prescriptions,
+            sum(government_contribution) FILTER (drug_type = 'Section 100') AS pbs_s100_government_cost
+        FROM {{pbs/monthly}} GROUP BY 1
+    ),
     j AS (
         SELECT months.month, apps.* EXCLUDE (month), events.* EXCLUDE (month), policy.policy_events,
             policy.fee_changes, cpi.cpi, fees.* EXCLUDE (month), q.cpi AS cpi_quarter, rba.* EXCLUDE (month),
-            ana.* EXCLUDE (month), sfd.* EXCLUDE (month)
+            ana.* EXCLUDE (month), sfd.* EXCLUDE (month), pbs.* EXCLUDE (month)
         FROM months LEFT JOIN apps USING (month) LEFT JOIN events USING (month) LEFT JOIN policy USING (month)
         LEFT JOIN cpi USING (month) LEFT JOIN fees USING (month) LEFT JOIN rba USING (month) LEFT JOIN ana USING (month)
-        LEFT JOIN sfd USING (month)
+        LEFT JOIN sfd USING (month) LEFT JOIN pbs USING (month)
         LEFT JOIN cpi q ON q.month = make_date(year(months.month), 3 * quarter(months.month), 1)
     ),
     nz AS (
@@ -2218,7 +2312,8 @@ def timeline_sql() -> str:
         {", ".join(f"round(j.{c} * b.base / j.cpi_quarter, 2) AS {c}_real" for c in TIMELINE_FEES_REAL)},
         j.fee_changes,
         j.cash_rate_target, j.cash_rate_interbank, j.aud_usd, j.aud_twi,
-        j.gdp_cvm, j.gdp_current, {", ".join(f"j.sfd_{code}" for code, _ in STATES)}
+        j.gdp_cvm, j.gdp_current, {", ".join(f"j.sfd_{code}" for code, _ in STATES)},
+        j.pbs_prescriptions, j.pbs_government_cost, j.pbs_s100_prescriptions, j.pbs_s100_government_cost
     FROM j CROSS JOIN f CROSS JOIN cpi_base b
     ORDER BY j.month
     """

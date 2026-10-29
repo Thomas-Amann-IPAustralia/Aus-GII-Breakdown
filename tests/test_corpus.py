@@ -650,3 +650,31 @@ def test_census_time_series_cells_lose_their_year_in_every_spelling():
          ["T2", "Med_age_persns_C2011", "Median_age_of_persons_Census_year_2011"]]
     )  # fmt: skip
     assert labels(meta) == {"Tot_persons_P": "Total persons Persons", "Med_age_persns": "Median age of persons"}
+
+
+def test_school_ratios_drop_sort_prefixes_and_make_the_level_one_case():
+    from corpus.sources.abs_schools import ratios
+
+    raw = pd.DataFrame(
+        [["Table 53a", None, None, None, None], ["Year", "State/Territory", "Affiliation", "School Level", "Ratio"],
+         ["2025", "i Aust.", "e All Affiliations", "b Secondary School", "11.7"],
+         ["2024", "i Aust.", "e All Affiliations", "b Secondary school", "11.7"]]
+    )  # fmt: skip
+    r = ratios(raw)
+    assert r.level.tolist() == ["Secondary school", "Secondary school"] and set(r.state) == {"Aust."}
+    assert r.ratio.tolist() == [11.7, 11.7] and r.year.tolist() == [2025, 2024]
+
+
+def test_nsrc_responses_start_at_the_year_row_and_read_numbers():
+    from corpus.sources.nsrc import responses
+
+    text = (
+        ",,\nNSRC 2000-2015 Unit Record Data,,\nNote: x,,\n"
+        "Year,Institution Name,Q1 Research Expenditure,Q5 Number of invention disclosures received\n"
+        '2004,The University of Queensland,"$1,200,000",15\n2000,CSIRO,,7\n,,,\n'
+    )
+    r = responses(text)
+    assert list(r.columns) == ["year", "institution_name", "q1_research_expenditure",
+                               "q5_number_of_invention_disclosures_received"]  # fmt: skip
+    assert r.q1_research_expenditure.tolist()[0] == 1_200_000 and pd.isna(r.q1_research_expenditure.tolist()[1])
+    assert r.year.tolist() == [2004, 2000]

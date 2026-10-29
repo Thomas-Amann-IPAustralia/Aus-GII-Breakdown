@@ -463,6 +463,10 @@ timeline:
     sfd_tas: {skip: "as gdp_cvm"}
     sfd_nt: {skip: "as gdp_cvm"}
     sfd_act: {skip: "as gdp_cvm"}
+    pbs_prescriptions: {skip: "added after Stage 2 (gap B11; July 2022 on): its own section"}
+    pbs_government_cost: {skip: "added after Stage 2 (gap B11): its own section"}
+    pbs_s100_prescriptions: {skip: "added after Stage 2 (gap B11): its own section"}
+    pbs_s100_government_cost: {skip: "added after Stage 2 (gap B11): its own section"}
   groups: {}
 
 industries:
@@ -548,6 +552,12 @@ institutions:
     patent_family_citations_5y: {skip: in family_citations_per_family}
     contracts: {skip: in contracts_per_kwork}
     contract_value: {skip: "in contracts_per_kwork (value follows contracts)"}
+    nsrc_research_expenditure: {skip: "added after Stage 2 (gap B9; 2000 to 2015, so none in the discovery period): its own section"}
+    nsrc_commercialisation_staff: {skip: "added after Stage 2 (gap B9): its own section"}
+    nsrc_invention_disclosures: {skip: "added after Stage 2 (gap B9): its own section"}
+    nsrc_licences_executed: {skip: "added after Stage 2 (gap B9): its own section"}
+    nsrc_licence_income: {skip: "added after Stage 2 (gap B9): its own section"}
+    nsrc_startups_created: {skip: "added after Stage 2 (gap B9): its own section"}
   ratios:
     has_parent: "part of another institution"
     citations_per_work: "citations received per work"

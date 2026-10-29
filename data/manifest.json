@@ -8019,6 +8019,33 @@
    },
    "run": "2026-10-22"
   },
+  "abs_schools": {
+   "files": {
+    "processed/ratios": {
+     "bytes": 6352,
+     "columns": [
+      "year",
+      "state",
+      "affiliation",
+      "level",
+      "ratio"
+     ],
+     "describe": "ABS Schools Table 53a: FTE student to FTE teaching staff ratios, long",
+     "location": "repo",
+     "path": "data/processed/abs_schools/ratios.parquet",
+     "rows": 2700,
+     "sha256": "88e9dd66eb2366c84b97e0f5110d89aaaaf285d6d3bdacff2723554e1b44b3fe"
+    },
+    "raw/schools_table_53a.xlsx": {
+     "bytes": 103622,
+     "location": "repo",
+     "path": "data/raw/abs_schools/schools_table_53a.xlsx",
+     "sha256": "84bb296f69fbe025f5731ae345bce44cb5e16db7c4e7649f6c6a09394ce9ad17",
+     "url": "https://www.abs.gov.au/statistics/people/education/schools/2025/Table%2053a%20Full-time%20equivalent%20%28FTE%29%20student%20to%20%28FTE%29%20teaching%20staff%20ratios%2C%202006-2025.xlsx"
+    }
+   },
+   "run": "2026-10-29"
+  },
   "arc_grants": {
    "files": {
     "processed/grants": {
@@ -10815,6 +10842,60 @@
    },
    "run": "2026-10-22"
   },
+  "nsrc": {
+   "files": {
+    "processed/responses": {
+     "bytes": 74018,
+     "columns": [
+      "year",
+      "institution_name",
+      "q1_research_expenditure",
+      "q2a_number_of_total_commercialisation_staff_fte",
+      "q2b_number_of_dedicated_commercialisation_staff_fte",
+      "q3a_cost_total_commercialisation_staff",
+      "q3b_cost_dedicated_commercialisation_staff",
+      "q4_ipr_protection_external_fees_and_legal_costs",
+      "q5_number_of_invention_disclosures_received",
+      "q6a_number_of_mtas_entered_into",
+      "q6b_income_dervied_from_mtas_executed",
+      "q7_total_number_of_loas_executed",
+      "q8_total_number_of_loas_active",
+      "q9_number_of_active_loas_yielding_income",
+      "q10_total_value_of_income_yielded_from_active_loas",
+      "q11_value_reported_income_paid_to_other_institutions_or_entitites",
+      "q12_value_of_research_commercialisation_equity_holdings",
+      "q13a_no_start_ups_dependent_upon_licensing_assigment_for_initiation",
+      "q13b_no_of_start_ups_dependent_upon_licensing_assigment_for_initiation_institution_held_equity",
+      "q14_number_of_startup_companies_created",
+      "q15a_number_of_consultancies_undertaken",
+      "q15b_number_of_contracts_undertaken",
+      "q15c_number_of_research_collaborations",
+      "q15d_number_of_direct_sales_transactions",
+      "q16a_total_gross_contracted_value_of_consultancies",
+      "q16b_total_gross_contracted_value_of_contracts",
+      "q16c_total_gross_value_of_research_collaborations",
+      "q16d_value_of_direct_sales_transactions",
+      "q17_offering_industry_skills_training_to_academic_researchers_or_research_students",
+      "q18a_number_of_academic_researchers",
+      "q18b_number_of_research_students",
+      "total_number_of_partcipants_that_completed_training_in_industry_skills"
+     ],
+     "describe": "NSRC unit records: one row per year and institution, 2000 to 2015",
+     "location": "repo",
+     "path": "data/processed/nsrc/responses.parquet",
+     "rows": 1193,
+     "sha256": "c0b426e366192b5d489f5b375963124caaf1e530e20b2658fcdd1ffec40b31d5"
+    },
+    "raw/2000-2015-nsrc-unit-record-data.csv": {
+     "bytes": 189353,
+     "location": "repo",
+     "path": "data/raw/nsrc/2000-2015-nsrc-unit-record-data.csv",
+     "sha256": "1ff572ec372ce9742260f78f05c557b361e2c8defdcf9841526d5cfebece9c2e",
+     "url": "https://data.gov.au/data/dataset/b12433aa-f1f1-4d85-9605-f13b9c362358/resource/7710dda7-727b-4f31-8325-abd0d35c0d4d/download/2000-2015-nsrc-unit-record-data.csv"
+    }
+   },
+   "run": "2026-10-29"
+  },
   "oecd": {
    "files": {
     "processed/business_births_deaths": {
@@ -13157,6 +13238,29 @@
      "rows": 279371,
      "sha256": "43e06605dac8f3e4e0b3db2438c865a7e332b71782238e7ca127d6a5e8ea8020"
     },
+    "processed/monthly": {
+     "bytes": 25687049,
+     "columns": [
+      "month",
+      "item_code",
+      "atc5_code",
+      "drug_name",
+      "patient_category",
+      "drug_type",
+      "script_type",
+      "prescriptions",
+      "patient_contribution",
+      "government_contribution",
+      "retail_markup",
+      "total_cost",
+      "patient_net_contribution"
+     ],
+     "describe": "PBS monthly totals by item, section and patient category, July 2022 on",
+     "location": "repo",
+     "path": "data/processed/pbs/monthly.parquet",
+     "rows": 1160293,
+     "sha256": "055ae47d682239512375fdc937aa43455dec89b254a61728d65f69c0813ab58c"
+    },
     "processed/supply": {
      "bytes": 38803639,
      "columns": [
@@ -13243,6 +13347,7 @@
      "url": "https://www.pbs.gov.au/statistics/dos-and-dop/files/pbs-item-drug-map.csv"
     }
    },
+   "reprocessed": "2026-10-29",
    "run": "2026-10-22"
   },
   "phidu": {
