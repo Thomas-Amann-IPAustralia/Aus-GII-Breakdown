@@ -23,7 +23,9 @@ The evidence atlas (`evidence/`) has Stage 2's pages (ADR 0035, 2026-10-29); the
   their lower citations are mostly the narrower reach (B8, B11, B12).
 - **Where filing happens** follows advantage (1.7 to 1.9 times the standard patent rate per standard deviation of
   IRSAD), remoteness and business mix, not one firm (B29 to B31); among firms, company form, age and cities, with R&D
-  spend linked only weakly to patenting and missing filers mostly young private companies (B22, B23).
+  spend linked only weakly to patenting, and about half of R&D claimants with no filing linked to their ABN, mostly
+  private companies of 3 to 10 years: a group to examine, not proven non-filers (B22, B23; restated 1 November 2026,
+  ADR 0036).
 - **Across countries** IP follows R&D and income; Australia's business R&D fell from 13th to 20th in the OECD, its
   patenting near what that predicts; within a decade, changes in R&D barely move patenting (B33, B34).
 - **Policy leaves clean breaks:** two rushes, three steps and the 1995 pauses are far outside placebo dates (B37), the
@@ -54,8 +56,8 @@ The evidence atlas (`evidence/`) has Stage 2's pages (ADR 0035, 2026-10-29); the
 | Lens | Observations | Distinct leads | What stands out |
 |---|---|---|---|
 | `rights` | B1 to B19 | 223 over six types | Representation and outcomes; lifetimes and reach by origin; expedite as composition; inventions owned abroad; gender by field |
-| `firms` | B20 to B26 | 33 | Who files among R&D claimants and suppliers; missing filers; contracts; age at first filing; young firms' patents moving abroad |
-| `regions` | B27 to B31 | 124 (75 on IP); 24,792 indicator pairs | One gradient of advantage, education and business density; negative binomial ratios; not one firm's; business mix |
+| `firms` | B20 to B26 | 33 | Who files among R&D claimants and suppliers; claimants with no filing linked; contracts; age at first filing; young firms' patents moving abroad |
+| `regions` | B27 to B31 | 128 (79 on IP); 24,948 indicator pairs | One gradient of advantage, education and business density; negative binomial ratios; not one firm's; business mix |
 | `national` | B32 to B35 | 188 (134 on IP); 225 attachments | Development gradient; Australia's OECD ranks; R&D and patenting in levels and changes |
 | `timeline` | B36 to B39 | 1 | No common cycle; policy breaks against placebos; provisional follow-up; Australia-only series give context only |
 | `industries` | B40 to B43 | 4 | Trade marks follow business R&D; patents in 8 divisions only; survey innovation is not IP |
@@ -100,7 +102,7 @@ as a driver.
 
 B1 to B4 the rights screen; B5 to B7 filing alone and grant; B8 to B10 lifetimes; B11, B12 reach and citations; B13,
 B14 expedited examination; B15, B16 routes and invention; B17, B18 gender; B19 rights moving overseas. B20, B21 the
-firms screen; B22 who files; B23 R&D and missing filers; B24 contracts and income; B25 age at first filing; B26 young
+firms screen; B22 who files; B23 R&D and claimants with no filing linked; B24 contracts and income; B25 age at first filing; B26 young
 firms' patents abroad. B27 the places screen; B28 attached indicators; B29 advantage and remoteness; B30 the largest
 filer; B31 business mix. B32 the countries screen; B33 Australia among OECD members; B34 R&D and patenting; B35
 attachments. B36 the timeline screen; B37 policy breaks; B38 provisional follow-up; B39 Australian against overseas,

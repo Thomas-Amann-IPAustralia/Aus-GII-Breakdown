@@ -609,6 +609,15 @@ def rights_sql() -> str:
 
 
 def firms_sql() -> str:
+    """One row per ABN in `linkage/abn_spine`.
+
+    "Has filed IP" has one definition (ADR 0036), `ip_record`: `filed` if any application is linked to the ABN as a
+    filer by either rule the lens holds (credited as `filer_abn`, which includes the register's ABNs, ADR 0029; or
+    as any founding applicant in IP RAPID's own panel, `ip_filed_total`, which predates them); `other_ip_link` if
+    none is, but the ABN is linked to IP another way (it holds a right now, is an applicant or owner on an IP RAPID
+    record, is an owner in the register, or IPLORD links it to IP to FY2020); `no_ip_link` if none of these. A zero
+    count, or `no_ip_link`, means no record links the ABN, not that the firm never filed: a firm can file without
+    its ABN being recorded."""
     return f"""
     WITH ip AS (  -- applications by the filer: the first founding applicant with an ABN (ADR 0013, 0016), else the
                   -- register's owner while the right has not changed hands (ADR 0029)
@@ -707,6 +716,12 @@ def firms_sql() -> str:
         ff.patent_first_fy_filled, ff.trade_mark_first_fy_filled, ff.design_first_fy_filled,
         s.ip_filed_total,
         coalesce(filed.ip_filed_weighted, 0) AS ip_filed_weighted,
+        -- the one filing flag (ADR 0036): a filing linked by either rule, else another link to IP, else none
+        CASE WHEN coalesce(ip.n_patents_standard + ip.n_patents_provisional + ip.n_patents_second_tier
+                           + ip.n_trade_marks + ip.n_designs, 0) > 0 OR s.ip_filed_total > 0 THEN 'filed'
+             WHEN coalesce(held.n_held, 0) > 0 OR s.in_iprapid_patent OR s.in_iprapid_trade_mark
+                  OR s.in_iprapid_design OR s.in_iprapid_pbr OR s.in_register OR s.in_iplord THEN 'other_ip_link'
+             ELSE 'no_ip_link' END AS ip_record,
         coalesce(ip.n_patents_standard, 0) AS n_patents_standard,
         coalesce(ip.n_patents_provisional, 0) AS n_patents_provisional,
         coalesce(ip.n_patents_second_tier, 0) AS n_patents_second_tier,
@@ -798,7 +813,11 @@ def regions_sql() -> str:
     holder's, so a right sold to another place stays where it was filed. Postcodes that are not postal areas (post
     office boxes, universities, large-volume receivers: S6) are not counted here; they are in the state totals of the
     rights lens. Rates per person count every filing; rates per business count organisations' filings only, as about
-    a fifth to a quarter of filings are by individuals, and the denominator is GST-registered businesses."""
+    a fifth to a quarter of filings are by individuals, and the denominator is GST-registered businesses.
+
+    Firms (by their ABR postcode) are counted by the firms lens's one filing flag, `ip_record` (ADR 0036): IP-filing
+    firms are those with a filing linked; R&D claimants with no filing linked, and those with no link to IP of any
+    kind, are counted separately."""
     lo, hi = WINDOW
     years = hi - lo + 1
     seifa = ",\n        ".join(
@@ -878,11 +897,12 @@ def regions_sql() -> str:
         WHERE founder_postcode IS NOT NULL AND filing_fy BETWEEN {lo} AND {hi}
         GROUP BY 1
     ),
-    firms AS (
+    firms AS (  -- by the firms lens's one filing flag, `ip_record` (ADR 0036)
         SELECT postcode AS poa_code,
-               count(*) FILTER (abn_active AND ip_filed_total > 0) AS ip_filing_firms,
+               count(*) FILTER (abn_active AND ip_record = 'filed') AS ip_filing_firms,
                count(*) FILTER (abn_active AND in_rdti) AS rdti_firms,
-               count(*) FILTER (abn_active AND in_rdti AND ip_filed_total = 0) AS rdti_firms_no_ip
+               count(*) FILTER (abn_active AND in_rdti AND ip_record <> 'filed') AS rdti_firms_no_filing,
+               count(*) FILTER (abn_active AND in_rdti AND ip_record = 'no_ip_link') AS rdti_firms_no_ip_link
         FROM {lens_table("firms")} GROUP BY 1
     ),
     contracts AS (  -- each contract once, at its latest notice (as in `linkage/abn_spine`, ADR 0010)
@@ -926,7 +946,8 @@ def regions_sql() -> str:
         coalesce(ip.designs_by_organisations, 0) AS designs_by_organisations,
         coalesce(firms.ip_filing_firms, 0) AS ip_filing_firms,
         coalesce(firms.rdti_firms, 0) AS rdti_firms,
-        coalesce(firms.rdti_firms_no_ip, 0) AS rdti_firms_no_ip,
+        coalesce(firms.rdti_firms_no_filing, 0) AS rdti_firms_no_filing,
+        coalesce(firms.rdti_firms_no_ip_link, 0) AS rdti_firms_no_ip_link,
         coalesce(tender.austender_suppliers, 0) AS austender_suppliers,
         coalesce(tender.austender_contracts, 0) AS austender_contracts,
         tender.austender_value,

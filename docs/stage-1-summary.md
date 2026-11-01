@@ -306,8 +306,9 @@ Every ABN that appears in IP Australia's data, the R&D Tax Incentive, AusTender 
   of Australian organisations' trade marks with a filer's ABN (84.1% to 59.9%): at least part of the fall is in
   linking, not filing (U45, OQ7).
 - **Money and place.** The median latest R&D claim is $307,490; the top 1% of government suppliers hold 83.1% of
-  contract value (U46). IP filers and R&D claimants are more metropolitan and more advantaged than firms in general
-  (U47).
+  contract value (U46). R&D claimants are more metropolitan and more advantaged than firms in general; IP filers
+  only a little more metropolitan, and no more advantaged (U47, restated 1 November 2026 with every linked filing,
+  ADR 0036).
 
 ### 4.4 Places (`regions`, U48 to U62)
 
@@ -324,8 +325,9 @@ claimants and contracts, and every value of five area sources in `region_indicat
 - **Concentration and chance.** The top tenth of areas file 72.5% of standard patents with 29.2% of people, and an
   area's patents are often one firm's (U52). Areas differ far more than chance would make them, so Stage 2 uses
   negative binomial models and pooling (U53).
-- **'Missing filers'.** 50.7% of R&D claimants have never filed IP; claimants are 5.6 per 1,000 businesses in major
-  cities and 0.6 in very remote areas (U54).
+- **R&D claimants with no filing linked.** 48.3% of R&D claimants have no filing linked to their ABN, and 44.7% no
+  link to IP of any kind; neither proves a firm never filed (U54, restated 1 November 2026 from 50.7% "never filed",
+  ADR 0036). Claimants are 5.6 per 1,000 businesses in major cities and 0.6 in very remote areas.
 - **The attachments.** 22.5 million values (U55). Values split from SA2s track direct counts (Data by Region's
   population is within 10% of the direct count for 99.34% of areas of 1,000 people or more); CABEE counts 0.742 of the
   ABR's businesses in the same order, so business counts come from the ABR (U56). Census cells are small and perturbed
@@ -412,8 +414,8 @@ explanation.
    ranks and shares.
 3. **Uneven access.** Individuals and regional areas stand out: individuals file alone (U20), file a fifth of the
    standard patents filed from Australia (U48), drove the provisional rise (U8) and file more of their patents only
-   here (U93); R&D claimants are rarer outside the cities and more often have never filed IP there (U54); filers are
-   more advantaged than firms in general (U47). About one inventor in seven in Australia is estimated to be a woman
+   here (U93); R&D claimants are rarer outside the cities and more often have no filing linked there (U54); R&D
+   claimants are more advantaged than firms in general, IP filers no more so (U47). About one inventor in seven in Australia is estimated to be a woman
    (U98). This bears directly on Q2 and Q4.
 4. **Research without local invention.** Strong research inputs (GII inputs 13th, U69; universities 86.8% of works,
    U82) sit beside weak outputs (24th), falling business R&D (U65) and research cited mostly by foreign inventions
@@ -507,7 +509,7 @@ the number of pairs tested, and a second period or sample before it counts as a 
 | Women's estimated share among inventors in Australia, by field and filer | U98 | Q2 |
 | Rights moving overseas by technology, firm and age | U18 | Q1, Q2 |
 | Firms' IP against their R&D, contracts, age and entity group | U41 to U46 | Q2, Q3 |
-| R&D claimants who have never filed IP ('missing filers'), by place and industry | U54 | Q4 |
+| R&D claimants with no filing linked, by place and industry | U54 | Q4 |
 | Area filing rates against advantage, remoteness, the Census and business mix | U51, U53 | Q2 |
 | Australia against OECD members, as ratios to people and GDP | U65, U66 | Q1, Q4 |
 | IP per business by industry, beside the crosswalk's limits; innovation (BCS) against IP | U75, U77, U79 | Q2, Q3 |
@@ -724,14 +726,14 @@ All descriptive.
 | U44 | firms | The top 1% of filing firms file 55.3% of standard patents |
 | U45 | firms | Recent filers are less often linked to an ABN |
 | U46 | firms | R&D claims spread; contract value concentrated |
-| U47 | firms | Filers and R&D claimants more metropolitan and advantaged |
+| U47 | firms | R&D claimants more metropolitan and advantaged; IP filers a little more metropolitan only |
 | U48 | regions | 2,641 postal areas, 25.4 million people; filer and holder differ for one right in fifteen |
 | U49 | regions | One standard patent in eighteen from a postcode that is not a postal area |
 | U50 | regions | Areas from no residents to 129,883 |
 | U51 | regions | Most areas outside the cities, most people inside; SEIFA deciles are tenths of areas |
 | U52 | regions | Top tenth of areas file 72.5% of standard patents; often one firm's |
 | U53 | regions | Areas differ far more than chance |
-| U54 | regions | Half of R&D claimants have never filed IP |
+| U54 | regions | About half of R&D claimants have no filing linked |
 | U55 | regions | 22.5 million attached values |
 | U56 | regions | Split values track direct ones; business counts from the ABR |
 | U57 | regions | Census cells small and perturbed |
