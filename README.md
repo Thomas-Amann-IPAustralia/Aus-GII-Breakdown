@@ -78,6 +78,7 @@ raw files pass through a cache outside the repo (`$IPHOLMES_CACHE`, default `~/.
 | `data/manifest.json` | Every file's SHA-256, size, rows, columns and location |
 | `docs/` | The research goal, the data plan, the catalogue, the evidence register |
 | `analysis/` | The analysis: the corpus profile, the EDA helpers (`analysis/eda/`) and notebooks (`analysis/notebooks/`) |
+| `analysis/GPT-audit/` | External audits of the EDA notebooks, one per notebook section; start at the index, `analysis/GPT-audit/261030/INDEX.md` |
 | `CLAUDE.md`, `GLOSSARY.md`, `docs/adr/` | How Claude sessions work here, the plain-English glossary, and the decision records |
 | `tests/` | The rules, and the committed data against the manifest |
 | `evidence/`, `analysis/atlas/` | The evidence atlas (the Stage 1 observations for non-technical readers) and the code that builds it from the notebook and its plain-English content (`analysis/atlas/content/`) |

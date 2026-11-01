@@ -29,6 +29,14 @@ notebook page (reworded); the rights lens page still gave the count before the d
 at phone width). Tests: `tests/test_atlas.py` runs again (6 tests). **Next, the owner's call:** publish (merge to the
 branch Pages serves) and Stage 3 (OQ19); B10's harvest is still to finish.
 
+**Status (2026-11-01): the external notebook audits are indexed.** Twelve audits of the notebooks (Stage 1 §§1 to 9;
+Stage 2 §§1 to 4) arrived in `analysis/GPT-audit/261030/` as uploads: 348 findings, 215 High and 133 Medium. Nothing
+in them has been acted on. `analysis/GPT-audit/261030/INDEX.md` maps each audit to its notebook section and
+observations, gives each one's section map and "read first" findings, the themes that recur across audits, how to cite
+a finding (R-numbers are local to each file) and a freshness check (both notebooks still match the SHA-256 the audits
+read). Not yet audited: Stage 2 §§5 to 8 and Stage 3. Pointers in `README.md` and `CLAUDE.md`. **Next, the owner's
+call:** whether and in what order to work through the audits' actions.
+
 **Status (2026-10-29, earlier): filling the data gaps** (A15, `docs/data-gaps-brief.md`), in its order. Done so far:
 - **A1, the fee history** (ADR 0031): `frl_fees` reads every version of the fee regulations from the Federal
   Register's API (EPUB tables of 160 compilations; `gaps.yaml` holds the 1980s and 1990s from the amending
