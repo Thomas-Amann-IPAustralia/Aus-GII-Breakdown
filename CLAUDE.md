@@ -70,6 +70,9 @@ uv run pytest -q
   `analysis/GPT-audit/261030/INDEX.md`: which audit covers which observations, how to cite a finding, recurring themes and
   a freshness check. Read the index, not the audits whole; check a finding against the notebook before acting on it, and
   act on them only at the owner's direction. What has been acted on, finding by finding, is in `AMENDMENTS.md` there. They are distinct from `analysis/audit/` (the check against IP Australia).
+- **For Stage 2, use the full audit** in `analysis/claude-audit/261102/INDEX.md` (a Claude Code session, 2 November
+  2026; the working list for Stage 2, A24): it rechecks the four Stage 2 audits above against the amended notebook, keeping their finding numbers, audits
+  §5 to §8, and gathers the survival theme's findings in one table. Same rules: check, then act at the owner's direction.
 - **At the end:** update the handover, commit, and push to the session's branch.
 
 The working agreement is adapted from `docs/sop-agent-construction-v2 (2).md`, which describes a different project; take

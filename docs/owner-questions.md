@@ -5,7 +5,7 @@ needs an account or a request (`CLAUDE.md`). Each says why it matters, what Clau
 changes. **Nothing here blocks Stage 1**; the work carries on around each one.
 
 When a question is answered, move it to **Answered** with the date and the answer, and record it where it applies (an
-ADR, the handover or the plan). Number new questions from the next free one: **OQ24**.
+ADR, the handover or the plan). Number new questions from the next free one: **OQ25**.
 
 ## Open: for you to answer
 
@@ -57,6 +57,9 @@ Australia reported itself (2,322, from non-residents), so the gap is between IP 
 
 | # | Question | Answer | Date | Recorded in |
 |---|---|---|---|---|
+| A24 | Should the full Stage 2 audit (`analysis/claude-audit/261102/`) replace ChatGPT's four Stage 2 audits as the working list for §1 to §4? | Yes. ChatGPT's files stay the source of the Issue and Action text for findings marked "Holds" | 2026-11-02 | `CLAUDE.md`; both audit indexes; handover |
+| A23 | Should the survival pass (survival read as renewal or value) come next, with the fix that makes every analysis draw the same halves (S2 S8 R07)? | Yes, in a fresh session with a fresh context window | 2026-11-02 | handover (the brief at the top) |
+| A22 | OQ24: years in force was adopted "as long as it is used alongside other signals" (A1); should B8 ("Australian organisations keep their standard patents longer") stay a Stage 3 signal, though reach and citations (B11, B12) point the other way? | Yes, but only as a comparison within reach bands (Australia only, two to four offices, five or more), worded as the share still in force and read beside B11 and B12 | 2026-11-02 | handover; `analysis/claude-audit/261102/` (INDEX, S2 L1 R33) |
 | A21 | Go ahead with the next audit theme | Done as pass 5: recorded ownership read as complete histories, with B26's unit and reach (seven findings, all holding). Ownership is now read at two endpoints; B19 gains its composition, B26 firm-level counts, which weaken its lead further | 2026-11-02 | ADR 0040; `analysis/GPT-audit/261030/AMENDMENTS.md`; handover |
 | A20 | Go ahead with the next audit theme, looking deeply and widely so that all errors are expunged | Done as pass 4: first observed filing as entry, with the four findings on the same age computation (seven in all: five hold in full, two in part; one part of S1 L0-L1 R31 is not confirmed). The wider check found undated firms grouped as the oldest and builds that differed from run to run in their last digits (now exact). B26's lead weakens; B25 is rebuilt from dates | 2026-11-02 | ADR 0039; `analysis/GPT-audit/261030/AMENDMENTS.md`; handover |
 | A19 | Continue checking the external notebook audits, correcting the claims that hold | Done as pass 3, the sweep passes 1 and 2 proposed: the 25 findings that later additions were not carried back, all verified (19 hold in full, 6 in part) and corrected in both notebooks and both stage summaries. The web pass and the other open themes remain | 2026-11-02 | ADR 0038; `analysis/GPT-audit/261030/AMENDMENTS.md`; handover |

@@ -72,10 +72,12 @@ Total: 348 findings (215 High, 133 Medium).
 
 ### Not yet audited
 
-- Stage 2 §5 timeline (B36 to B39, B47 to B49, B52, B56), §6 industries (B40 to B43, B53, B54, B57, B60), §7
-  institutions (B44 to B46, B62) and §8 summary of Stage 2.
-- `03_multivariate.ipynb` (Stage 3), and the summaries outside the notebooks (`docs/stage-1-summary.md`,
-  `docs/stage-2-summary.md`) and the evidence atlas, which every audit puts out of scope.
+- Stage 2 §5 to §8: **now audited** in `analysis/claude-audit/261102/` (2 November 2026, a Claude Code session), which
+  also rechecks the four Stage 2 audits here against the amended notebook (of their 115 findings, 20 resolved by the
+  passes, 19 holding in part, 76 holding) and checks `docs/stage-2-summary.md`. The owner adopted it as the working
+  list for Stage 2 (A24): start at its `INDEX.md`.
+- `03_multivariate.ipynb` (Stage 3), `docs/stage-1-summary.md` and the evidence atlas, which every audit puts out of
+  scope.
 
 ## How each audit is laid out
 
