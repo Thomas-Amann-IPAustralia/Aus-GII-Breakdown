@@ -20,14 +20,17 @@ The evidence atlas (`evidence/`) has Stage 2's pages (ADR 0035, 2026-10-29); the
   (B16); the Australian patents that move overseas are the wide, granted ones and young firms' (B19, B26); 3% to 5% of
   the US patents citing Australian research have Australian links (B46).
 - **Australian organisations' patents are narrower but kept longer** than overseas organisations', within fields too;
-  their lower citations are mostly the narrower reach (B8, B11, B12).
+  their lower citations are mostly the narrower reach (B8, B11, B12). Reach and citations hold for FY2010 to FY2019;
+  the older decade's family records are incomplete, so its apparent narrowing of the gap is mostly a records gap (B55;
+  restated 2 November 2026).
 - **Where filing happens** follows advantage (1.7 to 1.9 times the standard patent rate per standard deviation of
-  IRSAD), remoteness and business mix, not one firm (B29 to B31); among firms, company form, age and cities, with R&D
+  IRSAD, unadjusted; 1.44 and 1.49 with remoteness in the model), remoteness and business mix, not one firm (B29 to B31); among firms, company form, age and cities, with R&D
   spend linked only weakly to patenting, and about half of R&D claimants with no filing linked to their ABN, mostly
   private companies of 3 to 10 years: a group to examine, not proven non-filers (B22, B23; restated 1 November 2026,
   ADR 0036).
 - **Across countries** IP follows R&D and income; Australia's business R&D fell from 13th to 20th in the OECD, its
-  patenting near what that predicts; within a decade, changes in R&D barely move patenting (B33, B34).
+  patenting near what that predicts in 2016 to 2020 (104.9%, inside a wide interval; B61's ranks are a different
+  analysis, not a shortfall); within a decade, changes in R&D barely move patenting (B33, B34).
 - **Policy leaves clean breaks:** two rushes, three steps and the 1995 pauses are far outside placebo dates (B37), the
   starting points for Q5's natural experiments.
 - **Women among inventors** vary by field (4.2% in civil engineering to 26.9% in biotechnology) more than by filer;
@@ -87,7 +90,8 @@ as a driver.
   RAPID (B38, U90).
 - **Data worth adding:** firms' size and industry (the third factors most firm leads need; BLADE stays ruled out),
   ALP's crosswalk with services (B41), the fee history (R3, OQ2), and a check of Google Patents' coverage of older
-  Australian-only families (B11).
+  Australian-only families (B11). All were added after Stage 2 (A15): size and industry for employers of 100 or more
+  only (B50, B51), the crosswalk (B53, B54), the fees (B47 to B49) and the check (B55).
 - **Still open:** a sector review of the institutions link (OQ11), which B44 to B46 rest on.
 
 ## 7. What Stage 2 cannot tell you

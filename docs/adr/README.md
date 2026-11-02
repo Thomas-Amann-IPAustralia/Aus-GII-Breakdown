@@ -44,5 +44,6 @@ the owner's, or Claude's, which the owner can overturn.
 | [0035](0035-stage-2-in-the-evidence-atlas.md) | Stage 2 in the evidence atlas: both notebooks read, Stage 2's plain English in its own folder under the same numbers rule, quoted charts, the stage shown on every page; three corrections | 2026-10-29 | Owner (A16), Claude (how) |
 | [0036](0036-one-filing-flag-for-firms.md) | One filing flag for firms (`ip_record`: filed by either attribution rule, another link to IP, or none); the regions lens counts firms by it, so the register's ABNs reach it; "no filing linked", never "never filed"; from the external notebook audits | 2026-11-01 | Claude (owner asked for the audits' most urgent cross-cutting issue) |
 | [0037](0037-origin-is-the-filers.md) | Origin is the filer's (`founding_australian`, IP Australia's resident) in the timeline and industries lenses and every filer claim; `filer_group` gives origin and type from one party; `founding_australian_filled`; regions' organisations by the same party; from the external notebook audits, pass 2 | 2026-11-02 | Owner (A18), Claude (how) |
+| [0038](0038-later-additions-carried-back.md) | Later additions carried back: one current account in each observation, the first wording in a dated restatement; inventories show the whole and the labelled subset; rows, not values; a forward pointer for every gap filled later; from the external notebook audits, pass 3 | 2026-11-02 | Owner (A19), Claude (which theme, and how) |
 
-Next free number: 0038.
+Next free number: 0039.

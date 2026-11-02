@@ -29,7 +29,29 @@ notebook page (reworded); the rights lens page still gave the count before the d
 at phone width). Tests: `tests/test_atlas.py` runs again (6 tests). **Next, the owner's call:** publish (merge to the
 branch Pages serves) and Stage 3 (OQ19); B10's harvest is still to finish.
 
-**Status (2026-11-02, latest): audit pass 2, origin is the filer's, is corrected in the back end** (A18, ADR 0037,
+**Status (2026-11-02, latest): audit pass 3, later additions carried back** (A19, ADR 0038,
+`analysis/GPT-audit/261030/AMENDMENTS.md`). The owner asked for the audit work to continue, correcting what holds.
+Pass 3 is the sweep passes 1 and 2 proposed: the 25 findings, across all twelve audits, that material added later
+(the data gaps filled after Stage 2, the register's fills, passes 1 and 2) was not carried back. All were checked
+against both notebooks, the rebuilt lenses and both stage summaries: none is false, 19 hold in full and 6 in part.
+Corrected: three attachment inventories that called a subset the total (`region_indicators` 28,960,234 rows, not
+22,511,923; `national_indicators` 41,230,072; `industry_indicators` 1,425,157), now printing the reconciliation; leads
+and decisions left standing after they were settled (U34 by U103, U27 and U29 by U38 and U39, U45 by U100 and U101,
+U49 by U87, U75 by U114, the fee history, B11 and B12 by B55, B61's "B34's gap holds"); stale counts and pointers (U0's
+lens table, U22's 79 columns, U23's 18 series, §9's section numbers, §3.7's B28 count); and qualifications dropped in
+summaries (U53, B29, "divisions near certain", "named most often"). A false caption fixed (designs' origin is unknown
+for 4.0% to 25.1% a year, not "recorded for few"). Three small outputs put existing claims on the page: gross value
+added's profile (U73: 19 divisions, FY1990 to FY2026; manufacturing 14.2% of the divisions' sum to 6.0%), 683 WGEA
+reporters under 100 employees (U112) and U120's 2023 value. `docs/stage-1-summary.md` was further behind than the
+audits saw (its firms section predated the register's ABNs: 398,450 ABNs and five schemes, now 463,279 and six) and is
+restated, as are `docs/stage-2-summary.md` and `docs/eda-plan.md`'s lens table. No conclusion carried to Stage 3
+reverses; three narrow (B11 and B12 from FY2010; B61 no longer evidence of under-patenting; value added reopens a
+longer industry comparison). Notebook 1 re-executed whole; notebook 2's changes are text only. **Not done:** the
+website (its tests stop at the numbers rule, as after passes 1 and 2); the other open themes in `INDEX.md`. **Next,
+the owner's call:** another audit theme (the largest left: first observed filing as entry, survival read as value,
+recorded ownership as complete, geographic allocation), the web pass, OQ19 (Stage 3).
+
+**Status (2026-11-02): audit pass 2, origin is the filer's, is corrected in the back end** (A18, ADR 0037,
 `analysis/GPT-audit/261030/AMENDMENTS.md`). ADR 0013's rule (who files uses the founding applicants) and ADR 0024's
 finding (a founding applicant in Australia is IP Australia's resident) now hold everywhere: the `timeline` lens's
 origin series (`ORIGINS`) and the `industries` lens's Australian counts use `founding_australian`, not the current

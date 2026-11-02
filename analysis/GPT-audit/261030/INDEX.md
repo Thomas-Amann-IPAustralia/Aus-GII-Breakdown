@@ -7,7 +7,8 @@ notebook (its code, saved outputs, charts and prose) and lists prioritised findi
 
 **Acted on so far:** see [`AMENDMENTS.md`](AMENDMENTS.md), which records each finding verified and what was changed
 (pass 1, 1 November 2026: the firm filing population, ADR 0036; nine findings in five audits. Pass 2, 2 November
-2026: origin is the filer's, from one party, ADR 0037; eight findings in five audits).
+2026: origin is the filer's, from one party, ADR 0037; eight findings in five audits. Pass 3, 2 November 2026: later
+additions carried back, ADR 0038; 25 findings in all twelve audits).
 
 ## What these audits are, and are not
 
@@ -34,7 +35,7 @@ sha256sum analysis/notebooks/01_univariate.ipynb analysis/notebooks/02_bivariate
 | `01_univariate.ipynb` | `1d5e51a6…a357cdb` | all eight Stage 1 audits |
 | `02_bivariate.ipynb` | `44167924…18ede2` (commit `1581223`) | all four Stage 2 audits |
 
-On 1 November 2026 both notebooks still matched before the first pass of amendments; that pass changed both
+On 1 November 2026 both notebooks still matched before the first pass of amendments; those passes changed both
 (`AMENDMENTS.md`), so the hashes no longer match. If a hash differs, the notebook has changed since the audit: check
 whether a finding still applies before acting on it.
 
@@ -169,7 +170,7 @@ gives the audit file (S1 or S2, then lens) and finding numbers.
 | Theme | Where it is raised |
 |---|---|
 | Analysis goes beyond the stage's scope (relationships in Stage 1; conditional or joint models in Stage 2) | S1 L0-L1 R01; S1 L2 R45; S1 L3 R01; S1 L4 R01; S1 L5 R01; S1 L6 R01; S1 L7 R01; S8-S9 R04; S2 L1 R01; S2 L2 R01; S2 L3 R01; S2 L4 R01 |
-| Later additions or corrections not carried back into earlier observations and summaries | S1 L0-L1 R12, R32, R36; S1 L2 R49, R70; S1 L3 R02, R06, R32; S1 L4 R14, R28; S1 L5 R02, R13, R32; S1 L6 R02, R03, R15; S1 L7 R21; S8-S9 R03, R21; S2 L1 R29; S2 L2 R26; S2 L3 R10, R33; S2 L4 R22, R24 |
+| Later additions or corrections not carried back into earlier observations and summaries (**acted on, pass 3**) | S1 L0-L1 R12, R32, R36; S1 L2 R49, R70; S1 L3 R02, R06, R32; S1 L4 R14, R28; S1 L5 R02, R13, R32; S1 L6 R02, R03, R15; S1 L7 R21; S8-S9 R03, R21; S2 L1 R29; S2 L2 R26; S2 L3 R10, R33; S2 L4 R22, R24 |
 | Current holder described as the filer; origin left undefined or taken from a different party (**acted on, pass 2**) | S1 L0-L1 R04, R39, R43; S1 L4 R12; S1 L5 R03, R09; S8-S9 R05; S2 L1 R06 |
 | "Filer" or "filed IP" defined differently within a lens (**acted on, pass 1**) | S1 L2 R47; S2 L2 R04 |
 | No linked filing treated as "never filed"; missing or zero treated as observed absence (**firms' filing acted on, pass 1**: S1 L2 R48, S1 L3 R15, S8-S9 R17, S2 L2 R09, S2 L3 R06; the rest open) | S1 L0-L1 R05; S1 L2 R48; S1 L3 R05, R15; S1 L4 R16; S8-S9 R17; S2 L2 R09; S2 L3 R06 |

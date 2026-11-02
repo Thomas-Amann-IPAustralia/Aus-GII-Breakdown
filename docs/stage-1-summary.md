@@ -39,8 +39,9 @@ lens, with the owner setting the order.
    of postal areas with the most patents filed 72.5% of them with 29.2% of the people (U52); five attorney firms
    handle 63.96% of standard patents (U21); the Group of Eight hold two-thirds of ARC and NHMRC funding (U83); and one
    firm can be most of a postcode's patents (Aristocrat 76.3% of 2113's, U52).
-3. **Places differ far more than chance would make them.** 68.2% to 72.5% of areas file below what chance allows
-   around the national rate, and 6.7% to 15.5% above it, at postal areas and SA3s alike (U53). Stage 2 must model this
+3. **Places differ far more than chance would make them** (chance as a Poisson model at the national rate puts 2.5%
+   of areas beyond each limit). 68.2% of postal areas file fewer standard patents than it allows and 6.7% more (trade
+   marks 71.4% and 15.0%); pooled into SA3s, 72.5% and 15.5% (U53). Stage 2 must model this
    spread rather than assume it away.
 4. **Australians, above all individuals, often file without an attorney.** Overseas filers use one for 99.0% of
    standard patents; Australian filers for 85.4%; Australian individuals file 62.4% of their trade marks alone (U20).
@@ -64,7 +65,8 @@ lens, with the owner setting the order.
    inventor here (U96).
 9. **The register's history shapes what it can say.** Early years hold only the rights that survived until records
    were computerised; some events were dated in batches; patent ownership history starts in FY2003; trade mark
-   expedite requests fall sharply when records moved between systems in November 2018 (U23, U17, U34). Each is now
+   expedite events moved from IP RAPID to the register when records moved between systems in November 2018, though
+   requests did not fall (U23, U17, U34, U103). Each is now
    handled, but each limits what can be compared over time.
 10. **Links between datasets are the weakest point.** Firms' IP counts are lower bounds (U41); fewer recent filers
     are linked to an ABN (84.1% of Australian organisations' trade marks in FY2024, 59.9% in FY2026, U45); no firm has
@@ -131,12 +133,12 @@ making the lens unreadable.
 
 | Lens | One row per | Rows | Mainly informs |
 |---|---|---|---|
-| `rights` | IP right (patent, trade mark, design, plant breeder's right), 1904 to 2026 | 4,368,006 (74 columns) | Q1, Q2 |
-| `firms` | ABN in any IP, R&D, procurement or tax source | 398,450 | Q2, Q3, Q4 |
-| `regions` (+ `region_indicators`) | Postal area | 2,641 (+ 22,511,923) | Q2, Q4 |
-| `national` (+ `national_indicators`) | Country, year and indicator | 135,597 (+ 41,218,170) | Q1, Q4 |
+| `rights` | IP right (patent, trade mark, design, plant breeder's right), 1904 to 2026 | 4,356,908 (88 columns) | Q1, Q2 |
+| `firms` | ABN in any IP, R&D, procurement or tax source | 463,279 (51 columns) | Q2, Q3, Q4 |
+| `regions` (+ `region_indicators`) | Postal area | 2,641 (+ 28,960,234, seven sources) | Q2, Q4 |
+| `national` (+ `national_indicators`) | Country, year and indicator | 135,597 (+ 41,230,072) | Q1, Q4 |
 | `timeline` | Month, for Australia, January 1904 to September 2026 | 1,473 | Q1, Q4, Q5 |
-| `industries` (+ `industry_indicators`) | ANZSIC division and financial year, FY1990 to FY2026 | 703 (+ 1,409,875) | Q2, Q3, Q4 |
+| `industries` (+ `industry_indicators`) | ANZSIC division and financial year, FY1990 to FY2026 | 703 (+ 1,425,157, with the business survey cubes) | Q2, Q3, Q4 |
 | `institutions` (+ `institution_rights`) | Research institution (ROR) and calendar year, 1990 to 2026 | 4,810 (+ 31,528) | Q1, Q2, Q3 |
 
 All are rebuilt from the corpus in about two minutes by `analysis/eda/build.py`, and every column is described in
@@ -188,7 +190,7 @@ tables, so it survives the repair), and record the repair in an ADR. The main re
 | `rights` | Patents mixed standard, provisional and second-tier | Counted apart everywhere; headlines use standard patents | 0009 |
 | `rights` | A 1970 placeholder end date (1,282 rights); trade marks before 1986 "registered" on their filing day; a "technology area" that repeated the class for trade marks and designs; the applicant counted as its own attorney; a state missing for 34.96% of recent Australian patents | Each emptied, restricted or rebuilt (U2, U16) | 0012 |
 | `rights` | The current holder used where the filer was meant | Founding applicant columns beside the holder's; `representation` (attorney, other agent, self) | 0013 |
-| `timeline` | 15 series started on survivors, partial records or batch dates; the 1995 patent term change missing from the policy register | Series start where records are complete; the term change is the 17th policy event | 0014 |
+| `timeline` | 18 series started on survivors, partial records or batch dates; the 1995 patent term change missing from the policy register | Series start where records are complete; the term change is the 17th policy event | 0014 |
 | `firms`, `regions` | Applications credited to the current holder | Counted by the filer's ABN and postcode | 0016, 0017 |
 | `regions` | Rates in areas too small to mean anything | A rate only where 10 or more applications would be expected; SA3s for pooling | 0017 |
 | AusTender | Contract values summed over every amendment ($7,585.9 billion) | One row per contract at its latest notice ($1,258.5 billion) | 0010, 0011 |
@@ -221,8 +223,9 @@ handover.
 
 Every patent, trade mark, design and plant breeder's right in IP RAPID, 1904 to October 2026.
 
-- **What is in it.** 4,368,006 rights with no repeats; origin known for 86.37% (U1). Trade marks are 53.5% of rights,
-  patents 40.12%, designs 6.153%, plant breeder's rights 0.2686%; of patents, 82.17% are standard, 15.07% provisional
+- **What is in it.** 4,356,908 rights with no repeats, after 11,098 empty design records are dropped (U104); origin
+  known for 86.59% (U1). Trade marks are 53.6% of rights, patents 40.22%, designs 5.914%, plant breeder's rights
+  0.2693%; of patents, 82.17% are standard, 15.07% provisional
   and 2.77% second-tier (U4). Recent years are complete (U6).
 - **Who applies.** About nine in ten standard patents come from overseas (Australian share 8% to 12.4% since FY1990,
   U7). Origin is the filer's: a founding applicant in Australia, IP Australia's definition of a resident (ADR 0024,
@@ -251,9 +254,10 @@ Every patent, trade mark, design and plant breeder's right in IP RAPID, 1904 to 
   an attorney; Australian individuals often file alone (U20). Five patent attorney firms handle 63.96% of standard
   patents; trade mark representation is spread (top five 17.51%, U21).
 - **Milestones and lifetimes (the events).** Each milestone is recorded from a different date, so shares compare only
-  within those years (U32). Expedited patent examination rose from 1.87% (FY2005) to 10.31% (FY2026); trade mark
-  expedite requests fell from about 1,400 to about 230 a month in November 2018, when the records moved between
-  systems (U34). About one standard patent in seven and one trade mark in five is assigned (U35). Owners keep patents
+  within those years (U32). Expedited patent examination rose from 1.87% (FY2005) to 10.31% (FY2026); IP RAPID's
+  trade mark expedite events fell from about 1,400 to about 230 a month in November 2018, when the records moved
+  between systems; the events for priority-claiming marks moved to the register, and requests did not fall (U34,
+  U103). About one standard patent in seven and one trade mark in five is assigned (U35). Owners keep patents
   longer than they did and renew about half of trade marks at ten years (U36). Extensions of term are rare (1,450,
   U37). Two timeline puzzles were resolved: the 2002 trade mark trough (the gap between two Acts' first terms and the
   2000 filing peak, U38) and April design lapses (how lapses were dated, U39).
@@ -278,7 +282,7 @@ Every patent, trade mark, design and plant breeder's right in IP RAPID, 1904 to 
 
 IP Australia's register month by month, January 1904 to September 2026, with the CPI and 17 policy changes.
 
-- **Repairs.** 15 series started too early (on survivors, partial records or batch dates) and now start where their
+- **Repairs.** 18 series started too early (on survivors, partial records or batch dates) and now start where their
   records are complete; the 1995 rise of the patent term from 16 to 20 years was added (patent expiries fell 98.4%
   when it took effect, U23, U28).
 - **Growth.** Standard patents grew 3.9% a year in the 1990s and 0.4% a year from 2019 to 2025, set by overseas
@@ -291,22 +295,26 @@ IP Australia's register month by month, January 1904 to September 2026, with the
 - **Policy.** Two rushes, four steps, two pauses at commencement, and nothing visible for PCT accession, plain
   packaging, the 2018 and 2019 Productivity Commission responses or the designs grace period (U28).
 - **Artefacts.** 42 months still stand out after the repairs; each is explained (pauses and backlogs, the register's
-  start-up before June 1904, a portfolio transfer in July 2015) and none is removed (U29).
+  start-up before June 1904, and what may be one portfolio transfer in July 2015) and none is removed (U29).
 - **Prices.** The CPI is complete and quarterly from 1948 (312 quarters), and deflates every money series (U30).
 
 ### 4.3 Firms (`firms`, U41 to U47)
 
 Every ABN that appears in IP Australia's data, the R&D Tax Incentive, AusTender or the ATO's tax transparency reports.
 
-- **Who is in it.** 398,450 ABNs: the firms that used one of five schemes, not all businesses. 63.68% are in IP RAPID
-  alone and 12.75% linked to IP by IPLORD alone (with zero IP counts), so firms' IP counts are lower bounds (U41).
-- **What they are.** Private companies are 74.7% of firms and 94.5% of R&D claimants (U42); a median 13.6 years old on
-  the record, with a spike at the ABN's start in 1999 (U43).
-- **IP use.** The median filing firm filed one application; the top 1% filed 55.3% of standard patents and 25.9% of
-  trade marks; 116,240 firms hold 430,305 rights in force (U44).
-- **A linking problem.** First-time trade mark filers fell from 11,318 (FY2024) to 7,384 (FY2026), but so did the share
-  of Australian organisations' trade marks with a filer's ABN (84.1% to 59.9%): at least part of the fall is in
-  linking, not filing (U45, OQ7).
+- **Who is in it.** 463,279 ABNs: the firms that used one of six sources, not all businesses. 54.77% are in IP RAPID
+  alone, 13.99% linked to IP only by IP Australia's register and 10.96% linked to IP by IPLORD alone (with zero IP
+  counts), so firms' IP counts are lower bounds (U41). Restated 2 November 2026: first given as 398,450 ABNs from five
+  schemes, before the register's ABNs were added (ADR 0029).
+- **What they are.** Private companies are 71.3% of firms, 76.4% of IP filers and 94.5% of R&D claimants (U42); a
+  median 12.6 years old on the record, with a spike at the ABN's start in 1999 (U43).
+- **IP use.** The median filing firm filed one application; the top 1% filed 55.3% of the standard patents credited to
+  an ABN and 25.7% of trade marks; 116,240 firms hold 430,305 rights in force; 325,650 firms have a filing linked
+  (U44, ADR 0036).
+- **A linking problem, mostly resolved.** By IP RAPID's ABNs alone, first-time trade mark filers fell from 11,318
+  (FY2024) to 7,384 (FY2026), and so did the share of Australian organisations' trade marks with a filer's ABN (84.1%
+  to 59.9%). With the register's ABNs the share holds (92.3% to 90.9%) and first-time filers rise (14,728 to 19,730):
+  the fall was in what IP RAPID publishes (U45, U100, U101; OQ7). Standard patents are not filled (88.7% to 83.9%).
 - **Money and place.** The median latest R&D claim is $307,490; the top 1% of government suppliers hold 83.1% of
   contract value (U46). R&D claimants are more metropolitan and more advantaged than firms in general; IP filers
   only a little more metropolitan, and no more advantaged (U47, restated 1 November 2026 with every linked filing,
@@ -330,7 +338,7 @@ claimants and contracts, and every value of five area sources in `region_indicat
 - **R&D claimants with no filing linked.** 48.3% of R&D claimants have no filing linked to their ABN, and 44.7% no
   link to IP of any kind; neither proves a firm never filed (U54, restated 1 November 2026 from 50.7% "never filed",
   ADR 0036). Claimants are 5.6 per 1,000 businesses in major cities and 0.6 in very remote areas.
-- **The attachments.** 22.5 million values (U55). Values split from SA2s track direct counts (Data by Region's
+- **The attachments.** 29.0 million rows from seven sources, 22.5 million of them from the five first attached (U55). Values split from SA2s track direct counts (Data by Region's
   population is within 10% of the direct count for 99.34% of areas of 1,000 people or more); CABEE counts 0.742 of the
   ABR's businesses in the same order, so business counts come from the ABR (U56). Census cells are small and perturbed
   (U57); Data by Region repeats the Census (U58); most businesses employ no one (U59); PHIDU's periods differ (U60);
@@ -361,14 +369,16 @@ other tables, Measuring What Matters and Closing the Gap).
 ### 4.6 Industries (`industries`, U73 to U79)
 
 The 19 ANZSIC divisions, FY1990 to FY2026, with IP assigned through probabilistic crosswalks, business counts, R&D,
-wages and creative value added, and 1.4 million attached values.
+wages, creative value added and (added after Stage 2) gross value added, and 1.43 million attached rows (1.41 million
+before the 2024-25 business survey cubes).
 
-- **Coverage.** Only IP covers every division and year; business counts cover FY2023 to FY2026 and business R&D one
-  year, so Stage 2 compares patterns across 19 divisions, not models (U73).
-- **The crosswalks.** They carry 98.42% to 99.73% of standard patents; a patent's division is nearly certain (median
-  largest share 0.996), its subdivision less so (0.727) (U74).
-- **IP by industry.** Manufacturing receives 90.78% of standard patents because the corpus's crosswalk leaves out
-  services; trade marks spread (manufacturing 55.65%, professional services 11.05%), with a break in January 2002 when
+- **Coverage.** IP and gross value added cover every division and year; business counts cover FY2023 to FY2026 and
+  business R&D one year, so Stage 2 compares those across 19 divisions as patterns, not models; value added over 37
+  years is open for Stage 3 (U73, restated 2 November 2026: first said only IP covered every year).
+- **The crosswalks.** They carry 98.42% to 99.73% of standard patents; a patent's weight is concentrated on one
+  division (median largest share 0.996), which is not proof the division is right, its subdivision less so (0.727) (U74).
+- **IP by industry.** Manufacturing receives 90.78% of standard patents (FY2017 to FY2026) because the main
+  crosswalk leaves out services (with services, U114: 79.67% against 90.63%, FY2016 to FY2025); trade marks spread (manufacturing 55.65%, professional services 11.05%), with a break in January 2002 when
   the Nice classes were split (U75). Australians file 7.94% to 17.4% of a division's patents, about half of goods
   divisions' trade marks and two-thirds to four-fifths of services' (U76).
 - **Businesses, R&D and wages.** Construction (17.0%), professional services (13.0%) and property (11.4%) hold two in
@@ -454,7 +464,8 @@ The decisions Stage 1 made about how each variable may be used.
 - For patents filed before FY2003, `assignment_count` stands in for a change of owner (U35).
 - Lifetimes come from survival curves with unfinished rights kept; trade marks and designs are observed to 31 March
   2026 (U31, U36).
-- Trade mark expedite shares are compared only on one side of November 2018 (U34).
+- Trade mark expedites are compared across November 2018 as requests (IP RAPID's events), and priority-claiming marks
+  with either record; the register's unrequested events are kept apart (U103, revising U34's first decision).
 - A patent priority's office is read from its number, not IP RAPID's label (U88); `filing_route` names the first route
   that applies (U90).
 - A family's reach and citations are the whole family's, so they repeat across divisionals (U92); citations are
@@ -489,7 +500,8 @@ The decisions Stage 1 made about how each variable may be used.
 - WIPO by country from 1995; former states never added to their successors (U64).
 - Counts across countries become ratios to people or GDP (U66); trade marks are compared as class counts (U67).
 - Projections are filtered out by `status` (U72); a GII rank is context, its indicators the evidence (U69).
-- Industry IP counts are expected counts: divisions near certain, subdivisions spread; trade marks by industry from
+- Industry IP counts are expected counts: weight concentrated on one division, spread across
+  subdivisions; trade marks by industry from
   FY2003 (U74, U75). `TOTAL` is never added to the divisions.
 - Institutions' works and citations are never added across institutions, nor a child's to its parent's; a university's
   IP includes its companies; patent citations are compared by cohorts of the same age (U81, U82, U85).
@@ -520,8 +532,8 @@ the number of pairs tested, and a second period or sample before it counts as a 
 | Australian research cited by patents against Australian inventions that cite it | U85 | Q1, Q4 |
 
 **Unexplained leads, kept in view:** Australians' direct filing of standard patents, 28.3% in FY2026 (U90; IP
-Australia reads it as a real change among domestic innovators); the November 2018 fall in trade mark expedite requests
-(U34, OQ6); ABN linking since FY2025 (U45, OQ7: a fall in linking, not filing, ADR 0024); the step in the World Bank's
+Australia reads it as a real change among domestic innovators); what the register's unrequested "Examination expedited"
+means (U103, OQ6; the November 2018 fall itself is explained); ABN linking since FY2025 (U45, OQ7: a fall in linking, not filing, ADR 0024); the step in the World Bank's
 advanced education share around 2010 (U65); rising holder changes for plant breeder's rights (U17); petty patents of
 FY1986 to FY1988 without acceptances (U32). Closed by the audit: IP RAPID's innovation patents in 2016 (U67), a real
 rise IP Australia reported.
@@ -535,20 +547,22 @@ rise IP Australia reported.
    done).
 2. **A sector check of the institutions link** (OQ11): a half-hour review by someone who knows the sector, best done
    before Stage 2 compares institutions.
-3. **The fee history and the PBS report** (OQ2): fees are IP Australia's most direct lever and are not yet in the
-   data; recommended before Stage 2.
+3. **The fee history and the PBS report** (OQ2): fees are IP Australia's most direct lever and were not yet in the
+   data; recommended before Stage 2. Done after Stage 2 (A15): the fee history (ADR 0031, U108 to U111) and the PBS
+   with Section 100 (U123).
 4. AusTender's missing amendments (OQ3, small) and TableBuilder (OQ4, on hold).
 
 **For IP Australia** (the owner is asking): what evidence supports its reading that digital tools, including AI, drove
-the provisional rise, and whether the few heavy filers are part of it (OQ5); why trade mark expedite requests fell in
-November 2018 (OQ6); and whether ABNs are added to records later, or no longer collected or checked, since mid-2024
+the provisional rise, and whether the few heavy filers are part of it (OQ5); what the register's unrequested "Examination expedited" on
+trade marks means, now that U103 has shown requests did not fall in November 2018 (OQ6, reworded); and whether ABNs are added to records later, or no longer collected or checked, since mid-2024
 (OQ7). OQ5 and OQ7 were reworded after the audit against IP Australia's reports (section 10), which also added three
 more (OQ12 to OQ14).
 
 **Data worth adding, all free:** the RBA's cash and exchange rates and the ABS national accounts (timeline); the ATO's
 statistics by postcode (regions); IP Australia's published statistics as a benchmark; ALP's crosswalk that includes
 services (industries); WIPO's patent families by origin, to size the Australian inventions filed only abroad that
-Google's selection misses (the review's F07). BLADE, the only route to small firms' outcomes, stays ruled out, and that
+Google's selection misses (the review's F07). Each has since been added: the benchmark with the audit against IP Australia (ADR 0024), the rest
+after Stage 2 (A15). BLADE, the only route to small firms' outcomes, stays ruled out, and that
 limit is stated wherever it bears on a finding.
 
 ---
@@ -604,7 +618,9 @@ gaps are in what it publishes, and the register fills them beside IP RAPID's own
 - **U7 and U13 restated (U102):** designs filed FY2017 to FY2026 are 32.64% Australian with 0.083% of unknown origin
   (IP RAPID: 30.44% with 5.058%), by the filer's origin (ADR 0037).
 - **U34 restated (U103):** trade marks claiming convention priority carry an expedite event in every year, in IP RAPID
-  to FY2018 and in the register from FY2019 (97.82% in FY2018 and 99.55% in FY2020 in either record).
+  to FY2018 and in the register from FY2019 (97.82% in FY2018 and 99.55% in FY2020 in either record). Requests from other marks (IP RAPID's events)
+  run 4.81% (FY2018) and 4.48% (FY2019), with no break; the register adds an unrequested event to 14.95% (FY2019) to
+  26.69% (FY2026) of them (OQ6).
 - **U104:** 11,098 empty design records, numbered 1973 to 1982, are dropped and listed.
 
 - **Provisionals' inventors (1.8.7, U105 to U107):** the register holds every provisional IP RAPID does (264,250 of
@@ -682,7 +698,7 @@ All descriptive.
 | # | Lens | Observation |
 |---|---|---|
 | U0 | Corpus | 162 tables, 41 sources, 317.8 million rows; three sources hold 69.73% |
-| U1 | rights | One row per right (4,368,006), complete where it should be; origin known for 86.37% |
+| U1 | rights | One row per right (4,356,908), complete where it should be; origin known for 86.59% |
 | U2 | rights | Five repairs: a 1970 placeholder, a pre-1904 registration, trade marks registered at filing, a class as a technology area, attorney use |
 | U3 | rights | Rushes to file before two rule changes; 61,854 rights cannot be placed in time |
 | U4 | rights | Trade marks are 53.5% of rights; standard patents 82.17% of patents |
@@ -704,29 +720,29 @@ All descriptive.
 | U20 | rights | Overseas filers almost always use an attorney; Australian individuals often file alone |
 | U21 | rights | Patent attorneys concentrated (top five 63.96%); trade mark representation not |
 | U22 | timeline | One row per month (1,473), each series where it can be read |
-| U23 | timeline | 15 series started too early; the 1995 term change added |
+| U23 | timeline | 18 series started too early; the 1995 term change added |
 | U24 | timeline | Steady large series, noisy small ones |
 | U25 | timeline | Standard patents' growth slowed; trade marks and designs faster |
 | U26 | timeline | Australians file less in January, increasingly for patents |
-| U27 | timeline | Grants peaked in 2016; trade mark cessations keep rising |
+| U27 | timeline | Grants peaked in 2016; trade mark cessations higher in 2025 than 1996, with a dip from 2019 to 2023 |
 | U28 | timeline | Two rushes, four steps, two pauses; several changes with nothing visible |
 | U29 | timeline | 42 months stand out; explained and kept |
 | U30 | timeline | The CPI is complete and quarterly from 1948 |
 | U31 | rights (events) | The events columns rest on five checks |
 | U32 | rights (events) | Each milestone is recorded from a different date |
 | U33 | rights (events) | Patent examination lengthened to FY2006 and shortened since |
-| U34 | rights (events) | More patent applicants ask for speed; trade mark requests fell in November 2018 |
+| U34 | rights (events) | More patent applicants ask for speed; trade marks' expedite events moved record in November 2018, requests did not fall (U103) |
 | U35 | rights (events) | One standard patent in seven and one trade mark in five is assigned |
 | U36 | rights (events) | Patents kept longer; about half of trade marks renewed at ten years |
 | U37 | rights (events) | Extensions of term are rare: 1,450 |
 | U38 | rights (events) | The 2002 trade mark trough explained |
 | U39 | rights (events) | April design lapses explained |
 | U40 | rights (events) | Placeholder dates are few and handled |
-| U41 | firms | 398,450 ABNs that used one of five schemes; IP counts are lower bounds |
+| U41 | firms | 463,279 ABNs that used one of six sources; IP counts are lower bounds |
 | U42 | firms | Private companies dominate every source but AusTender |
-| U43 | firms | A median 13.6 years old on the record |
-| U44 | firms | The top 1% of filing firms file 55.3% of standard patents |
-| U45 | firms | Recent filers are less often linked to an ABN |
+| U43 | firms | A median 12.6 years old on the record |
+| U44 | firms | The top 1% of filing firms file 55.3% of the standard patents credited to an ABN |
+| U45 | firms | Recent filers are less often linked to an ABN in IP RAPID; the register restores most of the link |
 | U46 | firms | R&D claims spread; contract value concentrated |
 | U47 | firms | R&D claimants more metropolitan and advantaged; IP filers a little more metropolitan only |
 | U48 | regions | 2,641 postal areas, 25.4 million people; filer and holder differ for one right in fifteen |
@@ -734,9 +750,9 @@ All descriptive.
 | U50 | regions | Areas from no residents to 129,883 |
 | U51 | regions | Most areas outside the cities, most people inside; SEIFA deciles are tenths of areas |
 | U52 | regions | Top tenth of areas file 72.5% of standard patents; often one firm's |
-| U53 | regions | Areas differ far more than chance |
+| U53 | regions | Areas differ far more than a Poisson model's chance |
 | U54 | regions | About half of R&D claimants have no filing linked |
-| U55 | regions | 22.5 million attached values |
+| U55 | regions | 29.0 million attached rows from seven sources |
 | U56 | regions | Split values track direct ones; business counts from the ABR |
 | U57 | regions | Census cells small and perturbed |
 | U58 | regions | Data by Region varies by year and repeats the Census |
@@ -754,13 +770,13 @@ All descriptive.
 | U70 | national | The United States files 41.9% at IP Australia; three-quarters of Australians' applications are abroad |
 | U71 | national | The OECD's cross-border tables: the United States is Australia's main partner |
 | U72 | national | Measuring What Matters mostly copies; Closing the Gap includes projections |
-| U73 | industries | 19 divisions over 37 years; only IP covers all |
+| U73 | industries | 19 divisions over 37 years; IP and gross value added cover all |
 | U74 | industries | The crosswalks carry nearly every right; divisions clear, subdivisions less so |
 | U75 | industries | Nine in ten patents in manufacturing (services left out); trade marks break in 2002 |
 | U76 | industries | Australians file few patents in any industry |
 | U77 | industries | Construction, professional services and property hold two in five businesses |
 | U78 | industries | Business R&D $24.41 billion, concentrated in professional services and manufacturing |
-| U79 | industries | 1.4 million attached values; innovation from 9.9% to 31.9% of businesses |
+| U79 | industries | 1.43 million attached rows; innovation from 9.9% to 31.9% of businesses |
 | U80 | institutions | 130 institutions; research output only from 2010 |
 | U81 | institutions | The link by name and ABN; universities patent through companies to very different degrees |
 | U82 | institutions | Universities produce 86.8% of works |
