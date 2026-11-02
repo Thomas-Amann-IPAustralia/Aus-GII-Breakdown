@@ -542,11 +542,14 @@ def test_kaplan_meier_with_delayed_entry_matches_a_hand_count():
     counts = pd.DataFrame(
         {"t": [0, 1, 1.5, 2, 3], "ended": [0, 1, 0, 2, 0], "unfinished": [0, 0, 0, 0, 7], "entered": [4, 0, 6, 0, 0]}
     )
-    km = uni.kaplan_meier(counts, entered="entered")
+    km = uni.kaplan_meier(counts, entered="entered", start_at_risk=1)
     assert km.set_index("t").at_risk.loc[[1, 2, 3]].tolist() == [4, 9, 7]
     assert np.allclose(km.set_index("t").survival.loc[[1, 2, 3]], [0.75, 0.75 * 7 / 9, 0.75 * 7 / 9])
     plain = uni.kaplan_meier(counts)
     assert plain.set_index("t").at_risk.loc[1] == 10
+    # the curve starts once 5 are at risk: the end at t=1, with 4 at risk, is left out
+    late = uni.kaplan_meier(counts, entered="entered", start_at_risk=5).set_index("t")
+    assert late.index.min() == 1.5 and np.isclose(late.survival.loc[3], 7 / 9)
 
 
 def test_firms_count_by_the_filer_and_name_their_state():

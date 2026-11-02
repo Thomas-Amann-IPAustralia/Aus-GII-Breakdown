@@ -293,3 +293,85 @@ lens definitions (`holder_changed`, `assignment_count`, `australian_applicant`, 
 - **The website,** as before.
 - **Overlapping themes not acted on here:** US citations read as foreign invention or use (S1 L7 R13, S8-S9 R23),
   where B46 also sits; survival read as renewal or value (the next on the list).
+
+## Pass 6 (2 November 2026): survival read as the share still in force; one rule for the halves
+
+**Decision record:** ADR 0041 (`docs/adr/0041-survival-as-share-in-force.md`). The owner asked for the survival pass,
+with the fix to the halves, in a fresh session (A23), and decided how B8 is carried (A22). The findings are the full
+Stage 2 audit's survival table (`analysis/claude-audit/261102/INDEX.md`, cited as there, the numbers shared with this
+batch) and Stage 1's findings on the same theme here.
+
+### The check made first
+
+Every finding was checked against `build.py`, `variables.yaml`, the survival helpers and both notebooks, with
+queries on the lenses, before anything changed. The checks (scratch queries; the results now on the notebooks' pages
+are cited in the table):
+1. **How ends are dated.** Of ended rights filed FY2000 to FY2015, 97% of standard patents' recorded ends fall 0.5 to
+   0.7 of a year past an anniversary (the end of the grace period), and 95% of trade marks' (349,057) on a whole year.
+2. **What `in_force IS NOT NULL` drops.** At most 6 granted rights in any cohort used in §1.2 and §1.4; the 6,621
+   ended without a date are in older cohorts.
+3. **Clock and cohort.** A standard patent's date of patent precedes its application date by a median 1.48 to 1.52
+   years for overseas filers and organisations, 0.38 to 1.26 for Australian individuals; 48.5% to 89.0% of each
+   group's patents fall in a different financial year by the two dates.
+4. **Immortal time.** Of patents with an examination request (FY2003 to FY2009), 62.8% of those not expedited were
+   granted more than five years after their date of patent, against 19.0% of the expedited; none can cease before
+   grant (4 of 269,723 recorded as doing so).
+5. **The agent's date.** IP RAPID's party records carry `effective_from_date`; for trade marks it is the registration
+   date (a median 0 days from it in every cohort to FY2018), so representation can be dated before the first renewal,
+   not at filing.
+6. **What `exam_expedited` holds.** IP RAPID has no event for Patent Prosecution Highway requests; they are recorded as
+   expedited examination (the Global PPH began on 6 January 2014; the US arrangement in April 2008).
+7. **U36's cohorts.** By year, 116 innovation patents (1997 to 2000) counted as petty and 96 petty patents (2001) as
+   innovation; designs filed in 2003 and to 16 June 2004 (6,280) are under the 1906 Act.
+
+### Findings acted on
+
+| Finding | The audit's claim | Verified | Amendment |
+|---|---|---|---|
+| S2 L1 R11 (High) | "In force after N years" differs by right and cohort; ended-without-date rights uncounted; cohorts by application year against a clock from the date of patent | **Confirmed** (checks 1 to 3); the rounding is harmless, as the audit said | Cohorts by the financial year the term began (`TERM_FY`), as U36; each right's dating convention stated in §1.2's introduction and in U36; the `in_force` exclusion named |
+| S2 L1 R12 (High) | Survival read as renewal and value, against U36 and the glossary; immortal time before grant | **Confirmed** (check 4) | Delayed entry: each right joins at grant or registration (`univariate.kaplan_meier(entered=...)`, both notebooks); "share still in force" in headings, tables and summaries; §1.2 reconciled with U36; `GLOSSARY.md`'s "Lifetime" and "Ceased" restated, "Share still in force at N years", "Immortal time" and "Delayed entry" added |
+| S2 L1 R32 (High) | The screen takes unfinished lifetimes as finished; B4's medians are not survival medians | **Confirmed** | `years_in_force` out of the screen (`screens.yaml`); B1 restated (221 distinct leads, 5,006 pairs, rho 0.867, from 223, 5,207, 0.859); B4's lifetimes from curves by cohort (a new cell, `b4curves`): designs 20.1% (class 02) to 75.9% (class 24) after 5 years; innovation patents with an ABN 56.7% against 38.6%; China's low share (21.4%) not replicated |
+| S2 L1 R33 (High) | B8 carried alone, against A1; reach and citations disagree | **Confirmed**; acted on as A22 decided | A new cell (`b8reach1`): within reach bands (date of patent FY2010 to FY2016), Australian organisations 71.8% against 65.1% (two to four offices) and 75.6% against 66.5% (five or more), no difference among Australia-only patents (73.3% against 74.6%). B8, §1.9, §8 and the summary read it beside B11 and B12 and say the signals disagree |
+| S2 L1 R34 (High) | Representation "at any time" includes the renewal | **Confirmed, and material**: Australian marks whose agent first appears after 9.5 years are 89.5% (99.0%) in force at 10 years | The rights lens gains `agent_first_date`; B10 reads representation before the first renewal: the attorney gap 19.1 points (15.3), not 23.4 (21.9) |
+| S2 L1 R13 (Medium) | Within-field check in one period; wrong cross-references | **Confirmed** | Both periods (31 fields: Australian organisations lower in 11 and 3); B6 and B10 references replaced (section 1.1; B11) |
+| S2 L1 R14 (High) | "Simpson's paradox" not shown | **Confirmed, and the claim is wrong**: with cohorts and entry corrected, expedited patents are ahead pooled in both periods (72.6% against 68.9%; 67.6% against 66.6%), and a direct standardisation gives 5.88 and 0.68 points against the pooled 3.79 and 1.03 | B13 rebuilt with the standardisation in `fd83230a`; the earlier specification kept beside it, its five-year figures showing the immortal time |
+| S2 L1 R35 (Medium) | The rise in expedites may be work-sharing requests | **Confirmed in timing** (check 6): Japanese-priority patents 1.53% (2013) to 7.98% (2014), US-priority 3.07% to 6.77%; a separate 2011 and 2012 rise in every group (Australian organisations 41.26% in 2012) | A table by year of request (`b13kind1`); B13 names the kind of request as a third factor; `GLOSSARY.md` gains "Patent Prosecution Highway" |
+| S2 L1 R15 (High, in part) | Missing priority counts read as none; points against a 0-to-1 threshold | **In part**: `priority_claims` is never empty for trade marks (757,895 in FY2003 to FY2015), so the `coalesce` does nothing; the threshold wording holds | B14 says "no priority claim recorded" and gives differences in percentage points, not against the screen's scale |
+| S2 L1 R30 (Medium) | "Every interval is within about 1 point" | **Confirmed** | B10 gives the wider intervals of small groups |
+| S2 L1 R36 (Medium) | Cohorts' longer lives read as behaviour, without the fees | **Confirmed** | B8 calls it a difference between cohorts, beside B49's dates and U35 |
+| S2 L5 R04 (High) | B49's heading says one renewal change moved cessations; the bullet shows three | **Confirmed** | B49 reports all three, with checks (a window by dating, a trend baseline); only trade marks' July 1993 holds under every check (0.232 and 0.235, 0% of 66 placebos); September 2002's patent step is within the ordinary against the trend (0.189, 38.89%) |
+| S2 L5 R05 (High) | "A weak lever" from a design that cannot detect a modest effect; "lapsing" for cessations | **Confirmed** | "No response beyond placebo variation, at this design's power"; the anniversaries each patent change moved are named (a table in `c5b83a0e`); "cessations" in §8 |
+| S2 L5 R06 (Medium) | The window fits patents' dating only | **Confirmed** (check 1) | Months 1 to 12 for trade marks and designs, beside months 7 to 18 |
+| S2 S8 R03, R05 (High) | "Renewals", "keep" and "signs of private value" carried into §8 and the summary | **Confirmed** | §8's survival rows and the Stage 2 summary's restated, each dated; the summary's headline "Value made here is often owned or used elsewhere", which its body contradicted, restated too |
+| S1 L0-L1 R20 (High) | U36's cohorts mix regimes | **Confirmed** (check 7) | U36 by recorded subtype and by Act: designs from 17 June 2004 to 2009 51.8% after 5 years (the "2000s" read 64.8%); 1906-Act designs of 2000 to June 2004 apart (87.0%); innovation 35.7%, petty 68.3% |
+| S1 L0-L1 R21 (High) | Survival is not a renewal rate; entry rules, denominators, rounding, the censoring date | **Confirmed** | U36 counts each right from its grant, states the dating convention, the month rounding, the censoring date and the 629 rights left out, and shows the number at risk at 10 years; patents' shares fall 1 to 4 points (2000s 71.2% to 67.5%; medians 10.6, 10.6 and 13.5) |
+| S8-S9 R10 (High) | §9 and the summary present survival as renewal and value | **Confirmed** | U36's rows in §9 and the Stage 1 summary restated |
+| S2 S8 R07 (High) | Two hash functions define the halves | **Confirmed** | `bivariate.half_sql` is the one rule; `split_half` computes it in DuckDB; B35's GII split uses it; a test checks that the two agree. B50, B58, B59 and B35 rerun and restated: B58's halves now hold 1,311 and 1,210 areas (B29's 1,317 and 1,211); no reading changed, though B50's patent correlation reaches 0.11 in one half. This also settles S2 L3 R02 and S2 L2 R28 |
+
+### Found on the way, not in the audits
+
+1. **Delayed entry needs two guards.** A trade mark registered after the record of ends closes (31 March 2026) would
+   join after its own censoring, and 629 rights (616 trade marks) are recorded as ending before their own grant or
+   registration; either drove a curve towards zero in the first run (trade marks of the 2000s read 0%). Entries are
+   now clamped to the end, those 629 are left out, and `kaplan_meier` refuses counts with more ended than at risk.
+2. **Tiny early risk sets.** With delayed entry, the first month can hold very few registered rights (22 trade marks
+   of the 2010s, 3 of which ended then, which took the whole curve to 85%). Curves start once 30 are at risk, the
+   minimum for any reading. A first threshold of 100 dropped small groups (the within-field check fell to 15 fields)
+   and was replaced before committing.
+3. **§8's table had a line break inside the B16 row,** which split the row; fixed.
+
+### What else changed as a result
+
+- **Readings that change:** B8 (carried only within reach, where the gap is not the narrow patents'), B10 (the
+  representation gap smaller), B13 (no composition effect; a small link in both periods), B49 (one change survives
+  every check, not "only patents after September 2002"), U36 (patents' shares 1 to 4 points lower). B9's order is
+  less stable (rho 0.311).
+- **Tests:** delayed entry by hand count, its start threshold, and the halves' agreement. Both notebooks re-executed;
+  apart from the cells this pass changed, no output moved.
+
+### Left for other passes
+
+- **The website,** as before.
+- **On the audit's list but not this theme:** S2 L5 R01 to R03 and R07 to R14, S2 S8 R01, R02, R04, R06 (in part:
+  the summary's reproducibility line and B58's 11.03 were corrected here), R08 to R12, and §8's other rows (S2 S8 R03
+  marks them as under review).
