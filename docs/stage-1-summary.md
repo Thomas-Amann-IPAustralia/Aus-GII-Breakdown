@@ -68,7 +68,7 @@ lens, with the owner setting the order.
    expedite events moved from IP RAPID to the register when records moved between systems in November 2018, though
    requests did not fall (U23, U17, U34, U103). Each is now
    handled, but each limits what can be compared over time.
-10. **Links between datasets are the weakest point.** Firms' IP counts are lower bounds (U41); fewer recent filers
+10. **Links between datasets are the weakest point.** Firms' IP counts are lower bounds, if each recorded link is right (U41); fewer recent filers
     are linked to an ABN (84.1% of Australian organisations' trade marks in FY2024, 59.9% in FY2026, U45); no firm has
     an industry, so patents reach industries only through a crosswalk that leaves out services (U75); half the
     universities' patents carry a postcode that is not a postal area (U87).
@@ -134,7 +134,7 @@ making the lens unreadable.
 | Lens | One row per | Rows | Mainly informs |
 |---|---|---|---|
 | `rights` | IP right (patent, trade mark, design, plant breeder's right), 1904 to 2026 | 4,356,908 (88 columns) | Q1, Q2 |
-| `firms` | ABN in any IP, R&D, procurement or tax source | 463,279 (51 columns) | Q2, Q3, Q4 |
+| `firms` | ABN in any IP, R&D, procurement or tax source | 463,279 (54 columns) | Q2, Q3, Q4 |
 | `regions` (+ `region_indicators`) | Postal area | 2,641 (+ 28,960,234, seven sources) | Q2, Q4 |
 | `national` (+ `national_indicators`) | Country, year and indicator | 135,597 (+ 41,230,072) | Q1, Q4 |
 | `timeline` | Month, for Australia, January 1904 to September 2026 | 1,473 | Q1, Q4, Q5 |
@@ -304,17 +304,20 @@ Every ABN that appears in IP Australia's data, the R&D Tax Incentive, AusTender 
 
 - **Who is in it.** 463,279 ABNs: the firms that used one of six sources, not all businesses. 54.77% are in IP RAPID
   alone, 13.99% linked to IP only by IP Australia's register and 10.96% linked to IP by IPLORD alone (with zero IP
-  counts), so firms' IP counts are lower bounds (U41). Restated 2 November 2026: first given as 398,450 ABNs from five
+  counts), so firms' IP counts are lower bounds, if each recorded link is right (U41). Restated 2 November 2026: first given as 398,450 ABNs from five
   schemes, before the register's ABNs were added (ADR 0029).
 - **What they are.** Private companies are 71.3% of firms, 76.4% of IP filers and 94.5% of R&D claimants (U42); a
-  median 12.6 years old on the record, with a spike at the ABN's start in 1999 (U43).
+  median 12.6 years old on the record (years since the earliest public registration, among 430,679 dated ABNs, active
+  or not), with a spike at the ABN's start in 1999 (U43). Companies dated by ASIC registration are never flagged as
+  truncated, so "not truncated" is not "first seen from 2001" (ADR 0039).
 - **IP use.** The median filing firm filed one application; the top 1% filed 55.3% of the standard patents credited to
   an ABN and 25.7% of trade marks; 116,240 firms hold 430,305 rights in force; 325,650 firms have a filing linked
   (U44, ADR 0036).
-- **A linking problem, mostly resolved.** By IP RAPID's ABNs alone, first-time trade mark filers fell from 11,318
+- **A linking problem, mostly resolved.** By IP RAPID's ABNs alone, firms with a first observed linked trade mark fell from 11,318
   (FY2024) to 7,384 (FY2026), and so did the share of Australian organisations' trade marks with a filer's ABN (84.1%
-  to 59.9%). With the register's ABNs the share holds (92.3% to 90.9%) and first-time filers rise (14,728 to 19,730):
-  the fall was in what IP RAPID publishes (U45, U100, U101; OQ7). Standard patents are not filled (88.7% to 83.9%).
+  to 59.9%). With the register's ABNs the share falls only slightly (92.3% to 90.9%) and first observed linked filers rise (14,728 to 19,730):
+  most of the fall was in IP RAPID's records, though why is not shown (U45, U100, U101; OQ7). First observed is not
+  first ever: some of these firms were already linked to IP another way (U101). Standard patents are not filled (88.7% to 83.9%).
 - **Money and place.** The median latest R&D claim is $307,490; the top 1% of government suppliers hold 83.1% of
   contract value (U46). R&D claimants are more metropolitan and more advantaged than firms in general; IP filers
   only a little more metropolitan, and no more advantaged (U47, restated 1 November 2026 with every linked filing,
@@ -486,8 +489,8 @@ The decisions Stage 1 made about how each variable may be used.
 - Money is deflated by the quarterly CPI, with the base stated (U30).
 
 **Firms and places**
-- Firms' IP counts are lower bounds; firm filing by year is compared only to FY2024 until the ABN linking question is
-  answered (U41, U45).
+- Firms' IP counts are lower bounds, if each recorded link is right; firm filing by year uses the filled columns and
+  can be compared to FY2026 (U41, U45 revised by U100 and U101); a first filing is the first observed linked one.
 - Firm counts use medians, logs or ranks, never means alone (U44); age is used with `age_truncated` (U43).
 - Area rates are shown only where 10 or more applications would be expected; area counts are modelled with negative
   binomial models, pooled to SA3s and read beside the firms behind them (U52, U53).
@@ -595,8 +598,8 @@ Reports (2015 to 2026), its economic research papers and notes, as the Econ repo
 - **Three readings change:** design shares among known origin are lower bounds, because IP Australia counts about three
   in four of IP RAPID's "origin unknown" designs as Australian (U7, U13); trade marks filed in 2018 are 2.5% short in
   IP RAPID, in Madrid applications (U5, U25); and U27's 2016 grant peak counts second-tier patents too.
-- **Leads:** U67's 2016 innovation patents were a real rise IP Australia reported (closed); U45's fall in first-time
-  filers is a fall in ABN linking (narrowed); U28 gains a response (Australians' standard patents brought forward in
+- **Leads:** U67's 2016 innovation patents were a real rise IP Australia reported (closed); U45's fall in first observed
+  filers is mostly a fall in IP RAPID's ABN linking (narrowed); U28 gains a response (Australians' standard patents brought forward in
   2021 by the innovation closure); U8 and U90 have IP Australia's published readings (digital tools; direct filing by
   domestic innovators).
 - **Disputed:** IP Australia's "55.6% of resident applications were filed by individuals" (2022) cannot be reproduced
@@ -613,8 +616,8 @@ complete to within a week and its fields agree with the register's for nearly ev
 gaps are in what it publishes, and the register fills them beside IP RAPID's own values (notebook 1.8.6, U99 to U104):
 
 - **U45 restated (U100, U101):** with the register's business numbers, 92.3% of Australian organisations' trade marks
-  have a filer's ABN in FY2024, 91.4% in FY2025 and 90.9% in FY2026 (IP RAPID: 84.1%, 71.4%, 59.9%); firms filing
-  their first trade mark number 14,728, 15,818 and 19,730. Firm-level filing by year is now compared to FY2026.
+  have a filer's ABN in FY2024, 91.4% in FY2025 and 90.9% in FY2026 (IP RAPID: 84.1%, 71.4%, 59.9%); firms with
+  a first observed linked trade mark number 14,728, 15,818 and 19,730. Firm-level filing by year is now compared to FY2026.
 - **U7 and U13 restated (U102):** designs filed FY2017 to FY2026 are 32.64% Australian with 0.083% of unknown origin
   (IP RAPID: 30.44% with 5.058%), by the filer's origin (ADR 0037).
 - **U34 restated (U103):** trade marks claiming convention priority carry an expedite event in every year, in IP RAPID
@@ -740,7 +743,7 @@ All descriptive.
 | U40 | rights (events) | Placeholder dates are few and handled |
 | U41 | firms | 463,279 ABNs that used one of six sources; IP counts are lower bounds |
 | U42 | firms | Private companies dominate every source but AusTender |
-| U43 | firms | A median 12.6 years old on the record |
+| U43 | firms | A median 12.6 years old on the record (since the earliest public registration) |
 | U44 | firms | The top 1% of filing firms file 55.3% of the standard patents credited to an ABN |
 | U45 | firms | Recent filers are less often linked to an ABN in IP RAPID; the register restores most of the link |
 | U46 | firms | R&D claims spread; contract value concentrated |

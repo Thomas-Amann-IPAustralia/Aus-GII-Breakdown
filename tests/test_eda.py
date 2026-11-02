@@ -316,9 +316,15 @@ def test_firms_age_basis_names_the_date_that_set_first_seen():
     p = _built("firms")
     bad = data.sql(f"""
         SELECT count(*) FILTER (first_seen IS NOT NULL AND age_basis IS NULL) AS no_basis,
-               count(*) FILTER (age_truncated AND age_basis = 'asic') AS truncated_asic
+               count(*) FILTER (age_truncated AND age_basis = 'asic') AS truncated_asic,
+               -- an undated firm's age is unknown, not untruncated (ADR 0039)
+               count(*) FILTER (first_seen IS NULL AND age_truncated IS NOT NULL) AS undated_flagged,
+               -- each first filing's date falls in its financial year (July to June, named by its end)
+               count(*) FILTER (trade_mark_first_date_filled IS NOT NULL AND year(trade_mark_first_date_filled)
+                   + CASE WHEN month(trade_mark_first_date_filled) >= 7 THEN 1 ELSE 0 END
+                   <> trade_mark_first_fy_filled) AS date_not_in_fy
         FROM read_parquet('{p}')""").iloc[0]
-    assert bad.to_dict() == {"no_basis": 0, "truncated_asic": 0}
+    assert bad.to_dict() == {"no_basis": 0, "truncated_asic": 0, "undated_flagged": 0, "date_not_in_fy": 0}
 
 
 def test_regions_have_no_zero_census_medians():

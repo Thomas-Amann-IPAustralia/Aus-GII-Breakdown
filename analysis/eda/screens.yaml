@@ -181,6 +181,9 @@ firms:
     patent_first_fy_filled: number
     trade_mark_first_fy_filled: number
     design_first_fy_filled: number
+    patent_first_date_filled: {skip: "the first filing of patent_first_fy_filled, by date (ADR 0039): screened as its year"}
+    trade_mark_first_date_filled: {skip: "as patent_first_date_filled"}
+    design_first_date_filled: {skip: "as patent_first_date_filled"}
     ip_filed_total: number
     ip_filed_weighted: number
     ip_record: {skip: "made from the IP counts and links screened here; the planned pairs (2.1, 2.2) use it as the one filing flag (ADR 0036)"}

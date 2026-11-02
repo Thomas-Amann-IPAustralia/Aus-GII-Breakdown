@@ -194,3 +194,65 @@ found again by observation number and cell id.
 - **The other open themes** in `INDEX.md` (first observed filing as entry; survival as value; ownership histories;
   attorney representation; geographic allocation; WGEA's latest attributes; policy timing; and the rest), and the
   findings outside any theme.
+
+## Pass 4 (2 November 2026): first observed filing, firms' age, and reproducible builds
+
+**Decision record:** ADR 0039 (`docs/adr/0039-first-observed-filing-and-exact-ages.md`). The owner asked for the next
+theme, looked at "deeply and widely to ensure all errors are expunged" (A20).
+
+### The check made first
+
+The theme "first observed filing treated as true entry" has three findings; four more rest on the same computation
+(firms' age at filing) and were taken with it. Each was checked against `build.py`, the lenses, both notebooks and both
+stage summaries. Then the check went wider: every age and first-filing computation in both notebooks, every claim of
+"entry", "first-time", "lower bound" or "years old" in them and the summaries, and, when one count moved with nothing
+behind it, the reproducibility of the build itself (two full builds compared table by table).
+
+### Findings acted on
+
+| Finding | The audit's claim | Verified | Amendment |
+|---|---|---|---|
+| S1 L0-L1 R31 (High) | U100 "does not fall"; U101's "entry"; U102's lower bounds could be biased either way | **In part.** U100 and U101 confirmed: the filled share falls 92.3% to 90.9% (trade marks) and 92.3% to 89.3% (designs); first observed filings are not entry. **Not confirmed:** U102. IP Australia's counts (D1, `docs/audit-ip-australia.md`) show IP RAPID's unknown-origin designs are mostly Australian, so its known-origin shares are lower bounds, about 2 points low, as the filled share shows | U100's heading quantifies the fall; U101 restated with a check (below); U102's lower-bound reading kept and its evidence named. A slip of this pass corrected before committing: U102 was first reworded to "biased either way", then restored on finding D1 |
+| S1 L2 R50 (High) | U45: first observed filing is not entry; "lower bounds" not assured; the publication mechanism not shown | **Confirmed.** Of each year's first observed linked trade mark filers, 4.32% to 9.1% were already linked to IP another way (an earlier trade mark in IP RAPID's panel or held, a patent or design, or IPLORD's link to FY2020): 852 of 19,730 in FY2026. Filers with no ABN are missed. So the counts are neither upper nor lower bounds | A table in U101's cell (`ae577e36`) shows the overlap each year; U45, U101, the chart's title, axis and caption (`ce3fe734`) say "first observed linked"; U100's "So" bullet says the mechanism is not shown (OQ7) |
+| S2 L2 R17 (High) | B25: first observed filing is not entry or a guaranteed age bound; medians across groups do not show sequencing | **Confirmed, and larger**: 17.07% to 19.57% of first observed filings are dated before the firm's first public registration | B25 rebuilt from dates, with filings before registration reported apart and a within-firm comparison: the trade mark first for 72.86% (71.55% to 74.13%) of 4,550 firms with both |
+| S2 L2 R15 (High) | B25 and B26 filter on `NOT age_truncated`, not first seen from 2001; B26's 4,341 ten-plus patents are impossible under the stated rule | **Confirmed**: `age_truncated` never flags an ASIC-dated company; 51,712 were first seen before 2001. Restricted to firms first seen from 2001, B26's earlier ten-plus band holds 2 patents | The sample is named ("not truncated") and the from-2001 subset shown as a sensitivity check in both; §2.4 and §2.5 say which is which |
+| S2 L2 R16 (High) | `fy - 0.5` is the start of the financial year; negative ages counted in the first year; B26 uses calendar years; the axis is a density | **Confirmed** (financial years are named by their end, `build._fy`) | Ages from dates: the lens gains the three `*_first_date_filled` columns; B26 uses each patent's application date; the axis reads "probability density" |
+| S1 L2 R54 (High) | U43's age needs a reference date and population; undated firms read as not truncated | **Confirmed**: the 32,600 undated firms had `age_truncated` false | The flag is empty when there is no date (`build.firms_sql`, a test); U43 states the date (22 October 2026), the population (430,679 dated ABNs, active or not), what the flag does and does not catch (a new table), and that age usually understates but does not bound a business's start |
+| S8-S9 R15 (High) | §9's firm populations and bounds overstated; 19,730 is first observed, not first ever | **In part** (the entry and bound parts; the IPLORD count belongs to another finding) | §9's row: "first observed linked", with the 4.32% overlap; "lower bounds, if each recorded link is right" |
+
+### Found by the wider check, not in the audits
+
+1. **Undated firms counted as the oldest.** Notebook 2's `AGE` grouping (B22, B23) sent a missing age to "20 years or
+   more". No table moved: every undated firm is inactive (32,348) or not in the ABR (252), and those tables use active
+   ABNs. Fixed: undated firms are their own group. The firms screen did move, through the flag: entity type against
+   truncation 0.441 to 0.452, local government 15.9 to 14.8 times chance (B21).
+2. **Builds that differed from run to run.** Two builds of the same corpus differed in 383,271 values of
+   `region_indicators`, 696 rows of `industries`, 3,190 of `industry_indicators`, 677 of `regions` and 228 of
+   `institutions`, all in the last digits of parallel sums of fractions. B28's lead count moved between 24,947 and
+   24,948 from one build to the next, so pass 2's move of one lead, credited to ADR 0037, cannot be told apart from it.
+   Fixed with exact decimal sums (`build._exact_sum`); two full builds now agree in all eleven lenses. The first fix
+   tried (ordered sums) nearly tripled memory and killed notebook 1's kernel; it was replaced before committing.
+3. **A label that changed between runs:** U119's example cube titles (`any_value`, noted in pass 1); now fixed.
+4. **Stale since earlier passes:** §1.9's U99 row (designs of unknown origin 29,628 to 4,622, against U99's 30,215 to
+   5,539 since pass 2); the Stage 1 summary's rule that firm filing by year stops at FY2024 (revised by U45); the
+   firms lens's column count (54 now).
+5. **B22's age** is on the record at 22 October 2026, not at the time of the claim or contract; now said.
+
+### What else changed as a result
+
+- **B26's conclusion weakens.** The youngest firms' patents moved overseas more in FY2003 to FY2011 (5.79%, 3.98% to
+  8.35%) but not clearly in FY2012 to FY2021 (2.89%, 1.95% to 4.26%, overlapping every band); patents filed before the
+  firm's first registration move most in both periods (7.01%, 7.77%). §2.7, §8 and `docs/stage-2-summary.md` updated.
+- **B25's figures lengthen** (medians 2.61, 5.22 and 5.24 years) and its ordering rests on the within-firm comparison.
+- **Wording.** `GLOSSARY.md` gains "First observed linked filing" and "Reproducible build", and qualifies "Lower bound"
+  and "Left-truncated". The Stage 1 summary's firms section and rules restated.
+- **Tests.** `tests/test_eda.py::test_firms_age_basis_names_the_date_that_set_first_seen` now also checks that
+  undated firms have no flag and that each first filing's date falls in its financial year. Both notebooks re-executed;
+  the IP Australia benchmark is unchanged.
+
+### Left for other passes
+
+- **The website,** as before.
+- **Related findings not acted on:** S1 L2 R51 (linkage shares are of applications, now said in U100, but its party
+  and provisional points are separate), the IPLORD count in S8-S9 R15, and S2 L2 R18 to R20 (recorded ownership, the
+  next theme on the list).

@@ -17,7 +17,9 @@ The evidence atlas (`evidence/`) has Stage 2's pages (ADR 0035, 2026-10-29); the
   and designs are renewed far less (B6, B10). The direction of cause is open: an abandoned application may never
   appoint an attorney.
 - **Value made here is often owned or used elsewhere.** One patent in seven made in Australia is filed from overseas
-  (B16); the Australian patents that move overseas are the wide, granted ones and young firms' (B19, B26); 3% to 5% of
+  (B16); the Australian patents that move overseas are the wide, granted ones (B19); young firms' moved more in FY2003 to
+  FY2011 but not clearly since, and patents filed before the firm's first registration move most (B26, restated
+  2 November 2026, ADR 0039); 3% to 5% of
   the US patents citing Australian research have Australian links (B46).
 - **Australian organisations' patents are narrower but kept longer** than overseas organisations', within fields too;
   their lower citations are mostly the narrower reach (B8, B11, B12). Reach and citations hold for FY2010 to FY2019;
@@ -59,7 +61,7 @@ The evidence atlas (`evidence/`) has Stage 2's pages (ADR 0035, 2026-10-29); the
 | Lens | Observations | Distinct leads | What stands out |
 |---|---|---|---|
 | `rights` | B1 to B19 | 223 over six types | Representation and outcomes; lifetimes and reach by origin; expedite as composition; inventions owned abroad; gender by field |
-| `firms` | B20 to B26 | 33 | Who files among R&D claimants and suppliers; claimants with no filing linked; contracts; age at first filing; young firms' patents moving abroad |
+| `firms` | B20 to B26 | 33 | Who files among R&D claimants and suppliers; claimants with no filing linked; contracts; age at first observed linked filing (one in five dated before the firm's first registration); firm age and patents moving abroad |
 | `regions` | B27 to B31 | 128 (79 on IP); 24,947 indicator pairs | One gradient of advantage, education and business density; negative binomial ratios; not one firm's; business mix |
 | `national` | B32 to B35 | 188 (134 on IP); 225 attachments | Development gradient; Australia's OECD ranks; R&D and patenting in levels and changes |
 | `timeline` | B36 to B39 | 1 | No common cycle; policy breaks against placebos; provisional follow-up; Australia-only series give context only |

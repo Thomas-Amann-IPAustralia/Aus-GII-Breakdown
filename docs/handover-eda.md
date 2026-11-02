@@ -29,7 +29,26 @@ notebook page (reworded); the rights lens page still gave the count before the d
 at phone width). Tests: `tests/test_atlas.py` runs again (6 tests). **Next, the owner's call:** publish (merge to the
 branch Pages serves) and Stage 3 (OQ19); B10's harvest is still to finish.
 
-**Status (2026-11-02, latest): audit pass 3, later additions carried back** (A19, ADR 0038,
+**Status (2026-11-02, latest): audit pass 4, first observed filing, firms' age and reproducible builds** (A20, ADR
+0039, `analysis/GPT-audit/261030/AMENDMENTS.md`). The owner asked for the next audit theme, looked at deeply and
+widely. The theme (first observed filing read as entry) was taken with the four findings on the same age computation:
+seven findings, five holding in full and two in part. One part is not confirmed: IP RAPID's known-origin design
+shares are lower bounds, as IP Australia's own counts show (D1). Fixed in the back end: the firms lens gains
+`*_first_date_filled` (54 columns), and `age_truncated` is empty for the 32,600 undated firms (it read "not truncated").
+Notebooks: U101 shows that 4.32% to 9.1% of each year's first observed trade mark filers were already linked to IP, so
+"first observed linked", never "entry"; B25 is rebuilt from dates (17% to 20% of first filings are dated before the
+firm's first registration, so recorded ages are not lower bounds for one firm in five; medians 2.61, 5.22 and 5.24
+years; within firms the trade mark comes first for 72.86%); B26's young-firm lead now holds for FY2003 to FY2011
+only. The wider check found two defects the audits did not: notebook 2's `AGE` grouping put undated firms in "20
+years or more" (no table moved, since they are all inactive or outside the ABR), and the build was not reproducible.
+Parallel sums of fractions differed in their last digits between builds (383,271 values of `region_indicators`, most
+rows of `industries`), flipping one of B28's leads from run to run. `build._exact_sum` now adds them exactly, and two
+full builds agree in all eleven lenses. U119's cube labels, §1.9's U99 row and the Stage 1 summary's FY2024 rule were
+also stale. Both notebooks re-executed; tests pass except the atlas's five, as before; the benchmark is unchanged.
+**Next, the owner's call:** the next theme (recorded ownership read as complete: S1 L0-L1 R16, S8-S9 R07, S2 L1 R25,
+R26, S2 L2 R19, with S2 L2 R18 and R20 on B26's "moved overseas"), the web pass, OQ19 (Stage 3).
+
+**Status (2026-11-02): audit pass 3, later additions carried back** (A19, ADR 0038,
 `analysis/GPT-audit/261030/AMENDMENTS.md`). The owner asked for the audit work to continue, correcting what holds.
 Pass 3 is the sweep passes 1 and 2 proposed: the 25 findings, across all twelve audits, that material added later
 (the data gaps filled after Stage 2, the register's fills, passes 1 and 2) was not carried back. All were checked

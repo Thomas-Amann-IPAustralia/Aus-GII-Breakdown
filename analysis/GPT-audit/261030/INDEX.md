@@ -8,7 +8,8 @@ notebook (its code, saved outputs, charts and prose) and lists prioritised findi
 **Acted on so far:** see [`AMENDMENTS.md`](AMENDMENTS.md), which records each finding verified and what was changed
 (pass 1, 1 November 2026: the firm filing population, ADR 0036; nine findings in five audits. Pass 2, 2 November
 2026: origin is the filer's, from one party, ADR 0037; eight findings in five audits. Pass 3, 2 November 2026: later
-additions carried back, ADR 0038; 25 findings in all twelve audits).
+additions carried back, ADR 0038; 25 findings in all twelve audits. Pass 4, 2 November 2026: first observed
+filing, firms' age and reproducible builds, ADR 0039; seven findings in four audits).
 
 ## What these audits are, and are not
 
@@ -174,7 +175,7 @@ gives the audit file (S1 or S2, then lens) and finding numbers.
 | Current holder described as the filer; origin left undefined or taken from a different party (**acted on, pass 2**) | S1 L0-L1 R04, R39, R43; S1 L4 R12; S1 L5 R03, R09; S8-S9 R05; S2 L1 R06 |
 | "Filer" or "filed IP" defined differently within a lens (**acted on, pass 1**) | S1 L2 R47; S2 L2 R04 |
 | No linked filing treated as "never filed"; missing or zero treated as observed absence (**firms' filing acted on, pass 1**: S1 L2 R48, S1 L3 R15, S8-S9 R17, S2 L2 R09, S2 L3 R06; the rest open) | S1 L0-L1 R05; S1 L2 R48; S1 L3 R05, R15; S1 L4 R16; S8-S9 R17; S2 L2 R09; S2 L3 R06 |
-| First observed filing treated as true entry | S1 L0-L1 R31; S1 L2 R50; S2 L2 R17 |
+| First observed filing treated as true entry (**acted on, pass 4**, with S2 L2 R15, R16, S1 L2 R54 and S8-S9 R15) | S1 L0-L1 R31; S1 L2 R50; S2 L2 R17 |
 | Survival (years in force) read as renewal behaviour or value | S1 L0-L1 R20, R21; S8-S9 R10; S2 L1 R11, R12 |
 | Recorded ownership changes read as complete ownership histories | S1 L0-L1 R16; S8-S9 R07; S2 L1 R25, R26; S2 L2 R19 |
 | Attorney representation as an unvalidated proxy for help | S1 L0-L1 R15; S8-S9 R08; S2 L1 R07 |
