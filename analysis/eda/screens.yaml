@@ -28,7 +28,7 @@ rights:
     priority_date: {skip: in priority_claims and priority_office}
     registered_date: {skip: in registered}
     days_to_registration: number
-    retired_date: {skip: in years_in_force}
+    retired_date: {skip: "in in_force; lifetimes are read from survival curves (section 1.2)"}
     applicant_count: number
     applicant_type: category
     applicant_country: category
@@ -67,6 +67,7 @@ rights:
     agent_id: {skip: "identifier (agent_name names the organisations)"}
     agent_name: category
     agent_clients: number
+    agent_first_date: {skip: "a date; representation before the first renewal is derived from it in section 1.2"}
     representation: category
     date_of_patent: {skip: "the term's start, close to the filing date"}
     exam_requested_date: {skip: in years_to_exam_request}
@@ -78,7 +79,7 @@ rights:
     first_assigned_date: {skip: in assignment_count}
     term_extended_date: {skip: in term_extended}
     in_force: category
-    years_in_force: number
+    years_in_force: {skip: "unfinished for a right still in force, so not an ordinary number: lifetimes are read from survival curves by cohort (section 1.2; S2 L1 R32, ADR 0041)"}
     filing_route: category
     priority_claims: number
     priority_office: category
@@ -133,7 +134,7 @@ rights:
              applicant_state, founder_state]
     applicant_type: [applicant_type, founder_type]
     abn: [has_abn, has_abn_filled, register_abn_basis]
-    outcome: [status, in_force, registered, accepted, certified, years_in_force, days_to_registration]
+    outcome: [status, in_force, registered, accepted, certified, days_to_registration]
     representation: [has_agent, representation, agent_name, agent_clients]
     route: [filing_route, priority_claims, priority_office, australian_priority, divisional, pct_office, madrid_export,
             years_before_application]
@@ -145,7 +146,7 @@ rights:
     applicants: [applicant_count, founder_count]
     ownership: [holder_changed, assignment_count]
     class: [main_class, main_area]
-    age: [filing_fy, years_in_force, in_force, family_citations, status]
+    age: [filing_fy, in_force, family_citations, status]
 
 firms:
   key: abn

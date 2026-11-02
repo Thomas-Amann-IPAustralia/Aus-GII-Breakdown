@@ -290,17 +290,27 @@ def kaplan_meier(
     ended: str = "ended",
     unfinished: str = "unfinished",
     by: str | None = None,
+    entered: str | None = None,
 ) -> pd.DataFrame:
     """Survival curves from grouped counts: one row per (group and) time, with the number that `ended` then and the
     number still going (`unfinished`, censored) last seen then. Returns, for each time, the share still going after
     it (Kaplan-Meier: the product over times of 1 minus the share at risk that ended), the number at risk, and a 95%
     interval (Greenwood's variance, on the log-log scale, so it stays between 0 and 1). Aggregate in SQL first: a
-    curve needs only counts, never the rows."""
+    curve needs only counts, never the rows.
+
+    With `entered` (delayed entry, or left truncation), the counts also hold, at each time, the number that joined
+    the count then (for example, rights granted that many years after their term began; rows with only entries have
+    zero `ended` and `unfinished`): a right is at risk from its entry onwards, not from time 0, so a group that is
+    granted later is not credited with years in which it could not have ended (immortal time; ADR 0041)."""
     groups = counts.groupby(by) if by else [(None, counts)]
     out = []
     for g, d in groups:
-        d = d.groupby(time)[[ended, unfinished]].sum().sort_index()
+        d = d.groupby(time)[[ended, unfinished, *([entered] if entered else [])]].sum().sort_index()
         at_risk = d[ended].add(d[unfinished]).iloc[::-1].cumsum().iloc[::-1]
+        if entered:  # less those that join only after this time
+            at_risk = at_risk - d[entered].iloc[::-1].cumsum().iloc[::-1].shift(-1, fill_value=0)
+            d = d[at_risk > 0]
+            at_risk = at_risk[at_risk > 0]
         q = (d[ended] / at_risk).clip(upper=1)
         s = (1 - q).cumprod()
         var = (d[ended] / (at_risk * (at_risk - d[ended])).where(at_risk > d[ended])).cumsum()

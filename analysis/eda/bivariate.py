@@ -542,11 +542,27 @@ def rate_ratio(k1, e1, k2, e2, z: float = 1.96) -> tuple[float, float, float]:
     return float(rr), float(rr * np.exp(-z * se)), float(rr * np.exp(z * se))
 
 
+HALF_HASH = "hash(CAST({key} AS VARCHAR) || '{salt}') % 2 = 0"  # true for the discovery half (S2 S8 R07, ADR 0041)
+
+
+def half_sql(key: str, *, salt: str = "stage2") -> str:
+    """The SQL condition that puts a row in the discovery half: the one rule for every half in Stage 2 (the screens,
+    the notebook's SQL and `split_half`), DuckDB's hash of the key as text with a salt."""
+    return HALF_HASH.format(key=key, salt=salt)
+
+
 def split_half(keys: pd.Series, *, salt: str = "stage2") -> pd.Series:
-    """A stable random half for each key (True for the discovery half, False for replication), from a hash of the key,
-    so the same row always lands in the same half whichever columns are loaded."""
-    h = pd.util.hash_pandas_object(keys.astype(str) + salt, index=False).to_numpy()
-    return pd.Series((h % 2) == 0, index=keys.index)
+    """A stable random half for each key (True for the discovery half, False for replication), by the same rule as the
+    screens (`half_sql`: DuckDB's hash, computed in DuckDB), so a key lands in the same half in every analysis. Until
+    pass 6 this used pandas' hash, which put different keys in each half (S2 S8 R07, ADR 0041)."""
+    import duckdb
+
+    frame = pd.DataFrame({"k": keys.to_numpy(), "i": np.arange(len(keys))})
+    con = duckdb.connect()
+    con.register("frame", frame)
+    d = con.execute(f"SELECT {half_sql('k', salt=salt)} AS d FROM frame ORDER BY i").fetchnumpy()["d"]
+    con.close()
+    return pd.Series(np.asarray(d, dtype=bool), index=keys.index)
 
 
 # The screen's design, from screens.yaml ----------------------------------------------------------------------------
@@ -590,7 +606,8 @@ def screen_sample(lens: str, part: str, stratum: str | None = None, *, keyed: bo
     select = [f'"{c}"' for c in kinds if c not in derived] + [f'({d["sql"]}) AS "{c}"' for c, d in derived.items()]
     h = f"hash(CAST({spec['key']} AS VARCHAR) || 'stage2')"
     cond = spec[part]
-    where = [f"{h} % 2 = {0 if part == 'discovery' else 1}" if cond == "half" else f"({cond})"]
+    disc = half_sql(spec["key"])
+    where = [(disc if part == "discovery" else f"NOT ({disc})") if cond == "half" else f"({cond})"]
     if stratum is not None:
         where.append(f"({spec['strata']['sql']}) = '{stratum}'")
     limit = f"LIMIT {spec['sample']}" if spec.get("sample") else ""
