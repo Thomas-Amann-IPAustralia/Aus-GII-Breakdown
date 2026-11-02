@@ -225,6 +225,14 @@ def _postcode(col: str) -> str:
     )
 
 
+def _exact_sum(expr: str, where: str | None = None) -> str:
+    """A sum of fractions that is the same in every build (ADR 0039). DuckDB adds doubles in parallel, in no fixed
+    order, so their sum can differ in its last digits from one build to the next, and a result on a threshold can flip.
+    Each term is fixed to 18 decimal places and added exactly, so the order no longer matters."""
+    filt = f" FILTER ({where})" if where else ""
+    return f"CAST(sum(CAST({expr} AS DECIMAL(38, 18))){filt} AS DOUBLE)"
+
+
 def _fy(col: str) -> str:
     """The Australian financial year (ending 30 June) of a date."""
     return f"(year({col}) + CASE WHEN month({col}) >= 7 THEN 1 ELSE 0 END)"
@@ -653,7 +661,11 @@ def firms_sql() -> str:
         SELECT filer_abn AS abn,
                min(filing_fy) FILTER (patent_type = 'standard') AS patent_first_fy_filled,
                min(filing_fy) FILTER (ip_right_type = 'trade_mark') AS trade_mark_first_fy_filled,
-               min(filing_fy) FILTER (ip_right_type = 'design') AS design_first_fy_filled
+               min(filing_fy) FILTER (ip_right_type = 'design') AS design_first_fy_filled,
+               -- the same first filings' dates, so an age at first filing is counted in days (ADR 0039)
+               min(application_date) FILTER (patent_type = 'standard') AS patent_first_date_filled,
+               min(application_date) FILTER (ip_right_type = 'trade_mark') AS trade_mark_first_date_filled,
+               min(application_date) FILTER (ip_right_type = 'design') AS design_first_date_filled
         FROM {lens_table("rights")} WHERE filer_abn IS NOT NULL GROUP BY 1
     ),
     held AS (  -- rights held now: the first current applicant or owner with an ABN
@@ -726,14 +738,18 @@ def firms_sql() -> str:
              WHEN s.first_seen = s.asic_registered THEN 'asic'
              WHEN s.abn_status = 'ACT' AND s.first_seen = s.abn_status_from THEN 'abn'
              WHEN s.first_seen = s.gst_status_from THEN 'gst' END AS age_basis,
-        -- ABNs and GST began in 1999-2000: a business first seen then through them may be older
-        s.first_seen < DATE '2001-01-01' AND s.first_seen IS DISTINCT FROM s.asic_registered AS age_truncated,
+        -- ABNs and GST began in 1999-2000: a business first seen then through them may be older. Unknown (empty), not
+        -- false, when no registration date is known (ADR 0039)
+        CASE WHEN s.first_seen IS NULL THEN NULL
+             ELSE s.first_seen < DATE '2001-01-01' AND s.first_seen IS DISTINCT FROM s.asic_registered END
+          AS age_truncated,
         s.in_iprapid_patent, s.in_iprapid_trade_mark, s.in_iprapid_design,
         s.in_iplord,  -- IPLORD (to FY2020) links 50,790 ABNs to IP that IP RAPID gives no ABN for (ADR 0016)
         s.in_rdti, s.in_austender, s.in_ato_ctt,
         s.patent_first_fy, s.trade_mark_first_fy, s.design_first_fy,
         s.in_register,
         ff.patent_first_fy_filled, ff.trade_mark_first_fy_filled, ff.design_first_fy_filled,
+        ff.patent_first_date_filled, ff.trade_mark_first_date_filled, ff.design_first_date_filled,
         s.ip_filed_total,
         coalesce(filed.ip_filed_weighted, 0) AS ip_filed_weighted,
         -- the one filing flag (ADR 0036): a filing linked by either rule, else another link to IP, else none
@@ -939,7 +955,7 @@ def regions_sql() -> str:
     ),
     tender AS (  -- contracts first published in the window, by the supplier's postcode on the contract (ADR 0018)
         SELECT poa_code, count(DISTINCT abn) AS austender_suppliers, count(*) AS austender_contracts,
-               sum(value) AS austender_value
+               {_exact_sum("value")} AS austender_value
         FROM contracts WHERE {_fy("first_published")} BETWEEN {lo} AND {hi} GROUP BY 1
     ),
     nat AS (  -- national rates over the lens's places, for the minimum expected count
@@ -1117,8 +1133,10 @@ def region_indicators_sql() -> str:
     ),
     apportioned AS (
         SELECT w.poa_code, s.source, any_value(s.topic) AS topic, s.indicator, any_value(s.label) AS label, s.period,
-               CASE any_value(s.kind) WHEN 'count' THEN sum(s.value * w.split)
-                    ELSE sum(s.value * w.weight) / nullif(sum(w.weight), 0) END AS value,
+               -- exact sums: the same in every build (ADR 0039)
+               CASE any_value(s.kind) WHEN 'count' THEN {_exact_sum("s.value * w.split")}
+                    ELSE {_exact_sum("s.value * w.weight")} / nullif({_exact_sum("w.weight")}, 0) END
+                 AS value,
                any_value(s.unit) AS unit, any_value(s.kind) AS kind,
                'from ' || CASE any_value(s.kind_of_area) WHEN 'sa2' THEN 'SA2s' ELSE 'PHAs' END AS method
         FROM split s JOIN w ON w.kind = s.kind_of_area AND w.area = s.area
@@ -1635,7 +1653,7 @@ def _ip_by_division() -> str:
     ),
     ip_pat AS (
         SELECT i.application_number, left(lpad(a.anzsic, 4, '0'), 2) AS subdivision,
-               {_division_of("a.anzsic")} AS division, sum(a.weight / i.n) AS share
+               {_division_of("a.anzsic")} AS division, {_exact_sum("a.weight / i.n")} AS share
         FROM (SELECT *, count(*) OVER (PARTITION BY application_number) AS n FROM ipc) i
         JOIN {{concordances/ipc4_anzsic}} a USING (ipc4)
         GROUP BY 1, 2, 3
@@ -1647,7 +1665,8 @@ def _ip_by_division() -> str:
           AND coalesce(p.ipc_to, left(c.classification, 4)) IN (SELECT ipc4 FROM {{concordances/ipc4_anzsic_services}})
     ),
     ip_pat_svc AS (
-        SELECT i.application_number, {_division_of("a.anzsic")} AS division, sum(a.weight / i.n) AS share
+        SELECT i.application_number, {_division_of("a.anzsic")} AS division,
+               {_exact_sum("a.weight / i.n")} AS share
         FROM (SELECT *, count(*) OVER (PARTITION BY application_number) AS n FROM ipc_svc) i
         JOIN {{concordances/ipc4_anzsic_services}} a USING (ipc4)
         GROUP BY 1, 2
@@ -1659,7 +1678,7 @@ def _ip_by_division() -> str:
     ),
     ip_tm AS (
         SELECT c.application_number, left(lpad(a.anzsic, 4, '0'), 2) AS subdivision,
-               {_division_of("a.anzsic")} AS division, sum(a.weight / c.n) AS share
+               {_division_of("a.anzsic")} AS division, {_exact_sum("a.weight / c.n")} AS share
         FROM (SELECT *, count(*) OVER (PARTITION BY application_number) AS n FROM nice) c
         JOIN {{concordances/nice_anzsic}} a USING (nice)
         GROUP BY 1, 2, 3
@@ -1689,23 +1708,28 @@ def industries_sql() -> str:
     ),
     pat AS (
         SELECT p.division, r.filing_fy AS fy,
-               sum(p.share) FILTER (r.patent_type = 'standard') AS patents_standard,
-               sum(p.share) FILTER (r.patent_type = 'standard' AND r.founding_australian) AS patents_standard_au,
-               sum(p.share) FILTER (r.patent_type = 'second_tier') AS patents_second_tier
+               -- exact sums: the same in every build (ADR 0039)
+               {_exact_sum("p.share", "r.patent_type = 'standard'")}
+                 AS patents_standard,
+               {_exact_sum("p.share", "r.patent_type = 'standard' AND r.founding_australian")} AS patents_standard_au,
+               {_exact_sum("p.share", "r.patent_type = 'second_tier'")}
+                 AS patents_second_tier
         FROM ip_pat p JOIN r ON r.ip_right_type = 'patent' AND r.application_number = p.application_number
         GROUP BY 1, 2
     ),
     pat_svc AS (
         SELECT p.division, r.filing_fy AS fy,
-               sum(p.share) FILTER (r.patent_type = 'standard') AS patents_standard_with_services,
-               sum(p.share) FILTER (r.patent_type = 'standard' AND r.founding_australian)
+               {_exact_sum("p.share", "r.patent_type = 'standard'")}
+                 AS patents_standard_with_services,
+               {_exact_sum("p.share", "r.patent_type = 'standard' AND r.founding_australian")}
                    AS patents_standard_au_with_services
         FROM ip_pat_svc p JOIN r ON r.ip_right_type = 'patent' AND r.application_number = p.application_number
         GROUP BY 1, 2
     ),
     tm AS (
-        SELECT t.division, r.filing_fy AS fy, sum(t.share) AS trade_marks,
-               sum(t.share) FILTER (r.founding_australian) AS trade_marks_au
+        SELECT t.division, r.filing_fy AS fy, {_exact_sum("t.share")} AS trade_marks,
+               {_exact_sum("t.share", "r.founding_australian")}
+                 AS trade_marks_au
         FROM ip_tm t JOIN r ON r.ip_right_type = 'trade_mark' AND r.application_number = t.application_number
         GROUP BY 1, 2
     ),
@@ -1881,7 +1905,7 @@ def industry_indicators_sql() -> str:
         FROM {lens_table("rights")} WHERE filing_fy BETWEEN {INDUSTRIES_FY[0]} AND {INDUSTRIES_FY[1]}
     ),
     ip_sub AS (  -- the core lens's IP counts by subdivision: the detail within a division (ADR 0020)
-        SELECT x.division, x.subdivision, x.kind, r.filing_fy AS fy, sum(x.share) AS value
+        SELECT x.division, x.subdivision, x.kind, r.filing_fy AS fy, {_exact_sum("x.share")} AS value
         FROM (SELECT application_number, 'patent' AS ip_right_type, subdivision, division, share, 'patents' AS kind
               FROM ip_pat
               UNION ALL SELECT application_number, 'trade_mark', subdivision, division, share, 'trade_marks'
@@ -2112,7 +2136,8 @@ def institutions_sql() -> str:
         FROM {{austender/contracts}} GROUP BY 1
     ),
     tender AS (
-        SELECT a.ror, year(c.first_published) AS year, count(*) AS contracts, sum(c.value) AS contract_value
+        SELECT a.ror, year(c.first_published) AS year, count(*) AS contracts,
+               {_exact_sum("c.value")} AS contract_value
         FROM contracts c JOIN inst_abns a USING (abn) GROUP BY 1, 2
     ),
     nsrc AS (  -- the NSRC, 2000 to 2015 (gap B9): matched by name; an institution not surveyed that year has none

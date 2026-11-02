@@ -57,13 +57,13 @@ All lenses are built by `uv run python -m eda.build`, and every column is descri
 
 | Lens | One row per | Status | Main questions |
 |---|---|---|---|
-| `rights` | IP right | Built: 4,368,006 rows, 74 columns | Q1, Q2 |
-| `firms` | ABN in any IP, R&D, procurement or tax source | Built: 398,450 rows, 50 columns | Q2, Q3, Q4 |
-| `regions` | Postal area | Built: 2,641 rows, 42 columns; its attachments in `region_indicators` (postal area, source, indicator and period: 28,960,234 rows) | Q2, Q4 |
-| `national` | Country, year and indicator | Built: 135,597 rows, 11 columns; its attachments in `national_indicators` (place, source, indicator and period: 41,229,749 rows) | Q1, Q4 (context) |
-| `timeline` | Month, for Australia (Jan 1904 to Sep 2026) | Built: 1,473 rows, 75 columns | Q1, Q4, Q5 |
+| `rights` | IP right | Built: 4,356,908 rows, 88 columns | Q1, Q2 |
+| `firms` | ABN in any IP, R&D, procurement or tax source | Built: 463,279 rows, 54 columns | Q2, Q3, Q4 |
+| `regions` | Postal area | Built: 2,641 rows, 43 columns; its attachments in `region_indicators` (postal area, source, indicator and period: 28,960,234 rows) | Q2, Q4 |
+| `national` | Country, year and indicator | Built: 135,597 rows, 11 columns; its attachments in `national_indicators` (place, source, indicator and period: 41,230,072 rows) | Q1, Q4 (context) |
+| `timeline` | Month, for Australia (Jan 1904 to Sep 2026) | Built: 1,473 rows, 79 columns | Q1, Q4, Q5 |
 | `industries` | ANZSIC division and financial year | Built: 703 rows (FY1990 to FY2026), 20 columns; its attachments in `industry_indicators` (division, source, indicator and period: 1,425,157 rows) | Q2, Q3, Q4 |
-| `institutions` | Australian research institution (ROR) and calendar year | Built: 4,810 rows (130 institutions, 1990 to 2026), 30 columns; its IP in `institution_rights` (right and institution: 31,528 rows) | Q1, Q2, Q3 |
+| `institutions` | Australian research institution (ROR) and calendar year | Built: 4,810 rows (130 institutions, 1990 to 2026), 36 columns; its IP in `institution_rights` (right and institution: 31,528 rows) | Q1, Q2, Q3 |
 
 **Rules for time.**
 - Monthly and quarterly series join the `timeline`. Quarterly series are compared at quarterly resolution, never spread

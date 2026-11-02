@@ -133,3 +133,163 @@ the rebuilt lenses and both notebooks before changing anything.
   jointly filed right it can be another party than `filer_group`'s. Not changed: the firms lens's crediting rests on
   it, and pass 1 measured that lens.
 - **The sweep of later additions not carried back** (24 findings) and the other recurring themes in `INDEX.md`.
+
+## Pass 3 (2 November 2026): later additions carried back
+
+**Decision record:** ADR 0038 (`docs/adr/0038-later-additions-carried-back.md`). The owner asked for the audit work
+to continue, correcting what holds (A19); this is the sweep that passes 1 and 2 proposed.
+
+### The check made first
+
+Each of the 25 findings in the theme "later additions or corrections not carried back" (`INDEX.md`) was checked
+against both notebooks as they stood after pass 2, the lenses as rebuilt on 2 November 2026, and both stage summaries.
+None is false; 19 hold in full and 6 in part. The audits' hashes no longer match (passes 1 and 2), so every locator was
+found again by observation number and cell id.
+
+### Findings acted on
+
+| Finding | The audit's claim | Verified | Amendment |
+|---|---|---|---|
+| S1 L0-L1 R12 (High) | U13's ABN conclusion, design-origin results and a route caption are not updated for U99 to U102 | **In part.** U13's ABN figures were restated in pass 2 (13% to 21%, pointing to U99 and U100). The caption is false: designs' origin is unknown for 4.6% to 23.4% of each five-year period's designs (a lens query), not "recorded for few Australian designs" | Caption corrected (cell `5d808e57`, citing U7's 4.0% to 25.1% a year); §1.9's U13 row points to the register's fills. **Not done:** making the filled results primary, against ADR 0029 and the owner's A12 (fills beside IP RAPID's columns) |
+| S1 L0-L1 R32 (High) | U34's lead and one-side-only decision stand after U103; IP RAPID, register and either-record rates not distinguished | **Confirmed**: U103's table gives either-record rates of 4.94% (FY2018), 14.97% (FY2019) and 24.11% (FY2020) for marks without priority, against IP RAPID's 4.81% and 4.48% | U34's heading and decision retired with a dated restatement; the three records distinguished; §1.9's row and `docs/stage-1-summary.md` (themes 7 and 9, §4.1, the rules, the leads, the index) restated |
+| S1 L0-L1 R36 (Medium) | One authoritative version; external checks unlabelled | **In part.** U1 and U4 already point to U104. Found: U0's lens table gave 4,368,006 rights and 398,450 firms (4,356,908 and 463,279 now); U17 did not point to U35's assignment measure; U99's check is documented outside the page | U0's table corrected; U17 points to U35; U99's check labelled as documented in `docs/audit-ipa-api.md`, not re-run. The notebook's dated "Restated" lines serve as the change log (ADR 0038) |
+| S1 L2 R49 (High) | U45's chart and table use the unfilled first years; the fall is reduced, not removed; patent scopes differ | **Confirmed**: cell `ce3fe734` plotted `*_first_fy` (trade marks 7,384 in FY2026) though U45's revised decision uses the filled columns; `patent_first_fy` is any patent, `patent_first_fy_filled` standard patents only (`variables.yaml`) | The chart plots filled trade marks and designs, IP RAPID's dashed, and patents by IP RAPID's any-patent column, named as such; U45's heading no longer "a lead"; 92.3% to 90.9% is "much reduced, not removed"; standard patents' fall (88.7% to 83.9%) stands, unfilled; §2.7's row |
+| S1 L2 R70 (Medium) | §2.7 drops qualifications; acronyms not expanded; prerequisites | **In part.** Pass 1 restated U42, U44 and U47. ABN, ABR, ACN, GST, IRSAD and WGEA were not expanded in §2 | A terms paragraph opens §2; U44's row says 55.3% is of the standard patents credited to an ABN and that no filing linked is not proof of none. **Not done:** the notebook runs top to bottom by design, so shared definitions stay in the setup |
+| S1 L3 R02 (Medium) | U55's total is a five-source subtotal; "every value they publish" | **Confirmed**: the query excluded `ato_postcode` and `census_tsp` while its chart included all seven: 28,960,234 rows and 11,379 indicator-periods in all | The table covers seven sources and prints the five-source subtotal (22,511,923, 8,874); U55, §3's introduction and §3.5 restated; "the values taken from their selected tables" |
+| S1 L3 R06 (Medium) | U49's prospective wording after U87; six or seven universities | **Confirmed**: Stage 2 never placed these patents by institution; the summary said six, the observation lists seven codes | U49 cites U87 (742 of 1,474, 50.34%) and says placement is proposed, not done; §3.8's and §9's rows |
+| S1 L3 R32 (Medium) | §3.8 and §9 lose qualifications | **In part.** U53's range mixed postal areas (68.2%, 6.7%) with pooled SA3s (72.5%, 15.5%); U56's row lacked the 1,000-person threshold; U49's action was stale. "Never filed" was already corrected in pass 1 | U53 (chance named as a Poisson model), U55, U56 and U49 rows; the Stage 1 summary's theme 3 and §4.4 |
+| S1 L4 R14 (Medium) | U68's total excludes later additions | **Confirmed**: the query left out WIPO's families by origin (11,579 rows), ABS Schools (300) and the GII supplements (23), 11,902 in all | The cell prints the reconciliation to 41,230,072 rows; U68 restated, with text and empty rows noted; §4.4 and §4.7 |
+| S1 L4 R28 (Medium) | U63 and U69 not pointed to U120; U120's 11.8 in 2023 not on the page | **Confirmed**: the value is in the data (`GIISUP.2.1.5`) but the query kept the latest year only | U120's cell prints 2023 and 2025; U63 and U69 point to U120, distinguishing the published series' gaps |
+| S1 L5 R02 (Medium) | U22's column count, U23's fifteen, U28's missing fees, the status ending at U104 | **Confirmed**: 79 columns (35 + 26 fee + 4 Reserve Bank + 10 national accounts + 4 PBS); 18 rows in U23's table | U22, U23, U28, §5's introduction, notebook 1's status, §5.11, and the Stage 1 summary (18 series in three places; the fee history marked done) |
+| S1 L5 R13 (Medium) | U27 and U29's leads already settled by U38 and U39 | **Confirmed** | Both linked, with what U38 does not show; §5.11's portfolio transfer reads "what may be one" (U29 says the data do not name it) |
+| S1 L5 R32 (Medium) | §5.11 says cessations "keep rising"; added series little profiled | **In part.** Trade mark cessations were 29,802 (2019), 28,283 (2021), 28,319 (2023), 35,484 (2025). U30's base already reads correctly | U27 and §5.11 restated; a note marks the profiling of state final demand, nominal GDP and the PBS series as incomplete |
+| S1 L6 R02 (High) | U73 omits gross value added, filled for every division and year | **Confirmed** from the overview (`gva_cvm` 100% filled, 19 divisions, FY1990 to FY2026) | A compact profile of value added in the overview cell (manufacturing 14.2% of the divisions' sum in FY1990, 6.0% in FY2026); U73, §6's introduction and §6.7; the scope decision revised for value added. A slip of this pass corrected before publishing: value added was first said to be followed over time in B57, which uses FY2024 and FY2025 only |
+| S1 L6 R03 (High) | U75 and §6.7 treat the services crosswalk as future work; windows differ; totals "agree" | **Confirmed** | U75 links U114 with the matched window (90.63% against 79.67%, FY2016 to FY2025); "nearly equal (2 apart)"; the lead retired |
+| S1 L6 R15 (Medium) | U79's total excludes the cubes; rows are not values | **Confirmed**: 1,409,875 plus 15,282 cube rows is 1,425,157 | The cell prints the reconciliation and the cubes' empty rows; U79 and §6.7 |
+| S1 L7 R21 (High) | U85 lacks U121's coverage note; U80 omits NSRC; §7.9 sheds qualifications | **Confirmed**; U121's "does not change the institutions' order" is untested (23 sampled works) | U85 states the lower bound (about 5.6%, 3.5% to 8.3%) and that the rankings' robustness is not tested; U121's decision says it is an assumption; U80 adds NSRC (2000 to 2015, 82 institutions); §7.9 |
+| S8-S9 R03 (Medium) | §9's pointers obsolete; fees "missing" twice; §8 omits later sources | **Confirmed** | Pointers 1.9, 2.7, 3.8, 4.7, 5.11, 6.7, 7.9; an "added after Stage 2" note with its limits; §8 gains a row of the sources added after Stage 2 |
+| S8-S9 R21 (High) | "Divisions near certain" overstated; the services comparison done | **Confirmed** | §9's U75 row says weights are concentrated (median 0.996, U74), not proven right, with the matched-window comparison; item 7 defines allocated IP per business. The Stage 1 summary's §4.6 and rules likewise |
+| S2 L1 R29 (High) | B11, B12 and §1.9 keep conclusions B55 restricts; B55 "yes"; "B8's reach"; the inventory omits B55 | **Confirmed**; also B19's earlier cohort (FY2003 to FY2011) rests on the older family records | B11's heading, B12, B19 and B55 (its limits added; B8 named correctly) restated; §1.9's rows (B11 not replicated; B12 from FY2010; B55 explains rather than replicates); notebook 2's status lists B47 to B62; §8 and `docs/stage-2-summary.md` |
+| S2 L2 R26 (Medium) | Size and industry said absent though WGEA adds them; B51 too absolute | **Confirmed**: 683 firms with a WGEA report have under 100 employees in their latest one (a new column in U112's table); B20's screen skips the WGEA columns (`screens.yaml`) without saying so | B20, B24, B51, §2.7's gap paragraph and rows; U112's decision |
+| S2 L3 R10 (Medium) | §3.1's 6,406 indicators are a five-source subset | **Confirmed**: the query excludes the ATO (243 indicators) and the Census time series (233) | Named the original five-source screen, its exclusions and why its false discovery family is kept. Also found: §3.7 still gave B28's 24,948 leads, 24,947 since pass 2 |
+| S2 L3 R33 (High) | The places summaries overstate; B58, B59 not reconciled | **In part.** "1.7 to 1.9" is standard patents unadjusted (with remoteness, 1.44 and 1.49); B29's heading claimed the joint reading in SA3s, never fitted; B59's "yes" means the same sign; §8's row stopped at B31 | B29's heading; §3.7's rows; a note that B29 (levels) and B59 (changes) answer different questions; §8's row includes B58 and B59. **Not done:** the business-owner denominator, which is B58's stated measure |
+| S2 L4 R22 (High) | B61 does not replicate B34's gap | **Confirmed**: B34 puts Australia at 104.9% of its prediction in 2016 to 2020 | B61's claim removed; what each analysis measures stated; a rank contrast is not a shortfall |
+| S2 L4 R24 (Medium) | §4.5 strengthens claims; "named most often" with no tally | **Confirmed** | Populations, periods and intervals restored; candidate factors split into measured and proposed; the same "named most often" wording replaced in §1.9, §3.7 and §8 |
+
+### What else changed as a result
+
+- **The Stage 1 summary** (`docs/stage-1-summary.md`) was behind the notebook beyond the audits' scope: its lens
+  table (rows, columns and the three subtotals), §4.1 (rights before U104), §4.3 (firms before the register's ABNs:
+  398,450 ABNs, five schemes, 74.7% private companies, a median age of 13.6) and the index rows; all restated.
+  `docs/eda-plan.md`'s lens table likewise.
+- **No conclusion carried to Stage 3 reverses.** Narrowed: B11 and B12 hold from FY2010; B61 is no longer evidence that
+  Australia under-patents; value added reopens a longer industry comparison for Stage 3.
+- **Outputs added to put a claim on the page:** U120's 2023 value, the inventories' reconciliations, gross value
+  added's profile and the count of WGEA reporters under 100 employees. Notebook 1 re-executed whole; notebook 2's
+  changes are to text only.
+
+### Left for other passes
+
+- **The website,** as after passes 1 and 2.
+- **The other open themes** in `INDEX.md` (first observed filing as entry; survival as value; ownership histories;
+  attorney representation; geographic allocation; WGEA's latest attributes; policy timing; and the rest), and the
+  findings outside any theme.
+
+## Pass 4 (2 November 2026): first observed filing, firms' age, and reproducible builds
+
+**Decision record:** ADR 0039 (`docs/adr/0039-first-observed-filing-and-exact-ages.md`). The owner asked for the next
+theme, looked at "deeply and widely to ensure all errors are expunged" (A20).
+
+### The check made first
+
+The theme "first observed filing treated as true entry" has three findings; four more rest on the same computation
+(firms' age at filing) and were taken with it. Each was checked against `build.py`, the lenses, both notebooks and both
+stage summaries. Then the check went wider: every age and first-filing computation in both notebooks, every claim of
+"entry", "first-time", "lower bound" or "years old" in them and the summaries, and, when one count moved with nothing
+behind it, the reproducibility of the build itself (two full builds compared table by table).
+
+### Findings acted on
+
+| Finding | The audit's claim | Verified | Amendment |
+|---|---|---|---|
+| S1 L0-L1 R31 (High) | U100 "does not fall"; U101's "entry"; U102's lower bounds could be biased either way | **In part.** U100 and U101 confirmed: the filled share falls 92.3% to 90.9% (trade marks) and 92.3% to 89.3% (designs); first observed filings are not entry. **Not confirmed:** U102. IP Australia's counts (D1, `docs/audit-ip-australia.md`) show IP RAPID's unknown-origin designs are mostly Australian, so its known-origin shares are lower bounds, about 2 points low, as the filled share shows | U100's heading quantifies the fall; U101 restated with a check (below); U102's lower-bound reading kept and its evidence named. A slip of this pass corrected before committing: U102 was first reworded to "biased either way", then restored on finding D1 |
+| S1 L2 R50 (High) | U45: first observed filing is not entry; "lower bounds" not assured; the publication mechanism not shown | **Confirmed.** Of each year's first observed linked trade mark filers, 4.32% to 9.1% were already linked to IP another way (an earlier trade mark in IP RAPID's panel or held, a patent or design, or IPLORD's link to FY2020): 852 of 19,730 in FY2026. Filers with no ABN are missed. So the counts are neither upper nor lower bounds | A table in U101's cell (`ae577e36`) shows the overlap each year; U45, U101, the chart's title, axis and caption (`ce3fe734`) say "first observed linked"; U100's "So" bullet says the mechanism is not shown (OQ7) |
+| S2 L2 R17 (High) | B25: first observed filing is not entry or a guaranteed age bound; medians across groups do not show sequencing | **Confirmed, and larger**: 17.07% to 19.57% of first observed filings are dated before the firm's first public registration | B25 rebuilt from dates, with filings before registration reported apart and a within-firm comparison: the trade mark first for 72.86% (71.55% to 74.13%) of 4,550 firms with both |
+| S2 L2 R15 (High) | B25 and B26 filter on `NOT age_truncated`, not first seen from 2001; B26's 4,341 ten-plus patents are impossible under the stated rule | **Confirmed**: `age_truncated` never flags an ASIC-dated company; 51,712 were first seen before 2001. Restricted to firms first seen from 2001, B26's earlier ten-plus band holds 2 patents | The sample is named ("not truncated") and the from-2001 subset shown as a sensitivity check in both; §2.4 and §2.5 say which is which |
+| S2 L2 R16 (High) | `fy - 0.5` is the start of the financial year; negative ages counted in the first year; B26 uses calendar years; the axis is a density | **Confirmed** (financial years are named by their end, `build._fy`) | Ages from dates: the lens gains the three `*_first_date_filled` columns; B26 uses each patent's application date; the axis reads "probability density" |
+| S1 L2 R54 (High) | U43's age needs a reference date and population; undated firms read as not truncated | **Confirmed**: the 32,600 undated firms had `age_truncated` false | The flag is empty when there is no date (`build.firms_sql`, a test); U43 states the date (22 October 2026), the population (430,679 dated ABNs, active or not), what the flag does and does not catch (a new table), and that age usually understates but does not bound a business's start |
+| S8-S9 R15 (High) | §9's firm populations and bounds overstated; 19,730 is first observed, not first ever | **In part** (the entry and bound parts; the IPLORD count belongs to another finding) | §9's row: "first observed linked", with the 4.32% overlap; "lower bounds, if each recorded link is right" |
+
+### Found by the wider check, not in the audits
+
+1. **Undated firms counted as the oldest.** Notebook 2's `AGE` grouping (B22, B23) sent a missing age to "20 years or
+   more". No table moved: every undated firm is inactive (32,348) or not in the ABR (252), and those tables use active
+   ABNs. Fixed: undated firms are their own group. The firms screen did move, through the flag: entity type against
+   truncation 0.441 to 0.452, local government 15.9 to 14.8 times chance (B21).
+2. **Builds that differed from run to run.** Two builds of the same corpus differed in 383,271 values of
+   `region_indicators`, 696 rows of `industries`, 3,190 of `industry_indicators`, 677 of `regions` and 228 of
+   `institutions`, all in the last digits of parallel sums of fractions. B28's lead count moved between 24,947 and
+   24,948 from one build to the next, so pass 2's move of one lead, credited to ADR 0037, cannot be told apart from it.
+   Fixed with exact decimal sums (`build._exact_sum`); two full builds now agree in all eleven lenses. The first fix
+   tried (ordered sums) nearly tripled memory and killed notebook 1's kernel; it was replaced before committing.
+3. **A label that changed between runs:** U119's example cube titles (`any_value`, noted in pass 1); now fixed.
+4. **Stale since earlier passes:** §1.9's U99 row (designs of unknown origin 29,628 to 4,622, against U99's 30,215 to
+   5,539 since pass 2); the Stage 1 summary's rule that firm filing by year stops at FY2024 (revised by U45); the
+   firms lens's column count (54 now).
+5. **B22's age** is on the record at 22 October 2026, not at the time of the claim or contract; now said.
+
+### What else changed as a result
+
+- **B26's conclusion weakens.** The youngest firms' patents moved overseas more in FY2003 to FY2011 (5.79%, 3.98% to
+  8.35%) but not clearly in FY2012 to FY2021 (2.89%, 1.95% to 4.26%, overlapping every band); patents filed before the
+  firm's first registration move most in both periods (7.01%, 7.77%). §2.7, §8 and `docs/stage-2-summary.md` updated.
+- **B25's figures lengthen** (medians 2.61, 5.22 and 5.24 years) and its ordering rests on the within-firm comparison.
+- **Wording.** `GLOSSARY.md` gains "First observed linked filing" and "Reproducible build", and qualifies "Lower bound"
+  and "Left-truncated". The Stage 1 summary's firms section and rules restated.
+- **Tests.** `tests/test_eda.py::test_firms_age_basis_names_the_date_that_set_first_seen` now also checks that
+  undated firms have no flag and that each first filing's date falls in its financial year. Both notebooks re-executed;
+  the IP Australia benchmark is unchanged.
+
+### Left for other passes
+
+- **The website,** as before.
+- **Related findings not acted on:** S1 L2 R51 (linkage shares are of applications, now said in U100, but its party
+  and provisional points are separate), the IPLORD count in S8-S9 R15, and S2 L2 R18 to R20 (recorded ownership, the
+  next theme on the list).
+
+## Pass 5 (2 November 2026): recorded ownership read at two endpoints
+
+**Decision record:** ADR 0040 (`docs/adr/0040-ownership-endpoints-not-transfers.md`). The owner asked for the next
+theme (A21).
+
+### The check made first
+
+The theme "recorded ownership changes read as complete ownership histories" (five findings) was taken with the two
+findings on B26's unit and reach (S2 L2 R18, R20), since they concern the same outcome. Each was checked against the
+lens definitions (`holder_changed`, `assignment_count`, `australian_applicant`, `filer_abn` in `variables.yaml` and
+`build.py`) and both notebooks; then both notebooks and the summaries were swept for "moved", "move overseas",
+"leave", "came the other way", "valued most", "captured abroad", "transfer" and "fill most of the gap".
+
+### Findings acted on
+
+| Finding | The audit's claim | Verified | Amendment |
+|---|---|---|---|
+| S1 L0-L1 R16 (High) | U17 to U19 and U35 read recorded differences as transfers and moves; the pre-FY2003 two-thirds is uncalibrated | **Confirmed**: U18 compares `founding_australian` with `australian_applicant` (two endpoints); `holder_changed` compares party ids; U19's postcode differences cannot tell a new address from a new holder; U35's 64.68% to 74.66% is measured from FY2003 only. Also found: U19's ABN range left out provisionals (1.739%) and its state figures were stale (1.589%, 0.4418% now) | U17 says what "not the filer" can mean; U18 restated in endpoint terms with what it does not show; U19's "moves" become differences and its figures corrected; U35's heading and decision say "incomplete indicator, coverage unknown" |
+| S8-S9 R07 (High) | §9 carries the two-thirds into a decision; Stage 2 item 3 speaks of rights moving overseas | **Confirmed** | §9's U17/U35 row and item 3 restated; the Stage 1 summary's U18 line, rule, Stage 2 list and index rows |
+| S2 L1 R25 (High) | B19 reads endpoints as the export of the most valuable rights | **Confirmed**: grant and reach do not measure what an owner valued | B19 restated in endpoint terms; "valued most" and "captured abroad" withdrawn; reach and grant noted as seen today, not before the holder changed; §1.7's heading; B46's reference to B19 removed |
+| S2 L1 R26 (High) | B19's rates are not the composition of overseas-held patents | **Confirmed**: 539 of 1,219 overseas-held patents of FY2003 to FY2011 are single-office (44.22%) | A composition table in B19's cell (`5ef8906d`), with reach unknown counted (1,626 and 966 patents) |
+| S2 L2 R18 (High) | B26 counts patents, not firms; intervals ignore clustering; concentration unshown | **Confirmed**: by firm, the youngest 4.34% against 3.63% (FY2003 to FY2011), 2.96% against 3.33% (FY2012 to FY2021); one firm holds 44.26% of the 5-to-10-year band's overseas-held patents in the earlier period | B26's cell (`18df0008`) adds distinct firms, the share with a patent held only overseas and the largest firm's share in each band; the text reads the firm counts as the safer ones |
+| S2 L2 R19 (High) | B26's endpoints are over-interpreted; the ABN join's party alignment is unshown | **Confirmed**: 1,194 of 26,204 joined patents (4.56%) are jointly founded and in 171 the first founding applicant is not Australian (now printed) | Endpoint wording; sale of young firms and founders moving abroad kept as hypotheses; the join named |
+| S2 L2 R20 (High) | "Reach does not explain the gap" is unsupported; unknown reach hidden; B55 not carried | **Confirmed** | The claim withdrawn; reach unknown shown per band (24 to 272 patents); B55's caveat carried; §2.7's and §8's rows |
+
+### What else changed as a result
+
+- **B26's lead weakens further**: counted by firm, the youngest firms show no clear difference in either period. The
+  Stage 2 summary's "value made here is often owned or used elsewhere" line is restated in endpoint terms.
+- **No lens changes.** Notebook 2 re-executed; notebook 1's changes are text only.
+
+### Left for other passes
+
+- **The website,** as before.
+- **Overlapping themes not acted on here:** US citations read as foreign invention or use (S1 L7 R13, S8-S9 R23),
+  where B46 also sits; survival read as renewal or value (the next on the list).
