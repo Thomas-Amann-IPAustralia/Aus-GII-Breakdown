@@ -160,8 +160,9 @@ TIMELINE_LAG = {
 
 # The events attachment (B5, ADR 0015): each right's milestones, from IP RAPID's events, as (column, condition). Each
 # is the first such event the register still holds as standing (a lapse later reversed, or an acceptance withdrawn, is
-# not standing), dated from 1904 to the corpus date and not before the right's earliest filing (171 events are, such
-# as 26 trade mark oppositions dated 1909); 1 January 1970 is a placeholder (3,154 events) and is left out.
+# not standing), dated from 1904 to the corpus date and not before the right's earliest filing (174 events are, such
+# as 26 trade mark oppositions dated 1909 and 3 trade mark expedite requests); 1 January 1970 is a placeholder (3,154
+# events) and is left out.
 # A grant is not here: the grant event's date is `registered_date` for every granted patent.
 EXPEDITED = (
     "(ip_right_type = 'patent' AND event_type LIKE 'exam_expedited%') OR event_category = 'exam_request_expedite'"

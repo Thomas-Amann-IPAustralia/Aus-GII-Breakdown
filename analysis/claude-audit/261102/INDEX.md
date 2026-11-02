@@ -20,6 +20,12 @@ The notebook's SHA-256 below is the one this batch read; it has changed since.
 (S2 L5 R01, R13; S2 L6 R01, R06; S2 S8 R01, R06, with R02 and R04) and policy and fees (S2 L5 R02, R03, R07). All
 hold. Recorded in `analysis/GPT-audit/261030/AMENDMENTS.md` (pass 7).
 
+**Acted on (2 November 2026, pass 8, ADR 0043; the owner's request for a final review of both stages):** every finding
+still open, each checked against the notebook first; all hold, and all are acted on in wording, with the new methods
+some propose (block bootstraps, 1,000 resamples, B42 and B60 through the crosswalk with services, heatmap legends,
+fixed-age citation windows, an exposure for B62) listed for Stage 3 in `docs/review-stages-1-and-2.md`. Recorded in
+`analysis/GPT-audit/261030/AMENDMENTS.md` (pass 8).
+
 ## What this audit is, and is not
 
 - **A recheck and a continuation.** The ChatGPT batch (`analysis/GPT-audit/261030/`) audited §1 to §4 of this notebook
