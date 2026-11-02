@@ -17,9 +17,10 @@ The evidence atlas (`evidence/`) has Stage 2's pages (ADR 0035, 2026-10-29); the
   and designs are renewed far less (B6, B10). The direction of cause is open: an abandoned application may never
   appoint an attorney.
 - **Value made here is often owned or used elsewhere.** One patent in seven made in Australia is filed from overseas
-  (B16); the Australian patents that move overseas are the wide, granted ones (B19); young firms' moved more in FY2003 to
-  FY2011 but not clearly since, and patents filed before the firm's first registration move most (B26, restated
-  2 November 2026, ADR 0039); 3% to 5% of
+  (B16); Australian-founded patents now held only overseas are more often the wide and granted ones (a higher rate, not
+  most of them; B19), with no clear difference by the filing firm's age, though those filed before the firm's first
+  registration are the most often (B26). These compare two endpoints, not transfer histories, and say nothing of
+  where value goes (restated 2 November 2026); 3% to 5% of
   the US patents citing Australian research have Australian links (B46).
 - **Australian organisations' patents are narrower but kept longer** than overseas organisations', within fields too;
   their lower citations are mostly the narrower reach (B8, B11, B12). Reach and citations hold for FY2010 to FY2019;
@@ -61,7 +62,7 @@ The evidence atlas (`evidence/`) has Stage 2's pages (ADR 0035, 2026-10-29); the
 | Lens | Observations | Distinct leads | What stands out |
 |---|---|---|---|
 | `rights` | B1 to B19 | 223 over six types | Representation and outcomes; lifetimes and reach by origin; expedite as composition; inventions owned abroad; gender by field |
-| `firms` | B20 to B26 | 33 | Who files among R&D claimants and suppliers; claimants with no filing linked; contracts; age at first observed linked filing (one in five dated before the firm's first registration); firm age and patents moving abroad |
+| `firms` | B20 to B26 | 33 | Who files among R&D claimants and suppliers; claimants with no filing linked; contracts; age at first observed linked filing (one in five dated before the firm's first registration); firm age and patents with no Australian holder now |
 | `regions` | B27 to B31 | 128 (79 on IP); 24,947 indicator pairs | One gradient of advantage, education and business density; negative binomial ratios; not one firm's; business mix |
 | `national` | B32 to B35 | 188 (134 on IP); 225 attachments | Development gradient; Australia's OECD ranks; R&D and patenting in levels and changes |
 | `timeline` | B36 to B39 | 1 | No common cycle; policy breaks against placebos; provisional follow-up; Australia-only series give context only |
@@ -107,9 +108,9 @@ as a driver.
 ## 8. Index of observations
 
 B1 to B4 the rights screen; B5 to B7 filing alone and grant; B8 to B10 lifetimes; B11, B12 reach and citations; B13,
-B14 expedited examination; B15, B16 routes and invention; B17, B18 gender; B19 rights moving overseas. B20, B21 the
-firms screen; B22 who files; B23 R&D and claimants with no filing linked; B24 contracts and income; B25 age at first filing; B26 young
-firms' patents abroad. B27 the places screen; B28 attached indicators; B29 advantage and remoteness; B30 the largest
+B14 expedited examination; B15, B16 routes and invention; B17, B18 gender; B19 Australian-founded rights now held only overseas. B20, B21 the
+firms screen; B22 who files; B23 R&D and claimants with no filing linked; B24 contracts and income; B25 age at first filing; B26 firm age and
+patents held only overseas. B27 the places screen; B28 attached indicators; B29 advantage and remoteness; B30 the largest
 filer; B31 business mix. B32 the countries screen; B33 Australia among OECD members; B34 R&D and patenting; B35
 attachments. B36 the timeline screen; B37 policy breaks; B38 provisional follow-up; B39 Australian against overseas,
 and Australia-only series. B40 the industries screen; B41 IP per business; B42 innovation and IP; B43 attachments. B44

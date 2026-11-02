@@ -256,3 +256,40 @@ behind it, the reproducibility of the build itself (two full builds compared tab
 - **Related findings not acted on:** S1 L2 R51 (linkage shares are of applications, now said in U100, but its party
   and provisional points are separate), the IPLORD count in S8-S9 R15, and S2 L2 R18 to R20 (recorded ownership, the
   next theme on the list).
+
+## Pass 5 (2 November 2026): recorded ownership read at two endpoints
+
+**Decision record:** ADR 0040 (`docs/adr/0040-ownership-endpoints-not-transfers.md`). The owner asked for the next
+theme (A21).
+
+### The check made first
+
+The theme "recorded ownership changes read as complete ownership histories" (five findings) was taken with the two
+findings on B26's unit and reach (S2 L2 R18, R20), since they concern the same outcome. Each was checked against the
+lens definitions (`holder_changed`, `assignment_count`, `australian_applicant`, `filer_abn` in `variables.yaml` and
+`build.py`) and both notebooks; then both notebooks and the summaries were swept for "moved", "move overseas",
+"leave", "came the other way", "valued most", "captured abroad", "transfer" and "fill most of the gap".
+
+### Findings acted on
+
+| Finding | The audit's claim | Verified | Amendment |
+|---|---|---|---|
+| S1 L0-L1 R16 (High) | U17 to U19 and U35 read recorded differences as transfers and moves; the pre-FY2003 two-thirds is uncalibrated | **Confirmed**: U18 compares `founding_australian` with `australian_applicant` (two endpoints); `holder_changed` compares party ids; U19's postcode differences cannot tell a new address from a new holder; U35's 64.68% to 74.66% is measured from FY2003 only. Also found: U19's ABN range left out provisionals (1.739%) and its state figures were stale (1.589%, 0.4418% now) | U17 says what "not the filer" can mean; U18 restated in endpoint terms with what it does not show; U19's "moves" become differences and its figures corrected; U35's heading and decision say "incomplete indicator, coverage unknown" |
+| S8-S9 R07 (High) | §9 carries the two-thirds into a decision; Stage 2 item 3 speaks of rights moving overseas | **Confirmed** | §9's U17/U35 row and item 3 restated; the Stage 1 summary's U18 line, rule, Stage 2 list and index rows |
+| S2 L1 R25 (High) | B19 reads endpoints as the export of the most valuable rights | **Confirmed**: grant and reach do not measure what an owner valued | B19 restated in endpoint terms; "valued most" and "captured abroad" withdrawn; reach and grant noted as seen today, not before the holder changed; §1.7's heading; B46's reference to B19 removed |
+| S2 L1 R26 (High) | B19's rates are not the composition of overseas-held patents | **Confirmed**: 539 of 1,219 overseas-held patents of FY2003 to FY2011 are single-office (44.22%) | A composition table in B19's cell (`5ef8906d`), with reach unknown counted (1,626 and 966 patents) |
+| S2 L2 R18 (High) | B26 counts patents, not firms; intervals ignore clustering; concentration unshown | **Confirmed**: by firm, the youngest 4.34% against 3.63% (FY2003 to FY2011), 2.96% against 3.33% (FY2012 to FY2021); one firm holds 44.26% of the 5-to-10-year band's overseas-held patents in the earlier period | B26's cell (`18df0008`) adds distinct firms, the share with a patent held only overseas and the largest firm's share in each band; the text reads the firm counts as the safer ones |
+| S2 L2 R19 (High) | B26's endpoints are over-interpreted; the ABN join's party alignment is unshown | **Confirmed**: 1,194 of 26,204 joined patents (4.56%) are jointly founded and in 171 the first founding applicant is not Australian (now printed) | Endpoint wording; sale of young firms and founders moving abroad kept as hypotheses; the join named |
+| S2 L2 R20 (High) | "Reach does not explain the gap" is unsupported; unknown reach hidden; B55 not carried | **Confirmed** | The claim withdrawn; reach unknown shown per band (24 to 272 patents); B55's caveat carried; §2.7's and §8's rows |
+
+### What else changed as a result
+
+- **B26's lead weakens further**: counted by firm, the youngest firms show no clear difference in either period. The
+  Stage 2 summary's "value made here is often owned or used elsewhere" line is restated in endpoint terms.
+- **No lens changes.** Notebook 2 re-executed; notebook 1's changes are text only.
+
+### Left for other passes
+
+- **The website,** as before.
+- **Overlapping themes not acted on here:** US citations read as foreign invention or use (S1 L7 R13, S8-S9 R23),
+  where B46 also sits; survival read as renewal or value (the next on the list).

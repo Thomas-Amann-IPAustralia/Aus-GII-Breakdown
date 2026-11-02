@@ -249,8 +249,9 @@ Every patent, trade mark, design and plant breeder's right in IP RAPID, 1904 to 
 - **Where.** New South Wales 37.8% and Victoria 23.8% of Australian standard patents (the filer's state); usable
   postcodes for 99.27% of Australian filers (U15, U16).
 - **Filers, holders and representation (the parties).** The holder is not the filer for 22.0% of standard patents
-  filed in the 2000s, but for patents filed before FY2003 the history cannot be seen (U17). More Australian-filed rights
-  moved overseas than came the other way (standard patents 2,036 against 804, U18). Overseas filers almost always use
+  filed in the 2000s, but for patents filed before FY2003 the history cannot be seen (U17). More Australian-founded rights
+  now have no Australian holder than overseas-founded ones have an Australian one (standard patents 2,036 against
+  804, U18): two endpoints, not a transfer history. Overseas filers almost always use
   an attorney; Australian individuals often file alone (U20). Five patent attorney firms handle 63.96% of standard
   patents; trade mark representation is spread (top five 17.51%, U21).
 - **Milestones and lifetimes (the events).** Each milestone is recorded from a different date, so shares compare only
@@ -464,7 +465,8 @@ The decisions Stage 1 made about how each variable may be used.
 - Grant rates and times only for decided years: to FY2021 for standard patents, FY2024 for trade marks (U10, U12).
 - "Where and who files" uses the founding applicant; "who holds" the current applicant (U19).
 - Representation uses agents of five or more applicants, with bounds for trade marks (U20).
-- For patents filed before FY2003, `assignment_count` stands in for a change of owner (U35).
+- For patents filed before FY2003, `assignment_count` is an incomplete indicator of a change of owner, its coverage
+  unknown (from FY2003, about two-thirds of recorded holder changes have one) (U35).
 - Lifetimes come from survival curves with unfinished rights kept; trade marks and designs are observed to 31 March
   2026 (U31, U36).
 - Trade mark expedites are compared across November 2018 as requests (IP RAPID's events), and priority-claiming marks
@@ -524,7 +526,7 @@ the number of pairs tested, and a second period or sample before it counts as a 
 | Years in force, family reach and citations by origin, applicant and technology, within cohorts | U36, U93, U94 | Q1 |
 | The route into Australia by origin and applicant, and where inventions are made against who files them | U90, U96 | Q1, Q2 |
 | Women's estimated share among inventors in Australia, by field and filer | U98 | Q2 |
-| Rights moving overseas by technology, firm and age | U18 | Q1, Q2 |
+| Australian-founded rights with no Australian holder now, by technology, firm and age | U18 | Q1, Q2 |
 | Firms' IP against their R&D, contracts, age and entity group | U41 to U46 | Q2, Q3 |
 | R&D claimants with no filing linked, by place and industry | U54 | Q4 |
 | Area filing rates against advantage, remoteness, the Census and business mix | U51, U53 | Q2 |
@@ -718,7 +720,7 @@ All descriptive.
 | U15 | rights | New South Wales 37.8%, Victoria 23.8% of Australian standard patents |
 | U16 | rights | The state repair; postcodes usable for 99.3% |
 | U17 | rights | The holder is often not the filer; patents' history only from FY2003 |
-| U18 | rights | More Australian-filed rights moved overseas than came the other way |
+| U18 | rights | More Australian-founded rights now have no Australian holder than the reverse (endpoints, not transfers) |
 | U19 | rights | The filer's postcode differs from the holder's for about a tenth of rights |
 | U20 | rights | Overseas filers almost always use an attorney; Australian individuals often file alone |
 | U21 | rights | Patent attorneys concentrated (top five 63.96%); trade mark representation not |
@@ -735,7 +737,7 @@ All descriptive.
 | U32 | rights (events) | Each milestone is recorded from a different date |
 | U33 | rights (events) | Patent examination lengthened to FY2006 and shortened since |
 | U34 | rights (events) | More patent applicants ask for speed; trade marks' expedite events moved record in November 2018, requests did not fall (U103) |
-| U35 | rights (events) | One standard patent in seven and one trade mark in five is assigned |
+| U35 | rights (events) | One standard patent in seven and one trade mark in five has a recorded assignment |
 | U36 | rights (events) | Patents kept longer; about half of trade marks renewed at ten years |
 | U37 | rights (events) | Extensions of term are rare: 1,450 |
 | U38 | rights (events) | The 2002 trade mark trough explained |

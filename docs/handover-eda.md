@@ -29,7 +29,20 @@ notebook page (reworded); the rights lens page still gave the count before the d
 at phone width). Tests: `tests/test_atlas.py` runs again (6 tests). **Next, the owner's call:** publish (merge to the
 branch Pages serves) and Stage 3 (OQ19); B10's harvest is still to finish.
 
-**Status (2026-11-02, latest): audit pass 4, first observed filing, firms' age and reproducible builds** (A20, ADR
+**Status (2026-11-02, latest): audit pass 5, recorded ownership read at two endpoints** (A21, ADR 0040,
+`analysis/GPT-audit/261030/AMENDMENTS.md`). The theme "recorded ownership changes read as complete ownership
+histories" (S1 L0-L1 R16, S8-S9 R07, S2 L1 R25, R26, S2 L2 R19) was taken with S2 L2 R18 and R20 (B26's unit and
+reach): seven findings, all holding. Ownership is now read at two endpoints (an Australian founding applicant, no
+Australian holder now), never as moves, transfers or exported value (U17 to U19, U35, B19, B26, B46, §1.7, §2.5, both
+summaries). Pre-FY2003 assignments are an incomplete indicator of unknown coverage, not two-thirds. B19 shows the
+composition of overseas-held patents beside the rates (44.22% single-office in FY2003 to FY2011), with unknown reach
+counted; B26 shows firm-level counts (the youngest firms 4.34% against 3.63%, then 2.96% against 3.33%), each band's
+largest firm (up to 44.26% of a band) and the ABN join's party alignment (4.56% jointly founded). B26's lead weakens to
+no clear difference by firm. U19's ABN range (provisionals 1.739% left out) and state figures were stale; fixed. No
+lens changes; notebook 2 re-executed. **Next, the owner's call:** the next theme (survival read as renewal or value:
+S1 L0-L1 R20, R21, S8-S9 R10, S2 L1 R11, R12), the web pass, OQ19 (Stage 3).
+
+**Status (2026-11-02): audit pass 4, first observed filing, firms' age and reproducible builds** (A20, ADR
 0039, `analysis/GPT-audit/261030/AMENDMENTS.md`). The owner asked for the next audit theme, looked at deeply and
 widely. The theme (first observed filing read as entry) was taken with the four findings on the same age computation:
 seven findings, five holding in full and two in part. One part is not confirmed: IP RAPID's known-origin design
