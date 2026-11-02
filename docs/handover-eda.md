@@ -29,7 +29,29 @@ notebook page (reworded); the rights lens page still gave the count before the d
 at phone width). Tests: `tests/test_atlas.py` runs again (6 tests). **Next, the owner's call:** publish (merge to the
 branch Pages serves) and Stage 3 (OQ19); B10's harvest is still to finish.
 
-**Status (2026-11-02, latest): audit pass 5, recorded ownership read at two endpoints** (A21, ADR 0040,
+**Status (2026-11-02, latest): Stage 2 audited in full** (`analysis/claude-audit/261102/INDEX.md`). The owner asked for
+a new audit of all of Stage 2: review ChatGPT's Stage 2 audits, written before passes 1 to 5, and continue to the end,
+in the same format, leaving the website for another pass. Eight files, one per notebook section, and an index. Of
+ChatGPT's 115 Stage 2 findings (§1 to §4), the passes resolved 20, 19 hold in part and 76 hold; none was wrong. The
+audit read the helpers and definitions as well as the notebook (nothing re-run) and adds 52 findings (26 High): §5 (14),
+§6 (9), §7 (6), §8 with the method and `docs/stage-2-summary.md` (12), and 11 across §1 to §4. The main ones: "the
+halves" are drawn by two different hash functions (DuckDB's in the screens, pandas' in `split_half`), the cause of the
+places lens's unreconciled halves (S2 S8 R07); later additions not carried back in sections no earlier audit covered
+(B37 says the fee history is not in the data; §6 says the crosswalk with services is still to come; §8 says every
+companion table was screened); breaks the law makes certain counted as natural experiments, and B47's counts mixing
+falls with rises (S2 L5 R02, R03); B49's heading contradicting its bullet (three renewal changes beyond every placebo,
+not one); B39's own table contradicting it (overseas applicants' trade marks move with Australians', 0.785); B38's
+follow-up measure breaking in August 2021, when innovation patents closed; counts allocated by the crosswalk read as
+divisions' filing; B62's six ratios on one denominator; and the summary document's "Value made here is often owned or
+used elsewhere", which its own body contradicts. For the survival theme, next on the list, the index gathers 16 findings
+in one table: the screen treats unfinished lifetimes as finished (B4), "in force after N years" means different things
+for patents and trade marks, survival is read as renewal and value against U36 and A1, and B10 compares renewal by a
+representation measure that renewal itself can create. OQ24 asks the owner whether B8 stays a Stage 3 signal (A1's
+"alongside other signals"). Pointers added in `CLAUDE.md`, `README.md` and the earlier batch's `INDEX.md`. No notebook,
+code or website changes. **Next, the owner's call:** the survival pass from the index's table (and OQ24), the hash fix
+(S2 S8 R07), the web pass, OQ19 (Stage 3).
+
+**Status (2026-11-02): audit pass 5, recorded ownership read at two endpoints** (A21, ADR 0040,
 `analysis/GPT-audit/261030/AMENDMENTS.md`). The theme "recorded ownership changes read as complete ownership
 histories" (S1 L0-L1 R16, S8-S9 R07, S2 L1 R25, R26, S2 L2 R19) was taken with S2 L2 R18 and R20 (B26's unit and
 reach): seven findings, all holding. Ownership is now read at two endpoints (an Australian founding applicant, no
