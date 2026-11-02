@@ -29,7 +29,26 @@ notebook page (reworded); the rights lens page still gave the count before the d
 at phone width). Tests: `tests/test_atlas.py` runs again (6 tests). **Next, the owner's call:** publish (merge to the
 branch Pages serves) and Stage 3 (OQ19); B10's harvest is still to finish.
 
-**Status (2026-11-01, latest): audit pass 1, the firm filing population, is corrected in the back end** (A17, ADR
+**Status (2026-11-02, latest): audit pass 2, origin is the filer's, is corrected in the back end** (A18, ADR 0037,
+`analysis/GPT-audit/261030/AMENDMENTS.md`). ADR 0013's rule (who files uses the founding applicants) and ADR 0024's
+finding (a founding applicant in Australia is IP Australia's resident) now hold everywhere: the `timeline` lens's
+origin series (`ORIGINS`) and the `industries` lens's Australian counts use `founding_australian`, not the current
+holder's `australian_applicant`. `rights` gains `filer_group` (origin and type from one party: the first founding
+applicant in Australia, else the first with a known country; empty when origin is unknown) and
+`founding_australian_filled` (the register's fill only while a right has not changed hands); 88 columns. `regions`
+counts organisations' filings by the party that gives the postcode. Notebook 1's filer claims (U7, U8, U13, U15,
+U16, U20, U67, U90 to U94, U98 to U102, U105 to U107, U115, the timeline's U22 to U29 and the industries' U76, U114)
+and notebook 2's (`FILER` from `filer_group`: B5 to B19, B55; places B27, B28, B31, B58; timeline B36 to B39, B47 to
+B49, B52, B56; industries B40, B41) re-executed and restated, each with the earlier figure where a reader might have
+used it. The changes are small (standard patents' Australian share by up to 0.7 points a year), but two conclusions
+moved: B47's fee changes show 3 rushes and 2 steps beyond placebos (not 4 and 3; the Designs Act's overseas rush is
+now ordinary), and U7 no longer gives trade marks' FY1995 share. U67 now shows both IP Australia's definition (median
+1.011 of the World Bank's residents) and the first founding applicant's (1.001, nearer WIPO's first-named applicant).
+The benchmark against IP Australia is unchanged. **Not done:** the website (its tests stop at the numbers rule, as
+after pass 1); `founder_abn` keeps its own selection rule (ADR 0016). **Next, the owner's call:** the sweep of later
+additions not carried back, the web pass, OQ19 (Stage 3).
+
+**Status (2026-11-01): audit pass 1, the firm filing population, is corrected in the back end** (A17, ADR
 0036, `analysis/GPT-audit/261030/AMENDMENTS.md`). The owner asked for the most urgent cross-cutting issue in the
 audits, verified before acting. Of the recurring themes, the one that held and moved numbers was "has filed IP": the
 `firms` lens had three definitions, and the `regions` lens counted firms from IP RAPID's own applicant panel, which

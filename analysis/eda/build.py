@@ -48,12 +48,14 @@ TIMELINE_START, TIMELINE_END = (
 # category (dated on the day records moved between systems, such as 10 November 2018 for trade marks; at least 97% of
 # the rights each covers also have the same event with its real date).
 # Origin has three values (ADR 0009): a right with no applicant country counts as "origin unknown", never as overseas.
+# It is the filer's (ADR 0037): a founding applicant in Australia (`founding_australian`, IP Australia's definition of a
+# resident application, ADR 0024), not the current holder.
 # Outcomes are counts of events, each counted once: an event IP RAPID records twice for a right, with the same type and
 # date, counts once (ADR 0010).
 ORIGINS = [
-    ("au", "australian_applicant"),
-    ("overseas", "NOT australian_applicant"),
-    ("origin_unknown", "australian_applicant IS NULL"),
+    ("au", "founding_australian"),
+    ("overseas", "NOT founding_australian"),
+    ("origin_unknown", "founding_australian IS NULL"),
 ]
 TIMELINE_APPLICATIONS = [
     *[(f"patents_standard_{o}", f"patent_type = 'standard' AND {cond}") for o, cond in ORIGINS],
@@ -247,8 +249,14 @@ def design_shells_sql() -> str:
 def rights_sql() -> str:
     """One row per right. Origin comes from every current applicant (ADR 0009): Australian if any is in Australia,
     overseas if at least one has a known country and none is in Australia, else unknown (NULL). IP RAPID's own
-    `any_applicant_in_australia` turns unknown into false, so it is not used. IP RAPID publishes no agents for
-    provisional applications, so `has_agent` is empty (unknown) for them rather than false (ADR 0010).
+    `any_applicant_in_australia` turns unknown into false, so it is not used. That is the current holder's origin
+    (`australian_applicant`). Who files, and from where, is the founding applicants' (ADR 0013, 0037):
+    `founding_australian` is IP Australia's definition of a resident application (ADR 0024), and the `timeline` and
+    `industries` lenses take their Australian and overseas counts from it. `filer_group` gives origin and type from one
+    party (the first founding applicant in Australia, else the first with a known country), and
+    `founding_australian_filled` fills the filer's origin from the register while the right has not changed hands. IP
+    RAPID publishes no agents for provisional applications, so `has_agent` is empty (unknown) for them rather than
+    false (ADR 0010).
 
     Repairs from the Stage 1 section (ADR 0012): IP RAPID's "agent" is the address for service, which is often the
     applicant itself, so `has_agent` counts only an agent who is not one of the right's applicants or owners (by
@@ -369,6 +377,10 @@ def rights_sql() -> str:
         SELECT ip_right_type, application_number,
                count(*) AS founder_count,
                arg_min_null(party_type, (since, party_id)) AS founder_type,
+               -- the type of the party that gives the origin (ADR 0037): the first founder in Australia, else the
+               -- first with a known country
+               arg_min_null(party_type, (since, party_id)) FILTER (country_code = 'au') AS au_founder_type,
+               arg_min_null(party_type, (since, party_id)) FILTER (country_code IS NOT NULL) AS known_founder_type,
                arg_min_null(country_code, (since, party_id)) AS founder_country,
                CASE WHEN bool_or(country_code = 'au') THEN true
                     WHEN bool_or(country_code IS NOT NULL) THEN false END AS founding_australian,
@@ -509,6 +521,8 @@ def rights_sql() -> str:
         f.founder_type,
         f.founder_country,
         f.founding_australian,
+        CASE WHEN f.founding_australian THEN 'australian_' || f.au_founder_type
+             WHEN NOT f.founding_australian THEN 'overseas_' || f.known_founder_type END AS filer_group,
         f.founder_postcode,
         coalesce(
             CASE WHEN f.founder_state IN ('nsw', 'vic', 'qld', 'sa', 'wa', 'tas', 'nt', 'act') THEN f.founder_state END,
@@ -528,6 +542,12 @@ def rights_sql() -> str:
         reg.owner_country AS register_country,
         CASE WHEN a.applicants_au > 0 THEN true WHEN a.applicants_overseas > 0 THEN false
              WHEN reg.owner_country IS NOT NULL THEN reg.any_owner_in_australia END AS australian_applicant_filled,
+        -- the filer's origin, filled from the register's owner only while the right has not changed hands, as for
+        -- filer_abn (ADR 0029, 0037)
+        CASE WHEN f.founding_australian IS NOT NULL THEN f.founding_australian
+             WHEN reg.owner_country IS NOT NULL
+                  AND NOT coalesce(len(f.ids) > 0 AND len(h.ids) > 0 AND f.ids <> h.ids, false)
+             THEN reg.any_owner_in_australia END AS founding_australian_filled,
         CASE WHEN r.ip_right_type = 'trade_mark' AND reg.found THEN reg.expedite_events IS NOT NULL END
             AS register_expedited,
         reg.expedite_date AS register_expedite_date,
@@ -825,7 +845,9 @@ def regions_sql() -> str:
         for i in ("IRSAD", "IRSD", "IER", "IEO")
         for m, n in (("SCORE", "score"), ("RWAD", "decile"))
     )
-    by_org = " AND founder_type = 'organisation'"
+    # organisations: the type of the same party that gives the postcode, the first founding applicant in Australia
+    # (ADR 0037)
+    by_org = " AND filer_group = 'australian_organisation'"
     counts = ",\n               ".join(
         [
             "count(*) FILTER (patent_type = 'standard') AS patents_standard",
@@ -1662,13 +1684,13 @@ def industries_sql() -> str:
         FROM divs d CROSS JOIN (SELECT unnest(range({lo}, {hi + 1})) AS fy) f
     ),
     r AS (
-        SELECT ip_right_type, application_number, patent_type, australian_applicant, filing_fy
+        SELECT ip_right_type, application_number, patent_type, founding_australian, filing_fy
         FROM {lens_table("rights")} WHERE filing_fy BETWEEN {lo} AND {hi}
     ),
     pat AS (
         SELECT p.division, r.filing_fy AS fy,
                sum(p.share) FILTER (r.patent_type = 'standard') AS patents_standard,
-               sum(p.share) FILTER (r.patent_type = 'standard' AND r.australian_applicant) AS patents_standard_au,
+               sum(p.share) FILTER (r.patent_type = 'standard' AND r.founding_australian) AS patents_standard_au,
                sum(p.share) FILTER (r.patent_type = 'second_tier') AS patents_second_tier
         FROM ip_pat p JOIN r ON r.ip_right_type = 'patent' AND r.application_number = p.application_number
         GROUP BY 1, 2
@@ -1676,14 +1698,14 @@ def industries_sql() -> str:
     pat_svc AS (
         SELECT p.division, r.filing_fy AS fy,
                sum(p.share) FILTER (r.patent_type = 'standard') AS patents_standard_with_services,
-               sum(p.share) FILTER (r.patent_type = 'standard' AND r.australian_applicant)
+               sum(p.share) FILTER (r.patent_type = 'standard' AND r.founding_australian)
                    AS patents_standard_au_with_services
         FROM ip_pat_svc p JOIN r ON r.ip_right_type = 'patent' AND r.application_number = p.application_number
         GROUP BY 1, 2
     ),
     tm AS (
         SELECT t.division, r.filing_fy AS fy, sum(t.share) AS trade_marks,
-               sum(t.share) FILTER (r.australian_applicant) AS trade_marks_au
+               sum(t.share) FILTER (r.founding_australian) AS trade_marks_au
         FROM ip_tm t JOIN r ON r.ip_right_type = 'trade_mark' AND r.application_number = t.application_number
         GROUP BY 1, 2
     ),
@@ -1855,7 +1877,7 @@ def industry_indicators_sql() -> str:
                    AND n.division IN (SELECT division FROM divs))
     ),
     r AS (
-        SELECT ip_right_type, application_number, patent_type, australian_applicant, filing_fy
+        SELECT ip_right_type, application_number, patent_type, founding_australian, filing_fy
         FROM {lens_table("rights")} WHERE filing_fy BETWEEN {INDUSTRIES_FY[0]} AND {INDUSTRIES_FY[1]}
     ),
     ip_sub AS (  -- the core lens's IP counts by subdivision: the detail within a division (ADR 0020)

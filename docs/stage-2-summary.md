@@ -57,7 +57,7 @@ The evidence atlas (`evidence/`) has Stage 2's pages (ADR 0035, 2026-10-29); the
 |---|---|---|---|
 | `rights` | B1 to B19 | 223 over six types | Representation and outcomes; lifetimes and reach by origin; expedite as composition; inventions owned abroad; gender by field |
 | `firms` | B20 to B26 | 33 | Who files among R&D claimants and suppliers; claimants with no filing linked; contracts; age at first filing; young firms' patents moving abroad |
-| `regions` | B27 to B31 | 128 (79 on IP); 24,948 indicator pairs | One gradient of advantage, education and business density; negative binomial ratios; not one firm's; business mix |
+| `regions` | B27 to B31 | 128 (79 on IP); 24,947 indicator pairs | One gradient of advantage, education and business density; negative binomial ratios; not one firm's; business mix |
 | `national` | B32 to B35 | 188 (134 on IP); 225 attachments | Development gradient; Australia's OECD ranks; R&D and patenting in levels and changes |
 | `timeline` | B36 to B39 | 1 | No common cycle; policy breaks against placebos; provisional follow-up; Australia-only series give context only |
 | `industries` | B40 to B43 | 4 | Trade marks follow business R&D; patents in 8 divisions only; survey innovation is not IP |
@@ -116,9 +116,9 @@ the NSRC.
 ## 9. Data gaps filled after Stage 2 (2026-10-28, A15)
 
 - **Fees (B47 to B49; ADR 0031).** Changes in the fees to obtain a right rarely moved filing beyond placebo months:
-  of 34 pairs after changes of 10% or more, 4 rushes and 3 steps beyond 95% of placebos, about what chance gives;
+  of 34 pairs after changes of 10% or more, 3 rushes and 2 steps beyond 95% of placebos, about what chance gives;
   the clear breaks are the 1995 and 2003 Acts. Across the larger changes, bigger rises go with smaller steps (rho
-  -0.306, interval -0.646 to 0.080). Patent cessations rose beyond every placebo month after the September 2002
+  -0.307, interval -0.639 to 0.070). Patent cessations rose beyond every placebo month after the September 2002
   renewal rise (0.353 in logs); no other renewal change, including October 2020's 42.82%, did. Carried to Stage 3: the
   sharper test is each right's renewal at the anniversary a fee changed.
 - **Size and industry (B50, B51; ADR 0032).** Among employers of 100 or more, the largest are 22 points (14.6 to
@@ -129,9 +129,9 @@ the NSRC.
 - **The crosswalk with services (B53, B54).** Patents per business follow business R&D per business across divisions
   (0.739, interval 0.38 to 0.89; 0.465 without services); 16 screen leads against 8. Stage 3 reports both crosswalks.
 - **B11 again (B55).** Most of the fall in Australian organisations' "Australia only" patents is a gap in older
-  records: through the PCT, 63.43% to 11.53% between decades (a fall of 51.9 points, 50.6 to 53.1), while WIPO's
+  records: through the PCT, 63.22% to 11.42% between decades (a fall of 51.8 points, 50.5 to 53.0), while WIPO's
   share of families filed abroad held at about 64%. Family measures for Australian applicants from FY2010 only.
-- **The economy (B56, B57).** Real GDP's growth goes with overseas applicants' patenting (0.159 to 2008, 0.373
+- **The economy (B56, B57).** Real GDP's growth goes with overseas applicants' patenting (0.158 to 2008, 0.38
   after), not with Australians'; the states' demand tracks neither. Across divisions, value added per business goes
   with trade marks per business (0.591; 0.572) and business R&D (0.693; 0.677), with patents only through the
   crosswalk with services (0.581).

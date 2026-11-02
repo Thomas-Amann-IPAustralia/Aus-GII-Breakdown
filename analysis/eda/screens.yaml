@@ -50,6 +50,7 @@ rights:
     founder_type: category
     founder_country: category
     founding_australian: category
+    filer_group: {skip: "made from founding_australian and the founders' types (screened here); the planned pairs' filer (1.1 onward, ADR 0037)"}
     founder_postcode: {skip: "a place: postcodes are the regions lens's unit"}
     founder_state: category
     founder_abn: {skip: identifier}
@@ -59,6 +60,7 @@ rights:
     has_abn_filled: category
     register_country: category
     australian_applicant_filled: category
+    founding_australian_filled: {skip: "founding_australian with the register's fill (ADR 0037); its pairs are founding_australian's and australian_applicant_filled's"}
     register_expedited: category
     register_expedite_date: {skip: in register_expedited}
     holder_changed: category

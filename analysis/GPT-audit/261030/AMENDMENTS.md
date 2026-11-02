@@ -19,7 +19,7 @@ lenses), so that one fix corrects every use downstream?
 | Theme (from `INDEX.md`) | Holds? | What the check found | Chosen |
 |---|---|---|---|
 | "Filer" defined differently within a lens; no linked filing treated as "never filed" | Yes, and a back-end defect | Three definitions of "has filed IP" in use. The `regions` lens counted firms from IP RAPID's own applicant panel, which predates the register's ABNs (ADR 0029), so 60,021 firms whose filings only the register's ABNs link were invisible to it. Active IP-filing firms placed in a postal area: 162,359 against 207,537 with every linked filing. R&D claimants "that have never filed IP": 50.7% against 48.3% with no filing linked (44.7% with no link to IP at all). One conclusion reverses (U47) and one figure was wrongly computed (B23's IPLORD share) | **Yes** |
-| Current holder described as the filer; origin from a different party | Yes, but small | `timeline` (`ORIGINS` in `build.py`) and `industries` (`patents_standard_au`, `trade_marks_au`) take origin from the current holder (`australian_applicant`), against ADR 0013's rule that "who files" uses the founding columns. But holder and founder origin disagree for 0.2% to 1.8% of rights in each type and period (FY1985 to FY2026), and the Australian share of rights of known origin moves by at most 1.02 points (trade marks before FY2003: 61.68% by holder, 62.70% by founder; standard patents FY2017 to FY2026: 8.68% and 8.74%). The mixed-party concern (S1 L0-L1 R39, S2 L1 R06): the type of the first founder differs from the first Australian founder's for at most 0.121% of Australian-founded rights (31 of 25,650 standard patents, FY2010 to FY2019). B12's null branch is a real slip (unknown founding origin read as overseas when the type is known), affecting at most 224 standard patents filed FY2000 to FY2009 | Next (owner's item) |
+| Current holder described as the filer; origin from a different party | Yes, but small | `timeline` (`ORIGINS` in `build.py`) and `industries` (`patents_standard_au`, `trade_marks_au`) take origin from the current holder (`australian_applicant`), against ADR 0013's rule that "who files" uses the founding columns. But holder and founder origin disagree for 0.2% to 1.8% of rights in each type and period (FY1985 to FY2026), and the Australian share of rights of known origin moves by at most 1.02 points (trade marks before FY2003: 61.68% by holder, 62.70% by founder; standard patents FY2017 to FY2026: 8.68% and 8.74%). The mixed-party concern (S1 L0-L1 R39, S2 L1 R06): the type of the first founder differs from the first Australian founder's for at most 0.121% of Australian-founded rights (31 of 25,650 standard patents, FY2010 to FY2019). B12's null branch is a real slip (unknown founding origin read as overseas when the type is known), affecting at most 224 standard patents filed FY2000 to FY2009 | Next (owner's item); **done in pass 2** |
 | Later additions not carried back | Yes, in the samples checked | For example, U79's 1,409,875 leaves out the 15,282 rows of business survey cubes; B61 says "B34's gap holds" where B34 reports 104.9% of its fitted value. A document-consistency sweep, item by item, best done after back-end corrections, since each correction moves numbers again (this pass moved B27 and B28) | Later |
 | Analysis beyond the stage's scope | A matter of framing | The method of each stage, not a defect in data or numbers | No |
 
@@ -68,3 +68,68 @@ party in `iprapid/party`); they are recorded here so the next pass need not repe
   survey cubes in U119's inventory.
 - **The audits' hashes.** Both notebooks have changed, so the SHA-256 values in `INDEX.md` no longer match; a finding
   outside this pass still needs checking against the notebook before it is acted on.
+
+## Pass 2 (2 November 2026): origin is the filer's, from one party
+
+**Decision record:** ADR 0037 (`docs/adr/0037-origin-is-the-filers.md`). The owner asked for it (A18), as pass 1
+proposed (OQ23).
+
+### The check made first
+
+Pass 1's triage found the holder-versus-filer theme real but small; pass 2 re-checked each claim against the code,
+the rebuilt lenses and both notebooks before changing anything.
+
+- **The rule existed and was not applied.** ADR 0013 says "where and who files" uses the founding applicants, and ADR
+  0024 found `founding_australian` reproduces IP Australia's resident counts. `build.py` still took the `timeline`
+  lens's origin series (`ORIGINS`) and the `industries` lens's Australian counts from `australian_applicant`, the
+  current holder.
+- **Size:** yearly Australian shares move by up to 0.7 points for standard patents, 1.6 for designs and 4.4 for plant
+  breeder's rights (U7's table); counts by tens (April 2013's Australian standard patents, 1,018 by the holder and
+  1,044 by the filer).
+- **Which definition matches whom.** Against the World Bank's resident patents (WIPO's), 1989 to 2024: median ratio
+  1.0017 by the holder, 1.0110 by any founding applicant (IP Australia's definition), 1.0006 by the first founding
+  applicant. WIPO counts a resident by the first-named applicant; `variables.yaml` had said the World Bank and WIPO
+  count by the current applicant, which was wrong.
+- **Two parties:** the first founder's type differs from the first Australian founder's for at most 0.121% of
+  Australian-founded rights; the same pairing was in the `regions` lens's counts of organisations' filings.
+- **B12's null branch:** unknown origin read as overseas for at most 224 patents.
+
+### Findings acted on
+
+| Finding | The audit's claim | Verified | Amendment |
+|---|---|---|---|
+| S1 L0-L1 R04 (High) | §1.8.1 defines `applicant_*` as the current holder, yet U5 to U8, U13, U15 and U90 to U94 describe filers with them | **Confirmed**, cell by cell | Every filer claim uses the founding columns: origin `founding_australian`, type and origin `filer_group`, place `founder_state`, ABN `founder_abn`, counts `founder_count`. U7, U8, U13, U15, U16, U20, U90, U91, U93, U94, U98, U105 to U107 restated (U5's counts by type do not depend on origin) |
+| S1 L0-L1 R39 (High) | U13 (and later queries) pair an any-founder Australian flag with the first founder's type | **Confirmed**, and found in the `regions` lens too; small (at most 0.121%) | `rights.filer_group` takes origin and type from one party; notebook 1's cells, Stage 2's `FILER` and the regions lens's organisations' counts use it |
+| S1 L0-L1 R43 (Medium) | Shares of rights described as shares of filers (U20, U34, U100) | **Confirmed** for U20 and U100 | U13 and U20 say shares are of applications; U100's heading reworded. U34 not changed (its claim is about expedite events, left for the sweep) |
+| S1 L4 R12 (High) | Lens 4 uses `australian_applicant` to reconcile resident filings and to select Australian families (U67, U115) | **Confirmed** | U67 by the filer's origin, with the first founding applicant's country shown as the WIPO-comparable count (median 1.011 and 1.001); U115 selects families by the filer's origin |
+| S1 L5 R03 (High) | Lens 5's origin series are built without saying from which party | **Confirmed**: the current holder's | `ORIGINS` uses `founding_australian`; `variables.yaml` and U22 say so; U22 to U29 restated. The design series stay IP RAPID's (fills sit beside, ADR 0029; U102 has the filled shares) |
+| S1 L5 R09 (Medium) | U26 calls pooled provisional and plant breeder's series "Australian filers" | **Confirmed** | U26 separates the origin-split series from the two pooled ones (with their Australian shares) and defines the measure as a ratio to the surrounding months |
+| S8-S9 R05 (High) | §9's 91.3% overseas and 59.0% Australian are holder classifications | **Confirmed** | §9, §1.9 and `docs/stage-1-summary.md` restated by the filer's origin (91.3% overseas, the United States 43.6%; trade marks 59.2%) |
+| S2 L1 R06 (High) | `FILER` mixes parties; B12 sends unknown origin to overseas; some text uses holder fields | **Confirmed** | `FILER` is made from `filer_group` (empty when origin is unknown); B5 to B19 and B55 restated; B19 and B26 keep the holder for "moved overseas", which is about who holds |
+
+### What else changed as a result
+
+- **The timeline and industries in notebook 2.** B36 to B39, B47 to B49, B52 and B56 (the timeline's origin
+  series) and B40, B41 (the industries lens's Australian counts) restated. One conclusion softened: in B47, the
+  Designs Act 2003's rush from overseas is now within the placebo range (12.5%; its step is still beyond it), and the
+  October 2016 trade mark cut's overseas step is at the threshold (5.556%), so fee changes show 3 rushes and 2 steps
+  beyond 95% of placebos, not 4 and 3. `docs/stage-2-summary.md` updated.
+- **Places.** Organisations' filings now counted by the party that gives the postcode: B27, B28 (24,947 indicator
+  pairs are leads), B31, B58 and U48 move in the third decimal.
+- **U7.** Trade marks' FY1995 Australian share is no longer given: the founding applicant's country is missing for
+  6.3% of them. U24: trade marks of unknown filer's origin run at a median 5 a month (by the holder, mostly none).
+- **U1** counts 88 columns; **U99** and **U102** give the filer's filled origin (designs 32.64% Australian, 0.083%
+  unknown; the register fills only designs that have not changed hands).
+- **Wording.** `GLOSSARY.md` gains "Filer's origin" and "Filer group"; `variables.yaml` labels `australian_applicant`
+  as the current holder's.
+- **Tests.** `tests/test_eda.py::test_filer_origin_comes_from_one_party_and_feeds_the_timeline`. The IP Australia
+  benchmark (`python -m audit.benchmark`) is unchanged: it already used the founding applicants.
+
+### Left for other passes
+
+- **The website,** as after pass 1: the atlas's pages for the restated observations quote the old figures, and
+  `tests/test_atlas.py` stops at its numbers rule until the atlas is rebuilt.
+- **`founder_abn`** remains "the first founding applicant with an ABN" (ADR 0016), a third selection rule; for a
+  jointly filed right it can be another party than `filer_group`'s. Not changed: the firms lens's crediting rests on
+  it, and pass 1 measured that lens.
+- **The sweep of later additions not carried back** (24 findings) and the other recurring themes in `INDEX.md`.
