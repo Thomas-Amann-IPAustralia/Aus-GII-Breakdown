@@ -29,6 +29,42 @@ notebook page (reworded); the rights lens page still gave the count before the d
 at phone width). Tests: `tests/test_atlas.py` runs again (6 tests). **Next, the owner's call:** publish (merge to the
 branch Pages serves) and Stage 3 (OQ19); B10's harvest is still to finish.
 
+**Status (2026-11-02, latest): audit pass 2, origin is the filer's, is corrected in the back end** (A18, ADR 0037,
+`analysis/GPT-audit/261030/AMENDMENTS.md`). ADR 0013's rule (who files uses the founding applicants) and ADR 0024's
+finding (a founding applicant in Australia is IP Australia's resident) now hold everywhere: the `timeline` lens's
+origin series (`ORIGINS`) and the `industries` lens's Australian counts use `founding_australian`, not the current
+holder's `australian_applicant`. `rights` gains `filer_group` (origin and type from one party: the first founding
+applicant in Australia, else the first with a known country; empty when origin is unknown) and
+`founding_australian_filled` (the register's fill only while a right has not changed hands); 88 columns. `regions`
+counts organisations' filings by the party that gives the postcode. Notebook 1's filer claims (U7, U8, U13, U15,
+U16, U20, U67, U90 to U94, U98 to U102, U105 to U107, U115, the timeline's U22 to U29 and the industries' U76, U114)
+and notebook 2's (`FILER` from `filer_group`: B5 to B19, B55; places B27, B28, B31, B58; timeline B36 to B39, B47 to
+B49, B52, B56; industries B40, B41) re-executed and restated, each with the earlier figure where a reader might have
+used it. The changes are small (standard patents' Australian share by up to 0.7 points a year), but two conclusions
+moved: B47's fee changes show 3 rushes and 2 steps beyond placebos (not 4 and 3; the Designs Act's overseas rush is
+now ordinary), and U7 no longer gives trade marks' FY1995 share. U67 now shows both IP Australia's definition (median
+1.011 of the World Bank's residents) and the first founding applicant's (1.001, nearer WIPO's first-named applicant).
+The benchmark against IP Australia is unchanged. **Not done:** the website (its tests stop at the numbers rule, as
+after pass 1); `founder_abn` keeps its own selection rule (ADR 0016). **Next, the owner's call:** the sweep of later
+additions not carried back, the web pass, OQ19 (Stage 3).
+
+**Status (2026-11-01): audit pass 1, the firm filing population, is corrected in the back end** (A17, ADR
+0036, `analysis/GPT-audit/261030/AMENDMENTS.md`). The owner asked for the most urgent cross-cutting issue in the
+audits, verified before acting. Of the recurring themes, the one that held and moved numbers was "has filed IP": the
+`firms` lens had three definitions, and the `regions` lens counted firms from IP RAPID's own applicant panel, which
+predates the register's ABNs (ADR 0029), so 60,021 firms whose filings only the register links were invisible to it.
+Now `firms.ip_record` is the one flag (filed by either rule; another link to IP; none), and `regions` counts by it:
+active IP-filing firms 207,537 (162,359 before); `rdti_firms_no_ip` became `rdti_firms_no_filing` (48.3% of
+claimants, against 50.7% "never filed") with `rdti_firms_no_ip_link` beside it (44.7%). Both notebooks re-executed
+whole; restated: U41, U42, U44, U47, U54, U112, B23, B27, B28, B50, the summaries and both stage summaries. Two
+conclusions changed: IP filers are no more advantaged than firms in general (U47), and another link to IP explains
+little of B23's group (10.9% of the oldest, not the 54.3% first given, which had the wrong denominator). "No filing
+linked", never "never filed" or "missing filers" (GLOSSARY). Checked: the holder-versus-filer origin theme is real but
+small (shares move by at most 1.02 points; `timeline` and `industries` still take origin from the current holder):
+proposed as pass 2 (OQ23). **Not done here: the website.** The atlas still quotes the old figures, and
+the five tests in `tests/test_atlas.py` stop at its numbers rule until it is rebuilt (pages for U47, U54, B23, B27
+and B50 quote figures no longer in the notebooks); every other test passes (119). **Next, the owner's call:** OQ23 (pass 2), the web pass, OQ19 (Stage 3).
+
 **Status (2026-11-01): the external notebook audits are indexed.** Twelve audits of the notebooks (Stage 1 §§1 to 9;
 Stage 2 §§1 to 4) arrived in `analysis/GPT-audit/261030/` as uploads: 348 findings, 215 High and 133 Medium. Nothing
 in them has been acted on. `analysis/GPT-audit/261030/INDEX.md` maps each audit to its notebook section and

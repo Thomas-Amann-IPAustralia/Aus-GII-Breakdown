@@ -5,7 +5,7 @@ needs an account or a request (`CLAUDE.md`). Each says why it matters, what Clau
 changes. **Nothing here blocks Stage 1**; the work carries on around each one.
 
 When a question is answered, move it to **Answered** with the date and the answer, and record it where it applies (an
-ADR, the handover or the plan). Number new questions from the next free one: **OQ23**.
+ADR, the handover or the plan). Number new questions from the next free one: **OQ24**.
 
 ## Open: for you to answer
 
@@ -57,6 +57,8 @@ Australia reported itself (2,322, from non-residents), so the gap is between IP 
 
 | # | Question | Answer | Date | Recorded in |
 |---|---|---|---|---|
+| A18 | OQ23: audit pass 2, origin by the filer in the `timeline` and `industries` lenses, then the sweep of later additions? | "Go ahead with pass 2, the origin fix." Done: origin is the filer's (`founding_australian`) for every claim about who files; `filer_group` gives origin and type from one party; the regions lens counts organisations by the same party. The sweep and the web pass are still to come | 2026-11-02 | ADR 0037; `analysis/GPT-audit/261030/AMENDMENTS.md`; handover |
+| A17 | Act on the external notebook audits: find the most urgent cross-cutting issue, verify it before acting, correct it in the back end and record the amendments; the website in its own pass | Done as pass 1: the firm filing population (one flag, `ip_record`; the regions lens counts by it; U47's conclusion and B23's IPLORD share corrected) | 2026-11-01 | ADR 0036; `analysis/GPT-audit/261030/AMENDMENTS.md`; handover |
 | A16 | OQ19 (first part): give the evidence atlas Stage 2's pages? | Yes: "update the GitHub webpage to reflect all of the findings and changes made in Stage 2". Done for B1 to B62 and the sixteen Stage 1 observations added while filling the gaps (U108 to U123); publishing (merging to the Pages branch) stays the owner's call | 2026-10-29 | ADR 0035; handover |
 | A15 | After Stage 2: fill the data gaps? (OQ2: the fee history and the PBS report with Section 100; OQ3: the missing AusTender amendments; and the gaps Stage 2 found) | Yes, in a fresh Claude Code session. Taken to cover OQ2 and OQ3, with the PBS report last (its use waits for a medicine case study, OQ8) | 2026-10-28 | `docs/data-gaps-brief.md`; handover |
 | A14 | Go ahead with Stage 2 and the gender analysis (provisionals from FY2003, each year's coverage shown); add the provisional-inventor lead to the request (OQ17; the unrequested "Examination expedited" is already OQ6); open a pull request so the branch, and the atlas with it, can be published | Agreed to all | 2026-10-28 | This page (OQ17); handover |

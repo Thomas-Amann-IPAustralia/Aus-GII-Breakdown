@@ -528,6 +528,56 @@ def test_firms_count_by_the_filer_and_name_their_state():
     assert bad.to_dict() == dict.fromkeys(bad.index, 0)
 
 
+def test_filer_origin_comes_from_one_party_and_feeds_the_timeline():
+    """`filer_group` is empty exactly where the filer's origin is unknown (or that party has no type) and its prefix
+    is `founding_australian`; the filled origin only adds to it, never changes it; and the timeline's Australian,
+    overseas and unknown series count rights by the filer's origin (ADR 0037)."""
+    p = _built("rights")
+    t = _built("timeline")
+    bad = data.sql(f"""
+        WITH r AS (SELECT * FROM read_parquet('{p}')),
+        m AS (SELECT date_trunc('month', application_date) AS month,
+                     count(*) FILTER (founding_australian) AS au, count(*) FILTER (NOT founding_australian) AS os,
+                     count(*) FILTER (founding_australian IS NULL) AS unk
+              FROM r WHERE patent_type = 'standard' GROUP BY 1)
+        SELECT
+            count(*) FILTER (founding_australian IS NULL AND filer_group IS NOT NULL) AS group_without_origin,
+            count(*) FILTER (filer_group LIKE 'australian_%' AND NOT founding_australian) AS au_prefix,
+            count(*) FILTER (filer_group LIKE 'overseas_%' AND founding_australian) AS overseas_prefix,
+            count(*) FILTER (filer_group NOT IN ('australian_organisation', 'australian_individual',
+                                                  'overseas_organisation', 'overseas_individual')) AS values,
+            count(*) FILTER (founding_australian IS NOT NULL
+                             AND founding_australian_filled IS DISTINCT FROM founding_australian) AS fill_changed,
+            (SELECT count(*) FROM read_parquet('{t}') x JOIN m USING (month)
+              WHERE x.patents_standard_au <> m.au OR x.patents_standard_overseas <> m.os) AS timeline_origin
+        FROM r""").iloc[0]
+    assert bad.to_dict() == dict.fromkeys(bad.index, 0)
+
+
+def test_firms_have_one_filing_flag_and_regions_count_by_it():
+    """`ip_record` is `filed` exactly where a filing is linked by either rule, and never `no_ip_link` where any IP
+    link exists; the regions lens's firm counts are made from it (ADR 0036)."""
+    p = _built("firms")
+    regions = _built("regions")
+    n = "n_patents_standard + n_patents_provisional + n_patents_second_tier + n_trade_marks + n_designs"
+    bad = data.sql(f"""
+        WITH f AS (SELECT * FROM read_parquet('{p}')),
+        placed AS (SELECT f.* FROM f WHERE postcode IN (SELECT poa_code FROM read_parquet('{regions}')))
+        SELECT
+            count(*) FILTER ((ip_record = 'filed') IS DISTINCT FROM ({n} > 0 OR ip_filed_total > 0)) AS filed,
+            count(*) FILTER (ip_record = 'no_ip_link' AND (n_held > 0 OR in_iprapid_patent OR in_iprapid_trade_mark
+                             OR in_iprapid_design OR in_register OR in_iplord)) AS linked,
+            count(*) FILTER (ip_record IS NULL) AS missing,
+            (SELECT count(*) FILTER (abn_active AND ip_record = 'filed') FROM placed)
+              - (SELECT sum(ip_filing_firms) FROM read_parquet('{regions}')) AS regions_filers,
+            (SELECT count(*) FILTER (abn_active AND in_rdti AND ip_record <> 'filed') FROM placed)
+              - (SELECT sum(rdti_firms_no_filing) FROM read_parquet('{regions}')) AS regions_no_filing,
+            (SELECT count(*) FROM read_parquet('{regions}') WHERE rdti_firms_no_ip_link > rdti_firms_no_filing
+                OR rdti_firms_no_filing > rdti_firms) AS nesting
+        FROM f""").iloc[0]
+    assert bad.to_dict() == dict.fromkeys(bad.index, 0)
+
+
 def test_poisson_interval_matches_known_values():
     lo, hi = uni.poisson_interval([0, 10])
     assert lo[0] == 0 and hi[0] == pytest.approx(3.689, abs=1e-3)

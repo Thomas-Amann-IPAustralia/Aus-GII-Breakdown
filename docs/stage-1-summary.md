@@ -29,8 +29,8 @@ lens, with the owner setting the order.
 **The ten things most worth knowing.**
 
 1. **Australia's patent system is mostly used from overseas; its trade mark system mostly from home.** About nine in
-   ten standard patents are filed from overseas (91.3% in FY2017 to FY2026; the United States alone 43.5%), against
-   59.0% of trade marks filed by Australians (U13). China now files as many patent applications at IP Australia as
+   ten standard patents are filed from overseas (91.3% in FY2017 to FY2026; the United States alone 43.6%), against
+   59.2% of trade marks filed by Australians (U13; the filer's origin, restated 2 November 2026, ADR 0037). China now files as many patent applications at IP Australia as
    Australians do (8.3% each in 2024, from 0.3% in 2004), and three-quarters of Australians' own applications are made
    abroad (76.1%, U70). Overseas applicants arrive through the PCT (81.0% of their standard patents in FY2010), mostly
    with inventions first filed in the United States (53.42%), and their patents reach a median 6 offices against
@@ -49,7 +49,7 @@ lens, with the owner setting the order.
 5. **Provisional applications doubled in FY2026** (10,069, against 4,143 to 5,047 a year in FY2022 to FY2025), driven
    by individuals without ABNs, both broadly and through a few heavy filers (U8). It is real, not a recording artefact
    (N01, settled with the owner). Why is a question for IP Australia (OQ5).
-6. **Policy changes leave clear marks.** Two rushes to file before a rule changed (Raising the Bar, 4.39 times
+6. **Policy changes leave clear marks.** Two rushes to file before a rule changed (Raising the Bar, 4.41 times
    Australians' usual month; the innovation patent's closure, 4.31 times, then 95.9% fewer), four steps and two
    pauses, and several changes with nothing visible (U28). These are the raw material for the natural experiments
    the later questions need.
@@ -224,12 +224,14 @@ Every patent, trade mark, design and plant breeder's right in IP RAPID, 1904 to 
 - **What is in it.** 4,368,006 rights with no repeats; origin known for 86.37% (U1). Trade marks are 53.5% of rights,
   patents 40.12%, designs 6.153%, plant breeder's rights 0.2686%; of patents, 82.17% are standard, 15.07% provisional
   and 2.77% second-tier (U4). Recent years are complete (U6).
-- **Who applies.** About nine in ten standard patents come from overseas (Australian share 7.9% to 12.4% since FY1990,
-  U7). The first applicant's country for FY2017 to FY2026: the United States 43.5%, Australia 8.6%, China 6.8%, Japan
-  5.3% (U13). Australians file 59.0% of trade marks and 94.45% of provisional applications. 12% to 22% of Australian
-  organisations' rights carry no ABN (U13).
-- **The provisional rise.** 10,069 in FY2026, from individuals (5,399 against 1,365 to 1,926), with distinct ABNs flat
-  at 1,361; single-filing individuals rose from 1,538 to 2,507 and 54 individuals filed 10 or more (one filed 375). It
+- **Who applies.** About nine in ten standard patents come from overseas (Australian share 8% to 12.4% since FY1990,
+  U7). Origin is the filer's: a founding applicant in Australia, IP Australia's definition of a resident (ADR 0024,
+  0037). The first founding applicant's country for FY2017 to FY2026: the United States 43.6%, Australia 8.6%, China
+  6.9%, Japan 5.2% (U13). Australians file 59.19% of trade marks and 94.62% of provisional applications. 13% to 21% of
+  Australian organisations' applications have no filer's ABN in IP RAPID; the register fills most trade marks' (U13,
+  U99).
+- **The provisional rise.** 10,069 in FY2026, from individuals (5,510 against 1,413 to 1,986), with distinct filers'
+  ABNs flat at 1,372; single-filing individuals rose from 1,538 to 2,507 and 54 individuals filed 10 or more (one filed 375). It
   began in early 2025, peaked in March and April 2026 and eased by September 2026 (U8).
 - **How rights end.** "Lapsed" (an application abandoned) and "ceased" (a registered right let go) are different
   (U9). 408,957 old patents (filed FY1904 to FY1999) have an "unknown" status, and only 68.9% of expired patents have
@@ -241,8 +243,8 @@ Every patent, trade mark, design and plant breeder's right in IP RAPID, 1904 to 
   FY2014 (U33).
 - **What is protected.** Medical technology, pharmaceuticals and biotechnology are 32.0% of standard patents;
   advertising and business services (class 35) 11.7% of trade marks (U14).
-- **Where.** New South Wales 38.2% and Victoria 23.7% of Australian standard patents; usable postcodes for 99.3% of
-  Australian applicants (U15, U16).
+- **Where.** New South Wales 37.8% and Victoria 23.8% of Australian standard patents (the filer's state); usable
+  postcodes for 99.27% of Australian filers (U15, U16).
 - **Filers, holders and representation (the parties).** The holder is not the filer for 22.0% of standard patents
   filed in the 2000s, but for patents filed before FY2003 the history cannot be seen (U17). More Australian-filed rights
   moved overseas than came the other way (standard patents 2,036 against 804, U18). Overseas filers almost always use
@@ -263,9 +265,9 @@ Every patent, trade mark, design and plant breeder's right in IP RAPID, 1904 to 
   lead) (U90). Overseas inventions were first filed in the United States for 53.42%; 91.24% of Australians' PCT
   applications were filed at IP Australia (U91).
 - **Families, reach and citations (Google Patents).** 94.81% to 99.23% of standard patents filed in each decade since
-  the 1980s find their family (U92). Overseas applicants' patents reach a median 6 offices and 66.66% are granted in
-  the United States; Australians' reach 2, and 45.53% are filed only here (U93). Within five years, overseas
-  applicants' families are cited by a median 6 others and Australians' by 1 (43.99% never) (U94).
+  the 1980s find their family (U92). Overseas applicants' patents reach a median 6 offices and 66.67% are granted in
+  the United States; Australians' reach 2, and 45.12% are filed only here (U93). Within five years, overseas
+  applicants' families are cited by a median 6 others and Australians' by 1 (43.64% never) (U94).
 - **Inventors.** Inventors' countries are missing for most patents filed only in Australia, because Google's
   Australian publications give none (U95). Where known, 94.47% of patents filed from Australia have an inventor here,
   against 0.85% of those filed from overseas (U96). Gender estimated from names matches WIPO's published share for
@@ -306,8 +308,9 @@ Every ABN that appears in IP Australia's data, the R&D Tax Incentive, AusTender 
   of Australian organisations' trade marks with a filer's ABN (84.1% to 59.9%): at least part of the fall is in
   linking, not filing (U45, OQ7).
 - **Money and place.** The median latest R&D claim is $307,490; the top 1% of government suppliers hold 83.1% of
-  contract value (U46). IP filers and R&D claimants are more metropolitan and more advantaged than firms in general
-  (U47).
+  contract value (U46). R&D claimants are more metropolitan and more advantaged than firms in general; IP filers
+  only a little more metropolitan, and no more advantaged (U47, restated 1 November 2026 with every linked filing,
+  ADR 0036).
 
 ### 4.4 Places (`regions`, U48 to U62)
 
@@ -324,8 +327,9 @@ claimants and contracts, and every value of five area sources in `region_indicat
 - **Concentration and chance.** The top tenth of areas file 72.5% of standard patents with 29.2% of people, and an
   area's patents are often one firm's (U52). Areas differ far more than chance would make them, so Stage 2 uses
   negative binomial models and pooling (U53).
-- **'Missing filers'.** 50.7% of R&D claimants have never filed IP; claimants are 5.6 per 1,000 businesses in major
-  cities and 0.6 in very remote areas (U54).
+- **R&D claimants with no filing linked.** 48.3% of R&D claimants have no filing linked to their ABN, and 44.7% no
+  link to IP of any kind; neither proves a firm never filed (U54, restated 1 November 2026 from 50.7% "never filed",
+  ADR 0036). Claimants are 5.6 per 1,000 businesses in major cities and 0.6 in very remote areas.
 - **The attachments.** 22.5 million values (U55). Values split from SA2s track direct counts (Data by Region's
   population is within 10% of the direct count for 99.34% of areas of 1,000 people or more); CABEE counts 0.742 of the
   ABR's businesses in the same order, so business counts come from the ABR (U56). Census cells are small and perturbed
@@ -365,7 +369,7 @@ wages and creative value added, and 1.4 million attached values.
   largest share 0.996), its subdivision less so (0.727) (U74).
 - **IP by industry.** Manufacturing receives 90.78% of standard patents because the corpus's crosswalk leaves out
   services; trade marks spread (manufacturing 55.65%, professional services 11.05%), with a break in January 2002 when
-  the Nice classes were split (U75). Australians file 7.87% to 17.29% of a division's patents, about half of goods
+  the Nice classes were split (U75). Australians file 7.94% to 17.4% of a division's patents, about half of goods
   divisions' trade marks and two-thirds to four-fifths of services' (U76).
 - **Businesses, R&D and wages.** Construction (17.0%), professional services (13.0%) and property (11.4%) hold two in
   five businesses; manufacturing 3.2% (U77). Business R&D was $24.41 billion in 2023-24, 37.6% in professional
@@ -412,8 +416,8 @@ explanation.
    ranks and shares.
 3. **Uneven access.** Individuals and regional areas stand out: individuals file alone (U20), file a fifth of the
    standard patents filed from Australia (U48), drove the provisional rise (U8) and file more of their patents only
-   here (U93); R&D claimants are rarer outside the cities and more often have never filed IP there (U54); filers are
-   more advantaged than firms in general (U47). About one inventor in seven in Australia is estimated to be a woman
+   here (U93); R&D claimants are rarer outside the cities and more often have no filing linked there (U54); R&D
+   claimants are more advantaged than firms in general, IP filers no more so (U47). About one inventor in seven in Australia is estimated to be a woman
    (U98). This bears directly on Q2 and Q4.
 4. **Research without local invention.** Strong research inputs (GII inputs 13th, U69; universities 86.8% of works,
    U82) sit beside weak outputs (24th), falling business R&D (U65) and research cited mostly by foreign inventions
@@ -507,7 +511,7 @@ the number of pairs tested, and a second period or sample before it counts as a 
 | Women's estimated share among inventors in Australia, by field and filer | U98 | Q2 |
 | Rights moving overseas by technology, firm and age | U18 | Q1, Q2 |
 | Firms' IP against their R&D, contracts, age and entity group | U41 to U46 | Q2, Q3 |
-| R&D claimants who have never filed IP ('missing filers'), by place and industry | U54 | Q4 |
+| R&D claimants with no filing linked, by place and industry | U54 | Q4 |
 | Area filing rates against advantage, remoteness, the Census and business mix | U51, U53 | Q2 |
 | Australia against OECD members, as ratios to people and GDP | U65, U66 | Q1, Q4 |
 | IP per business by industry, beside the crosswalk's limits; innovation (BCS) against IP | U75, U77, U79 | Q2, Q3 |
@@ -597,8 +601,8 @@ gaps are in what it publishes, and the register fills them beside IP RAPID's own
 - **U45 restated (U100, U101):** with the register's business numbers, 92.3% of Australian organisations' trade marks
   have a filer's ABN in FY2024, 91.4% in FY2025 and 90.9% in FY2026 (IP RAPID: 84.1%, 71.4%, 59.9%); firms filing
   their first trade mark number 14,728, 15,818 and 19,730. Firm-level filing by year is now compared to FY2026.
-- **U7 and U13 restated (U102):** designs filed FY2017 to FY2026 are 32.31% Australian with 0.007% of unknown origin
-  (IP RAPID: 30.05% with 5.062%).
+- **U7 and U13 restated (U102):** designs filed FY2017 to FY2026 are 32.64% Australian with 0.083% of unknown origin
+  (IP RAPID: 30.44% with 5.058%), by the filer's origin (ADR 0037).
 - **U34 restated (U103):** trade marks claiming convention priority carry an expedite event in every year, in IP RAPID
   to FY2018 and in the register from FY2019 (97.82% in FY2018 and 99.55% in FY2020 in either record).
 - **U104:** 11,098 empty design records, numbered 1973 to 1982, are dropped and listed.
@@ -690,9 +694,9 @@ All descriptive.
 | U10 | rights | Grant rates by year: standard patents 54.4% to 75.5% |
 | U11 | rights | Median 980 days to grant (standard patents), 223 to register (trade marks); a 222-day peak |
 | U12 | rights | The typical time by year of application |
-| U13 | rights | Who applied, FY2017 to FY2026: the United States 43.5% of standard patents |
+| U13 | rights | Who applied, FY2017 to FY2026: the United States 43.6% of standard patents |
 | U14 | rights | Health fields lead patents (32.0%); class 35 leads trade marks |
-| U15 | rights | New South Wales 38.2%, Victoria 23.7% of Australian standard patents |
+| U15 | rights | New South Wales 37.8%, Victoria 23.8% of Australian standard patents |
 | U16 | rights | The state repair; postcodes usable for 99.3% |
 | U17 | rights | The holder is often not the filer; patents' history only from FY2003 |
 | U18 | rights | More Australian-filed rights moved overseas than came the other way |
@@ -724,14 +728,14 @@ All descriptive.
 | U44 | firms | The top 1% of filing firms file 55.3% of standard patents |
 | U45 | firms | Recent filers are less often linked to an ABN |
 | U46 | firms | R&D claims spread; contract value concentrated |
-| U47 | firms | Filers and R&D claimants more metropolitan and advantaged |
+| U47 | firms | R&D claimants more metropolitan and advantaged; IP filers a little more metropolitan only |
 | U48 | regions | 2,641 postal areas, 25.4 million people; filer and holder differ for one right in fifteen |
 | U49 | regions | One standard patent in eighteen from a postcode that is not a postal area |
 | U50 | regions | Areas from no residents to 129,883 |
 | U51 | regions | Most areas outside the cities, most people inside; SEIFA deciles are tenths of areas |
 | U52 | regions | Top tenth of areas file 72.5% of standard patents; often one firm's |
 | U53 | regions | Areas differ far more than chance |
-| U54 | regions | Half of R&D claimants have never filed IP |
+| U54 | regions | About half of R&D claimants have no filing linked |
 | U55 | regions | 22.5 million attached values |
 | U56 | regions | Split values track direct ones; business counts from the ABR |
 | U57 | regions | Census cells small and perturbed |

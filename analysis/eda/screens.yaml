@@ -50,6 +50,7 @@ rights:
     founder_type: category
     founder_country: category
     founding_australian: category
+    filer_group: {skip: "made from founding_australian and the founders' types (screened here); the planned pairs' filer (1.1 onward, ADR 0037)"}
     founder_postcode: {skip: "a place: postcodes are the regions lens's unit"}
     founder_state: category
     founder_abn: {skip: identifier}
@@ -59,6 +60,7 @@ rights:
     has_abn_filled: category
     register_country: category
     australian_applicant_filled: category
+    founding_australian_filled: {skip: "founding_australian with the register's fill (ADR 0037); its pairs are founding_australian's and australian_applicant_filled's"}
     register_expedited: category
     register_expedite_date: {skip: in register_expedited}
     holder_changed: category
@@ -181,6 +183,7 @@ firms:
     design_first_fy_filled: number
     ip_filed_total: number
     ip_filed_weighted: number
+    ip_record: {skip: "made from the IP counts and links screened here; the planned pairs (2.1, 2.2) use it as the one filing flag (ADR 0036)"}
     n_patents_standard: number
     n_patents_provisional: number
     n_patents_second_tier: number
@@ -260,7 +263,8 @@ regions:
     designs_by_organisations: {skip: in designs_per_1k_businesses}
     ip_filing_firms: {skip: in ip_firms_per_1k_businesses}
     rdti_firms: {skip: in rdti_firms_per_1k_businesses}
-    rdti_firms_no_ip: {skip: in missing_filer_share}
+    rdti_firms_no_filing: {skip: in no_filing_share}
+    rdti_firms_no_ip_link: {skip: "a companion of rdti_firms_no_filing, shown beside it in 3.4 and 2.2 (ADR 0036)"}
     austender_suppliers: {skip: in suppliers_per_1k_businesses}
     austender_contracts: {skip: "a count that grows with the area's size; suppliers_per_1k_businesses carries the measure"}
     austender_value: {skip: "mostly where suppliers' head offices are (U62); suppliers_per_1k_businesses carries the measure"}
@@ -287,7 +291,7 @@ regions:
         THEN 1000 * patents_second_tier / persons END
     ip_firms_per_1k_businesses:
       kind: number
-      label: "Active firms that have filed IP per 1,000 GST-registered businesses"
+      label: "Active firms with a filing linked per 1,000 GST-registered businesses"
       sql: >-
         CASE WHEN active_gst_abns * (SELECT sum(ip_filing_firms) / sum(active_gst_abns) FROM {lens/regions}) >= 10
         THEN 1000 * ip_filing_firms / active_gst_abns END
@@ -297,10 +301,10 @@ regions:
       sql: >-
         CASE WHEN active_gst_abns * (SELECT sum(rdti_firms) / sum(active_gst_abns) FROM {lens/regions}) >= 10
         THEN 1000 * rdti_firms / active_gst_abns END
-    missing_filer_share:
+    no_filing_share:
       kind: number
-      label: "Share of R&D Tax Incentive claimants that have never filed IP"
-      sql: "CASE WHEN rdti_firms >= 10 THEN rdti_firms_no_ip / rdti_firms END"
+      label: "Share of R&D Tax Incentive claimants with no filing linked"
+      sql: "CASE WHEN rdti_firms >= 10 THEN rdti_firms_no_filing / rdti_firms END"
     suppliers_per_1k_businesses:
       kind: number
       label: "Government suppliers per 1,000 GST-registered businesses"

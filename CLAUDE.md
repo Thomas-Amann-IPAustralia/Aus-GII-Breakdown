@@ -69,7 +69,7 @@ uv run pytest -q
 - **External notebook audits** (twelve so far, one per notebook section) are indexed in
   `analysis/GPT-audit/261030/INDEX.md`: which audit covers which observations, how to cite a finding, recurring themes and
   a freshness check. Read the index, not the audits whole; check a finding against the notebook before acting on it, and
-  act on them only at the owner's direction. They are distinct from `analysis/audit/` (the check against IP Australia).
+  act on them only at the owner's direction. What has been acted on, finding by finding, is in `AMENDMENTS.md` there. They are distinct from `analysis/audit/` (the check against IP Australia).
 - **At the end:** update the handover, commit, and push to the session's branch.
 
 The working agreement is adapted from `docs/sop-agent-construction-v2 (2).md`, which describes a different project; take
