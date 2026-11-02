@@ -375,3 +375,48 @@ are cited in the table):
 - **On the audit's list but not this theme:** S2 L5 R01 to R03 and R07 to R14, S2 S8 R01, R02, R04, R06 (in part:
   the summary's reproducibility line and B58's 11.03 were corrected here), R08 to R12, and §8's other rows (S2 S8 R03
   marks them as under review).
+
+## Pass 7 (2 November 2026): later additions in §5 to §8; policy and fees
+
+**Decision record:** ADR 0042 (`docs/adr/0042-policy-breaks-by-kind-and-later-additions.md`). The owner chose the
+theme (A27) after adopting pass 6's readings (A25). Findings from the full Stage 2 audit
+(`analysis/claude-audit/261102/`): the "later additions" theme's six (S2 L5 R01, R13; S2 L6 R01, R06; S2 S8 R01, R06),
+two more of the same kind in §8 (S2 S8 R02, R04), and policy and fees (S2 L5 R02, R03, R07; R04 to R06 were pass 6).
+
+### The check made first
+
+Each finding was checked against the notebook, `screens.yaml`, the lenses and the summaries. Then the code was
+extended to test what the findings question: control series for each policy change, the event window's completeness,
+every unusual fee pair named with its direction, a bootstrap over changes, and B43's periods and its repeat through
+the crosswalk with services. Only the cells this pass changed have different outputs (one unordered table elsewhere
+swapped two rows; no number moved).
+
+### Findings acted on
+
+| Finding | The audit's claim | Verified | Amendment |
+|---|---|---|---|
+| S2 L5 R01 (High) | B37 says the fee history is not in the data; §5's other cross-references lag | **Confirmed**; also B36's "not a common cycle" and B39's reading predate B52 and B56, which find a cycle in overseas applicants' filing | B37 points to §5.4; B36 and B39 gain dated pointers to B52 and B56 |
+| S2 L5 R02 (High) | Breaks the law makes certain read as clean natural experiments; no controls; the heading's count; the event window unchecked | **Confirmed.** Controls tested: quiet around Raising the Bar (37.5% to 81.94% of placebos as large) and the Designs Act; Australians' designs stepped down at the innovation patent's closure (-0.189, none of 58 placebos as large) and design registrations at the Patents Act 1990 (-0.196). All four candidate steps are beyond every placebo in some series. The 20-year term's window has 6 of 12 months before | B37 rebuilt: each break classified with what it could identify, controls in the table, the window's months shown; §5.7, §8 and the summary restated ("Policy leaves clean breaks" withdrawn) |
+| S2 L5 R03 (High) | B47's counts mix directions and leave out the one price-like break; the chart's series unmarked | **Confirmed**: of five pairs beyond 95% of placebos, one points the way a price would (Australians' designs after July 1988, -0.136, 2.778% of 36); the January 1998 rush (0.147, before a cut) is against a price | B47 names each pair with its direction; the chart marks Australian and overseas series; §5.7, §8 and the summary |
+| S2 L5 R07 (Medium) | B48 resamples pairs; placebo shares read as p-values | **Confirmed** | B48's interval resamples the 18 changes (-0.638 to 0.049; -0.639 to 0.070 before); placebo shares described as ranks among overlapping windows in B37 and B47 |
+| S2 L5 R13 (Medium) | The PBS series have no Stage 2 treatment though the record says they do; stale section numbers | **Confirmed** | §5's introduction and §8 record the deferral (the medicine case study, OQ8); `screens.yaml` cites 5.4, 5.5 and 5.6 correctly |
+| S2 L6 R01 (High) | §6's rules, B41 and §6.7 superseded by the crosswalk with services | **Confirmed** | §6's rules (concentrated weights, two crosswalks), B41's last sentence, §6.7's B41 row and closing paragraph, the summary's lens table |
+| S2 L6 R06 (Medium) | B43's scope, periods and single pass unstated | **Confirmed**: the business survey's items are from FY2018 (881) to FY2023 (577), against FY2024 filing; through the crosswalk with services two items pass their own correction (q 0.047) | §6.3's introduction and B43 state the scope, the periods and the repeat; §6.7's row |
+| S2 S8 R01 (High) | "Every lens and every companion table has been screened ... (B1 to B46)" | **Confirmed** | §8 says what was screened, what was examined as selected pairs, what has no Stage 2 treatment, and which pairs lack an interval or a second sample; B1 to B62 |
+| S2 S8 R02 (High) | B62 and B15's divisionals carried in their lens summaries, missing from §8's signals | **Confirmed** | Both added to §8's list (B62 with its denominator caution, S2 L7 R02) |
+| S2 S8 R04 (Medium) | §8 says firm size and industry are "not in the data" | **Confirmed** | "Known for WGEA reporters only (B50, B51); not for most filers" |
+| S2 S8 R06 (Medium) | The summary's figures and method statements out of date | **Confirmed**; the reproducibility line and B58's 11.03 were corrected in pass 6 | The status line names B47 to B62; WIPO's share given as its two endpoints (64.6% in 2006, 63.65% in 2022) |
+
+### What else changed as a result
+
+- **Readings that narrow:** B37's behavioural breaks are Raising the Bar's rush and perhaps the Designs Act's overseas
+  step; the others confirm that a law changed a series. B47 gains one price-like break. B43 gains two passes through
+  the crosswalk with services, still a single sample among dependent items.
+- **No lens changes.** Notebook 2 re-executed; tests pass (the atlas's five as before).
+
+### Left for other passes
+
+- **The website,** as before.
+- **On the audit's list:** S2 L5 R08 to R12 and R14 (in part: §5.7's B37, B47 and B48 rows are restated here); S2 L6
+  R02 to R05, R07 to R09; S2 L7 R01 to R06; S2 S8 R03 (other rows), R05 (the industries and institutions rows), R08
+  to R12.

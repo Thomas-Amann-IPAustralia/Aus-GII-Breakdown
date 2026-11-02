@@ -431,37 +431,37 @@ timeline:
     trade_mark_assignments: number
     cpi: number
     policy_events: {skip: "the policy changes, studied one at a time with placebo dates (5.1)"}
-    fee_patent_provisional: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_patent_filing: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_patent_examination: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_patent_grant: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_patent_to_grant: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_patent_renewals: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_patent_second_tier_filing: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_tm_filing: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_tm_registration: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_tm_to_register: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_tm_renewal: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_design_filing: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_design_examination: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_design_renewal: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_pbr_application: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_pbr_examination: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_pbr_grant: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_pbr_to_grant: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_pbr_annual: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_patent_to_grant_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_patent_renewals_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_tm_to_register_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_tm_renewal_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_design_filing_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_pbr_to_grant_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    fee_changes: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.5, ADR 0031)"}
-    cash_rate_target: {skip: "the RBA attachment (gap B1): context for the policy and fee changes, read beside them (5.6); not a filing series"}
+    fee_patent_provisional: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_patent_filing: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_patent_examination: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_patent_grant: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_patent_to_grant: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_patent_renewals: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_patent_second_tier_filing: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_tm_filing: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_tm_registration: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_tm_to_register: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_tm_renewal: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_design_filing: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_design_examination: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_design_renewal: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_pbr_application: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_pbr_examination: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_pbr_grant: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_pbr_to_grant: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_pbr_annual: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_patent_to_grant_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_patent_renewals_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_tm_to_register_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_tm_renewal_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_design_filing_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_pbr_to_grant_real: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    fee_changes: {skip: "fee levels change in steps on a few dates: studied as dated changes against placebo dates (5.4, ADR 0031)"}
+    cash_rate_target: {skip: "the RBA attachment (gap B1): context for the policy and fee changes, read beside them (5.5); not a filing series"}
     cash_rate_interbank: {skip: "as cash_rate_target"}
     aud_usd: {skip: "as cash_rate_target"}
     aud_twi: {skip: "as cash_rate_target"}
-    gdp_cvm: {skip: "the national accounts (gap B2): the economy's size and cycle, read beside filing (5.5)"}
+    gdp_cvm: {skip: "the national accounts (gap B2): the economy's size and cycle, read beside filing (5.6)"}
     gdp_current: {skip: "as gdp_cvm"}
     sfd_nsw: {skip: "as gdp_cvm"}
     sfd_vic: {skip: "as gdp_cvm"}
@@ -471,10 +471,10 @@ timeline:
     sfd_tas: {skip: "as gdp_cvm"}
     sfd_nt: {skip: "as gdp_cvm"}
     sfd_act: {skip: "as gdp_cvm"}
-    pbs_prescriptions: {skip: "added after Stage 2 (gap B11; July 2022 on): its own section"}
-    pbs_government_cost: {skip: "added after Stage 2 (gap B11): its own section"}
-    pbs_s100_prescriptions: {skip: "added after Stage 2 (gap B11): its own section"}
-    pbs_s100_government_cost: {skip: "added after Stage 2 (gap B11): its own section"}
+    pbs_prescriptions: {skip: "added after Stage 2 (gap B11; July 2022 on): no Stage 2 pair yet; it serves the medicine case study (R7), whose place waits for OQ8 (recorded in 5.0 and 8; S2 L5 R13)"}
+    pbs_government_cost: {skip: "as pbs_prescriptions"}
+    pbs_s100_prescriptions: {skip: "as pbs_prescriptions"}
+    pbs_s100_government_cost: {skip: "as pbs_prescriptions"}
   groups: {}
 
 industries:

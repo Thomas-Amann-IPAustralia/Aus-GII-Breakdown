@@ -7,7 +7,29 @@ working list for Stage 2, in place of ChatGPT's four Stage 2 audits (A24); the s
 the halves (S2 S8 R07), in a fresh session with a fresh context window (A23); and B8 stays a Stage 3 signal only as a
 comparison within reach bands, worded as the share still in force and read beside B11 and B12 (A22, answering OQ24).
 
-**Status (2026-11-02, latest): audit pass 6, the survival pass, done** (A23, ADR 0041,
+**The owner's decisions (2026-11-02, A25 to A27):** pass 6's restated readings adopted as they stand (A25); OQ25 added
+to the request to IP Australia (A26); next, later additions not carried back in §5 to §8, with policy and fees (A27,
+done as pass 7).
+
+**Status (2026-11-02, latest): audit pass 7, later additions in §5 to §8, and policy and fees** (A27, ADR 0042,
+`analysis/GPT-audit/261030/AMENDMENTS.md`). Eleven findings of the full Stage 2 audit (S2 L5 R01, R02, R03, R07, R13;
+S2 L6 R01, R06; S2 S8 R01, R02, R04, R06), each checked first; all hold. **B37** now classifies each policy break
+(mechanical, administrative, behavioural), sets it beside two control series and shows its window's months: the
+behavioural breaks are Raising the Bar's rush (controls quiet) and perhaps the Designs Act's overseas step; at the
+innovation patent's closure and the Patents Act 1990 a control moved too; all four candidate steps, not three, are
+beyond every placebo in some series; the 20-year term's window is incomplete. **B47** names each of the five fee
+breaks with its direction: one points the way a price would (Australians' designs after July 1988, which B47 had left
+out), and the 1998 rush read as price-like is not. **B48's** interval resamples changes (-0.638 to 0.049). **B43**
+states its scope and periods (FY2018 to FY2023 against FY2024 filing) and gains two passes through the crosswalk with
+services. Later additions carried back: B37's fee sentence, B36 and B39 (B52, B56), §6's rules, B41 and §6.7 (the
+crosswalk with services), §8's opening (what was screened, what was not, the PBS deferred to OQ8), B15 and B62 added
+to §8's signals, firm size "known for WGEA reporters only", the summary's status line and WIPO's endpoints;
+`screens.yaml`'s section numbers. No lens changes; notebook 2 re-executed; tests pass except the atlas's five, as
+before. **Next, the owner's call:** the next theme on the audit's list ("Read first" item 5, what a count measures:
+S2 L6 R02, S2 L7 R01, S2 L6 R04, S2 L7 R02; then §5's dependence and absence findings, S2 L5 R08 to R12), the web
+pass, OQ19 (Stage 3).
+
+**Status (2026-11-02): audit pass 6, the survival pass, done** (A23, ADR 0041,
 `analysis/GPT-audit/261030/AMENDMENTS.md`). The 16 survival findings of the full Stage 2 audit, Stage 1's three on the
 same theme and the fix to the halves (S2 S8 R07) were checked against the code, the lenses and both notebooks first:
 all hold (S2 L1 R15 in part; R14's "Simpson's paradox" proved wrong). Fixed at the source: `kaplan_meier` takes

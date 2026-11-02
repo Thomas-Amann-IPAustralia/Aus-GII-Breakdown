@@ -16,6 +16,10 @@ first; all hold (S2 L1 R15 in part, and S2 L1 R14's "Simpson's paradox" proved w
 changed, finding by finding, is in `analysis/GPT-audit/261030/AMENDMENTS.md` (pass 6), so one log holds every pass.
 The notebook's SHA-256 below is the one this batch read; it has changed since.
 
+**Acted on (2 November 2026, pass 7, ADR 0042; the owner's choice, A27):** later additions not carried back in §5 to §8
+(S2 L5 R01, R13; S2 L6 R01, R06; S2 S8 R01, R06, with R02 and R04) and policy and fees (S2 L5 R02, R03, R07). All
+hold. Recorded in `analysis/GPT-audit/261030/AMENDMENTS.md` (pass 7).
+
 ## What this audit is, and is not
 
 - **A recheck and a continuation.** The ChatGPT batch (`analysis/GPT-audit/261030/`) audited §1 to §4 of this notebook
