@@ -359,6 +359,14 @@ def rights_sql() -> str:
         FROM other_agents o JOIN clients c USING (party_id)
         GROUP BY 1, 2
     ),
+    agent_from AS (  -- when an agent who is not an applicant or owner first appears on the right's record (S2 L1 R34):
+                     -- a party record's start is its registration date for most trade marks, not the filing date
+        SELECT ag.ip_right_type, ag.application_number, min(ag.effective_from_date) AS agent_first_date
+        FROM {{iprapid/party}} ag
+        SEMI JOIN other_agents o USING (ip_right_type, application_number, party_id)
+        WHERE ag.party_role_category = 'applicant_agent'
+        GROUP BY 1, 2
+    ),
     agent_info AS (  -- 12,214 agents have more than one name (some are pseudonymised codes): the most used, so that
                      -- every build picks the same one (ADR 0019)
         SELECT agent_id, arg_max(party_name, (n, party_name)) AS agent_name
@@ -565,6 +573,7 @@ def rights_sql() -> str:
         g.agent_id,
         ai.agent_name,
         g.agent_clients,
+        CASE WHEN r.ip_right_sub_type <> 'provisional' THEN af.agent_first_date END AS agent_first_date,
         CASE WHEN r.ip_right_sub_type = 'provisional' THEN NULL
              WHEN g.agent_clients >= 5 THEN 'attorney'
              WHEN g.agent_id IS NOT NULL THEN 'other_agent'
@@ -620,6 +629,7 @@ def rights_sql() -> str:
     LEFT JOIN applicants a USING (ip_right_type, application_number)
     LEFT JOIN agents g USING (ip_right_type, application_number)
     LEFT JOIN agent_info ai ON ai.agent_id = g.agent_id
+    LEFT JOIN agent_from af USING (ip_right_type, application_number)
     LEFT JOIN founding f USING (ip_right_type, application_number)
     LEFT JOIN holders h USING (ip_right_type, application_number)
     LEFT JOIN poa_state ps ON ps.poa_code = r.postcode_au

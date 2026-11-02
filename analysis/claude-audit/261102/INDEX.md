@@ -10,6 +10,16 @@ Stage 2 audits, whose files stay the source of the Issue and Action text for fin
 survival pass comes next, with S2 S8 R07's fix to the halves, in a fresh session (A23); and B8 stays a Stage 3 signal
 only as a comparison within reach bands, read beside B11 and B12 (A22, which answers OQ24).
 
+**Acted on (2 November 2026, pass 6, ADR 0041):** the survival theme (the 16 findings in the table below, with Stage
+1's S1 L0-L1 R20, R21 and S8-S9 R10) and S2 S8 R07, which also settles S2 L3 R02 and S2 L2 R28. Each was checked
+first; all hold (S2 L1 R15 in part, and S2 L1 R14's "Simpson's paradox" proved wrong, not just unshown). What was
+changed, finding by finding, is in `analysis/GPT-audit/261030/AMENDMENTS.md` (pass 6), so one log holds every pass.
+The notebook's SHA-256 below is the one this batch read; it has changed since.
+
+**Acted on (2 November 2026, pass 7, ADR 0042; the owner's choice, A27):** later additions not carried back in §5 to §8
+(S2 L5 R01, R13; S2 L6 R01, R06; S2 S8 R01, R06, with R02 and R04) and policy and fees (S2 L5 R02, R03, R07). All
+hold. Recorded in `analysis/GPT-audit/261030/AMENDMENTS.md` (pass 7).
+
 ## What this audit is, and is not
 
 - **A recheck and a continuation.** The ChatGPT batch (`analysis/GPT-audit/261030/`) audited §1 to §4 of this notebook

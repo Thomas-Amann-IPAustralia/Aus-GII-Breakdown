@@ -175,6 +175,23 @@ def test_effect_sizes_for_planned_pairs():
     assert 0.4 < h.mean() < 0.6 and h.equals(bi.split_half(pd.Series([str(i) for i in range(1000)])))
 
 
+def test_split_half_agrees_with_the_screens_halves():
+    # One rule for every half (S2 S8 R07, ADR 0041): split_half in pandas and the screens' SQL put each key, text or
+    # number, in the same half
+    import duckdb
+
+    for keys in (pd.Series([f"{i:011d}" for i in range(2000)]), pd.Series(range(800, 8000, 7))):
+        frame = pd.DataFrame({"key": keys})
+        con = duckdb.connect()
+        con.register("frame", frame)
+        sql_half = con.execute(f"SELECT {bi.half_sql('key')} AS d FROM frame").df().d.to_numpy()
+        con.close()
+        h = bi.split_half(keys)
+        assert (h.to_numpy() == sql_half).all() and 0.45 < h.mean() < 0.55
+    shuffled = pd.Series(["b", "a", "c", "d"], index=[10, 3, 7, 1])
+    assert bi.split_half(shuffled).loc[3] == bi.split_half(pd.Series(["a"])).iloc[0]
+
+
 def test_wilson_interval_matches_known_value():
     low, high = bi.wilson(np.array([5]), np.array([10]))
     assert low[0] == pytest.approx(0.2366, abs=1e-4) and high[0] == pytest.approx(0.7634, abs=1e-4)
@@ -517,6 +534,22 @@ def test_kaplan_meier_matches_a_hand_count():
     at = uni.survival_at(km.assign(g="a"), [0, 1.5, 2, 5], by="g", min_at_risk=1)
     assert np.allclose(at.loc["a"].tolist()[:3], [1.0, 0.8, 0.8 * 4 / 7])
     assert np.isnan(at.loc["a", 5])  # beyond the curve
+
+
+def test_kaplan_meier_with_delayed_entry_matches_a_hand_count():
+    # 4 at risk from t=0; 1 ends at t=1. 6 more join at t=1.5 (granted then). At t=2, 2 of the 9 at risk end; at t=3,
+    # the 7 left are unfinished. Without delayed entry the 6 would wrongly be at risk at t=1 (immortal time)
+    counts = pd.DataFrame(
+        {"t": [0, 1, 1.5, 2, 3], "ended": [0, 1, 0, 2, 0], "unfinished": [0, 0, 0, 0, 7], "entered": [4, 0, 6, 0, 0]}
+    )
+    km = uni.kaplan_meier(counts, entered="entered", start_at_risk=1)
+    assert km.set_index("t").at_risk.loc[[1, 2, 3]].tolist() == [4, 9, 7]
+    assert np.allclose(km.set_index("t").survival.loc[[1, 2, 3]], [0.75, 0.75 * 7 / 9, 0.75 * 7 / 9])
+    plain = uni.kaplan_meier(counts)
+    assert plain.set_index("t").at_risk.loc[1] == 10
+    # the curve starts once 5 are at risk: the end at t=1, with 4 at risk, is left out
+    late = uni.kaplan_meier(counts, entered="entered", start_at_risk=5).set_index("t")
+    assert late.index.min() == 1.5 and np.isclose(late.survival.loc[3], 7 / 9)
 
 
 def test_firms_count_by_the_filer_and_name_their_state():

@@ -7,7 +7,54 @@ working list for Stage 2, in place of ChatGPT's four Stage 2 audits (A24); the s
 the halves (S2 S8 R07), in a fresh session with a fresh context window (A23); and B8 stays a Stage 3 signal only as a
 comparison within reach bands, worded as the share still in force and read beside B11 and B12 (A22, answering OQ24).
 
-**Brief for the next session: the survival pass (A23).** Work from the table "The survival theme in one place" in
+**The owner's decisions (2026-11-02, A25 to A27):** pass 6's restated readings adopted as they stand (A25); OQ25 added
+to the request to IP Australia (A26); next, later additions not carried back in §5 to §8, with policy and fees (A27,
+done as pass 7).
+
+**Status (2026-11-02, latest): audit pass 7, later additions in §5 to §8, and policy and fees** (A27, ADR 0042,
+`analysis/GPT-audit/261030/AMENDMENTS.md`). Eleven findings of the full Stage 2 audit (S2 L5 R01, R02, R03, R07, R13;
+S2 L6 R01, R06; S2 S8 R01, R02, R04, R06), each checked first; all hold. **B37** now classifies each policy break
+(mechanical, administrative, behavioural), sets it beside two control series and shows its window's months: the
+behavioural breaks are Raising the Bar's rush (controls quiet) and perhaps the Designs Act's overseas step; at the
+innovation patent's closure and the Patents Act 1990 a control moved too; all four candidate steps, not three, are
+beyond every placebo in some series; the 20-year term's window is incomplete. **B47** names each of the five fee
+breaks with its direction: one points the way a price would (Australians' designs after July 1988, which B47 had left
+out), and the 1998 rush read as price-like is not. **B48's** interval resamples changes (-0.638 to 0.049). **B43**
+states its scope and periods (FY2018 to FY2023 against FY2024 filing) and gains two passes through the crosswalk with
+services. Later additions carried back: B37's fee sentence, B36 and B39 (B52, B56), §6's rules, B41 and §6.7 (the
+crosswalk with services), §8's opening (what was screened, what was not, the PBS deferred to OQ8), B15 and B62 added
+to §8's signals, firm size "known for WGEA reporters only", the summary's status line and WIPO's endpoints;
+`screens.yaml`'s section numbers. No lens changes; notebook 2 re-executed; tests pass except the atlas's five, as
+before. **Next, the owner's call:** the next theme on the audit's list ("Read first" item 5, what a count measures:
+S2 L6 R02, S2 L7 R01, S2 L6 R04, S2 L7 R02; then §5's dependence and absence findings, S2 L5 R08 to R12), the web
+pass, OQ19 (Stage 3).
+
+**Status (2026-11-02): audit pass 6, the survival pass, done** (A23, ADR 0041,
+`analysis/GPT-audit/261030/AMENDMENTS.md`). The 16 survival findings of the full Stage 2 audit, Stage 1's three on the
+same theme and the fix to the halves (S2 S8 R07) were checked against the code, the lenses and both notebooks first:
+all hold (S2 L1 R15 in part; R14's "Simpson's paradox" proved wrong). Fixed at the source: `kaplan_meier` takes
+delayed entry (each right counted from its grant or registration, with three guards: entries clamped to the end, the
+629 rights recorded as ending before their grant left out, curves starting once 30 are at risk); cohorts by the
+financial year the term began; the rights lens gains `agent_first_date` (89 columns); `years_in_force` leaves the
+screen (221 distinct leads, from 223); `bivariate.half_sql` is the one rule for every half, and `split_half` computes
+it in DuckDB (a test checks); `GLOSSARY.md` restated and extended. Readings that change: **B8** is carried only within
+reach bands (A22): within the same reach Australian organisations' patents are more often in force at 10 years (two
+to four offices 71.8% against 65.1%; five or more 75.6% against 66.5%), but not among Australia-only patents, and the
+three signals (B8, B11, B12) disagree; **B10's** representation gap, read before the first renewal, is 19.1 points
+(23.4 "at any time": marks whose agent arrives after 9.5 years are 89.5% in force); **B13** has no composition effect
+and a small link in both periods (3.7 and 1.0 points), with work-sharing requests (the Global PPH, 2014) mixed in;
+**B49** has one change that survives every check (trade marks, July 1993), and September 2002's patent step is within
+the ordinary against the trend; **U36's** patent shares are 1 to 4 points lower (2000s 67.5% in force at 10 years) and
+its design and second-tier cohorts follow the Acts. The halves' rerun (B35, B50, B58, B59) changes no reading; B58's
+halves are now §3's. §1.9, §5.7, §8, both summaries, U36's rows and the owner questions (OQ25 proposed, for IP
+Australia: PPH requests and the 2011 and 2012 rise) updated. Two faults of this pass were found and fixed before
+committing (delayed entry without guards took trade mark curves towards 0%; a first start threshold of 100 dropped
+small groups). Tests: 122 pass; the atlas's five fail as before; the benchmark is unchanged. **Next, the owner's
+call:** the next audit theme (the index's "Read first" list: later additions in §5 to §8, S2 L5 R01, S2 L6 R01, S2 S8
+R01, R06; policy and fees, S2 L5 R02, R03; what a count measures), the web pass, OQ19 (Stage 3), and whether to add
+OQ25 to the request to IP Australia.
+
+**Brief for this pass (done above): the survival pass (A23).** Work from the table "The survival theme in one place" in
 `analysis/claude-audit/261102/INDEX.md` (16 findings: S2 L1 R11 to R15, R30, R32 to R36; S2 L5 R04 to R06; S2 S8 R03 and
 R05), with Stage 1's findings on the same theme (S1 L0-L1 R20, R21 and S8-S9 R10, in `analysis/GPT-audit/261030/`, which
 the audit did not recheck), and the fix to the halves (S2 S8 R07: one hash function for every half; then B35's GII
@@ -45,7 +92,7 @@ notebook page (reworded); the rights lens page still gave the count before the d
 at phone width). Tests: `tests/test_atlas.py` runs again (6 tests). **Next, the owner's call:** publish (merge to the
 branch Pages serves) and Stage 3 (OQ19); B10's harvest is still to finish.
 
-**Status (2026-11-02, latest): Stage 2 audited in full** (`analysis/claude-audit/261102/INDEX.md`). The owner asked for
+**Status (2026-11-02): Stage 2 audited in full** (`analysis/claude-audit/261102/INDEX.md`). The owner asked for
 a new audit of all of Stage 2: review ChatGPT's Stage 2 audits, written before passes 1 to 5, and continue to the end,
 in the same format, leaving the website for another pass. Eight files, one per notebook section, and an index. Of
 ChatGPT's 115 Stage 2 findings (§1 to §4), the passes resolved 20, 19 hold in part and 76 hold; none was wrong. The

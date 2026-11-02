@@ -54,10 +54,12 @@ lens, with the owner setting the order.
    Australians' usual month; the innovation patent's closure, 4.31 times, then 95.9% fewer), four steps and two
    pauses, and several changes with nothing visible (U28). These are the raw material for the natural experiments
    the later questions need.
-7. **Owners keep patents longer than they used to; about half of trade marks are renewed at ten years.** Standard
-   patents' median years in force rose from 10.7 (1980s) to 13.5 (2000s and 2010s); 46.9% to 56.4% of trade marks
-   were still in force after ten years (U36). The owner adopted years in force as a working measure for Stage 2,
-   alongside other signals.
+7. **Later patent cohorts are more often still in force; about half of trade marks are in force after ten years.**
+   Standard patents' median years in force rose from 10.6 (1980s and 1990s) to 13.5 (2000s and 2010s), and 53.2% to
+   67.5% were in force after ten years; 46.9% to 56.3% of trade marks were (U36). These are shares on the register,
+   not renewal decisions or value. The owner adopted years in force as a working measure for Stage 2, alongside
+   other signals. (Restated 2 November 2026, ADR 0041: each right is now counted from its grant, and cohorts follow
+   the Acts; it read "owners keep patents longer", with medians 10.7 to 13.5.)
 8. **Australia's research is used, but mostly abroad.** 93.6% of US patent citations to Australian research
    institutions' work come from inventions with no Australian applicant or inventor (U85). Nationally, research
    intensity peaked in 2008 (gross R&D 2.24% of GDP) and has fallen to 1.68% (2023), below the OECD median of 1.85%;
@@ -258,8 +260,9 @@ Every patent, trade mark, design and plant breeder's right in IP RAPID, 1904 to 
   within those years (U32). Expedited patent examination rose from 1.87% (FY2005) to 10.31% (FY2026); IP RAPID's
   trade mark expedite events fell from about 1,400 to about 230 a month in November 2018, when the records moved
   between systems; the events for priority-claiming marks moved to the register, and requests did not fall (U34,
-  U103). About one standard patent in seven and one trade mark in five is assigned (U35). Owners keep patents
-  longer than they did and renew about half of trade marks at ten years (U36). Extensions of term are rare (1,450,
+  U103). About one standard patent in seven and one trade mark in five is assigned (U35). Later patent cohorts are
+  more often in force at 10 and 15 years, and about half of trade marks are in force after ten (U36; shares on the
+  register, not renewal decisions). Extensions of term are rare (1,450,
   U37). Two timeline puzzles were resolved: the 2002 trade mark trough (the gap between two Acts' first terms and the
   2000 filing peak, U38) and April design lapses (how lapses were dated, U39).
 - **How rights came to Australia (the links).** IP RAPID labels 93.88% of PCT numbers as Australian, so a priority's
@@ -440,7 +443,8 @@ explanation.
 5. **Policy leaves fingerprints.** Rushes, steps and pauses around rule changes (U28, U3, U33) offer before-and-after
    comparisons, the starting point for the natural experiments Q5 needs. Fees, the lever IP Australia holds most
    directly, are not yet in the data (R3).
-6. **Signs of a right's value.** Lifetimes have lengthened for patents and shortened for trade marks (U36), and
+6. **Candidate signs of a right's value.** Lifetimes on the register have lengthened for patents and shortened for
+   trade marks (U36: shares still in force, which need other evidence before they are read as value), and
    ownership changes are common (U17, U35). How widely a patent is filed and how often it is cited (U93, U94) add two
    more signs of private value (Q1), to read beside years in force, which is now a working measure.
 7. **The record has a history.** System migrations, Acts and classifications change what is recorded: survivors and
@@ -467,8 +471,11 @@ The decisions Stage 1 made about how each variable may be used.
 - Representation uses agents of five or more applicants, with bounds for trade marks (U20).
 - For patents filed before FY2003, `assignment_count` is an incomplete indicator of a change of owner, its coverage
   unknown (from FY2003, about two-thirds of recorded holder changes have one) (U35).
-- Lifetimes come from survival curves with unfinished rights kept; trade marks and designs are observed to 31 March
-  2026 (U31, U36).
+- Lifetimes come from survival curves with unfinished rights kept, each right counted from its grant or
+  registration (rights recorded as ending before it left out), cohorts by the date the term runs from and by the Act
+  (designs before 17 June 2004 apart; second-tier patents by subtype); trade marks and designs are observed to 31
+  March 2026 (U31, U36; ADR 0041). A patent ends on the record six months after the anniversary it was not renewed
+  at, a trade mark or design at the anniversary, so "in force after N years" is stated by right.
 - Trade mark expedites are compared across November 2018 as requests (IP RAPID's events), and priority-claiming marks
   with either record; the register's unrequested events are kept apart (U103, revising U34's first decision).
 - A patent priority's office is read from its number, not IP RAPID's label (U88); `filing_route` names the first route
@@ -738,7 +745,7 @@ All descriptive.
 | U33 | rights (events) | Patent examination lengthened to FY2006 and shortened since |
 | U34 | rights (events) | More patent applicants ask for speed; trade marks' expedite events moved record in November 2018, requests did not fall (U103) |
 | U35 | rights (events) | One standard patent in seven and one trade mark in five has a recorded assignment |
-| U36 | rights (events) | Patents kept longer; about half of trade marks renewed at ten years |
+| U36 | rights (events) | Later patent cohorts more often in force; about half of trade marks in force after ten years (shares on the register) |
 | U37 | rights (events) | Extensions of term are rare: 1,450 |
 | U38 | rights (events) | The 2002 trade mark trough explained |
 | U39 | rights (events) | April design lapses explained |
