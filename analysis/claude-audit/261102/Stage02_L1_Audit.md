@@ -139,7 +139,8 @@ reconciling them.
 
 **Action:** Read B8 with B11 and B12, as A1 asks: compare years in force within reach bands (Australia only, two to
 four offices, five or more), which the lens allows, before carrying an origin gap; say in §8 that the signals disagree.
-Whether B8 stays a Stage 3 signal is the owner's call (OQ24). Evidence: `fb8284f8`, `7bb3ecee`, `de334709`;
+The owner has decided (A22, 2 November 2026): B8 stays a Stage 3 signal only as that comparison within reach bands,
+worded as the share still in force and read beside B11 and B12. Evidence: `fb8284f8`, `7bb3ecee`, `de334709`;
 `docs/owner-questions.md` (A1).
 
 ### R34 | High | B10, §1.9, summary: representation "on the record at any time" includes the renewal itself

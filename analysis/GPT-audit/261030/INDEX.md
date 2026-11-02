@@ -74,7 +74,8 @@ Total: 348 findings (215 High, 133 Medium).
 
 - Stage 2 §5 to §8: **now audited** in `analysis/claude-audit/261102/` (2 November 2026, a Claude Code session), which
   also rechecks the four Stage 2 audits here against the amended notebook (of their 115 findings, 20 resolved by the
-  passes, 19 holding in part, 76 holding) and checks `docs/stage-2-summary.md`. For Stage 2, start at its `INDEX.md`.
+  passes, 19 holding in part, 76 holding) and checks `docs/stage-2-summary.md`. The owner adopted it as the working
+  list for Stage 2 (A24): start at its `INDEX.md`.
 - `03_multivariate.ipynb` (Stage 3), `docs/stage-1-summary.md` and the evidence atlas, which every audit puts out of
   scope.
 

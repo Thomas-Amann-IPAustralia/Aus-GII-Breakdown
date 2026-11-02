@@ -2,6 +2,22 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
+**The owner's decisions (2026-11-02, A22 to A24):** the full Stage 2 audit (`analysis/claude-audit/261102/`) is the
+working list for Stage 2, in place of ChatGPT's four Stage 2 audits (A24); the survival pass comes next, with the fix to
+the halves (S2 S8 R07), in a fresh session with a fresh context window (A23); and B8 stays a Stage 3 signal only as a
+comparison within reach bands, worded as the share still in force and read beside B11 and B12 (A22, answering OQ24).
+
+**Brief for the next session: the survival pass (A23).** Work from the table "The survival theme in one place" in
+`analysis/claude-audit/261102/INDEX.md` (16 findings: S2 L1 R11 to R15, R30, R32 to R36; S2 L5 R04 to R06; S2 S8 R03 and
+R05), with Stage 1's findings on the same theme (S1 L0-L1 R20, R21 and S8-S9 R10, in `analysis/GPT-audit/261030/`, which
+the audit did not recheck), and the fix to the halves (S2 S8 R07: one hash function for every half; then B35's GII
+split, B50, B58 and B59 again). As in passes 1 to 5: check each finding against the code, the lenses and both notebooks
+before changing anything; correct at the source (`build.py`, `bivariate.py`, `screens.yaml`, `GLOSSARY.md`) so that one
+fix carries everywhere; re-execute the notebooks; restate each observation with a dated line; carry the changes into
+§1.9, §5.7, §8, both stage summaries and U36. For B8, follow A22. Record it as pass 6 in
+`analysis/GPT-audit/261030/AMENDMENTS.md`, so one log holds every pass, citing findings as the audit does (the earlier
+numbers are shared), with an ADR (0041). The website stays a separate pass.
+
 **The owner's decision (2026-10-29, A16):** update the website with all of Stage 2's findings and changes (done, ADR
 0035). **(2026-10-28):** begin Stage 2 (A14); update the website only once all of Stage 2 is finished.
 **The owner's decisions (2026-10-26):** address the three remaining `rights` attachments (done: the links, Google
@@ -46,10 +62,12 @@ divisions' filing; B62's six ratios on one denominator; and the summary document
 used elsewhere", which its own body contradicts. For the survival theme, next on the list, the index gathers 16 findings
 in one table: the screen treats unfinished lifetimes as finished (B4), "in force after N years" means different things
 for patents and trade marks, survival is read as renewal and value against U36 and A1, and B10 compares renewal by a
-representation measure that renewal itself can create. OQ24 asks the owner whether B8 stays a Stage 3 signal (A1's
-"alongside other signals"). Pointers added in `CLAUDE.md`, `README.md` and the earlier batch's `INDEX.md`. No notebook,
-code or website changes. **Next, the owner's call:** the survival pass from the index's table (and OQ24), the hash fix
-(S2 S8 R07), the web pass, OQ19 (Stage 3).
+representation measure that renewal itself can create. OQ24 asked whether B8 stays a Stage 3 signal (A1's "alongside
+other signals"); the owner answered the same day (A22, below). Pointers added in `CLAUDE.md`, `README.md` and the
+earlier batch's `INDEX.md`. No notebook, code or website changes. **The owner's decisions (2026-11-02, A22 to A24):**
+yes to all three: B8 stays a signal only within reach bands; the survival pass next, with the hash fix, in a fresh
+session; this audit is the working list for Stage 2. **Next:** the survival pass, from the brief at the top; then the
+web pass and OQ19 (Stage 3), the owner's call.
 
 **Status (2026-11-02): audit pass 5, recorded ownership read at two endpoints** (A21, ADR 0040,
 `analysis/GPT-audit/261030/AMENDMENTS.md`). The theme "recorded ownership changes read as complete ownership

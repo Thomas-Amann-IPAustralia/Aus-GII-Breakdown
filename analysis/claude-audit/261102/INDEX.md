@@ -5,6 +5,11 @@ An audit of all of Stage 2 (`analysis/notebooks/02_bivariate.ipynb`, §1 to §8)
 before the notebook was amended, and continue the audit to the end of Stage 2, in the same format. The folder name is
 the batch's date.
 
+**The owner's decisions (2 November 2026):** this batch is the working list for Stage 2, in place of ChatGPT's four
+Stage 2 audits, whose files stay the source of the Issue and Action text for findings marked "Holds" (A24); the
+survival pass comes next, with S2 S8 R07's fix to the halves, in a fresh session (A23); and B8 stays a Stage 3 signal
+only as a comparison within reach bands, read beside B11 and B12 (A22, which answers OQ24).
+
 ## What this audit is, and is not
 
 - **A recheck and a continuation.** The ChatGPT batch (`analysis/GPT-audit/261030/`) audited §1 to §4 of this notebook
@@ -12,7 +17,7 @@ the batch's date.
   there. This batch checks each of those 115 findings against the notebook as it now stands, and audits §5 to §8 for
   the first time. It also checks `docs/stage-2-summary.md` against the notebook, since §8 calls it "the fuller account".
 - **Review input, not adopted conclusions.** A finding is a claim to check, and acting on it is the owner's direction
-  (`CLAUDE.md`, working agreement). One finding needs the owner's decision before it can be acted on (OQ24).
+  (`CLAUDE.md`, working agreement). The one finding that needed the owner's decision (OQ24) has it: A22.
 - **Read further than the earlier batch, but not re-run.** Besides the notebook's text, code and saved outputs, this
   audit read the helpers and definitions the notebook relies on (`analysis/eda/bivariate.py`, `univariate.py`,
   `build.py`, `variables.yaml`, `screens.yaml`, ADR 0030), which settles several of the earlier batch's
@@ -70,7 +75,7 @@ new).
 
 1. **S2 S8 R07, two hash functions.** A back-end inconsistency, and the cause of S2 L3 R02 and S2 L2 R28: one fix
    corrects the halves of B50, B58, B59 and B35's GII split.
-2. **The survival theme, next on the owner's list** (the cluster below), starting with S2 L1 R33 (OQ24), R12, R32, R11
+2. **The survival theme, next on the owner's list** (the cluster below), starting with S2 L1 R33 (decided: A22), R12, R32, R11
    and R34.
 3. **Later additions not carried back** in the sections no earlier audit covered: S2 L5 R01, S2 L6 R01, S2 S8 R01 and
    R06.
@@ -89,7 +94,7 @@ should take, with the Stage 1 findings in the earlier batch that belong to the s
 | S2 L1 R11 | High | §1.2, §1.4 | What "in force after N years" measures: eligibility (`in_force`), ends without dates left out, patents' ends dated at the end of grace but trade marks' at the anniversary, the harmless rounding, and cohorts by application year against a clock from the date of patent |
 | S2 L1 R12 | High | §1.2, B8, B10, B14, §1.9 | Survival read as renewal and as value, against U36 ("not value") and the glossary; immortal time before grant |
 | S2 L1 R32 | High | B4 | The screen treats unfinished lifetimes as finished; B4's medians are not survival medians |
-| S2 L1 R33 | High | B8, §8, summary | Survival carried alone, against A1's condition; reach and citations point the other way (OQ24) |
+| S2 L1 R33 | High | B8, §8, summary | Survival carried alone, against A1's condition; reach and citations point the other way. Decided (A22): keep B8 only within reach bands, beside B11 and B12 |
 | S2 L1 R34 | High | B10 | Representation "at any time" includes the renewal |
 | S2 L1 R14 | High | B13 | "Simpson's paradox" not shown |
 | S2 L1 R15 | High (in part) | B14 | Expedite meaning, missing priority counts, points against a 0-to-1 threshold |
