@@ -93,3 +93,42 @@ def test_site_lists_of_text_hold_only_text(atlas):
     assert all(isinstance(g[k], str) for g in site["next"]["data_gaps"] for k in ("gap", "why", "source", "cost"))
     # every outcome Stage 3 uses has a plain-English meaning
     assert set(atlas["verdicts"]) <= set(site["verdict_words"])
+
+
+def _markdown_copies():
+    import shutil
+    import subprocess
+
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node is not installed")
+    script = build.ROOT / "analysis" / "atlas" / "markdown_check.mjs"
+    out = subprocess.run([node, str(script)], capture_output=True, text=True, check=True).stdout
+    return [json.loads(line) for line in out.splitlines()]
+
+
+def test_each_page_has_a_markdown_copy_with_its_chart_as_a_table(atlas):
+    # The "Copy as Markdown" button (evidence/js/markdown.js): every page's copy carries its words, its trail and,
+    # for a page with a chart, the chart's numbers as a table, one per view
+    by = {o["id"]: o for o in atlas["observations"]}
+    copies = _markdown_copies()
+    assert [c["id"] for c in copies] == list(by)
+    for c in copies:
+        o, md = by[c["id"]], c["md"]
+        assert md.startswith(f"# {o['id']}: "), o["id"]
+        for heading in [
+            "## Follow the evidence",
+            "### Step 1 of 4",
+            "### Step 4 of 4",
+            "## Assumptions and limits",
+            "## What happens next",
+            "## For analysts: the notebook's own words",
+        ]:
+            assert heading in md, (o["id"], heading)
+        assert all(f"[{s['title']}]" in md or s["title"] in md for s in (atlas["sources"][x] for x in o["sources"]))
+        assert "[[" not in md and not build._ID.search(md), o["id"]  # the site's markup is turned into Markdown
+        assert c["chart"] == bool(o.get("chart")), o["id"]
+        if c["chart"]:
+            assert "## Chart" in md and all(n > 0 for n in c["rows"]), o["id"]
+            # a table's rows: one per category and view, beside the key figures, verdicts and source tables
+            assert md.count("\n| ") >= sum(c["rows"]), o["id"]

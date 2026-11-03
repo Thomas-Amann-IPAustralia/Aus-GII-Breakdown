@@ -2,8 +2,9 @@
 // analysis/atlas/build.py) and each chart's JSON on demand. All text reaches the page as text nodes; the light markup
 // in the content (**bold**, [[term]], {U44}, {B6}, {M3}, `code`) is turned into elements here, never parsed as HTML.
 
-import { el, initTheme } from "../../assets/js/util.js";
+import { download, el, initTheme } from "../../assets/js/util.js";
 import { chartCard, sweep } from "./charts.js";
+import { observationMarkdown } from "./markdown.js";
 
 const $ = (s, r = document) => r.querySelector(s);
 const main = $("#main");
@@ -243,6 +244,50 @@ function chartSlot(id, opts = {}) {
     }).catch(() => slot.replaceChildren(el("p.muted.small", "The chart could not be loaded.")));
   }
   return slot;
+}
+
+// the Markdown copy of an observation page (markdown.js), with the chart's numbers as a table
+async function chartSpec(id) {
+  if (!chartCache[id]) {
+    const r = await fetch(`data/charts/${id}.json`);
+    if (!r.ok) throw new Error(String(r.status));
+    chartCache[id] = await r.json();
+  }
+  return chartCache[id];
+}
+async function markdownOf(o) {
+  const chart = o.chart ? await chartSpec(o.chart).catch(() => null) : null;
+  return observationMarkdown(o, { atlas: A, chart, base: location.href.split("#")[0] });
+}
+function say(text) {
+  const live = $("#live");
+  if (live) { live.textContent = ""; requestAnimationFrame(() => { live.textContent = text; }); }
+}
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch { /* no clipboard: the older way */ }
+  const t = el("textarea", { style: { position: "fixed", opacity: "0" } }, text);
+  document.body.append(t);
+  t.select();
+  let ok = false;
+  try { ok = document.execCommand("copy"); } catch { ok = false; }
+  t.remove();
+  return ok;
+}
+function markdownTools(o) {
+  const label = (b, text) => { b.lastChild.textContent = text; };
+  const copy = el("button.btn.small", { type: "button", title: "Copy this page as Markdown: the observation, its chart's numbers as a table, the evidence trail, sources, limits and explainers" }, icon("copy"), el("span", "Copy as Markdown"));
+  const save = el("button.btn.small", { type: "button", title: `Download this page as ${o.id}.md` }, icon("source"), el("span", "Download .md"));
+  copy.addEventListener("click", async () => {
+    const ok = await copyText(await markdownOf(o));
+    label(copy, ok ? "Copied" : "Could not copy");
+    say(ok ? `Observation ${o.id} copied as Markdown.` : "The browser did not allow copying; use Download .md instead.");
+    setTimeout(() => label(copy, "Copy as Markdown"), 2000);
+  });
+  save.addEventListener("click", async () => {
+    download(`${o.id}.md`, await markdownOf(o), "text/markdown;charset=utf-8");
+    say(`Observation ${o.id} downloaded as ${o.id}.md.`);
+  });
+  return el("div.md-tools", { role: "group", "aria-label": "Take this page as Markdown" }, copy, save);
 }
 
 // ------------------------------------------------------------------------------------------------ pages
@@ -545,7 +590,8 @@ function observationPage(id) {
 
   const head = el("header.obs-head",
     el("div.meta", el("span.id", o.id), lensChip(o.lens), stageChip(o), el("span", o.section.replace(/`/g, "")), strengthBadge(o.strength), aboutLabel(o)),
-    el("h1", o.headline));
+    el("h1", o.headline),
+    markdownTools(o));
   const chain = o.stage === 3 ? chainBlock(o) : null;
   const box = el("section.obs-box", { "aria-label": `Observation ${o.id}` },
     el("div.obs-label", icon("eye"), `Observation ${o.id} · ${o.strength}`),
