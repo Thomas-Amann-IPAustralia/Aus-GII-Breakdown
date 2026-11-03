@@ -19,7 +19,9 @@ notebooks, not the GitHub webpage." What the review found and did:
 - **A helper fault:** `multi.adjusted_effect` returned a meaningless clustered interval, silently, when two held
   factors picked out the same rows (a patent with no field has no class count either). It now refits on the
   independent columns (a test covers it). Notebook 3 was re-run in full before and after the new sections: every
-  earlier output is identical.
+  earlier output is identical. A last full run found one new cell (352-mix, M31's change between Censuses) whose
+  resampled intervals moved in the third decimal between runs (row order and the parallel sums' last digits); its
+  rows are now sorted and rounded to 10 decimals, three runs agree, and M31 quotes the result (-0.204, not -0.203).
 - **Two sources in no lens:** the Labour Force Survey (`abs_labour`) and the IP judgments (`fedcourt`), planned for the
   timeline, were never attached, so they had no profile, pair or model. Now in the timeline (86 columns): `employed`,
   `unemployment_rate`, `participation_rate`, `owner_managers`, `ip_judgments` (and on patents, on trade marks, January
