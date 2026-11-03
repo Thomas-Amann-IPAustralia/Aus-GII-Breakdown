@@ -38,8 +38,8 @@ in_brief:
     **Four things do not agree** (below). Three change how an observation should be read; none overturns one.
   - >-
     **Two questions close or narrow.** The jump in innovation patents in 2016 ({U67}) was a real rise that IP
-    Australia reported itself. The fall in first-time trade mark filers ({U45}) is a fall in linking filers to their
-    ABNs, not in filing.
+    Australia reported itself. The fall in first observed trade mark filers ({U45}) is mostly a fall in linking filers
+    to their ABNs, not in filing.
 
 method:
   - title: Find what IP Australia has published
@@ -179,7 +179,7 @@ notes:
     complete as this observation says for 2014 to 2025. For designs, IP Australia knows the origin of more
     applications than IP RAPID publishes (D1).
   U3: >-
-    IP Australia also describes the rush to file before [[raising-the-bar]] in 2013 and the 13% fall in 2014 that
+    IP Australia also describes the rush to file before [[raising-the-bar|Raising the Bar]] in 2013 and the 13% fall in 2014 that
     followed, and the rush before the innovation patent closed.
   U5: >-
     IP Australia's yearly application counts match, with one exception: trade marks filed in 2018, of which IP RAPID
@@ -231,13 +231,15 @@ notes:
     the Bar to keep the old rules.
   U36: >-
     IP Australia found the same fall in trade mark [[renewal|renewals]]: around 70 per cent were renewed after their
-    first ten years in the 1980s, and 50 per cent in the 2000s. This observation found 67.3% and 46.9%.
+    first ten years in the 1980s, and 50 per cent in the 2000s. This observation found 67.0% (filed 1983 to 1989) and
+    46.9% (2000s) still in force after ten years.
   U44: >-
     IP Australia also describes Australian patenting as concentrated: around 3,100 businesses hold a patent in a year.
   U45: >-
     IP Australia reports record trade mark filings by Australians in 2025 (55,913). Counted by applicant rather than
-    by ABN, first-time Australian trade mark filers rose from 22,838 in 2024 to 28,626 in 2025. So the fall this
-    observation found is in linking filers to their ABNs, not in filing.
+    by ABN, first-time Australian trade mark filers rose from 22,838 in 2024 to 28,626 in 2025. So most of the fall
+    this observation found is in linking filers to their ABNs, not in filing; IP Australia's own register restores
+    most of the link ({U100}).
   U48: >-
     Shares the figure disputed under {U13}: IP Australia's 55.6% of residents' applications filed by individuals in
     2022, which Stage 1's data cannot reproduce (D3).
@@ -265,7 +267,7 @@ notes:
     IP Australia found a similar share of universities' international patent applications filed with a collaborator
     (21%, 2000 to 2015), and notes that universities were less prominent among leading filers in 2025.
   U89: >-
-    IP Australia's counts of patents arriving through the [[pct]] match within 0.35%.
+    IP Australia's counts of patents arriving through the [[pct|PCT]] match within 0.35%.
   U90: >-
     IP Australia reports the same shift away from the PCT (66.7% of standard applications in 2025) and says direct
     filings have expanded, particularly among domestic innovators, which supports this observation's lead.
@@ -303,13 +305,15 @@ conclusions:
     strength: Research commissioned by IP Australia; an association.
     adds: >-
       {U34} (expedited requests, 1.87% to 10.31%) and {U36} (years in force) are the same two measures: a pair for
-      Stage 2 that would repeat the finding with open data. Stage 2 found it holds for overseas organisations only;
-      pooled, it is a change in who asks ({B13}).
+      Stage 2 that would repeat the finding with open data. Stage 2 found expedited patents slightly more often in
+      force after 10 years, pooled, in both periods; the link differs by filer and is not explained by who asks, and
+      "expedited" mixes urgent requests with work-sharing ({B13}).
   - id: C4
     claim: The innovation patent did not meet its goal of serving small businesses.
     strength: IP Australia's and the Productivity Commission's research.
     adds: >-
-      {U7}: Australians' share of second-tier patents fell from 79.2% to 87.4% (FY1990 to FY2010) to 16.1% in FY2021.
+      {U7}: Australians' share of second-tier patents fell from 79.2% to 87.4% (FY1990 to FY2010) to about one in six
+      in FY2021, when overseas applicants filed before the closure.
   - id: C5
     claim: Raising the Bar increased competition and follow-on invention, unevenly across fields.
     strength: Research commissioned by IP Australia.
@@ -317,7 +321,7 @@ conclusions:
   - id: C6
     claim: Clutter on the trade mark register is not an immediate concern, though falling renewals are a possible source.
     strength: IP Australia's own measures.
-    adds: "{U36} confirms the fall in renewals; Stage 1 cannot measure whether marks are used."
+    adds: "{U36} shows the fall in the share of trade marks still in force after ten years; Stage 1 cannot measure whether marks are used."
   - id: C7
     claim: IP rights do not significantly raise market concentration.
     strength: A statistical model; an association.
@@ -351,8 +355,8 @@ changes:
   - Trade mark series flag 2018 (D2).
   - Innovation patent counts include standard patents converted into innovation patents, as IP Australia's later reports do ({U67}).
   - Stage 2's look at the innovation patent's closure includes Australians' standard patents in 2021 and 2022 ({U28}).
-  - From FY2025, first-time filers are counted by applicant as well as by ABN ({U45}).
-  - "A new pair for Stage 2: expedited examination against how long patents are kept (C3). Done: it holds for overseas organisations only ({B13})."
+  - From FY2025, first observed filers are counted with the business numbers IP Australia's register holds ({U45}, {U101}).
+  - "A new pair for Stage 2: expedited examination against how long patents are kept (C3). Done: slightly more often in force, pooled, in both periods, and it differs by filer ({B13})."
   - Any comparison with IP Australia's figures counts calendar years, and Australian applications the way IP Australia does.
 
 questions_intro: >-

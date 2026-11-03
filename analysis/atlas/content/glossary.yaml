@@ -607,8 +607,26 @@ replication:
   group: stats
   title: Replication (a second sample)
   short: >-
-    Checking a pattern again on different data: rights filed a decade earlier, or the other random half of the firms
+    Checking a pattern again on different units: rights filed a decade earlier, or the other random half of the firms
     or places. A pattern that appears in one sample only may be chance or a quirk of that period.
+  more: >-
+    Where a lens has few units (19 industry divisions, about 110 research institutions, 36 OECD members), the second
+    look is at the same units in another period. That is a [[stability-check|stability check]], not a replication.
+stability-check:
+  group: stats
+  title: Stability check
+  short: >-
+    A second look at the same units at another time: the same countries a decade earlier, the same 19 industry
+    divisions a year later, mostly the same research institutions seven years earlier. Units keep their traits, so
+    agreement is expected whatever the relationship. It shows a pattern is stable, not that it holds in an independent
+    sample.
+no-association:
+  group: stats
+  title: No association detected
+  short: >-
+    The wording used when a link between two measures is weak, or does not pass the correction for many tests: the
+    data cannot tell it from chance at this sample size. It is not evidence that there is no link, unless an interval
+    rules out any link that would matter.
 interval:
   group: stats
   title: Interval (95%)

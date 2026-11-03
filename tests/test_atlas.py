@@ -54,6 +54,13 @@ def test_numbers_rule_catches_a_number_the_notebook_does_not_show():
     assert build.check_numbers({**ok, "points": ["about 4.4 million"]}, nb) == ["4.4"]
 
 
+def test_chart_shape_catches_a_label_split_at_its_comma():
+    # In a YAML flow list an unquoted "Standard patent, division" is two labels, so the bars no longer line up
+    split = {"type": "bar", "x": {"values": ["Standard patent", "division"]}, "series": [{"name": "s", "data": [0.9]}]}
+    assert build.chart_shape("U74", split) == ["U74: chart series 's' has 1 values for 2 categories"]
+    assert build.chart_shape("U74", {**split, "x": {"values": ["Standard patent, division"]}}) == []
+
+
 def test_site_lists_of_text_hold_only_text(atlas):
     # A colon followed by a space turns an unquoted YAML list item into a mapping, which the page cannot render
     site = atlas["site"]

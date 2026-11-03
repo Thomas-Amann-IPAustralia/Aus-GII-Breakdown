@@ -28,6 +28,7 @@ export function fmt(v, format, digits) {
   const d = digits ?? (format === "pct" ? 1 : Math.abs(v) < 10 && !Number.isInteger(v) ? 2 : 0);
   switch (format) {
     case "pct": return `${nf(d).format(v)}%`;
+    case "share": return `${nf(digits ?? 1).format(v * 100)}%`; // a proportion (0 to 1) shown as a percentage
     case "money": return `$${nf(d).format(v)}`;
     case "moneym": return `$${nf(d).format(v)} m`;
     case "year": return String(Math.round(v));
@@ -38,6 +39,7 @@ export function fmt(v, format, digits) {
 function axisFmt(format) {
   return (v) => {
     if (format === "pct") return `${nf(1).format(v)}%`;
+    if (format === "share") return `${nf(0).format(v * 100)}%`;
     if (format === "year") return String(v);
     if (format === "money" || format === "moneym") return `$${compact(v)}${format === "moneym" ? " m" : ""}`;
     return compact(v);

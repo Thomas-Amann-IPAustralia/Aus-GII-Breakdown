@@ -8,18 +8,20 @@
   statement: >-
     The table holds 2,641 postal areas and 25,365,506 people, with every count complete. Applications are counted where
     the filer was; the filer's and holder's postcodes differ for 6.05% of standard patents and 7.6% of trade marks.
-    Individuals filed 21.53% of standard patents and 41.07% of provisional applications from Australia.
+    Individuals filed 21.43% of standard patents and 41.05% of provisional applications from Australia.
   figures:
     - value: "2,641"
       label: postal areas
-    - value: "21.53%"
+    - value: "21.43%"
       label: of standard patents filed by individuals
-    - value: "41.07%"
+    - value: "41.05%"
       label: of provisional applications filed by individuals
   points:
     - "SEIFA scores are missing for 17 areas (99.36% filled); Census medians for 1 to 34 areas (rent: 34 areas with no
       renters)."
-    - "Individuals also filed 24.97% of trade marks, 20.71% of designs and 43.11% of second-tier patents."
+    - "Individuals also filed 24.96% of trade marks, 20.67% of designs and 43.1% of second-tier patents. Whether a
+      filing is an individual's is read from the first founding applicant in Australia, the party whose postcode is
+      counted."
     - "A rate per business counts organisations' filings only, because the business count holds no individuals."
   questions:
     - q: 2
@@ -34,7 +36,7 @@
     y: {name: "% filed by individuals", min: 0, format: pct, digits: 2}
     series:
       - name: Filed by individuals
-        data: [43.11, 41.07, 24.97, 21.53, 20.71]
+        data: [43.1, 41.05, 24.96, 21.43, 20.67]
     source: IP Australia, IP RAPID (lens regions)
   prep:
     - what: Applications are counted at the postcode of the first founding applicant in Australia, over FY2017 to FY2026.
@@ -71,7 +73,11 @@
     - "2052 (NewSouth Innovations, 84.6% of its 749 patents and provisionals), 3800 (Monash University, 97.5% of 445),
       2006 (the University of Sydney, 95.4% of 417), 3010 (the University of Melbourne, 87.2% of 352)."
     - "Trade marks are placed more often: 96.43% fall in postal areas, 1.7% in real codes with no residents."
-    - "So universities' patents are mostly missing from the postal-area counts; they stay in the state totals."
+    - "So many universities' patents are missing from the postal-area counts; they stay in the state totals. {U87}
+      measures it: 742 of the universities' 1,474 standard patent applications with a filer's postcode (50.34%, FY2017
+      to FY2026) carry a real code with no residents."
+    - "4072, the University of Queensland's postcode, holds 360; its commercialisation company UniQuest filed 6.1%,
+      and most have no filer's ABN."
   questions:
     - q: 2
       how: Without this, places with universities would look as if they filed far less than they do.
@@ -88,10 +94,11 @@
   assumptions:
     - A postcode in a delivery range with registered businesses but no residents is a real place, such as a campus.
   limits:
-    - These patents cannot be placed in an area without a lookup of where each code is.
+    - These patents cannot be placed in an area without a lookup of where each code is; that lookup has not been done,
+      so the postal-area counts leave them out (ADR 0017).
   next: >-
-    The institutions lens counts universities' patents directly ({U87}); Stage 2 checks whether regional results are
-    sensitive to them.
+    The institutions lens counts universities' patents directly ({U87}). Placing them in postal areas through the
+    institutions' locations is proposed, not done, so regional comparisons are read without them.
   terms: [postal-area]
   related: [U87, U48, U81]
 
@@ -238,8 +245,8 @@
       patents, 2113 (61.8)."
   questions:
     - q: 2
-      how: Real differences between places are the starting point for asking who is underserved; chance cannot explain
-        them away.
+      how: Places differ by more than chance alone would give, the starting point for asking which places are
+        underserved.
     - q: 4
       how: Areas far below the national rate are candidates, later, for asking whether something holds them back.
   sources: [iprapid, abs_regions]
@@ -269,25 +276,28 @@
 - id: U54
   lens: regions
   about: system
-  headline: Half of R&D claimants have never filed for IP, and claimants are rarer outside the cities
+  headline: About half of R&D claimants have no filing linked to their business number, and claimants are rarer outside the cities
   statement: >-
-    Of 17,627 active R&D Tax Incentive claimants placed in a postal area, 50.7% have never filed IP as a founding
-    applicant. There are 5.6 claimants per 1,000 businesses in major cities, 2.4 in inner regional, 1.8 in outer
-    regional, 1.3 in remote and 0.6 in very remote areas.
+    Of 17,627 active R&D Tax Incentive claimants placed in a postal area, 48.3% have no IP filing linked to their
+    business number, and 44.7% have no link to IP of any kind. Neither shows that a claimant never filed. There are
+    5.6 claimants per 1,000 businesses in major cities, 2.4 in inner regional, 1.8 in outer regional, 1.3 in remote and
+    0.6 in very remote areas.
   figures:
-    - value: "50.7%"
-      label: of R&D claimants have never filed IP
+    - value: "48.3%"
+      label: of R&D claimants have no IP filing linked to their ABN
     - value: "5.6 vs 0.6"
       label: claimants per 1,000 businesses, major cities against very remote
   points:
-    - "Claimants outside the cities have more often never filed IP (59.6% in outer regional areas, against 50.4% in the
-      cities)."
-    - "IP-filing firms: 49.7 per 1,000 businesses in the cities, against 19.0 to 29.3 elsewhere."
-    - "These are counts by registered address, not necessarily where the R&D is done."
+    - "Claimants in outer regional and remote areas more often have no filing linked (57% and 56.5%, against 48% in
+      the cities); inner regional areas are close to the cities (49.4%), and very remote areas hold only 11 claimants."
+    - "Firms with a filing linked: 63.3 per 1,000 businesses in the cities, against 24.7 to 38.3 elsewhere."
+    - "**Why \"no filing linked\" is not \"never filed\".** A firm can file without its business number being
+      recorded, or under a related company."
+    - "These are counts by registered address, often a head office, not necessarily where the R&D is done."
   questions:
     - q: 4
-      how: Firms doing R&D that never use the IP system ('missing filers') are an obvious group to ask about later, for
-        barriers IP Australia could ease.
+      how: Firms doing R&D with no filing linked are a group worth asking about later, for barriers IP Australia could
+        ease; some of them may file under another entity.
     - q: 3
       how: R&D without IP is one of the alternatives to registration Q3 asks about.
   sources: [rdti, iprapid, abr, abs_regions, linkage]
@@ -302,43 +312,50 @@
         data: [5.6, 2.4, 1.8, 1.3, 0.6]
     source: ATO R&D Tax Incentive; ABR; IP RAPID (lens regions)
   prep:
-    - what: Firms are placed by their business register postcode; "never filed" means never a founding applicant with
-        this ABN.
-      why: Filing is credited to the business that filed (ADR 0016).
+    - what: Firms are placed by their business register postcode. "No filing linked" means no application is linked to
+        the claimant's ABN by IP RAPID's filer's ABN or IP Australia's register (ADR 0036); "no link to IP" means also
+        no right held, no other IP record and no IPLORD link.
+      why: Filing is credited to the business that filed (ADR 0016), and a count of linked filings can only show what
+        the records link.
   steps:
-    - Count active claimants and IP-filing firms in each postal area.
-    - Count claimants who never filed IP.
+    - Count active claimants and firms with a filing linked in each postal area.
+    - Count claimants with no filing linked, and with no link to IP of any kind.
     - Group by remoteness and divide by businesses.
   assumptions:
-    - A claimant with no IP under its own ABN has not filed; filings under a related company's ABN are missed.
+    - A claimant's own ABN is the one its filings would carry; filings under a related company's ABN, or with no ABN,
+      are missed.
   limits:
     - "A lower bound on IP use: firms' IP counts are lower bounds ({U41})."
   next: >-
-    Stage 2 studies 'missing filers' by place and industry.
+    Stage 2 studies claimants with no filing linked, by place and by firm ({B23}, {B27}).
   terms: [rdti, remoteness, lower-bound]
   related: [U41, U47, U53]
 
 - id: U55
   lens: regions
   about: data
-  headline: Five more area sources add 22,511,923 values, nearly every one for nearly every postal area
+  headline: Seven area sources add 28,960,234 values, nearly every one for nearly every postal area
   statement: >-
-    The companion table holds 22,511,923 values: 8,874 indicator-periods from the Census, Data by Region, PHIDU's social
-    health atlas, business counts (CABEE) and the Clean Energy Regulator. The median indicator reaches 2,634 to 2,641 of
-    the 2,641 postal areas.
+    The companion table holds 28,960,234 values: 11,379 indicator-periods from seven sources. The first five (the
+    Census, Data by Region, PHIDU's social health atlas, business counts and the Clean Energy Regulator) hold
+    22,511,923; the ATO's postcode tables (2012-13 to 2023-24) and the Census time series (2011 to 2021) were added
+    after Stage 2. The median indicator reaches 2,634 to 2,641 of the 2,641 postal areas.
   figures:
-    - value: "22,511,923"
+    - value: "28,960,234"
       label: attached values
-    - value: "8,874"
-      label: indicator-periods
+    - value: "11,379"
+      label: indicator-periods, from seven sources
   points:
+    - "ATO postcode tables: 4,602,252 values, 1,806 indicator-periods. Census time series: 1,846,059 values, 699
+      indicator-periods."
+    - "Values are what was taken from each source's selected tables, not everything the source publishes."
     - "Census: 2,993 cells of 14 tables (2021). Data by Region: 774 items in 12 years. PHIDU: 2,368 indicators over 22
       periods. CABEE: 260 business counts for June 2023, 2024 and 2025. Clean Energy Regulator: 11 series over 26 years."
     - "0.05% of Data by Region's values and 0.11% of PHIDU's are empty."
   questions:
     - q: 2
       how: Gives Stage 2 a wide range of local conditions (education, health, industry, income) to compare with filing.
-  sources: [abs_census, abs_regions, phidu, abs_cabee, cer]
+  sources: [abs_census, abs_regions, phidu, abs_cabee, cer, ato_postcode, abs_census_tsp]
   chart: U55
   prep:
     - what: Values published for SA2s or PHIDU's areas reach postal areas through their 2021 residents; Census and Clean
@@ -364,7 +381,7 @@
   statement: >-
     Data by Region's 2021 population, split from larger areas, is within 10% of the direct count for 99.34% of postal
     areas of 1,000 people or more. CABEE's June 2025 business count is 0.742 of the register's active GST businesses, but
-    ranks areas almost alike (Spearman 0.988): they count different things.
+    ranks areas almost alike (a rank correlation of 0.988): they count different things.
   figures:
     - value: "99.34%"
       label: of areas within 10% of the direct population count
@@ -516,12 +533,12 @@
   about: data
   headline: PHIDU's health and social indicators are mostly rates, for many different periods
   statement: >-
-    54.14% of PHIDU's indicators are levels (mostly standardised ratios and percentages), the rest counts, mostly of
-    people. Periods differ by indicator: 702 indicators are for 2022/23, 359 for 2021, 234 for 2024 and 225 for 2019 to
-    2023.
+    1,297 of PHIDU's 2,368 indicators are levels (mostly standardised ratios and percentages), 54.14% of its
+    indicator-periods; the rest are counts, mostly of people. Periods differ by indicator: 702 indicators are for
+    2022/23, 359 for 2021, 234 for the 2024 estimated population and 225 for 2019 to 2023.
   figures:
-    - value: "54.14%"
-      label: of PHIDU's indicators are rates or ratios
+    - value: "1,297 of 2,368"
+      label: of PHIDU's indicators are levels (rates or ratios)
     - value: "702"
       label: indicators for 2022/23
   points:
@@ -553,8 +570,8 @@
   headline: Small-scale energy installations moved from solar water heaters to solar panels to batteries
   statement: >-
     Solar water heaters fell from 122,312 installations in 2009 to 18,505 in 2025. Solar panels went from 62,831 in 2009
-    to 360,423 in 2011, 370,287 in 2020 and 272,395 in 2025. Batteries, recorded from July 2025, numbered 339,457 in 2026
-    to September.
+    to 360,423 in 2011, 370,287 in 2020 and 272,395 in 2025. Batteries first appear in the records in 2025: 207,305 that
+    year and 339,457 in 2026 to September.
   figures:
     - value: "339,457"
       label: batteries installed in 2026 to September
@@ -646,6 +663,16 @@
     - q: 2
       how: Adds incomes and business owners by place, to set beside where filing happens.
   sources: [ato_postcode]
+  chart:
+    type: bar
+    title: Individuals lodging tax returns with business income
+    subtitle: Share of individuals lodging, first and latest income year
+    x: {type: category, values: [2012-13, 2023-24]}
+    y: {name: "% with business income", min: 0, max: 15, format: pct, digits: 2}
+    series:
+      - name: With business income
+        data: [8.59, 10.36]
+    source: ATO taxation statistics, individuals by postcode (lens region_indicators)
   prep:
     - what: The ATO's Table 6 by postcode and income year; an item labelled only "Number of individuals" in some
         years is read as a count.
@@ -685,6 +712,16 @@
     - q: 2
       how: Lets change in education and income be set beside change in filing ({B59}).
   sources: [abs_census_tsp, abs_census]
+  chart:
+    type: bar
+    title: People aged 15 and over with a bachelor degree or higher
+    subtitle: Share across Australia's postal areas, from the Census time series
+    x: {type: category, values: ["2011", "2021"]}
+    y: {name: "% of people 15 and over", min: 0, max: 40, format: pct, digits: 2}
+    series:
+      - name: Bachelor degree or higher
+        data: [18.84, 26.32]
+    source: ABS Census time series profile (lens region_indicators)
   prep:
     - what: Each Census's SA2 values apportioned to 2021 postal areas.
       why: Areas' boundaries change between Censuses; apportioning puts all three on one map.

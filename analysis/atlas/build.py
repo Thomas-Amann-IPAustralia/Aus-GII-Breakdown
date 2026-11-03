@@ -105,6 +105,18 @@ def check_numbers(obs: dict, nb: notebook.Observation) -> list[str]:
     return sorted(missing, key=lambda n: (len(n), n))
 
 
+def chart_shape(oid: str, chart: dict) -> list[str]:
+    """A quoted chart's series must hold one value per category (an unquoted label with a comma splits in two)."""
+    xs = chart.get("x", {}).get("values")
+    if xs is None or chart.get("type") not in ("bar", "line", "range"):
+        return []
+    return [
+        f"{oid}: chart series '{s.get('name')}' has {len(s.get('data', []))} values for {len(xs)} categories"
+        for s in chart.get("series", [])
+        if len(s.get("data", [])) != len(xs)
+    ]
+
+
 def load_yaml(name: str):
     return yaml.safe_load((CONTENT / name).read_text(encoding="utf-8"))
 
@@ -204,6 +216,7 @@ def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tu
                     problems.append(f"{oid}: numbers not on the notebook's page: {', '.join(missing)}")
             chart = o.pop("chart", None)
             if isinstance(chart, dict):
+                problems += chart_shape(oid, chart)
                 chart = {"id": oid, **chart}
                 if write:
                     CHARTS.mkdir(parents=True, exist_ok=True)

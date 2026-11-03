@@ -1,0 +1,1 @@
+{"id":"U113","type":"bar","title":"The Reserve Bank's cash rate target","subtitle":"Three points in its record","x":{"type":"category","values":["September 1990","December 2020","September 2026"]},"y":{"name":"Cash rate target (%)","min":0,"format":"pct","digits":2},"series":[{"name":"Cash rate target","data":[14,0.1,4.36]}],"source":"Reserve Bank of Australia (lens timeline)"}

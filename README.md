@@ -82,7 +82,7 @@ raw files pass through a cache outside the repo (`$IPHOLMES_CACHE`, default `~/.
 | `analysis/claude-audit/` | A full audit of Stage 2's notebook by a Claude Code session, rechecking the external Stage 2 audits and continuing them to §8; start at `analysis/claude-audit/261102/INDEX.md` |
 | `CLAUDE.md`, `GLOSSARY.md`, `docs/adr/` | How Claude sessions work here, the plain-English glossary, and the decision records |
 | `tests/` | The rules, and the committed data against the manifest |
-| `evidence/`, `analysis/atlas/` | The evidence atlas (the Stage 1 observations for non-technical readers) and the code that builds it from the notebook and its plain-English content (`analysis/atlas/content/`) |
+| `evidence/`, `analysis/atlas/` | The evidence atlas (every Stage 1 and Stage 2 observation, for readers who are not data scientists) and the code that builds it from the notebooks and its plain-English content (`analysis/atlas/content/`) |
 | `index.html`, `assets/` | The GII breakdown page (Australia in the Global Innovation Index 2026), kept from the earlier site; it reads a frozen summary in `assets/data/`, and will be rebuilt on the corpus |
 
 ## Credentials

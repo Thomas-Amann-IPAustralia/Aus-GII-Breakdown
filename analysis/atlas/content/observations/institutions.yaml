@@ -17,20 +17,23 @@
   points:
     - "84 institutions filed a standard patent, 112 a trade mark."
     - "Government contracts from 2005 (few before 2007)."
-    - "So Stage 2 can relate research to IP over 2010 to 2024, and grants to IP from 2001 (ARC) or 2013 (NHMRC)."
+    - "The NSRC's research commercialisation survey, added after Stage 2, covers 2000 to 2015 for 82 institutions
+      ({U122}), ending before research output begins."
+    - "So Stage 2 can relate research to IP over 2010 to 2024, grants to IP from 2001 (ARC) or 2013 (NHMRC), and
+      commercialisation to IP over 2000 to 2015 only, a separate window ({B62})."
   questions:
     - q: 1
       how: Research institutions are a main route from public research to invention; this says over which years they can be studied.
-  sources: [ror, openalex, arc_grants, nhmrc_grants, iprapid, austender]
+  sources: [ror, openalex, arc_grants, nhmrc_grants, iprapid, austender, nsrc]
   chart:
     type: range
     title: Which years each institutions measure covers
-    x: {type: category, values: [IP and patent families, ARC grants, Government contracts, Research output (OpenAlex), NHMRC grants]}
+    x: {type: category, values: [IP and patent families, Commercialisation survey (NSRC), ARC grants, Government contracts, Research output (OpenAlex), NHMRC grants]}
     y: {name: Year, min: 1985, max: 2030, format: year}
     series:
       - name: Years covered
-        data: [[1990, 2026], [2001, 2026], [2005, 2026], [2010, 2026], [2013, 2026]]
-    source: OpenAlex; ARC; NHMRC; IP RAPID; AusTender (lens institutions)
+        data: [[1990, 2026], [2000, 2015], [2001, 2026], [2005, 2026], [2010, 2026], [2013, 2026]]
+    source: OpenAlex; ARC; NHMRC; IP RAPID; AusTender; NSRC (lens institutions)
   prep:
     - what: Each institution is identified by its Research Organization Registry (ROR) record; the table runs by
         calendar year.
@@ -202,9 +205,12 @@
     - value: "481"
       label: standard patents filed by CSIRO, 2017 to 2026
   points:
-    - "Filing with others: 16.63% of CSIRO's standard patents have another filer, Sydney's 42.95%."
-    - "Provisionals: 6.01% to 9.83% over the same periods, then 4.86% in 2025 and 2026, when individuals' provisional filing
-      doubled ({U8})."
+    - "70 of the 130 institutions filed a standard patent; the top ten filed 63.4%."
+    - "Filing with others: 16.63% of CSIRO's standard patents have another founding applicant, Sydney's 42.95% and
+      South Australia's 43.40%; across the lens, 24.3% to 34.2% by five-year period."
+    - "Provisionals: 6.01% to 9.83% over the same periods, then 4.86% in 2025 and 2026, when provisional filing
+      doubled, mostly from individuals ({U8}). The universities file 1.29 (Griffith) to 2.58 (Sydney) provisionals per
+      standard application."
   questions:
     - q: 1
       how: Measures how much of Australia's own patenting comes from publicly funded research.
@@ -220,7 +226,8 @@
     - For each five-year period, count standard patents filed from Australia and those by the institutions.
     - Rank institutions by standard patents filed 2017 to 2026.
   assumptions:
-    - The reviewed link finds all the institutions' filings.
+    - The reviewed link between institutions and their names and business numbers finds their filings; no one in the
+      sector has yet reviewed it (OQ11), so some may be missed.
   limits:
     - A count of patents says nothing about their use or licensing.
   next: >-
@@ -231,25 +238,33 @@
 - id: U85
   lens: institutions
   about: system
-  headline: US patents often cite Australian institutions' research, but almost always from inventions with no Australian link
+  headline: US patents often cite the institutions' research; few of the citing patents have an Australian applicant or inventor
   statement: >-
-    93.6% of US patent citations to the institutions' research come from inventions with no Australian applicant or
-    inventor. Per 1,000 works published 2010 to 2014, US patents cite 107.7 of medical research institutes' works, 64.56 of
-    public research agencies' and 43.26 of universities'.
+    Per 1,000 works published 2010 to 2014, US patents cite 107.7 of medical research institutes' works, 64.56 of
+    public research agencies' and 43.26 of universities'. 93.6% of these citations come from US patents with no
+    Australian applicant or inventor; most US patents have no Australian party, whatever they cite.
   figures:
-    - value: "93.6%"
-      label: of citations come from inventions with no Australian link
     - value: "107.7"
-      label: medical research institutes' works cited per 1,000
+      label: medical research institutes' works cited by a US patent, per 1,000
+    - value: "93.6%"
+      label: of the citations come from US patents with no Australian party
   points:
-    - "Peter MacCallum 161.5, QIMR Berghofer 140.9, the Florey 119.3; Melbourne leads the universities (64.25)."
-    - "Works published in 2010 drew 26,933 US patent citations; 2024's 268, because citations accumulate for years."
-    - "97.0% of the institutions' standard applications filed 2000 to 2024 are found in Google Patents."
+    - "Peter MacCallum 161.5, QIMR Berghofer 140.9, the Florey 119.3, Data61 115.1; Melbourne leads the universities
+      (64.25)."
+    - "Works published in 2010 drew 26,933 US patent citations; 2024's 268, because citations accumulate for years, so
+      recent years are not comparable."
+    - "**What this does not show.** The citing patents are US patents only, and a citation (often added by an examiner
+      or an attorney) is not use. So this is not a measure of where Australian research is used."
+    - "The counts are lower bounds: about 5.6% more patent-cited Australian works are missing from the harvest ({U121})."
+    - "97.0% of the institutions' standard applications filed 2000 to 2024 are found in Google Patents, but only 4.3% of
+      their provisionals, which are rarely published."
   questions:
     - q: 1
-      how: Research used mostly by foreign inventions may create value mostly abroad, a central question for public value.
+      how: Where public research reaches invention bears on public value. This measure shows how often US patents cite
+        the research, and is clear about what a citation cannot show.
     - q: 4
-      how: The gap between Australian research and Australian invention is a lead for where intervention might help.
+      how: Sets out what citation counts can and cannot measure, before they are used to look for gaps between research
+        and invention.
   sources: [openalex_works, reliance_on_science, openalex, google_patents]
   chart:
     type: bar
@@ -272,11 +287,14 @@
     - Divide by works published.
     - Work out the share of citations from patents with an Australian applicant or inventor.
   assumptions:
-    - A patent's citation to a paper means the invention drew on it, at least in part.
+    - A citation shows a link between a patent and a paper; it may have been added by an examiner or an attorney, so it
+      is not evidence that the invention used the research.
   limits:
     - US patents only; recent works have had little time to be cited.
+    - The share from patents with no Australian party mostly reflects that most US patents have none.
   next: >-
-    Stage 2 sets Australian research cited by patents against Australian inventions that cite it.
+    Stage 2 related citations to the institutions' own patenting ({B45}, {B46}). Stage 3 is to compare citations in
+    fixed-age windows.
   terms: [citations, openalex]
   related: [U84, U94, U96]
 
@@ -294,7 +312,8 @@
     - value: "$1,433 million"
       label: to UNSW, the largest
   points:
-    - "Contracts number 1,000 to 1,835 a year from 2008: the institutions' records start in earnest in 2007."
+    - "Contracts number 38 in 2005 and 90 in 2006, then 979 to 1,835 a year from 2008: the institutions' records start
+      in earnest in 2007."
     - "Single large contracts move the yearly value ($1,637 million in 2019)."
   questions:
     - q: 3
@@ -387,11 +406,13 @@
       label: Australian works in the harvest
   points:
     - "10 of the 23 were never cited by another paper; 12 are held under another id (a merged record)."
-    - "**Decision:** no re-harvest. An undercount of a few per cent spread over the institutions does not change their
-      order or {B45} and {B46}; Stage 3 notes it as a [[lower-bound]]."
+    - "**Decision:** no re-harvest. An undercount of a few per cent, if spread evenly over the institutions, would not
+      change their order or {B45} and {B46}. That is an assumption: the sample's 23 works are too few to test it by
+      institution. Stage 3 reads the counts as a [[lower-bound]]."
   questions:
     - q: 1
-      how: Confirms the measure of research used by inventors is close to complete.
+      how: Shows that the count of the institutions' works cited by US patents is close to complete, a few per cent
+        short.
   sources: [reliance_on_science, openalex_works]
   prep:
     - what: A random sample of patent-cited works not in the harvest, looked up in OpenAlex (about 200 calls, free).

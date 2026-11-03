@@ -11,7 +11,26 @@ comparison within reach bands, worded as the share still in force and read besid
 to the request to IP Australia (A26); next, later additions not carried back in §5 to §8, with policy and fees (A27,
 done as pass 7).
 
-**Status (2026-11-02, latest): pass 8, a final review of Stages 1 and 2** (the owner's request: an in-depth review
+**The owner's decisions (2026-11-02, A28 and A29):** correct the website now, in plain English with graphs where
+possible, with "Follow the evidence" precise enough for people in the IP ecosystem and nothing overstated (A28, done as
+the web pass below); and Stage 3 begins, after a break, by taking up the methods the final review listed (A29). The
+owner expects to open a pull request; publishing the pages (OQ19) waits on it.
+
+**Status (2026-11-03, latest): the web pass** (A28, ADR 0044). The evidence atlas matches the reviewed notebooks again.
+131 of 186 pages had changed since the atlas was built (29 October 2026); each was rewritten from its current notebook
+text (headline, statement, figures, points, chart, questions, preparation, steps, assumptions, limits), and the other 55
+were swept for withdrawn readings ("never filed", "renewed", "moved overseas", "no link") and jargon. Plain English in
+the main view; the precise definitions in "Follow the evidence" (the filer's origin and type, representation before
+the renewal, shares over every employer). 40 more pages have a chart (178 of 186, quoted charts checked by the numbers
+rule); a `share` chart format shows the notebooks' proportions as percentages; the build now checks each quoted chart's
+shape (`build.chart_shape`, after U74's labels split at a comma). The drawn-from-data charts use `founding_australian`,
+`founder_type`, `founder_country`, `ip_record` and U36's survival method (ADR 0041), and assert current figures. The
+framing pages (overview, the ten Stage 1 findings, "What Stage 2 found", limits, corrections, "What comes next", the
+lenses, the questions and the review against IP Australia) follow the notebooks. Checks: the strict build passes for all
+186 pages; the tests pass in full; ruff is clean; the pages render in Chromium at desktop and phone width with no console
+errors. **Next:** the owner's pull request and OQ19; then Stage 3, starting with the methods (A29).
+
+**Status (2026-11-02): pass 8, a final review of Stages 1 and 2** (the owner's request: an in-depth review
 before the website is updated; ADR 0043; the assessment is `docs/review-stages-1-and-2.md`; the record, finding by
 finding, is pass 8 in `analysis/GPT-audit/261030/AMENDMENTS.md`). All 186 observations were read against the outputs
 above them; both notebooks were re-run from a fresh build first (notebook 2 identical; notebook 1 identical but for two
