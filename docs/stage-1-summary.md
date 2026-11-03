@@ -693,11 +693,30 @@ profiled here before its pairs go to Stage 2:
 - **The PBS with Section 100 (gap B11; `pbs/monthly`; notebook 5.10, U123).** Section 100 is about 30% of the PBS's
   government cost ($6.33 billion in FY2026); the yearly CSVs leave it out.
 
-## 13. Where to find things
+## 13. Gaps filled in the review of all three stages (2026-11-03, A33, ADR 0048)
+
+At the owner's request every column of every lens, and every source, was checked for a profile. Four were missing,
+and are now in the notebook, as additions marked "added in the review" (no earlier observation is rewritten):
+
+- **The Labour Force Survey and the IP judgments (U124; notebook 5.11).** Neither was in any lens, so neither had a
+  profile. Both are now in the timeline (seven columns: employed persons, the unemployment and participation rates,
+  owner-managers, and IP judgments in all, on patents and on trade marks). Each is complete over its coverage
+  (February 1978, January 1991 and January 1995 on; the judgments end in February 2025 with the corpus). IP
+  judgments averaged 51.7 a year in 1995 to 2007 and 104.9 in 2008 to 2024. The same section profiles the shape of the
+  series added after Stage 2 that had only their coverage profiled: their largest falls are in 2020 (GDP -5.83% on a
+  year earlier) and, for Western Australia's demand, 2016 (-10.96%); the PBS peaks in December.
+- **Every fee column (U125; notebook 5.7).** The 13 fee components beside the six totals: complete from their first
+  month, 3 to 12 amounts each.
+- **Stage 3's name-match columns (U126; notebook 2.7).** Set only where they should be; they add 2.03% (standard
+  patents) to 7.59% (provisionals) to the counts by ABN, and one ABN has 827 standard patents found by name.
+- **`shared_with_institution` (U127; notebook 7.3).** Another institution co-files 10.98% of the institutions' patent
+  links and 3.5% of their trade mark links.
+
+## 14. Where to find things
 
 | What | Where |
 |---|---|
-| Every observation, with its chart and the output it quotes | `analysis/notebooks/01_univariate.ipynb` (section summaries 1.9, 2.6, 3.6, 4.5, 5.7, 6.5, 7.7; section 9) |
+| Every observation, with its chart and the output it quotes | `analysis/notebooks/01_univariate.ipynb` (section summaries 1.9, 2.8, 3.8, 4.7, 5.12, 6.7, 7.9; section 9) |
 | The plan, and where every table goes | `docs/eda-plan.md` |
 | Status, leads and conventions for the next session | `docs/handover-eda.md` |
 | Every decision and repair | `docs/adr/` (0001 to 0025) |
@@ -814,3 +833,7 @@ All descriptive.
 | U96 | rights (inventors) | Inventions filed from Australia are made here; few filed from overseas are |
 | U97 | rights (inventors) | Gender estimates match WIPO's for Australia, run high elsewhere, far too high for China and Korea |
 | U98 | rights (inventors) | About one inventor in seven in Australia is estimated to be a woman |
+| U124 | timeline | The Labour Force Survey and IP judgments, attached in the review; the shape of the series added after Stage 2 |
+| U125 | timeline | Every fee column, complete from its first month |
+| U126 | rights, firms | Stage 3's name-match columns, set only in scope; 2% to 8% beside the counts by ABN |
+| U127 | institutions | Another institution co-files 10.98% of the institutions' patent links |

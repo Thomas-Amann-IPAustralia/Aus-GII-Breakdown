@@ -143,7 +143,7 @@ the institutions screen; B45 universities; B46 the Australian links of the US pa
 B49 fee changes (added after Stage 2); B50, B51 firms' size and industry; B52 the dollar and the cash rate; B53, B54
 the crosswalk with services; B55 B11 again (families' coverage); B56 GDP and states' demand; B57 value added by
 division; B58 incomes by postcode; B59 change between Censuses; B60 innovation in 2024-25; B61 the GII's blanks; B62
-the NSRC.
+the NSRC. B63 the labour market and IP judgments (added in the review of 3 November 2026).
 
 ## 9. Data gaps filled after Stage 2 (2026-10-28, A15)
 
@@ -193,3 +193,15 @@ the NSRC.
   (0.617; 0.615) and patents with licence income (0.593; 0.525) in both 2004-2009 and 2010-2015. All six measures share
   one denominator, research expenditure, so the correlations are partly that denominator; not a test of patents as a
   sign of commercialisation (restated 2 November 2026, pass 8, ADR 0043; audit S2 L7 R02).
+
+## 10. Added in the review of all three stages (2026-11-03, A33, ADR 0048)
+
+The Labour Force Survey and the IP judgments were in no lens, so they had no Stage 2 pair; the review attached them to
+the timeline (notebook 1, U124) and adds **B63** (notebook 2, 5.7): year-on-year changes by quarter, as B52 and B56.
+The unemployment rate goes against overseas applicants' trade marks (-0.561 in 1991 to 2008, -0.224 after) and
+employment with them (0.466, 0.282); Australians' trade marks go against employment (-0.182, -0.332); IP judgments
+were not seen to move with oppositions. Australian individuals' provisionals per 1,000 owner-managers fell from 2.71
+(FY1992) to 0.6 (FY2024) and were 2.47 in FY2026, after U8's surge. No intervals here (serially dependent changes);
+notebook 3 resamples them in blocks (M36). Nothing else in this document changes: the Stage 2 readings that Stage 3
+revises are listed in `docs/stage-3-summary.md` and the handover, and notebook 2 keeps its wording until the owner
+lifts the website's freeze.

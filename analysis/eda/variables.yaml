@@ -426,3 +426,10 @@ timeline:
   pbs_government_cost: {label: PBS government cost, kind: money, unit: AUD, note: "as pbs_prescriptions: the government's contribution, current dollars"}
   pbs_s100_prescriptions: {label: PBS Section 100 prescriptions, kind: count, note: "as pbs_prescriptions, Section 100 only"}
   pbs_s100_government_cost: {label: PBS Section 100 government cost, kind: money, unit: AUD, note: "as pbs_government_cost, Section 100 only: about 30% of the total"}
+  employed: {label: Employed persons, kind: numeric, unit: thousands, note: "the Labour Force Survey (abs_labour/lf, measure M3): persons aged 15 and over, Australia, seasonally adjusted, monthly from February 1978 (added in the review of 3 November 2026)"}
+  unemployment_rate: {label: Unemployment rate, kind: rate, unit: per cent, note: "as employed (measure M13): unemployed persons as a share of the labour force, seasonally adjusted"}
+  participation_rate: {label: Participation rate, kind: rate, unit: per cent, note: "as employed (measure M12): the labour force as a share of the civilian population aged 15 and over, seasonally adjusted"}
+  owner_managers: {label: Owner-managers, kind: numeric, unit: thousands, note: "the Labour Force Survey by status in employment (abs_labour/lf_stat_emp): owner-managers of incorporated and unincorporated enterprises, with or without employees, by their main job; persons, original (not seasonally adjusted), monthly from January 1991; people, not businesses"}
+  ip_judgments: {label: IP judgments, kind: count, note: "decisions of the Federal Court, the Full Federal Court, the High Court and the Copyright Tribunal on IP (fedcourt/judgments), by the date of decision, January 1995 (when they become continuous) to February 2025 (the collection closed on 10 March 2025; empty after); a judgment can involve several rights"}
+  ip_judgments_patents: {label: IP judgments involving patents, kind: count, note: "as ip_judgments, those whose rights include patents"}
+  ip_judgments_trade_marks: {label: IP judgments involving trade marks, kind: count, note: "as ip_judgments, those whose rights include trade marks"}

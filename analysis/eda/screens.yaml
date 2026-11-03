@@ -480,6 +480,13 @@ timeline:
     pbs_government_cost: {skip: "as pbs_prescriptions"}
     pbs_s100_prescriptions: {skip: "as pbs_prescriptions"}
     pbs_s100_government_cost: {skip: "as pbs_prescriptions"}
+    employed: {skip: "the Labour Force Survey (added in the review of 3 November 2026): the labour market beside filing, as selected pairs (notebook 2, 5.8; notebook 3, 5.6); not a filing series"}
+    unemployment_rate: {skip: "as employed"}
+    participation_rate: {skip: "as employed"}
+    owner_managers: {skip: "as employed: the denominator for individuals who file (notebook 2, 5.8)"}
+    ip_judgments: {skip: "the IP judgments (fedcourt; added to the lens in the review of 3 November 2026): selected pairs with oppositions (notebook 2, 5.8; notebook 3, 5.6)"}
+    ip_judgments_patents: {skip: "as ip_judgments"}
+    ip_judgments_trade_marks: {skip: "as ip_judgments"}
   groups: {}
 
 industries:
