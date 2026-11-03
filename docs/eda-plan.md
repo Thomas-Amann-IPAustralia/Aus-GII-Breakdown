@@ -23,7 +23,9 @@ inventors, are built and profiled (U88 to U98, ADR 0022). **Stage 1 is complete:
 profile, summarised in `docs/stage-1-summary.md` (and section 9 of the notebook). **Stage 2 is complete (2026-10-28,
 A14)**, with the method of ADR 0030 (a screen of every pair of each lens and companion table, set in
 `analysis/eda/screens.yaml`, then the planned pairs of the Stage 1 summary's section 7): observations B1 to B46 in
-`02_bivariate.ipynb`, summarised in `docs/stage-2-summary.md`. Stage 3 begins when the owner says. This plan says what the exploratory
+`02_bivariate.ipynb`, summarised in `docs/stage-2-summary.md`. **Stage 3 began on 3 November 2026 (A32, ADR 0046):**
+its first pass covers every lens (M1 to M24 in `03_multivariate.ipynb`) and drafts the two tables, with the website
+frozen meanwhile. This plan says what the exploratory
 data analysis (EDA) covers, where each dataset fits, what each part needs before it starts, and which gaps are worth
 filling. Decisions are in `docs/adr/` (0002 to 0030); terms are in `GLOSSARY.md`.
 

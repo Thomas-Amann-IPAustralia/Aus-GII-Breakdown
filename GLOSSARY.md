@@ -258,6 +258,10 @@ Terms used in this project, in plain English. Add a term the first time the anal
 | **Gamma model** | A model for positive amounts that are skewed (a few very large contract values), reported as a ratio of averages. |
 | **Moving-block bootstrap** | A bootstrap for series over time: resamples are built from runs of consecutive periods (four quarters, say), so that neighbouring periods stay together, as they are alike. Its intervals are wider, and more honest, than resampling single periods. |
 | **Effective sample size** | How many independent observations a series of dependent ones is worth: 40 quarters that each resemble the last may carry the information of 15 independent ones. |
+| **Exposure** | In a model of counts, what the count is a rate of (an area's residents, a university's works, an institution's research spend): the model then compares rates, not raw counts, without dividing every measure by the same number. |
+| **Age-compared (fixed-age) citations** | A work's citations set against the average for works of the same publication year, since an older work has had longer to be cited. Stage 3 compares institutions this way (M23). |
+| **STL (seasonal-trend decomposition)** | A way to split a series into a slowly changing trend, a pattern that repeats each year, and the remainder. Its *strength* measures (0 to 1) say how much less variable the series is once the trend or the season is taken out. |
+| **Tweedie model** | A model for amounts that are often zero and otherwise skewed, such as licence income. |
 | **Trend** | The long-run direction of a series over years, ignoring short ups and downs. |
 | **Seasonality** | A pattern that repeats every year, such as fewer applications over the Christmas holidays. |
 | **Moving average** | The average of the last few values (here, usually 12 months), redrawn each month. It smooths out seasons and one-off spikes. |

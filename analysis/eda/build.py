@@ -647,7 +647,7 @@ def rights_sql() -> str:
     """
 
 
-def name_match_sql(base: str) -> str:
+def name_match_sql(base: str, *, postcode: bool = False) -> str:
     """CTEs ending in `name_match`: an ABN found by name for each right of `base` whose filer is an Australian
     organisation and that has no filer's ABN (Stage 3's check of firms' counts, ADR 0045 and 0047). The filer's party
     (`filer_group`'s rule, ADR 0037: the first founding applicant in Australia) is taken with its name and state as
@@ -656,34 +656,40 @@ def name_match_sql(base: str) -> str:
     where the ABR gives that ACN one ABN); a match is kept only if exactly one ABN has the key and is registered in
     the filer's state. Tested on rights whose ABN is known (hidden, then recovered): 1.1% to 4.8% of matches name
     another ABN by type and decade, older designs 9.8% (ADR 0047). Kept apart: never in `filer_abn` or the `n_*`
-    counts."""
+    counts. With `postcode`, the postcode must agree too where both are known (ADR 0045's first rule, which the
+    test showed halves the matches for no gain in accuracy, ADR 0047)."""
+    pc = f"arg_min({_postcode('post_code')}, (since, party_id)) FILTER (country_code = 'au')" if postcode else "NULL"
+    pc_join = " AND (r.postcode IS NULL OR c.postcode IS NULL OR c.postcode = r.postcode)" if postcode else ""
     return f"""
     nm_founders AS (
-        SELECT ip_right_type, application_number, party_id, party_name, country_code, state_code,
+        SELECT ip_right_type, application_number, party_id, party_name, country_code, state_code, post_code,
                effective_from_date AS since,
                row_number() OVER (PARTITION BY ip_right_type, application_number, party_id
                                   ORDER BY effective_from_date, country_code NULLS LAST, post_code NULLS LAST,
-                                           state_code NULLS LAST) AS k
+                                           state_code NULLS LAST, party_name NULLS LAST) AS k  -- the name breaks
+                                           -- ties, so every build picks the same record of a party
         FROM {{iprapid/party}} WHERE party_role_category IN ('applicant', 'owner') AND is_founding
     ),
     nm_filer AS (
         SELECT ip_right_type, application_number,
                arg_min(party_name, (since, party_id)) FILTER (country_code = 'au') AS name,
                arg_min(upper(CASE state_code WHEN 'queensland' THEN 'qld' ELSE state_code END), (since, party_id))
-                   FILTER (country_code = 'au') AS state
+                   FILTER (country_code = 'au') AS state,
+               {pc} AS postcode
         FROM nm_founders WHERE k = 1 GROUP BY ALL
     ),
     nm_rights AS (
-        SELECT b.ip_right_type, b.application_number, {_name_key("f.name")} AS key, f.state
+        SELECT b.ip_right_type, b.application_number, {_name_key("f.name")} AS key, f.state, f.postcode
         FROM {base} b JOIN nm_filer f USING (ip_right_type, application_number)
         WHERE b.filer_group = 'australian_organisation' AND b.filer_abn IS NULL
     ),
-    nm_abr AS (SELECT abn, upper(state) AS state, entity_type, name FROM {{abr/abns}}),
+    nm_abr AS (SELECT abn, upper(state) AS state, {_postcode("postcode")} AS postcode, entity_type, name
+               FROM {{abr/abns}}),
     nm_acn AS (
         SELECT acn, any_value(abn) AS abn FROM {{abr/abns}} WHERE acn IS NOT NULL GROUP BY 1 HAVING count(*) = 1
     ),
     nm_candidates AS (
-        SELECT DISTINCT c.key, c.abn, a.state
+        SELECT DISTINCT c.key, c.abn, a.state, {"a.postcode" if postcode else "NULL AS postcode"}
         FROM (SELECT {_name_key("name")} AS key, abn FROM nm_abr WHERE entity_type <> 'IND' AND name IS NOT NULL
               UNION ALL
               SELECT {_name_key("n.company_name")}, coalesce(nullif(n.abn, ''), a.abn)
@@ -693,7 +699,7 @@ def name_match_sql(base: str) -> str:
     ),
     name_match AS (
         SELECT r.ip_right_type, r.application_number, any_value(c.abn) AS name_matched_abn
-        FROM nm_rights r JOIN nm_candidates c ON c.key = r.key AND c.state = r.state
+        FROM nm_rights r JOIN nm_candidates c ON c.key = r.key AND c.state = r.state{pc_join}
         GROUP BY ALL HAVING count(DISTINCT c.abn) = 1
     )"""
 

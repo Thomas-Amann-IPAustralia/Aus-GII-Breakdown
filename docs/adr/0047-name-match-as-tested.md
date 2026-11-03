@@ -40,6 +40,11 @@ standard patents, 8,275 designs), and every one has its filer's name in IP RAPID
 - **New rows for matched ABNs the lens does not hold:** it would change the lens's population and every earlier
   figure that counts firms.
 
+**Corrected the same day.** The first build of the match varied by a few rights between runs (trade marks filed FY2020
+to FY2026: 200,046 matched in one run, 200,038 in the next), because a party with two records on the same day that
+differ only in name could give either name. The name now breaks that tie, so every build gives the same match; the
+figures in section 2.5 are from the corrected build.
+
 **Consequences.** The `rights` lens gains one column and the `firms` lens four; `variables.yaml` and `screens.yaml`
 describe them (the name match is not screened). The build takes about a minute longer. U44, U45 and the firm leads
 are rerun with the matched links in section 2.5, without changing notebooks 1 and 2 (the website is frozen, A32).

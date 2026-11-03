@@ -460,7 +460,8 @@ def partial_corr_interval(
     rng = np.random.default_rng(seed)
     raw, part = [], []
     for _ in range(reps):
-        r = partial_corr(d.iloc[rng.integers(0, len(d), len(d))], x, y, controls, method=method)
+        with np.errstate(divide="ignore", invalid="ignore"):  # a resample can repeat one row's value throughout
+            r = partial_corr(d.iloc[rng.integers(0, len(d), len(d))], x, y, controls, method=method)
         raw.append(r["raw"])
         part.append(r["partial"])
     raw, part = np.array(raw, float), np.array(part, float)

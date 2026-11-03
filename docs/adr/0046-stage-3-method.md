@@ -35,8 +35,14 @@ skeleton of `03_multivariate.ipynb` (23 October 2026) predates Stage 2 and two o
      B29, reported as rate ratios;
    - the small lenses (36 OECD members, 19 divisions, about 110 institutions): partial rank correlations, with
      intervals from 1,000 resamples of the units; leads at most, as in Stage 2;
-   - the timeline: trend and season removed first (STL), then the review's block resampling.
-4. **Verdict words, in each sample.** A signal **holds** if its adjusted effect has the raw effect's direction, its
+   - lifetimes (a share still in force): a proportional hazards (Cox) model with delayed entry at grant, as Stage 2's
+     survival curves count each right (ADR 0041), reported as hazard ratios; a yes or no "in force at 10 years"
+     among granted rights was tried first and rejected, since it treats patents granted at different ages unequally,
+     and a landmark at five years kept too few of the older cohorts' patents;
+   - money (contract value, licence income): a gamma model, or a Tweedie model where there are zeros;
+   - the timeline: trend and season removed first (STL), then the review's block resampling; policy breaks as
+     interrupted time series with a trend and the month of the year held and Newey-West intervals.
+4. **Verdict words, in each sample** (ratios compared on a log scale). A signal **holds** if its adjusted effect has the raw effect's direction, its
    95% interval excludes zero and at least half of the raw size remains; it is **weakened** if the direction and
    interval hold but less than half remains; **not detected once held** if the interval includes zero; **reversed** if
    it changes direction with an interval that excludes zero. Where the raw association was not itself detected (its
