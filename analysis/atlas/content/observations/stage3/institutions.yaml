@@ -1,0 +1,268 @@
+# Stage 3, the institutions lens (section 7 of the multivariate notebook). Rules as in ../stage3/rights.yaml. The
+# institutions link has not been reviewed by someone in the sector (OQ11), which every result here rests on; about 40
+# universities and 60 to 84 institutions: leads at most, and the second period is a stability check.
+
+- id: M23
+  lens: institutions
+  about: system
+  headline: Among universities, size, citations, patent-cited research and grant success are largely one measure of research intensity
+  statement: >-
+    Among about 40 universities, each research measure goes with more patents per work on its own, but held together
+    none does so in both periods: size, citations, research that patents cite and ARC grant success are largely one
+    measure of research intensity. The share of works cited by patents holds in 2010 to 2016 (1.771 per standard
+    deviation) but not in 2017 to 2023 (1.157); size holds only in the later period.
+  figures:
+    - value: "1.771 and 1.157"
+      label: patents per work per standard deviation of the patent-cited share, held together (alone 1.701 and 1.422)
+    - value: "0.869 and 1.720"
+      label: size (works), held together, in the two periods
+    - value: "0.292 and 0.507"
+      label: citations and the patent-cited share against patents per work, compared at a fixed age (2017 to 2023)
+  points:
+    - "39 universities with 1,000 or more works in 2010 to 2016, 40 in 2017 to 2023; [[negative-binomial|negative
+      binomial]] rate ratios per standard deviation."
+    - "**Citations per work** (age-compared): 1.419 alone and 1.145 held; 1.151 and 0.994. **ARC grants per 1,000
+      works:** 1.420 and 0.979; 1.389 and 0.826. Not detected once held, in either period."
+    - "**Compared at a fixed age**, citations and the patent-cited share rank with patents per work at 0.292 and 0.507:
+      weaker than Stage 2's raw links (0.417 to 0.759), which mixed works of different ages."
+    - "The institutions link is unreviewed (OQ11)."
+  revisits:
+    - id: B45
+      signal: "Universities' patenting"
+      verdict: mixed
+      what: >-
+        Each measure goes with patents per work alone, but held together none does in both periods: the patent-cited
+        share holds in 2010 to 2016 only (1.771, then 1.157), size in 2017 to 2023 only (1.720).
+  held: [size (works, log), citations per work (age-compared), the share of works cited by patents (age-compared), ARC grants per 1,000 works]
+  verdicts:
+    - signal: Share of works cited by patents
+      detail: 1.701 and 1.422 alone; 1.771 and 1.157 held together
+      verdict: mixed
+    - signal: Size (works)
+      detail: 1.599 and 1.594 alone; 0.869 and 1.720 held together
+      verdict: mixed
+    - signal: Citations per work
+      detail: 1.419 and 1.151 alone; 1.145 and 0.994 held together
+      verdict: not detected once held
+    - signal: ARC grants per 1,000 works
+      detail: 1.420 and 1.389 alone; 0.979 and 0.826 held together
+      verdict: not detected once held
+  chart:
+    type: effect
+    title: "Universities' patents per work against four research measures"
+    subtitle: Rate ratios per standard deviation, each alone and all held together; 2010 to 2016; 95% intervals
+    x: {values: ["Share of works cited by patents", "Size (works)", "Citations per work", "ARC grants per 1,000 works"]}
+    y: {name: Rate ratio per standard deviation, format: ratio, digits: 2}
+    ref: 1
+    ref_label: no difference
+    series:
+      - name: Alone
+        colour: muted
+        data: [[1.701, 1.393, 2.077], [1.599, 1.265, 2.021], [1.419, 1.153, 1.746], [1.420, 1.119, 1.803]]
+      - name: Held together
+        colour: 0
+        data: [[1.771, 1.274, 2.461], [0.869, 0.530, 1.424], [1.145, 0.888, 1.476], [0.979, 0.731, 1.310]]
+    views:
+      - label: 2010 to 2016
+      - label: 2017 to 2023
+        subtitle: Rate ratios per standard deviation, each alone and all held together; 2017 to 2023; with intervals
+        series:
+          - name: Alone
+            colour: muted
+            data: [[1.422, 1.145, 1.768], [1.594, 1.255, 2.024], [1.151, 0.849, 1.562], [1.389, 1.105, 1.745]]
+          - name: Held together
+            colour: 0
+            data: [[1.157, 0.873, 1.535], [1.720, 1.066, 2.774], [0.994, 0.726, 1.360], [0.826, 0.551, 1.236]]
+    source: OpenAlex; Reliance on Science; ARC; IP Australia, IP RAPID (lens institutions); notebook 3, section 7.1
+  questions:
+    - q: 2
+      how: Among universities, which measure of research goes with patenting is not stable; research intensity as a whole does.
+    - q: 3
+      how: Grant success and citations add nothing beyond research intensity as conditions for a university's patenting.
+  sources: [openalex, openalex_works, reliance_on_science, arc_grants, iprapid, ror]
+  prep:
+    - what: Each university's standard patents over a period as a negative binomial model with its works as the [[exposure|exposure]] (so the result is patents per work).
+      why: Compares rates without dividing every measure by the same number.
+    - what: Citations per work and the share of works cited by patents are each compared with works of the same publication year ([[fixed-age|fixed age]]).
+      why: A 2012 work has had longer to be cited than a 2021 one; the final review asked for fixed-age windows.
+  steps:
+    - Model patents per work against each measure alone.
+    - Hold all four together, and read each rate ratio.
+    - Repeat in the other period, a stability check of the same universities.
+  assumptions:
+    - The reviewed list of universities' names and ABNs links each to its patents (unreviewed by the sector, OQ11).
+  limits:
+    - About 40 universities; leads at most.
+  next: >-
+    The tenth early signal: the sector review of the institutions link (OQ11). {M38} reads every kind of institution.
+  terms: [negative-binomial, exposure, fixed-age, rate-ratio, standard-deviation, stability-check, verdict-words]
+  related: [B45, M38, B44]
+
+- id: M24
+  lens: institutions
+  about: system
+  headline: At the same research spend, more patents are not seen to go with more licences or licence income
+  statement: >-
+    With research spend as the [[exposure|exposure]] rather than a shared divisor, most of Stage 2's commercialisation
+    links are not detected. Disclosures go with patents (1.242 per doubling), and patents with start-ups (1.321), in
+    2010 to 2015 only; patents go with neither licences executed nor licence income in either period. Stage 2's
+    correlations (0.617 and 0.615) were, as it warned, largely the shared denominator.
+  figures:
+    - value: "1.242"
+      label: patents per doubling of disclosures, 2010 to 2015 (1.068 in 2004 to 2009, not detected)
+    - value: "1.187 and 1.170"
+      label: licence income per doubling of patents, not detected in either period
+    - value: "0.617 and 0.615"
+      label: "Stage 2's correlations of disclosures with patents, on a shared denominator"
+  points:
+    - "64 institutions (2004 to 2009) and 61 to 66 (2010 to 2015) with $10 million or more of research spend."
+    - "**Start-ups against standard patents:** 0.937, then 1.321. **Licences executed:** 1.009 and 1.111."
+    - "Stage 2's patents against licence income were 0.593 and 0.525. The commercialisation signal is weak at this
+      level: at the same research spend, more patents are not seen to go with more licence income."
+  revisits:
+    - id: B62
+      signal: Disclosures, patents and licences
+      verdict: mixed
+      what: >-
+        With research spend as the exposure, disclosures go with patents (1.242) and patents with start-ups (1.321) in
+        2010 to 2015 only; licences and licence income are not detected in either period. B62's correlations were
+        largely the shared denominator.
+  held: [research spend (as the exposure)]
+  verdicts:
+    - signal: Standard patents against invention disclosures
+      detail: 1.068 (2004 to 2009), 1.242 (2010 to 2015)
+      verdict: mixed
+    - signal: Start-ups against standard patents
+      detail: 0.937, then 1.321
+      verdict: mixed
+    - signal: Licences executed against standard patents
+      detail: 1.009 and 1.111; both intervals include 1
+      verdict: not detected once held
+    - signal: Licence income against standard patents
+      detail: 1.187 and 1.170; both intervals include 1
+      verdict: not detected once held
+  chart:
+    type: effect
+    title: Commercialisation measures at the same research spend
+    subtitle: Rate ratios per doubling, with research spend as the exposure; 95% intervals
+    x: {values: ["Standard patents ~ invention disclosures", "Start-ups ~ standard patents", "Licences executed ~ standard patents", "Licence income ~ standard patents"]}
+    y: {name: Rate ratio per doubling, format: ratio, digits: 2}
+    ref: 1
+    ref_label: no difference
+    series:
+      - name: 2004 to 2009
+        colour: muted
+        data: [[1.068, 0.962, 1.185], [0.937, 0.768, 1.142], [1.009, 0.806, 1.262], [1.187, 0.832, 1.694]]
+      - name: 2010 to 2015
+        colour: 0
+        data: [[1.242, 1.100, 1.403], [1.321, 1.026, 1.701], [1.111, 0.971, 1.271], [1.170, 0.718, 1.907]]
+    source: National Survey of Research Commercialisation; IP Australia, IP RAPID (lens institutions); notebook 3, section 7.2
+    note: A ratio of 1.5 per doubling would mean twice the disclosures goes with 1.5 times the patents at the same research spend.
+  questions:
+    - q: 2
+      how: At the same research spend, institutions' patents are not seen to go with licence income, so patent counts are a weak sign of commercialisation here (the tenth early signal).
+  sources: [nsrc, iprapid, ror]
+  prep:
+    - what: Research expenditure as the exposure of a negative binomial model (the rate is per research dollar), with the other measure as a factor on its own scale (log2, so the ratio is per doubling); licence income as a [[tweedie|Tweedie model]].
+      why: Stage 2 correlated six measures each divided by the same research spend, so an institution with low reported spend was high on all six.
+  steps:
+    - Model each count per research dollar against the other measure, per doubling.
+    - Read each in 2004 to 2009 and 2010 to 2015, for institutions with $10 million or more of research spend.
+  assumptions:
+    - The NSRC's reported research spend is comparable across institutions.
+  limits:
+    - About 60 institutions; leads at most; the institutions link is unreviewed (OQ11).
+  next: >-
+    The tenth early signal: commercialisation data by field, and the sector review (OQ11).
+  terms: [exposure, rate-ratio, nsrc, tweedie, verdict-words]
+  related: [B62, M38]
+
+- id: M38
+  lens: institutions
+  about: system
+  headline: Across every kind of institution, research that patents cite goes with the institution's own patenting, kind and size held
+  statement: >-
+    Across universities, medical research institutes and other institutions with 1,000 or more works, research that
+    patents cite goes with more of the institution's own patents and provisionals per work, with kind, size, citations
+    and NHMRC grants held, in both periods: 2.307 and 1.644 times the patents per standard deviation. The share of US
+    patents' citations from patents with an Australian party goes with neither once size and kind are held.
+  figures:
+    - value: "2.307 and 1.644"
+      label: standard patents per work, per standard deviation of the patent-cited share, everything held
+    - value: "2.493 and 1.695"
+      label: provisionals per work, everything held
+    - value: "69 and 84"
+      label: institutions in 2010 to 2016 and 2017 to 2023
+  points:
+    - "69 institutions in 2010 to 2016 (39 universities, 17 medical research institutes, 13 others), 84 in 2017 to 2023
+      (40, 27, 17)."
+    - "**Standard patents per work:** 2.386 alone, 2.384 with kind and size held, 2.307 with citations and NHMRC too
+      (2010 to 2016); 2.027, 1.693 and 1.644 (2017 to 2023). Holds."
+    - "**Provisionals per work:** 2.076, 2.672 and 2.493; 2.019, 1.647 and 1.695. Holds."
+    - "**The Australian-linked share of US patents' citations** against patents per 1,000 works: 0.165 raw and 0.161
+      held; 0.298 and 0.135: not detected once held. Among universities alone ({M23}) the patent-cited share held only
+      in the earlier period; across every kind, with kind held, it holds in both."
+  revisits:
+    - id: B44
+      signal: Research that patents cite
+      verdict: holds
+      what: >-
+        Across every kind of institution, the patent-cited share goes with the institution's own patents per work with
+        kind, size, citations and NHMRC held (2.307 and 1.644 per standard deviation).
+    - id: B46
+      signal: Australian-linked citations
+      verdict: not detected once held
+      what: >-
+        The Australian-linked share of US patents' citations goes with neither patents per work (0.161 and 0.135 held)
+        nor the patent-cited share once size and kind are held: its later link was size and kind.
+  held: [the kind of institution, size (works), citations per work (age-compared), NHMRC grants per 1,000 works]
+  verdicts:
+    - signal: Standard patents per work against the patent-cited share
+      detail: 2.386 and 2.027 alone; 2.307 and 1.644 with everything held
+      verdict: holds
+    - signal: Provisionals per work against the patent-cited share
+      detail: 2.076 and 2.019 alone; 2.493 and 1.695 with everything held
+      verdict: holds
+    - signal: The Australian-linked share against patents per 1,000 works
+      detail: 0.165 and 0.298 raw; 0.161 and 0.135 held
+      verdict: not detected once held
+  chart:
+    type: effect
+    title: "Institutions' own patenting against the share of their research that patents cite"
+    subtitle: Rate ratios per standard deviation of the age-compared patent-cited share; 95% intervals
+    x: {values: ["Standard patents per work, 2010 to 2016", "Standard patents per work, 2017 to 2023", "Provisionals per work, 2010 to 2016", "Provisionals per work, 2017 to 2023"]}
+    y: {name: Rate ratio per standard deviation, format: ratio, digits: 2}
+    ref: 1
+    ref_label: no difference
+    series:
+      - name: Alone
+        colour: muted
+        data: [[2.386, 1.706, 3.337], [2.027, null, null], [2.076, null, null], [2.019, null, null]]
+      - name: Kind and size held
+        colour: 1
+        data: [[2.384, 1.649, 3.446], [1.693, 1.131, 2.536], [2.672, 1.738, 4.108], [1.647, 1.044, 2.599]]
+      - name: Citations and NHMRC held too
+        colour: 0
+        data: [[2.307, 1.569, 3.393], [1.644, 1.080, 2.505], [2.493, 1.666, 3.731], [1.695, 1.012, 2.837]]
+    source: OpenAlex; Reliance on Science; NHMRC; IP Australia, IP RAPID (lens institutions); notebook 3, section 7.3
+  questions:
+    - q: 1
+      how: Research that later patents draw on comes from institutions that patent more themselves, across every kind of institution.
+    - q: 2
+      how: Part of the tenth early signal; the Australian-linked share of US patents' citations is not a separate signal once size and kind are known.
+  sources: [ror, openalex, openalex_works, reliance_on_science, nhmrc_grants, google_patents_inventors, iprapid]
+  prep:
+    - what: Every institution with 1,000 or more works in a period (universities, medical research institutes and the rest together); standard patents and provisionals as negative binomial models with works as the exposure.
+      why: M23 took universities only; Stage 2's B44 was across every kind.
+  steps:
+    - Model patents per work against the age-compared patent-cited share alone.
+    - Hold kind and size, then citations and NHMRC grants too.
+    - Read B46's share against patents per work and the patent-cited share, with size and kind held.
+  assumptions:
+    - The kind of institution (university, medical research institute, other) is well recorded in the research register.
+  limits:
+    - The institutions link is unreviewed (OQ11); 69 to 84 institutions, leads at most.
+  next: >-
+    The tenth early signal: the sector review of the institutions link (OQ11).
+  terms: [negative-binomial, exposure, fixed-age, rate-ratio, standard-deviation, verdict-words]
+  related: [B44, B46, M23, M24]

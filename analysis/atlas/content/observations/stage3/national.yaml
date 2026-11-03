@@ -1,0 +1,277 @@
+# Stage 3, the national lens (section 4 of the multivariate notebook). Rules as in ../stage3/rights.yaml. Each
+# indicator is a member's mean over a period (2016 to 2020, then 2006 to 2010); the second period is a stability
+# check of the same countries, not a replication. 36 members give wide intervals: leads at most.
+
+- id: M17
+  lens: national
+  about: system
+  headline: Across OECD members the indicators spread over several dimensions; Australia is low on manufacturing and exports, high on education and new businesses
+  statement: >-
+    Across 35 OECD members, eleven indicators that are not IP measures spread over several dimensions rather than one:
+    the first [[principal-components|component]], income and research output, carries 24.7% of the variation and the
+    first four 73.4%. Australia sits at an edge of the second: little manufacturing and exporting, much tertiary
+    education and many new businesses. On these indicators its nearest members are Norway, New Zealand and Sweden.
+  figures:
+    - value: "-2.47"
+      label: Australia's score on the second component (manufacturing and trade against education and new businesses)
+    - value: "Norway, New Zealand, Sweden"
+      label: the members closest to Australia on the first four components (distances 1.21, 1.76 and 1.82)
+    - value: "24.7%"
+      label: of the variation carried by the first component (73.4% by the first four)
+  points:
+    - "**Less repetition than among places:** variance inflation is under 10 for every indicator (journal articles 8.3,
+      GDP per person 6.5, the rest 1.4 to 4.1)."
+    - "**The first component** is income and research output (GDP per person +0.53, journal articles +0.53, business
+      R&D +0.30); **the second** is manufacturing and trade (manufacturing +0.56, exports +0.34) against education and
+      new businesses (advanced education -0.39, new business density -0.34)."
+    - "**Australia on single indicators**, in standard deviations from the members' mean: manufacturing -1.57, exports
+      -1.06, business R&D -0.35; tertiary enrolment +1.78, new business density +1.75, journal articles +0.96, GDP per
+      person +0.64."
+    - "Then Denmark (2.44) and the United Kingdom (2.46). These are the natural first set for comparisons of Australia
+      with similar economies; they are similar on these eleven indicators, not on the IP system."
+  revisits:
+    - id: B32
+      signal: One development gradient across countries
+      verdict: refined
+      what: >-
+        Among OECD members the non-IP indicators spread over several dimensions (the first carries 24.7%, the first
+        four 73.4%), not one gradient; Australia sits at the edge of the second (-2.47).
+  held: ["nothing: a summary of eleven non-IP indicators across members"]
+  chart:
+    type: bar
+    horizontal: true
+    title: Australia against the OECD members, indicator by indicator
+    subtitle: Standard deviations from the members' mean, 2016 to 2020 (0 is the mean)
+    x: {values: [Tertiary enrolment, New business density, Journal articles, GDP per person, Business R&D, Exports, Manufacturing]}
+    y: {name: Standard deviations from the members' mean, format: signed}
+    series:
+      - name: Australia
+        data: [1.78, 1.75, 0.96, 0.64, -0.35, -1.06, -1.57]
+    views:
+      - label: Australia's profile
+      - label: The members most like Australia
+        subtitle: Distance from Australia on the first four components (smaller is closer)
+        x: {values: [Norway, New Zealand, Sweden, Denmark, United Kingdom]}
+        y: {name: Distance from Australia, min: 0}
+        series:
+          - name: Distance
+            data: [1.21, 1.76, 1.82, 2.44, 2.46]
+    source: World Bank, WDI; OECD (lens national); notebook 3, section 4.1
+  questions:
+    - q: 1
+      how: Names the members most like Australia on the economy's make-up, the natural comparison set for reading Australia's IP system.
+    - q: 4
+      how: Australia's low manufacturing and exporting, and high education and new businesses, are the context any comparison of IP outcomes must hold.
+  sources: [wdi, oecd, gii]
+  prep:
+    - what: Eleven indicators of each member that are not IP measures, means over 2016 to 2020; total R&D and researchers per million left out.
+      why: Business R&D is part of total R&D (their variance inflation was 116 and 95 together), and the World Bank's researchers series for Australia ends in 2010 (U63).
+  steps:
+    - Measure how far each indicator repeats the others, then summarise them as principal components.
+    - Place Australia on each component and each indicator.
+    - Find the members closest to Australia on the first four components.
+  assumptions:
+    - A member's mean over five years describes it for the period.
+  limits:
+    - Similar on these indicators is not similar on the IP system.
+  next: >-
+    The eighth early signal: use the nearest members as the comparison set for Australia's IP system.
+  terms: [principal-components, variance-inflation, standard-deviation, oecd-median]
+  related: [M18, B32, B33]
+
+- id: M18
+  lens: national
+  about: system
+  headline: Across OECD members, patenting at home follows business R&D at the same income and size; income adds nothing once R&D is held
+  statement: >-
+    Across OECD members, residents' patenting at home goes with business R&D with income and population held (a
+    [[partial-correlation|partial rank correlation]] of 0.715 in 2016 to 2020, 0.623 in 2006 to 2010), while income adds
+    nothing detectable once business R&D is held. Abroad, richer members file more at the same business R&D. Trade marks
+    go with income rather than R&D, and only in the later period. Australia's patenting is near what business R&D and
+    income together predict.
+  figures:
+    - value: "0.715 and 0.623"
+      label: patents at home against business R&D, income and size held (raw 0.853 and 0.795)
+    - value: "0.173 and 0.267"
+      label: patents at home against income, business R&D and size held (raw 0.639 and 0.660)
+    - value: "111.9%"
+      label: of predicted patenting, Australia 2016 to 2020, with business R&D and income (interval 18.24% to 686.4%)
+  points:
+    - "**Patents filed worldwide by residents:** with business R&D 0.910 raw and 0.811 held; 0.903 and 0.818. With income
+      0.827 and 0.637; 0.757 and 0.502. Both hold."
+    - "**Trade mark classes worldwide:** with business R&D 0.561 and 0.188, not detected once held; with income 0.656 and
+      0.435 in 2016 to 2020 (holds), 0.429 and 0.237 in 2006 to 2010 (not detected once held): the stability check does
+      not confirm it."
+    - "**Australia:** 104.9% of the patenting business R&D alone predicts (Stage 2's figure), 111.9% with income too, in
+      2016 to 2020; 55.22% and 53.76% in 2006 to 2010, also inside wide intervals. With 36 members, Australia's position
+      cannot be told from the line."
+    - "**Changes from 2006 to 2010 to 2016 to 2020** (34 members): patents against the change in business R&D 0.165 raw
+      and 0.130 with the change in income held: not detected either way, as Stage 2 found."
+  revisits:
+    - id: B33
+      signal: IP follows R&D and income
+      verdict: mixed
+      what: >-
+        For patents at home, business R&D holds (0.715 and 0.623) and income is not detected once held (0.173 and
+        0.267); abroad, both hold; trade marks follow income at most, in one period.
+    - id: B34
+      signal: Australia against the line; changes
+      verdict: not detected either way
+      what: >-
+        Australia files 104.9% to 111.9% of what the line predicts, inside wide intervals; changes in business R&D
+        against changes in patenting, 0.165 raw and 0.130 held, are not detected either way.
+  held: [GDP per person, population, "for patents and income: business R&D"]
+  verdicts:
+    - signal: Patents at home against business R&D
+      detail: 0.853 and 0.795 raw; 0.715 and 0.623 held
+      verdict: holds
+    - signal: Patents at home against income
+      detail: 0.639 and 0.660 raw; 0.173 and 0.267 held
+      verdict: not detected once held
+    - signal: Patents filed worldwide against business R&D, and against income
+      detail: 0.811 and 0.818 held (R&D); 0.637 and 0.502 held (income)
+      verdict: holds
+    - signal: Trade mark classes against business R&D
+      detail: 0.561 and 0.364 raw; 0.188 and 0.179 held
+      verdict: not detected once held
+    - signal: Trade mark classes against income
+      detail: 0.435 held in 2016 to 2020; 0.237 in 2006 to 2010
+      verdict: mixed
+  chart:
+    type: effect
+    title: Patenting and trade marks across OECD members, against business R&D and income
+    subtitle: Partial rank correlations, raw and with the other measure and population held; 2016 to 2020; 95% intervals from 1,000 resamples
+    x: {values: ["Patents at home ~ business R&D", "Patents at home ~ income", "Patents worldwide ~ business R&D", "Patents worldwide ~ income", "Trade mark classes ~ business R&D", "Trade mark classes ~ income"]}
+    y: {name: Rank correlation, format: signed, digits: 3}
+    ref: 0
+    ref_label: no association
+    series:
+      - name: Raw
+        colour: muted
+        data: [[0.853, 0.713, 0.923], [0.639, null, null], [0.910, null, null], [0.827, null, null], [0.561, null, null], [0.656, null, null]]
+      - name: Held together
+        colour: 0
+        data: [[0.715, 0.450, 0.848], [0.173, -0.316, 0.577], [0.811, 0.601, 0.895], [0.637, 0.335, 0.820], [0.188, -0.296, 0.589], [0.435, 0.009, 0.728]]
+    views:
+      - label: 2016 to 2020
+      - label: 2006 to 2010 (stability check)
+        subtitle: Partial rank correlations, raw and held together; 2006 to 2010; 95% intervals from 1,000 resamples
+        series:
+          - name: Raw
+            colour: muted
+            data: [[0.795, null, null], [0.660, null, null], [0.903, null, null], [0.757, null, null], [0.364, null, null], [0.429, null, null]]
+          - name: Held together
+            colour: 0
+            data: [[0.623, 0.266, 0.829], [0.267, -0.072, 0.567], [0.818, 0.559, 0.915], [0.502, 0.155, 0.722], [0.179, -0.302, 0.622], [0.237, -0.312, 0.638]]
+    source: OECD; WIPO, IP Statistics; World Bank, WDI (lens national); notebook 3, section 4.2
+  questions:
+    - q: 1
+      how: Across comparable economies, patenting at home follows business R&D, not income, which bears on what Australia's patenting reflects.
+    - q: 4
+      how: Part of the eighth early signal; Australia sits near the line, so its patenting is about what its business R&D predicts.
+  sources: [oecd, wipo_ipstats, wdi]
+  prep:
+    - what: Residents' patent applications per million people (at home, and worldwide by residents) and residents' trade mark classes worldwide, against business R&D as a share of GDP, with GDP per person and population held.
+      why: The pairs Stage 2 read, with the other measure held.
+  steps:
+    - Correlate the ranks of each pair, raw.
+    - Take out what income and population (or business R&D) explain from both, and correlate what is left, with intervals from 1,000 resamples of members.
+    - Read Australia against a model with business R&D and income together, and changes between the periods.
+  assumptions:
+    - The second period is a stability check of the same countries, not an independent sample.
+  limits:
+    - 36 members give wide intervals; leads at most.
+    - Between countries (ecological).
+  next: >-
+    The eighth early signal, with {M33}: research effort goes with patenting across members.
+  terms: [partial-correlation, stability-check, prediction-interval, gerd, ecological, verdict-words]
+  related: [B33, B34, M17, M33]
+
+- id: M33
+  lens: national
+  about: system
+  headline: With income and size held, a quarter of the cross-country attachments remain leads with patenting, and they measure research effort
+  statement: >-
+    Of 477 cross-country attachments, 224 are leads with residents' patenting raw and 56 once income and size are held.
+    Research effort and business R&D remain; well-being and venture capital almost entirely go. Women's share of
+    researchers, which went against patenting raw, is not detected once business's share of researchers is held: the
+    raw link is where research is done, not a finding about women.
+  figures:
+    - value: "56 of 477"
+      label: attachments that remain leads with income and size held (224 raw)
+    - value: "0.743 and 0.620"
+      label: R&D spending as a share of GDP against patenting, held (raw 0.863)
+    - value: "0.130"
+      label: women's share of researchers, with business's share of researchers held too (raw -0.647)
+  points:
+    - "**Leads, raw then held:** the GII 63 to 20; the OECD's R&D statistics 83 to 32; the industry and innovation goals 6
+      to 3; venture capital 6 to 0; current well-being 66 to 1."
+    - "**Strongest held:** utility models by origin 0.741 and 0.472; researchers per million 0.701 and 0.644;
+      knowledge-intensive employment 0.694 and 0.420; business researchers 0.658 and 0.628. The other way: difficulty
+      making ends meet -0.621 and -0.455; higher education's share of researchers -0.425 and -0.478."
+    - "**Women's share of researchers:** -0.647 raw, -0.266 with income and size held, 0.130 with business's share of
+      researchers held too; in 2006 to 2010 -0.650, -0.270 and 0.123."
+    - "Between countries; about 30 to 52 economies a pair; leads at most."
+  revisits:
+    - id: B35
+      signal: The cross-country attachments
+      verdict: weakened
+      what: >-
+        With income and size held, 56 of 477 attachments remain leads (224 raw), measures of research effort; women's
+        share of researchers is not detected once business's share of researchers is held (0.130).
+  held: [GDP per person, population, "for women's share: business's share of researchers"]
+  verdicts:
+    - signal: Leads among the attachments
+      detail: 224 raw; 56 with income and size held
+      verdict: weakened
+    - signal: Women's share of researchers against patenting
+      detail: -0.647 raw; -0.266 with income and size; 0.130 with business's share of researchers too
+      verdict: not detected once held
+  chart:
+    type: bar
+    title: Cross-country attachments that go with residents' patenting, raw and with income and size held
+    subtitle: Leads by source, 2016 to 2020 then 2006 to 2010 under B35's rule
+    x: {values: ["The GII", "OECD R&D statistics", "Industry and innovation goals", "Venture capital", "Current well-being"]}
+    y: {name: Leads, min: 0}
+    series:
+      - name: Raw
+        colour: muted
+        data: [63, 83, 6, 6, 66]
+      - name: Income and size held
+        colour: 0
+        data: [20, 32, 3, 0, 1]
+    views:
+      - label: Leads by source
+      - label: "Women's share of researchers"
+        type: effect
+        subtitle: Partial rank correlation with residents' patenting, 2016 to 2020, with its interval
+        x: {values: ["Raw", "Income and size held", "Business's share of researchers held too"]}
+        y: {name: Rank correlation, format: signed, digits: 3}
+        ref: 0
+        ref_label: no association
+        series:
+          - name: "Women's share of researchers"
+            colour: 0
+            data: [[-0.647, -0.805, -0.409], [-0.266, -0.565, 0.055], [0.130, -0.232, 0.416]]
+    source: WIPO, Global Innovation Index; OECD; World Bank, WDI (lens national); notebook 3, section 4.3
+  questions:
+    - q: 1
+      how: Across countries, what goes with patenting beyond income and size is research effort, mostly in business.
+    - q: 4
+      how: Part of the eighth early signal; it also clears women's share of researchers as a finding about women.
+  sources: [gii, oecd, wdi, wipo_ipstats]
+  prep:
+    - what: Each attachment read with GDP per person and population (logs) held, across every country of a million people or more, under B35's rule for a lead (false discovery rate in the first sample, the same sign and a pass in the second).
+      why: Stage 2 read the attachments raw, "again along development".
+  steps:
+    - Screen every attachment against residents' patents per million people, raw and with income and size held.
+    - Count the leads by source, and read the strongest.
+    - Read women's share of researchers with business's share of researchers held too.
+  assumptions:
+    - Counts of patents themselves are left out of the attachments, as in B35, so the screen does not find patents against patents.
+  limits:
+    - About 30 to 52 economies a pair; leads at most, and between countries.
+  next: >-
+    Part of the eighth early signal: the nearest members ({M17}) as the comparison set.
+  terms: [partial-correlation, lead, gii, attachment, ecological, verdict-words]
+  related: [B35, M18]

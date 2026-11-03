@@ -6,9 +6,10 @@
 The pages (`evidence/index.html`) read only what this writes. Three kinds of input meet here:
 - the plain-English layer in `analysis/atlas/content/` (written for readers who are not data scientists);
 - the notebooks themselves (`analysis/notebooks/01_univariate.ipynb` for Stage 1, `02_bivariate.ipynb` for Stage
-  2): each observation's own words and the charts above it, read by `atlas.notebook`, so the pages quote the notebook
-  instead of copying it. Stage 1's plain English is in `content/observations/`, Stage 2's in
-  `content/observations/stage2/`, one file per lens in each;
+  2, `03_multivariate.ipynb` for Stage 3): each observation's own words and the charts above it, read by
+  `atlas.notebook`, so the pages quote the notebook instead of copying it. Stage 1's plain English is in
+  `content/observations/`, Stage 2's in `content/observations/stage2/`, Stage 3's in `content/observations/stage3/`,
+  one file per lens in each;
 - the corpus's records of where each source came from and where it is kept (`config/sources.yaml`,
   `data/manifest.json`).
 
@@ -16,6 +17,11 @@ The pages (`evidence/index.html`) read only what this writes. Three kinds of inp
 quoted charts must appear in the notebook's own observation or in the outputs above it (`check_numbers`). A number
 that is not on the notebook's page is not a finding, so it cannot be one here either. The build fails if one is
 missing.
+
+**Stage 3's links back.** A Stage 3 observation names the earlier observations it tests (`revisits`), each with the
+verdict Stage 3 gives it (holds, weakened, ...) and one sentence on what changed. The build copies each onto the
+earlier observation's page (`later`), so a Stage 2 page says what became of its signal once other factors were held
+(ADR 0049).
 """
 
 from __future__ import annotations
@@ -56,13 +62,33 @@ OBS_FIELDS = {
     "limits": list,
     "next": str,
 }
-OPTIONAL = {"chart", "notebook_charts", "related", "terms", "attachment", "featured"}
+OPTIONAL = {"chart", "notebook_charts", "related", "terms", "attachment", "featured", "revisits", "held", "verdicts"}
+# Stage 3's words for what is left of a signal once its third factors are held together (ADR 0046), with two for
+# results that are not about a held signal: a check that did not replicate in the second sample, and a descriptive
+# result that refines an earlier one. A revisit with parts that differ is "mixed", and says which part is which.
+VERDICTS = [
+    "holds",
+    "weakened",
+    "not detected once held",
+    "reversed",
+    "appears once held",
+    "not detected either way",
+    "does not replicate",
+    "mixed",
+    "refined",
+]
+STAGE_FOLDER = {"observations": 1, "stage2": 2, "stage3": 3}
 
 # A number: digits with optional thousands commas and decimals (1,439,947; 0.2686; 55.3). Observation and question
 # references ({U44}, {B6}, Q2), and glossary markup, are removed before numbers are read.
 _NUMBER = re.compile(r"(?<![\w.])\d[\d,]*(?:\.\d+)?")
-_REFS = re.compile(r"\{[UB]\d+\}|\bQ[1-5]\b|\b[UB]\d+\b|\bOQ\d+\b|\bADR \d{4}\b|\bFY(?=\d)|\[\[[^\]|]+\|?|\]\]")
-_ID = re.compile(r"\{([UB]\d+)\}")
+_REFS = re.compile(
+    r"\{[UBM]\d+\}|\bQ[1-5]\b|\b[UBM]\d+\b|\bOQ\d+\b|\bADR \d{4}\b"
+    r"|\bStages? [1-3](?: and [1-3])?\b|\bFY(?=\d)|\[\[[^\]|]+\|?|\]\]"
+)
+# A quoted chart's styling (a colour's place in the palette, an axis's range, the line of no difference) is not a figure
+_STYLE = {"colour", "size", "width", "opacity", "digits", "min", "max", "ref", "format", "type", "height"}
+_ID = re.compile(r"\{([UBM]\d+)\}")
 NOTEBOOK_URLS = {
     stage: f"{REPO}/blob/main/{path.relative_to(ROOT).as_posix()}" for stage, path in notebook.NOTEBOOKS.items()
 }
@@ -92,12 +118,22 @@ def _strings(x) -> list[str]:
     return []
 
 
+def _unstyled(x):
+    """A chart without its styling keys, so that only its data and labels are checked."""
+    if isinstance(x, dict):
+        return {k: _unstyled(v) for k, v in x.items() if k not in _STYLE}
+    if isinstance(x, list):
+        return [_unstyled(v) for v in x]
+    return x
+
+
 def check_numbers(obs: dict, nb: notebook.Observation) -> list[str]:
     """The numbers in an observation's plain English (and its quoted chart) that are not on the notebook's page."""
     page = numbers(nb.text + "\n" + nb.evidence_text)
-    fields = [obs["headline"], obs["statement"], obs["figures"], obs["points"]]
+    fields = [obs["headline"], obs["statement"], obs["figures"], obs["points"], obs.get("verdicts", [])]
+    fields += [r.get("what", "") for r in obs.get("revisits", [])]
     if isinstance(obs.get("chart"), dict):  # a chart of quoted values
-        c = obs["chart"]
+        c = _unstyled(obs["chart"])
         fields += [c.get("series", []), c.get("views", []), c.get("x", {}).get("values", [])]
     missing = set()
     for s in _strings(fields):
@@ -106,9 +142,13 @@ def check_numbers(obs: dict, nb: notebook.Observation) -> list[str]:
 
 
 def chart_shape(oid: str, chart: dict) -> list[str]:
-    """A quoted chart's series must hold one value per category (an unquoted label with a comma splits in two)."""
+    """A quoted chart's series must hold one value per category (an unquoted label with a comma splits in two), in
+    every view as well as the chart itself."""
+    views = [{**chart, **v, "x": {**chart.get("x", {}), **v.get("x", {})}} for v in chart.get("views", [])]
+    if views:
+        return sorted({p for v in views for p in chart_shape(oid, {**v, "views": []})})
     xs = chart.get("x", {}).get("values")
-    if xs is None or chart.get("type") not in ("bar", "line", "range"):
+    if xs is None or chart.get("type") not in ("bar", "line", "range", "effect"):
         return []
     return [
         f"{oid}: chart series '{s.get('name')}' has {len(s.get('data', []))} values for {len(xs)} categories"
@@ -190,6 +230,7 @@ def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tu
     problems, out = [], []
     paths = [CONTENT / "observations" / f"{lens}.yaml" for lens in LENSES]
     paths += [CONTENT / "observations" / "stage2" / f"{lens}.yaml" for lens in LENSES]
+    paths += [CONTENT / "observations" / "stage3" / f"{lens}.yaml" for lens in LENSES]
     for path in paths:
         lens = path.stem
         if not path.exists():
@@ -208,7 +249,7 @@ def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tu
             if o.get("lens") != lens:
                 problems.append(f"{oid}: lens '{o.get('lens')}' in {path.name}")
             nb = nbs[oid]
-            if (path.parent.name == "stage2") != (nb.stage == 2):
+            if STAGE_FOLDER[path.parent.name] != nb.stage:
                 problems.append(f"{oid}: a Stage {nb.stage} observation in {path.relative_to(CONTENT)}")
             if not problems or not any(p.startswith(f"{oid}:") for p in problems):
                 missing = check_numbers(o, nb)
@@ -231,6 +272,7 @@ def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tu
             o["original"] = nb.text
             o["notebook_charts"] = notebook_charts(nb, o.get("notebook_charts"), write)
             out.append(o)
+    problems += link_back(out, nbs)
     seen = [o["id"] for o in out]
     for oid in nbs:
         if oid not in seen:
@@ -240,6 +282,26 @@ def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tu
     order = {oid: i for i, oid in enumerate(nbs)}
     out.sort(key=lambda o: order.get(o["id"], 1e9))
     return out, problems
+
+
+def link_back(obs: list[dict], nbs: dict) -> list[str]:
+    """Copy each Stage 3 revisit onto the page it revisits (`later`), and check its id and verdict."""
+    problems, by = [], {o["id"]: o for o in obs}
+    for o in obs:
+        for v in o.get("verdicts", []):
+            if v.get("verdict") not in VERDICTS or not v.get("signal"):
+                problems.append(f"{o['id']}: a verdict row needs a signal and one of {VERDICTS}")
+        for r in o.get("revisits", []):
+            rid = r.get("id")
+            if rid not in nbs or nbs[rid].stage >= nbs[o["id"]].stage:
+                problems.append(f"{o['id']}: revisits {rid}, which is not an earlier stage's observation")
+                continue
+            if r.get("verdict") not in VERDICTS or not r.get("what"):
+                problems.append(f"{o['id']}: its revisit of {rid} needs 'what' and a verdict, one of {VERDICTS}")
+                continue
+            if rid in by:
+                by[rid].setdefault("later", []).append({"id": o["id"], "verdict": r["verdict"], "what": r["what"]})
+    return problems
 
 
 def build(strict: bool = True, write: bool = True) -> dict:
@@ -252,6 +314,7 @@ def build(strict: bool = True, write: bool = True) -> dict:
         "repo": REPO,
         "notebook": NOTEBOOK_URLS[1],
         "notebooks": {str(k): v for k, v in NOTEBOOK_URLS.items()},
+        "verdicts": VERDICTS,
         "site": site,
         "lenses": load_yaml("lenses.yaml"),
         "questions": load_yaml("questions.yaml"),

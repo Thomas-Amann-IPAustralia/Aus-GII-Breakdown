@@ -757,3 +757,127 @@
     Used in the medicine case study, after Stage 3.
   terms: []
   related: []
+
+- id: U124
+  lens: timeline
+  about: data
+  headline: The labour market and the IP judgments join the timeline complete over their coverage; IP judgments doubled from 2008
+  statement: >-
+    Two sources planned for the timeline were attached in the review of 3 November 2026: the Labour Force Survey
+    (employed persons, unemployment and participation from February 1978, owner-managers from January 1991) and the IP
+    judgments (January 1995 to February 2025). None has an empty month inside its coverage. IP judgments rose from an
+    average 51.7 a year in 1995 to 2007 to 104.9 in 2008 to 2024, the step coming in 2008. The series added after
+    Stage 2 grow steadily, with their unusual months in 2020.
+  figures:
+    - value: "51.7 to 104.9"
+      label: IP judgments a year, 1995 to 2007 against 2008 to 2024
+    - value: "584 months"
+      label: of employment, unemployment and participation, February 1978 to September 2026
+    - value: "1.08%"
+      label: median yearly growth of owner-managers (1,419.25 thousand to 2,236.86 thousand)
+  points:
+    - "**The labour market:** employed persons 5,997.20 thousand to 14,822.00 thousand, a median 1.88% more a year (1991
+      to 2019); unemployment 3.43% to 11.22% (latest 4.72%); participation 60.13% to 67.19%. Employment's largest fall
+      is May 2020 (-560.91 thousand)."
+    - "**Owner-managers** have no season (98 to 102 by month of the year); their largest months against the year around
+      them (November 1998, January 2014, August 2017) are the survey's sampling noise in an unadjusted series."
+    - "**IP judgments:** 0 to 21 a month (median 6), 31 (1995) to 138 (2019) a year; involving patents 19.8 and 30.3 a
+      year, trade marks 17.8 and 22.9. Whether courts decided more IP cases or more decisions were kept and found is not
+      shown. January is 27% of an ordinary month (the courts' vacation). The series stops in February 2025 (OQ22)."
+    - "**The series added after Stage 2:** GDP in current prices grew a median 5.66% a year (1991 to 2019); the largest
+      falls on a year earlier are June 2020 (GDP -5.83%) and, for Western Australia's demand, September 2016 (-10.96%).
+      The PBS's prescriptions peak in December and are lowest in February."
+    - "The seven columns join the timeline (86 columns). None is a filing series, so none is screened: the labour market
+      is context and a cycle measure, the owner-managers a denominator for individuals who file ({B63}), the judgments
+      a count of enforcement beside oppositions."
+  questions:
+    - q: 1
+      how: Adds enforcement (court judgments) beside filing and oppositions, one of the few public signs of how rights are used after grant.
+    - q: 4
+      how: Adds the labour market as a third factor for before-and-after comparisons, and owner-managers as a base for individuals' filing.
+  sources: [abs_labour, fedcourt, abs_national_accounts, pbs]
+  chart:
+    type: bar
+    title: IP judgments a year, before and after 2008
+    subtitle: Average judgments a year, all and by kind of right
+    x: {type: category, values: [All IP judgments, Involving patents, Involving trade marks]}
+    y: {name: Judgments a year, min: 0}
+    series:
+      - name: 1995 to 2007
+        colour: muted
+        data: [51.7, 19.8, 17.8]
+      - name: 2008 to 2024
+        data: [104.9, 30.3, 22.9]
+    source: The courts, via the Open Australian Legal Corpus (lens timeline); notebook 1, section 5.11
+  prep:
+    - what: The Labour Force Survey's headline series and status in employment, monthly; the IP judgments counted by month of decision, by kind of right.
+      why: Both were planned for the timeline and never attached, so they had no profile, pair or model until the review.
+  steps:
+    - Check each series for gaps within its coverage.
+    - Profile its range, growth, season and unusual months.
+    - Profile the shape of the series added after Stage 2, which Stage 1's summary listed as not profiled.
+  assumptions:
+    - The corpus's filter finds IP judgments consistently over time (older judgments, without a cover page, are found by their opening).
+  limits:
+    - The judgments end with the corpus in February 2025 (OQ22).
+    - Owner-managers come from a survey and carry its sampling noise.
+  next: >-
+    Stage 2 pairs them with filing ({B63}); Stage 3 reads those pairs with block resampling ({M36}).
+  terms: [gdp]
+  related: [B63, M36]
+
+- id: U125
+  lens: timeline
+  about: data
+  headline: Every one of IP Australia's fee columns is complete from its first month, and each fee has taken 3 to 12 amounts
+  statement: >-
+    Beyond the totals charted in Stage 1, every fee column in the timeline is complete from its first month: patents
+    from May 1991, trade marks from July 1989, designs from April 1982 and plant breeder's rights from December 1994.
+    Each fee has taken 3 to 12 amounts over that time, in dollars of the day.
+  figures:
+    - value: "3 to 12"
+      label: amounts each fee has taken
+    - value: "$290 to $550"
+      label: the patent examination fee (11 amounts)
+    - value: "$1,400 to $2,000"
+      label: "the plant breeder's rights examination fee"
+  points:
+    - "**Patents** (425 months): the provisional fee 75 to 110 dollars (now 100, 4 amounts), filing 160 to 400 (8),
+      grant 0 to 300 (7 amounts, 8 changes: the grant fee was once removed and later restored), the second-tier filing
+      fee 75 to 280 (now 200)."
+    - "**Trade marks** (447 months): filing 120 to 250 (6), registration 0 to 360 (now 0, 6 amounts), renewal 300 to 500
+      (now 400)."
+    - "**Designs** (534 months): filing 40 to 250 and renewal 20 to 400 (9 and 10 amounts); examination from July 2004
+      (the 2003 Act), 360 to 500. **Plant breeder's rights** (382 months): application 300 to 400, grant 250 to 500, the
+      annual fee 250 to 600."
+    - "The six real-terms columns end in June 2026, the CPI's last quarter, three months before the others."
+  questions:
+    - q: 4
+      how: The fee history every test of fees as a lever reads from ({B47}, {B49}, {M28}, {M34}).
+    - q: 5
+      how: The record of past fee changes that any projection of a fee change starts from.
+  sources: [frl_fees, abs_prices]
+  chart:
+    type: range
+    title: The range of each official fee over its history
+    subtitle: Lowest to highest amount, dollars of the day
+    x: {type: category, values: [Patent provisional, Patent filing, Patent examination, Patent grant, Second-tier filing, Trade mark filing, Trade mark registration, Trade mark renewal, Design filing, Design renewal, Design examination, PBR application, PBR examination, PBR grant, PBR annual fee]}
+    y: {name: Dollars, min: 0, max: 2100, format: money}
+    series:
+      - name: Range
+        data: [[75, 110], [160, 400], [290, 550], [0, 300], [75, 280], [120, 250], [0, 360], [300, 500], [40, 250], [20, 400], [360, 500], [300, 400], [1400, 2000], [250, 500], [250, 600]]
+    source: Federal Register of Legislation, fee regulations (lens timeline); notebook 1, section 5.7
+  prep:
+    - what: Each fee column of the timeline, profiled for completeness and the number of distinct amounts.
+      why: Stage 1 profiled the totals but not the components, which the fee tests read.
+  steps:
+    - Check each column from its first month for gaps.
+    - Count the amounts each fee has taken, and read its range.
+  assumptions:
+    - The fee in force in a month is the one the regulations set for that month.
+  limits:
+    - Dollars of the day; the real-terms columns end with the CPI's last quarter.
+  next: >-
+    Read by the fee tests in Stages 2 and 3.
+  terms: [official-fees, cpi, nominal]
+  related: [U109, B47, M28]

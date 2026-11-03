@@ -1511,8 +1511,8 @@ def U22() -> dict:
     return {
         "type": "range",
         "title": "Where each monthly series can be read",
-        "subtitle": "The span of each of the timeline's 28 series, after the repairs: earlier months are empty, "
-        "not zero",
+        "subtitle": f"The span of each of the timeline's {len(spans)} series, after the repairs: earlier months are "
+        "empty, not zero",
         "x": {"type": "category", "values": [s[0] for s in spans]},
         "y": {"name": "Year", "min": 1900, "max": 2030, "format": "year"},
         "series": [{"name": "Months with a value", "data": [[s[1], s[2]] for s in spans]}],

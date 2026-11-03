@@ -508,3 +508,59 @@
     Stage 2 reads size and industry among large employers ({B50}, {B51}); OQ20 asks about small firms.
   terms: [wgea, anzsic, abn]
   related: [B50, B51]
+
+- id: U126
+  lens: firms
+  about: data
+  headline: The name match's columns are set only where they should be, and add 2% to 8% to the counts by ABN, concentrated in a few firms
+  statement: >-
+    The [[name-match|name match]] finds an ABN for 16.48% of Australian organisations' trade marks with no filer's ABN,
+    and 28.95% of standard patents, but none of the plant breeder's rights. Counted by firm, the matched filings add
+    2.03% to the standard patents credited by ABN, 2.80% to trade marks and 7.59% to provisionals, concentrated in a few
+    large organisations. They are kept apart, never added to the counts.
+  figures:
+    - value: "16.48% and 28.95%"
+      label: of trade marks and standard patents with no filer's ABN that the match links
+    - value: "2.03%"
+      label: added to standard patents credited by ABN (3,742 applications, 948 ABNs)
+    - value: "827"
+      label: standard patents found by name for one ABN
+  points:
+    - "**Where it is set:** empty outside its scope (0 rights). Of the rights with no filer's ABN, 31,960 of 193,879
+      trade marks (9,305 ABNs) and 4,116 of 14,219 standard patents (1,223 ABNs); 27.29% of provisionals, 20.67% of
+      designs, 23.18% of second-tier patents, none of the 3,966 plant breeder's rights."
+    - "**The four counts** have no empty values. Of the 948 ABNs with a standard patent found by name, 624 have none by
+      ABN and 121 no filing linked at all; trade marks 7,561 ABNs and 28,547 applications, 2,594 with no filing linked."
+    - "**Concentrated:** the median ABN with any has 1 (designs 2), but one has 827 standard patents found by name, one
+      401 provisionals, one 1,035 trade marks and one 227 designs: a few large organisations file under a name the ABR
+      or ASIC knows without giving an ABN."
+    - "Whether to adopt them is the owner's decision (OQ26); {M12} tests the match."
+  questions:
+    - q: 2
+      how: Shows how much the counts by ABN miss, and where, so that firm findings can be read as the lower bounds they are.
+  sources: [iprapid, abr, asic, linkage]
+  chart:
+    type: bar
+    title: Rights with no filer's ABN that the name match links to one
+    subtitle: Australian organisations' rights, every year
+    x: {type: category, values: [Standard patents, Provisionals, Second-tier patents, Designs, Trade marks, "Plant breeder's rights"]}
+    y: {name: Linked by name, format: pct, min: 0}
+    series:
+      - name: Linked by name
+        data: [28.95, 27.29, 23.18, 20.67, 16.48, 0]
+    source: IP Australia, IP RAPID; ABR; ASIC (lens firms); notebook 1, section 2.7
+    note: "IP RAPID never gives a plant breeder's rights filer an ABN, so the match cannot be tested on them."
+  prep:
+    - what: "`name_matched_abn` in the rights lens and four `*_name_matched` counts in the firms lens, built by the name match (ADR 0045, 0047)."
+      why: Added in Stage 3 and profiled in the review, as every new column is.
+  steps:
+    - Check the column is set only for Australian organisations' rights with no filer's ABN.
+    - Count what it adds, by kind of right and by firm.
+  assumptions:
+    - A match is one ABN with the name, registered in the filer's state.
+  limits:
+    - The match uses ABN main names and ASIC company names only.
+  next: >-
+    Tested in {M12}; adopting it is OQ26.
+  terms: [name-match, abn, abr, asic, lower-bound]
+  related: [M12, U44, U45]

@@ -1,0 +1,500 @@
+# Stage 3, the places lens (section 3 of the multivariate notebook). Rules as in ../stage3/rights.yaml. Areas with 100
+# or more residents and an IRSAD score; the two samples are the lens's halves. Every association here is between areas
+# (ecological), not about the people or firms in them.
+
+- id: M13
+  lens: regions
+  about: system
+  headline: Places' characteristics repeat each other; one dimension, advantage, carries half of how areas differ
+  statement: >-
+    Across 2,525 postal areas, the measures of advantage, income and education can largely be predicted from one
+    another. Summarised as [[principal-components|components]], the first, an advantage gradient on which every
+    advantage measure rises together, carries 49.5% of the variation; the first four carry 82.3%. So Stage 2's single
+    indicators (income, education, advantage) are mostly one measure: none should be read as the one that matters.
+  figures:
+    - value: "49.5%"
+      label: of the areas' variation carried by the first component, advantage
+    - value: "82.3%"
+      label: carried by the first four components together
+    - value: "86.0"
+      label: variance inflation of IRSAD (above 10 means largely predictable from the others)
+  points:
+    - "**[[variance-inflation|Variance inflation]]:** IRSAD 86.0, IRSD 32.1, IEO 25.0, median household income 19.6,
+      IER 13.0, the share with a degree 11.4: all above 10. Businesses per person (1.6) and R&D claimants per 1,000
+      businesses (1.3) are not."
+    - "**The second component** (14.5%) rises with median age and businesses per person and falls with household
+      size: older areas of small households and many businesses."
+    - "**The third** (11.3%) rises with economic resources and household size and falls with R&D claimants and the
+      degree share: its low end is areas with more degrees and R&D claimants than their resources alone suggest."
+    - "**The fourth** (6.9%) rises with rent and age and falls with businesses per person."
+  revisits:
+    - id: B27
+      signal: Advantage, education and income go together
+      verdict: refined
+      what: >-
+        The advantage measures repeat each other (variance inflation 11.4 to 86.0), and one component carries 49.5% of
+        the areas' variation: B27's single measures are mostly one measure.
+    - id: B28
+      signal: Most attachments follow one gradient
+      verdict: refined
+      what: >-
+        The gradient B28 saw is the first component, advantage, carrying 49.5% of the variation; {M32} reads every
+        attachment beyond it.
+  held: ["nothing: a summary of how 13 characteristics of places repeat each other"]
+  chart:
+    type: bar
+    horizontal: true
+    title: How far each characteristic of a place can be predicted from the others
+    subtitle: Variance inflation across 2,525 postal areas; above 10, a measure largely repeats the others
+    x: {values: [IRSAD, IRSD, IEO, Median household income, IER, Share with a degree, Businesses per person, "R&D claimants per 1,000 businesses"]}
+    y: {name: Variance inflation, min: 0}
+    series:
+      - name: Variance inflation
+        data: [86.0, 32.1, 25.0, 19.6, 13.0, 11.4, 1.6, 1.3]
+    marks:
+      y: [{at: 10, label: "10"}]
+    source: ABS, SEIFA, Census and CABEE; ATO, R&D Tax Incentive (lens regions); notebook 3, section 3.1
+  questions:
+    - q: 2
+      how: Shows that where filing happens cannot be put down to one characteristic of a place (income, or education); they move together as one gradient.
+  sources: [abs_regions, abs_census, abs_cabee, rdti, linkage]
+  prep:
+    - what: Thirteen characteristics of each area with 100 or more residents and every characteristic, some on a log scale (incomes, rent, businesses per person).
+      why: The same characteristics Stage 2 read one at a time.
+  steps:
+    - Measure how far each characteristic can be predicted from the others (variance inflation).
+    - Summarise the thirteen as principal components, each a weighted mix of all of them, ordered by how much of the variation it carries.
+    - Name each component by the characteristics that weigh most in it.
+  assumptions:
+    - A component is a summary, not a thing in the world; its name is the analyst's reading of its weights.
+  limits:
+    - Between areas, not people.
+  next: >-
+    The components are held in {M14} and {M31}, so that each signal is read beyond the advantage gradient.
+  terms: [principal-components, variance-inflation, irsad, ecological]
+  related: [M14, M16, B27]
+
+- id: M14
+  lens: regions
+  about: system
+  headline: Beyond advantage and remoteness, business density and places with more degrees than their resources suggest go with filing
+  statement: >-
+    With the four components and remoteness held together, the advantage gradient is still there but weaker: each
+    [[standard-deviation|standard deviation]] of advantage goes with 1.256 times the standard patent rate, against
+    1.932 with advantage alone (first half), so 35% to 39% of the raw ratio remains. Two other dimensions go with
+    filing: business density, and degrees and R&D claimants beyond what an area's resources would suggest.
+    Remoteness stays.
+  figures:
+    - value: "1.256 and 1.341"
+      label: standard patents per standard deviation of advantage, held together (raw 1.932 and 2.135)
+    - value: "0.518"
+      label: inner regional areas' rate against major cities', components held (first half)
+    - value: "0.713"
+      label: extra spread beyond chance with every factor held (1.253 with advantage alone)
+  points:
+    - "**Trade marks:** 1.830 and 1.362, 51% left (holds, just); 1.988 and 1.386, 48% (weakened). **Designs:** 1.863
+      and 1.186. **Provisionals:** 1.652 and 1.247. Weakened."
+    - "**Held together, for standard patents:** the second component (older areas, small households, many businesses)
+      1.446 and 1.219; the third 0.731 and 0.663, so areas with more degrees and R&D claimants than their resources
+      would suggest file more; the fourth 0.702 and 0.666. The same signs for trade marks, designs and provisionals."
+    - "**Remoteness stays:** very remote areas file standard patents at 0.218 and 0.115 of major cities' rate."
+    - "Stage 2's IRSAD ratio (1.717 and 1.857) is mostly the whole advantage gradient, and part of it is where
+      businesses, degree holders and R&D claimants are, and remoteness."
+  revisits:
+    - id: B29
+      signal: Advantage and remoteness
+      verdict: weakened
+      what: >-
+        With the four components and remoteness held, advantage goes with 1.256 and 1.341 times the standard patent
+        rate per standard deviation, against 1.932 and 2.135 alone (35% and 39% left on a log scale); business density
+        and degrees beyond resources also go with filing, and remoteness stays.
+  held: [the four components (advantage, age and business density, degrees beyond resources, rent), remoteness]
+  verdicts:
+    - signal: Standard patents, advantage
+      detail: 1.932 and 2.135 alone; 1.256 and 1.341 held together (35% and 39% left)
+      verdict: weakened
+    - signal: Trade marks, advantage
+      detail: 1.830 and 1.988 alone; 1.362 and 1.386 held together (51% and 48% left)
+      verdict: mixed
+    - signal: Designs and provisionals, advantage
+      detail: 1.186 to 1.313 held together (26% to 44% left)
+      verdict: weakened
+  chart:
+    type: effect
+    title: Standard patents per resident and the dimensions of a place
+    subtitle: Rate ratios per standard deviation of each component, and remoteness against major cities, with 95% intervals; first half then second
+    views:
+      - label: Advantage, raw and held
+        x: {values: ["Standard patents, first half", "Standard patents, second half", "Trade marks, first half", "Trade marks, second half", "Designs, first half", "Designs, second half", "Provisionals, first half", "Provisionals, second half"]}
+        y: {name: Rate ratio per standard deviation of advantage, format: ratio, digits: 2}
+        ref: 1
+        ref_label: no difference
+        series:
+          - name: Advantage alone (the raw reading)
+            colour: muted
+            data: [[1.932, 1.788, 2.088], [2.135, 1.958, 2.327], [1.830, null, null], [1.988, null, null], [1.863, null, null], [2.054, null, null], [1.652, null, null], [1.960, null, null]]
+          - name: With the other components and remoteness held
+            colour: 0
+            data: [[1.256, 1.122, 1.405], [1.341, 1.190, 1.511], [1.362, 1.273, 1.457], [1.386, null, null], [1.186, 1.025, 1.372], [1.205, null, null], [1.247, null, null], [1.313, null, null]]
+      - label: The other dimensions, held together
+        x: {values: ["Older areas, small households, many businesses", "Degrees and R&D claimants below resources", "High rent, few businesses per person", "Inner regional (against major cities)", "Very remote (against major cities)"]}
+        y: {name: Rate ratio (standard patents), format: ratio, digits: 2}
+        ref: 1
+        ref_label: no difference
+        series:
+          - name: First half
+            colour: 0
+            data: [[1.446, 1.312, 1.593], [0.731, 0.674, 0.792], [0.702, 0.642, 0.768], [0.518, 0.404, 0.664], [0.218, null, null]]
+          - name: Second half
+            colour: 2
+            data: [[1.219, 1.092, 1.361], [0.663, 0.606, 0.725], [0.666, 0.603, 0.736], [0.738, 0.562, 0.969], [0.115, null, null]]
+    source: ABS, SEIFA, Census and CABEE; IP Australia, IP RAPID (lens regions); notebook 3, section 3.2
+    note: "Below 1 on the third component means areas whose degrees and R&D claimants run ahead of their resources file more."
+  questions:
+    - q: 2
+      how: Beyond the advantage gradient, filing goes with business density and with educated, research-active places, and falls with remoteness, which bears on which places benefit.
+    - q: 4
+      how: Part of the seventh early signal; where filers work against where they are registered is the next check.
+  sources: [abs_regions, abs_census, abs_cabee, rdti, iprapid]
+  prep:
+    - what: Areas' counts over ten years (FY2017 to FY2026) as [[negative-binomial|negative binomial]] models with the area's residents as the [[exposure|exposure]], as in B29.
+      why: The model compares filing rates per resident, allowing areas to differ more than chance would make them.
+  steps:
+    - Model each kind of filing against the first component (advantage) alone.
+    - Add the other three components and remoteness, and read each rate ratio with the others held.
+    - Compare the advantage ratio held with alone, on a log scale, and give the outcome.
+  assumptions:
+    - The components, being uncorrelated by construction, can be held together without repeating each other.
+  limits:
+    - Between areas, not people or firms (ecological).
+    - A registered address can be a head office or an adviser's, not where the work is done.
+  next: >-
+    The seventh early signal: where filers work against where they are registered, and universities' postcodes.
+  terms: [negative-binomial, rate-ratio, standard-deviation, principal-components, remoteness, exposure, ecological, verdict-words]
+  related: [B29, M13, M15, M31]
+
+- id: M15
+  lens: regions
+  about: system
+  headline: The advantage gradient is not one filer's; without each area's largest filer it is steeper
+  statement: >-
+    Taking each area's largest filer by the [[filers-party|filer's party]] (the party whose postcode places the
+    patent), the gradient of standard patents with advantage is steeper without it: 1.933 and 2.031 times the rate per
+    standard deviation of IRSAD, against 1.717 and 1.857 with every filer. Stage 2's reading holds with the
+    party-aligned filer.
+  figures:
+    - value: "1.933 and 2.031"
+      label: IRSAD rate ratio without each area's largest filer
+    - value: "1.717 and 1.857"
+      label: with every filer, as in B29
+    - value: "31.4%"
+      label: of the 24,879 placed patents held by each area's largest filer
+  points:
+    - "24,879 Australian standard patents placed in 2,528 areas, from 12,793 filers; by the first founding ABN, as B30
+      took it, the largest filers hold 29.2%."
+    - "Nor do the largest filers account for how far areas differ: the spread beyond chance is larger without them
+      (1.994 and 1.912, against 1.354 and 1.650)."
+  revisits:
+    - id: B30
+      signal: The gradient is not one firm's
+      verdict: holds
+      what: >-
+        With the largest filer taken by the filer's party, the IRSAD ratio rises from 1.717 and 1.857 to 1.933 and
+        2.031 without it: the gradient is not one filer's.
+  held: ["the area's largest filer, by the filer's party, taken out"]
+  verdicts:
+    - signal: IRSAD rate ratio without each area's largest filer
+      detail: 1.717 and 1.857 with every filer; 1.933 and 2.031 without
+      verdict: holds
+  chart:
+    type: effect
+    title: Standard patents per resident and area advantage, with and without each area's largest filer
+    subtitle: Rate ratio per standard deviation of IRSAD, with 95% intervals; the two halves of the areas
+    x: {values: ["First half", "Second half"]}
+    y: {name: Rate ratio per standard deviation of IRSAD, format: ratio, digits: 2}
+    ref: 1
+    ref_label: no gradient
+    series:
+      - name: With every filer
+        colour: muted
+        data: [[1.717, 1.597, 1.845], [1.857, 1.717, 2.008]]
+      - name: Without each area's largest filer
+        colour: 0
+        data: [[1.933, 1.771, 2.110], [2.031, 1.856, 2.223]]
+    source: ABS, SEIFA; IP Australia, IP RAPID (lens regions); notebook 3, section 3.3
+  questions:
+    - q: 2
+      how: The concentration of filing in advantaged places is broad, not one large filer in each.
+  sources: [iprapid, abs_regions]
+  prep:
+    - what: Australian standard patents filed FY2017 to FY2026, placed by the filer's postcode, with the largest filer in each area taken by the filer's party, whether or not it has an ABN.
+      why: The same party that gives the patent its postcode, as the final review asked.
+  steps:
+    - Measure the IRSAD rate ratio with every filer, as in B29.
+    - Take out each area's largest filer and measure it again, in each half.
+  assumptions:
+    - A filer's party is one filer.
+  limits:
+    - Between areas (ecological).
+  next: >-
+    Part of the seventh early signal.
+  terms: [filers-party, rate-ratio, irsad, ecological, verdict-words]
+  related: [B30, M14]
+
+- id: M16
+  lens: regions
+  about: system
+  headline: Postal areas do not fall into distinct kinds; one group of 288 advantaged city areas holds more than half the patents
+  statement: >-
+    Grouping postal areas by their four components gives at most a weak structure: the best grouping, five groups, has
+    a [[silhouette|silhouette]] of 0.269, short of clear segments (0.5 or more). Read as a description, one group of
+    288 advantaged, educated city areas files 3.14 standard patents a year per 10,000 people and holds 13,993 of the
+    24,879 patents placed (56%); the rest is a continuum.
+  figures:
+    - value: "0.269"
+      label: the best silhouette (five groups); 0.5 or more would be clear segments
+    - value: "56%"
+      label: of placed standard patents in 288 areas
+    - value: "3.14"
+      label: standard patents a year per 10,000 people in those areas (0.37 to 0.59 elsewhere)
+  points:
+    - "Silhouettes for two to eight groups run from 0.232 to 0.269."
+    - "**288 areas** (4,451,909 residents; 95% of their people in major cities; median IRSAD 1,088), high on advantage
+      (1.36) and low on the third component (more degrees and R&D claimants than their resources): 50.13 trade marks a
+      year per 10,000 people."
+    - "**713 areas** (11,871,712 residents, the most), above average on advantage (0.78): 0.59 patents and 13.37 trade
+      marks a year per 10,000 people."
+    - "**The other three groups** (260, 539 and 725 areas) are below average on advantage and file 0.37 to 0.48 patents
+      and 8.76 to 10.63 trade marks a year per 10,000 people."
+  revisits:
+    - id: B27
+      signal: Where filing concentrates
+      verdict: refined
+      what: >-
+        Areas form no distinct kinds (silhouette 0.269 at best); the clearest structure is 288 advantaged, educated city
+        areas holding 56% of placed standard patents.
+  held: ["nothing: a grouping of areas by their four components"]
+  chart:
+    type: bar
+    title: Five groups of postal areas, and how much they file
+    subtitle: Standard patents a year per 10,000 people, by group (the best of two to eight groups, a weak structure)
+    x: {values: ["288 areas: advantaged, educated, cities", "713 areas: above average on advantage", "260 areas", "539 areas", "725 areas"]}
+    y: {name: "Standard patents a year per 10,000 people", min: 0}
+    series:
+      - name: Standard patents a year per 10,000 people
+        data: [3.14, 0.59, 0.48, 0.41, 0.37]
+    views:
+      - label: Standard patents
+      - label: Trade marks
+        y: {name: "Trade marks a year per 10,000 people", min: 0}
+        series:
+          - name: Trade marks a year per 10,000 people
+            data: [50.13, 13.37, 10.63, 8.76, 9.48]
+    source: ABS, SEIFA, Census and CABEE; IP Australia, IP RAPID (lens regions); notebook 3, section 3.4
+    note: A silhouette of 0.269 means the groups overlap; they describe a continuum, not kinds of place.
+  questions:
+    - q: 2
+      how: The concentration of filing in a minority of advantaged, educated city areas is the clearest structure among places.
+    - q: 4
+      how: Shows that places do not sort into distinct kinds an intervention could target as groups; they lie on a continuum.
+  sources: [abs_regions, abs_census, abs_cabee, iprapid]
+  prep:
+    - what: "k-means groups the areas by their scores on the four components, for two to eight groups, each scored by its silhouette (from -1 to 1)."
+      why: "Under ADR 0046 a grouping is read as kinds of place only with a silhouette of 0.25 or more, and as clear segments at 0.5 or more."
+  steps:
+    - Group the areas for two to eight groups and score each grouping.
+    - Take the best (five groups, 0.269) as a description, and profile each group.
+  assumptions:
+    - The four components describe the areas well enough to group them.
+  limits:
+    - A weak structure; the groups are a convenience, not a finding about kinds of place.
+  next: >-
+    Part of the seventh early signal.
+  terms: [silhouette, principal-components, ecological]
+  related: [M13, M14]
+
+- id: M31
+  lens: regions
+  about: system
+  headline: Beyond advantage and remoteness, manufacturing's share of businesses goes with more filing per business; incomes add nothing detectable
+  statement: >-
+    With the four components and remoteness held, an area's share of manufacturing businesses goes with more standard
+    patents per business (a [[partial-correlation|partial rank correlation]] of 0.449 and 0.396), where Stage 2 found
+    none: it appears once held. Finance and professional services keep only a trade mark link, weakened; incomes add
+    nothing detectable beyond the gradient; and gaining graduates over a decade goes with a slight fall in patents.
+  figures:
+    - value: "0.449 and 0.396"
+      label: manufacturing's share against patents per 1,000 businesses, held (raw 0.111 and -0.022)
+    - value: "0.076 and 0.012"
+      label: taxable income per individual against patents per 10,000 people, held (raw 0.384 and 0.405)
+    - value: "-0.115 and -0.134"
+      label: gaining graduates against the change in standard patents, 2011 levels held
+  points:
+    - "**Manufacturing:** trade marks 0.090 raw and 0.349 held; 0.062 and 0.371. Still not who files, and a business's
+      address can be a head office."
+    - "**Financial and insurance services:** patents 0.444 and 0.161, then 0.380 and 0.017, not replicated; trade marks
+      0.660 and 0.227, 0.696 and 0.162, weakened. **Professional services:** patents 0.386 and 0.102, not detected once
+      held; trade marks 0.654 and 0.191, weakened."
+    - "**Incomes:** against trade marks 0.457 and -0.044, 0.518 and -0.039: not detected once held. The share with
+      business income goes with trade marks a little beyond the gradient (0.087; 0.143)."
+    - "**Change:** gaining graduates against the change in trade marks 0.024 and 0.063, not detected; gaining income,
+      not detected. An area gaining graduates may be gaining residents who do not file."
+  revisits:
+    - id: B31
+      signal: Business mix and filing
+      verdict: appears once held
+      what: >-
+        Among areas of the same advantage, density and remoteness, more manufacturing businesses go with more patents
+        per business (0.449 and 0.396 held, against 0.111 and -0.022 raw), where B31 found no link.
+    - id: B58
+      signal: Incomes and filing
+      verdict: not detected once held
+      what: >-
+        Taxable income per individual against patents per 10,000 people: 0.384 and 0.405 raw, 0.076 and 0.012 with the
+        components and remoteness held. Its link is the advantage gradient.
+    - id: B59
+      signal: A decade's change and filing
+      verdict: appears once held
+      what: >-
+        With the 2011 levels held, gaining graduates goes with a slight fall in standard patents (-0.115 and -0.134;
+        raw -0.065 and -0.108), not no association.
+  held: [the four components, remoteness, "for change: the area's 2011 levels"]
+  verdicts:
+    - signal: Manufacturing's share, standard patents per 1,000 businesses
+      detail: 0.111 and -0.022 raw; 0.449 and 0.396 held
+      verdict: appears once held
+    - signal: Manufacturing's share, trade marks per 1,000 businesses
+      detail: 0.090 and 0.062 raw; 0.349 and 0.371 held
+      verdict: appears once held
+    - signal: Finance and insurance, trade marks
+      detail: 0.660 and 0.696 raw; 0.227 and 0.162 held
+      verdict: weakened
+    - signal: Taxable income per individual, standard patents
+      detail: 0.384 and 0.405 raw; 0.076 and 0.012 held
+      verdict: not detected once held
+    - signal: Gaining graduates, change in standard patents
+      detail: -0.065 and -0.108 raw; -0.115 and -0.134 held
+      verdict: appears once held
+  chart:
+    type: effect
+    title: Business mix, incomes and change against filing, beyond the advantage gradient
+    subtitle: Partial rank correlations across postal areas, raw and with the four components and remoteness held; first half; 95% intervals from 1,000 resamples
+    x: {values: ["Manufacturing's share, patents per business", "Manufacturing's share, trade marks per business", "Finance and insurance, patents per business", "Finance and insurance, trade marks per business", "Professional services, patents per business", "Professional services, trade marks per business", "Taxable income, patents per person", "Gaining graduates, change in patents"]}
+    y: {name: Rank correlation, format: signed, digits: 3}
+    ref: 0
+    ref_label: no association
+    series:
+      - name: Raw
+        colour: muted
+        data: [[0.111, -0.003, 0.222], [0.090, null, null], [0.444, null, null], [0.660, null, null], [0.386, null, null], [0.654, null, null], [0.384, null, null], [-0.065, null, null]]
+      - name: Held together
+        colour: 0
+        data: [[0.449, 0.357, 0.530], [0.349, 0.286, 0.407], [0.161, 0.049, 0.273], [0.227, 0.161, 0.294], [0.102, -0.011, 0.215], [0.191, null, null], [0.076, -0.035, 0.185], [-0.115, -0.180, -0.048]]
+    source: ABS, CABEE and Census; ATO, statistics by postcode; IP Australia, IP RAPID (lens regions); notebook 3, section 3.5
+    note: First half only; the second half's figures are in the observation.
+  questions:
+    - q: 2
+      how: Among places alike in advantage, density and remoteness, those with more manufacturing businesses file more per business, which bears on which places' businesses use the IP system.
+    - q: 4
+      how: Part of the seventh early signal; residents' incomes add nothing beyond the gradient, so income is not a separate target.
+  sources: [abs_cabee, ato_postcode, abs_census_tsp, iprapid, abs_regions]
+  prep:
+    - what: "Partial rank correlations with 95% intervals from 1,000 resamples of areas, in each half; business mix from CABEE (June 2025, areas with 100 or more businesses), incomes from the ATO (2023-24)."
+      why: Ranks read an association without assuming straight lines; resampling areas gives honest intervals.
+    - what: For change, the 2011 levels (graduates' share, income, filing) are held.
+      why: An area that starts high has less room to rise.
+  steps:
+    - Correlate each measure with filing, raw.
+    - Take out what the four components and remoteness explain from both, and correlate what is left.
+    - Give the outcome in each half.
+  assumptions:
+    - A business's address in CABEE is where it operates.
+  limits:
+    - A business's address can be a head office, and allocated counts are not who files (U75).
+    - Between areas (ecological).
+  next: >-
+    Part of the seventh early signal: where filers work against where they are registered.
+  terms: [partial-correlation, held-together, cabee, ecological, verdict-words]
+  related: [B31, B58, B59, M32]
+
+- id: M32
+  lens: regions
+  about: system
+  headline: Most of the attached indicators' links with filing are the advantage gradient; what remains is where businesses are
+  statement: >-
+    Of 13,673 pairs of an attached indicator and a filing rate, 9,539 are leads raw but only 1,281 remain leads with
+    the four components and remoteness held. Health and social indicators, and most of the Census, go with filing only
+    as the gradient does. What remains is mostly where businesses, and manufacturing businesses, are.
+  figures:
+    - value: "1,281 of 13,673"
+      label: pairs that remain leads beyond the components (9,539 raw)
+    - value: "46 and 87"
+      label: of 2,368 PHIDU indicators that survive, against patents and trade marks
+    - value: "0.414 and 0.471"
+      label: businesses with turnover of $2 million or more per resident, against patents, beyond the components
+  points:
+    - "6,882 indicators from seven sources, against standard patents and trade marks per 10,000 people."
+    - "**Strongest beyond the components, standard patents:** employing businesses with 20 or more employees 0.407 and
+      0.435; manufacturing businesses 0.379 and 0.423. The other way: households with one motor vehicle -0.240 and
+      -0.287, lone-person households -0.236 and -0.253."
+    - "**Trade marks:** manufacturing businesses 0.327 and 0.379; professional, scientific and technical businesses
+      0.301 and 0.394 (raw 0.723); retail businesses 0.297 and 0.369."
+    - "Many indicators are versions of one another, so the leads are not independent; between areas."
+  revisits:
+    - id: B28
+      signal: Every attached indicator
+      verdict: weakened
+      what: >-
+        Beyond the components and remoteness, 1,281 of 13,673 pairs remain leads, against 9,539 raw; what remains is
+        mostly counts of businesses by size and industry.
+  held: [the four components, remoteness]
+  verdicts:
+    - signal: Leads among every attached indicator
+      detail: 9,539 raw; 1,281 beyond the components and remoteness
+      verdict: weakened
+  chart:
+    type: bar
+    title: Leads with filing, raw and beyond the advantage gradient, by source
+    subtitle: Pairs of an attached indicator and standard patents per 10,000 people that pass B28's tests
+    x: {values: ["Census", "PHIDU (health and social)", "Data by Region", "CABEE (businesses)", "ATO", "Census time series", "CER"]}
+    y: {name: Leads, min: 0}
+    series:
+      - name: Raw
+        colour: muted
+        data: [1502, 1666, 512, 201, 208, 164, 2]
+      - name: Beyond the components and remoteness
+        colour: 0
+        data: [284, 46, 83, 103, 15, 27, 0]
+    views:
+      - label: Standard patents
+      - label: Trade marks
+        subtitle: Pairs of an attached indicator and trade marks per 10,000 people that pass B28's tests
+        series:
+          - name: Raw
+            colour: muted
+            data: [2036, 1958, 648, 222, 227, 193, 0]
+          - name: Beyond the components and remoteness
+            colour: 0
+            data: [296, 87, 116, 133, 44, 43, 4]
+    source: ABS, Census, Data by Region and CABEE; PHIDU; ATO; CER; IP Australia, IP RAPID (lens regions); notebook 3, section 3.6
+    note: CABEE's business counts keep about half their leads; PHIDU's keep about 3%.
+  questions:
+    - q: 2
+      how: Separates what goes with filing beyond the advantage gradient (business counts by size and industry) from what only follows it (health, most of the Census).
+  sources: [abs_census, phidu, abs_regions, abs_cabee, ato_postcode, abs_census_tsp, cer, iprapid]
+  prep:
+    - what: "B28's screen, each indicator in the period covering the most areas, counts as rates per 1,000 residents, now with all seven sources and with the components and remoteness held."
+      why: Stage 2 asked which go with filing beyond the gradient.
+  steps:
+    - Screen every indicator against filing raw, as B28 did.
+    - Screen them again as partial rank correlations with the components and remoteness held, under B28's rule for a lead (both halves).
+    - Count the leads by source, and read the strongest.
+  assumptions:
+    - B28's rule (false discovery rate in the first half, the same sign and 0.1 or more in the second) marks a lead.
+  limits:
+    - Many indicators are versions of one another, so the leads are not independent.
+  next: >-
+    Part of the seventh early signal: business counts by size and industry carry information beyond the gradient, as
+    {M31} found for the mix.
+  terms: [partial-correlation, lead, screen, attachment, cabee, ecological, verdict-words]
+  related: [B28, M31, M13]

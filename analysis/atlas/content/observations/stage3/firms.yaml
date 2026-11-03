@@ -1,0 +1,639 @@
+# Stage 3, the firms lens (section 2 of the multivariate notebook). Rules as in ../stage3/rights.yaml. One row is one
+# firm (ABN), so no clustering is needed; the two samples are the lens's halves. "A filing linked" is ip_record =
+# 'filed' (ADR 0036): "no filing linked", never "never filed".
+
+- id: M8
+  lens: firms
+  about: system
+  headline: Among R&D claimants, older firms, higher spenders and public companies more often have a standard patent linked, held together; the city gap does not replicate
+  statement: >-
+    Among 17,514 active R&D Tax Incentive claimants, claimants 20 years or more on the record are 23.1 points more
+    likely to have a filing linked than those of 3 to 10, with spend, company form, state and postcode advantage
+    [[held-together|held together]]. Spending above the median and being a public company go with having a standard
+    patent (about 4 to 5 and 8 to 9 points held together), but much less with any filing. A city address goes with
+    filing in one half only.
+  figures:
+    - value: "+23.1 points"
+      label: any filing linked, 20 years or more against 3 to 10, held together (first half)
+    - value: "+4.3 and +4.7 points"
+      label: a standard patent, R&D spend above the median, held together
+    - value: "+8.0 and +9.4 points"
+      label: a standard patent, public against private company, held together
+  points:
+    - "**Age:** any filing linked +24.2 raw and +23.1 held together; +22.9 and +22.4. A standard patent +13.0 and +10.5;
+      +12.0 and +9.0. Holds. Age is on the record at the build date, so an older firm has had longer to file: part of
+      this is time, not kind."
+    - "**R&D spend above the median** ($326,125, the median average claim): a standard patent +6.2 and +4.3, holds; any
+      filing +6.0 and +2.4, weakened. The form and age of high spenders account for more than half of their higher
+      filing."
+    - "**Public against private company** (969 public, 16,510 private): a standard patent +15.5 and +8.0, holds (51.5%
+      and 59.5% left); any filing +13.0 and +5.9, weakened."
+    - "**Major city against elsewhere:** any filing +5.2 raw and +5.6 held in the first half, +2.2 and +0.5 in the
+      second. It does not replicate."
+  revisits:
+    - id: B23
+      signal: R&D spend and patenting among claimants
+      verdict: holds
+      what: >-
+        Spending above the median goes with a standard patent at the same form, age and place (+4.3 and +4.7 points
+        held together), weakly, as B23 read it; with any filing it weakens (+2.4 and +2.8).
+    - id: B22
+      signal: Who files among R&D claimants
+      verdict: mixed
+      what: >-
+        Among claimants, age holds (+23.1 and +22.4 points for any filing) and public form holds for a standard patent
+        (+8.0 and +9.4); a city address does not replicate (+5.6, then +0.5).
+  held: [R&D spend (above or below the median), company form (public or private), age on the record, the state, the postcode's IRSAD decile, "a major city or elsewhere"]
+  verdicts:
+    - signal: Age 20 years or more against 3 to 10, any filing linked
+      detail: +24.2 and +22.9 raw; +23.1 and +22.4 held together
+      verdict: holds
+    - signal: R&D spend above the median, a standard patent
+      detail: +6.2 and +6.6 raw; +4.3 and +4.7 held together
+      verdict: holds
+    - signal: R&D spend above the median, any filing linked
+      detail: +6.0 and +6.4 raw; +2.4 and +2.8 held together
+      verdict: weakened
+    - signal: Public against private company, a standard patent
+      detail: +15.5 and +15.8 raw; +8.0 and +9.4 held together (51.5% and 59.5% left)
+      verdict: holds
+    - signal: Public against private company, any filing linked
+      detail: +13.0 and +13.4 raw; +5.9 and +6.4 held together
+      verdict: weakened
+    - signal: Major city against elsewhere, any filing linked
+      detail: +5.6 held in the first half, +0.5 in the second
+      verdict: does not replicate
+  chart:
+    type: effect
+    title: Who has a filing linked among R&D Tax Incentive claimants
+    subtitle: Difference in the share of claimants, in percentage points, raw and with spend, form, age, state and postcode advantage held together; first half; 95% intervals
+    views:
+      - label: Any filing linked
+        x: {values: ["Age 20 years or more against 3 to 10", "R&D spend above the median", "Public against private company", "Major city against elsewhere (first half)", "Major city against elsewhere (second half)"]}
+        y: {name: Difference (percentage points), format: signed}
+        ref: 0
+        ref_label: no difference
+        series:
+          - name: Raw (as Stage 2 compared)
+            colour: muted
+            data: [[24.2, 21.5, 26.8], [6.0, 3.9, 8.1], [13.0, null, null], [5.2, 1.7, 8.6], [2.2, -1.3, 5.6]]
+          - name: Held together
+            colour: 0
+            data: [[23.1, 20.3, 25.9], [2.4, 0.3, 4.5], [5.9, 1.0, 10.8], [5.6, 1.7, 9.6], [0.5, -3.4, 4.5]]
+      - label: A standard patent
+        x: {values: ["Age 20 years or more against 3 to 10", "R&D spend above the median", "Public against private company"]}
+        y: {name: Difference (percentage points), format: signed}
+        ref: 0
+        ref_label: no difference
+        series:
+          - name: Raw (as Stage 2 compared)
+            colour: muted
+            data: [[13.0, null, null], [6.2, 4.8, 7.5], [15.5, 11.4, 19.7]]
+          - name: Held together
+            colour: 0
+            data: [[10.5, 8.4, 12.6], [4.3, 2.9, 5.7], [8.0, 4.5, 11.5]]
+    source: IP Australia, IP RAPID; ATO, R&D Tax Incentive transparency; ABR (lens firms); notebook 3, section 2.1
+  questions:
+    - q: 2
+      how: Younger claimants are far less often linked to a filing at the same spend, form and place, which bears on which firms the IP system reaches.
+    - q: 3
+      how: R&D spend goes only weakly with patenting (about 4 to 5 points for spending above the median), so R&D and IP are not the same activity measured twice.
+    - q: 4
+      how: Part of the sixth early signal, on which firms could be reached by an intervention.
+  sources: [rdti, linkage, abr, iprapid, abs_regions]
+  prep:
+    - what: Active ABNs that claimed the R&D Tax Incentive in 2021-22 to 2023-24 with a recorded spend, in each half of the lens.
+      why: The same claimants as Stage 2, with the halves as the sample and its check.
+    - what: "Age is read on the record at the build date, with undated firms and those first seen before 2001 kept as their own groups, never read as old (ADR 0039)."
+      why: An age that is unknown is not an age.
+  steps:
+    - Compare claimants on each of four signals (spend, form, age, place), with nothing held.
+    - Fit one model for each outcome (any filing linked; a standard patent) with all four, the state and the postcode's advantage held together.
+    - Give each signal's outcome in each half.
+  assumptions:
+    - The R&D Tax Incentive covers companies only, so "form" compares kinds of company.
+  limits:
+    - "\"No filing linked\" is not \"never filed\": IP RAPID leaves many recent filers without an ABN (U45)."
+    - Firm size and industry are not held; they are known only for employers of 100 or more.
+  next: >-
+    Part of the sixth early signal. Firm size and industry for small firms (OQ20), and the timing of filing against
+    claims, are the gaps to fill. {M12} checks the counts against a name match.
+  terms: [held-together, average-marginal-effect, rdti, halves, verdict-words]
+  related: [B22, B23, M12, M29]
+
+- id: M9
+  lens: firms
+  about: system
+  headline: Government suppliers with a filing linked win about two and a half times the contracts and nearly three times the value, at the same form, age and place
+  statement: >-
+    Among 52,884 active government suppliers, those with a filing linked hold 2.382 times as many contracts as those
+    without (first half), and 2.969 times the contract value, with the entity group, age, state, remoteness and
+    postcode advantage held together. On a log scale 60% to 73% of Stage 2's raw ratios remain.
+  figures:
+    - value: "2.382 and 2.603"
+      label: times as many contracts, held together (raw 3.950 and 4.742)
+    - value: "2.969 and 2.720"
+      label: times the contract value, held together (raw 4.437 and 5.352)
+    - value: "25.05%"
+      label: of active suppliers with a filing linked
+  points:
+    - "**Contracts** ([[negative-binomial|negative binomial]] model): 63% and 61% of the raw ratio remains on a log scale.
+      Holds."
+    - "**Contract value** (a [[gamma|gamma model]], at each contract's latest amendment): 73% and 60% remains. Holds."
+    - "**Not a cause in either direction:** larger suppliers may both file and win more, and firm size is not in the
+      model (known only for employers of 100 or more)."
+  revisits:
+    - id: B24
+      signal: Suppliers' contracts and IP
+      verdict: holds
+      what: >-
+        Suppliers with a filing linked hold 2.382 and 2.603 times the contracts, and 2.969 and 2.720 times the value,
+        with the entity group, age, state, remoteness and postcode advantage held together.
+  held: [the entity group, age on the record, the state, remoteness, the postcode's IRSAD decile]
+  verdicts:
+    - signal: Number of contracts
+      detail: 3.950 and 4.742 raw; 2.382 and 2.603 held together (63% and 61% left on a log scale)
+      verdict: holds
+    - signal: Contract value
+      detail: 4.437 and 5.352 raw; 2.969 and 2.720 held together (73% and 60% left)
+      verdict: holds
+  chart:
+    type: effect
+    title: Government suppliers with a filing linked, against those without
+    subtitle: Ratios (how many times as many), raw and with form, age and place held together; 95% intervals
+    x: {values: ["Contracts, first half", "Contracts, second half", "Contract value, first half", "Contract value, second half"]}
+    y: {name: "Times as many, filing linked against none", format: ratio, digits: 2}
+    ref: 1
+    ref_label: the same
+    series:
+      - name: Raw (as Stage 2 compared)
+        colour: muted
+        data: [[3.950, 3.775, 4.133], [4.742, 4.534, 4.958], [4.437, 2.715, 7.250], [5.352, 3.209, 8.926]]
+      - name: Held together
+        colour: 0
+        data: [[2.382, 2.272, 2.496], [2.603, 2.485, 2.728], [2.969, 2.117, 4.166], [2.720, 1.972, 3.750]]
+    source: Department of Finance, AusTender; IP Australia, IP RAPID; ABR (lens firms); notebook 3, section 2.2
+  questions:
+    - q: 3
+      how: Firms that file IP win more government business at the same form, age and place, one of the conditions under which IP goes with activity.
+    - q: 4
+      how: Procurement is a door through which an intervention could reach firms that file (the sixth early signal).
+  sources: [austender, linkage, abr, iprapid, abs_regions]
+  prep:
+    - what: Active ABNs with a contract, in each half; contract value at each contract's latest amendment.
+      why: The latest amendment is the contract's value as it stands.
+  steps:
+    - Model the number of contracts as a negative binomial and the total value as a gamma model, each as a ratio of a filing linked against none.
+    - Hold the entity group, age, state, remoteness and postcode advantage together.
+    - Read how much of the raw ratio is left on a log scale, and give the outcome.
+  assumptions:
+    - The firms lens holds every active supplier with a contract, so the comparison is within suppliers.
+  limits:
+    - Firm size is not held; larger suppliers may both file and win more.
+    - Which came first, the filing or the contracts, is not read here.
+  next: >-
+    Part of the sixth early signal: firm size for small firms, and the timing of filing against contracts.
+  terms: [held-together, negative-binomial, gamma, rate-ratio, austender, verdict-words]
+  related: [B24, M29]
+
+- id: M10
+  lens: firms
+  about: system
+  headline: Followed by cohort, about two thirds of firms that file both kinds filed a trade mark before their first standard patent
+  statement: >-
+    Following firms by the year of their first public registration, rather than a window of filings, 64.04% to 69.48%
+    of firms that have filed both a trade mark and a standard patent filed the trade mark first: a little less than
+    Stage 2's 72.86%, and least in the cohort followed longest. Only 2.78% to 3.57% of each cohort's firms have filed
+    both.
+  figures:
+    - value: "64.04% and 66.09%"
+      label: trade mark first, firms first registered 2001 to 2005 (the two halves)
+    - value: "68.68% and 69.48%"
+      label: trade mark first, firms first registered 2011 to 2015
+    - value: "72.86%"
+      label: Stage 2's figure, from a window of filings
+  points:
+    - "**2001 to 2005:** 64.04% of 762 and 66.09% of 752 firms; a median 4.04 and 4.85 years between the two first
+      filings. **2006 to 2010:** 68.01% and 68.30%; 3.61 and 2.96 years. **2011 to 2015:** 68.68% and 69.48%; 2.79 and
+      2.92 years."
+    - "Almost none filed both on the same day (0 to 3 firms a cohort)."
+    - "**Why the cohorts differ:** Stage 2's window (both first filings in FY2010 to FY2026) favoured pairs filed close
+      together. The later cohorts have had less time, so their shares still lean to pairs filed close together."
+  revisits:
+    - id: B25
+      signal: Which comes first, a trade mark or a patent
+      verdict: refined
+      what: >-
+        Followed by cohort the order holds, but the share filing a trade mark first is lower (64.04% to 69.48%, against
+        72.86%) and lowest in the cohort followed longest, whose later second filings the window cut off.
+  held: ["cohorts of firms by first public registration, followed to the end of the data (instead of a window of filings)"]
+  chart:
+    type: bar
+    title: Firms that filed a trade mark before their first standard patent, by cohort
+    subtitle: Of firms with both, by the year of first public registration; the two halves of the lens
+    x: {values: ["2001 to 2005", "2006 to 2010", "2011 to 2015"]}
+    y: {name: Trade mark first, format: pct, min: 50, max: 80}
+    series:
+      - name: First half
+        colour: 0
+        data: [64.04, 68.01, 68.68]
+      - name: Second half
+        colour: 2
+        data: [66.09, 68.30, 69.48]
+    marks:
+      y: [{at: 72.86, label: "Stage 2's window"}]
+    source: IP Australia, IP RAPID; ABR; ASIC (lens firms); notebook 3, section 2.3
+    note: The axis starts at 50% to show the differences between cohorts; every cohort is well above half.
+  questions:
+    - q: 2
+      how: Most firms that come to hold both kinds of right start with a brand, which bears on the route by which firms enter the patent system.
+  sources: [linkage, abr, asic, iprapid]
+  prep:
+    - what: Firms whose first public registration fell in 2001 to 2005, 2006 to 2010 or 2011 to 2015, and whose registration date is not truncated; a first filing dated before the registration is kept.
+      why: The final review asked for an order that does not depend on a window of filings.
+  steps:
+    - Take each cohort's firms that have filed both a trade mark and a standard patent, at any date.
+    - Measure the share whose first trade mark came first, with an interval, in each half, and the median years between the two.
+    - Count how many of the cohort filed both, so the selection is visible.
+  assumptions:
+    - A firm's first observed filing is its first filing (filings before 2001, or without an ABN, are not seen).
+  limits:
+    - The later cohorts have had less time to file their second kind of right.
+  next: >-
+    Descriptive: it refines Stage 2's figure. The order is a lead for how firms come to the patent system, for the
+    answers to Q2.
+  terms: [cohort, halves, interval]
+  related: [B25]
+
+- id: M11
+  lens: firms
+  about: system
+  headline: Among employers of 100 or more, the largest file more, and the gap widens within the same industry
+  statement: >-
+    Over every employer of 100 or more reporting to WGEA, employers of 1,000 or more more often have a filing linked
+    than those under 250 (65.3% against 48.3%), and the gap widens with the industry held: +19.1 and +20.3 points, from
+    +17.0 and +18.0 raw. Large employers are in divisions that file less. R&D spend's link to patenting within size and
+    industry does not replicate in this small group.
+  figures:
+    - value: "+19.1 and +20.3 points"
+      label: any filing linked, 1,000 or more against under 250, industry held (raw +17.0 and +18.0)
+    - value: "+12.1 and +16.0 points"
+      label: a standard patent, industry held
+    - value: "509"
+      label: WGEA employers claiming the R&D Tax Incentive
+  points:
+    - "9,742 WGEA employers (latest report), 7,126 of them in the lens; those outside it are counted as having no filing
+      linked."
+    - "**A standard patent:** +7.4 raw and +12.1 held; +13.4 and +16.0. **A trade mark:** +17.1 and +19.0; +16.7 and
+      +19.0. Holds."
+    - "**R&D spend above the median** ($2,194,930) with size and division held: a standard patent +14.7 in the first
+      half, +3.8 in the second, so it does not replicate; with about 250 employers a half, little can be detected
+      either way."
+    - "Size is known only for WGEA reporters, so these are large employers only, not the firms most IP filers are."
+  revisits:
+    - id: B50
+      signal: Size and filing among large employers
+      verdict: holds
+      what: >-
+        The size gap holds and widens with the industry held: +19.1 and +20.3 points for any filing linked, against
+        +17.0 and +18.0 raw.
+    - id: B51
+      signal: R&D within size among large employers
+      verdict: does not replicate
+      what: >-
+        R&D spend above the median goes with a standard patent in the first half (+14.7) but not the second (+3.8),
+        with size and industry held; about 250 employers a half.
+  held: [the ANZSIC division, "for R&D spend: the size band"]
+  verdicts:
+    - signal: Any filing linked, 1,000 or more against under 250
+      detail: +17.0 and +18.0 raw; +19.1 and +20.3 held
+      verdict: holds
+    - signal: A standard patent
+      detail: +7.4 and +13.4 raw; +12.1 and +16.0 held
+      verdict: holds
+    - signal: A trade mark
+      detail: +17.1 and +16.7 raw; +19.0 and +19.0 held
+      verdict: holds
+    - signal: R&D spend above the median, a standard patent
+      detail: +14.7 held in the first half, +3.8 in the second
+      verdict: does not replicate
+  chart:
+    type: effect
+    title: Employers of 1,000 or more against those under 250
+    subtitle: Difference in the share with a filing linked, in percentage points, over every WGEA employer; raw and with the industry held; 95% intervals
+    x: {values: ["Any filing linked, first half", "Any filing linked, second half", "A standard patent, first half", "A standard patent, second half", "A trade mark, first half", "A trade mark, second half"]}
+    y: {name: Largest minus smallest employers (percentage points), format: signed}
+    ref: 0
+    ref_label: no difference
+    series:
+      - name: Raw (as Stage 2 compared)
+        colour: muted
+        data: [[17.0, 12.6, 21.3], [18.0, 13.7, 22.2], [7.4, 4.3, 10.5], [13.4, 9.9, 16.8], [17.1, null, null], [16.7, null, null]]
+      - name: Industry held
+        colour: 0
+        data: [[19.1, 14.9, 23.3], [20.3, 16.2, 24.4], [12.1, 8.8, 15.5], [16.0, 12.5, 19.4], [19.0, 14.8, 23.3], [19.0, 14.9, 23.2]]
+    source: WGEA; IP Australia, IP RAPID (lens firms); notebook 3, section 2.4
+  questions:
+    - q: 2
+      how: Among large employers, size goes with filing more strongly within an industry than across all, so the industries large employers are in file less.
+    - q: 3
+      how: R&D spend's link to patenting within size is too weak to detect in about 250 employers a half.
+  sources: [wgea, rdti, linkage, iprapid]
+  prep:
+    - what: Every employer with a WGEA report, those outside the firms lens counted as having no filing linked, as in B50; only WGEA's own fields are held.
+      why: Anything taken from the lens (age, place) is missing for exactly the employers with no link.
+  steps:
+    - Compare employers of 1,000 or more with those under 250, with nothing held (raw).
+    - Hold the ANZSIC division and compare again.
+    - Among WGEA employers claiming the R&D Tax Incentive, compare spend above the median with the size band and division held.
+  assumptions:
+    - The latest WGEA report gives an employer's size and industry.
+  limits:
+    - Size is known only for employers of 100 or more (OQ20).
+  next: >-
+    Part of the sixth early signal; small firms' size and industry are the gap (OQ20).
+  terms: [held-together, wgea, anzsic, verdict-words]
+  related: [B50, B51]
+
+- id: M12
+  lens: firms
+  about: data
+  headline: A name match to the business register recovers most missing business numbers accurately, and changes no firm finding
+  statement: >-
+    Matching Australian organisations' rights that have no filer's ABN to the ABR's and ASIC's names recovers a known
+    ABN for 66% to 85% of rights where the ABN was hidden for a test, with 1.1% to 4.8% of matches naming another ABN.
+    Applied to rights with no ABN it links 17.7% to 35.3% of them. It closes most of the recent fall in standard
+    patents linked to an ABN, and moves concentration and the claimants' figures by less than a point.
+  figures:
+    - value: "81.70%"
+      label: of standard patents' hidden ABNs recovered, FY2010 to FY2019 (2.06% of matches another ABN)
+    - value: "88.68% to 83.85%"
+      label: standard patents with a filer's ABN, FY2024 to FY2026; 89.43% to 89.20% with the matched links
+    - value: "55.31% and 55.06%"
+      label: of standard patents filed by the top 1% of firms, by ABN and with the matched links
+  points:
+    - "**The test:** standard patents FY2010 to FY2019, 83.41% matched and 81.70% recovered; FY2020 to FY2026, 68.95%,
+      67.85% and 1.60% another ABN. Trade marks 78.89%, 76.59% and 2.91%. Designs filed FY2000 to FY2009 are the
+      weakest, 9.84% another ABN. A \"wrong\" ABN can be a related company of the same group."
+    - "**With the postcode as well**, 42.62% to 46.04% matched, with 2.34% to 4.71% another ABN: it halves the matches
+      for no gain in accuracy, so it was dropped."
+    - "**Rights with no ABN, FY2000 to FY2026:** 3,217 of 9,104 standard patents matched (35.34%), 20,845 of 117,531
+      trade marks (17.74%), 6,183 of 18,317 provisionals, 2,171 of 8,275 designs; none of 3,220 plant breeder's rights."
+    - "**Firms with a first observed linked standard patent:** 660 (FY2020) to 542 (FY2026) by the filer's ABN, 675 to
+      616 with the matched links: about half of U45's later fall is linking (an 18% fall becomes 9%)."
+    - "**R&D claimants with no filing linked** fall from 48.48% to 47.70%; every signal of {M8} keeps its direction and
+      verdict. Adopting the matched links into the counts is the owner's decision (OQ26)."
+  revisits:
+    - id: U45
+      signal: Recent filers less often linked to an ABN
+      verdict: refined
+      what: >-
+        With the matched links, standard patents with an ABN go from 89.43% (FY2024) to 89.20% (FY2026), against 88.68%
+        to 83.85% by the filer's ABN: most of the recent fall is linking. About half of the later fall in first patent
+        filers is linking too (an 18% fall becomes 9%).
+    - id: U44
+      signal: A few firms file most patents
+      verdict: refined
+      what: >-
+        Concentration barely moves with the matched links: the top 1% of firms file 55.31% of standard patents by ABN
+        and 55.06% with the matched links (trade marks 25.66% and 26.02%).
+  held: ["a name match to the ABR's main names and ASIC's company names, kept apart from the counts"]
+  verdicts:
+    - signal: The match's accuracy, every type and decade but older designs
+      detail: 1.14% to 4.83% of matches name another ABN (older designs 9.84%)
+      verdict: refined
+    - signal: The recent fall in standard patents linked to an ABN
+      detail: 88.68% to 83.85% by ABN; 89.43% to 89.20% with the matched links
+      verdict: refined
+    - signal: Concentration of standard patents
+      detail: 55.31% by ABN, 55.06% with the matched links
+      verdict: refined
+  chart:
+    type: bar
+    title: Australian organisations' rights linked to a business number, with and without the name match
+    subtitle: Share with an ABN, FY2024 and FY2026; the matched links are read beside the counts, never added to them
+    x: {values: ["Standard patents, FY2024", "Standard patents, FY2026", "Trade marks, FY2024", "Trade marks, FY2026", "Designs, FY2024", "Designs, FY2026"]}
+    y: {name: Share with an ABN, format: pct, min: 80, max: 95}
+    series:
+      - name: By the filer's ABN
+        colour: muted
+        data: [88.68, 83.85, 92.34, 90.94, 92.27, 89.34]
+      - name: With the name-matched links
+        colour: 0
+        data: [89.43, 89.20, 93.01, 92.91, 92.76, 90.72]
+    source: IP Australia, IP RAPID; ABR; ASIC (lens rights and firms); notebook 3, section 2.5
+    note: The axis starts at 80% to show the gap; most rights are linked either way.
+  questions:
+    - q: 2
+      how: Firms' IP counts are lower bounds; the name match shows how far, and that no firm finding depends on the missing links.
+    - q: 3
+      how: The claimants' and suppliers' findings rest on the same links, and keep their direction with the matched ones.
+  sources: [iprapid, abr, asic, linkage, ipa_register]
+  prep:
+    - what: "The filer's name is matched to the ABR's main names and ASIC's company names (current and former), and a match is kept only if exactly one ABN has the name and is registered in the filer's state (`name_matched_abn`, ADR 0045 and 0047)."
+      why: A name shared by several ABNs, or found in another state, is too likely to be the wrong firm.
+    - what: The match is tested on rights whose ABN is known, with the ABN hidden.
+      why: Shows how often the match is right before it is used where the ABN is missing.
+  steps:
+    - Run the match on rights with a known ABN, hidden, and measure the share recovered and the share naming another ABN.
+    - Run it on rights with no ABN, and read U45's linked shares and first observed filers with and without it.
+    - Read U44's concentration and M8's claimants with the matched links beside the counts.
+  assumptions:
+    - An organisation's name as filed, in its state, picks out one business.
+  limits:
+    - "A \"wrong\" ABN can be a related company of the same group, which the test cannot tell."
+    - The match uses ABN main names and ASIC company names only, not trading or business names.
+  next: >-
+    For the owner (OQ26): whether to adopt the matched links into the counts. The gaps it leaves are the ABNs IP
+    RAPID leaves out (OQ7) and trading and business names (ASIC's business names register).
+  terms: [abn, abr, asic, name-match, lower-bound]
+  related: [U44, U45, M8, U126]
+
+- id: M29
+  lens: firms
+  about: system
+  headline: Among government suppliers, company form, age and a city address go with filing; the advantaged postcode does not once they are held
+  statement: >-
+    Among 52,884 active government suppliers, public companies (+31.2 points), firms of 20 years or more (+14.6) and
+    city addresses (+12.3) each go with a filing linked with the others and the state held, in both halves. The
+    advantaged postcode's link is not detected once they are held. Large taxpayers with a filing linked do not report
+    more income once their form, age and state are held.
+  figures:
+    - value: "+31.2 and +29.2 points"
+      label: public against private company, held together (65.1% against 31.4% raw)
+    - value: "-0.0 and -0.5 points"
+      label: IRSAD decile 8 to 10 against 1 to 7, held together (raw +4.6 and +5.1)
+    - value: "0.824 and 0.961"
+      label: large taxpayers' income ratio, filing linked against none, held together
+  points:
+    - "**20 years or more against 3 to 10:** +21.5 raw and +14.6 held; +21.7 and +14.3. Holds (67.9% and 66.0% left).
+      Age is on the record at the build date."
+    - "**Major city against elsewhere:** +12.5 and +12.3; +13.6 and +13.2. Holds."
+    - "**The advantaged postcode:** not detected once held. The suppliers' gradient by advantage of postcode is their
+      form, age and city address."
+    - "**Large taxpayers** (6,310 with a latest income; 40.45% and 41.20% with a filing linked): income ratio 1.393 raw
+      and 0.824 held in the first half, reversed; 1.601 and 0.961 in the second, not detected once held."
+  revisits:
+    - id: B22
+      signal: Who files among government suppliers
+      verdict: mixed
+      what: >-
+        Among suppliers, form, age and a city address hold with the others held (+31.2, +14.6 and +12.3 points); the
+        advantaged postcode is not detected once held (+4.6 raw, -0.0 held).
+    - id: B24
+      signal: Large taxpayers' income and IP
+      verdict: mixed
+      what: >-
+        Large taxpayers with a filing linked do not report more income at the same form, age and state: 0.824 held
+        (reversed) and 0.961 (not detected once held), against 1.393 and 1.601 raw.
+  held: [company form, age on the record, a major city or elsewhere, the postcode's IRSAD decile, the state, "for large taxpayers: the entity group, age and state"]
+  verdicts:
+    - signal: Public against private company
+      detail: +33.7 and +32.5 raw; +31.2 and +29.2 held together
+      verdict: holds
+    - signal: Age 20 years or more against 3 to 10
+      detail: +21.5 and +21.7 raw; +14.6 and +14.3 held together
+      verdict: holds
+    - signal: Major city against elsewhere
+      detail: +12.5 and +13.6 raw; +12.3 and +13.2 held together
+      verdict: holds
+    - signal: IRSAD decile 8 to 10 against 1 to 7
+      detail: +4.6 and +5.1 raw; -0.0 and -0.5 held together
+      verdict: not detected once held
+    - signal: Large taxpayers' income, first half
+      detail: 1.393 raw, 0.824 held together
+      verdict: reversed
+    - signal: Large taxpayers' income, second half
+      detail: 1.601 raw, 0.961 held together
+      verdict: not detected once held
+  chart:
+    type: effect
+    title: Who has a filing linked among government suppliers
+    subtitle: Difference in the share of suppliers, in percentage points, raw and with the others and the state held together; 95% intervals
+    views:
+      - label: Suppliers with a filing linked
+        x: {values: ["Public against private company, first half", "Public against private company, second half", "20 years or more against 3 to 10, first half", "20 years or more against 3 to 10, second half", "Major city against elsewhere, first half", "Major city against elsewhere, second half", "IRSAD decile 8 to 10 against 1 to 7, first half", "IRSAD decile 8 to 10 against 1 to 7, second half"]}
+        y: {name: Difference (percentage points), format: signed}
+        ref: 0
+        ref_label: no difference
+        series:
+          - name: Raw (as Stage 2 compared)
+            colour: muted
+            data: [[33.7, null, null], [32.5, null, null], [21.5, null, null], [21.7, null, null], [12.5, null, null], [13.6, null, null], [4.6, 3.5, 5.7], [5.1, null, null]]
+          - name: Held together
+            colour: 0
+            data: [[31.2, 28.3, 34.0], [29.2, 26.4, 32.0], [14.6, 13.1, 16.1], [14.3, 12.8, 15.9], [12.3, 10.9, 13.8], [13.2, 11.8, 14.6], [-0.0, -1.2, 1.2], [-0.5, -1.7, 0.7]]
+      - label: Large taxpayers' income
+        x: {values: ["First half", "Second half"]}
+        y: {name: "Ratio of mean income, filing linked against none", format: ratio, digits: 2}
+        ref: 1
+        ref_label: the same income
+        series:
+          - name: Raw (as Stage 2 compared)
+            colour: muted
+            data: [[1.393, 1.077, 1.802], [1.601, 1.214, 2.111]]
+          - name: Held together
+            colour: 0
+            data: [[0.824, 0.685, 0.990], [0.961, 0.803, 1.150]]
+    source: Department of Finance, AusTender; ATO, corporate tax transparency; IP Australia, IP RAPID; ABR (lens firms); notebook 3, section 2.6
+  questions:
+    - q: 2
+      how: Which suppliers file is their form, age and city address, not their postcode's advantage.
+    - q: 3
+      how: Large taxpayers that file report no more income at the same form, age and state, so filing is not a sign of larger income among them.
+    - q: 4
+      how: Part of the sixth early signal, on which firms an intervention through procurement would reach.
+  sources: [austender, ato_ctt, linkage, abr, iprapid, abs_regions]
+  prep:
+    - what: Active suppliers, in each half; each of four signals modelled with the others and the state held.
+      why: The four go together (public companies are older and in cities), so each is read at the others' levels.
+    - what: Large taxpayers' latest total income (the ATO's transparency reports) as a gamma model, a filing linked against none, with the entity group, age and state held.
+      why: Income is skewed, so a ratio of averages is the natural reading.
+  steps:
+    - Compare suppliers on form, age, city and postcode advantage, each with nothing held.
+    - Fit one model with all four and the state held together, and give each outcome in each half.
+    - Model large taxpayers' income with form, age and state held.
+  assumptions:
+    - The ABR's entity type gives a firm's form, and its first public registration its age.
+  limits:
+    - Size is not held; it is in the lens only for WGEA's employers.
+  next: >-
+    Part of the sixth early signal: firm size for small firms (OQ20), and the timing of filing against contracts.
+  terms: [held-together, average-marginal-effect, irsad, gamma, verdict-words]
+  related: [B22, B24, M9, M8]
+
+- id: M30
+  lens: firms
+  about: system
+  headline: Patents filed before the firm's first registration are more often now held only overseas, with the patent's own characteristics held
+  statement: >-
+    Joined to the firm that filed them, Australian-founded patents filed before the firm's first public registration are
+    more often now held only overseas than those of firms 10 years or more, with grant, reach, field, route and year
+    held: +5.40 points (FY2003 to FY2011) and +6.21 (FY2012 to FY2021). Firms under 2 years old are not detected either
+    way.
+  figures:
+    - value: "+5.40 and +6.21 points"
+      label: filed before first registration, against firms 10 years or more, held together
+    - value: "7.77% against 2.33%"
+      label: now held only overseas, FY2012 to FY2021, raw
+    - value: "26,204"
+      label: patents from 9,380 firms
+  points:
+    - "**Filed before first registration:** 7.01% against 3.24%, +3.77 raw and +5.40 held, FY2003 to FY2011; +5.44 and
+      +6.21, FY2012 to FY2021. Holds."
+    - "**Under 2 years old:** +2.55 raw and +3.66 held; +0.56 and +0.91. Not detected either way."
+    - "Who filed before the firm was registered (a founder, or a business before its ABN) is not in the data. Two
+      endpoints, not transfers."
+  revisits:
+    - id: B26
+      signal: The filing firm's age and patents held overseas
+      verdict: holds
+      what: >-
+        Patents filed before the firm's first registration are more often now held only overseas with grant, reach,
+        field, route and year held (+5.40 and +6.21 points); firms under 2 years old are not detected either way, as
+        B26 read it.
+  held: [grant, family reach, the technology field, the route of filing, the filing year, several founding applicants]
+  verdicts:
+    - signal: Filed before the firm's first registration
+      detail: +3.77 and +5.44 raw; +5.40 and +6.21 held together
+      verdict: holds
+    - signal: Firms under 2 years old
+      detail: +2.55 and +0.56 raw; +3.66 and +0.91 held; every interval includes zero
+      verdict: not detected either way
+  chart:
+    type: effect
+    title: Patents now held only overseas, by the filing firm's age
+    subtitle: Against firms 10 years or more, in percentage points, raw and with grant, reach, field, route and year held; 95% intervals clustered by firm
+    x: {values: ["Filed before first registration, FY2003 to FY2011", "Filed before first registration, FY2012 to FY2021", "Firm under 2 years old, FY2003 to FY2011", "Firm under 2 years old, FY2012 to FY2021"]}
+    y: {name: Difference (percentage points), format: signed}
+    ref: 0
+    ref_label: no difference
+    series:
+      - name: Raw (as Stage 2 compared)
+        colour: muted
+        data: [[3.77, 1.54, 6.00], [5.44, 2.66, 8.22], [2.55, -1.27, 6.38], [0.56, -1.02, 2.14]]
+      - name: Held together
+        colour: 0
+        data: [[5.40, 3.08, 7.72], [6.21, 3.66, 8.76], [3.66, -0.40, 7.71], [0.91, -0.89, 2.71]]
+    source: IP Australia, IP RAPID; Google Patents; ABR (lens rights and firms); notebook 3, section 2.7
+  questions:
+    - q: 1
+      how: Patents filed before the firm existed on the register are the ones more often held only overseas now, which bears on where value from early-stage invention goes (the fourth early signal).
+    - q: 2
+      how: Points to founders or pre-registration businesses as a group whose patents more often end up overseas.
+  sources: [iprapid, google_patents, linkage, abr]
+  prep:
+    - what: M6's model joined to the filing firm by the filer's ABN, for firms whose registration date is not truncated, as in B26.
+      why: A firm's age is known only when its first public registration is.
+  steps:
+    - Compare firms under 2 years old, and patents filed before first registration, with firms 10 years or more (raw).
+    - Hold grant, reach, field, route, filing year and founders together, clustered by the firm.
+    - Give each outcome in B26's two periods.
+  assumptions:
+    - A firm's first public registration marks when it began as that ABN.
+  limits:
+    - Two endpoints, not transfers (ADR 0040).
+  next: >-
+    The fourth early signal, with {M6}: dated ownership changes and holders' identities.
+  terms: [held-together, average-marginal-effect, verdict-words]
+  related: [B26, M6]

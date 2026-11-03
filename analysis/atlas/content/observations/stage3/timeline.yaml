@@ -1,0 +1,543 @@
+# Stage 3, the timeline lens (section 5 of the multivariate notebook). Rules as in ../stage3/rights.yaml. Quarterly
+# changes are read with moving-block resampling (neighbouring quarters are alike); monthly breaks as interrupted time
+# series with the trend and season held, beside control series the change should not have moved.
+
+- id: M19
+  lens: timeline
+  about: system
+  headline: With block resampling, Stage 2's one quarterly lead still holds, but the quarters are worth far fewer independent observations than they number
+  statement: >-
+    Resampled in blocks of consecutive quarters, so that alike neighbouring quarters stay together, trade mark
+    registrations and trade mark oppositions still move together in both periods (0.658, then 0.588), with wider
+    intervals. The 68 to 72 quarters are worth only 13.98 to 53.45 independent ones, so pairs below Stage 2's threshold
+    had little power. Of the planned pairs, only Australians' and overseas applicants' standard patents move together,
+    and only from 2008.
+  figures:
+    - value: "0.658 and 0.588"
+      label: trade mark registrations against oppositions, 1991 to 2008 then 2008 to 2026
+    - value: "23.06 of 68"
+      label: independent quarters the first period's lead is worth
+    - value: "0.444"
+      label: Australians' against overseas applicants' standard patents, from 2008 (blocks 0.178 to 0.705)
+  points:
+    - "**B36's lead with blocks of 8 quarters:** 0.440 to 0.823 in the first period (single quarters 0.465 to 0.803);
+      0.296 to 0.786 in the second (single quarters 0.394 to 0.740), worth 46.21 of 72. Holds; its intervals widen, as
+      the review expected."
+    - "**Standard patents, Australian against overseas applicants:** -0.055 before 2008, then 0.444. **Trade marks:**
+      0.287, then 0.129; **designs** 0.050 and 0.069; **provisionals against Australians' standard patents** -0.007 and
+      0.034: not detected either way."
+    - "**Australians' trade marks against the CPI:** -0.478 in the first period (worth 13.98 quarters), -0.187 in the
+      second: one period only, not a lead."
+    - "Annual series have fewer points still."
+  revisits:
+    - id: B36
+      signal: The quarterly screen's one lead
+      verdict: holds
+      what: >-
+        Trade mark registrations and oppositions still move together with block resampling (0.658 and 0.588; blocks of
+        8 quarters 0.440 to 0.823 and 0.296 to 0.786); the quarters are worth 13.98 to 53.45 independent ones.
+    - id: B39
+      signal: Australian and overseas applicants together
+      verdict: mixed
+      what: >-
+        Standard patents move together from 2008 only (0.444, blocks 0.178 to 0.705); trade marks and designs are not
+        detected either way as quarterly changes.
+  held: ["moving blocks of 8 consecutive quarters, in place of single quarters, for the intervals"]
+  verdicts:
+    - signal: Trade mark registrations against trade mark oppositions
+      detail: 0.658 and 0.588; block intervals clear of zero in both periods
+      verdict: holds
+    - signal: Standard patents, Australian against overseas applicants
+      detail: -0.055 before 2008, 0.444 after (blocks 0.178 to 0.705)
+      verdict: mixed
+    - signal: Trade marks and designs, Australian against overseas applicants
+      detail: 0.287 and 0.129; 0.050 and 0.069
+      verdict: not detected either way
+    - signal: "Australians' trade marks against the CPI"
+      detail: -0.478 before 2008, -0.187 after
+      verdict: does not replicate
+  chart:
+    type: effect
+    title: Quarterly changes that move together, with intervals from moving blocks of 8 quarters
+    subtitle: Rank correlations of year-on-year changes, 1991Q3 to 2008Q2 and 2008Q3 to 2026Q2, with 95% intervals from 1,000 block resamples
+    x: {values: ["Trade mark registrations ~ trade mark oppositions", "Standard patents: Australian ~ overseas applicants", "Trade marks: Australian ~ overseas applicants", "Australians' trade marks ~ the CPI"]}
+    y: {name: Rank correlation, format: signed, digits: 3}
+    ref: 0
+    ref_label: no association
+    series:
+      - name: 1991 to 2008
+        colour: 0
+        data: [[0.658, 0.440, 0.823], [-0.055, -0.316, 0.152], [0.287, -0.108, 0.620], [-0.478, -0.628, -0.174]]
+      - name: 2008 to 2026
+        colour: 2
+        data: [[0.588, 0.296, 0.786], [0.444, 0.178, 0.705], [0.129, -0.186, 0.348], [-0.187, -0.525, 0.195]]
+    views:
+      - label: The planned pairs
+      - label: "B36's lead: single quarters against blocks"
+        subtitle: Trade mark registrations against oppositions, with 95% intervals from single quarters and from blocks of 8
+        x: {values: ["1991 to 2008", "2008 to 2026"]}
+        series:
+          - name: Single quarters (as Stage 2)
+            colour: muted
+            data: [[0.658, 0.465, 0.803], [0.588, 0.394, 0.740]]
+          - name: Blocks of 8 quarters
+            colour: 0
+            data: [[0.658, 0.440, 0.823], [0.588, 0.296, 0.786]]
+    source: IP Australia, IP RAPID; ABS, CPI (lens timeline); notebook 3, section 5.1
+  questions:
+    - q: 1
+      how: Shows how little the quarterly series can say about which kinds of filing move together, so their "no association detected" is weak evidence either way.
+  sources: [iprapid, abs_prices]
+  prep:
+    - what: "Each pair's rank correlation of quarterly year-on-year changes in each period, with intervals from 1,000 resamples of single quarters and of [[block-resampling|moving blocks]] of 4 and 8 quarters, and the [[effective-sample|effective sample size]]."
+      why: Changes of quarterly totals are alike from one quarter to the next, so resampling single quarters gives intervals that are too narrow.
+  steps:
+    - Measure each pair's correlation of quarterly changes, as Stage 2 did.
+    - Resample in blocks of consecutive quarters, and read a pair as moving together only if the block interval is clear of zero.
+    - Count how many independent quarters each series is worth.
+  assumptions:
+    - Blocks of 8 quarters (two years) are long enough to keep the dependence between neighbouring quarters.
+  limits:
+    - Few effective quarters mean little power to detect a moderate association.
+  next: >-
+    Recorded: the quarterly screen was not too generous for its one lead. {M36} reads the cycle the same way.
+  terms: [block-resampling, effective-sample, correlation, interval, verdict-words]
+  related: [B36, B39, M36]
+
+- id: M20
+  lens: timeline
+  about: system
+  headline: Most filing series are dominated by their trends; seasons are strong only for provisionals and Australians' trade marks
+  statement: >-
+    Split into a trend, a season and the rest (an [[stl|STL decomposition]] of each monthly series, January 1995 to
+    June 2026), trade marks' and overseas applicants' series are almost all trend (strength 0.889 to 0.973), while
+    Australians' standard patents (0.549) and designs (0.336) are noisy against theirs. Seasons are strong for
+    Australians' trade marks (0.799) and provisionals (0.753). Once trend and season are removed, different series move
+    together only moderately (0.239 to 0.325).
+  figures:
+    - value: "0.973"
+      label: trend strength of Australians' trade marks (0 to 1)
+    - value: "0.799 and 0.753"
+      label: season strength of Australians' trade marks and provisionals
+    - value: "0.325"
+      label: the strongest pair of remainders, provisionals and Australians' trade marks
+  points:
+    - "378 months, on the log counts."
+    - "**Remainders**, with intervals from blocks of 12 months: overseas standard patents and Australians' trade marks
+      0.256, Australians' and overseas trade marks 0.253, Australians' and overseas standard patents 0.239."
+    - "Shocks shared across kinds of right and origin. One reading, to test, is the calendar: the number of working days
+      in a month and the moving Easter, which a 12-month season does not capture."
+  revisits:
+    - id: B36
+      signal: Series moving together
+      verdict: refined
+      what: >-
+        Once trend and season are removed, the remainders of different series move together only moderately (0.239 to
+        0.325), shocks shared across kinds of right and origin, perhaps the calendar.
+  held: ["each series' own trend and season, removed by STL"]
+  chart:
+    type: bar
+    horizontal: true
+    title: How much of each monthly filing series is trend, and how much season
+    subtitle: Strength of the trend and of the season (0 to 1; above about 0.6 is strong), January 1995 to June 2026
+    x: {values: ["Australians' trade marks", "Overseas trade marks", "Overseas designs", "Provisionals", "Overseas standard patents", "Australians' standard patents", "Australians' designs"]}
+    y: {name: Strength (0 to 1), min: 0, max: 1, format: ratio, digits: 2}
+    series:
+      - name: Trend
+        colour: 0
+        data: [0.973, 0.962, 0.949, 0.896, 0.889, 0.549, 0.336]
+      - name: Season
+        colour: 1
+        data: [0.799, 0.470, 0.331, 0.753, 0.308, 0.306, 0.580]
+    source: IP Australia, IP RAPID (lens timeline); notebook 3, section 5.2
+  questions:
+    - q: 1
+      how: Shows what any before-and-after comparison of filing must allow for (strong trends, strong seasons in two series), and that shocks are partly shared.
+  sources: [iprapid]
+  prep:
+    - what: Each monthly filing series, as the log of the count plus one, split by STL (robust to outliers) into trend, season and remainder.
+      why: A trend or season shared by two series makes them look linked when they are not.
+  steps:
+    - Decompose each series and measure the strength of its trend and season.
+    - Correlate the remainders of different series, with block intervals for the strongest pairs.
+  assumptions:
+    - A season that repeats every 12 months describes the calendar's effect well enough.
+  limits:
+    - Working days and the moving Easter are not in a 12-month season.
+  next: >-
+    A data gap Stage 3 lists: a working-day calendar (public holidays by state).
+  terms: [stl, seasonal, block-resampling]
+  related: [M19, M25]
+
+- id: M25
+  lens: timeline
+  about: system
+  headline: Raising the Bar's rush, and Australians' lower level of patents after it, hold with trend and season held; the Designs Act's step does not stand apart
+  statement: >-
+    Read as an interrupted time series with each series' trend and season held, Raising the Bar (April 2013) brought a
+    rush of Australians' standard patents (0.605 in logs) and a lower level after it (a step of -0.334, about 28% fewer
+    a month), which then recovers; its controls were quiet but for one small series. The Designs Act 2003's step for
+    overseas applicants (June 2004) does not stand apart: Australians' trade marks, a control, stepped too.
+  figures:
+    - value: "-0.334"
+      label: Australians' standard patents, step after Raising the Bar (about 28% fewer a month)
+    - value: "0.605"
+      label: Australians' standard patents, the rush before it (in logs)
+    - value: "0.251"
+      label: Australians' trade marks, a control, stepping with the Designs Act (0.391 for overseas designs)
+  points:
+    - "**Raising the Bar:** a slope of +0.089 a year after the step, a lower level that then recovers. **Overseas
+      applicants:** a rush of 0.352, no step detected (-0.047)."
+    - "**Its controls:** Australians' designs, rush 0.049 and step -0.077, quiet; plant breeder's rights, rush 0.206, a
+      small and noisy series. Stage 2's reading holds, with the plant breeder's rights' rush as a caution."
+    - "**The Designs Act 2003:** overseas applicants' designs step 0.391; but Australians' designs step too (0.162), and
+      so do Australians' trade marks (0.251), while Australians' standard patents do not (0.036)."
+    - "A linear trend over ten years is a simple counterfactual; Stage 2's placebo months remain the check on how often a
+      step this size appears by chance."
+  revisits:
+    - id: B37
+      signal: Behavioural policy breaks
+      verdict: mixed
+      what: >-
+        Raising the Bar's rush and lower level hold for Australians' standard patents with trend and season held (rush
+        0.605, step -0.334); the Designs Act's overseas step (0.391) is not shown to be the Act's, since a control
+        steps too (0.251).
+    - id: U28
+      signal: Rushes, steps and pauses around policy changes
+      verdict: refined
+      what: >-
+        Of the rushes Stage 1 saw, Raising the Bar's holds with each series' trend and season held, and is followed by
+        a lower level (about 28% fewer a month) that recovers.
+  held: [a linear trend over ten years, the month of the year, "control series the change should not have moved"]
+  verdicts:
+    - signal: Raising the Bar, Australians' standard patents
+      detail: rush 0.605, step -0.334; controls quiet but plant breeder's rights' rush (0.206)
+      verdict: holds
+    - signal: The Designs Act 2003, overseas applicants' designs
+      detail: step 0.391; a control (Australians' trade marks) steps 0.251
+      verdict: not detected once held
+  chart:
+    type: effect
+    title: Raising the Bar (April 2013) and the Designs Act 2003 (June 2004), with trend and season held
+    subtitle: Rush (the change's month and the three before) and step (the level after), in logs, with 95% Newey-West intervals
+    x: {values: ["Australians' standard patents", "Overseas applicants' standard patents", "Control: Australians' designs", "Control: plant breeder's rights"]}
+    y: {name: Change in the log of monthly filings, format: signed, digits: 3}
+    ref: 0
+    ref_label: no change
+    series:
+      - name: Rush
+        colour: 1
+        data: [[0.605, 0.336, 0.874], [0.352, 0.184, 0.520], [0.049, -0.031, 0.128], [0.206, 0.017, 0.395]]
+      - name: Step after
+        colour: 0
+        data: [[-0.334, -0.421, -0.246], [-0.047, -0.117, 0.023], [-0.077, -0.197, 0.044], [0.085, -0.088, 0.258]]
+    views:
+      - label: Raising the Bar, 2013
+      - label: The Designs Act 2003
+        subtitle: Step after June 2004, in logs, with 95% Newey-West intervals; a control stepping too means the step is not shown to be the Act's
+        x: {values: ["Overseas applicants' designs", "Australians' designs", "Control: Australians' trade marks", "Control: Australians' standard patents"]}
+        series:
+          - name: Step after
+            colour: 0
+            data: [[0.391, 0.247, 0.535], [0.162, 0.057, 0.266], [0.251, 0.115, 0.388], [0.036, -0.016, 0.088]]
+    source: IP Australia, IP RAPID; the policy register (lens timeline); notebook 3, section 5.3
+    note: In logs, a step of -0.334 is about 28% fewer a month.
+  questions:
+    - q: 4
+      how: Confirms Raising the Bar as a clear behavioural response (a rush, then a lower level) worth a design that follows who rushed and what their applications became (the eleventh early signal).
+    - q: 5
+      how: A natural experiment for estimating what a policy change did, with its controls set out.
+  sources: [iprapid, policy_events]
+  prep:
+    - what: Each series' log monthly count over ten years (five either side), with a linear trend and the month of the year held, plus a rush, a step and a change in slope after the change.
+      why: Stage 2 measured each break against placebo months; Stage 3 holds the trend and season, which a break could otherwise be confused with.
+  steps:
+    - Fit an [[interrupted|interrupted time series]] to each series with a rush, a step and a change in slope.
+    - Fit the same to control series the change should not have moved.
+    - Read a behavioural break only where the series moves and its controls do not.
+  assumptions:
+    - A linear trend over ten years is what the series would have done without the change.
+  limits:
+    - A linear trend is a simple counterfactual; the placebo months remain the check on chance.
+  next: >-
+    The eleventh early signal: a design for Q5 around Raising the Bar, following who rushed and what their rushed
+    applications became.
+  terms: [interrupted, newey-west, raising-the-bar, placebo, natural-experiment, verdict-words]
+  related: [B37, U28, M34]
+
+- id: M34
+  lens: timeline
+  about: system
+  headline: With trend and season held, the fee breaks mostly do not read as prices; the cessation steps hold in the national series but not at each right's anniversary
+  statement: >-
+    Read as interrupted time series with trend and season held, Stage 2's fee breaks mostly do not behave as prices
+    would: the Trade Marks Act 1995 is a fall, not a rush; January 1998's patent fee cut brought overseas filing forward
+    and raised it after; October 2016's trade mark fee cut stepped overseas applicants' filing up (0.161), with a control
+    stepping too. Patent cessations stepped up after September 2002 (0.476) in the series, but at each patent's own
+    anniversary nothing changed ({M28}).
+  figures:
+    - value: "-0.495"
+      label: Australians' trade marks, step after the Trade Marks Act 1995 (cost +36.6%)
+    - value: "0.161"
+      label: overseas applicants' trade marks, step after October 2016 (fee -40.5%)
+    - value: "0.476"
+      label: patent cessations, step from month 7 after September 2002
+  points:
+    - "**Trade Marks Act 1995, January 1996:** Australians' trade marks rush -0.282 and step -0.495; overseas applicants'
+      -0.098 and -0.188; a control, Australians' standard patents, rush +0.162. Falls either side of a rise: the Act's
+      pause, as Stage 2 read it."
+    - "**Patents, January 1998 (-15.3%):** overseas applicants' rush +0.126 and step +0.094; Australians' not detected;
+      the controls quiet. Filing brought forward before a cut is against a price; the step after it points a price's
+      way, at the edge."
+    - "**Designs, July 1988 (+15.4%):** Australians' rush -0.220 and step -0.212; a control, Australians' standard
+      patents, steps +0.184. Filing also fell before the rise, which a price would not do; the trend before is short."
+    - "**Cessations:** trade marks after July 1993 (+2.0%) step 0.219, the controls not. Both hold in the series, but at
+      each patent's anniversary nothing changes in September 2002, so the series' rise is more patents reaching those
+      anniversaries, not more let go."
+  revisits:
+    - id: B47
+      signal: Fee breaks in filing
+      verdict: mixed
+      what: >-
+        Mostly not prices: the 1995 Act's falls (step -0.495), January 1998's overseas rush before a cut, October
+        2016's overseas step (0.161) partly shared with a control (0.069).
+    - id: B49
+      signal: Fee breaks in cessations
+      verdict: mixed
+      what: >-
+        The steps hold in the national series (patents 0.476, trade marks 0.219, controls quiet), but at each patent's
+        own anniversary nothing changes ({M28}): more patents reached those anniversaries, not more were let go.
+  held: [a linear trend over ten years, the month of the year, "two control series whose fees did not change"]
+  verdicts:
+    - signal: Trade Marks Act 1995 (a rise)
+      detail: Australians' trade marks rush -0.282 and step -0.495
+      verdict: mixed
+    - signal: Patents, January 1998 (a cut)
+      detail: overseas applicants' rush +0.126 and step +0.094; controls quiet
+      verdict: mixed
+    - signal: Trade marks, October 2016 (a cut)
+      detail: overseas applicants step +0.161; a control +0.069
+      verdict: mixed
+    - signal: Patent cessations after September 2002
+      detail: step 0.476 in the series; controls do not step; nothing at each patent's anniversary
+      verdict: mixed
+  chart:
+    type: effect
+    title: Steps in filing and cessations after fee changes, with trend and season held
+    subtitle: Step after each change, in logs, for the series the fee applied to and a control it did not; 95% Newey-West intervals
+    x: {values: ["Trade Marks Act 1995: Australians' trade marks", "Trade Marks Act 1995: overseas applicants' trade marks", "Patents, January 1998: overseas applicants", "Designs, July 1988: Australians' designs", "Designs, July 1988: control, Australians' standard patents", "Trade marks, October 2016: overseas applicants", "Trade marks, October 2016: Australians", "Trade marks, October 2016: control, overseas designs", "Patent cessations, September 2002", "Patent cessations: control, trade mark cessations", "Trade mark cessations, July 1993", "Trade mark cessations: control, design cessations"]}
+    y: {name: Step in the log of monthly counts, format: signed, digits: 3}
+    ref: 0
+    ref_label: no step
+    series:
+      - name: The series the change applied to
+        colour: 0
+        data: [[-0.495, -0.598, -0.392], [-0.188, -0.276, -0.099], [0.094, 0.001, 0.187], [-0.212, -0.271, -0.153], null, [0.161, 0.052, 0.270], [-0.091, -0.164, -0.018], null, [0.476, 0.222, 0.730], null, [0.219, 0.170, 0.267], null]
+      - name: A control series
+        colour: muted
+        data: [null, null, null, null, [0.184, 0.078, 0.291], null, null, [0.069, 0.004, 0.135], null, [0.196, -0.093, 0.485], null, [0.109, -0.026, 0.244]]
+    source: IP Australia, IP RAPID; Federal Register of Legislation, fee regulations (lens timeline); notebook 3, section 5.4
+    note: A price would bring filing forward before a rise and lower it after; a cut would do the reverse.
+  questions:
+    - q: 4
+      how: Fees to obtain a right seldom moved filing as prices would, and renewal fees did not move letting go at the anniversary, so fees look a weak lever (the fourteenth early signal).
+    - q: 5
+      how: The breaks with controls set out are the raw material for any estimate of a fee change's effect.
+  sources: [frl_fees, iprapid, policy_events]
+  prep:
+    - what: "Stage 2's named filing breaks and cessation breaks, each series' log monthly count over ten years (or from its start if two years come before the change), with a rush (the month before and the month of the change), a step and a change in slope after it."
+      why: Holds the trend and season that a fee break could be confused with.
+    - what: For cessations the step starts where Stage 2's window does, month 7 for patents (cessations are dated at the end of the grace period), month 1 for trade marks.
+      why: A cessation is recorded after the grace period, not at the fee change.
+  steps:
+    - Fit an interrupted time series to each series with a rush, a step and a change in slope.
+    - Fit the same to two control series whose fees did not change.
+    - Read a price response only where the direction is a price's and the controls are quiet.
+  assumptions:
+    - A price would bring filing forward before a rise and lower it after.
+  limits:
+    - The national series counts all rights reaching an anniversary; a rise can be more rights reaching it, not more let go.
+  next: >-
+    The fourteenth early signal, with {M28}: owners' payment dates, and the fee's share of a patent's cost of keeping.
+  terms: [interrupted, newey-west, official-fees, cease, verdict-words]
+  related: [B47, B49, M28, M25]
+
+- id: M35
+  lens: timeline
+  about: system
+  headline: FY2025's fall in provisionals followed up is in new and heavy individual filers; filers seen before followed up about as often
+  statement: >-
+    Australian individuals' provisionals filed in FY2025 were followed by a complete application within 12 months
+    6.66% of the time, against 12.91% in FY2022 to FY2024. The filer's state, volume, history and month of filing
+    account for none of the fall (-6.42 points held, -6.25 raw). Among individuals who also filed in the earlier
+    years, the fall is not detected; it is in new and heavy filers.
+  figures:
+    - value: "-6.42 points"
+      label: individuals' follow-up, FY2025 against FY2022 to FY2024, held (raw -6.25)
+    - value: "4.34% against 7.11%"
+      label: filers in both periods, not detected (-2.27 held)
+    - value: "22.38% to 5.46%"
+      label: followed up, individuals with 10 or more provisionals that year
+  points:
+    - "16,378 Australian filers' provisionals, FY2022 to FY2025."
+    - "**Organisations:** 9.49% against 11.63%, -2.14 raw and -1.85 held, holds; filers in both: +1.31 held, not detected
+      once held."
+    - "**By the filer's volume that year:** individuals with 2 to 9 provisionals, 10.82% then 3.39%; one, 12.92% then
+      7.98%. Organisations with 10 or more, 0.62% then 3.32%."
+    - "Late recording and the PCT are not in the data, so the lead stays a question for IP Australia (OQ18), beside
+      U8's surge."
+  revisits:
+    - id: B38
+      signal: FY2025 provisionals followed up less
+      verdict: holds
+      what: >-
+        The fall holds with the filer's state, volume, history and month held (-6.42 points for individuals, -1.85 for
+        organisations), but among filers seen before it is not detected: the fall is in new and heavy filers.
+    - id: U8
+      signal: The surge in provisionals
+      verdict: refined
+      what: >-
+        Individuals with 10 or more provisionals that year followed up 5.46% in FY2025 against 22.38% before: the heavy
+        filers behind the surge follow up much less.
+  held: [the filer's state, several founders, the month of filing, the filer's volume that year, "whether the filer had filed a patent before"]
+  verdicts:
+    - signal: Individuals, FY2025 against FY2022 to FY2024
+      detail: -6.25 raw, -6.42 held
+      verdict: holds
+    - signal: Individuals who filed in both periods
+      detail: -2.77 raw, -2.27 held; both intervals include zero
+      verdict: not detected either way
+    - signal: Organisations
+      detail: -2.14 raw, -1.85 held
+      verdict: holds
+    - signal: Organisations who filed in both periods
+      detail: +1.87 raw, +1.31 held
+      verdict: not detected once held
+  chart:
+    type: bar
+    title: Australian filers' provisionals followed by a complete application within 12 months
+    subtitle: Share followed up, FY2022 to FY2024 against FY2025, by the filer and its volume that year
+    x: {values: ["Individuals, all", "Individuals with 10 or more", "Individuals with 2 to 9", "Individuals with one", "Individuals who filed in both periods", "Organisations, all", "Organisations who filed in both periods"]}
+    y: {name: Followed up within 12 months, format: pct, min: 0}
+    series:
+      - name: FY2022 to FY2024
+        colour: muted
+        data: [12.91, 22.38, 10.82, 12.92, 7.11, 11.63, 6.39]
+      - name: FY2025
+        colour: 0
+        data: [6.66, 5.46, 3.39, 7.98, 4.34, 9.49, 8.25]
+    source: IP Australia, IP RAPID (lens timeline); notebook 3, section 5.5
+  questions:
+    - q: 4
+      how: Locates the fall in follow-up among new and heavy individual filers, which bears on what the surge in provisionals is (the fifteenth early signal).
+  sources: [iprapid]
+  prep:
+    - what: Stage 2's measure (a provisional followed by an Australian complete application within 12 months), with the filer's state, co-filers, month of filing, volume that year (1, 2 to 9, 10 or more) and history held, clustered by the filer.
+      why: Of Stage 2's candidate explanations, who filed is the one in the data.
+  steps:
+    - Compare FY2025 with FY2022 to FY2024, raw.
+    - Hold the filer's characteristics together, then compare among filers who filed in both periods.
+    - Break the shares down by the filer's volume.
+  assumptions:
+    - A follow-up is recorded when it is filed; if priority claims are recorded late, the latest year is undercounted (OQ18).
+  limits:
+    - One year; late recording and PCT follow-ups at national phase are not in the data.
+  next: >-
+    The fifteenth early signal: IP Australia on when priority claims are recorded (OQ18), and PCT follow-ups at
+    national phase, about 30 months on.
+  terms: [provisional, held-together, average-marginal-effect, verdict-words]
+  related: [B38, U8]
+
+- id: M36
+  lens: timeline
+  about: system
+  headline: With block resampling, the business cycle shows only in overseas applicants' trade marks, and only before 2008
+  statement: >-
+    Resampled in blocks of 8 quarters, few of the cycle's quarterly pairs are clear of zero, and none in both periods.
+    The cash rate (0.460) and unemployment (-0.561) moved with overseas applicants' trade marks before 2008, not after.
+    The cycle remains a third factor to hold in before-and-after comparisons, not a signal.
+  figures:
+    - value: "0.460"
+      label: the cash rate against overseas applicants' trade marks, before 2008 (0.198 after)
+    - value: "-0.561"
+      label: unemployment against overseas applicants' trade marks, before 2008 (-0.224 after)
+    - value: "23.46 of 68"
+      label: independent quarters the cash rate's pair is worth
+  points:
+    - "**The cash rate** with real GDP held: 0.466, then 0.165. Against overseas designs 0.293 and 0.348, neither clear.
+      The dollar against overseas standard patents -0.215 and 0.261, neither clear."
+    - "**Real GDP** against overseas standard patents 0.158 and 0.380; with the cash rate held 0.181 and 0.313: not clear
+      of zero."
+    - "**Labour and the courts:** employment against Australians' trade marks -0.182 and -0.332, neither clear;
+      unemployment against Australians' trade marks -0.256, then 0.382, opposite signs; IP judgments on trade marks
+      against oppositions -0.274 before 2008, then 0.134."
+    - "Allowing for the quarters' dependence, the pairs are worth 15.9 to 68 effective quarters."
+  revisits:
+    - id: B52
+      signal: The cash rate and the dollar
+      verdict: does not replicate
+      what: >-
+        With blocks, the cash rate goes with overseas applicants' trade marks before 2008 (0.460) but not after
+        (0.198); the dollar's pairs are not clear of zero.
+    - id: B56
+      signal: Real GDP and overseas patents
+      verdict: not detected either way
+      what: >-
+        Real GDP against overseas applicants' standard patents, 0.158 and 0.380 (0.181 and 0.313 with the cash rate
+        held): not clear of zero once the quarters' dependence is allowed for.
+    - id: B63
+      signal: The labour market and the courts
+      verdict: does not replicate
+      what: >-
+        Unemployment against overseas applicants' trade marks is clear before 2008 (-0.561) but not after (-0.224);
+        Australians' pairs are not clear or flip sign; IP judgments go against oppositions before 2008 only.
+  held: ["moving blocks of 8 quarters for the intervals", "for two pairs: the other cycle measure"]
+  verdicts:
+    - signal: Cash rate against overseas applicants' trade marks
+      detail: 0.460 before 2008, 0.198 after
+      verdict: does not replicate
+    - signal: Unemployment against overseas applicants' trade marks
+      detail: -0.561 before 2008, -0.224 after
+      verdict: does not replicate
+    - signal: Real GDP against overseas applicants' standard patents
+      detail: 0.158 and 0.380; neither clear of zero
+      verdict: not detected either way
+  chart:
+    type: effect
+    title: The cycle against filing, with intervals from moving blocks of 8 quarters
+    subtitle: Rank correlations of year-on-year quarterly changes, 1991Q3 to 2008Q2 and 2008Q3 to 2026Q2; 95% block intervals
+    x: {values: ["Cash rate ~ overseas applicants' trade marks", "Unemployment ~ overseas applicants' trade marks", "Real GDP ~ overseas applicants' standard patents", "Employment ~ Australians' trade marks", "Unemployment ~ Australians' trade marks", "IP judgments on trade marks ~ trade mark oppositions"]}
+    y: {name: Rank correlation, format: signed, digits: 3}
+    ref: 0
+    ref_label: no association
+    series:
+      - name: 1991 to 2008
+        colour: 0
+        data: [[0.460, 0.247, 0.594], [-0.561, -0.735, -0.183], [0.158, null, null], [-0.182, null, null], [-0.256, null, null], [-0.274, -0.552, -0.023]]
+      - name: 2008 to 2026
+        colour: 2
+        data: [[0.198, -0.189, 0.467], [-0.224, -0.497, 0.136], [0.380, -0.017, 0.599], [-0.332, -0.603, 0.044], [0.382, 0.020, 0.651], [0.134, null, null]]
+    source: Reserve Bank of Australia; ABS, national accounts and Labour Force Survey; the courts; IP Australia, IP RAPID (lens timeline); notebook 3, section 5.6
+  questions:
+    - q: 1
+      how: The economy's cycle explains little of filing quarter to quarter once the series' dependence is allowed for.
+    - q: 4
+      how: Recorded, not carried, as a signal; the cycle stays a third factor for before-and-after designs.
+    - q: 5
+      how: Any projection must allow for the cycle only where it shows, overseas applicants' trade marks.
+  sources: [rba, abs_national_accounts, abs_labour, fedcourt, iprapid]
+  prep:
+    - what: "As in {M19}: rank correlations of the changes with 95% intervals from 1,000 resamples of single quarters and of moving blocks of 8, and the effective number of quarters; two pairs again with the other cycle measure held."
+      why: Stage 2 read these pairs with no interval; the final review asked for block resampling for all of the timeline's changes.
+  steps:
+    - Measure each pair's correlation of quarterly changes in each period.
+    - Resample in blocks of 8 quarters, and read a pair as moving together only if the block interval is clear of zero.
+    - Hold the other cycle measure for the cash rate's and GDP's pairs.
+  assumptions:
+    - The cash rate, GDP and unemployment are alternative measures of one cycle.
+  limits:
+    - Few effective quarters; little power to detect a moderate association.
+  next: >-
+    Recorded, not carried: the cycle is a third factor to hold in before-and-after comparisons, not a signal.
+  terms: [block-resampling, effective-sample, cash-rate, gdp, verdict-words]
+  related: [B52, B56, B63, M19]

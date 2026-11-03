@@ -562,3 +562,83 @@
     Carried to Stage 3 as a third factor, with block resampling for intervals.
   terms: [gdp, growth-rate, correlation]
   related: [B52, U116]
+
+- id: B63
+  lens: timeline
+  about: system
+  headline: The labour market moves with overseas applicants' trade marks; IP judgments were not seen to move with oppositions
+  statement: >-
+    As year-on-year changes by quarter, more work in Australia goes with more trade mark filing from overseas: the
+    unemployment rate against overseas applicants' trade marks is -0.561 before 2008 and -0.224 after. Australians' trade
+    marks move against employment and participation in both periods, but their sign with unemployment flips. IP
+    judgments were not seen to move with oppositions. Individuals' trade marks rose from 2.01 to 7.8 a year per 1,000
+    owner-managers between FY1992 and FY2026.
+  figures:
+    - value: "-0.561 and -0.224"
+      label: unemployment against overseas applicants' trade marks (1991 to 2008, then from 2008)
+    - value: "2.01 to 7.8"
+      label: Australian individuals' trade marks a year per 1,000 owner-managers, FY1992 to FY2026
+    - value: "0.871"
+      label: owner-managers' level against individuals' trade marks across the years (a shared trend, not a link)
+  points:
+    - "68 quarters (1991Q3 to 2008Q2), then 72; no intervals here, because the changes are serially dependent; Stage 3
+      resamples them in blocks ({M36})."
+    - "**Overseas applicants:** employed persons against their trade marks 0.466 and 0.282; participation 0.228 and
+      0.292. Against their standard patents: unemployment -0.278 and -0.317. As the cash rate did ({B52})."
+    - "**Australians:** employment against their trade marks -0.182 and -0.332, participation -0.3 and -0.236;
+      unemployment -0.256, then 0.382 (the sign flips). Against their standard patents every pair is 0.238 or less."
+    - "**IP judgments:** on trade marks against trade mark oppositions -0.274 (50 quarters), then 0.134 (66); on patents
+      against patent oppositions 0.021 from 2008."
+    - "**Owner-managers as a denominator:** individuals' standard patents fell from 0.49 to 0.24 a year per 1,000
+      owner-managers (FY2021), 0.33 in FY2026; provisionals from 2.71 (FY1992) to 0.6 (FY2024), then 2.47 in FY2026,
+      after U8's surge."
+  questions:
+    - q: 1
+      how: Enforcement in the courts is not seen to move with oppositions, so the two are separate readings of how rights are contested.
+    - q: 4
+      how: The labour market is the cycle again, a third factor for before-and-after comparisons; owner-managers give individuals' filing a base over time.
+  sources: [abs_labour, fedcourt, iprapid]
+  chart:
+    type: bar
+    horizontal: true
+    title: The labour market and the courts against filing, as quarterly changes
+    subtitle: Rank correlations of year-on-year changes; no intervals (the changes are serially dependent)
+    x: {type: category, values: ["Unemployment ~ overseas applicants' trade marks", "Employment ~ overseas applicants' trade marks", "Participation ~ overseas applicants' trade marks", "Employment ~ Australians' trade marks", "Unemployment ~ Australians' trade marks", "IP judgments on trade marks ~ trade mark oppositions"]}
+    y: {name: Rank correlation, min: -1, max: 1, format: ratio, digits: 2}
+    series:
+      - name: 1991 to 2008
+        colour: muted
+        data: [-0.561, 0.466, 0.228, -0.182, -0.256, -0.274]
+      - name: From 2008
+        data: [-0.224, 0.282, 0.292, -0.332, 0.382, 0.134]
+    views:
+      - label: Quarterly changes
+      - label: Per 1,000 owner-managers
+        horizontal: false
+        title: "Australian individuals' filing a year per 1,000 owner-managers"
+        subtitle: FY1992 against FY2026
+        x: {values: [Trade marks, Provisionals, Standard patents]}
+        y: {name: A year per 1,000 owner-managers, min: 0, format: ratio, digits: 2}
+        series:
+          - name: FY1992
+            colour: muted
+            data: [2.01, 2.71, 0.49]
+          - name: FY2026
+            data: [7.8, 2.47, 0.33]
+    source: ABS, Labour Force Survey; the courts; IP Australia, IP RAPID (lens timeline); notebook 2, section 5.7
+  prep:
+    - what: Year-on-year changes by quarter of the labour market's series and the IP judgments, against filing, in two periods, as Stage 2 read every timeline pair.
+      why: The review attached the Labour Force Survey and the judgments, which had no pair.
+  steps:
+    - Correlate the ranks of each pair's quarterly changes in each period.
+    - Read owner-managers as a base for individuals' filing over time.
+  assumptions:
+    - Quarterly changes remove the shared trend that levels carry.
+  limits:
+    - No intervals; Stage 3's block resampling ({M36}) shows that few of these pairs are clear of zero.
+    - Owner-managers are a base over time only; none is available by place.
+  next: >-
+    Stage 3 reads the pairs with block resampling ({M36}): only the pre-2008 pairs for overseas applicants' trade marks
+    are clear of zero.
+  terms: [correlation, cash-rate]
+  related: [U124, M36, B52]

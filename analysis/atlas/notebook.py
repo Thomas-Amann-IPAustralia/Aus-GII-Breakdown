@@ -1,10 +1,11 @@
-"""Read the Stage 1 and Stage 2 notebooks into observation records: each observation's own words, the section it sits
+"""Read the Stage 1, 2 and 3 notebooks into observation records: each observation's own words, the section it sits
 in, the outputs above it (text, for checking numbers) and the charts above it (PNG), so the evidence pages quote the
 notebooks rather than copy them by hand.
 
-An observation is a block of markdown that starts `**U12 (descriptive).` (Stage 1) or `**B6 (observational).` (Stage
-2) and runs to the next one or the end of its cell. Its evidence is the code cells between the previous markdown cell
-that holds observations and its own cell: the outputs "directly above" it, as the notebook's rules put it.
+An observation is a block of markdown that starts `**U12 (descriptive).` (Stage 1), `**B6 (observational).` (Stage
+2) or `**M3 (observational).` (Stage 3) and runs to the next one or the end of its cell. Its evidence is the code
+cells between the previous markdown cell that holds observations and its own cell: the outputs "directly above" it,
+as the notebook's rules put it.
 """
 
 from __future__ import annotations
@@ -17,10 +18,15 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 NOTEBOOK = ROOT / "analysis" / "notebooks" / "01_univariate.ipynb"
-# Each stage's notebook and the letter its observations carry (U: univariate, B: bivariate)
-NOTEBOOKS = {1: NOTEBOOK, 2: ROOT / "analysis" / "notebooks" / "02_bivariate.ipynb"}
+# Each stage's notebook and the letter its observations carry (U: univariate, B: bivariate, M: multivariate)
+NOTEBOOKS = {
+    1: NOTEBOOK,
+    2: ROOT / "analysis" / "notebooks" / "02_bivariate.ipynb",
+    3: ROOT / "analysis" / "notebooks" / "03_multivariate.ipynb",
+}
+LETTER = {1: "U", 2: "B", 3: "M"}
 
-_START = re.compile(r"^(?:#### Observation |\*\*)([UB]\d+) \((descriptive|observational|causal|projected)[;)]", re.M)
+_START = re.compile(r"^(?:#### Observation |\*\*)([UBM]\d+) \((descriptive|observational|causal|projected)[;)]", re.M)
 _HEADING = re.compile(r"^(#{2,5}) (.+)$", re.M)
 
 
@@ -62,7 +68,7 @@ def _text_outputs(cell: dict) -> str:
 
 
 def read_all() -> list[Observation]:
-    """Every observation of every stage: Stage 1's in notebook order, then Stage 2's."""
+    """Every observation of every stage: Stage 1's in notebook order, then Stage 2's, then Stage 3's."""
     return [o for stage, path in NOTEBOOKS.items() for o in read(path, stage)]
 
 

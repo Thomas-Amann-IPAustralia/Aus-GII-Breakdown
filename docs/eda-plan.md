@@ -28,7 +28,8 @@ its first pass covers every lens (M1 to M24 in `03_multivariate.ipynb`) and draf
 frozen meanwhile. **A review of all three stages (3 November 2026, A33, ADR 0048)** found and filled the gaps: every
 Stage 2 signal carried to Stage 3 now has its Stage 3 section (M26 to M38), the Labour Force Survey and the IP
 judgments are attached to the timeline and taken through all three stages (U124, B63, M36), and the columns Stage 1
-had not profiled are (U125 to U127). This plan says what the exploratory
+had not profiled are (U125 to U127). **The website freeze was lifted the same day (A34, ADR 0049):** the evidence
+atlas shows all three stages, each Stage 3 page with its chain from the Stage 2 signal it tests. This plan says what the exploratory
 data analysis (EDA) covers, where each dataset fits, what each part needs before it starts, and which gaps are worth
 filling. Decisions are in `docs/adr/` (0002 to 0030); terms are in `GLOSSARY.md`.
 
