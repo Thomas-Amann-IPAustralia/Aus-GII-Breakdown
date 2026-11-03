@@ -603,6 +603,17 @@ lead:
     small (a strength of 0.1), survives the correction for the number of pairs tested, holds again in a second period
     or sample, and is not two versions of one measure.
   more: A lead is a pattern to explain, not an explanation. Stage 3 tests whether it survives other factors.
+halves:
+  group: stats
+  title: Halves (first and second half)
+  short: >-
+    Where a lens has no years to split by (firms, places, institutions' rights, the GII's economies), its rows are split
+    at random into two halves: patterns are found in the first half and checked in the second, which played no part in
+    finding them.
+  more: >-
+    The split uses a fixed scramble of each row's key (a hash), so every run puts each firm or area in the same half.
+    Results are given for both, first half then second: "0.114; 0.126" means 0.114 in the first half and 0.126 in the
+    second. Since 2 November 2026 every analysis uses the same rule (ADR 0041).
 replication:
   group: stats
   title: Replication (a second sample)

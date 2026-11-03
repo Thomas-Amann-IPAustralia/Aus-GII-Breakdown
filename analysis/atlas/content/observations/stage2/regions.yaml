@@ -50,7 +50,7 @@
   sources: [abs_regions, abs_census, abr, iprapid, rdti, linkage]
   prep:
     - what: Postal areas split into two halves by a fixed rule (1,377 and 1,264 areas).
-      why: Places have no second period in the lens, so a random half is the [[replication|replication]] sample.
+      why: Places have no second period in the lens, so a random [[halves|half]] is the [[replication|replication]] sample.
   steps:
     - Screen every pair of the lens's own columns in one half, and check it in the other.
     - Read which kinds of IP go together, and which area characteristics go with each.
@@ -100,7 +100,7 @@
       - name: Rank correlation
         data: [0.595, 0.593, 0.575, 0.573, -0.473, -0.477, -0.482]
     source: ABS CABEE; PHIDU; IP RAPID (lens regions and region_indicators)
-    note: Areas, not people; each pair held in the other half of the areas.
+    note: Areas, not people; each pair held in the second half of the areas.
   questions:
     - q: 2
       how: Filing follows one broad gradient of place advantage, so who benefits from IP is tied to where people live.
@@ -113,7 +113,7 @@
       why: Millions of indicator-to-indicator pairs would serve no question.
   steps:
     - Measure each indicator against each of six IP rates in one half; keep those past the threshold and the correction.
-    - Check them in the other half.
+    - Check them in the second half.
     - Read the strongest at each end for patents and trade marks.
   assumptions:
     - The indicators are published for the same areas, or apportioned to them, as each source describes.
@@ -130,7 +130,7 @@
   headline: Filing rises steeply with advantage and falls with remoteness; both hold when read together, in both halves of the areas
   statement: >-
     For each [[standard-deviation]] of advantage (the IRSAD score), a postal area files 1.717 times as many standard
-    patents per person (1.857 in the other half; 1.884 with areas pooled into larger SA3s). Inner regional areas file
+    patents per person (1.857 in the second half; 1.884 with areas pooled into larger SA3s). Inner regional areas file
     at 0.259 of major cities' rate. Read together, advantage's ratio is 1.442 and inner regional areas still file at
     0.382 of the cities' rate at the same advantage (that combined reading was not repeated for SA3s).
   figures:
@@ -177,7 +177,7 @@
       why: Counts in small areas vary far more than chance alone would make them ({U53}).
   steps:
     - Model each type's count on the area's IRSAD score, then on remoteness, then on both.
-    - Repeat in the other half and pooled into SA3s.
+    - Repeat in the second half and pooled into SA3s.
     - Compare pooled rates by decile of advantage to see the shape.
   assumptions:
     - Applications are counted at the filer's postcode, and people from the Census.
@@ -197,7 +197,7 @@
   statement: >-
     Each area's largest filer holds 29.2% of the 24,879 Australian standard patents placed in 2,528 areas. Without
     it, the [[rate-ratio|rate ratio]] per standard deviation of advantage is 1.897 (interval 1.74 to 2.067), against
-    1.717 with it; in the other half, 1.961 against 1.857.
+    1.717 with it; in the second half, 1.961 against 1.857.
   figures:
     - value: "29.2%"
       label: of patents held by each area's largest filer
@@ -315,7 +315,7 @@
     - value: "0.194"
       label: the share in business with trade marks per person
   points:
-    - "The other half of the areas agrees: 0.405, 0.518, 0.229 and 0.212."
+    - "The second half of the areas agrees: 0.405, 0.518, 0.229 and 0.212."
     - "Individuals' own filing per person in business barely moves with the share running a business (-0.078; -0.14)."
     - "**So** the advantage gradient is not only that advantaged areas have more business owners."
   chart:
@@ -368,7 +368,7 @@
   points:
     - "The median area's income rose about 39% (dollars of the day); its patents per person fell, and its trade marks
       rose slightly."
-    - "The 2011 share of graduates against the later change: -0.024 and -0.065 (-0.063 and -0.147 in the other half)."
+    - "The 2011 share of graduates against the later change: -0.024 and -0.065 (-0.063 and -0.147 in the second half)."
     - "**So** levels go together ({B29}, {B58}) but changes were not seen to: the advantage gradient looks like a
       standing difference between places, not one that moves with them. That is not evidence that education or income
       has no effect."

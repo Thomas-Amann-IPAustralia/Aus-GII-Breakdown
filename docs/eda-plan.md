@@ -244,6 +244,13 @@ outcomes for small businesses are a limit of this research, stated wherever it b
 | 2. Bivariate | `02_bivariate.ipynb` | Which pairs move together, in what shape, how strongly, for whom? | `bivariate`: `run_screen` (with `screens.yaml`), `replicate`, `distinct_leads`, `leads_table`, `strength_map`; `rate_by`, `rate_difference`, `median_difference`, `ratio_by`, `survival_with_interval`, `compare_groups`, `dot_chart` | Every pair within each lens has been screened. Each lead has its size and interval, survives a correction for the number of pairs tested, and holds in a second period or sample. Candidate third factors are listed. |
 | 3. Multivariate | `03_multivariate.ipynb` | Do the signals survive other factors? What structure and segments exist? | `multivariate`: `corr_heatmap`, `pca`, `scree`, `vif`, `partial_corr`, `clusters`, `assign` | A table of early signals (evidence, strength, question, next step) and a table of data gaps (why, possible source, cost). |
 
+**Stage 3 also checks firms' IP counts against a name match to the ABR (A30, ADR 0045).** Australian organisations'
+rights with no filer's ABN (in IP RAPID or the register) are matched by name to the ABR's main names and ASIC's company
+names, with the state and postcode as a check. The match is tested first on rights that do have an ABN (hidden, then
+recovered), and its error rate is reported. The matched links go in their own columns, never added to the `n_*` counts;
+the firm findings (U44, U45 and the Stage 2 leads that use firm counts) are rerun with them, to show whether any changes.
+The ABR keeps no sole traders' names, so individuals cannot be matched.
+
 Every variable gets the systematic profile. Written observations are kept for what is notable, so that breadth does not
 bury the findings. If a notebook passes about 25 MB, it is split by lens (ADR 0002).
 
