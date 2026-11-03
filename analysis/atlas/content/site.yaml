@@ -3,7 +3,7 @@
 # Numbers here come from docs/stage-1-summary.md, docs/stage-2-summary.md, the research goal and the notebooks; each
 # is traceable to an observation, linked where it is named.
 
-as_at: "2026-10-29"
+as_at: "2026-11-02"
 
 hero:
   eyebrow: Stage 2 of 3 · exploratory data analysis · complete
@@ -57,11 +57,11 @@ stages:
 featured:
   id: B6
   intro: Every observation can be followed from the published data to the finding. This one, from Stage 2, shows how.
-  title: Patents filed without an attorney are rarely granted
+  title: Australian individuals' patents filed without an attorney are rarely granted
   text: >-
-    Of Australian individuals' standard patents filed alone, 4.9% were granted, against 40.8% with an attorney: a gap
-    of about 36 percentage points in both decades. Open it to see where the data came from, the reasoning, and why
-    this is an association and not a cause.
+    Of the standard patents Australian individuals filed alone in FY2010 to FY2019, 4.8% were granted, against 40.6%
+    of those filed with an attorney: a gap of about 36 percentage points, in both decades. Open it to see where the
+    data came from, the reasoning, and why this is an association and not a cause.
 
 stage2:
   title: What Stage 2 found
@@ -74,56 +74,66 @@ stage2:
     - title: Filing without an attorney goes with poorer outcomes
       text: >-
         Australian individuals' standard patents filed alone are granted about 36 percentage points less often, in
-        both decades and among examined applications too; lone filers' trade marks and designs are renewed far less.
-        The arrow may run backwards: an application abandoned early may never appoint an attorney.
+        both decades and among examined applications too. Australians' trade marks with no agent before the first
+        renewal stay in force less often (19.1 points). The arrow may run backwards: an application abandoned early
+        may never appoint an attorney.
       ids: [B5, B6, B10]
-    - title: Value made here is often owned or used elsewhere
+    - title: Some inventions made here are filed or held overseas
       text: >-
-        One patent in seven made in Australia is filed from overseas; the Australian patents that move overseas are
-        the wide, granted ones and young firms'; only 3% to 5% of the US patents citing Australian research have
-        Australian links.
+        About one patent in seven with an inventor in Australia is filed from overseas. Australian-filed patents now
+        held only overseas are more common among the wide and the granted, though by firm the youngest filers are not
+        clearly different. Few of the US patents citing Australian research have an Australian party, but a citation
+        is not use, so none of this shows where value is realised.
       ids: [B16, B19, B26, B46]
-    - title: Australian organisations' patents reach fewer countries but are kept longer
+    - title: Australian organisations' patents reach fewer countries; the signals of value disagree
       text: >-
-        Within fields too. Their lower citations go mostly with their narrower reach. Older Australian families'
-        filings abroad are incomplete in the records, so these are read from FY2010.
+        Filed in the same number of countries, Australian organisations' patents more often stay in force for 10
+        years than overseas organisations', except those filed only in Australia. But they reach fewer countries and
+        are cited less, mostly because of that reach. Older Australian families' filings abroad are incomplete in the
+        records, so these are read from FY2010.
       ids: [B8, B11, B12, B55]
     - title: Filing follows advantage and remoteness, not one firm
       text: >-
         Each step of area advantage goes with 1.7 to 1.9 times the standard patent rate, and the gradient holds with
-        remoteness allowed for and with each area's largest filer removed. It is a standing difference: areas that
-        gained graduates or income over a decade did not gain filing.
+        remoteness allowed for and with each area's largest filer taken out. Areas that gained graduates or income over
+        a decade were not seen to gain filing, so it looks like a standing difference between places.
       ids: [B29, B30, B58, B59]
-    - title: Among firms, filing goes with company form, age, cities, size and industry
+    - title: Among firms, filing goes with company form, age and, among large employers, size and industry
       text: >-
-        R&D spend goes with patenting only weakly, even within size bands; about half of R&D claimants have never
-        filed IP, mostly young private companies. Among large employers, industry sorts patenting far more than size.
+        R&D spend goes with patenting only weakly, even within size bands. About half of R&D claimants have no IP
+        filing linked to their business number, mostly private companies of 3 to 10 years. Counting every large
+        employer, the largest are 24.3 points more likely than the smallest to have a filing linked, and industry
+        sorts patenting far more than size.
       ids: [B22, B23, B50, B51]
     - title: Across countries, IP follows R&D and income
       text: >-
-        Australia's business R&D fell from 13th to 20th in the OECD and its patenting sits near what that predicts;
-        within a decade, changes in R&D barely move patenting. Few of Australia's researchers work in business.
+        Across OECD members, patenting rises with business R&D almost one for one, and Australia filed about what its
+        business R&D predicts in 2016 to 2020. Within a decade, changes in R&D were not seen to go with changes in
+        patenting. Few of Australia's researchers work in business (31st of 37 members).
       ids: [B32, B33, B34, B61]
-    - title: Policy changes leave clean breaks; fee changes rarely do
+    - title: Policy changes broke series as the law required; few breaks show behaviour, and fee changes rarely moved filing
       text: >-
-        Two rushes, three steps and the 1995 pauses are far outside anything seen at placebo dates, the starting points
-        for natural experiments. Fee changes rarely moved filing or lapsing, except patent cessations after the 2002
-        renewal rise.
+        Seven of eight policy changes moved a series further than any comparison month, but most of those breaks were
+        certain by law. The rush before Raising the Bar is the clearest sign of applicants' behaviour. Of the changes in
+        fees to obtain a right, only one break went the way a price would; of the changes in renewal fees, only one
+        (trade marks, July 1993) survives every check.
       ids: [B37, B47, B49]
     - title: Women's share among inventors varies by field more than by filer
       text: >-
-        From 4.2% in civil engineering to 26.9% in biotechnology, an order that holds across decades. On
-        provisionals, organisations' inventors include more women than individuals'.
+        From 4.2% in civil engineering to 26.9% in biotechnology, an order that holds across decades. On provisional
+        applications, Australian organisations' inventors include more women than Australian individuals'.
       ids: [B17, B18]
-    - title: Across industries, patents follow R&D once services are counted
+    - title: Across industries, the patents allocated by technology follow R&D once services are counted
       text: >-
-        Through the crosswalk with services, patents per business follow business R&D per business; innovation as the
-        business survey asks it does not go with patenting in three surveys.
+        Industry counts are applications allocated by what they protect, not what each industry's businesses file.
+        Through the crosswalk with services, patents allocated per business follow business R&D per business. A
+        division's share of innovating businesses showed no clear pattern with patenting in three surveys.
       ids: [B53, B54, B42, B60]
-    - title: Institutions whose research inventors use also patent and license more
+    - title: Institutions whose research US patents cite more also patent more
       text: >-
-        Larger, more cited universities file more patents per work; across institutions, disclosures go with patents
-        and patents with licence income. Industry-partnered grants do not go with joint filing.
+        Larger, more cited universities file more patents per work. Across institutions, disclosures go with patents and
+        patents with licence income, partly because every measure is divided by the same research spend. No association
+        was detected between industry-partnered grants and joint filing, though a moderate one is not ruled out.
       ids: [B44, B45, B62]
 
 ten_title: Ten things Stage 1 found
@@ -134,9 +144,9 @@ ten_intro: >-
 ten:
   - title: Patents are mostly filed from overseas; trade marks mostly from home
     text: >-
-      About nine in ten standard patents filed in Australia come from overseas (the United States alone 43.5%),
-      against 59.0% of trade marks filed by Australians. China now files as many patent applications here as
-      Australians do, and three-quarters of Australians' own applications are made abroad.
+      About nine in ten standard patents filed in Australia come from overseas (the United States alone 43.6%), while
+      Australians file 59.19% of trade marks. China now files as many patent applications here as Australians do, and
+      three-quarters of Australians' own applications are made abroad.
     ids: [U13, U70, U93]
   - title: Almost everything is concentrated
     text: >-
@@ -156,24 +166,26 @@ ten:
     ids: [U20, U48]
   - title: Provisional applications doubled in FY2026
     text: >-
-      10,069 against 4,143 to 5,047 a year before, driven by individuals without business numbers, both broadly and
-      through a few heavy filers. It is real, not a recording artefact. Why is a question for IP Australia.
+      10,069 against 4,143 to 5,047 a year before, mostly from individuals but from organisations too, both broadly
+      and through a few heavy filers. It is in the filings, not the recording. Why is a question for IP Australia.
     ids: [U8]
-  - title: Policy changes leave clear marks
+  - title: Around some policy changes, filing shows clear rushes, steps and pauses
     text: >-
-      Rushes to file before a rule changed (Raising the Bar, 4.39 times Australians' usual month; the innovation
-      patent's closure, 4.31 times), steps, and pauses when new Acts began. These are the raw material for the
-      natural experiments the later questions need.
+      Rushes to file before a rule changed (Raising the Bar, 4.41 times Australians' usual month; the innovation
+      patent's closure, 4.31 times), steps, and pauses when new Acts began; around other changes nothing stands out.
+      These timings are the raw material for the natural experiments the later questions need.
     ids: [U28, U3]
-  - title: Patents are kept longer than they were; about half of trade marks are renewed at ten years
+  - title: Later standard patents more often stay in force; about half of trade marks are still in force after ten years
     text: >-
-      Standard patents' median years in force rose from 10.7 (1980s) to 13.5 (2000s and 2010s). The research owner
-      has adopted years in force as a working measure for Stage 2, alongside other signals.
+      Standard patents' median time in force rose from 10.6 years (granted in the 1980s and 1990s) to 13.5 (2000s and
+      2010s). These are shares still on the register, not value; the research owner adopted years in force as a
+      working measure for Stage 2, alongside other signals.
     ids: [U36]
-  - title: Australia's research is used, but mostly abroad
+  - title: US patents often cite Australian research, and R&D spending has fallen
     text: >-
-      93.6% of US patent citations to Australian research institutions' work come from inventions with no Australian
-      applicant or inventor. Research intensity peaked in 2008 and has fallen below the OECD median.
+      US patents often cite Australian research institutions' work; 93.6% of those citations come from patents with
+      no Australian applicant or inventor, as most US patents have none. A citation is not use. Australia's R&D
+      spending rose to 2008 as a share of GDP and has fallen since, below the OECD median.
     ids: [U85, U65, U66]
   - title: The register's history shapes what it can say
     text: >-
@@ -182,8 +194,9 @@ ten:
     ids: [U23, U17, U34]
   - title: Links between datasets are the weakest point
     text: >-
-      Firms' IP counts are lower bounds; fewer recent filers are linked to a business number; no firm has an industry;
-      half the universities' patents carry a postcode that is not a place where people live.
+      Firms' IP counts are lower bounds; IP RAPID links fewer recent filers to a business number (IP Australia's
+      register restores most for trade marks and designs); only large employers have an industry; half the
+      universities' patents carry a postcode that is not a place where people live.
     ids: [U41, U45, U75, U87]
 
 reading:
@@ -350,7 +363,8 @@ limits:
         leads at most.
     - title: Everyone
       text: >-
-        The firms lens holds firms that used a scheme, not all businesses. Individuals in IP RAPID are pseudonymised,
+        The firms lens holds businesses found in an IP, R&D, procurement or tax source, not all businesses, so shares of
+        large employers that file are taken over every employer ({B50}). Individuals in IP RAPID are pseudonymised,
         so their gender cannot be estimated; only inventors' can, from names, and reliably only for inventors in
         Australia.
     - title: Small firms
@@ -386,7 +400,7 @@ limits:
     two stages found weakest.
   weak:
     - title: Firms
-      text: Firms reach IP only through business numbers on applications, so firms' IP counts are lower bounds, and fewer recent filers carry one ({U41}, {U45}). Size and industry reach only employers of 100 or more ({U112}).
+      text: Firms reach IP only through business numbers on applications, so firms' IP counts are lower bounds; IP RAPID's recent filings carry fewer, and IP Australia's register restores most for trade marks and designs ({U41}, {U45}, {U100}). Size and industry reach only employers of 100 or more ({U112}).
     - title: Industries
       text: Industries reach patents only through a crosswalk; the recommended one leaves out services, so a second one with services sits beside it ({U75}, {U114}).
     - title: Places
@@ -418,13 +432,35 @@ limits:
       what: Observation {U0} still gave the first corpus profile (152 tables from 38 sources) when the output above it gave the later one.
       now: The notebook's text now follows its output (162 tables from 41 sources), found while building these pages.
     - when: 29 October 2026
-      what: "{B11} left open whether the fall in Australian organisations' patents filed only in Australia (73.02% to 40.71%) was a change in practice or in the records."
+      what: "{B11} left open whether the fall in Australian organisations' patents filed only in Australia (73.0% to 40.68%) was a change in practice or in the records."
       now: Mostly the records. Older Australian families' filings abroad are incomplete ({B55}), so family measures for Australian applicants are read from FY2010.
+    - when: 1 November 2026
+      what: Firms that file were counted from IP RAPID's own records, which miss the business numbers IP Australia's register links.
+      now: One flag now counts any linked filing; sole traders' and R&D claimants' shares moved, and "never filed" became "no filing linked" ({U42}, {U54}, {B23}).
+    - when: 2 November 2026
+      what: An application's origin and type were the current holder's.
+      now: They are the filer's, IP Australia's definition of a resident application; most shares moved by a point or less ({U7}, {U13}, {U67}).
+    - when: 2 November 2026
+      what: Firms' first filings were read as their entry into the system, and changes of holder as transfers.
+      now: They are first observed filings and two endpoints, filing and today ({U101}, {U18}, {B19}).
+    - when: 2 November 2026
+      what: Lifetimes counted every right from the start of its term, and were described as renewal.
+      now: Each right is counted from its grant or registration, and read as the share still in force; expedited patents' link with lifetime reversed ({U36}, {B8}, {B10}, {B13}).
+    - when: 2 November 2026
+      what: Policy and fee breaks were read without controls, and against placebo dates as if those were probabilities.
+      now: Each break is classed by kind and set beside series it should not have moved; most were certain by law ({B37}, {B47}, {B49}).
+    - when: 2 November 2026
+      what: A final review of both stages found 68 of 186 observations reading further than their numbers, or quoting a figure the output did not give.
+      now: "Each is restated in the notebook with the earlier wording kept. The largest change: shares of large employers that file are taken over every employer, not only those in the firms table (48.6% to 72.9% by size, not 70.4% to 82.5%; {U112}, {B50}). Weak links are no longer written as absences, same-unit samples as replications, industry allocations as filing, or US patent citations as use ({B39}, {B32}, {B41}, {U85}, {B46})."
+    - when: 2 November 2026
+      what: These pages had fallen behind the notebooks for 131 observations, and four charts no longer matched the data.
+      now: Every page was brought into line with its notebook, the charts now use the filer's origin and the current survival method, and 40 more pages have a chart (178 of 186).
 
 next:
   intro: >-
     Stages 1 and 2 prepared the ground: every measure described, then every pair related. Stage 3 looks at many
-    measures together before the five questions are answered. Nothing below has been done yet.
+    measures together before the five questions are answered. Nothing below has been done yet; the research owner
+    has agreed that Stage 3 begins by strengthening Stage 2's methods where the final review asked.
   stages:
     - name: Stage 2, pairs of variables
       when: Complete (28 October 2026)
@@ -441,11 +477,15 @@ next:
         value (Q3), each with its candidate third factors.
       done: Every pair within each lens screened; each lead with its size and interval, past the correction and held in a second sample.
     - name: Stage 3, many variables together
-      when: Next, when the owner says
+      when: Next, after a break
       now: true
       asks: Do the signals survive once other factors are allowed for? What structure and groups exist?
       how: >-
-        Several variables are looked at together: whether a link between two holds when a third is held steady,
+        First, Stage 2's methods are strengthened where the final review asked: intervals that allow for changes over
+        time being linked, more resamples for any interval quoted, industry comparisons through both crosswalks,
+        citations counted over the same number of years for every patent, research spending used as a base rather
+        than a divisor, two firm-level checks redone, and legends on every heatmap. Then several variables are looked
+        at together: whether a link between two holds when a third is held steady,
         which variables move as a group (the gradient of advantage, education and business density across places,
         and of development across countries, reduced to a few components), and which kinds of firms or places form
         natural clusters.
@@ -463,8 +503,8 @@ next:
         Analyses designed for each question: descriptive where that suffices, and natural experiments or other
         designs wherever an additional benefit is claimed.
       example: >-
-        Using the closure of the innovation patent, or the 2002 renewal fee rise, as a natural experiment to estimate
-        what a policy actually changed ({B37}, {B49}).
+        Using Raising the Bar, or renewal at each patent's anniversary when a fee changed, as a natural experiment to
+        estimate what a policy actually changed ({B37}, {B49}).
       adds: Answers with evidence proportionate to each claim, as the research goal requires.
       done: When the owner adopts the findings.
   leads_title: What Stage 3 will test
@@ -474,19 +514,19 @@ next:
     (origin and type), family reach, the route of filing, the technology field, selection at grant, firm size and
     industry, business density and mix, education, income, and the kind of institution.
   leads:
-    - lead: Filing without an attorney against grant and renewal, within the same applicant type, origin and route
+    - lead: Filing without an attorney against grant and staying in force, within the same applicant type, origin and route
       ids: [B6, B10]
       questions: [2, 4]
-    - lead: Years in force, family reach and citations by origin, within fields and among granted patents (FY2010 on for Australian applicants)
+    - lead: Years in force, family reach and citations by origin, within reach and fields, read together because they disagree (FY2010 on for Australian applicants)
       ids: [B8, B11, B12]
       questions: [1, 3]
-    - lead: Inventions made here but owned abroad, and the patents that move overseas, by reach, field and the filing firm's age
+    - lead: Inventions made here but filed from overseas, and Australian-filed patents now held only overseas, by reach, field and the filing firm, counted by firm
       ids: [B16, B19, B26]
       questions: [1, 4]
     - lead: Women's share among inventors by field and filer, with field held steady
       ids: [B17, B18]
       questions: [2]
-    - lead: Firms that file, and R&D claimants that never have, with size and industry for large employers
+    - lead: Firms that file, and R&D claimants with no filing linked, with size and industry for large employers (shares over every employer)
       ids: [B22, B23, B50, B51]
       questions: [3, 4]
     - lead: Government contracts against IP, within entity groups and with firm size where known
@@ -498,13 +538,13 @@ next:
     - lead: Countries' patenting against business R&D and researchers in business, with the development gradient reduced to components
       ids: [B32, B34, B61]
       questions: [3, 4]
-    - lead: Policy and fee breaks as natural experiments, each beside series it should not have moved and allowing for the cycle; renewal at each anniversary a fee changed
+    - lead: The behavioural policy breaks (Raising the Bar, the Designs Act) as natural experiments, beside series they should not have moved and allowing for the cycle; renewal at each anniversary a fee changed
       ids: [B37, B49, B52]
       questions: [4, 5]
-    - lead: Patents per business against R&D across industries, reported through both crosswalks
+    - lead: Patents allocated per business against R&D across industries, reported through both crosswalks
       ids: [B53, B54, B57]
       questions: [3]
-    - lead: Universities' patenting against research scale and use, and institutions' patents against licensing, by kind of institution
+    - lead: Universities' patenting against research scale and citations (in fixed-age windows), and institutions' patents against licensing with research spend as a base, by kind of institution
       ids: [B45, B46, B62]
       questions: [1, 3]
   puzzles_intro: >-
@@ -515,7 +555,9 @@ next:
     ({B11}), by a gap in older records ({B55}).
   puzzles:
     - Australians' direct filing of standard patents rose to 28.3% in FY2026 ({U90}), and provisionals filed in FY2025 were followed up less often ({B38}); both could be priority claims recorded late (OQ18).
-    - Divisional applications doubled among both Australian and overseas organisations ({B15}).
+    - The share of divisional applications about doubled among both Australian and overseas organisations ({B15}).
+    - Firms with a first observed patent fell from 1,167 (FY2021) to 810 (FY2024), before the linking to business numbers fell; innovation patents closed in August 2021 ({U45}).
+    - Plant breeder's rights applications were the decade's lowest in FY2025 and FY2026, which may be real or a delay in recording ({U6}).
     - The World Bank's share of the labour force with advanced education steps up around 2010 ({U65}).
     - Plant breeder's rights change hands more often in recent years ({U17}).
     - Petty patents filed in FY1986 to FY1988 mostly have no acceptance recorded ({U32}).
@@ -523,14 +565,14 @@ next:
     Some questions only the research owner, or IP Australia, can answer. They are listed so that nothing depends on
     an unstated guess.
   owner:
-    - "**When to start Stage 3.** Stage 2 is complete, and its pages are on this site."
+    - "**Stage 3** begins after a break, starting with the methods the final review asked for (the owner's decision, 2 November 2026)."
     - "**A sector check of the institutions link** (OQ11): a half-hour review by someone who knows the sector, which {B44} to {B46} and {B62} rest on."
     - "**Firms' size and industry for small firms** (OQ20): known only for employers of 100 or more; small firms need a paid or requested source."
     - "**Older Australian patent families** (OQ21): repair the links from the EPO's patent family service (free, but an account in your name), or read family measures from FY2010 only."
     - "**Court judgments after March 2025** (OQ22) and ABS TableBuilder (OQ4, on hold)."
   ipa:
     - What evidence supports IP Australia's reading that digital tools, including AI, drove the rise in provisional applications, and are the few very heavy filers part of it? (OQ5, {U8})
-    - IP Australia's register still records "Examination expedited" for every trade mark claiming an overseas filing date, but IP RAPID stopped publishing it in November 2018. What does it mean where no one asked, and could IP RAPID publish it? (OQ6, {U34})
+    - IP Australia's register records "Examination expedited" for nearly every trade mark claiming an overseas filing date, and for a growing share of other marks where no one asked; IP RAPID stopped publishing the event in November 2018. What does it mean where no one asked, and could IP RAPID publish it? (OQ6, {U34})
     - IP Australia's register holds a business number for most of the recent applications that have none in IP RAPID. Why does IP RAPID leave them out, and could it publish them? (OQ7, {U45})
     - What does IP Australia's figure of 55.6% of resident applications filed by individuals in 2022 count? (OQ12, {U13}, {U48})
     - "IP Australia's own register, IP RAPID and WIPO agree on 2018's trade marks, about 2,000 fewer than IP Australia's report: what did the report's 2018 count include? (OQ13, {U5})"

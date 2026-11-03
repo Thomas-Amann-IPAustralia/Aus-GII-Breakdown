@@ -19,6 +19,20 @@
     - "410 pairs are negligible."
     - "Random halves of one population are a weaker test than a second decade, so the firms' leads rest more on their
       size and on the planned pairs that follow."
+    - "The screen predates the WGEA columns and skips them: they cover employers of 100 or more only, so they are read
+      among those firms ({B50}, {B51})."
+  chart:
+    type: bar
+    horizontal: true
+    title: What the screen of the firms lens found
+    subtitle: Pairs of variables, screened in one random half of the firms and checked in the other
+    x: {type: category, values: [Leads (in both halves), Passed in one half only, Negligible, Related by construction]}
+    y: {name: Pairs of variables, min: 0}
+    series:
+      - name: Pairs
+        data: [221, 10, 410, 171]
+    source: ABN spine; ABR; R&D Tax Incentive; AusTender; ATO; IP RAPID (lens firms)
+    note: The 221 leads are 33 distinct pairs of measures.
   questions:
     - q: 2
       how: Sorts which features of firms (form, age, place, R&D, contracts) go with filing IP.
@@ -28,7 +42,7 @@
   prep:
     - what: The firms are split into two halves by a fixed rule (a hash of the ABN), so the same firms fall in each
         half on every run.
-      why: The firms lens has no second period, so a random half is the [[replication]] sample.
+      why: The firms lens has no second period, so a random half is the [[replication|replication]] sample.
   steps:
     - Screen every pair in the first half, as for rights ({B1}).
     - Check each lead in the second half.
@@ -61,10 +75,21 @@
       label: R&D spend with total income, among large taxpayers who claim R&D
   points:
     - "**How the lens was built:** entity type goes with rights held (0.365; 0.366) and with whether an older firm's age
-      is cut short (0.441; 0.438), which is how ABNs began in 1999 and 2000."
+      may be cut short (0.452; 0.451; local government 14.8 times chance), which is how ABNs began in 1999 and 2000."
     - "R&D spend rises with contract value (0.176; 0.184), and government suppliers cluster in the ACT (a median of 1
       contract against 0 in NSW)."
-    - "The R&D and income pair is 0.346 in the other half: it holds, smaller."
+    - "The R&D and income pair is 0.346 in the other half: it holds, smaller, among the few firms that are both large
+      taxpayers and R&D claimants."
+  chart:
+    type: bar
+    title: Median R&D claimed, by company type
+    subtitle: R&D Tax Incentive claimants' average spend
+    x: {type: category, values: [Public companies, Proprietary companies]}
+    y: {name: "Median R&D claimed ($ million)", min: 0, format: moneym, digits: 3}
+    series:
+      - name: Median R&D claimed
+        data: [1.381, 0.297]
+    source: ATO R&D Tax Incentive transparency data; ABR (lens firms)
   questions:
     - q: 2
       how: Separates who is in the lens from what goes with filing, so later firm findings are not artefacts of how firms were found.
@@ -89,7 +114,7 @@
 - id: B22
   lens: firms
   about: system
-  headline: Among firms that came in another way, filing IP goes with being a company, older and in a city
+  headline: Among firms that came in another way, filing IP goes with being a company and older; for government suppliers, also with a city address and an advantaged postcode
   statement: >-
     Of active R&D Tax Incentive claimants, 51.41% have filed IP; of government suppliers, 25.02%; of large taxpayers,
     40.45%. Among suppliers, public companies have filed in 65.1% of cases and sole traders in 1.2%; firms in major
@@ -104,16 +129,33 @@
   points:
     - "Trade marks dominate: 45.26%, 23.75% and 39.35% have filed one; standard patents 12.26%, 3.12% and 7.54%."
     - "**Age:** claimants under 3 years old 26.9%, 20 years or more 67.4%. Age is partly time: an older firm has had
-      longer to file."
-    - "**Advantage:** for suppliers the share rises steadily with the postcode's advantage (0.806 over the tenths;
-      0.782 in the other half). For R&D claimants there is no gradient (48.47% to 50.92%): once a firm does R&D, where
-      it is registered does not go with filing."
+      longer to file, and age is on the record at 22 October 2026, not when the firm claimed or contracted."
+    - "**Advantage:** for suppliers the share rises with the postcode's advantage, with a dip in the third and fourth
+      tenths (a rank correlation of 0.806 over the tenths; 0.782 in the other half). For R&D claimants no gradient was
+      detected (48.47% to 50.92% across the tenths)."
+    - "**City and country, R&D claimants:** major cities 51.9%, inner regional 49.8%, outer regional 39.3%; the gap is
+      in outer regional areas only."
     - "Each figure held in the other half (for example 51.89%, 25.09% and 41.2% overall)."
+  chart:
+    type: bar
+    horizontal: true
+    title: Government suppliers that have filed IP, by kind of entity
+    subtitle: Active suppliers, in one random half of the firms and the other
+    x: {type: category, values: [Public companies, Private companies, Trusts, Partnerships, Sole traders]}
+    y: {name: "% that have filed IP", min: 0, max: 100, format: pct, digits: 1}
+    series:
+      - name: First half
+        data: [65.1, 31.4, 7.2, 6.5, 1.2]
+      - name: Second half
+        data: [63.7, 31.2, 8.0, 6.1, 1.3]
+        colour: muted
+    source: AusTender; ABR; IP RAPID; IP Australia's register (lens firms)
   questions:
     - q: 2
       how: Shows which firms already in contact with government (through R&D claims or contracts) have not used the IP system.
     - q: 4
-      how: Small, young and regional firms that do business with government but have not filed are a reachable group.
+      how: Small, young and regional firms that do business with government but have no filing linked are a group IP
+        Australia could reach; whether they need IP is not shown.
   sources: [linkage, abr, rdti, austender, ato_ctt, iprapid, abs_regions]
   prep:
     - what: Active ABNs that entered the lens through an R&D claim, a government contract or a large taxpayer's
@@ -136,70 +178,81 @@
 - id: B23
   lens: firms
   about: system
-  headline: More R&D spend goes with patenting, but only weakly; about half of R&D claimants have never filed IP at any spend
+  headline: More R&D spend goes with patenting, but only weakly; about half of R&D claimants have no IP filing linked to their business number, at any level of spend
   statement: >-
     Among 17,514 active R&D claimants, 9.5% of the lowest-spending tenth have filed a standard patent, rising to 24.1%
-    of the highest-spending tenth. The rank correlation between spend and patent applications is only 0.120. 54% of
-    the lowest spenders and 45.5% of the highest have never filed IP.
+    of the highest-spending tenth. The rank [[correlation]] between spend and patent applications is only 0.120. 52% of
+    the lowest spenders and 43.1% of the highest have no IP filing linked to their business number.
   figures:
     - value: "9.5% → 24.1%"
       label: claimants that have filed a standard patent, lowest to highest tenth of R&D spend
     - value: "0.120"
       label: spend with patent applications (small)
-    - value: "74.4%"
-      label: claimants under 3 years old that have never filed (missing filers)
+    - value: "8,444"
+      label: claimants with no filing linked, 95.7% of them private companies
   points:
     - "The lowest tenth spends a median $44,790 a year; the highest $3.79m."
-    - "**Missing filers** (no IP as a founding applicant) are most common among young claimants (under 3 years: 74.4%)
-      and least among the oldest (20 years or more: 35.8%); more common in private companies (51.4%) than public ones
-      (39.9%); somewhat more in outer regional areas (62.1%) than major cities (50.3%). They do not vary with the
-      postcode's advantage."
-    - "**An upper bound for older firms:** IPLORD links 54.3% of the oldest missing filers to IP that IP RAPID gives no
-      ABN, against none under 3 years old, so among young claimants the count is close to exact."
-    - "The other half agrees: 9.8% and 24.3%; spend with patents 0.128."
+    - "**No filing linked** is most common among claimants under 3 years old on the record (72.9%) and least among those
+      20 years or more (32.6%); more common in private companies (49.2%) than public ones (36.2%), and in outer regional
+      areas (60.3%) than major cities (48%). It does not rise or fall in step with the postcode's advantage."
+    - "**Who they are, together:** 55.3% of the 8,444 are private companies 3 to 10 years old on the record; only 2.4%
+      are under 3."
+    - "**Another link to IP explains little of it:** of the claimants with no filing linked, 10.9% of those 20 years or
+      more, and 4.1% of those under 3, are linked to IP another way (holding a right, another IP record, or an older IP
+      Australia dataset)."
+    - "**Not proven non-filers.** A firm can file without its business number being recorded, or through a related
+      company. The other half of the claimants agrees: 9.8% and 24.3%; spend with patents 0.128; no filing linked 52.3%
+      and 43%."
   questions:
     - q: 4
-      how: Young private companies that do R&D but have never filed IP are a clear group where an intervention could add most.
+      how: Claimants with no filing linked, mostly private companies of 3 to 10 years, are a group for Q4 to examine.
+        Whether they have output worth protecting, or file through another entity, is not measured here.
     - q: 3
       how: R&D is only loosely tied to patenting, so R&D alone is a weak condition for IP.
   sources: [rdti, linkage, abr, iprapid, iplord]
   chart:
     type: bar
-    title: R&D claimants that have filed a standard patent, and that have never filed IP
+    title: R&D claimants that have filed a standard patent, and that have no IP filing linked
     subtitle: Lowest and highest tenth of claimants by R&D spend
     x: {type: category, values: [Lowest-spending tenth, Highest-spending tenth]}
     y: {name: "% of claimants", min: 0, max: 100, format: pct, digits: 1}
     series:
       - name: Filed a standard patent
         data: [9.5, 24.1]
-      - name: Never filed IP
-        data: [54, 45.5]
+      - name: No filing linked
+        data: [52, 43.1]
         colour: muted
-    source: R&D Tax Incentive transparency data; ABR; IP RAPID (lens firms)
+    source: R&D Tax Incentive transparency data; ABR; IP RAPID; IP Australia's register (lens firms)
   prep:
-    - what: Claimants ranked into tenths by recorded R&D spend.
+    - what: Claimants ranked into tenths by recorded R&D spend, in one random half of the firms and checked in the
+        other.
       why: Spend is very uneven; tenths show the shape without being pulled by the largest.
+    - what: '"No filing linked" means no application is linked to the claimant''s ABN by IP RAPID''s filer''s ABN or IP
+        Australia''s register (ADR 0036); "no link to IP" also means no right held, no other IP record and no IPLORD
+        link.'
+      why: A count of linked filings can only show what the records link, so neither is called "never filed".
   steps:
-    - For each tenth of spend, find the share that has filed a standard patent and the share that has never filed.
-    - Find the share of missing filers by age, entity group, remoteness and advantage.
-    - Check with IPLORD how many missing filers have IP that IP RAPID does not link to their ABN.
+    - For each tenth of spend, find the share that has filed a standard patent and the share with no filing linked.
+    - Find the share with no filing linked by age, entity group, remoteness and advantage, and who they are together.
+    - Check how many of them are linked to IP another way.
   assumptions:
-    - A claimant with no IP linked by ABN has not filed, except where IPLORD finds otherwise.
+    - A claimant's own ABN is the one its filings would carry.
   limits:
     - Industry, which the business register does not give, is the main missing [[third-factor]].
+    - Age is on the record at 22 October 2026, not when the firm claimed.
   next: >-
-    Carried to Stage 3 as a signal for Q4; among large employers, size does not explain the weak link ({B51}).
+    Carried to Stage 3 as a group for Q4; among large employers, size does not explain the weak link ({B51}).
   terms: [rdti, iplord, lower-bound]
-  related: [B22, B51]
+  related: [B22, B51, U54]
 
 - id: B24
   lens: firms
   about: system
-  headline: Government suppliers that have filed IP win more and larger contracts, within every kind of entity
+  headline: Government suppliers that have filed IP have more contracts and more contract value, within each kind of entity shown except trusts
   statement: >-
-    Suppliers that have filed IP have a median 3 contracts against 2, and a median contract value of $273,400 against
-    $113,800 (a difference of $159,700). Large taxpayers with IP do not report clearly more income ($214.6m against
-    $186.8m, and not in the other half).
+    Suppliers that have filed IP have a median 3 contracts against 2, and a median total contract value per supplier
+    of $273,400 against $113,800 (a difference of $159,700). Large taxpayers with IP do not report clearly more income
+    ($214.6m against $186.8m, and not in the other half).
   figures:
     - value: "$273,400 against $113,800"
       label: median contract value, suppliers with IP against without
@@ -212,10 +265,26 @@
     - "Within entity groups the gap holds in both halves for private companies, public companies, government bodies and
       other entities; for trusts it is negligible."
     - "Large taxpayers' other half: $204.0m against $200.2m, an interval that includes no difference: not a lead."
-    - "**Not a cause:** IP and contracts may both follow from a firm's size and capability."
+    - "Sole traders and partnerships are not shown."
+    - "**Not a cause:** IP and contracts may both follow from a firm's size and capability. Size is known only for
+      large employers ({B50}), and this comparison was not redone among them."
+  chart:
+    type: bar
+    title: Median total contract value per government supplier
+    subtitle: Suppliers that have filed IP against those that have not, in each random half of the firms
+    x: {type: category, values: [First half, Second half]}
+    y: {name: "Median contract value ($)", min: 0, format: money}
+    series:
+      - name: Have filed IP
+        data: [273400, 277300]
+      - name: Have not filed
+        data: [113800, 110000]
+        colour: muted
+    source: AusTender; ABR; IP RAPID; IP Australia's register (lens firms)
   questions:
     - q: 2
-      how: Firms with IP win more of government's business, a sign of who benefits from public purchasing.
+      how: Firms with IP have more of government's business; that shows who benefits from public purchasing, not that
+        IP wins contracts.
     - q: 3
       how: Holding IP goes with commercial success in one measurable market, though size could explain both.
   sources: [austender, ato_ctt, linkage, abr, iprapid]
@@ -240,126 +309,165 @@
 - id: B25
   lens: firms
   about: system
-  headline: Firms file their first trade mark early, and their first patent or design later
+  headline: Within firms, the first trade mark usually comes before the first patent or design; one first filing in five is dated before the firm's first public registration
   statement: >-
-    Among firms first seen in 2001 or later, the first trade mark came a median 2.03 years after the firm's first
-    public registration, and 39.61% within the first year. The first standard patent came a median 4.62 years after,
-    and the first design 4.72 years.
+    Of 4,550 firms with a first trade mark and a first standard patent both filed FY2010 to FY2026, 72.86% filed the
+    trade mark first; of 3,851 with a first trade mark and a first design, 65.62%. Measured from the firm's first
+    public registration, first trade marks came a median 2.61 years after it and first standard patents 5.22 years.
+    But 18.02% of first trade marks and 19.57% of first standard patents are dated before that registration.
   figures:
-    - value: "2.03 years"
-      label: median age at first trade mark
-    - value: "4.62 years"
-      label: median age at first standard patent
-    - value: "39.61%"
-      label: first trade marks filed within the firm's first year
+    - value: "72.86%"
+      label: of firms filed their first trade mark before their first standard patent
+    - value: "2.61 vs 5.22 years"
+      label: median age at first trade mark and first standard patent
+    - value: "19.57%"
+      label: of first standard patents dated before the firm's first public registration
   points:
-    - "13.39% of first standard patents came within the first year; 28.42% after 10 years or more (16.71% for trade
-      marks)."
-    - "The other half agrees: 2.06, 4.76 and 4.23 years."
-    - "Age counts from the first public registration (ABN, GST or ASIC), a [[lower-bound]] on when the business began
-      ({U43})."
+    - "**Trade marks:** 32.25% of first trade marks came within the firm's first year, and 17.99% after 10 years or
+      more. **Standard patents:** 7.11% within the first year, 29.65% after 10 years or more. **Designs:** a median 5.24
+      years."
+    - "**Firms first seen from 2001 only:** 2.24 years for trade marks, 3.97 for standard patents and 3.96 for designs;
+      shorter, since such a firm can be at most about 25 years old here."
+    - "**One in five before registration.** For those firms the registration date is not the business's start, so a
+      recorded age is not a lower bound on age at filing for about one firm in five."
+    - "**Who is counted in the within-firm order:** only firms whose two first filings both fall in FY2010 to FY2026; a
+      firm whose first of either came earlier, or whose second has not come yet, is left out, so pairs filed close
+      together weigh more. 5.09% of firms filed their first trade mark and design on the same day."
+    - "The other half of the firms agrees: medians of 2.66 and 5.39 years, and 32% within the first year for trade
+      marks."
   questions:
     - q: 4
-      how: Shows when firms first come to IP, the moment an intervention aimed at new filers would meet them.
+      how: Shows when firms first come to IP, and that a trade mark usually comes first, the moment an intervention
+        aimed at new filers would meet them.
   sources: [linkage, abr, asic, iprapid]
   chart:
     type: bar
     title: How old firms are when they first file
-    subtitle: Median years from the firm's first public registration, first filings FY2010 to FY2026
+    subtitle: Median years from the firm's first public registration to its first observed filing, FY2010 to FY2026
     x: {type: category, values: [Trade marks, Standard patents, Designs]}
-    y: {name: Median years, min: 0}
+    y: {name: Median years, min: 0, format: num, digits: 2}
     series:
-      - name: Median age at first filing
-        data: [2.03, 4.62, 4.72]
-    source: ABR; ASIC; IP RAPID (lens firms)
+      - name: Firms whose age is not cut short
+        data: [2.61, 5.22, 5.24]
+      - name: Firms first seen from 2001
+        data: [2.24, 3.97, 3.96]
+        colour: muted
+    source: ABR; ASIC; IP RAPID; IP Australia's register (lens firms)
+    note: Filings on or after the firm's first public registration; about one in five first filings came before it.
   prep:
-    - what: Firms first seen in 2001 or later, so their age is not cut short by when ABNs began.
-      why: Older firms' registrations start in 1999 and 2000, whatever their real age ({U43}).
+    - what: Each firm's first observed linked filing of each type, FY2010 to FY2026, for firms whose age is not cut
+        short by when ABNs began ({U43}); ages are exact, from the first registration to the filing date (ADR 0039).
+      why: Older firms' registrations start in 1999 and 2000, whatever their real age.
+    - what: Filings dated before the firm's first registration are counted apart, not dropped.
+      why: They show that the registration date is not always the business's start.
   steps:
-    - For each firm, find its first filing of each type from FY2010.
-    - Measure the years since its first public registration, and summarise by type.
+    - For each firm, find its first linked filing of each type from FY2010.
+    - Measure the years from its first public registration, and summarise by type.
+    - Within firms that have two kinds of first filing in the window, count which came first, with an interval.
   assumptions:
-    - The first public registration is close to when a young business began.
+    - The first public registration is close to when a young business began, except where a filing came first.
   limits:
-    - Lower bounds on age; a business may trade before it registers.
+    - First observed, not first ever; the within-firm order counts only firms with both first filings in the window.
   next: >-
-    Read beside {B26} and the missing filers ({B23}) in Stage 3.
+    Stage 3 reads the order within firms without the window's selection, beside {B26} and the claimants with no
+    filing linked ({B23}).
   terms: [abn, asic, median]
   related: [B23, B26, U43]
 
 - id: B26
   lens: firms
   about: system
-  headline: Patents filed by the youngest firms move overseas more often, in both periods, though the numbers are small
+  headline: By firm, the youngest filers are not clearly more often those whose patents are now held only overseas; patents filed before a firm's first registration are the most often held overseas
   statement: >-
-    Of standard patents filed from Australia by firms under 2 years old, 5.72% (33 of 577) are now held only overseas
-    for FY2003 to FY2011 filings and 3.93% (37 of 941) for FY2012 to FY2021. Firms 2 to 5 years old: 1.93% and 2.13%.
+    Of the 346 youngest firms (under 2 years old when they filed) in FY2003 to FY2011, 4.34% have an Australian-filed
+    standard patent now held only overseas, against 3.63% of 1,186 firms 10 years or more; in FY2012 to FY2021, 2.96%
+    of 709 against 3.33% of 2,135. Patents filed before the firm's first public registration are the most often held
+    only overseas in both periods (7.01% and 7.77%).
   figures:
-    - value: "5.72%"
-      label: youngest firms' patents now held only overseas (FY2003 to FY2011)
-    - value: "3.93%"
+    - value: "4.34% vs 3.63%"
+      label: firms with a patent now held only overseas, youngest against 10 years or more (FY2003 to FY2011)
+    - value: "2.96% vs 3.33%"
       label: the same, FY2012 to FY2021
-    - value: "1.93%"
-      label: firms 2 to 5 years old (FY2003 to FY2011)
+    - value: "7.01% and 7.77%"
+      label: patents filed before the firm's first registration, now held only overseas
   points:
-    - "Intervals 4.1% to 7.92% and 2.87% to 5.37%."
-    - "5 to 10 years: 4.72% and 1.34%; 10 years or more: 3.29% and 2.33%."
-    - "The youngest firms' patents are not the widest (12.31% and 20.62% filed in five or more offices, against 15.63%
-      to 26.69% for older firms'), so reach does not explain the gap."
+    - "**Counted by patent**, the youngest firms' share is 5.79% (26 of 449) in the earlier period and 2.89% (24 of 831)
+      in the later one, against 3.24% and 2.33% for firms 10 years or more. But patents of one firm are not
+      independent, so the firm counts above are the safer reading: one firm holds 23.08% of the youngest band's
+      overseas-held patents in the earlier period."
+    - "**Reach is not ruled out:** the youngest firms' patents are less often filed in five or more offices in the
+      earlier period (12.03%, against 15.61% to 19.43%) and in the middle in the later one."
+    - "**Whose business number:** a patent joins a firm by its first founding applicant with an ABN, which for a
+      jointly filed patent need not be the Australian party (1,194 of the 26,204 patents joined are jointly filed)."
+    - "**Not shown:** whether a young firm was sold, its founders moved, or its patents' returns went abroad. Those are
+      hypotheses, not observations."
   questions:
     - q: 1
-      how: Young firms' inventions are more often owned abroad later, another route by which value made here is captured elsewhere.
+      how: Whether young firms' inventions end up held abroad bears on where value made here is realised; by firm, the
+        youngest are not clearly different from older firms.
     - q: 4
-      how: Points to young firms as the place where keeping value in Australia is most at stake.
+      how: Patents filed before a firm's first registration are the most often held only overseas, a group worth
+        understanding before any help is aimed at young firms.
   sources: [iprapid, linkage, abr]
   chart:
     type: bar
-    title: Standard patents now held only overseas, by the filing firm's age
-    subtitle: Firms first seen in 2001 or later, by period of filing
-    x: {type: category, values: [Under 2 years, 2 to 5 years, 5 to 10 years, 10 years or more]}
+    title: Standard patents now held only overseas, by the filing firm's age when it filed
+    subtitle: Australian-filed standard patents, by period of filing (counted by patent)
+    x: {type: category, values: [Before the firm's first registration, Under 2 years, 2 to 5 years, 5 to 10 years, 10 years or more]}
     y: {name: "% now held only overseas", min: 0, format: pct, digits: 2}
     series:
       - name: FY2003 to FY2011
-        data: [5.72, 1.93, 4.72, 3.29]
+        data: [7.01, 5.79, 2.34, 4.69, 3.24]
       - name: FY2012 to FY2021
-        data: [3.93, 2.13, 1.34, 2.33]
+        data: [7.77, 2.89, 2.16, 1.39, 2.33]
         colour: muted
-    source: IP RAPID; ABR (lens firms)
+    source: IP RAPID; ABR; ASIC (lens firms)
+    note: Counted by patent; patents of one firm are not independent, so the firm counts in the text are the safer reading.
   prep:
-    - what: Each patent's filing firm and its age at filing, beside the patent's current holders ({B19}).
-      why: Links the move overseas to the firm that made the invention.
+    - what: Each patent's filing firm (by the first founding applicant with an ABN) and the firm's exact age at filing,
+        beside the patent's current holders ({B19}); firms whose age is not cut short ({U43}).
+      why: Links the holder at today's end to the firm that filed.
+    - what: Shares are given by patent and by firm.
+      why: Patents of one firm share its fate, so counting them as independent overstates precision.
   steps:
-    - Group patents by the filing firm's age at filing.
-    - Find the share now held only overseas, with intervals, in two periods.
-    - Check whether reach explains the difference.
+    - Group patents and firms by the filing firm's age at filing, in two periods.
+    - Find the share now held only overseas, by patent and by firm, with intervals.
+    - Set the shares beside reach, and beside how much one firm contributes to a band.
   assumptions:
-    - A patent held only by overseas owners has been sold or transferred abroad.
+    - Two endpoints are compared, an Australian founding applicant at filing and only overseas holders now; the path
+      between is not seen (ADR 0040).
   limits:
-    - Small numbers. The likely [[third-factor|third factors]], the sale of young firms to overseas buyers and
-      founders moving abroad, are not in the data.
+    - Small numbers, and a single firm can move a band.
+    - The likely [[third-factor|third factors]], the sale of young firms and founders moving abroad, are not in the
+      data.
   next: >-
-    Carried to Stage 3 as a lead for Q1 that needs care.
+    Carried to Stage 3 as a lead that needs care, counted by firm.
   terms: [assignment, interval]
   related: [B19, B25]
 
 - id: B50
   lens: firms
   about: system
-  headline: Among employers of 100 or more, filing rises with size; the largest are 22 points more likely to have filed a standard patent
+  headline: Among employers of 100 or more, filing rises with size; the largest are 24.3 points more likely than the smallest to have any filing linked
   statement: >-
-    Of 7,126 firms with a WGEA report, 0.109 of those under 250 employees have filed a standard patent, against 0.328
-    of those with 5,000 or more: 22 points (interval 14.6 to 30.3), rising band by band. Any right: 0.701 to 0.825.
+    Counting every WGEA employer (9,742), with those the firms table does not hold counted as having no filing linked:
+    2,533 of the 5,208 employers with fewer than 250 staff have a filing linked (about half), against 113 of the 155
+    with 5,000 or more (nearly three in four). The gap is 24.3 [[percentage-point|points]] (interval 16.7 to 30.8). For
+    a standard patent it is 21.5 points (14.9 to 29.1), rising band by band.
   figures:
-    - value: "0.109 → 0.328"
-      label: share that has filed a standard patent, under 250 to 5,000 or more employees
-    - value: "22 points"
-      label: the difference (14.6 to 30.3)
-    - value: "0.701 → 0.825"
-      label: share that has filed any right
+    - value: "24.3 points"
+      label: largest against smallest employers, any filing linked (16.7 to 30.8)
+    - value: "21.5 points"
+      label: the same for a standard patent (14.9 to 29.1)
+    - value: "2,616"
+      label: employers found in none of the firms table's sources, counted as having no filing linked
   points:
-    - "A trade mark: 0.685 to 0.81 (12.6 points)."
-    - "As rank correlations with headcount the pairs are weak in both halves (0.056 to 0.093, under the screen's 0.1):
-      the rise is steady but small beside the spread within each band."
+    - "A trade mark: 24.3 points too (16.6 to 30.9)."
+    - "**Within the firms table alone** the shares look higher and the gap for any filing is half as large (12.1
+      points), because the 2,616 employers in none of its sources (an IP, R&D, procurement or tax record), smaller ones
+      most often, are left out. Shares of employers that file are therefore taken over every employer ({U112})."
+    - "As rank correlations with headcount the links are weak (0.048 to 0.11 in the two halves): the rise is steady but
+      small beside the spread within each band."
   questions:
     - q: 2
       how: Size goes with using the IP system even among large employers.
@@ -368,78 +476,94 @@
   sources: [wgea, linkage, iprapid]
   chart:
     type: bar
-    title: Employers of 100 or more that have filed a standard patent
-    subtitle: Share of firms with a WGEA report, smallest and largest size band
-    x: {type: category, values: [Under 250 employees, "5,000 or more"]}
-    y: {name: Share of firms, min: 0, max: 1, format: ratio}
+    title: Employers of 100 or more with any IP filing linked, by size
+    subtitle: Every WGEA employer, against only those the firms table holds (latest report)
+    x: {type: category, values: [Under 250 staff, 250 to 499, 500 to 999, "1,000 to 4,999", "5,000 or more"]}
+    y: {name: Share with a filing linked, min: 0, max: 1, format: share}
     series:
-      - name: Filed a standard patent
-        data: [0.109, 0.328]
-      - name: Filed any right
-        data: [0.701, 0.825]
+      - name: Every employer
+        data: [0.486, 0.555, 0.559, 0.651, 0.729]
+      - name: Only those in the firms table
+        data: [0.704, 0.738, 0.734, 0.778, 0.825]
         colour: muted
-    source: WGEA public data; IP RAPID (lens firms)
+    source: WGEA public data; IP RAPID; IP Australia's register (lens firms)
+    note: Employers outside the firms table are counted as having no filing linked.
   prep:
-    - what: Each firm's size band and industry from its WGEA report ({U112}).
-      why: WGEA is the only free source of size and industry by ABN, for employers of 100 or more.
+    - what: Each employer's size band and industry from its WGEA report ({U112}); shares are taken over every employer
+        in WGEA's latest reports, those outside the firms table counted as having no filing linked (ADR 0043).
+      why: The firms table holds an ABN only if it appears in an IP, R&D, procurement or tax source, so taking shares
+        within it leaves out employers that have none of these, most often smaller ones.
+    - what: Differences between the smallest and largest bands come with 95% intervals.
+      why: The largest band holds only 155 employers.
   steps:
-    - Group firms with a report by size band.
-    - Find the share in each band that has filed a standard patent, a trade mark or any right, with intervals.
+    - Group every WGEA employer by size band.
+    - Find the share in each band with any filing linked, a standard patent or a trade mark, with intervals.
+    - Repeat within the firms table, to show how much its selection moves the shares.
   assumptions:
-    - The size band in the latest report stands for the firm's size.
+    - The size band in the latest report stands for the employer's size.
   limits:
-    - Employers of 100 or more only (4.05% of patent filers); small firms still have no size ([[wgea]], ADR 0032).
+    - Employers of 100 or more only; small firms still have no size ([[wgea|WGEA]], ADR 0032).
+    - '"No filing linked" is not "never filed": an employer can file without its ABN being recorded.'
   next: >-
     Carried to Stage 3 as a third factor among large employers.
-  terms: [wgea, interval]
+  terms: [wgea, interval, percentage-point]
   related: [B51, U112]
 
 - id: B51
   lens: firms
   about: system
-  headline: Industry sorts patenting far more than size does, and size does not explain R&D's weak link with patenting
+  headline: Among large employers, industry sorts patenting far more than size does, and size does not explain R&D's weak link with patenting
   statement: >-
-    Among large employers, 0.395 of manufacturing firms have filed a standard patent, against 0.006 in accommodation.
-    Among the 509 covered R&D claimants, R&D spend goes with standard patents at 0.172, and within size bands at 0.105
-    to 0.253: the weak link of {B23} holds within size.
+    Counting every WGEA employer, 0.346 of manufacturing employers have filed a standard patent, against 0.003 in
+    accommodation and food services. Among the 509 large employers that claim R&D, R&D spend goes with standard patents
+    at a rank [[correlation]] of 0.172, and within size bands at 0.105 to 0.253: the weak link of {B23} holds within
+    size.
   figures:
-    - value: "0.395"
-      label: manufacturers that have filed a standard patent
-    - value: "0.006"
-      label: accommodation firms
+    - value: "0.346"
+      label: share of manufacturing employers that have filed a standard patent
+    - value: "0.003"
+      label: in accommodation and food services
     - value: "0.105 to 0.253"
       label: R&D spend with patents, within size bands
   points:
-    - "Mining 0.274, wholesale trade 0.251, utilities 0.197; health care 0.033, administrative services 0.034."
-    - "Trade marks reach every division (0.473 in public administration to 0.868 in arts and recreation)."
+    - "Wholesale trade 0.23, mining 0.162, utilities 0.133; health care 0.023, administrative services 0.02."
+    - "Trade marks reach every division (over every employer, 0.299 in public administration to 0.703 in
+      manufacturing)."
+    - "Within the firms table alone every division's share is higher (manufacturing 0.395), for the reason given in
+      {B50}."
     - "Headcount goes with R&D spend at 0.289."
   questions:
     - q: 3
-      how: Industry is the strongest condition for whether a firm patents, stronger than size.
+      how: Among large employers, industry sorts patenting far more than size does.
     - q: 4
-      how: Opportunities for patent-related interventions sit in a few industries; trade marks reach all.
+      how: Patenting among large employers is concentrated in a few industries, while trade marks reach all of them.
   sources: [wgea, rdti, linkage, iprapid]
   chart:
     type: bar
     horizontal: true
     title: Large employers that have filed a standard patent, by industry
-    subtitle: Share of firms with a WGEA report, the divisions the notebook quotes
-    x: {type: category, values: [Manufacturing, Mining, Wholesale trade, Utilities, Administrative services, Health care, Accommodation]}
-    y: {name: Share of firms, min: 0, format: ratio}
+    subtitle: Every WGEA employer, against only those the firms table holds; the divisions the notebook quotes
+    x: {type: category, values: [Manufacturing, Wholesale trade, Mining, Utilities, Health care, Administrative services, Accommodation and food]}
+    y: {name: Share of employers, min: 0, max: 0.5, format: share}
     series:
-      - name: Filed a standard patent
-        data: [0.395, 0.274, 0.251, 0.197, 0.034, 0.033, 0.006]
+      - name: Every employer
+        data: [0.346, 0.23, 0.162, 0.133, 0.023, 0.02, 0.003]
+      - name: Only those in the firms table
+        data: [0.395, 0.251, 0.274, 0.197, 0.033, 0.034, 0.006]
+        colour: muted
     source: WGEA public data; IP RAPID (lens firms)
   prep:
-    - what: Each covered firm's ANZSIC division from WGEA.
-      why: The business register gives no industry.
+    - what: Each employer's ANZSIC division from WGEA, with shares taken over every employer ({B50}).
+      why: The business register gives no industry, and the firms table leaves out employers with no IP, R&D,
+        procurement or tax record.
   steps:
     - Find the share that has filed a standard patent and a trade mark in each division.
-    - Among covered R&D claimants, relate spend to patents overall and within size bands.
+    - Among large employers that claim R&D, relate spend to patents overall and within size bands.
   assumptions:
-    - WGEA's industry is the firm's main activity.
+    - WGEA's industry is the employer's main activity.
   limits:
-    - Large employers only; most IP filers are small firms with no industry recorded.
+    - Large employers only; most IP filers are small firms with no industry recorded (683 reporters have under 100
+      staff, not a sample of small firms).
   next: >-
     Industry and size are now third factors for large employers in Stage 3 (OQ20 asks about small firms).
   terms: [wgea, anzsic, rdti]

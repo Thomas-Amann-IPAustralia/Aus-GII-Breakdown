@@ -420,3 +420,106 @@ swapped two rows; no number moved).
 - **On the audit's list:** S2 L5 R08 to R12 and R14 (in part: §5.7's B37, B47 and B48 rows are restated here); S2 L6
   R02 to R05, R07 to R09; S2 L7 R01 to R06; S2 S8 R03 (other rows), R05 (the industries and institutions rows), R08
   to R12.
+
+## Pass 8 (2 November 2026): a final review of Stages 1 and 2
+
+**Decision record:** ADR 0043 (`docs/adr/0043-final-review-of-stages-1-and-2.md`); the assessment is
+`docs/review-stages-1-and-2.md`. The owner asked for an in-depth review of both stages before the website is updated:
+every observation a reasonable and objective description of its outputs, the two notebooks consistent where later
+datasets overtook earlier readings, and an assessment of quality. Unlike passes 1 to 7, this pass took no single theme:
+it read all 186 observations against the outputs above them, re-ran both notebooks from a fresh build, checked the
+summary documents number by number, and acted on the full Stage 2 audit's findings still open
+(`analysis/claude-audit/261102/`), each checked first.
+
+### The check made first
+
+- **Reproducibility.** The eleven lenses were rebuilt from the corpus (row counts as recorded) and both notebooks
+  re-executed into scratch copies before any change: notebook 2's text outputs were identical to the committed ones;
+  notebook 1's were identical except two tables whose rows came in another order (cells under U93 and U85), fixed with
+  an `ORDER BY`. A third table (B25's within-firm order) flipped on a later run and is now sorted.
+- **Numbers on the page.** A script took every number in each observation and looked for it in the outputs above
+  (the notebooks' own rule); the misses were checked one by one. Most were arithmetic on the page, cross-references
+  or chart labels (`uni.counts` prints counts and shares on its bars). The rest are below.
+- **Every observation read against its outputs**, both notebooks, with the code read where a label was ambiguous, and
+  a handful of claims checked in the lenses (marked "verified in the lenses" below).
+
+### What was found, and done
+
+| Observation | What was wrong | Amendment |
+|---|---|---|
+| U1 | 88 columns and 13 from the parties, before `agent_first_date` (ADR 0041); the output prints 89 | 89 columns, 60 from the attachments, 14 from the parties |
+| U3 | "50,756 rights that cannot be placed in time" left out 6 plant breeder's rights and 1 trade mark the table shows | 50,763 rights with no application date |
+| U5 | "From FY1990 no more than 0.4%" of unknown origin, from selected years; at most 0.45% (FY1993) | The maximum printed and quoted |
+| U6 | "Not lower than earlier years for any type": plant breeder's rights are the decade's lowest (258, 255) | Restated for the three types it holds for; plant breeder's rights named |
+| U8 | "Not from businesses": organisations' provisionals rose too (3,060 to 4,558, verified in the lenses and now printed); flat ABN counts confounded by IP RAPID's falling ABN coverage (U45) | Restated; the organisations' column added |
+| U9 | Designs "24% in force and 66% ended after registration": the table gives 25.5% and 64.1% | 26% and 64% |
+| U11, U70 | U11 still called the 222-day peak a lead; U70 said "not an artefact" from WIPO's average | Pointer to U70; "consistent with the office's usual path" |
+| U25 | "Quickened" for trade marks (faster in the 1990s); Australians' designs read from the chart | Heading narrowed; the range printed (1,903 to 2,678 a year) |
+| U28 | The designs grace period listed under "None visible" though Australians' designs fell 16.5% | Its own bullet: a change against the direction the rule would push |
+| U31 | "171 dated before the right's earliest filing", from `build.py`'s note, not on the page; the build drops 174 (3 trade mark expedite requests besides) | The count printed; 174; `build.py`'s note and `variables.yaml` corrected (no behaviour change) |
+| U34 | Standard patent oppositions "0.14% to 0.38% since FY2015": FY2015 is 0.39% | Corrected |
+| U38 | "Filings peaked in 2000", though 2003 is higher in the same table | "A peak" (1997 to 2002) |
+| U40 | `agent_first_date` had no profile; 362,490 rights carry 12 May 2018, all but 5 of them patents | A check printed and a bullet: a batch date for patents; B10 uses the date for trade marks and designs only |
+| U41 | "IPLORD's 99th percentile is 7 times IP RAPID's": the statistic is the ratio's 99th percentile | Restated; provisionals' 1.7% added |
+| U42 | "Dominate every source but AusTender": private companies are 55.3% of suppliers | Heading restated |
+| U45 | First patent filers fell from 1,167 (FY2021) to 810 (FY2024) while ABN linking held: not a linking fall | A dated bullet (a lead: the innovation patent's closure) |
+| U46 | "15 firms ... from the reports' first years", not on the page | What the page shows (6 reported in one year only) |
+| U47 | Government suppliers "less of both" metropolitan and advantaged: more often in decile 10 (35.3% against 33.4%) | Restated: less metropolitan, at both ends of advantage |
+| U54 | "Claimants outside the cities more often have no filing linked", from outer regional areas alone | Restated by remoteness class |
+| U60, U61 | "54.14% of its indicators" is a share of indicator-periods; batteries' July 2025 start not on the page | Restated to the page |
+| U65, U66, U70 | Counts read from rounded displays (13,280, 29,010, 10,630; exact 13,278, 29,014, 10,631); gross R&D (21st of 35) under "Bottom"; "for that reason alone" | Exact values printed and quoted; "below the median for R&D"; "about where its size alone would put them" |
+| U83 | "9.7% (2017)" not on the page | The range printed |
+| U84 | Universities "1.8 to 2.7" provisionals per standard (the table: 1.29 to 2.58); individuals' filing "doubled" (nearly tripled) | Corrected |
+| U85 | "The research-to-invention link runs mostly through foreign patents", from US patents' citations alone | Restated: US patents only, no baseline, a citation is not use |
+| U86 | "1,000 to 1,835 a year from 2008": 2014 has 979 | Corrected |
+| U107 | "More on organisations' than on individuals'" holds for Australian filers only; individuals' provisionals "doubled" | Restated |
+| U112 | The share of WGEA employers that file taken among those the lens holds only (7,126 of 9,742): 0.704 to 0.825, against 0.486 to 0.729 over every employer | Both printed; every employer leads (see B50) |
+| U123 | Prescriptions "335.9 million to 339 million", first and last years read as a range (335.1 to 339.6) | Corrected |
+| §1.9, §2.7, §3.8, §4.7, §9; §5.0's repair note | Rows carrying the above, and stale: §9's U8 "1,361", U89 "matches exactly", "81.0%" (81.1%), U67 "within 1.5% and 2.2%"; §5.0 "15 of them too early" (18) | Restated |
+| B4 (§1.9) | Its leads that are not followed up recorded nowhere (audit S2 L1 R37) | A row with each lead's fate |
+| B5, B6 | "Designs ... 99.4% to 100% are, whoever files": the selection B3 warns against (S2 L1 R09); "the 1,149 organisations" were applications; a conjecture stated as fact | Restated |
+| B12 | "(16.0 against 12.6)": the table gives 12.5; "two readings of the same expected value" asserted | Corrected; softened |
+| B13 | "Granted more often in every group": true for standard patents, not overseas trade marks | Scoped |
+| B17, B18 | A field mix by filer not on the page; B18's heading holds for Australian filers only | Restated |
+| B22, B24 | "In a city" for both doors; "steady" gradient; "within every kind of entity" though trusts are negligible | Restated |
+| B25, B26, B30 | The window condition behind 72.86% (S2 L2 R29); B26 headed by the patent-level rate (R30); B30's filer and postcode parties (S2 L3 R34) | Restated |
+| B28 | "A turnover of $2m or more" from a label the table cut short ($2m to less than $5m, verified in the lenses); the strongest lead not named | Labels printed in full; restated |
+| B29 | The halves' difference put down to "city-centre postcodes", not shown | The decile's five heaviest areas and their halves printed; restated |
+| B31 | "Patents are filed by manufacturers (U75)", which U75 and the industries lens say the crosswalk cannot show | Restated |
+| B32, B34, B35, §4.5 | The same countries a decade apart read as replication (S2 L4 R25); a base-10 log change unlabelled; "raising R&D would not ... raise patenting quickly"; a fact assumed in B35 | Stability check; "about 17%"; the lead restated as an association; a hypothesis |
+| B36, B39 | Weak, serially dependent changes read as absences (S2 L5 R08); B39's strongest annual pair is overseas applicants' trade marks, not "the same filings" (R09); the lead's explanation (R10) | Restated |
+| B37 | "Every candidate break is beyond every placebo month": the Patents Act 1990 is not (33.33%, 93.06%); controls' range given for spikes only | Seven of eight; 48.61% to 73.61% |
+| B38 | FY2025 set against a range across the August 2021 closure (S2 L5 R12) | FY2022 to FY2024 the base; the break and the PCT named |
+| B49 | The trend check's own extremes (March 2007, August 2010) not reported | Added |
+| B50, B51 | Shares among the lens's employers only (see U112) | Every employer: any right 0.486 to 0.729 (+24.3 points), patents 0.075 to 0.29 (+21.5); divisions likewise |
+| B52, B56 | Mechanisms ("in booms", "a shared cycle, not a price"), "ten pairs" (six), "about what chance gives" not computed (S2 L5 R11) | Restated |
+| B40, B41, B42, B53, B54, B57, B60, §6.7 | Allocated counts read as divisions' filing (S2 L6 R02); the second year read as replication (R03); ratios against their own denominator (R04); conclusions from 17 divisions on zeros (R05); no intervals and a size-laden measure (R07); "no patent class to services" (R08); §6.7's column (R09) | Restated throughout |
+| B44, B45, B46, B62, §7.1, §7.4 | Kind's funding rules read as performance (S2 L7 R03); "no link" from imprecise correlations (R05); "Australian research is used ... elsewhere" (R01); ages of works (R04); six ratios on one denominator and "a fair sign" (R02); "44 universities", "four pairs" (R06); a wrong cross-reference (U83 for U81) | Restated |
+| §8; method notes | Rows carrying the above (S2 S8 R03); B39 among "no lead"; intervals from 100 resamples (R09); the corrected V in small lenses (R10); absences (R12); same-unit samples (R08) | Restated; two method notes in "How to read"; `GLOSSARY.md` gains "Stability check" and "No association detected" |
+| nb2 §1 rules | "Trade mark expedite shares only on one side of November 2018": U103 revised it | Carried back |
+| `docs/stage-1-summary.md` | Stale figures from before passes 2 and 6 (53.42%, 91.24%, 69.3%, 19.9%, 14.91%, 74.92%, 15.57%, "61,854 rights"), "88 columns", and the restated readings above | 18 edits |
+| `docs/stage-2-summary.md` | The over-strong lines of S2 S8 R05 and the readings above | 20 edits |
+
+### What else changed as a result
+
+- **Readings that change in substance:** U8 (organisations' provisionals rose too); U112, B50 and B51 (shares over
+  every employer, the size gap doubled for any right); B31 (manufacturers are not shown to file the patents); B37
+  (seven of eight breaks); B38 (the comparable base); B39 (annual trade marks move together); U85 and B46 (citations
+  are not use); B62 (a shared denominator). No conclusion carried to Stage 3 reverses; several narrow.
+- **No lens changes.** Notebook 1 prints figures in thirteen cells (among them U31's 174 events dated before a right's
+  earliest filing, 26 of them trade mark oppositions of 1909, which only `build.py`'s note held, as 171) and sorts two tables;
+  notebook 2 prints every-employer WGEA rates, full CABEE labels and B29's halves, and sorts one table. Both re-executed; `docs/eda-plan.md`'s rights row
+  says 89 columns.
+
+### Left for other passes
+
+- **The website** (`analysis/atlas/content/`): its plain English quotes several restated observations (among them U3,
+  U8, U9, U112, B31, B37, B38, B39, B46, B50, B62); the web pass carries them over. Against the corrected notebooks the
+  atlas's numbers rule now lists 61 observations whose plain English quotes a figure the notebook no longer shows, most
+  of them from passes 1 to 7 (for example U8's 1,361, U91's 53.42% and B55's 63.43%); `build.build(strict=True,
+  write=False)` lists them, and `tests/test_atlas.py` errors on them, as it did before this pass.
+- **New methods the audit proposes,** listed for Stage 3 in the assessment: block bootstraps for serially dependent
+  changes (S2 L5 R08, R11), 1,000 resamples for quoted intervals (S2 S8 R09), B42 and B60 through the crosswalk with
+  services (S2 L6 R05), heatmap legends (S2 S8 R11), fixed-age citation windows (S2 L7 R04), expenditure as an exposure
+  for B62 (S2 L7 R02), the window-free within-firm order for B25 (S2 L2 R29) and the party-aligned filer for B30 (S2 L3
+  R34).

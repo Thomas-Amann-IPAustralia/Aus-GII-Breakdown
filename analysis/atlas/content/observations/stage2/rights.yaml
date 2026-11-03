@@ -5,24 +5,27 @@
 - id: B1
   lens: rights
   about: data
-  headline: Every pair of measures for each type of right was screened; 223 distinct leads passed and most held in a second decade
+  headline: Every pair of measures for each type of right was checked; 221 pairs passed every test, in two separate decades
   statement: >-
-    Each type of right was screened on rights filed FY2010 to FY2019 and again on those filed FY2000 to FY2009. 223
-    distinct pairs of measures passed all four tests for a [[lead]]. The two decades agree closely on which pairs are
-    strong (a rank [[correlation]] of 0.859 across 5,207 pairs), though a lead's size often differs between them.
+    Each type of right was checked on rights filed FY2010 to FY2019 and again on different rights, filed FY2000 to
+    FY2009. 221 distinct pairs of measures passed all four tests for a [[lead]]. The two decades agree closely on which
+    pairs are strong (a rank [[correlation]] of 0.867 across 5,006 pairs), though a lead's size often differs between
+    them.
   figures:
-    - value: "223"
+    - value: "221"
       label: distinct leads across six types of right
-    - value: "0.859"
+    - value: "0.867"
       label: agreement between the two decades on how strong each pair is
-    - value: "264 of 1,649"
+    - value: "245 of 1,586"
       label: leads whose strength differs by more than 0.1 between the decades
   points:
-    - "Leads as pairs of variables: 490 for standard patents, 304 for trade marks, 271 for designs, 41 for
-      provisionals, 436 for second-tier patents and 107 for plant breeder's rights. As distinct pairs of measures (one
-      measure counted once, however many versions of it there are): 59, 45, 33, 9, 63 and 14."
-    - "85, 22, 68, 7, 158 and 29 pairs passed in the first decade but did not hold in the second, so they are not
+    - "Leads as pairs of variables: 484 for standard patents, 296 for trade marks, 252 for designs, 41 for
+      provisionals, 414 for second-tier patents and 99 for plant breeder's rights. As distinct pairs of measures (one
+      measure counted once, however many versions of it there are): 59, 45, 32, 9, 62 and 14."
+    - "81, 20, 62, 7, 155 and 29 pairs passed in the first decade but did not hold in the second, so they are not
       leads."
+    - "Years in force is not part of this check: for a right still in force it is only how long it has lasted so far.
+      Lifetimes are compared with survival curves instead ({U36}, {B4})."
     - "No pair failed on the correction for the number of pairs alone. With samples this large, almost everything is
       \"statistically significant\"; the size threshold (0.1) and the second decade did the sorting."
   questions:
@@ -40,7 +43,7 @@
     y: {name: Distinct leads, min: 0}
     series:
       - name: Distinct leads
-        data: [59, 45, 33, 9, 63, 14]
+        data: [59, 45, 32, 9, 62, 14]
     source: IP Australia, IP RAPID; Google Patents; WGND (lens rights)
   prep:
     - what: Each type of right is screened on its own, on up to 200,000 rights in each decade, chosen by a fixed rule
@@ -54,7 +57,7 @@
         a finding.
   steps:
     - Measure every pair of variables on one scale from 0 (unrelated) to 1 (perfectly related), whatever their kinds.
-    - Keep a pair only if it is at least small (0.1) and survives the [[multiple-testing]] correction in FY2010 to FY2019.
+    - Keep a pair only if it is at least small (0.1) and survives the [[multiple-testing|correction for many tests]] in FY2010 to FY2019.
     - Measure it again in FY2000 to FY2009, and keep it only if it is at least 0.1 there too, in the same direction.
     - Drop pairs that are two versions of one measure, and count the rest once per pair of measures.
   assumptions:
@@ -75,9 +78,9 @@
   about: system
   headline: The strongest pairs are how the IP system works, not findings, and are recorded but not carried forward
   statement: >-
-    The strongest leads are what the filing rules make inevitable. Australian filers file their international (PCT)
-    applications at IP Australia (strength 0.945), and the inventions they file are made here (0.892). A patent's
-    time to grant rises with how long its owner waits before asking for examination (0.83).
+    The strongest leads are what the filing rules and the way records are made would produce anyway. Australian filers
+    file their international (PCT) applications at IP Australia (strength 0.945), and the inventions they file are made
+    here (0.892). A patent's time to grant rises with how long its owner waits before asking for examination (0.83).
   figures:
     - value: "0.945"
       label: filer in Australia with IP Australia as the PCT receiving office
@@ -87,19 +90,35 @@
       label: how much more often than chance an Australian filer uses IP Australia for a PCT application
   points:
     - "Each held in the earlier decade too: 0.938, 0.851 and 0.817."
-    - "**The applicant sets the pace.** A standard patent's time to grant depends heavily on when its owner asks for
-      examination, not only on the office."
+    - "**The applicant sets part of the pace.** A standard patent's time to grant rises with how long its owner waits
+      before asking for examination; the office is not the only source of delay."
     - "**A record effect.** Wider families have fewer inventors of unknown country (0.526; 0.582), because Google Patents
       takes inventors' countries from foreign publications, which narrow families lack ({U95})."
     - "**Trade marks:** expedited examination goes with a priority claim (0.78; 0.763), the recording {U103}
       explained."
-    - "**Provisionals:** individuals have no ABN (0.757; 0.738)."
+    - "**Provisionals:** individuals have no ABN (0.757; 0.738). **Trade marks:** a founding applicant's country goes
+      with its priority office (0.731; 0.774)."
+  chart:
+    type: bar
+    horizontal: true
+    title: The strongest pairs, and how they held in the earlier decade
+    subtitle: Strength from 0 (unrelated) to 1 (perfectly related); rights filed FY2010 to FY2019 and FY2000 to FY2009
+    x: {type: category, values: ["Filer in Australia, PCT filed at IP Australia", "Filer in Australia, an inventor in Australia", "Time to grant, time to request examination", "Trade marks: expedited, priority claimed", "Provisionals: an individual, no ABN", "Trade marks: filer's country, priority office", "Family size, inventors of unknown country"]}
+    y: {name: Strength, min: 0, max: 1, format: ratio}
+    series:
+      - name: FY2010 to FY2019
+        data: [0.945, 0.892, 0.83, 0.78, 0.757, 0.731, 0.526]
+      - name: FY2000 to FY2009
+        data: [0.938, 0.851, 0.817, 0.763, 0.738, 0.774, 0.582]
+        colour: muted
+    source: IP Australia, IP RAPID; Google Patents (lens rights)
+    note: Each pair is expected from how rights are filed and recorded, so none is carried forward as a finding.
   questions:
     - q: 1
       how: Clears away pairs that only restate the rules, so that the measures carried forward are about value, not procedure.
   sources: [iprapid, google_patents, google_patents_inventors]
   prep:
-    - what: The screen's leads, each with a 95% [[interval]] for its strength from repeated resampling.
+    - what: The screen's leads, each with a 95% [[interval|interval]] for its strength from repeated resampling.
       why: Shows how precisely each strength is known.
   steps:
     - Read the strongest leads for each type of right.
@@ -133,9 +152,20 @@
       label: lapsed and withdrawn designs still unknown after the register's fill
   points:
     - "The same in the earlier decade (0.996)."
-    - "IP Australia's own register fills nearly all of them ([[filled]] origin, ADR 0029)."
+    - "IP Australia's own register fills nearly all of them ([[filled|filled]] origin, ADR 0029)."
     - "So a comparison of origins on IP RAPID alone quietly drops the designs that failed, and must use the filled
       origin instead."
+  chart:
+    type: bar
+    title: Designs with no applicant country in IP RAPID, by status
+    subtitle: Designs filed FY2010 to FY2019
+    x: {type: category, values: [Lapsed, Withdrawn, Ceased, Registered]}
+    y: {name: "% with no country", min: 0, max: 100, format: pct, digits: 2}
+    series:
+      - name: No country in IP RAPID
+        data: [100, 100, 0.22, 0.01]
+    source: IP Australia, IP RAPID (lens rights)
+    note: With IP Australia's register filled in, 1.12% of lapsed and 3.81% of withdrawn designs remain unknown.
   questions:
     - q: 2
       how: "Prevents a false reading of who files designs: failed applications would otherwise vanish from the
@@ -172,7 +202,7 @@
     - value: "2 against 9"
       label: median offices in a family, Australian against Italian applicants
     - value: "14.9 times"
-      label: how much more often than chance South Australian filers use one Adelaide firm
+      label: how much more often than chance South Australian filers use one attorney firm (Collison & Co)
   points:
     - "**Representation and outcome:** standard patents (0.243; 0.217), trade marks (0.317; 0.274), second-tier patents
       (0.491; 0.474); designs filed through an agent who is not an attorney (0.323; 0.281). Followed up in {B5} to {B7}."
@@ -184,11 +214,29 @@
       Followed up in {B17} and {B18}."
     - "**Trade marks:** individuals go with clothing (class 25, 2.1 times chance); overseas applicants with medical
       apparatus (class 10, 1.9 times); attorneys file more classes per mark (a mean 1.958 against 1.466 filing alone)."
-    - "**Lifetimes:** designs' years in force vary with the class (a median 9.41 years for class 04, 5 for clothing);
-      second-tier patents' with the applicant's country (China lowest, a median 2.54 years) and with having an ABN (a
-      median 6.54 years against 3.54)."
+    - "**Lifetimes**, read from survival curves rather than the screen: designs still in force after the renewal at 5
+      years range from 20.1% for clothing (class 02) to 75.9% for medical and laboratory equipment (class 24), filed
+      FY2010 to FY2019 (20.8% and 74.6% for FY2005 to FY2009). Innovation patents still in force after 5 years: 56.7%
+      with an applicant that has an ABN against 38.6% without (54.7% and 34.5% in the earlier period); 78.2% for
+      applicants in the United States, 40.8% in Australia and 21.4% in China (China's 46.1% in the earlier period, on
+      72 patents, does not replicate)."
     - "**Plant breeder's rights:** the genus goes with overseas applicants (grapes highest) and with the time to grant
       (citrus a median 2,692 days)."
+  chart:
+    type: bar
+    horizontal: true
+    title: Innovation patents still in force after 5 years
+    subtitle: By the applicant's ABN and country; date of patent FY2010 to FY2016 and FY2003 to FY2009
+    x: {type: category, values: [Applicant has an ABN, Applicant has no ABN, Applicant in the United States, Applicant in Australia, Applicant in China]}
+    y: {name: "% still in force", min: 0, max: 100, format: pct, digits: 1}
+    series:
+      - name: FY2010 to FY2016
+        data: [56.7, 38.6, 78.2, 40.8, 21.4]
+      - name: FY2003 to FY2009
+        data: [54.7, 34.5, 80.8, 36.8, 46.1]
+        colour: muted
+    source: IP Australia, IP RAPID (lens rights)
+    note: China's earlier figure rests on 72 patents still at risk at 5 years, and does not replicate.
   questions:
     - q: 1
       how: Lifetimes, reach and citations, the value signals, are tied to who files and in what field, so they must be compared within those groups.
@@ -220,23 +268,23 @@
   about: system
   headline: Australian individuals file alone far more than anyone else; organisations and overseas filers almost never do, for patents
   statement: >-
-    Of standard patents filed FY2010 to FY2019, Australian individuals filed 26.06% with no attorney or agent,
-    Australian organisations 3.52%, overseas individuals 1.14% and overseas organisations 0.28%. For trade marks,
-    Australian individuals filed 68.29% alone.
+    Of standard patents filed FY2010 to FY2019, Australian individuals filed 26.11% with no attorney or agent,
+    Australian organisations 3.54%, overseas individuals 1.14% and overseas organisations 0.28%. For trade marks,
+    Australian individuals filed 68.28% alone.
   figures:
-    - value: "26.06%"
+    - value: "26.11%"
       label: Australian individuals' standard patents filed alone
     - value: "0.28%"
       label: overseas organisations' standard patents filed alone
-    - value: "68.29%"
+    - value: "68.28%"
       label: Australian individuals' trade marks filed alone
   points:
-    - "In FY2000 to FY2009: Australian individuals 19.77%, Australian organisations 6.97%, overseas individuals 1.35%,
+    - "In FY2000 to FY2009: Australian individuals 19.79%, Australian organisations 6.97%, overseas individuals 1.35%,
       overseas organisations 0.14%."
-    - "Trade marks: Australian organisations 40.23% (42.67% in the earlier decade), overseas organisations 5.37%
-      (10.47%)."
-    - "**Designs do not replicate:** Australian individuals filed 22.79% of their designs alone in FY2010 to FY2019 but
-      2.15% in FY2000 to FY2009, when 5,499 of their 8,144 designs went through an agent who is not an attorney. How
+    - "Trade marks: Australian individuals 58.82% in the earlier decade; Australian organisations 40.23% (42.67%),
+      overseas organisations 5.37% (10.47%)."
+    - "**Designs do not hold across decades:** Australian individuals filed 22.76% of their designs alone in FY2010 to FY2019 but
+      2.15% in FY2000 to FY2009, when 5,499 of their 8,142 designs went through an agent who is not an attorney. How
       agents were recorded seems to have changed, so designs are compared within one decade only."
   questions:
     - q: 2
@@ -253,13 +301,13 @@
     y: {name: "% filed alone", min: 0, format: pct, digits: 2}
     series:
       - name: FY2010 to FY2019
-        data: [26.06, 3.52, 1.14, 0.28]
+        data: [26.11, 3.54, 1.14, 0.28]
       - name: FY2000 to FY2009
-        data: [19.77, 6.97, 1.35, 0.14]
+        data: [19.79, 6.97, 1.35, 0.14]
         colour: muted
     source: IP Australia, IP RAPID (lens rights)
   prep:
-    - what: "Representation is read from the repaired [[attorney]] columns ({U20}): an agent who is not the
+    - what: "Representation is read from the repaired [[attorney|attorney]] columns ({U20}): an agent who is not the
               applicant, and whether that agent acts for five or more applicants."
       why: The register's own flag counted applicants as their own agents ({U2}).
   steps:
@@ -278,54 +326,75 @@
 - id: B6
   lens: rights
   about: system
-  headline: Australian individuals' patents filed alone are rarely granted, about 36 points less often, in both decades
+  headline: Patents that Australian individuals file without an attorney are rarely granted, about 36 points less often, in both decades
   statement: >-
-    Of Australian individuals' standard patents filed alone FY2010 to FY2019, 4.9% were granted, against 40.8% with an
-    attorney: a gap of 35.9 [[percentage-point|points]] (interval 34.1 to 37.6). In FY2000 to FY2009 the gap was 36.9
-    points. It stays among applications whose examination was requested (34.5 points).
+    Of the standard patents Australian individuals filed alone in FY2010 to FY2019, 4.8% were granted, against 40.6%
+    of those filed with an attorney: a gap of 35.8 [[percentage-point|points]] (interval 33.9 to 37.5). In FY2000 to
+    FY2009 the gap was 36.8 points. It stays among applications whose examination was requested (34.4 points).
   figures:
-    - value: "4.9% against 40.8%"
+    - value: 4.8% against 40.6%
       label: Australian individuals' standard patents granted, filed alone against with an attorney
-    - value: "35.9 points"
-      label: the gap, FY2010 to FY2019 (36.9 in FY2000 to FY2009)
-    - value: "34.5 points"
+    - value: "35.8 points"
+      label: the gap, FY2010 to FY2019 (36.8 in FY2000 to FY2009)
+    - value: "34.4 points"
       label: the gap among applications that were examined
   points:
-    - "**Filing alone goes with not asking for examination:** 25.3% of individuals' lone applications were examined,
-      against 75.9% with an attorney."
-    - "**Australian organisations do not replicate:** a gap of 40.0 points in FY2010 to FY2019 but -6.1 in FY2000 to
-      FY2009, when the 1,148 organisations filing alone were granted 62.1% of the time (probably firms with their own
-      patent staff)."
-    - "**Trade marks replicate for both:** with an attorney, Australian individuals' marks are registered 24.3 points
-      more often, organisations' 23.6 points. Designs are registered without examination, so 99.4% to 100% are,
-      whoever files."
-    - "**Not a cause.** An application dropped early may never appoint an attorney, so the arrow can run backwards; and
-      those who file alone differ in resources and experience."
+    - '**Filing alone goes with not asking for examination:** 25.2% of individuals'' lone applications were examined,
+      against 75.9% with an attorney.'
+    - '**Australian organisations do not show it in both decades:** a gap of 40.0 points in FY2010 to FY2019 but -6.0 in FY2000 to
+      FY2009, when the 1,149 applications organisations filed alone were granted 62.1% of the time. Those earlier lone
+      filers may have been firms with their own patent staff; the data do not say.'
+    - '**Trade marks show it in both decades, for both:** with an attorney, Australian individuals'' marks are registered 24.3 points
+      more often, organisations'' 23.6 points.'
+    - '**Designs cannot be read here:** the comparison keeps only designs with a known filer, and IP RAPID gives no
+      origin for nearly every design that lapsed or was withdrawn ({B3}), so its 99.4% to 100% registered reflects that
+      selection, not designs'' registration rate.'
+    - '**Not a cause.** Representation counts an agent recorded at any time, so an application dropped early may never
+      appoint one (the arrow can run backwards); and those who file alone differ in resources and experience.'
   questions:
     - q: 2
-      how: Individuals who file without help end with far fewer granted patents, a sign of who the system serves less well.
+      how: Individuals who file without help end with far fewer granted patents. Whether that reflects the system
+        serving them less well, or weaker or abandoned applications, is not shown here.
     - q: 4
-      how: The lead for whether help to file would add value, the kind of intervention Q4 asks about.
+      how: The lead for whether help to file would add value, the kind of intervention Q4 asks about; testing it needs
+        a design that comes after Stage 3.
     - q: 3
       how: Representation is a condition that goes with whether a filing becomes a right at all.
-  sources: [iprapid]
+  sources:
+    - iprapid
   chart:
     type: bar
     title: Australian individuals' standard patents granted
     subtitle: Share granted, filed alone against with an attorney, by decade of filing
-    x: {type: category, values: [FY2010 to FY2019, FY2000 to FY2009]}
-    y: {name: "% granted", min: 0, max: 50, format: pct, digits: 1}
+    x:
+      type: category
+      values:
+        - FY2010 to FY2019
+        - FY2000 to FY2009
+    y:
+      name: '% granted'
+      min: 0
+      max: 50
+      format: pct
+      digits: 1
     series:
       - name: Filed alone
-        data: [4.9, 8.3]
+        data:
+          - 4.8
+          - 8.3
         colour: muted
       - name: With an attorney
-        data: [40.8, 45.2]
+        data:
+          - 40.6
+          - 45.1
     source: IP Australia, IP RAPID (lens rights)
   prep:
-    - what: Grant rates among standard patents whose outcome is known, by group and representation, with Wilson
-        intervals for each rate and Newcombe intervals for the gaps.
-      why: An [[interval]] shows how precisely each rate and gap is known.
+    - what: Grant rates among standard patents whose outcome is known (pending applications left out), by the filer's
+        origin and type and by representation, with Wilson intervals for each rate and Newcombe intervals for the gaps.
+      why: An [[interval|interval]] shows how precisely each rate and gap is known.
+    - what: Representation is from the repaired attorney columns ({U20}); "filed alone" means no agent other than the
+        applicant was ever recorded.
+      why: The register's own flag counted applicants as their own agents ({U2}).
   steps:
     - For Australian individuals, find the share of standard patents granted, filed alone and with an attorney.
     - Take the difference, with its interval, in each decade.
@@ -334,14 +403,22 @@
   assumptions:
     - Patents filed long enough ago have had time to reach an outcome (the decades end in FY2019).
   limits:
-    - The arrow can run backwards (abandonment before an attorney is appointed), and resources and experience differ.
-    - "Candidate [[third-factor|third factors]]: applicant type and origin, whether examination is requested, the
-        route of filing."
-  next: >-
-    Carried to Stage 3, which tests the gap with these third factors held steady. Any claim that help to file would
+    - The arrow can run backwards (an application abandoned early may never appoint an attorney), and resources and
+      experience differ.
+    - 'Candidate [[third-factor|third factors]]: applicant type and origin, whether examination is requested, the route of
+      filing.'
+  next: Carried to Stage 3, which tests the gap with these third factors held steady. Any claim that help to file would
     raise grants needs a design that comes after Stage 3.
-  terms: [attorney, grant-rate, interval, percentage-point, third-factor]
-  related: [B5, B10, U20]
+  terms:
+    - attorney
+    - grant-rate
+    - interval
+    - percentage-point
+    - third-factor
+  related:
+    - B5
+    - B10
+    - U20
 
 - id: B7
   lens: rights
@@ -350,17 +427,30 @@
   statement: >-
     Granted standard patents filed FY2010 to FY2019 took a median 3.12 years from application for Australian
     organisations, against 2.65 for overseas organisations (a difference of 0.476 years). In FY2000 to FY2009 it was
-    3.40 against 3.32 (0.077). The gap does not hold in both decades.
+    3.41 against 3.32 (0.082). The gap does not hold in both decades.
   figures:
     - value: "0.476 years"
       label: the gap in median time to grant, FY2010 to FY2019
-    - value: "0.077 years"
+    - value: "0.082 years"
       label: the gap, FY2000 to FY2009
   points:
     - "Counted from the examination request instead, the gap is 0.17 years in the later decade and -0.079 in the
       earlier."
-    - "**The route explains much of it:** an international (PCT) application's clock starts at national phase entry,
-      about 30 months after its priority ({U6}), and overseas filers use the PCT most ({B15})."
+    - "**The route is the likely third factor:** an international (PCT) application's clock in Australia starts at
+      national phase entry, about 30 months after its priority ({U6}), and overseas filers use the PCT most ({B15})."
+  chart:
+    type: bar
+    title: Median years from application to grant, granted standard patents
+    subtitle: Australian against overseas organisations, by decade of filing
+    x: {type: category, values: [FY2010 to FY2019, FY2000 to FY2009]}
+    y: {name: Median years to grant, min: 0, format: num, digits: 2}
+    series:
+      - name: Australian organisations
+        data: [3.12, 3.41]
+      - name: Overseas organisations
+        data: [2.65, 3.32]
+        colour: muted
+    source: IP Australia, IP RAPID (lens rights)
   questions:
     - q: 2
       how: Checks whether Australian applicants wait longer for their rights; on this evidence, not consistently.
@@ -385,78 +475,95 @@
 - id: B8
   lens: rights
   about: system
-  headline: Australian organisations keep their standard patents longer than overseas organisations do, even within fields
+  headline: For patents filed in the same number of countries, Australian organisations' more often stay in force for 10 years than overseas organisations', except those filed only in Australia
   statement: >-
-    Of granted standard patents filed FY2005 to FY2009, 78.7% of Australian organisations' were still in force after
-    10 years, against 72.3% of overseas organisations' and 66.4% of Australian individuals'. Within technology fields,
-    Australian organisations keep a higher share in all but 9 of 32, by a median 4.7 points.
+    Among standard patents with a date of patent in FY2010 to FY2016, filed in two to four offices, 71.8% of
+    Australian organisations' were still in force after 10 years, against 65.1% of overseas organisations'; in five or
+    more offices, 75.6% against 66.5%. For patents filed in Australia alone there is no difference (73.3% against
+    74.6%). Australian organisations' patents also reach fewer offices and are cited less ({B11}, {B12}), so the
+    signals of value do not agree.
   figures:
-    - value: "78.7%"
-      label: Australian organisations' patents in force after 10 years (FY2005 to FY2009)
-    - value: "72.3%"
-      label: overseas organisations'
-    - value: "4.7 points"
-      label: Australian organisations' median lead within the same field
+    - value: "75.6% vs 66.5%"
+      label: still in force after 10 years, filed in five or more offices, Australian against overseas organisations
+    - value: "73.3% vs 74.6%"
+      label: the same, filed in Australia alone (no difference)
   points:
-    - "FY2000 to FY2004 filings: Australian organisations 72.8%, overseas organisations 62.9%, Australian individuals
-      55.3%, overseas individuals 55.4%."
-    - "After 15 years: Australian organisations 50.3% and 42.4%; overseas organisations 43.9% and 36.8%."
-    - "Every group kept its patents longer in the later period, in line with {U36}."
-    - "**[[third-factor|Third factors]]:** selection at grant (Australians' applications are granted less often, so
-      their granted patents may be the stronger ones, {B6}); family reach (a patent held only in Australia has one set
-      of fees); firm size."
+    - "**In the earlier cohort** (date of patent FY2005 to FY2009, where reach is less reliable, {B55}): 77.5% against
+      68.4% in two to four offices and 77.0% against 69.2% in five or more; in Australia alone 72.7% against 78.0%."
+    - "**So the gap is not about narrow patents paying fewer fees:** it is absent among Australia-only patents (and
+      reversed in the earlier cohort), and largest among the widest. 22.9% of Australian organisations' patents are
+      filed in Australia alone, against 4.5% of overseas organisations', so a pooled comparison mixes the groups."
+    - "**Pooled, after 10 years:** Australian organisations 75.1% and 73.8% (date of patent FY2005 to FY2009 and FY2000
+      to FY2004), overseas organisations 69.7% and 64.2%, Australian individuals 60.3% and 55.2%, overseas individuals
+      64.3% and 57.3%."
+    - "**Within technology fields** (31 with enough patents), Australian organisations' share in force at 10 years is
+      below overseas organisations' in 11 fields in FY2005 to FY2009 and in 3 in FY2000 to FY2004."
+    - "**Between cohorts,** the later one is more often in force in every group. The cohorts met different renewal fees
+      ({B49}), so this is a difference between cohorts, its cause open."
   questions:
     - q: 1
-      how: Years in force is the working measure of private value the owner adopted; Australian organisations' patents score higher on it.
+      how: Years in force is the working measure of private value the owner adopted. Within the same reach Australian
+        organisations' patents more often stay in force, but they reach fewer offices and are cited less, so which
+        signal, if any, measures value is for Stage 3 to test.
     - q: 3
-      how: Whether it holds within fields says the difference is not only which fields Australians patent in.
-  sources: [iprapid]
+      how: Comparing within reach and within fields separates the filer from what it files.
+  sources: [iprapid, google_patents]
   chart:
     type: bar
-    horizontal: true
-    title: Granted standard patents still in force after 10 years
-    subtitle: By filer, for patents filed FY2005 to FY2009 and FY2000 to FY2004
-    x: {type: category, values: [Australian organisations, Overseas organisations, Australian individuals, Overseas individuals]}
-    y: {name: "% in force after 10 years", min: 0, max: 100, format: pct, digits: 1}
+    title: Standard patents still in force after 10 years, by how many offices they were filed in
+    subtitle: Granted standard patents with a date of patent FY2010 to FY2016
+    x: {type: category, values: [Australia only, Two to four offices, Five or more offices]}
+    y: {name: "% still in force after 10 years", min: 0, max: 100, format: pct, digits: 1}
     series:
-      - name: FY2005 to FY2009
-        data: [78.7, 72.3, 66.4, 68.6]
-      - name: FY2000 to FY2004
-        data: [72.8, 62.9, 55.3, 55.4]
+      - name: Australian organisations
+        data: [73.3, 71.8, 75.6]
+      - name: Overseas organisations
+        data: [74.6, 65.1, 66.5]
         colour: muted
-    source: IP Australia, IP RAPID (lens rights)
+    source: IP Australia, IP RAPID; Google Patents (lens rights)
+    note: For Australia-only patents the two intervals overlap (70.7% to 75.8% against 73.2% to 76.0%).
   prep:
-    - what: '[[survival-curve|Survival curves]] of granted standard patents by group, with Greenwood intervals for the
-        share in force at 10 and 15 years.'
+    - what: '[[survival-curve|Survival curves]] of granted standard patents by filer, counted from the date of patent,
+        with Greenwood intervals for the share in force at 10 and 15 years (ADR 0041).'
       why: A survival curve keeps patents still alive, rather than dropping them ({U36}).
+    - what: The comparison is made within groups of family reach (Australia only, two to four offices, five or more),
+        for dates of patent FY2010 to FY2016, when Google Patents' reach is reliable for Australian filers ({B55}).
+      why: A patent filed only in Australia pays one set of renewal fees, so reach could explain a gap in years in
+        force; comparing within reach sets that aside.
   steps:
-    - Draw each group's survival curve from grant, for two five-year cohorts.
+    - Draw each group's survival curve from the date of patent, for each cohort and reach group.
     - Read the share in force at 10 and 15 years, with intervals.
     - Repeat within each technology field with enough patents, and compare the groups field by field.
+    - Set the result beside reach ({B11}) and citations ({B12}) for the same filers.
   assumptions:
-    - Keeping a patent in force (paying renewals) is a sign the owner values it, as adopted for Stage 2.
+    - Keeping a patent in force (paying renewals) is a sign the holder values it, as adopted for Stage 2.
   limits:
     - Private value, not public value.
-    - Family reach for Australian applicants before FY2010 rests partly on incomplete records ({B55}).
+    - Selection at grant differs by filer, and before FY2003 the founding applicant may be a later holder ({U35}).
+    - The [[third-factor|third factors]] (selection at grant, the kind of applicant, firm size) are not held steady
+      here.
   next: >-
-    Carried to Stage 3 with its third factors. A sharper test is each patent's renewal when a fee changed ({B49}).
-  terms: [survival-curve, renewal, cohort, third-factor]
-  related: [B9, B10, B55, U36]
+    Carried to Stage 3 with its third factors, beside reach and citations. A sharper test is each patent's renewal
+    when a fee changed ({B49}).
+  terms: [survival-curve, renewal, cohort, third-factor, patent-family]
+  related: [B9, B10, B11, B12, B55, U36]
 
 - id: B9
   lens: rights
   about: system
-  headline: Technology fields differ in how long their patents are kept, but their order is only moderately stable
+  headline: Technology fields differ in how many of their patents stay in force for 10 years, but the order of fields is unstable
   statement: >-
-    The share of standard patents in force after 10 years (FY2005 to FY2009 filings) runs from 59.4% to 81.2% across
-    35 fields. The fields' order agrees between the two periods with a rank correlation of only 0.459.
+    The share of standard patents still in force 10 years after their date of patent (FY2005 to FY2009) runs from 51.9%
+    to 84.9% across 35 technology fields. The fields' order agrees with the earlier period's (FY2000 to FY2004) with a
+    rank [[correlation]] of only 0.311.
   figures:
-    - value: "59.4% to 81.2%"
+    - value: "51.9% to 84.9%"
       label: in force after 10 years, across 35 fields
-    - value: "0.459"
-      label: agreement of the fields' order between two periods
+    - value: "0.311"
+      label: agreement of the fields' order between two periods (weak)
   points:
-    - "A weak [[replication]]: field differences in lifetimes are kept as a lead only together with {B8}."
+    - "A weak [[replication]], so field differences in years in force are not carried on their own, only as something
+      to hold steady when comparing filers ({B8})."
   questions:
     - q: 3
       how: Whether the field a patent is in is a condition for how long it is valued; only weakly, on this evidence.
@@ -470,7 +577,7 @@
   assumptions:
     - WIPO's 35 fields group patents in a way that means the same in both periods.
   limits:
-    - A moderate agreement means a field's position can change between periods.
+    - A weak agreement means a field's position often changes between periods.
   next: >-
     Field is a [[third-factor]] in Stage 3, not a signal on its own.
   terms: [survival-curve, ipc, replication]
@@ -479,29 +586,37 @@
 - id: B10
   lens: rights
   about: system
-  headline: Overseas organisations renew trade marks and designs most, Australian individuals least, and Australians who file alone far less
+  headline: Overseas organisations' trade marks and designs most often stay in force past the first renewal, Australian individuals' least
   statement: >-
-    Of trade marks filed FY2010 to FY2015, 56.3% of overseas organisations' were in force after 10 years, 45.9% of
-    Australian organisations' and 26.0% of Australian individuals'. Among Australian filers, 52.0% of marks filed with
-    an attorney were kept, against 28.6% filed alone.
+    Of trade marks filed FY2010 to FY2015, 56.2% of overseas organisations' were still in force after 10 years, 45.9%
+    of Australian organisations' and 26.0% of Australian individuals'. Among Australian filers, marks with an attorney
+    on the record before the renewal stayed in force 50.8% of the time, against 31.7% with no agent then: a gap of
+    19.1 [[percentage-point|points]].
   figures:
-    - value: "56.3% against 26.0%"
+    - value: "56.2% against 26.0%"
       label: trade marks in force after 10 years, overseas organisations against Australian individuals
-    - value: "52.0% against 28.6%"
-      label: Australians' marks kept, with an attorney against alone
-    - value: "69.9% against 28.3%"
+    - value: "50.8% against 31.7%"
+      label: Australians' marks in force after 10 years, with an attorney against no agent before the renewal
+    - value: "69.9% against 28.2%"
       label: designs in force after 5 years, overseas organisations against Australian individuals
   points:
-    - "The earlier period (FY2003 to FY2009) gives much the same: 56.3%, 44.6% and 27.7%; with an attorney 52.1%, alone
-      30.2%."
-    - "Designs in force after 5 years (FY2010 to FY2019): Australian organisations 44.4%; Australians with an attorney
-      47.2%, alone 28.9%."
-    - "Every [[interval]] is within about 1 point, and the differences hold in both periods."
+    - "The earlier period (FY2003 to FY2009) gives much the same: 56.3%, 44.6% and 27.7%; with an attorney before the
+      renewal 49.7%, no agent 34.4%."
+    - "**Why \"before the renewal\" matters.** An agent recorded at any time includes one added for the renewal
+      itself: Australian marks whose agent first appears more than 9.5 years after filing are 89.5% in force at 10
+      years. Counting agents at any time had made the attorney gap look larger (23.4 points, not 19.1)."
+    - "Designs in force after 5 years (FY2010 to FY2019): overseas organisations 69.9%, Australian organisations
+      44.4%, Australian individuals 28.2%; Australians with an attorney before the renewal 46.7%, no agent 31.1%."
+    - "Intervals are within about a point for the large groups and wider for small ones, and the differences hold in
+      both periods."
+    - "**Not a cause.** Individuals file alone most ({B5}), and whether the business behind a mark survived is not in
+      these data."
   questions:
     - q: 1
-      how: Renewal is a sign of private value for trade marks and designs, as years in force is for patents.
+      how: Staying in force past a renewal is a sign of private value for trade marks and designs, as years in force is
+        for patents.
     - q: 2
-      how: Australian individuals and lone filers keep their rights least, another sign of who the system serves less.
+      how: Australian individuals' and lone filers' rights stay in force least; why is not shown here.
     - q: 4
       how: Adds renewal to grant ({B6}) as an outcome that goes with representation.
   sources: [iprapid]
@@ -514,21 +629,29 @@
     y: {name: "% in force after 10 years", min: 0, max: 100, format: pct, digits: 1}
     series:
       - name: FY2010 to FY2015
-        data: [56.3, 45.9, 38.0, 26.0]
+        data: [56.2, 45.9, 37.9, 26.0]
       - name: FY2003 to FY2009
-        data: [56.3, 44.6, 40.6, 27.7]
+        data: [56.3, 44.6, 40.5, 27.7]
         colour: muted
     source: IP Australia, IP RAPID (lens rights)
   prep:
-    - what: Survival curves of trade marks from filing and of designs from filing, by filer and by representation.
-      why: Trade marks are renewed every ten years and designs at five, so those are the natural points to read.
+    - what: Survival curves of trade marks and designs from registration, by filer and by representation, read at the
+        first renewal (10 years for trade marks, 5 for designs).
+      why: Those are the first points at which a holder must pay to keep the right.
+    - what: Representation is read as it stood before the renewal, from the date an agent who is not an applicant
+        first appears (ADR 0041).
+      why: An agent recorded at any time includes one appointed for the renewal itself, which would make represented
+        marks look more often renewed. IP RAPID dates most trade marks' agents from registration, so "before the
+        renewal" means on the record by then, not necessarily at filing.
   steps:
     - Read the share in force at 10 years (trade marks) and 5 years (designs) for each group, in two periods.
     - Repeat for Australian filers by representation.
   assumptions:
-    - Renewing a mark or design is a sign its owner values it.
+    - Keeping a mark or design in force is a sign its holder values it.
   limits:
     - The survival of the business behind a mark is not in these data, and individuals file alone most ({B5}).
+    - The date an agent first appears cannot be used for patents ({U40}), so this check is for trade marks and designs
+      only.
   next: >-
     Carried to Stage 3, with applicant type as the main [[third-factor]].
   terms: [renewal, survival-curve, attorney]
@@ -537,25 +660,30 @@
 - id: B11
   lens: rights
   about: system
-  headline: Australian organisations' patents reach fewer countries than overseas filers', though the gap has narrowed
+  headline: Australian organisations' patents reach fewer countries than overseas filers'; the apparent narrowing since the 2000s is mostly a gap in older records
   statement: >-
-    Of standard patents filed FY2010 to FY2019, 40.71% of Australian organisations' were filed only in Australia,
-    against 8.23% of overseas organisations'. 22.6% reached five or more offices, against 69.58%; 32.8% were granted
+    Of standard patents filed FY2010 to FY2019, 40.68% of Australian organisations' were filed only in Australia,
+    against 8.23% of overseas organisations'. 22.63% reached five or more offices, against 69.58%; 32.82% were granted
     in the United States, against 67.13%.
   figures:
-    - value: "40.71%"
+    - value: "40.68%"
       label: Australian organisations' patents filed only in Australia (FY2010 to FY2019)
     - value: "8.23%"
       label: overseas organisations'
-    - value: "32.8% against 67.13%"
+    - value: "32.82% against 67.13%"
       label: granted in the United States
   points:
-    - "Australian individuals: 59.91% only in Australia."
-    - "In FY2000 to FY2009: Australian organisations 73.02% only in Australia, five or more offices 13.07%, a US grant
-      15.79%. Most of that fall is a gap in older records, not a change in practice ({B55})."
+    - "Australian individuals: 60.12% only in Australia."
+    - "In FY2000 to FY2009 the records show Australian organisations 73.0% only in Australia, 13.09% in five or more
+      offices and 15.81% granted in the US. That apparent change is mostly a gap in the older records: Australian
+      organisations' patents that came through the PCT, which must have an international filing, appear in Australia
+      alone 63.22% of the time in those years ({B55}). So the earlier figures for Australian filers are provisional,
+      not a replication."
   questions:
     - q: 1
-      how: How far a patent family reaches is a sign of the value its owner expects; Australian organisations expect less, or protect less abroad.
+      how: How far a patent family reaches is a common sign of the value its owner expects. Australian organisations'
+        patents reach fewer offices, whether because their owners expect less from them or for reasons of cost and
+        market; these data do not say which.
     - q: 3
       how: Reach is the main condition behind citation differences ({B12}).
   sources: [iprapid, google_patents]
@@ -568,7 +696,7 @@
     y: {name: "% filed only in Australia", min: 0, max: 100, format: pct, digits: 2}
     series:
       - name: FY2010 to FY2019
-        data: [59.91, 40.71, 8.23]
+        data: [60.12, 40.68, 8.23]
     source: IP Australia, IP RAPID; Google Patents (lens rights)
   prep:
     - what: "Each standard patent's [[patent-family]] from Google Patents: the offices it was filed in, and whether
@@ -593,22 +721,22 @@
   headline: Australians' patents are cited less within their field and year, and most of the gap goes with how far they reach
   statement: >-
     On a scale where 50 is a typical patent of the same field and year, overseas organisations' patents score 52.3 for
-    citations within five years, Australian organisations' 32.2 and Australian individuals' 24.1 (FY2010 to FY2019).
-    Among patents of the same reach, the gap shrinks or reverses.
+    citations within five years, Australian organisations' 32.3 and Australian individuals' 24.0 (FY2010 to FY2019).
+    Among patents filed in the same number of offices, the gap shrinks or reverses.
   figures:
-    - value: "52.3 against 32.2"
+    - value: "52.3 against 32.3"
       label: citation percentile, overseas against Australian organisations
     - value: "15.2 against 11.6"
       label: among patents filed in one office, Australian organisations ahead
     - value: "50.6 against 57.7"
       label: among patents filed in five or more offices
   points:
-    - "In FY2000 to FY2009: 53.6, 25.0 and 20.3; among one-office patents 16.0 against 12.6; five or more offices 57.6
-      against 58.2."
+    - "In FY2000 to FY2009: 53.6, 25.0 and 20.2; among one-office patents 16.0 against 12.5; five or more offices 57.6
+      against 58.2. These earlier figures for Australian filers rest partly on incomplete family records ({B55})."
     - "Among patents filed in 2 to 4 offices: 39.9 against 50.7 (42.0 against 52.1)."
-    - "**So reach is the main [[third-factor]]:** a narrow family is seldom cited wherever it comes from. Since owners
-      choose and pay for reach, citations and reach are two readings of the same expected value, not independent
-      evidence of it."
+    - "**So reach is the main [[third-factor]]:** a narrow family is seldom cited wherever it comes from. Citations and
+      reach are therefore not independent evidence of value: a wider family has more documents to cite, and owners
+      choose and pay for reach."
   questions:
     - q: 1
       how: Citations are a sign that an invention is built on by others, one route to public value; for Australians it mostly follows reach.
@@ -626,7 +754,7 @@
       - name: Overseas organisations
         data: [52.3, 11.6, 50.7, 57.7]
       - name: Australian organisations
-        data: [32.2, 15.2, 39.9, 50.6]
+        data: [32.3, 15.2, 39.9, 50.6]
     source: IP Australia, IP RAPID; Google Patents (lens rights)
   prep:
     - what: Each patent's citing families within five years ({U94}), turned into a [[percentile]] among patents of
@@ -648,87 +776,117 @@
 - id: B13
   lens: rights
   about: system
-  headline: Expedited patents seem to last longer, but only because of who asks; within each kind of filer the link is mixed
+  headline: Expedited patents are slightly more often still in force at 10 years, but the link differs by filer, and "expedited" mixes kinds of request
   statement: >-
-    Pooled, 76.8% of expedited standard patents (FY2010 to FY2016) were in force after 10 years, against 68.7% of
-    others; but in FY2003 to FY2009 it was 68.7% against 71.3%. The pooled link comes from a change in who asks for
-    [[expedited]] examination ([[simpsons-paradox|Simpson's paradox]]); only for overseas organisations does it hold
-    in both periods.
+    Pooled, 72.6% of expedited standard patents with a date of patent in FY2003 to FY2009 were still in force after 10
+    years, against 68.9% of others; for FY2010 to FY2016, 67.6% against 66.6%, a difference within overlapping
+    intervals. The link is not explained by who asks for [[expedited|expedited]] examination, but it differs by filer: higher
+    for overseas organisations, lower for Australian individuals in both periods.
   figures:
-    - value: "76.8% against 68.7%"
-      label: expedited against other patents in force after 10 years, FY2010 to FY2016
-    - value: "0.84% → 8.0%"
-      label: overseas organisations' examined patents that were expedited, before and from FY2010
-    - value: "77.4% against 68.4%"
-      label: overseas organisations, expedited against not (FY2010 to FY2016)
+    - value: "72.6% against 68.9%"
+      label: expedited against other patents in force after 10 years (FY2003 to FY2009)
+    - value: "67.6% against 66.6%"
+      label: the same, FY2010 to FY2016 (intervals overlap)
+    - value: "79.7% against 68.7%"
+      label: overseas organisations, expedited against not (FY2003 to FY2009)
   points:
-    - "Overseas organisations: 78.5% against 71.1% in FY2003 to FY2009 too. Australian organisations: 80.2% against
-      77.0%, then 69.9% against 79.1%. Australian individuals: 64.6% against 70.7%, then 54.1% against 68.8% (expedited
-      patents kept less)."
-    - "As overseas organisations, who keep patents longer, became most of the expedited, the pooled figure rose."
-    - "**Expedited applications are granted more often** in every group: Australian organisations 69.75% against
-      57.0%, overseas organisations 82.53% against 76.18% (FY2010 on)."
-    - "IP Australia's commissioned study found expedited patents kept longer (ADR 0024); here that holds for overseas
-      organisations only."
+    - "**By filer:** overseas organisations 79.7% against 68.7%, then 67.9% against 66.4%; Australian organisations
+      71.6% against 76.1%, then 73.7% against 74.1%; Australian individuals 55.1% against 65.0%, then 59.7% against
+      68.5% (expedited lower in both periods)."
+    - "**Not who asks:** weighting each filer group's own gap by the expedited patents' mix of filers gives 5.88 and
+      0.68 points, against 3.79 and 1.03 pooled, so the mix of filers does not account for the pooled gap."
+    - "**Who asks, and for what.** 0.84% of overseas organisations' examined patents were expedited in FY2003 to FY2009
+      and 8.0% from FY2010; Australian individuals' 19.71% and 19.95%. From 2014, overseas organisations' patents with a
+      Japanese priority were expedited more often (1.53% in 2013 to 7.98%), as were those with a US priority (3.07% to
+      6.77%). That coincides with the Global Patent Prosecution Highway (6 January 2014), under which an applicant
+      whose claims another office has allowed asks for faster examination, and IP RAPID records the request as
+      expedited examination. So \"expedited\" mixes urgency with work-sharing that follows examination abroad."
+    - "**Expedited applications are granted more often** in every group of standard patents: Australian organisations
+      69.72% against 57.04%, overseas organisations 82.53% against 76.18% (FY2010 on)."
+    - "IP Australia's commissioned study found expedited patents kept longer (ADR 0024); here the pooled link is small,
+      holds in both periods and differs by filer."
   questions:
     - q: 4
-      how: Expedited examination is a service IP Australia offers; whether it goes with longer-lived rights is a question about its value.
+      how: Expedited examination is a service IP Australia offers; whether it goes with longer-lived rights is a question
+        about its value, and the answer depends on who asks and why.
     - q: 1
       how: Tests a value signal (years in force) against a choice the filer makes.
   sources: [iprapid]
   chart:
     type: bar
     horizontal: true
-    title: Standard patents in force after 10 years, expedited or not
-    subtitle: By filer, patents filed FY2010 to FY2016
-    x: {type: category, values: [Overseas organisations, Australian organisations, Australian individuals]}
+    title: Standard patents still in force after 10 years, expedited or not
+    subtitle: By filer and date of patent
+    x: {type: category, values: ["Overseas organisations, FY2003 to FY2009", "Overseas organisations, FY2010 to FY2016", "Australian organisations, FY2003 to FY2009", "Australian organisations, FY2010 to FY2016", "Australian individuals, FY2003 to FY2009", "Australian individuals, FY2010 to FY2016"]}
     y: {name: "% in force after 10 years", min: 0, max: 100, format: pct, digits: 1}
     series:
       - name: Expedited
-        data: [77.4, 80.2, 64.6]
+        data: [79.7, 67.9, 71.6, 73.7, 55.1, 59.7]
       - name: Not expedited
-        data: [68.4, 77.0, 70.7]
+        data: [68.7, 66.4, 76.1, 74.1, 65.0, 68.5]
         colour: muted
     source: IP Australia, IP RAPID (lens rights)
   prep:
-    - what: Survival curves of granted standard patents, expedited or not, pooled and by filer, in two periods.
-      why: Splitting by filer shows whether the pooled link is real or a change in who is in each group.
+    - what: Survival curves of granted standard patents, expedited or not, pooled and by filer, counted from the date of
+        patent, for two cohorts (ADR 0041).
+      why: Counting from the start of the term would give later-granted patents years in which they could not end, and
+        flatter the expedited, which are granted sooner.
+    - what: A check for a composition effect ([[simpsons-paradox|Simpson's paradox]]) that weights each filer group's
+        own gap by the expedited patents' mix of filers, and by the others' mix.
+      why: If the expedited were simply a different mix of filers, the weighted gaps would vanish.
   steps:
     - Compare expedited and other patents pooled, in each period.
-    - Repeat within each group of filer.
-    - Measure how the share of expedited patents changed in each group between the periods.
+    - Repeat within each group of filer, and weight the groups' gaps by each mix.
+    - Measure how the share of patents expedited changed, by filer and by the office of first filing, year by year.
   assumptions:
     - The expedite request is recorded as made ({U34} found trade mark records changed; patents' did not).
   limits:
-    - The urgency behind a request (a product on the market, a dispute) is not recorded, and could explain both.
+    - The urgency behind a request (a product on the market, a dispute) is not recorded, and could explain both a
+      request and a longer life.
+    - Requests that follow examination abroad would be expected to go with grant and a longer life, so the pooled
+      link mixes two kinds of request.
   next: >-
-    Recorded, not carried as a pooled signal; Stage 3 reads it by filer only.
+    Read in Stage 3 by filer and by kind of request, not as one pooled signal.
   terms: [expedited, simpsons-paradox, survival-curve]
   related: [B14, B8, U34]
 
 - id: B14
   lens: rights
   about: system
-  headline: Expediting a trade mark goes with renewal only slightly, and not for overseas organisations, so it is not a lead
+  headline: Expedited trade marks are a few points more often in force after 10 years for Australians, and slightly less for overseas organisations, so this is not a lead
   statement: >-
-    Among trade marks without a priority claim filed FY2010 to FY2015, 49.8% of Australian organisations' expedited
-    marks were in force after 10 years, against 45.5% of the rest; Australian individuals 28.8% against 25.8%; overseas
-    organisations 59.2% against 60.3%. Differences of 1 to 4 points are below what this stage looks for.
+    Among trade marks with no priority claim recorded, filed FY2010 to FY2015, 49.8% of Australian organisations'
+    expedited marks were still in force after 10 years, against 45.5% of the rest; Australian individuals 28.7% against
+    25.8%; overseas organisations 59.0% against 60.2%. For Australians the differences are 1.1 to 4.3 points, small
+    beside the gaps between filers in {B10} (15 to 30 points).
   figures:
-    - value: "1 to 4 points"
+    - value: "1.1 to 4.3 points"
       label: the difference for Australians, expedited against not
-    - value: "59.2% against 60.3%"
+    - value: "59.0% against 60.2%"
       label: overseas organisations, expedited against not
   points:
     - "FY2003 to FY2009: Australian organisations 45.6% against 44.5%, Australian individuals 30.1% against 27.5%,
-      overseas organisations 57.7% against 60.6%."
+      overseas organisations 57.5% against 60.6%."
     - "Marks with a priority claim are left out because their expedite event was recorded differently over time ({U34})."
+  chart:
+    type: bar
+    title: Trade marks still in force after 10 years, expedited or not
+    subtitle: Marks with no priority claim recorded, earliest filing FY2010 to FY2015
+    x: {type: category, values: [Australian organisations, Australian individuals, Overseas organisations]}
+    y: {name: "% in force after 10 years", min: 0, max: 100, format: pct, digits: 1}
+    series:
+      - name: Expedited
+        data: [49.8, 28.7, 59.0]
+      - name: Not expedited
+        data: [45.5, 25.8, 60.2]
+        colour: muted
+    source: IP Australia, IP RAPID (lens rights)
   questions:
     - q: 4
       how: Expedited trade mark examination does not, on this evidence, go with marks being kept longer.
   sources: [iprapid]
   prep:
-    - what: Trade marks without a priority claim only.
+    - what: Trade marks with no priority claim recorded only.
       why: Priority-claiming marks carried the expedite event almost always until FY2018 ({U103}).
   steps:
     - Read the share in force after 10 years for expedited and other marks, by filer, in two periods.
@@ -744,11 +902,11 @@
 - id: B15
   lens: rights
   about: system
-  headline: Each kind of filer has its own route into Australia, and divisional applications doubled
+  headline: Each kind of filer has its own route into Australia, and the share of divisional applications about doubled
   statement: >-
     Overseas organisations' standard patents (FY2010 to FY2019) came mostly through the PCT (74.7%). Australian
-    organisations' came through the PCT 45.3% of the time and by claiming an earlier Australian application 21.0%;
-    Australian individuals' by claiming an Australian application 31.0%, the PCT 29.2% and directly 27.8%.
+    organisations' came through the PCT 45.4% of the time and by claiming an earlier Australian application 21.0%;
+    Australian individuals' by claiming an Australian application 31.2%, the PCT 28.9% and directly 27.9%.
   figures:
     - value: "74.7%"
       label: overseas organisations' standard patents through the PCT
@@ -758,8 +916,8 @@
       label: overseas organisations' divisionals
   points:
     - "Earlier decade: overseas organisations through the PCT 78.2%, a priority abroad 13.4% (8.9% later); Australian
-      organisations through the PCT 51.4%, claiming an Australian application 28.0%, direct 7.3% (9.2% later);
-      Australian individuals claiming an Australian application 39.7%, PCT 27.5%, direct 25.0%."
+      organisations through the PCT 51.5%, claiming an Australian application 27.9%, direct 7.3% (9.2% later);
+      Australian individuals claiming an Australian application 39.7%, PCT 27.4%, direct 25.0%."
     - "A [[divisional]] keeps an application pending longer, so their rise is a lead for Stage 3."
   questions:
     - q: 2
@@ -776,13 +934,13 @@
     y: {name: "% of the group's patents", min: 0, max: 100, format: pct, digits: 1}
     series:
       - name: Through the PCT
-        data: [74.7, 45.3, 29.2]
+        data: [74.7, 45.4, 28.9]
       - name: Divisionals
         data: [15.6, 22.4, null]
       - name: Claiming an Australian application
-        data: [null, 21.0, 31.0]
+        data: [null, 21.0, 31.2]
       - name: Direct
-        data: [null, 9.2, 27.8]
+        data: [null, 9.2, 27.9]
     source: IP Australia, IP RAPID (lens rights)
     note: Blank bars are routes the notebook does not quote for that group.
   prep:
@@ -819,10 +977,22 @@
       not in IP Australia's records at all, so the true share owned abroad is higher."
   questions:
     - q: 1
-      how: Value created in Australia (an invention made here) is often owned elsewhere, a first measure of value captured abroad.
+      how: Some inventions made in Australia are filed by overseas applicants; whether value from them is realised
+        abroad is not shown here.
     - q: 2
-      how: Shows that Australian inventors' work benefits overseas owners in a sizeable share of cases.
+      how: About one patent in seven with an inventor in Australia is filed by an overseas applicant; who benefits from
+        that work is not shown here.
   sources: [iprapid, google_patents_inventors]
+  chart:
+    type: bar
+    title: Standard patents with an inventor in Australia that were filed from overseas
+    subtitle: Share by decade of filing
+    x: {type: category, values: [FY2000 to FY2009, FY2010 to FY2019]}
+    y: {name: "% filed from overseas", min: 0, max: 30, format: pct, digits: 2}
+    series:
+      - name: Filed from overseas
+        data: [19.28, 14.51]
+    source: IP RAPID; Google Patents' inventors (lens rights)
   prep:
     - what: Inventors' countries from Google Patents, for patents where they are known.
       why: IP RAPID does not hold inventors.
@@ -851,17 +1021,19 @@
       label: women's share among inventors, civil engineering to biotechnology
     - value: "0.86"
       label: agreement of the fields' order between the decades
-    - value: "12.17% against 11.21%"
-      label: Australian organisations against Australian individuals (FY2010 to FY2019)
+    - value: "12.18% against 11.13%"
+      label: Australian organisations against Australian individuals (FY2010 to FY2019; intervals overlap)
   points:
     - "Earlier decade: civil engineering 4.3%, transport 4.1%, pharmaceuticals 20.4%, biotechnology 27.2%."
-    - "By filer, earlier decade: Australian organisations 15.85%, Australian individuals 11.55%; overseas organisations
-      10.57% and 9.83%. In FY2010 to FY2019 the intervals overlap, so the filer gap does not replicate for standard
-      patents."
+    - "By filer, earlier decade: Australian organisations 15.9%, Australian individuals 11.22%; overseas organisations
+      10.57% and 9.83%. In FY2010 to FY2019 the organisations' and individuals' intervals overlap (11.79% to 12.6%
+      against 9.8% to 12.4%), so the filer gap does not hold in both decades for standard patents."
+    - "The field may be weighted differently by each kind of filer; which fields each files more is not shown here."
     - "44,251 inventor places on 22,335 patents, 93.38% with an estimate."
   questions:
     - q: 2
-      how: Women's share among inventors is one measure of who takes part in invention; the field explains most of the difference.
+      how: Women's share among inventors is one measure of who takes part in invention; the field sorts most of the
+        difference.
   sources: [iprapid, google_patents_inventors, wgnd]
   chart:
     type: bar
@@ -896,13 +1068,13 @@
 - id: B18
   lens: rights
   about: system
-  headline: On provisional applications, organisations' inventors include more women than individuals', in both decades
+  headline: On provisional applications, Australian organisations' inventors include more women than Australian individuals', in both decades
   statement: >-
     On provisionals filed FY2013 to FY2022, women are an estimated 21.19% of Australian organisations' inventors and
-    16.14% of Australian individuals'; in FY2003 to FY2012, 25.52% and 18.89%. The states'
-    order holds between the decades (0.821).
+    16.12% of Australian individuals'; in FY2003 to FY2012, 25.51% and 18.9%. Among overseas filers it is the other way
+    (individuals 16.6%, organisations 6.66%). The states' order holds between the decades (0.821).
   figures:
-    - value: "21.19% against 16.14%"
+    - value: "21.19% against 16.12%"
       label: women among inventors, organisations against individuals (FY2013 to FY2022)
     - value: "25.59%"
       label: the ACT, highest of the states in the later decade
@@ -910,8 +1082,8 @@
       label: agreement of the states' order between decades
   points:
     - "Western Australia and New South Wales lowest (17.83% and 17.92%); South Australia fell from 32.23% to 21.92%."
-    - "**Coverage falls in the latest years:** Australian organisations' provisionals name an inventor only 70.13%
-      (FY2024), 63.91% (FY2025) and 71.03% (FY2026) of the time, against 93.49% to 95.86% for individuals. Their recent
+    - "**Coverage falls in the latest years:** Australian organisations' provisionals name an inventor only 70.15%
+      (FY2024), 63.91% (FY2025) and 71.03% (FY2026) of the time, against 93.48% to 95.86% for individuals. Their recent
       shares are not compared with earlier years until IP Australia answers OQ17."
     - "These estimates use the applicant's country, not the inventor's, so they are not set beside {B17}'s."
   questions:
@@ -927,9 +1099,9 @@
     y: {name: "% of inventors (estimated)", min: 0, max: 30, format: pct, digits: 2}
     series:
       - name: FY2013 to FY2022
-        data: [21.19, 16.14, 6.66]
+        data: [21.19, 16.12, 6.66]
       - name: FY2003 to FY2012
-        data: [25.52, 18.89, 6.05]
+        data: [25.51, 18.9, 6.05]
         colour: muted
     source: IP Australia's register (provisionals' inventors); WGND name dictionary (lens rights)
   prep:
@@ -951,11 +1123,12 @@
 - id: B19
   lens: rights
   about: system
-  headline: The Australian patents that move overseas are the wide and the granted ones, and organisations' move more
+  headline: Australian-filed patents now held only overseas are more common among the wider and the granted ones, and among organisations'
   statement: >-
-    Of standard patents filed from Australia FY2003 to FY2011 and now held only overseas, the share is 14.52% for
-    families in five or more offices against 3.75% for one office, and 9.96% for granted patents against 1.15% never
-    granted. Organisations' move more than individuals' (6.88% against 1.63%).
+    Of standard patents with an Australian founding applicant filed FY2003 to FY2011, 14.52% of those whose family
+    reaches five or more offices now have only overseas holders, against 3.75% of those filed in one office; 9.96% of
+    granted patents against 1.15% of those never granted; and 6.91% of organisations' against 1.57% of individuals'.
+    These compare two moments, filing and today; the path in between is not seen.
   figures:
     - value: "14.52% against 3.75%"
       label: now held only overseas, five or more offices against one
@@ -964,16 +1137,22 @@
     - value: "0.805"
       label: agreement of the fields' order between periods
   points:
-    - "FY2012 to FY2021 filings, which have had less time to change hands: 6.25% and 1.16% by reach; 4.81% and 0.87%
-      granted or not; organisations 2.8%, individuals 1.95%."
-    - "Highest in materials and metallurgy (9.33%), organic fine chemistry (8.21%) and biotechnology (7.96%); lowest in
-      handling (0.83%)."
-    - "**So** the rights that leave are those their owners valued most."
+    - "**Later filings** (FY2012 to FY2021), which have had less time to change hands: 6.25% and 1.16% by reach, 4.81%
+      and 0.87% granted or not, organisations 2.84% and individuals 1.81%."
+    - "**A higher rate is not most of the patents:** of those now held only overseas, 44.22% are single-office patents
+      in the earlier period (34.54% in five or more offices), and 18.9% in the later one (47.47% in five or more)."
+    - "**By field:** highest in materials and metallurgy (9.33% in the later period), organic fine chemistry (8.21%) and
+      biotechnology (7.96%); lowest in handling (0.83%)."
+    - "**What this does not show.** Reach and grant are seen today, not necessarily before the holder changed (a new
+      holder can extend a family or see a patent through to grant), and neither measures what an owner valued. Before
+      FY2010 Australian filers' family records are incomplete ({B55}), so the earlier period's reach bands are
+      provisional."
   questions:
     - q: 1
-      how: Value created in Australia may be captured abroad, and it is the most valued rights that leave.
+      how: Whether value created in Australia is realised abroad is a Q1 question. This shows which Australian-filed
+        patents now have only overseas holders, not where value goes.
     - q: 4
-      how: Shows which kinds of patents are most likely to move, a possible focus for keeping value here.
+      how: Shows which kinds of Australian-filed patents more often end up held only overseas.
   sources: [iprapid, google_patents]
   chart:
     type: bar
@@ -989,14 +1168,20 @@
         data: [1.16, 2.56, 6.25]
         colour: muted
     source: IP Australia, IP RAPID; Google Patents (lens rights)
+    note: Reach is as recorded today; the earlier period's bands are provisional.
   prep:
-    - what: Each right's current holders, from the ownership history ({U18}), against its filer's origin.
-      why: A right filed from Australia and now held only overseas has moved.
+    - what: Two endpoints for each patent, from the holder history ({U18}, ADR 0040) - an Australian founding applicant
+        at filing, and only overseas holders now (at least one with a known country).
+      why: The register records who filed and who holds now, not each transfer in between.
+    - what: The filer's type is that of the first founding applicant in Australia (ADR 0037).
+      why: It is the party whose origin makes the patent Australian-filed.
   steps:
-    - Take standard patents filed from Australia.
-    - Find the share now held only by overseas owners, by reach, grant, filer and field, in two periods.
+    - Take standard patents with an Australian founding applicant, in two periods of filing.
+    - Find the share now held only by overseas holders, by reach, grant, filer and field.
+    - Compare the order of fields between the periods.
   assumptions:
-    - The ownership history records sales and transfers fully from FY2003.
+    - The holder history is recorded from FY2003 ({U17}); a change of holder can be a sale, a merger or a change of
+      name.
   limits:
     - Reach and grant are tied to each other and to the field; Stage 3 separates them.
   next: >-
@@ -1009,23 +1194,26 @@
   about: data
   headline: Most of the fall in Australian organisations' "Australia only" patents is a gap in older records, not a change in practice
   statement: >-
-    Of Australian organisations' standard patents that entered through the PCT, Google Patents shows 63.43% in
-    Australia alone for FY2000 to FY2009 and 11.53% for FY2010 to FY2019, a fall of 51.9 points. An international
-    application held in Australia alone two times in three is not believable, and WIPO's share of Australian families
-    filed abroad stayed flat.
+    Of Australian organisations' standard patents that entered through the PCT, Google Patents shows 63.22% in
+    Australia alone for FY2000 to FY2009 and 11.42% for FY2010 to FY2019, a fall of 51.8 points. An international
+    application seen in Australia alone two times in three is not a believable practice, and WIPO's share of
+    Australian families filed in more than one office stayed flat (64.6% in 2006, 63.65% in 2022).
   figures:
-    - value: "63.43% → 11.53%"
+    - value: "63.22% → 11.42%"
       label: PCT patents shown in Australia alone, FY2000 to FY2009 against FY2010 to FY2019
     - value: "64.6% and 63.65%"
       label: WIPO's share of Australian families filed in more than one office, 2006 and 2022
-    - value: "33.36% → 57.35%"
+    - value: "33.92% → 57.45%"
       label: the same share through Google Patents
   points:
-    - "Patents filed directly: 83.08% and 65.7%, a fall of 17.4 points, part of which may be real practice."
-    - "WIPO's and Google Patents' year-on-year changes barely move together (-0.357 over 1991 to 2005, 0.252 over 2006
+    - "Patents filed directly: 83.14% and 65.65%, a fall of 17.5 points, part of which may be real practice."
+    - "WIPO's and Google Patents' year-on-year changes barely move together (-0.354 over 1991 to 2005, 0.24 over 2006
       to 2022)."
-    - "**So** {B11}'s fall from 73.02% to 40.71%, and the earlier decade's results on reach and citations for Australian
-      applicants, rest partly on incomplete records; the FY2010 to FY2019 results stand."
+    - "**So** {B11}'s fall from 73.0% to 40.68%, and the earlier decade's results on reach and citations for Australian
+      applicants (including {B19}'s reach bands), rest partly on incomplete records; the FY2010 to FY2019 results
+      stand. {B8}'s years in force come from IP RAPID and are not affected."
+    - "**Limits of this check:** the two decades' samples differ in route and in Google Patents' coverage, so this
+      explains the gap rather than measuring the true older shares."
   questions:
     - q: 1
       how: Protects the value measures (reach, citations) from a records gap that would make Australians look more inward than they were.
@@ -1038,10 +1226,10 @@
     y: {name: "% shown in Australia alone", min: 0, max: 100, format: pct, digits: 2}
     series:
       - name: FY2000 to FY2009
-        data: [63.43, 83.08]
+        data: [63.22, 83.14]
         colour: muted
       - name: FY2010 to FY2019
-        data: [11.53, 65.7]
+        data: [11.42, 65.65]
     source: Google Patents; IP RAPID; WIPO IP Statistics (lens rights)
   prep:
     - what: WIPO's patent families by origin ({U115}) set beside Google Patents' families of the same applicants.

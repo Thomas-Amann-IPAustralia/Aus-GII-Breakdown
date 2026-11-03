@@ -10,7 +10,7 @@ corpus:
     - value: "162"
       label: tables in the corpus profile
     - value: "41"
-      label: sources in the profile (42 in the register today)
+      label: sources in the profile (54 in the register today)
     - value: "317.8 million"
       label: rows in all
   description: >-
@@ -32,21 +32,22 @@ rights:
       label: patents, trade marks, designs and plant breeder's rights
     - value: "1904 to 2026"
       label: the years the register covers
-    - value: "86"
-      label: columns, after five attachments and the register's fills
+    - value: "89"
+      label: columns, after seven attachments and the register's fills
   description: >-
     Every patent, trade mark, design and plant breeder's right in IP Australia's open register, IP RAPID, from the
     first application in February 1904 to October 2026. Each row says what the right is, who filed it and who holds
-    it now, where they are, how it reached Australia, what happened to it (examination, grant, opposition, sale,
-    lapse) and, for patents, how widely the invention was protected abroad, how often later inventions cite it and
+    it now, where they are, how it reached Australia, what happened to it (examination, grant, opposition,
+    assignment, lapse) and, for patents, how widely the invention was protected abroad, how often later inventions cite it and
     where its inventors live.
 
 
-    Five **attachments** add those last groups of columns from other tables: the parties (who filed, who holds, who
+    Seven **attachments** add those last groups of columns from other tables: the parties (who filed, who holds, who
     represents them), the events (each milestone and the right's lifetime), the links (the route into Australia),
-    Google Patents (the worldwide family) and the inventors. IP Australia's own register fills what IP RAPID leaves
-    out (business numbers, design owners' countries, the inventors of provisional applications), in columns beside
-    IP RAPID's, never replacing them.
+    Google Patents (the worldwide family), the inventors, and IP Australia's own register with its record of
+    provisional applications' inventors. The register fills what IP RAPID leaves out (business numbers, design
+    owners' countries, the inventors of provisional applications), in columns beside IP RAPID's, never replacing
+    them. Origin and applicant type are the filer's, IP Australia's definition of a resident application (ADR 0037).
   sources: [iprapid, ipa_register, ipa_provisionals, google_patents, google_patents_inventors, wgnd, abs_regions]
   questions: [1, 2]
   repairs:
@@ -137,23 +138,25 @@ timeline:
       adr: "0010"
   limits:
     - Months before each series' start are empty on purpose; a long series is not complete back to 1904.
-    - Comparisons of months around a policy change do not yet allow for trends or seasons ({U28}).
+    - Comparisons of months around a policy change in Stage 1 do not allow for trends or seasons ({U28}); Stage 2's
+      placebo months do ({B37}).
 
 firms:
   name: Firms
   unit: One row per business number (ABN)
-  rows: 398,450 ABNs
+  rows: 463,279 ABNs
   facts:
-    - value: "398,450"
-      label: ABNs that used one of five schemes
-    - value: "50"
+    - value: "463,279"
+      label: ABNs found in one of six sources
+    - value: "54"
       label: columns
   description: >-
-    Every Australian Business Number that appears in IP Australia's data, the R&D Tax Incentive, AusTender (government
-    contracts) or the ATO's tax transparency reports, with what the business is, where it is registered, how old it
-    is on the record, the IP it filed and holds, its R&D claims, its large-company income and its contracts. It is the
-    businesses that used a scheme, not every business in Australia. For employers of 100 or more, WGEA's reports add
-    a size band and an industry; smaller firms have neither.
+    Every Australian Business Number that appears in IP RAPID, IP Australia's register, IPLORD, the R&D Tax
+    Incentive, AusTender (government contracts) or the ATO's tax transparency reports, with what the business is,
+    where it is registered, how old it is on the record, the IP it filed and holds, its R&D claims, its large-company
+    income and its contracts. It is the businesses found in those sources, not every business in Australia, so a
+    share of all businesses, or of all large employers, is taken over a wider count ({B50}). For employers of 100 or
+    more, WGEA's reports add a size band and an industry; smaller firms have neither.
   sources: [linkage, abr, asic, iprapid, iplord, rdti, austender, ato_ctt, wgea, abs_regions]
   questions: [2, 3, 4]
   repairs:
@@ -170,8 +173,9 @@ firms:
       why: ABNs and GST began in 1999-2000, so a business first seen then may be much older.
       adr: "0010"
   limits:
-    - IP counts are lower bounds ({U41}), and fewer recent filers are linked to an ABN ({U45}).
-    - "No firm has an industry: the business register extract holds none."
+    - IP counts are lower bounds ({U41}); IP RAPID links fewer recent filers to an ABN, and IP Australia's register
+      restores most for trade marks and designs ({U45}, {U100}).
+    - "Only large employers have an industry (from WGEA): the business register extract holds none."
     - Small firms' growth and survival are out of reach without the ABS's BLADE, which is ruled out.
 
 regions:

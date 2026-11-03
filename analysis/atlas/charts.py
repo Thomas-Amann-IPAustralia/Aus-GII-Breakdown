@@ -226,7 +226,7 @@ def U46() -> dict:
 def U47() -> dict:
     groups = {
         "All firms": "true",
-        "IP filers": "ip_filed_total > 0",
+        "IP filers": "ip_record = 'filed'",
         "R&D claimants": "in_rdti",
         "Government suppliers": "in_austender",
     }
@@ -252,6 +252,8 @@ def U47() -> dict:
     decile = share("irsad_decile").sort_index()
     same(remote.loc["Major Cities of Australia", "R&D claimants"], 89.9, "R&D claimants in major cities")
     same(decile.loc[10, "R&D claimants"], 39.3, "R&D claimants in decile 10")
+    same(remote.loc["Major Cities of Australia", "IP filers"], 86.9, "IP filers in major cities")
+    same(decile.loc[10, "IP filers"], 33.3, "IP filers in decile 10")
     names = list(groups)
     return {
         "type": "bar",
@@ -403,7 +405,7 @@ def U3() -> dict:
     }
 
 
-ORIGIN = """CASE WHEN australian_applicant THEN 'Australian' WHEN NOT australian_applicant THEN 'Overseas'
+ORIGIN = """CASE WHEN founding_australian THEN 'Australian' WHEN NOT founding_australian THEN 'Overseas'
                 ELSE 'Origin unknown' END"""
 
 
@@ -513,19 +515,19 @@ def U7() -> dict:
 def U8() -> dict:
     d = sql("""
         SELECT strftime(date_trunc('month', application_date), '%Y-%m') AS m,
-               coalesce(applicant_type, 'not recorded') AS a, count(*) AS n
+               coalesce(founder_type, 'not recorded') AS a, count(*) AS n
         FROM {lens/rights}
         WHERE patent_type = 'provisional' AND application_date BETWEEN DATE '2021-07-01' AND DATE '2026-09-30'
         GROUP BY ALL ORDER BY 1
     """)
     p = pivot(d, "m", "a", "n").fillna(0)
     same(p.loc["2026-03"].sum(), 1274, "provisionals in March 2026")
-    same(p.loc["2026-03", "individual"], 740, "individuals' provisionals in March 2026")
+    same(p.loc["2026-03", "individual"], 756, "individuals' provisionals in March 2026")
     labels = [pd.Timestamp(f"{m}-01").strftime("%b %Y") for m in p.index]
     return {
         "type": "line",
         "title": "Provisional applications per month",
-        "subtitle": "July 2021 to September 2026, by the type of the first applicant",
+        "subtitle": "July 2021 to September 2026, by the type of the first applicant named at filing",
         "x": {"type": "category", "values": labels},
         "y": {"name": "Provisional applications", "min": 0, "format": "int"},
         "series": [
@@ -684,17 +686,17 @@ def country(code: str) -> str:
 @chart
 def U13() -> dict:
     d = sql("""
-        SELECT applicant_country AS c, count(*) AS n FROM {lens/rights}
+        SELECT founder_country AS c, count(*) AS n FROM {lens/rights}
         WHERE patent_type = 'standard' AND filing_fy BETWEEN 2017 AND 2026 GROUP BY 1 ORDER BY 2 DESC, 1
     """)
     total = d.n.sum()
-    same(100 * d.n.iloc[0] / total, 43.5, "United States share")
+    same(100 * d.n.iloc[0] / total, 43.6, "United States share")
     top = d[d.c.notna()].head(10)
     rest = total - top.n.sum()
     return {
         "type": "bar",
         "horizontal": True,
-        "title": "Standard patents by the first applicant's country",
+        "title": "Standard patents by the first founding applicant's country",
         "subtitle": "% of standard patents filed FY2017 to FY2026",
         "x": {"type": "category", "values": [country(c) for c in top.c] + ["All other countries, or none recorded"]},
         "y": {"name": "% of standard patents", "min": 0, "format": "pct", "digits": 1},
@@ -981,28 +983,46 @@ def U35() -> dict:
 def U36() -> dict:
     from eda import univariate as uni
 
+    # The notebook's specification (ADR 0041): cohorts by the date the term follows, second-tier patents by subtype,
+    # designs by the Act they were filed under, and each right joining the count at its grant or registration
+    # (delayed entry); rights recorded as ending before their own grant are left out.
     life = sql("""
         WITH c AS (
-            SELECT coalesce(patent_type, ip_right_type) AS t,
-                   year(CASE WHEN ip_right_type = 'patent' THEN date_of_patent WHEN ip_right_type = 'pbr'
-                             THEN registered_date ELSE earliest_filed_date END) AS y,
-                   floor(years_in_force * 12) / 12 AS years, in_force
-            FROM {lens/rights} WHERE in_force IS NOT NULL
+            SELECT coalesce(patent_type, ip_right_type) AS t, ip_right_sub_type AS sub,
+                   CASE WHEN ip_right_type = 'patent' THEN date_of_patent WHEN ip_right_type = 'pbr'
+                        THEN registered_date ELSE earliest_filed_date END AS start,
+                   year(start) AS y,
+                   floor(years_in_force * 12) / 12 AS years, in_force,
+                   least(greatest(floor(date_diff('day', start, registered_date) / 365.25 * 12) / 12, 0), years)
+                       AS joined
+            FROM {lens/rights}
+            WHERE in_force IS NOT NULL AND (in_force OR retired_date >= registered_date)
+        ),
+        d AS (
+            SELECT *, CASE WHEN t = 'second_tier' THEN (CASE WHEN sub = 'petty' THEN 'Petty patents'
+                                                            ELSE 'Innovation patents' END)
+                           WHEN t = 'trade_mark' AND y < 1990 THEN '1983 to 1989'
+                           WHEN t = 'design' AND y < 1990 THEN '1986 to 1989'
+                           WHEN t = 'design' AND y >= 2000 AND start < DATE '2004-06-17'
+                               THEN '2000 to June 2004 (1906 Act)'
+                           WHEN t = 'design' AND y < 2010 AND start >= DATE '2004-06-17'
+                               THEN 'June 2004 to 2009 (2003 Act)'
+                           ELSE ((y // 10) * 10)::VARCHAR || 's' END AS cohort
+            FROM c
+            WHERE (t IN ('standard', 'second_tier') AND y >= 1980) OR (t = 'trade_mark' AND y >= 1983)
+               OR (t = 'design' AND y >= 1986) OR t = 'pbr'
         )
-        SELECT t, CASE WHEN t = 'second_tier' THEN (CASE WHEN y <= 2000 THEN 'Petty (to 2001)' ELSE 'Innovation' END)
-                       WHEN t = 'trade_mark' AND y < 1990 THEN '1983 to 1989'
-                       WHEN t = 'design' AND y < 1990 THEN '1986 to 1989'
-                       ELSE ((y // 10) * 10)::VARCHAR || 's' END AS cohort,
-               years, count(*) FILTER (NOT in_force) AS ended, count(*) FILTER (in_force) AS unfinished
-        FROM c
-        WHERE (t IN ('standard', 'second_tier') AND y >= 1980) OR (t = 'trade_mark' AND y >= 1983)
-           OR (t = 'design' AND y >= 1986) OR t = 'pbr'
-        GROUP BY ALL
+        SELECT t, cohort, years, count(*) FILTER (NOT in_force) AS ended, count(*) FILTER (in_force) AS unfinished,
+               0 AS entered
+        FROM d GROUP BY ALL
+        UNION ALL
+        SELECT t, cohort, joined, 0, 0, count(*) FROM d GROUP BY ALL
     """)
     life["group"] = life.t + ": " + life.cohort
-    curves = uni.kaplan_meier(life, time="years", by="group")
+    curves = uni.kaplan_meier(life, time="years", by="group", entered="entered")
     at = uni.survival_at(curves, [10], by="group", time="years").mul(100)
-    same(at.loc["standard: 1980s", 10], 54.3, "standard patents of the 1980s in force after 10 years")
+    same(at.loc["standard: 1980s", 10], 53.2, "standard patents of the 1980s in force after 10 years")
+    same(at.loc["standard: 2000s", 10], 67.5, "standard patents of the 2000s in force after 10 years")
     same(at.loc["trade_mark: 2000s", 10], 46.9, "trade marks of the 2000s in force after 10 years")
     views = []
     for t in ["standard", "trade_mark", "design", "second_tier", "pbr"]:
@@ -1022,8 +1042,8 @@ def U36() -> dict:
         views.append(
             {
                 "label": TYPES[t],
-                "subtitle": f"{TYPES[t]}: % still in force, by years since the term began, for "
-                "each cohort (rights still in force count as unfinished)",
+                "subtitle": f"{TYPES[t]}: % still in force, by years since the term began, for each cohort "
+                "(each right counted from its grant or registration; rights still in force count as unfinished)",
                 "series": series,
             }
         )
@@ -1201,15 +1221,15 @@ ROUTES = {
 def U90() -> dict:
     d = sql("""
         SELECT coalesce(patent_type, ip_right_type) AS t,
-               CASE WHEN australian_applicant THEN 'Australian' ELSE 'overseas' END AS o,
+               CASE WHEN founding_australian THEN 'Australian' ELSE 'overseas' END AS o,
                filing_fy AS y, filing_route AS route, count(*) AS n
         FROM {lens/rights}
-        WHERE filing_fy BETWEEN 1985 AND 2026 AND filing_route IS NOT NULL AND australian_applicant IS NOT NULL
+        WHERE filing_fy BETWEEN 1985 AND 2026 AND filing_route IS NOT NULL AND founding_australian IS NOT NULL
         GROUP BY ALL
     """)
     d["share"] = 100 * d.n / d.groupby(["t", "o", "y"]).n.transform("sum")
     sh = d.set_index(["t", "o", "y", "route"]).share
-    same(sh["standard", "overseas", 2010, "pct"], 81.0, "overseas PCT share FY2010")
+    same(sh["standard", "overseas", 2010, "pct"], 81.1, "overseas PCT share FY2010")
     same(sh["standard", "Australian", 2026, "direct"], 28.3, "Australian direct filing FY2026")
     years = list(range(1985, 2027))
     views = []
@@ -1243,11 +1263,11 @@ def U91() -> dict:
     d = sql("""
         SELECT priority_office AS o, count(*) AS n FROM {lens/rights}
         WHERE patent_type = 'standard' AND filing_fy BETWEEN 2017 AND 2026 AND priority_claims > 0 AND NOT
-            australian_applicant
+            founding_australian
         GROUP BY 1 ORDER BY 2 DESC, 1
     """)
     tot = d.n.sum()
-    same(100 * d.n.iloc[0] / tot, 53.42, "US share of overseas priorities")
+    same(100 * d.n.iloc[0] / tot, 53.43, "US share of overseas priorities")
     top = d[d.o.notna()].head(8)
     names = {"ep": "European Patent Office", "wo": "WIPO (international)"}
     return {
@@ -1272,8 +1292,8 @@ def U91() -> dict:
 
 REACH = """FROM {lens/rights} WHERE patent_type = 'standard' AND filing_fy BETWEEN 2010 AND 2019 AND family_id IS
     NOT NULL
-           AND australian_applicant IS NOT NULL"""
-ORIGIN2 = "CASE WHEN australian_applicant THEN 'Australian applicants' ELSE 'Overseas applicants' END"
+           AND founding_australian IS NOT NULL"""
+ORIGIN2 = "CASE WHEN founding_australian THEN 'Australian applicants' ELSE 'Overseas applicants' END"
 
 
 @chart
@@ -1302,8 +1322,8 @@ def U94() -> dict:
                 AND family_citations_5y IS NOT NULL GROUP BY ALL""")
     p = pivot(d, "k", "o", "n").fillna(0)
     p = 100 * p / p.sum()
-    same(p.loc[0, "Australian applicants"], 43.99, "Australians never cited")
-    same(p.loc[0, "Overseas applicants"], 13.29, "overseas never cited")
+    same(p.loc[0, "Australian applicants"], 43.64, "Australians never cited")
+    same(p.loc[0, "Overseas applicants"], 13.28, "overseas never cited")
     return {
         "type": "bar",
         "title": "How often later inventions cite each patent",
@@ -1480,7 +1500,7 @@ def tl_series() -> list[str]:
 def U22() -> dict:
     t = timeline()
     cols = tl_series()
-    same(t.patents_standard_au.max(), 1018, "busiest month of Australian standard patents")
+    same(t.patents_standard_au.max(), 1044, "busiest month of Australian standard patents")
     same(t.patents_standard_au.idxmax().year, 2013, "busiest year")
     spans = []
     for c in cols:
@@ -1711,7 +1731,7 @@ def U28() -> dict:
     w = uni.event_windows(t.reset_index(), POLICY_TARGETS)
     same(
         w.loc[("raising-the-bar", "patents_standard_au"), "month of the change, × average before"],
-        4.39,
+        4.41,
         "Raising the Bar rush",
     )
     same(
@@ -2078,7 +2098,7 @@ def U53() -> dict:
 @chart
 def U55() -> dict:
     d = sql("SELECT source, count(*) AS n FROM {lens/region_indicators} GROUP BY 1 ORDER BY 2 DESC, 1")
-    same(int(d.n.sum()), 22511923, "attached values")
+    same(int(d.n.sum()), 28960234, "attached values")
     names = {
         "census": "Census 2021",
         "data_by_region": "Data by Region",
@@ -2394,8 +2414,8 @@ def U67() -> dict:
     t = sql("""
         WITH ipr AS (
             SELECT year(application_date) AS year,
-                   count(*) FILTER (patent_type = 'standard' AND australian_applicant) AS res,
-                   count(*) FILTER (patent_type = 'standard' AND NOT australian_applicant) AS nonres
+                   count(*) FILTER (patent_type = 'standard' AND founding_australian) AS res,
+                   count(*) FILTER (patent_type = 'standard' AND NOT founding_australian) AS nonres
             FROM {lens/rights} WHERE year(application_date) BETWEEN 1980 AND 2024 GROUP BY 1),
         wdi AS (
             SELECT year, max(value) FILTER (indicator = 'IP.PAT.RESD') AS wres, max(value) FILTER (indicator =
@@ -2404,7 +2424,7 @@ def U67() -> dict:
         SELECT * FROM ipr JOIN wdi USING (year) ORDER BY year
     """).set_index("year")
     t["a"], t["o"] = t.res / t.wres, t.nonres / t.wnon
-    same(t.loc[1989:2024, "a"].median(), 1.002, "median ratio, Australian applicants")
+    same(t.loc[1989:2024, "a"].median(), 1.011, "median ratio, Australian applicants")
     same(t.loc[1980, "o"], 0.072, "overseas ratio 1980")
     return {
         "type": "line",
@@ -2504,7 +2524,7 @@ def U76() -> dict:
     )
     w["p"] = 100 * w.patents_standard_au / w.patents_standard.where(w.patents_standard > 50)
     w["t"] = 100 * w.trade_marks_au / w.trade_marks
-    same(w.loc["C", "p"], 7.87, "Australian share of manufacturing's patents")
+    same(w.loc["C", "p"], 7.94, "Australian share of manufacturing's patents")
     views = []
     for k, label in [("t", "Trade marks"), ("p", "Standard patents")]:
         s = w.dropna(subset=[k]).sort_values(k, ascending=False)

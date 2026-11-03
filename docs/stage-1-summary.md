@@ -32,8 +32,8 @@ lens, with the owner setting the order.
    ten standard patents are filed from overseas (91.3% in FY2017 to FY2026; the United States alone 43.6%), against
    59.2% of trade marks filed by Australians (U13; the filer's origin, restated 2 November 2026, ADR 0037). China now files as many patent applications at IP Australia as
    Australians do (8.3% each in 2024, from 0.3% in 2004), and three-quarters of Australians' own applications are made
-   abroad (76.1%, U70). Overseas applicants arrive through the PCT (81.0% of their standard patents in FY2010), mostly
-   with inventions first filed in the United States (53.42%), and their patents reach a median 6 offices against
+   abroad (76.1%, U70). Overseas applicants arrive through the PCT (81.1% of their standard patents in FY2010), mostly
+   with inventions first filed in the United States (53.43% of those with a priority; restated 2 November 2026, pass 8, ADR 0043), and their patents reach a median 6 offices against
    Australians' 2 (U90, U91, U93).
 2. **Almost everything is concentrated.** The top 1% of filing firms filed 55.3% of standard patents (U44); the tenth
    of postal areas with the most patents filed 72.5% of them with 29.2% of the people (U52); five attorney firms
@@ -135,7 +135,7 @@ making the lens unreadable.
 
 | Lens | One row per | Rows | Mainly informs |
 |---|---|---|---|
-| `rights` | IP right (patent, trade mark, design, plant breeder's right), 1904 to 2026 | 4,356,908 (88 columns) | Q1, Q2 |
+| `rights` | IP right (patent, trade mark, design, plant breeder's right), 1904 to 2026 | 4,356,908 (89 columns) | Q1, Q2 |
 | `firms` | ABN in any IP, R&D, procurement or tax source | 463,279 (54 columns) | Q2, Q3, Q4 |
 | `regions` (+ `region_indicators`) | Postal area | 2,641 (+ 28,960,234, seven sources) | Q2, Q4 |
 | `national` (+ `national_indicators`) | Country, year and indicator | 135,597 (+ 41,230,072) | Q1, Q4 |
@@ -235,16 +235,17 @@ Every patent, trade mark, design and plant breeder's right in IP RAPID, 1904 to 
   6.9%, Japan 5.2% (U13). Australians file 59.19% of trade marks and 94.62% of provisional applications. 13% to 21% of
   Australian organisations' applications have no filer's ABN in IP RAPID; the register fills most trade marks' (U13,
   U99).
-- **The provisional rise.** 10,069 in FY2026, from individuals (5,510 against 1,413 to 1,986), with distinct filers'
-  ABNs flat at 1,372; single-filing individuals rose from 1,538 to 2,507 and 54 individuals filed 10 or more (one filed 375). It
+- **The provisional rise.** 10,069 in FY2026, mostly from individuals (5,510 against 1,413 to 1,986), though
+  organisations' rose too (3,060 to 4,558); distinct filers' ABNs stayed flat at 1,372, but IP RAPID's latest filings
+  carry fewer ABNs (U45), so this does not show businesses' provisionals were flat (restated 2 November 2026, pass 8, ADR 0043); single-filing individuals rose from 1,538 to 2,507 and 54 individuals filed 10 or more (one filed 375). It
   began in early 2025, peaked in March and April 2026 and eased by September 2026 (U8).
 - **How rights end.** "Lapsed" (an application abandoned) and "ceased" (a registered right let go) are different
   (U9). 408,957 old patents (filed FY1904 to FY1999) have an "unknown" status, and only 68.9% of expired patents have
   a grant date, so old grants are under-recorded. The standard patent grant rate fell from 75.5% (FY2000) to 54.4%
   (FY2008) and recovered to 65.4% (FY2019, U10).
 - **How long it takes.** A median 980 days to grant a standard patent and 223 days to register a trade mark (filed
-  FY2010 to FY2019, U11), with a sharp trade mark peak at 222 days that WIPO's figures show is the office's usual path
-  (U70). Patent examination from request to acceptance lengthened to 755 days (FY2006) and has been 422 to 516 since
+  FY2010 to FY2019, U11), with a sharp trade mark peak at 222 days that matches WIPO's 2016 average for the office
+  (U70; an average, so consistent with the office's usual path rather than proof of it). Patent examination from request to acceptance lengthened to 755 days (FY2006) and has been 422 to 516 since
   FY2014 (U33).
 - **What is protected.** Medical technology, pharmaceuticals and biotechnology are 32.0% of standard patents;
   advertising and business services (class 35) 11.7% of trade marks (U14).
@@ -268,10 +269,10 @@ Every patent, trade mark, design and plant breeder's right in IP RAPID, 1904 to 
 - **How rights came to Australia (the links).** IP RAPID labels 93.88% of PCT numbers as Australian, so a priority's
   office is read from its number (U88). The PCT route then matches WIPO's count of national phase entries at IP
   Australia, a median 1.001 of it from 1995 to 2024 (U89). Overseas applicants' standard patents came through the PCT
-  for 81.0% in FY2010 and 69.3% in FY2026, with divisionals rising to 19.9%; Australians' moved from claiming a
+  for 81.1% in FY2010 and 69.4% in FY2026, with divisionals rising to 19.8% (the filer's origin; restated 2 November 2026, pass 8, ADR 0043); Australians' moved from claiming a
   provisional (81.2% in FY1985, 11.4% in FY2026) to the PCT, divisionals and, lately, direct filing (28.3% in FY2026, a
-  lead) (U90). Overseas inventions were first filed in the United States for 53.42%; 91.24% of Australians' PCT
-  applications were filed at IP Australia (U91).
+  lead) (U90). Overseas filers' earliest priorities were filed in the United States for 53.43%; 91.64% of
+  Australians' PCT applications were filed at IP Australia (U91).
 - **Families, reach and citations (Google Patents).** 94.81% to 99.23% of standard patents filed in each decade since
   the 1980s find their family (U92). Overseas applicants' patents reach a median 6 offices and 66.67% are granted in
   the United States; Australians' reach 2, and 45.12% are filed only here (U93). Within five years, overseas
@@ -363,10 +364,11 @@ other tables, Measuring What Matters and Closing the Gap).
   OECD median of 1.18%; manufacturing 13.7% to 5.32% of GDP (down 61%, the median member 30%); IP payments exceed
   receipts in every year (U65).
 - **Against the OECD.** Near the top for non-resident patents (5th of 38), new businesses (2nd of 30) and new business
-  density (4th); near the bottom for exports (34th of 35), manufacturing (31st of 32) and business R&D (26th of 35)
-  (U66).
-- **Three routes agree.** IP RAPID's standard patents are within 1.5% (Australian) and 2.2% (overseas) of the World
-  Bank's, 1989 to 2024; the World Bank's trade mark series count classes, not applications (U67).
+  density (4th); near the bottom for exports (34th of 35) and manufacturing (31st of 32), and below the median for business
+  R&D (26th of 35) and gross R&D (21st of 35) (U66, restated 2 November 2026, pass 8, ADR 0043).
+- **Three routes agree.** IP RAPID's standard patents are a median 1.011 of the World Bank's for Australian
+  applicants (0.931 in 2008 to 1.027) and 0.981 to 1.019 of it for overseas ones, 1989 to 2024 (restated 2 November 2026, pass 8, ADR 0043: first
+  given as "within 1.5% and 2.2%"); the World Bank's trade mark series count classes, not applications (U67).
 - **The attachments.** Australia is absent from the OECD's business demography, innovation and IP methods and IP tax
   regimes tables (U68). The GII 2026 ranks Australia 20th of 139 (inputs 13th, outputs 24th), strong in education and
   universities, weak in outputs and trade (U69). The United States files 41.9% of patent applications at IP Australia
@@ -410,8 +412,9 @@ holders) by ROR and calendar year, 1990 to 2026, linked through a reviewed list 
 - **IP.** The institutions file a small, slowly rising share of standard patents filed from Australia (4.80% in 1990 to
   1994, 8.96% in 2020 to 2024); CSIRO files the most (481 in 2017 to 2026), and a quarter to a third are filed with
   others (U84).
-- **Science and patents.** US patents cite the institutions' research, but 93.6% of the citations come from inventions
-  with no Australian applicant or inventor; medical research institutes' works are cited most per work (107.7 per
+- **Science and patents.** US patents cite the institutions' research, but 93.6% of the citations come from patents
+  with no Australian applicant or inventor (US patents only, most of which have no Australian party whatever they
+  cite: not a measure of where the research is used); medical research institutes' works are cited most per work (107.7 per
   1,000 works, against universities' 43.26) (U85).
 - **Contracts and place.** Universities hold 77.9% of the institutions' contract value (U86); 50.34% of the
   universities' standard patents carry a postcode with no residents, which closes the U49 question (U87).
@@ -638,7 +641,7 @@ gaps are in what it publishes, and the register fills them beside IP RAPID's own
 - **Provisionals' inventors (1.8.7, U105 to U107):** the register holds every provisional IP RAPID does (264,250 of
   264,260 numbers; the gaps in the numbering were never used) and names 181,469 inventors, from FY2003 (98.53% to
   100% of provisionals to FY2023; 76.38% to 84.69% since FY2024, a lead). An estimated 21.24% of inventors on
-  Australian organisations' provisionals filed FY2017 to FY2026 are women, and 15.57% on individuals'; 14.56% in
+  Australian organisations' provisionals filed FY2017 to FY2026 are women, and 15.58% on individuals'; 14.56% in
   FY2026. These are the data for the research owner's gender analysis.
 
 ## 12. Data gaps filled after Stage 2 (2026-10-28, A15)
@@ -653,7 +656,9 @@ profiled here before its pairs go to Stage 2:
   keeping a patent for its full term 16,550 against 16,140. Fees changed on 39 dates, nearly always upwards; patent
   renewals have moved towards the last years (the 19th anniversary's fee 8.94 times the 5th's).
 - **Firms' size and industry (gap A3; `wgea`, ADR 0032; notebook 2.6, U112).** For employers of 100 or more only:
-  7,126 firms in the lens, 4.05% of its standard patent filers but 18.41% of its standard patents. Nothing free covers
+  7,126 firms in the lens (of 9,742 employers), 4.05% of its standard patent filers but 18.41% of its standard patents.
+  Over every employer, 48.6% (under 250 employees) to 72.9% (5,000 or more) have a filing linked; the lens's own
+  shares (70.4% to 82.5%) leave out the employers in none of its sources (restated 2 November 2026, pass 8, ADR 0043). Nothing free covers
   smaller firms.
 - **The cash rate and the dollar (gap B1; `rba`; notebook 5.8, U113).** Monthly and complete, from 1969 (the dollar)
   and 1990 (the cash rate target).
@@ -661,8 +666,9 @@ profiled here before its pairs go to Stage 2:
   manufacturing's share of applications falls from 90.63% to 79.67%; the recommended crosswalk stays the main measure.
 - **Patent families by origin, and Google Patents' coverage (gap A4; `wipo_ipstats`; notebook 4.5, U115).** WIPO
   counts 61.73% to 66.37% of Australian-origin families filed in more than one office in every five years since 2000;
-  Google Patents' links show far fewer for older years (14.91% for 2000 to 2004), and Australian applicants' PCT
-  patents appear "Australia only" 74.92% of the time in FY2000 to FY2004 against about 12% after FY2010. Family
+  Google Patents' links show far fewer for older years (15.15% for 2000 to 2004), and Australian applicants' PCT
+  patents appear "Australia only" 73.63% of the time in FY2000 to FY2004 (the filer's origin; first given as 14.91% and
+  74.92%, by the holder's; restated 2 November 2026, pass 8, ADR 0043) against about 12% after FY2010. Family
   measures for Australian applicants are read from FY2010 on (OQ21 asks whether to repair the older links).
 - **The national accounts (gap B2; `abs_national_accounts`; notebook 5.9, U116).** GDP quarterly from 1959, state
   final demand from 1985, value added by division for every year of the industries lens.
@@ -712,12 +718,12 @@ All descriptive.
 | U0 | Corpus | 162 tables, 41 sources, 317.8 million rows; three sources hold 69.73% |
 | U1 | rights | One row per right (4,356,908), complete where it should be; origin known for 86.59% |
 | U2 | rights | Five repairs: a 1970 placeholder, a pre-1904 registration, trade marks registered at filing, a class as a technology area, attorney use |
-| U3 | rights | Rushes to file before two rule changes; 61,854 rights cannot be placed in time |
+| U3 | rights | Rushes to file before two rule changes; 50,763 rights have no application date |
 | U4 | rights | Trade marks are 53.5% of rights; standard patents 82.17% of patents |
 | U5 | rights | Annual counts by type; second-tier patents end after FY2021 |
-| U6 | rights | The latest years are complete |
+| U6 | rights | The latest years are complete for standard patents, trade marks and designs (plant breeder's rights the decade's lowest) |
 | U7 | rights | About nine in ten standard patents from overseas; design origin often unrecorded |
-| U8 | rights | Provisional applications doubled in FY2026, from individuals |
+| U8 | rights | Provisional applications doubled in FY2026, mostly from individuals (organisations' rose too) |
 | U9 | rights | Lapsed is not ceased; 408,957 old patents of unknown status |
 | U10 | rights | Grant rates by year: standard patents 54.4% to 75.5% |
 | U11 | rights | Median 980 days to grant (standard patents), 223 to register (trade marks); a 222-day peak |
@@ -751,7 +757,7 @@ All descriptive.
 | U39 | rights (events) | April design lapses explained |
 | U40 | rights (events) | Placeholder dates are few and handled |
 | U41 | firms | 463,279 ABNs that used one of six sources; IP counts are lower bounds |
-| U42 | firms | Private companies dominate every source but AusTender |
+| U42 | firms | Private companies are most of every source's firms (55.3% of suppliers to 94.5% of R&D claimants) |
 | U43 | firms | A median 12.6 years old on the record (since the earliest public registration) |
 | U44 | firms | The top 1% of filing firms file 55.3% of the standard patents credited to an ABN |
 | U45 | firms | Recent filers are less often linked to an ABN in IP RAPID; the register restores most of the link |
@@ -775,7 +781,7 @@ All descriptive.
 | U63 | national | 30 indicators, 229 places; Australia's R&D people series end early |
 | U64 | national | Before 1995 WIPO cannot say where most applicants come from |
 | U65 | national | R&D intensity peaked in 2008; manufacturing fell twice as fast as the OECD's |
-| U66 | national | Near the top for filings from abroad, near the bottom for exports and business R&D |
+| U66 | national | Near the top for filings from abroad, near the bottom for exports and manufacturing, below the median for R&D |
 | U67 | national | Three routes agree on patents; the World Bank's trade marks count classes |
 | U68 | national | 41.2 million attached values; Australia absent from five OECD flows |
 | U69 | national | GII 2026: 20th of 139 |
@@ -800,7 +806,7 @@ All descriptive.
 | U88 | rights (links) | Eight columns from the links; IP RAPID's PCT country label read past |
 | U89 | rights (links) | The PCT route agrees with WIPO's count of national phase entries, year by year |
 | U90 | rights (links) | Overseas applicants come through the PCT; Australians moved from provisionals to the PCT, divisionals and direct filing |
-| U91 | rights (links) | Most overseas inventions first filed in the United States; Australians' PCT applications filed at home; marks taken abroad |
+| U91 | rights (links) | Most overseas filers' priorities first filed in the United States; Australians' PCT applications filed at home; marks taken abroad |
 | U92 | rights (Google Patents) | The family of nearly every standard patent since the 1980s is found |
 | U93 | rights (Google Patents) | Overseas applicants' patents belong to wide families; Australians' are mostly narrow |
 | U94 | rights (Google Patents) | Citations are a long tail, and Australians' patents are cited less |

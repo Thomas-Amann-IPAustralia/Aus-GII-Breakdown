@@ -6,18 +6,20 @@
   about: data
   headline: The timeline has one row per month since 1904, with each series starting only where it can be trusted
   statement: >-
-    The timeline holds 1,473 months, January 1904 to September 2026, with 28 monthly series of applications and events,
-    the price index and the policy changes. After the repairs, series begin between January 1904 and December 2003, and
-    none has a gap inside its span.
+    The timeline holds 1,473 months, January 1904 to September 2026, in 79 columns: 28 monthly series of applications
+    and events, the price index and the policy changes, and, added after Stage 2, fees, the Reserve Bank's rates, the
+    national accounts and the PBS. After the repairs, series begin between January 1904 and December 2003, and none has
+    a gap inside its span.
   figures:
     - value: "1,473"
       label: months
-    - value: "1,018"
+    - value: "1,044"
       label: Australian standard patent applications in April 2013, the busiest month
   points:
     - "The busiest month of standard patent applications, from Australian and overseas applicants alike, is April 2013
-      (1,018 and 5,407), when Raising the Bar took effect; of second-tier applications, August 2021 (2,789), when
+      (1,044 and 5,381), when Raising the Bar took effect; of second-tier applications, August 2021 (2,789), when
       innovation patents closed; of provisional applications, March 2026 (1,274)."
+    - "Origin is the filer's: a founding applicant in Australia, IP Australia's definition of a resident application."
     - "The last months are empty only where the register is still recording: six months for trade mark and design
       cessations, three for designs by origin."
   questions:
@@ -50,21 +52,23 @@
 - id: U23
   lens: timeline
   about: data
-  headline: Fifteen series started too early, on records that hold only survivors or batches, and one policy change was missing
+  headline: Eighteen series started too early, on records that hold only survivors or batches, and one policy change was missing
   statement: >-
     Before records were computerised, the register holds only rights still alive then. Only 2.0% of trade marks filed
     in early 1981 were never registered, against 52.0% from the first quarter of 1983. So those years count survivors,
-    not filings, and fifteen series now start later. The rise of the patent term from 16 to 20 years (1 July 1995) was
+    not filings, and eighteen series now start later. The rise of the patent term from 16 to 20 years (1 July 1995) was
     missing from the policy list and has been added.
   figures:
     - value: "2.0% → 52.0%"
       label: trade marks never registered, early 1981 against early 1983
-    - value: "Fifteen"
+    - value: "Eighteen"
       label: series given a later start
     - value: "16 → 20 years"
       label: the patent term from 1 July 1995, the policy change added
   points:
     - "**Designs:** 0.4% and 0.7% never registered in the second half of 1985, then 26.3% in the first quarter of 1986."
+    - "The survivor months had counted 44,231 trade marks from Australian applicants and 75,470 from overseas ones
+      (3.1% and 8.5% of each series)."
     - "**Batches.** Patent cessations were dated in batches to April 1995: 29.8% of the 104 months from September 1986
       hold none."
     - "**Partial records.** Grants are recorded only for patents filed from 1979: 1.0% to 1.9% of standard patents filed
@@ -80,7 +84,7 @@
   chart: U23
   notebook_charts: [0, 1]
   prep:
-    - what: Fifteen series start by hand where their records become complete, each with its reason in the build code.
+    - what: Eighteen series start by hand where their records become complete, each with its reason in the build code.
       why: The general rule (the first month from which 9 of the next 12 have a record) started them too early (ADR 0014).
     - what: The 1995 term change is checked against the Act itself and added to the policy register.
       why: The patent expiry series shows it plainly, and the register's note on the 1990 Act was wrong.
@@ -103,7 +107,7 @@
   about: data
   headline: Large monthly series are steady; small ones are noisy and need longer periods
   statement: >-
-    Over FY2017 to FY2026 the steadiest series is standard patent applications from overseas (a median 2,310 a month,
+    Over FY2017 to FY2026 the steadiest series is standard patent applications from overseas (a median 2,306 a month,
     varying by only 0.08 of its average). The most variable are second-tier patents (1.82, from the rush before their
     closure and the near-silence after) and small series such as extensions of term.
   figures:
@@ -115,6 +119,8 @@
     - "Small series: patent oppositions (median 5 a month), extensions of term (5) and plant breeder's rights granted
       (13.5)."
     - "Outliers: 12 months each for provisional applications (the rise of 2025 and 2026) and second-tier patents (2021)."
+    - "The \"origin unknown\" series are mostly zero for standard patents (95% of months), as they should be once
+      origins are recorded; for trade marks only 16.67% of months are zero."
     - "**Decision.** Series with a median under 10 a month are compared by quarter or year, not by month."
   questions:
     - q: 5
@@ -154,10 +160,13 @@
     - value: "32,399"
       label: standard patent applications in 2021, the highest year
   points:
-    - "Australians' standard patents grew 1.1%, 2.3%, 1.0% and 1.1% a year in the four periods."
-    - "Designs grew almost entirely from overseas; Australians' stayed near 2,000 to 2,700 a year."
-    - "**Falls.** In 2009, standard patents fell 10.9%, designs 15.2% and trade marks 4.5%, the year after the global
-      financial crisis began; trade marks fell 11.2% in 2022 from the 2021 peak."
+    - "Australians' standard patents grew 1.1%, 2.5%, 0.9% and 0.9% a year in the four periods (by the filer's origin);
+      overseas applicants' 4.2%, 1.1%, 2.1% and 0.3%."
+    - "Trade marks grew 6.9%, 3.3%, 2.7% and 4.3% a year in the four periods, so their growth since 2019 is faster than
+      in the 2010s but slower than in the 1990s."
+    - "Designs grew almost entirely from overseas; Australians' ran at 1,903 (2022) to 2,678 (2013) a year from 1990."
+    - "**Falls.** In 2009, standard patents fell 10.9% (26,598 to 23,707), designs 15.2% and trade marks 4.5%, the year
+      after the global financial crisis began; trade marks fell 11.2% in 2022 from the 2021 peak."
   questions:
     - q: 1
       how: The long-run path of each kind of right is context for any claim about the system's contribution.
@@ -186,9 +195,10 @@
   about: system
   headline: Australians file a quarter less in January; overseas applicants barely pause
   statement: >-
-    From 2010 to 2019, Australians' January filings were 75% of an ordinary month for standard patents and trade marks,
-    70% for provisionals and 66% for designs, while overseas applicants' were 90% to 95%. The January lull is deepening
-    for Australian patents: 80% (1990s), 78, 75 and 73 (2020 to 2025).
+    From 2010 to 2019, Australians' January filings were 75% of an ordinary month for standard patents and trade marks
+    and 67% for designs, while overseas applicants' were 90% to 96%. Provisional applications, about 95% Australian,
+    were at 70%. For Australian standard patents, January was at 80% in the 1990s, 82% in the 2000s, 75% in the 2010s
+    and 74% in 2020 to 2025.
   figures:
     - value: "75%"
       label: of an ordinary month, Australian standard patents in January
@@ -226,11 +236,11 @@
 - id: U27
   lens: timeline
   about: system
-  headline: Patent grants peaked in 2016; trade mark cessations keep rising
+  headline: Patent grants peaked in 2016; trade mark cessations reached their highest in 2025
   statement: >-
     Patent grants peaked at 25,687 in 2016, three years after the rush to file before Raising the Bar, and were 19,612
     in 2025. Trade mark registrations reached 70,634 in 2021. Trade mark cessations (registered marks let go) rose from
-    7,240 in 1996 to 35,484 in 2025, the peak.
+    7,240 in 1996 to 35,484 in 2025, the peak, though not steadily: 29,802 in 2019 and 28,319 in 2023.
   figures:
     - value: "25,687"
       label: patent grants in 2016, the peak
@@ -240,7 +250,8 @@
     - "Patent expiries rose from 30 (1996) to 4,019 (2025), as patents filed under the 20-year term reach it."
     - "Ownership transfers: trade mark assignments peaked at 18,370 (2019), patent assignments at 6,015 (2015)."
     - "Trade mark oppositions rose from 824 (1996) to 2,309 (2025, the peak)."
-    - "Trade mark cessations fell to 3,773 in 2002 while lapses rose: explained by the register's terms ({U38})."
+    - "Trade mark cessations fell to 3,773 in 2002 while lapses rose: accounted for by the gap between two Acts' first
+      terms and the large filing year of 2000 ({U38})."
   questions:
     - q: 1
       how: What happens to rights (granted, kept, let go, sold, challenged) is the flow behind any measure of their value.
@@ -266,29 +277,36 @@
   lens: timeline
   about: system
   featured: true
-  headline: Policy changes leave clear marks, two rushes, four steps and two pauses, while several leave none
+  headline: Around some policy changes filing shows clear rushes, steps and pauses; around others nothing stands out
   statement: >-
-    Before Raising the Bar (April 2013), Australians filed 1,018 standard patents in a month, 4.39 times their average
-    month in the year before. Before the innovation patent closed (August 2021), 2,789 second-tier applications came in
-    one month (4.31 times), then 95.9% fewer. Patent expiries fell 98.4% when the term rose to 20 years.
+    In April 2013, the month Raising the Bar took effect, Australians filed 1,044 standard patent applications, 4.41
+    times their average month in the year before. In August 2021, when the innovation patent closed to new
+    applications, 2,789 second-tier applications came in (4.31 times), then 95.9% fewer a month in the year after.
+    Patent expiries fell 98.4% when the term rose to 20 years.
   figures:
-    - value: "4.39×"
+    - value: "4.41×"
       label: Australians' usual monthly patent filing, in April 2013
     - value: "−95.9%"
-      label: second-tier applications after the innovation patent closed
+      label: second-tier applications a month after the innovation patent closed
     - value: "−98.4%"
       label: patent expiries after the term rose to 20 years
   points:
-    - "**Rushes:** Raising the Bar (Australians 4.39 times, overseas 2.66 times their usual month) and the innovation
-      patent's closure. Anticipation also shows after each was enacted."
+    - "**Rushes before a change:** Raising the Bar (Australians 4.41 times their usual month, overseas applicants 2.65
+      times; in the year after, 34.0% and 7.7% fewer a month) and the innovation patent's closure. Filing also rose
+      after each change was enacted and before it took effect: second-tier applications by 176.4%, Australian standard
+      patents by 45.3%."
     - "**Steps:** patent expiries (the 20-year term), extensions of term (the 1999 scheme, from 0.08 to 11.17 a month),
       second-tier applications when the innovation patent replaced the petty patent (+71.5%), and designs under the
-      Designs Act 2003 (overseas applications +34.1%)."
-    - "**Pauses when an Act began:** no trade mark registrations in January 1996 (Trade Marks Act 1995) and 113 patent
-      grants in June 1991 (Patents Act 1990), against about 1,025 a month."
-    - "**Nothing visible:** joining the PCT, the plain packaging of tobacco, the 2018 and 2019 Productivity Commission
-      responses and the designs grace period."
-    - "All compare the 12 months after with the 12 before; trends and seasons are not yet allowed for."
+      Designs Act 2003 (overseas applications +40.4%, Australians' +3.4%)."
+    - "**Pauses when an Act began:** no trade mark registrations in January 1996 (Trade Marks Act 1995; 4,021 in March)
+      and 113 patent grants in June 1991 (Patents Act 1990), against about 1,025 a month."
+    - "**Nothing stands out:** joining the PCT (entries through it come about 30 months after filing abroad), the plain
+      packaging of tobacco, and the 2018 and 2019 Productivity Commission responses. Overseas trade marks fell 17.2% in
+      the year after Australia joined the Madrid Protocol (July 2001), but they had been falling since early 2000."
+    - "**Against the direction expected:** after the designs grace period (March 2022), Australians' design
+      applications fell 16.5% and overseas applicants' rose 0.2%. A grace period would not be expected to lower filing,
+      so the fall has some other cause, which this comparison cannot name."
+    - "All compare the 12 months after with the 12 before; trends and seasons are not allowed for here ({B37} does)."
   questions:
     - q: 5
       how: These dated changes are the raw material for natural experiments, the designs that can estimate what a policy
@@ -309,12 +327,15 @@
     - Compare the change's month and the 12 months after with the average month of the 12 before.
     - Class each response as a rush, a step, a pause or nothing visible.
   assumptions:
-    - The change caused what is seen around it. Stage 1 only describes timing; trends, seasons and other events could
-      also be at work.
+    - The month a change took effect (or was enacted) is the right month to compare around. Stage 1 does not assume the
+      change caused what is seen, since trends, seasons and other events could also be at work.
   limits:
-    - Fee changes, IP Australia's most direct lever, are not yet in the data (OQ2).
+    - A before-and-after comparison of one series cannot separate a change's effect from anything else that happened
+      at the same time.
+    - Fee changes, IP Australia's most direct lever, were added after Stage 2 ({U108} to {U111}) and compared in {B47}
+      to {B49}.
   next: >-
-    Stage 2 measures each candidate against trends and seasons, with placebo dates.
+    Stage 2 measures each candidate against trends and seasons, with placebo dates ({B37}).
   terms: [natural-experiment, placebo, raising-the-bar, second-tier]
   related: [U3, U22, U29, U37]
 
@@ -613,6 +634,16 @@
     - q: 5
       how: The cycle and the dollar's value are context for any before-and-after comparison of policy.
   sources: [rba]
+  chart:
+    type: bar
+    title: The Reserve Bank's cash rate target
+    subtitle: Three points in its record
+    x: {type: category, values: [September 1990, December 2020, September 2026]}
+    y: {name: "Cash rate target (%)", min: 0, format: pct, digits: 2}
+    series:
+      - name: Cash rate target
+        data: [14, 0.1, 4.36]
+    source: Reserve Bank of Australia (lens timeline)
   prep:
     - what: The RBA's statistical tables joined to the timeline by month.
       why: The timeline is monthly.
