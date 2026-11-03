@@ -702,6 +702,165 @@ prediction-interval:
   short: >-
     The range within which a single new case (one country) would be expected to fall, given the pattern across the
     others. It is wider than the interval for the pattern itself, because single cases vary.
+# ----- Stage 3: several measures at once (ADR 0046), kept in step with GLOSSARY.md
+held-together:
+  group: stats
+  title: Held together (raw and adjusted)
+  short: >-
+    A comparison made inside one model with several third factors at once, so that each is held fixed while the others
+    are too. The raw figure is the plain comparison Stage 2 made, with nothing held; the difference between the two is
+    how much of the raw figure those factors account for.
+  more: >-
+    Holding measured factors fixed is not an experiment: factors the data do not hold can still explain an association,
+    and some associations run backwards. Every Stage 3 finding is observational or descriptive.
+verdict-words:
+  group: stats
+  title: Holds, weakened, not detected once held, reversed
+  short: >-
+    Stage 3's words for what is left of a signal once its third factors are held together. Holds: the same direction,
+    its 95% interval clear of no difference, and at least half of the raw size left. Weakened: the same direction and
+    clear, but less than half left. Not detected once held: the interval includes no difference. Reversed: the other
+    direction, and clear.
+  more: >-
+    Where the raw figure was not itself detected: appears once held (the held one is clear) or not detected either way.
+    "Does not replicate" marks a result seen in one sample but not the second; "mixed", a page whose parts differ; and
+    "refined", a description that sharpens an earlier one. Ratios are compared on a log scale (ADR 0046). Not detected
+    is not the same as no association: a moderate one may be missed.
+average-marginal-effect:
+  group: stats
+  title: Average difference in points (average marginal effect)
+  short: >-
+    How a model of a yes or no outcome (granted or not, a filing linked or not) is reported here: the difference, in
+    percentage points, between the predicted chance of the outcome with the signal and without it, averaged over every
+    row with its other factors as they are.
+clustered:
+  group: stats
+  title: Clustered intervals
+  short: >-
+    Intervals that allow the rows of one group (the rights of one filer) to be alike. A firm with thousands of
+    applications then counts as one source of evidence, not thousands, and the intervals widen accordingly.
+filers-party:
+  group: ip
+  title: "Filer's party"
+  short: >-
+    The applicant IP RAPID records as giving a right its origin and type (the first founding applicant in Australia,
+    else the first with a known country), identified by its party number. Stage 3 groups a filer's rights by it.
+hazard-ratio:
+  group: stats
+  title: Hazard ratio
+  short: >-
+    From a model of how long rights stay in force: how much more or less likely a right in one group is to end in any
+    given year than one in another, with other factors held. 0.8 means 20% less likely to end, so more often still in
+    force; 1 means no difference.
+  more: >-
+    Stage 3 uses a proportional hazards (Cox) model and counts each patent from its grant, as Stage 2's survival curves
+    do (delayed entry).
+principal-components:
+  group: stats
+  title: Principal components
+  short: >-
+    A way to summarise many related measures in a few combined ones. Each component is a weighted mix of all the
+    measures, and the first carries as much of the variation as any single mix can; the weights show what it stands for.
+variance-inflation:
+  group: stats
+  title: Variance inflation
+  short: >-
+    How far one measure can be predicted from the others. Above about 5 to 10, the measures repeat one another, so
+    holding them all at once, or reading any one alone, can mislead.
+silhouette:
+  group: stats
+  title: Silhouette (how distinct groups are)
+  short: >-
+    A score from -1 to 1 for a grouping of places or units: how much closer each is to its own group than to the next.
+    Stage 3 reads groups as distinct only at 0.5 or more, and as some structure from 0.25.
+partial-correlation:
+  group: stats
+  title: Partial rank correlation
+  short: >-
+    The correlation of two measures' ranks once what the held factors explain has been taken out of both. It reads an
+    association beyond those factors without assuming straight lines, for small sets of units such as countries,
+    industries or institutions.
+block-resampling:
+  group: stats
+  title: Block resampling (moving-block bootstrap)
+  short: >-
+    A bootstrap for series over time: resamples are built from runs of consecutive periods (8 quarters, say), so that
+    alike neighbouring periods stay together. Its intervals are wider, and more honest, than resampling single periods.
+effective-sample:
+  group: stats
+  title: Effective sample size
+  short: >-
+    How many independent observations a series of dependent ones is worth: 68 quarters that each resemble the last may
+    carry the information of 23 independent ones.
+exposure:
+  group: stats
+  title: Exposure (in a model of counts)
+  short: >-
+    What a count is a rate of: an area's residents, a university's works, an institution's research spend. The model
+    then compares rates without dividing every measure by the same number, which can make unrelated measures look
+    linked.
+fixed-age:
+  group: stats
+  title: Compared at a fixed age
+  short: >-
+    Citations counted over the same span for every work or patent (within five years of priority, or against works of
+    the same publication year), since an older one has had longer to be cited.
+within-filers:
+  group: stats
+  title: Within the same filers
+  short: >-
+    A comparison made inside each filer and then averaged: each filer's own average is taken out first, so the result
+    says how the same filers changed, not how the mix of filers did.
+stl:
+  group: stats
+  title: Trend, season and the rest (STL)
+  short: >-
+    A way to split a monthly series into a slowly changing trend, a pattern that repeats each year, and what is left.
+    Its strength measures (0 to 1) say how much of the series each accounts for; above about 0.6 is strong.
+interrupted:
+  group: stats
+  title: Interrupted time series
+  short: >-
+    A before-and-after reading of a series around a change (a new law, a fee change): the series' trend and season are
+    held, and the model measures a rush before the change, a step in level after it and a change in slope, set beside
+    series the change should not have moved.
+newey-west:
+  group: stats
+  title: Newey-West interval
+  short: >-
+    An interval for a model of a series over time that allows neighbouring months to be alike (here, over 12 months),
+    so that it is not too narrow.
+trend-either-side:
+  group: stats
+  title: Trend either side
+  short: >-
+    A before-and-after comparison that fits a straight-line trend on each side of a change, each with its own slope, so
+    that a gradual drift is not read as a jump at the change.
+let-go:
+  group: ip
+  title: Let go (at an anniversary)
+  short: >-
+    A right whose owner did not pay the fee due at an anniversary, so that it ceased: for patents, a cessation dated 3
+    to 12 months after the anniversary (the six-month grace period ends first); for trade marks and designs, one dated
+    at the anniversary.
+gamma:
+  group: stats
+  title: Gamma model
+  short: >-
+    A model for positive amounts that are skewed (a few very large contract values or incomes), reported as a ratio of
+    averages.
+tweedie:
+  group: stats
+  title: Tweedie model
+  short: >-
+    A model for amounts that are often zero and otherwise skewed, such as an institution's licence income.
+name-match:
+  group: data
+  title: Name match (to the business register)
+  short: >-
+    An ABN found for an Australian organisation's right that has none, by matching the filer's name to the ABR's main
+    names and ASIC's company names, kept only if exactly one ABN has the name in the filer's state. Tested on rights
+    with a known ABN; kept apart from the counts, never added to them (ADR 0045, 0047).
 observational:
   group: stats
   title: Observational evidence

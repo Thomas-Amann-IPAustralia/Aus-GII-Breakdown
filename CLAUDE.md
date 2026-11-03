@@ -10,11 +10,11 @@ A32, ADR 0046; a review of all three stages on the same day filled the gaps it f
 `docs/eda-plan.md`; status and open items are in `docs/handover-eda.md`. Don't start
 answering the five questions until Stage 3 is done and the owner says so.
 
-**The website is frozen during Stage 3 (A32).** Don't change `evidence/` or `analysis/atlas/`, or rerun
-`atlas.charts`; keep notebooks 1 and 2 as reviewed, changing them only by additions and dated corrections where a
-gap is found (as the review of 3 November 2026 did, A33: U124 to U127, B63), run cell by cell, never in full. Where
-Stage 3 changes an earlier reading, say so in its M observation; list it, and any addition to notebooks 1 and 2, in
-the handover under "Waiting for the atlas".
+**The website freeze is lifted (A34, ADR 0049).** The atlas shows all three stages again: a change to any observation
+changes its page in the same commit, and a Stage 3 observation names what it revisits (`revisits`), what it held
+(`held`) and its outcome, which the build copies onto the earlier page. Keep notebooks 1 and 2 as reviewed, changing
+them only by additions and dated corrections where a gap is found (as the review of 3 November 2026 did, A33), run
+cell by cell, never in full.
 
 ## Working agreement
 
@@ -80,10 +80,10 @@ uv run pytest -q
   act on them only at the owner's direction. What has been acted on, finding by finding, is in `AMENDMENTS.md` there. They are distinct from `analysis/audit/` (the check against IP Australia).
 - **Both stages were reviewed in full** on 2 November 2026 (pass 8, ADR 0043): the assessment is
   `docs/review-stages-1-and-2.md`, with the methods still to adopt in Stage 3.
-- **The evidence atlas** (`evidence/`, built by `analysis/atlas/`) matches the reviewed notebooks (ADR 0044). It is
-  frozen during Stage 3 (A32): its rule that a change to an observation changes its page in the same commit applies
-  again when the owner lifts the freeze (then `uv run python -m atlas.build` must pass, and drawn charts are redrawn
-  with `python -m atlas.charts` after `eda.build`).
+- **The evidence atlas** (`evidence/`, built by `analysis/atlas/`) matches all three notebooks (ADR 0044, 0049): a
+  change to an observation changes its page in the same commit, `uv run python -m atlas.build` must pass (the numbers
+  rule), and drawn charts are redrawn with `python -m atlas.charts` after `eda.build`. Stage 3's plain English is in
+  `analysis/atlas/content/observations/stage3/`.
 - **For Stage 2, use the full audit** in `analysis/claude-audit/261102/INDEX.md` (a Claude Code session, 2 November
   2026; the working list for Stage 2, A24; every finding acted on by pass 8): it rechecks the four Stage 2 audits above against the amended notebook, keeping their finding numbers, audits
   §5 to §8, and gathers the survival theme's findings in one table. Same rules: check, then act at the owner's direction.

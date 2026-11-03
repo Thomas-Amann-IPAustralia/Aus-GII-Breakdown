@@ -1,6 +1,6 @@
 // The evidence atlas: one page, routed by the address's #fragment, reading evidence/data/atlas.json (built by
 // analysis/atlas/build.py) and each chart's JSON on demand. All text reaches the page as text nodes; the light markup
-// in the content (**bold**, [[term]], {U44}, {B6}, `code`) is turned into elements here, never parsed as HTML.
+// in the content (**bold**, [[term]], {U44}, {B6}, {M3}, `code`) is turned into elements here, never parsed as HTML.
 
 import { el, initTheme } from "../../assets/js/util.js";
 import { chartCard, sweep } from "./charts.js";
@@ -16,7 +16,7 @@ const lensColour = (l) => `var(--l-${l})`;
 
 // ------------------------------------------------------------------------------------------------ text markup
 
-const TOKEN = /\*\*(.+?)\*\*|\[\[([^\]|]+)(?:\|([^\]]+))?\]\]|\{([UB]\d+)\}|`([^`]+)`|(OQ\d+)/g;
+const TOKEN = /\*\*(.+?)\*\*|\[\[([^\]|]+)(?:\|([^\]]+))?\]\]|\{([UBM]\d+)\}|`([^`]+)`|(OQ\d+)/g;
 /** Inline markup to nodes. */
 function inline(text) {
   const out = [];
@@ -76,21 +76,76 @@ function qChip(q) {
 function strengthBadge(s) {
   return el("span.strength", { title: "How strong the evidence is: see How to read an observation" }, s);
 }
-const STAGE_NAME = { 1: "each variable on its own", 2: "pairs of variables" };
+const STAGE_NAME = { 1: "each variable on its own", 2: "pairs of variables", 3: "many variables together" };
 function stageChip(o) {
-  return el("span.chip.stagechip", { title: `Stage ${o.stage}: ${STAGE_NAME[o.stage]}` }, `Stage ${o.stage}`);
+  return el(`span.chip.stagechip.s${o.stage}`, { title: `Stage ${o.stage}: ${STAGE_NAME[o.stage]}` }, `Stage ${o.stage}`);
 }
 function aboutLabel(o) {
   return el("span.about", o.about === "data" ? "About the data" : "About the IP system");
+}
+// Stage 3's outcomes (ADR 0046): always the word and its colour together, never the colour alone
+const VERDICT_TONE = {
+  holds: "hold", weakened: "weak", "not detected once held": "gone", reversed: "rev", "appears once held": "new",
+  "not detected either way": "none", "does not replicate": "none", mixed: "mixed", refined: "ref",
+};
+function verdictTag(v, small = false) {
+  return el(`span.vtag.vt-${VERDICT_TONE[v] || "none"}${small ? ".sm" : ""}`, { title: A.site.verdict_words?.[v] || null }, v);
+}
+/** The outcomes a page carries: a Stage 3 page's own (what it revisits), or what Stage 3 found for an earlier page. */
+function verdictsOf(o) {
+  return [...new Set([...(o.revisits || []), ...(o.later || [])].map((r) => r.verdict))];
+}
+function laterChip(o) {
+  return o.later?.length ? el("span.chip.later", { title: "Stage 3 tested this with other factors held" }, `Tested again in ${o.later.map((x) => x.id).join(", ")}`) : null;
 }
 function ocard(o) {
   const a = el("a.ocard", { href: `#/${o.id}` },
     el("div.meta", el("span.id", o.id), lensChip(o.lens, false), stageChip(o), aboutLabel(o)),
     el("h3", o.headline),
     el("p", trim(plain(o.statement), 190)),
-    el("div.meta", (o.questions || []).map((q) => el("span.chip.qchip", `Q${q.q}`)), o.chart ? el("span.chip", "Chart") : null));
+    el("div.meta", (o.questions || []).map((q) => el("span.chip.qchip", `Q${q.q}`)), o.chart ? el("span.chip", "Chart") : null,
+      o.stage === 3 ? verdictsOf(o).map((v) => verdictTag(v, true)) : laterChip(o)));
   a.style.setProperty("--lc", lensColour(o.lens));
   return a;
+}
+/** A compact row for long lists: the id, the headline, and what Stage 3 made of it. */
+function orow(o) {
+  const tags = o.stage === 3 ? verdictsOf(o).map((v) => verdictTag(v, true)) : o.later?.length
+    ? [el("span.chip.later", { title: `Stage 3 tested this with other factors held: ${o.later.map((x) => `${x.id}, ${x.verdict}`).join("; ")}` }, `→ ${o.later.map((x) => x.id).join(", ")}`)] : [];
+  const a = el("a.orow", { href: `#/${o.id}` },
+    el("span.id", o.id),
+    el("span.ohead", o.headline),
+    el("span.otags", ...tags, o.chart ? el("span.ochart", { title: "Has a chart" }, icon("chart")) : null));
+  a.style.setProperty("--lc", lensColour(o.lens));
+  return a;
+}
+/** A notebook section as a group that opens and closes, holding its observations as rows. */
+function sectionGroup(title, items, open = true) {
+  return el("details.sub", open ? { open: true } : {},
+    el("summary", el("span.chev", { "aria-hidden": "true" }, "›"), el("span.stitle", title.replace(/`/g, "")), el("span.scount", String(items.length))),
+    el("div.olist", items.map(orow)));
+}
+/** Every check Stage 3 made of an earlier observation, with the Stage 3 page that made it. */
+function revisitsAll() {
+  return A.observations.filter((o) => o.stage === 3).flatMap((o) => (o.revisits || []).map((r) => ({ ...r, m: o.id, lens: o.lens })));
+}
+/** A bar of Stage 3's checks by outcome, with the counts written out beside it. */
+function verdictBar() {
+  const all = revisitsAll();
+  const counts = A.verdicts.map((v) => [v, all.filter((r) => r.verdict === v).length]).filter(([, c]) => c);
+  const label = counts.map(([v, c]) => `${c} ${v}`).join(", ");
+  return el("div.vsummary",
+    el("div.vbar", { role: "img", "aria-label": `Stage 3's ${all.length} checks of earlier observations by outcome: ${label}.` },
+      counts.map(([v, c]) => { const s = el(`span.vt-${VERDICT_TONE[v]}`, { title: `${v}: ${c}` }); s.style.flexGrow = String(c); return s; })),
+    el("div.vlegend", counts.map(([v, c]) => el("span", verdictTag(v, true), el("strong", String(c))))));
+}
+/** A numbered list of findings, each with the observations behind it. */
+function tenList(items) {
+  return el("ol.ten", { style: { listStyle: "none", padding: 0 } }, items.map((t, i) => el("li.tenitem",
+    el("span.n", String(i + 1).padStart(2, "0")),
+    el("h3", t.title),
+    ...paras(t.text),
+    el("div.meta", t.ids.map(obsLink)))));
 }
 /** A name or phrase used mid-sentence: first letter lower-cased, unless it starts an acronym or a proper noun. */
 function lower(s) {
@@ -100,7 +155,7 @@ function lower(s) {
 /** Markup removed, for short summaries. */
 function plain(s) {
   return String(s ?? "").replace(/\[\[[^\]|]+\|([^\]]+)\]\]/g, "$1").replace(/\[\[([^\]]+)\]\]/g, (_, k) => A.glossary[k]?.title?.toLowerCase() || k)
-    .replace(/\*\*/g, "").replace(/\{([UB]\d+)\}/g, "$1").replace(/`/g, "");
+    .replace(/\*\*/g, "").replace(/\{([UBM]\d+)\}/g, "$1").replace(/`/g, "");
 }
 function trim(s, n) {
   const t = String(s).replace(/\s+/g, " ").trim();
@@ -116,7 +171,7 @@ function icon(name) {
   return s;
 }
 function note(kind, text) {
-  const tags = { assume: ["Assumption", "flag"], limit: ["Limit", "alert"], next: ["Next stage", "arrow"] };
+  const tags = { assume: ["Assumption", "flag"], limit: ["Limit", "alert"], next: ["Next stage", "arrow"], done: ["Done in Stage 3", "check"] };
   const [tag, ic] = tags[kind];
   return el(`div.note.${kind}`, icon(ic), el("div", el("span.tag", tag), el("p", inline(text))));
 }
@@ -209,36 +264,36 @@ function home() {
       el("h1", S.hero.title),
       ...paras(S.hero.lead, "lead"),
       el("div.row", { style: { marginTop: "18px" } },
-        el("a.btn.primary", { href: "#/observations" }, "Browse all observations", icon("arrow")),
+        el("a.btn.primary", { href: "#/stage3" }, "What Stage 3 found", icon("arrow")),
+        el("a.btn", { href: "#/observations" }, "Browse all observations"),
         el("a.btn", { href: "#/limits" }, "What the analysis cannot tell you yet"))),
     metrics);
 
   const banner = el("div.banner", icon("info"), el("div", ...paras(S.banner)));
 
-  const journey = el("div.journey", S.stages.map((s) => el(`a.stage${s.status === "Complete" ? ".done" : ""}`, { href: s.href || "#/next" },
+  const journey = el("div.journey", S.stages.map((s) => el(`a.stage${s.status === "Complete" ? ".done" : s.now ? ".now" : ""}`, { href: s.href || "#/next" },
     el("div.dot", s.n), el("h3", s.name), el("span.status", s.status), el("p", s.short))));
 
   const f = byId[S.featured.id];
   const feature = el("div.feature",
     el("div.feature-copy",
-      el("div.meta", obsLink(f.id), lensChip(f.lens), strengthBadge(f.strength)),
+      el("div.meta", obsLink(f.id), lensChip(f.lens), stageChip(f), strengthBadge(f.strength)),
       el("h2", S.featured.title || f.headline),
       ...paras(S.featured.text),
       el("div.row", el("a.btn.primary", { href: `#/${f.id}` }, "Follow this observation back to its data", icon("arrow")))),
     el("div.feature-viz", chartSlot(f.chart, { compact: true })));
 
-  const tenList = (items) => el("ol.ten", { style: { listStyle: "none", padding: 0 } }, items.map((t, i) => el("li.tenitem",
-    el("span.n", String(i + 1).padStart(2, "0")),
-    el("h3", t.title),
-    ...paras(t.text),
-    el("div.meta", t.ids.map(obsLink)))));
-  const ten = tenList(S.ten);
-  const found2 = S.stage2 ? tenList(S.stage2.items) : null;
+  const found3 = S.stage3 ? el("div",
+    verdictBar(),
+    tenList(S.stage3.items),
+    el("div.row", { style: { marginTop: "16px" } }, el("a.btn.primary", { href: "#/stage3" }, "Every signal Stage 3 tested, and what is left of it", icon("arrow")),
+      el("a.btn", { href: "#/next" }, "The early signals and data gaps"))) : null;
 
   const lensTiles = el("div.lens-tiles", LENS_ORDER.filter((l) => A.lenses[l]).map((l) => {
     const L = A.lenses[l];
-    const count = A.observations.filter((o) => o.lens === l).length;
-    const t = el("a.ltile", { href: `#/lens/${l}` }, el("h3", L.name), el("p", L.unit), el("small", `${count} observation${count === 1 ? "" : "s"} · ${L.rows || ""}`));
+    const mine = A.observations.filter((o) => o.lens === l);
+    const per = [1, 2, 3].map((k) => mine.filter((o) => o.stage === k).length).map((c, k) => (c ? `${c} in Stage ${k + 1}` : "")).filter(Boolean).join(", ");
+    const t = el("a.ltile", { href: `#/lens/${l}` }, el("h3", L.name), el("p", L.unit), el("small", `${mine.length} observation${mine.length === 1 ? "" : "s"}${per ? ` (${per})` : ""}`));
     t.style.setProperty("--lc", lensColour(l));
     return t;
   }));
@@ -253,52 +308,129 @@ function home() {
 
   const anatomy = el("div.anatomy", S.reading.parts.map((p) => el(`div.a-${p.kind}`, el("strong", p.title), ...paras(p.text))));
   const scale = el("div.grid.g4", S.reading.strengths.map((s) => el(`div.card.flat`, { style: s.now ? { borderColor: "var(--obs-line)", background: "var(--obs)" } : {} },
-    el("h3", s.name, ...(s.stages || []).map((n) => el("span.chip", { style: { marginLeft: "8px" } }, `Stage ${n}`))), ...paras(s.text))));
+    el("h3", s.name, ...(s.stages || []).map((k) => el("span.chip", { style: { marginLeft: "8px" } }, `Stage ${k}`))), ...paras(s.text))));
 
   show(hero, banner,
     section("Where this sits in the research", S.journey_intro, journey),
+    found3 ? section(S.stage3.title, S.stage3.intro, found3) : null,
     section("Start with one observation", S.featured.intro, feature),
-    found2 ? section(S.stage2.title, S.stage2.intro, found2) : null,
-    section(S.ten_title || "Ten things most worth knowing", S.ten_intro, ten),
+    S.stage2 ? section(S.stage2.title, S.stage2.intro, tenList(S.stage2.items)) : null,
+    section(S.ten_title || "Ten things most worth knowing", S.ten_intro, tenList(S.ten)),
     section("Explore by lens", "A lens is the unit being described: an IP right, a firm, a place, a country, a month, an industry or a research institution.", lensTiles),
     section("Explore by research question", "The five questions the research will answer after Stage 3. Every observation says which of them it moves closer to, and how.", qTiles),
     section("How to read an observation", S.reading.intro, anatomy, el("h3", { style: { margin: "22px 0 10px" } }, "How strong is the evidence?"), ...paras(S.reading.strength_intro, "muted"), scale));
 }
 
+// Stage 3 on one page: how a signal is tested, what the outcomes mean, and every check with the page that made it
+function stage3Page() {
+  setCrumbs([{ label: "Overview", href: "#/" }, { label: "What Stage 3 found" }]);
+  setNav("stage3");
+  document.title = "What Stage 3 found · Evidence atlas";
+  const T = A.site.stage3;
+  const all = revisitsAll();
+  const st = { v: "all" };
+  const board = el("div");
+  const bar = el("div.chipbar", { role: "group", "aria-label": "Show the checks with this outcome" });
+  const opts = [["all", "Every outcome"], ...A.verdicts.filter((v) => all.some((r) => r.verdict === v)).map((v) => [v, v])];
+  for (const [k, name] of opts) {
+    const b = el("button", { type: "button", "aria-pressed": String(st.v === k) },
+      k === "all" ? name : verdictTag(k, true), el("span.muted.small", String(k === "all" ? all.length : all.filter((r) => r.verdict === k).length)));
+    b.addEventListener("click", () => { st.v = k; [...bar.children].forEach((c) => c.setAttribute("aria-pressed", String(c === b))); draw(); });
+    bar.append(b);
+  }
+  function draw() {
+    const rows = all.filter((r) => st.v === "all" || r.verdict === st.v);
+    board.replaceChildren(...LENS_ORDER.map((l) => [l, rows.filter((r) => r.lens === l)]).filter(([, g]) => g.length).flatMap(([l, g]) => [
+      el("div.group-head", lensChip(l), el("h3", A.lenses[l]?.unit || ""), el("span.muted.small", `${g.length} check${g.length === 1 ? "" : "s"}`)),
+      el("div.vboard", g.map((r) => el("div.vrow",
+        el("div.vfrom", el("span.vstage", `Stage ${byId[r.id]?.stage ?? 2} found`), el("div", obsLink(r.id), " ", el("strong", r.signal || "")), el("p.small", trim(byId[r.id]?.headline || "", 150))),
+        el("div.varrow", { "aria-hidden": "true" }, icon("arrow")),
+        el("div.vto", el("span.vstage", "Held together in Stage 3"), el("div", verdictTag(r.verdict)), el("p", inline(r.what)),
+          el("a.small.vread", { href: `#/${r.m}` }, `${r.m}: ${trim(byId[r.m].headline, 96)}`))))),
+    ]), rows.length ? "" : el("p.muted", "No check has this outcome."));
+  }
+  draw();
+  const words = el("div.tablewrap", el("table.data", el("thead", el("tr", el("th", "Outcome"), el("th", "What it means"), el("th.n", "Checks"))),
+    el("tbody", A.verdicts.filter((v) => A.site.verdict_words?.[v]).map((v) => el("tr", el("td", verdictTag(v)), el("td", inline(A.site.verdict_words[v])), el("td.n", String(all.filter((r) => r.verdict === v).length)))))));
+  const ex = byId[T.example.id];
+  show(el("div.eyebrow", "Stage 3 · many variables together"), el("h1", T.page_title), ...paras(T.lead, "lead"),
+    el("div.banner", { style: { margin: "18px 0" } }, icon("info"), el("div", ...paras(T.banner))),
+    section("How Stage 3 tests a signal", T.how_intro, journeyDiagram(T.how),
+      el("div.dsteps", { style: { marginTop: "18px" } }, T.how.map((s, i) => el("div.dstep", el("div.dn", String(i + 1)), el("div", el("h3", s.title), ...paras(s.text)))))),
+    section(T.example.title, T.example.intro,
+      el("div.feature",
+        el("div.feature-copy", el("div.meta", obsLink(ex.id), lensChip(ex.lens), stageChip(ex)), el("h2", ex.headline), ...paras(T.example.text),
+          el("div.row", el("a.btn.primary", { href: `#/${ex.id}` }, `Open ${ex.id}`, icon("arrow")))),
+        el("div.feature-viz", chartSlot(ex.chart, { compact: true })))),
+    section("What the outcomes mean", T.verdicts_intro, words),
+    section("Every signal Stage 3 tested, and what is left of it", T.board_intro, verdictBar(), el("div", { style: { margin: "14px 0 4px" } }, bar), board),
+    section(T.structure_title, T.structure_intro, tenList(T.structure)),
+    section("What Stage 3 hands on", T.next_intro, el("div.row", el("a.btn.primary", { href: "#/next" }, "The early signals and data gaps", icon("arrow")),
+      el("a.btn", { href: "#/observations?stage=3" }, "All Stage 3 observations"))));
+}
+
 function observationsPage(params) {
   setCrumbs([{ label: "Overview", href: "#/" }, { label: "Observations" }]);
   setNav("observations");
-  const st = { lens: params.get("lens") || "all", q: params.get("q") || "all", about: params.get("about") || "all", stage: params.get("stage") || "all", s: params.get("s") || "" };
-  const results = el("div");
+  const pref = (k, d) => { try { return localStorage.getItem(`atlas.${k}`) || d; } catch { return d; } };
+  const keep = (k, v) => { try { localStorage.setItem(`atlas.${k}`, v); } catch { /* storage unavailable: the choice lasts this visit */ } };
+  const st = {
+    lens: params.get("lens") || "all", q: params.get("q") || "all", about: params.get("about") || "all", stage: params.get("stage") || "all",
+    v: params.get("v") || "all", s: params.get("s") || "", view: params.get("view") || pref("view", "list"), group: params.get("group") || pref("group", "lens"),
+  };
+  const results = el("div.results");
   const count = el("p.result-count", { "aria-live": "polite" });
+  const outline = el("nav.outline", { "aria-label": "Jump to a group" });
 
+  const pressGroup = (box, b) => [...box.children].forEach((c) => c.setAttribute("aria-pressed", String(c === b)));
   const lensBar = el("div.chipbar", { role: "group", "aria-label": "Lens" });
-  const opts = [["all", "All lenses"], ...LENS_ORDER.filter((l) => A.lenses[l]).map((l) => [l, A.lenses[l].name])];
-  for (const [k, name] of opts) {
+  for (const [k, name] of [["all", "All lenses"], ...LENS_ORDER.filter((l) => A.lenses[l]).map((l) => [l, A.lenses[l].name])]) {
     const b = el("button", { type: "button", "aria-pressed": String(st.lens === k) }, k === "all" ? null : el("span.ldot"), name);
     if (k !== "all") b.style.setProperty("--lc", lensColour(k));
-    b.addEventListener("click", () => { st.lens = k; [...lensBar.children].forEach((c) => c.setAttribute("aria-pressed", String(c === b))); update(); });
+    b.addEventListener("click", () => { st.lens = k; pressGroup(lensBar, b); update(); });
     lensBar.append(b);
   }
+  const segOf = (label, pairs, key, titles = {}) => {
+    const box = el("div.seg", { role: "group", "aria-label": label });
+    for (const [k, name] of pairs) {
+      const b = el("button", { type: "button", "aria-pressed": String(st[key] === k), title: titles[k] || null }, name);
+      b.addEventListener("click", () => { st[key] = k; pressGroup(box, b); if (key === "view" || key === "group") keep(key, k); update(); });
+      box.append(b);
+    }
+    return box;
+  };
+  const stageSeg = segOf("Stage", [["all", "All stages"], ["1", "Stage 1"], ["2", "Stage 2"], ["3", "Stage 3"]], "stage",
+    { 1: `Stage 1: ${STAGE_NAME[1]}`, 2: `Stage 2: ${STAGE_NAME[2]}`, 3: `Stage 3: ${STAGE_NAME[3]}` });
+  const about = segOf("What the observation is about", [["all", "All"], ["system", "About the IP system"], ["data", "About the data"]], "about");
+  const viewSeg = segOf("Show as", [["list", "List"], ["cards", "Cards"]], "view");
+  const groupSeg = segOf("Group by", [["lens", "By lens"], ["stage", "By stage"]], "group");
   const qSel = el("select", { "aria-label": "Research question" }, el("option", { value: "all" }, "Any research question"),
     A.questions.map((q) => el("option", { value: String(q.id) }, `Q${q.id}: ${q.short}`)));
   qSel.value = st.q;
   qSel.addEventListener("change", () => { st.q = qSel.value; update(); });
-  const about = el("div.seg", { role: "group", "aria-label": "What the observation is about" });
-  for (const [k, name] of [["all", "All"], ["system", "About the IP system"], ["data", "About the data"]]) {
-    const b = el("button", { type: "button", "aria-pressed": String(st.about === k) }, name);
-    b.addEventListener("click", () => { st.about = k; [...about.children].forEach((c) => c.setAttribute("aria-pressed", String(c === b))); update(); });
-    about.append(b);
-  }
-  const stageSeg = el("div.seg", { role: "group", "aria-label": "Stage" });
-  for (const [k, name] of [["all", "Both stages"], ["1", "Stage 1"], ["2", "Stage 2"]]) {
-    const b = el("button", { type: "button", "aria-pressed": String(st.stage === k), title: k === "all" ? null : `Stage ${k}: ${STAGE_NAME[k]}` }, name);
-    b.addEventListener("click", () => { st.stage = k; [...stageSeg.children].forEach((c) => c.setAttribute("aria-pressed", String(c === b))); update(); });
-    stageSeg.append(b);
-  }
+  const used = new Set(A.observations.flatMap(verdictsOf));
+  const vSel = el("select", { "aria-label": "What Stage 3 found" }, el("option", { value: "all" }, "Any Stage 3 outcome"),
+    el("option", { value: "later" }, "Tested again in Stage 3"),
+    A.verdicts.filter((v) => used.has(v)).map((v) => el("option", { value: v }, `Stage 3: ${v}`)));
+  vSel.value = st.v;
+  vSel.addEventListener("change", () => { st.v = vSel.value; update(); });
   const search = el("input", { type: "search", placeholder: "Search the observations", "aria-label": "Search the observations", value: st.s });
   search.addEventListener("input", () => { st.s = search.value; update(); });
+  const openAll = (open) => results.querySelectorAll("details").forEach((d) => { d.open = open; });
 
+  function groups(list) {
+    if (st.group === "stage") {
+      return [1, 2, 3].map((k) => ({ key: `s${k}`, title: `Stage ${k}: ${STAGE_NAME[k]}`, chip: el("span.chip.stagechip", `Stage ${k}`), items: list.filter((o) => o.stage === k) }))
+        .filter((g) => g.items.length)
+        .map((g) => ({ ...g, subs: LENS_ORDER.map((l) => [A.lenses[l]?.name || l, g.items.filter((o) => o.lens === l)]).filter(([, x]) => x.length) }));
+    }
+    return LENS_ORDER.map((l) => ({ key: l, title: A.lenses[l]?.unit || "", chip: lensChip(l), items: list.filter((o) => o.lens === l) }))
+      .filter((g) => g.items.length)
+      .map((g) => ({ ...g, subs: [...new Set(g.items.map((o) => `${o.stage}|${o.section}`))].map((k) => {
+        const [s, sec] = [k.slice(0, 1), k.slice(2)];
+        return [`Stage ${s} · ${sec}`, g.items.filter((o) => String(o.stage) === s && o.section === sec)];
+      }) }));
+  }
   function update() {
     const words = st.s.toLowerCase().split(/\s+/).filter(Boolean);
     const list = A.observations.filter((o) =>
@@ -306,28 +438,46 @@ function observationsPage(params) {
       (st.q === "all" || o.questions.some((x) => String(x.q) === st.q)) &&
       (st.about === "all" || o.about === st.about) &&
       (st.stage === "all" || String(o.stage) === st.stage) &&
-      words.every((w) => `${o.id} ${o.headline} ${o.statement} ${(o.points || []).join(" ")}`.toLowerCase().includes(w)));
+      (st.v === "all" || (st.v === "later" ? o.later?.length : verdictsOf(o).includes(st.v))) &&
+      words.every((w) => haystack(o).includes(w)));
     count.textContent = `${list.length} of ${A.observations.length} observations`;
-    const groups = LENS_ORDER.map((l) => [l, list.filter((o) => o.lens === l)]).filter(([, g]) => g.length);
-    results.replaceChildren(...groups.flatMap(([l, g]) => [
-      el("div.group-head", lensChip(l), el("h2", A.lenses[l]?.unit || ""), el("span.muted.small", `${g.length}`)),
-      el("div.cards", g.map(ocard)),
-    ]), list.length ? "" : el("p.muted", "No observation matches. Try fewer words, or another lens."));
+    const gs = groups(list);
+    const few = list.length <= 60;
+    outline.replaceChildren(...gs.map((g) => el("button", { type: "button", onclick: () => { const d = document.getElementById(`grp-${g.key}`); if (d) { d.open = true; d.scrollIntoView({ block: "start" }); } } },
+      g.chip.cloneNode(true), el("span.count", String(g.items.length)))));
+    outline.hidden = gs.length < 2;
+    results.replaceChildren(...gs.map((g) => el("details.ogroup", { id: `grp-${g.key}`, open: true },
+      el("summary", el("span.chev", { "aria-hidden": "true" }, "›"), g.chip, el("h2", g.title), el("span.muted.small", `${g.items.length}`)),
+      st.view === "cards"
+        ? g.subs.map(([t, items]) => [el("h3.subhead", t.replace(/`/g, "")), el("div.cards", items.map(ocard))])
+        : g.subs.map(([t, items]) => sectionGroup(t, items, few || g.subs.length <= 6)))),
+    list.length ? "" : el("p.muted", "No observation matches. Try fewer words, or another lens."));
     const p = new URLSearchParams();
-    if (st.lens !== "all") p.set("lens", st.lens);
-    if (st.q !== "all") p.set("q", st.q);
-    if (st.about !== "all") p.set("about", st.about);
-    if (st.stage !== "all") p.set("stage", st.stage);
+    for (const k of ["lens", "q", "about", "stage", "v"]) if (st[k] !== "all") p.set(k, st[k]);
     if (st.s) p.set("s", st.s);
+    if (st.view !== "list") p.set("view", st.view);
+    if (st.group !== "lens") p.set("group", st.group);
     history.replaceState(null, "", `#/observations${p.toString() ? `?${p}` : ""}`);
   }
   show(
-    el("div.eyebrow", "Stages 1 and 2 · every observation"),
+    el("div.eyebrow", "Stages 1, 2 and 3 · every observation"),
     el("h1", "Observations"),
     ...paras(A.site.observations_intro, "lead"),
-    el("div.filters", lensBar, el("div.filter-row", qSel, stageSeg, about, search), count),
+    el("div.filters",
+      lensBar,
+      el("div.filter-row", search, qSel, vSel),
+      el("div.filter-row", stageSeg, about),
+      el("div.filter-row.tools", count, el("span.spacer"), el("span.muted.small", "Group"), groupSeg, el("span.muted.small", "Show"), viewSeg,
+        el("button.linkbtn", { type: "button", onclick: () => openAll(true) }, "Open all"), el("button.linkbtn", { type: "button", onclick: () => openAll(false) }, "Close all"))),
+    outline,
     results);
   update();
+}
+const hayCache = new Map();
+/** The text an observation is searched by. */
+function haystack(o) {
+  if (!hayCache.has(o.id)) hayCache.set(o.id, `${o.id} ${o.headline} ${plain(o.statement)} ${(o.points || []).map(plain).join(" ")} ${o.section} ${(o.revisits || []).map((r) => `${r.id} ${r.signal || ""}`).join(" ")}`.toLowerCase());
+  return hayCache.get(o.id);
 }
 
 function trailStep(n, iconName, title, summary, body, open = false) {
@@ -363,6 +513,28 @@ function tablesTable(sources) {
   return el("div.tablewrap", t);
 }
 
+/** For a Stage 3 page: what Stage 2 found, what was held together, and what is left, as three linked steps. */
+function chainBlock(o) {
+  const seen = new Set();
+  const from = (o.revisits || []).filter((r) => byId[r.id] && !seen.has(r.id) && seen.add(r.id));
+  return el("section.chain", { "aria-label": "How this observation follows from the earlier stages" },
+    el("div.clink",
+      el("span.ctag", el("b", "1"), from.some((r) => byId[r.id].stage === 1) && !from.some((r) => byId[r.id].stage === 2) ? "Stage 1 found" : "Stage 2 found"),
+      from.length
+        ? el("ul", from.map((r) => el("li", obsLink(r.id), " ", el("span", r.signal ? r.signal : trim(byId[r.id].headline, 110)))))
+        : el("p", "A question of structure: which measures repeat each other, and whether there are distinct groups.")),
+    el("div.carrow", { "aria-hidden": "true" }, icon("arrow")),
+    el("div.clink",
+      el("span.ctag", el("b", "2"), "Stage 3 held together"),
+      o.held?.length ? el("div.held", o.held.map((h) => el("span.chip", inline(h)))) : el("p", "Nothing held: a description of how the measures relate.")),
+    el("div.carrow", { "aria-hidden": "true" }, icon("arrow")),
+    el("div.clink.cres",
+      el("span.ctag", el("b", "3"), "What is left"),
+      (o.revisits || []).length
+        ? el("ul.vlist", o.revisits.map((r) => el("li", verdictTag(r.verdict, true), " ", el("span", r.signal || r.id))))
+        : el("p", "See the observation below.")));
+}
+
 function observationPage(id) {
   const o = byId[id];
   const L = A.lenses[o.lens] || { name: o.lens };
@@ -374,17 +546,33 @@ function observationPage(id) {
   const head = el("header.obs-head",
     el("div.meta", el("span.id", o.id), lensChip(o.lens), stageChip(o), el("span", o.section.replace(/`/g, "")), strengthBadge(o.strength), aboutLabel(o)),
     el("h1", o.headline));
+  const chain = o.stage === 3 ? chainBlock(o) : null;
   const box = el("section.obs-box", { "aria-label": `Observation ${o.id}` },
     el("div.obs-label", icon("eye"), `Observation ${o.id} · ${o.strength}`),
     el("p.statement", inline(o.statement)),
     o.points?.length ? el("ul", o.points.map((p) => el("li", inline(p)))) : null);
+  const update = o.later?.length ? el("section.s3update", { "aria-label": "What Stage 3 found" },
+    el("div.s3label", icon("route"), o.later.length === 1 ? "Stage 3 tested this with other factors held together" : `Stage 3 tested this ${o.later.length} ways, with other factors held together`),
+    o.later.map((x) => el("div.s3item",
+      el("div", verdictTag(x.verdict)),
+      el("div", el("p", inline(x.what)), el("a.vread", { href: `#/${x.id}` }, `Read ${x.id}: ${trim(byId[x.id].headline, 110)}`))))) : null;
   const figures = o.figures?.length ? el("div.figures", o.figures.map((f) => el("div.figure", el("strong", f.value), el("span", inline(f.label))))) : null;
   const chart = o.chart ? chartSlot(o.chart) : null;
+  const verdicts = o.verdicts?.length ? el("section.block",
+    el("h2", icon("check"), "Signal by signal"),
+    el("p.block-intro", "Each comparison as Stage 2 measured it (raw), then with its other factors held together, and the outcome."),
+    el("div.tablewrap", el("table.data.vtable",
+      el("thead", el("tr", el("th", { scope: "col" }, "What was compared"), el("th", { scope: "col" }, "Raw, then held together"), el("th", { scope: "col" }, "Outcome"))),
+      el("tbody", o.verdicts.map((v) => el("tr", el("td", inline(v.signal)), el("td", inline(v.detail || "")), el("td", verdictTag(v.verdict)))))))) : null;
 
+  const intro = {
+    1: "Stage 1 answers none of the five questions. This is how the observation prepares the ground for them.",
+    2: "Stage 2 answers none of the five questions either: it finds which measures go together. This is how the association prepares the ground for them.",
+    3: "Stage 3 answers none of the five questions either: it tests which of Stage 2's signals survive with their other factors held together. This is how the result prepares the ground for them.",
+  };
   const why = el("section.block",
     el("h2", icon("compass"), "How this moves the research forward"),
-    el("p.block-intro", o.stage === 1 ? "Stage 1 answers none of the five questions. This is how the observation prepares the ground for them."
-      : "Stage 2 answers none of the five questions either: it finds which measures go together. This is how the association prepares the ground for them."),
+    el("p.block-intro", intro[o.stage]),
     el("div.qlist", o.questions.map((q) => {
       const Q = A.questions.find((x) => x.id === q.q);
       return el("div.qitem", el("a.qn", { href: `#/question/${q.q}` }, `Q${q.q}`), el("div", el("h3", Q.title), el("p", inline(q.how))));
@@ -422,7 +610,8 @@ function observationPage(id) {
 
   const honesty = el("section.block", el("h2", icon("alert"), "Assumptions and limits"),
     el("div.notes", o.assumptions.map((a) => note("assume", a)), o.limits.map((a) => note("limit", a))));
-  const next = el("section.block", el("h2", icon("arrow"), "What happens next"), el("div.notes", note("next", o.next)));
+  const done = o.later?.length ? note("done", `Stage 3 has since tested this with other factors held: ${o.later.map((x) => `{${x.id}}, ${x.verdict}`).join("; ")}. The box under the observation says what was left.`) : null;
+  const next = el("section.block", el("h2", icon("arrow"), "What happens next"), el("div.notes", note("next", o.next), done));
 
   const nbCharts = o.notebook_charts || [];
   const analysts = el("section.block",
@@ -435,13 +624,15 @@ function observationPage(id) {
         el("p.small", el("a", { href: A.notebooks?.[o.stage] || A.notebook, rel: "noopener noreferrer", target: "_blank" }, "Open the notebook on GitHub"), " · the code that builds every lens is in analysis/eda/build.py."))));
 
   const related = (o.related || []).filter((r) => byId[r]);
-  const rel = related.length ? el("section.block", el("h2", "Related observations"), el("div.cards", related.map((r) => ocard(byId[r])))) : null;
+  const rel = related.length ? el("section.block", el("h2", "Related observations"), el("div.olist.boxed", related.map((r) => orow(byId[r])))) : null;
 
   const prev = A.observations[i - 1], nxt = A.observations[i + 1];
   const pager = el("nav.pager", { "aria-label": "Previous and next observations" },
-    prev ? el("a", { href: `#/${prev.id}` }, el("small", `← ${prev.id}`), prev.headline) : el("span"),
-    nxt ? el("a.next", { href: `#/${nxt.id}` }, el("small", `${nxt.id} →`), nxt.headline) : null);
+    prev ? el("a", { href: `#/${prev.id}`, rel: "prev" }, el("small", `← ${prev.id}`), prev.headline) : el("span"),
+    nxt ? el("a.next", { href: `#/${nxt.id}`, rel: "next" }, el("small", `${nxt.id} →`), nxt.headline) : null);
+  const keys = el("p.keys", "Keys: ", el("kbd", "←"), " and ", el("kbd", "→"), " move between observations; ", el("kbd", "/"), " searches.");
 
+  const sibs = A.observations.filter((x) => x.stage === o.stage && x.section === o.section && x.lens === o.lens);
   const terms = [...new Set([...(o.terms || []), ...[...JSON.stringify(o).matchAll(/\[\[([^\]|]+)/g)].map((m) => m[1])])].filter((t) => A.glossary[t]);
   const rail = el("aside.rail", { "aria-label": "Explainers and facts about this observation" },
     el("section",
@@ -454,11 +645,17 @@ function observationPage(id) {
           el("dt", "Stage"), el("dd", `${o.stage} of 3 (${STAGE_NAME[o.stage]})`)),
         el("h2", { style: { marginTop: "14px" } }, "Strength of evidence"),
         el("div.scale", ["descriptive", "observational", "causal", "projected"].map((s) => el(`span${s === o.strength ? ".on" : ""}`, s === o.strength ? `${s} (this observation)` : s))),
-        el("p.small.muted", { style: { marginTop: "8px" } }, o.strength === "descriptive" ? "Descriptive: what the data show, not why." : "Observational: two measures go together; other explanations remain, and it is not a cause.", " Causal claims need designs that come after Stage 3."))),
+        el("p.small.muted", { style: { marginTop: "8px" } }, o.strength === "descriptive" ? "Descriptive: what the data show, not why." : "Observational: measures go together; other explanations remain, and it is not a cause.", " Causal claims need designs that come after Stage 3."))),
+    sibs.length > 1 ? el("section.sibs",
+      el("h2", "In this section"),
+      el("p.small.muted", `Stage ${o.stage} · ${o.section.replace(/`/g, "")}`),
+      el("ol", sibs.map((x) => el("li", x.id === o.id
+        ? el("span.here", { "aria-current": "page" }, el("span.id", x.id), el("span", trim(x.headline, 80)))
+        : el("a", { href: `#/${x.id}` }, el("span.id", x.id), el("span", trim(x.headline, 80))))))) : null,
     terms.length ? el("section", el("h2", "Explainers"), ...terms.map((t) => el("div.explainer", el("h3", icon("info"), A.glossary[t].title), ...paras(A.glossary[t].short)))) : null);
 
   show(el("div.obs-page",
-    el("article.obs-main", head, box, figures, chart, why, trail, honesty, next, analysts, rel, pager),
+    el("article.obs-main", head, chain, box, update, figures, chart, verdicts, why, trail, honesty, next, analysts, rel, pager, keys),
     rail));
 }
 
@@ -483,26 +680,29 @@ function lensPage(l) {
   setCrumbs([{ label: "Lenses", href: "#/lenses" }, { label: L.name }]);
   setNav("lenses");
   const obs = A.observations.filter((o) => o.lens === l);
-  const sections = [...new Set(obs.map((o) => o.section))];
+  const stages = [1, 2, 3].filter((k) => obs.some((o) => o.stage === k));
   const srcs = (L.sources || []).map((s) => A.sources[s]).filter(Boolean);
   const head = el("header",
     el("div.eyebrow", lensChip(l, false), "Lens"),
     el("h1", L.name), el("p.lead", L.unit),
     el("div.figures", (L.facts || []).map((f) => el("div.figure", el("strong", f.value), el("span", f.label)))));
+  const outline = el("nav.outline", { "aria-label": "Jump to a stage" }, stages.map((k) => el("button", { type: "button", onclick: () => document.getElementById(`st-${k}`)?.scrollIntoView({ block: "start" }) },
+    el("span.chip.stagechip", `Stage ${k}`), STAGE_NAME[k], el("span.count", String(obs.filter((o) => o.stage === k).length)))));
   show(head,
     el("div.prose", ...paras(L.description)),
     L.questions?.length ? el("div.row", { style: { margin: "10px 0 0" } }, el("span.muted.small", "Mainly informs"), ...L.questions.map(qChip)) : "",
+    section(`Its ${obs.length} observations`, "In the order the analysis made them: each measure on its own (Stage 1), then pairs (Stage 2), then several at once (Stage 3). Each notebook section opens and closes.",
+      outline,
+      ...stages.flatMap((k) => {
+        const mine = obs.filter((o) => o.stage === k);
+        const secs = [...new Set(mine.map((o) => o.section))];
+        return [el("h2.stage-h", { id: `st-${k}` }, `Stage ${k}: ${STAGE_NAME[k]}`, el("span.muted.small", ` · ${mine.length} observation${mine.length === 1 ? "" : "s"}`)),
+          ...secs.map((s) => sectionGroup(s, mine.filter((o) => o.section === s), secs.length <= 8))];
+      })),
     section("Built from", "Each source as its publisher released it. Where the data come from lists every table, where it is kept and its fingerprint.", el("div.srclist", srcs.map((s) => sourceCard(s)))),
     L.repairs?.length ? section("Repairs made before any observation", "Problems found while profiling, fixed in the lens and recorded in a decision record. Each says why.",
       el("div.prep", L.repairs.map((p) => el("div.prepitem", el("p", inline(p.what)), el("p.why", el("strong", "Why"), ...inline(p.why), p.adr ? el("span.muted", ` (ADR ${p.adr})`) : null))))) : "",
-    L.limits?.length ? section("Limits of this lens", null, el("div.notes", L.limits.map((x) => note("limit", x)))) : "",
-    section(`Its ${obs.length} observations`, null, ...[1, 2].flatMap((n) => {
-      const mine = obs.filter((o) => o.stage === n);
-      if (!mine.length) return [];
-      const secs = sections.filter((s) => mine.some((o) => o.section === s));
-      return [el("h2", { style: { margin: "26px 0 4px" } }, `Stage ${n}: ${STAGE_NAME[n]}`),
-        ...secs.flatMap((s) => [el("h3", { style: { margin: "18px 0 10px" } }, s.replace(/`/g, "")), el("div.cards", mine.filter((o) => o.section === s).map(ocard))])];
-    })));
+    L.limits?.length ? section("Limits of this lens", null, el("div.notes", L.limits.map((x) => note("limit", x)))) : "");
 }
 
 function questionsPage() {
@@ -524,15 +724,20 @@ function questionPage(id) {
   setCrumbs([{ label: "Research questions", href: "#/questions" }, { label: `Question ${q.id}` }]);
   setNav("questions");
   const bearing = A.observations.filter((o) => o.questions.some((x) => x.q === q.id));
-  const items = (n) => bearing.filter((o) => o.stage === n).map((o) => el("div.qitem", obsLink(o.id), el("div", el("h3", el("a", { href: `#/${o.id}` }, o.headline)), el("p", inline(o.questions.find((x) => x.q === q.id).how)))));
-  const leads = A.site.next.leads.filter((l) => l.questions.includes(q.id));
+  const items = (n) => bearing.filter((o) => o.stage === n).map((o) => el("div.qitem", obsLink(o.id), el("div",
+    el("h3", el("a", { href: `#/${o.id}` }, o.headline)),
+    o.stage === 3 ? el("div.meta", { style: { margin: "2px 0 4px" } }, verdictsOf(o).map((v) => verdictTag(v, true))) : null,
+    el("p", inline(o.questions.find((x) => x.q === q.id).how)))));
+  const signals = (A.site.next.signals || []).filter((l) => l.questions.includes(q.id));
+  const count = (n) => bearing.filter((o) => o.stage === n).length;
   show(
     el("div.eyebrow", `Question ${q.id} of 5`), el("h1", q.title), ...paras(q.text, "lead"),
     q.sub?.length ? section("What the research goal asks under it", null, el("ul.prose", q.sub.map((s) => el("li", s)))) : "",
-    section("What Stage 2 found that bears on it", "Pairs of measures that go together, held in a second period or sample: associations, not answers.", el("div.qlist", items(2)), editorialNote("These links are the analyst's guide to where each observation may help. They are not findings.")),
-    section("What Stage 1 found that bears on it", "Descriptive observations: groundwork, not answers.", el("div.qlist", items(1))),
-    section(A.site.next.leads_title, "Signals carried from Stage 2, each to be tested with its third factors held steady.",
-      el("div.qlist", leads.map((l) => el("div.qitem", el("span.qn", "Lead"), el("div", el("h3", inline(l.lead)), el("p", "From ", ...l.ids.flatMap((x, i) => [i ? ", " : "", obsLink(x)]))))))),
+    signals.length ? section("Early signals that bear on it", "From Stage 3's table of early signals: associations that survived their third factors held together, drafted for the research owner's review. Not answers.",
+      el("div.qlist", signals.map((l) => el("div.qitem", el("span.qn", `#${A.site.next.signals.indexOf(l) + 1}`), el("div", el("h3", inline(l.signal)), el("p.small", el("strong", "Strength: "), ...inline(l.strength)), el("p.small", "From ", ...l.ids.flatMap((x, i) => [i ? ", " : "", obsLink(x)])), el("p.small", el("strong", "Suggested next step: "), ...inline(l.next))))))) : "",
+    count(3) ? section(`What Stage 3 found that bears on it (${count(3)})`, "Stage 2's signals tested with their other factors held together, and the structure among places, countries, industries and institutions.", el("div.qlist", items(3)), editorialNote("These links are the analyst's guide to where each observation may help. They are not findings.")) : "",
+    section(`What Stage 2 found that bears on it (${count(2)})`, "Pairs of measures that go together, held in a second period or sample: associations, not answers.", el("div.qlist", items(2))),
+    section(`What Stage 1 found that bears on it (${count(1)})`, "Descriptive observations: groundwork, not answers.", el("div.qlist", items(1))),
     q.reach?.length ? section("What is out of reach for now", null, el("div.notes", q.reach.map((x) => note("limit", x)))) : "");
 }
 
@@ -612,16 +817,18 @@ function nextPage() {
   const stages = el("div.grid.g3", N.stages.map((s) => el("div.card", { style: s.now ? { borderColor: "var(--obs-line)" } : {} },
     el("div.meta", el("span.chip", s.when)), el("h2", { style: { marginTop: "8px" } }, s.name), el("p", el("strong", "Asks: "), inline(s.asks)),
     ...paras(s.how, "small"), el("p.small", el("strong", "For example: "), inline(s.example)), el("p.small", el("strong", "What it adds: "), inline(s.adds)), el("p.small.muted", el("strong", "Finished when: "), inline(s.done)))));
-  const leads = el("div.tablewrap", el("table.data", el("thead", el("tr", el("th", N.leads_head), el("th", "From"), el("th", "Questions"))),
-    el("tbody", N.leads.map((l) => el("tr", el("td", inline(l.lead)), el("td", l.ids.flatMap((x, i) => [i ? " " : "", obsLink(x)])), el("td", l.questions.map(qChip)))))));
+  const signals = el("div.tablewrap", el("table.data.signals", el("thead", el("tr", el("th.n", "#"), el("th", "Signal"), el("th", "Evidence"), el("th", "Strength"), el("th", "Questions"), el("th", "Suggested next step"))),
+    el("tbody", N.signals.map((x, i) => el("tr", el("td.n", String(i + 1)), el("td", inline(x.signal)), el("td", x.ids.flatMap((y, j) => [j ? " " : "", obsLink(y)])), el("td", inline(x.strength)), el("td", x.questions.map(qChip)), el("td", inline(x.next)))))));
+  const gaps = el("div.tablewrap", el("table.data", el("thead", el("tr", el("th", "Gap"), el("th", "Why it matters"), el("th", "Possible source"), el("th", "Cost"))),
+    el("tbody", N.data_gaps.map((g) => el("tr", el("td", el("strong", inline(g.gap))), el("td", inline(g.why)), el("td", inline(g.source)), el("td", inline(g.cost)))))));
   show(el("div.eyebrow", "The road ahead"), el("h1", "What comes next"), ...paras(N.intro, "lead"),
     section("Three stages, then the questions", null, stages),
-    section(N.leads_title, N.leads_intro, leads),
+    section(N.signals_title, N.signals_intro, signals, N.recorded ? el("div.notes", { style: { marginTop: "12px" } }, el("div.note.limit", icon("flag"), el("div", el("span.tag", "Recorded, not carried"), el("p", inline(N.recorded))))) : null),
+    section("Gaps in the data", N.gaps_intro, gaps),
     section("Puzzles kept in view", N.puzzles_intro, el("div.notes", N.puzzles.map((p) => el("div.note.next", icon("flag"), el("div", el("span.tag", "Unexplained"), el("p", inline(p))))))),
     section("Questions waiting on someone else", N.open_intro, el("div.grid.g2",
       el("div.card.flat", el("h3", "For the research owner"), el("ul", N.owner.map((x) => el("li", inline(x))))),
       el("div.card.flat", el("h3", "For IP Australia"), el("ul", N.ipa.map((x) => el("li", inline(x))))))),
-    section("Data worth adding", N.gaps_intro, el("ul.prose", N.gaps.map((x) => el("li", inline(x))))),
     section("After Stage 3", null, el("ol.prose", N.after.map((x) => el("li", inline(x))))));
 }
 
@@ -721,14 +928,16 @@ function glossaryPage(focus) {
 function route() {
   hidePop();
   closeMenu();
+  closeJump();
   const raw = location.hash.replace(/^#\/?/, "");
   const [path, query] = raw.split("?");
   const params = new URLSearchParams(query || "");
   const parts = path.split("/").filter(Boolean);
   document.title = "Evidence atlas";
   if (!parts.length) home();
-  else if (/^[UB]\d+$/.test(parts[0]) && byId[parts[0]]) observationPage(parts[0]);
+  else if (/^[UBM]\d+$/.test(parts[0]) && byId[parts[0]]) observationPage(parts[0]);
   else if (parts[0] === "observations") observationsPage(params);
+  else if (parts[0] === "stage3") stage3Page();
   else if (parts[0] === "lenses") lensesPage();
   else if (parts[0] === "lens" && A.lenses[parts[1]]) lensPage(parts[1]);
   else if (parts[0] === "questions") questionsPage();
@@ -753,13 +962,88 @@ const side = $("#side"), menu = $("#menu");
 function closeMenu() { side.classList.remove("open"); menu.setAttribute("aria-expanded", "false"); }
 menu.addEventListener("click", () => { const open = !side.classList.contains("open"); side.classList.toggle("open", open); menu.setAttribute("aria-expanded", String(open)); });
 
-// the search box in the top bar: an id goes straight to its page; words go to the filtered list
-$("#jump").addEventListener("keydown", (e) => {
-  if (e.key !== "Enter") return;
-  const v = e.target.value.trim();
-  e.target.value = "";
-  if (/^[ub]\d+$/i.test(v) && byId[v.toUpperCase()]) location.hash = `#/${v.toUpperCase()}`;
-  else location.hash = `#/observations?s=${encodeURIComponent(v)}`;
+// the search box in the top bar: suggestions as you type (an id, or words in a headline); Enter opens the one chosen,
+// or the filtered list of observations
+const jump = $("#jump");
+const jumpList = el("ul.jump-list", { id: "jump-list", role: "listbox", "aria-label": "Matching observations", hidden: true });
+jump.closest(".jump").append(jumpList);
+jump.setAttribute("role", "combobox");
+jump.setAttribute("aria-autocomplete", "list");
+jump.setAttribute("aria-controls", "jump-list");
+jump.setAttribute("aria-expanded", "false");
+let hits = [], pick = -1;
+function matches(v) {
+  const q = v.trim().toLowerCase();
+  if (!q) return [];
+  const id = q.toUpperCase();
+  const exact = byId[id] ? [byId[id]] : [];
+  const prefix = /^[UBM]\d*$/.test(id) ? A.observations.filter((o) => o.id !== id && o.id.startsWith(id)) : [];
+  const words = q.split(/\s+/);
+  const rest = A.observations.filter((o) => !exact.includes(o) && !prefix.includes(o) && words.every((w) => haystack(o).includes(w)));
+  // headline matches first, the latest stage first among equals; then matches anywhere in the text
+  const inHead = (o) => words.every((w) => o.headline.toLowerCase().includes(w));
+  const rank = (o) => (inHead(o) ? 0 : 10) + (3 - o.stage);
+  return [...exact, ...prefix, ...rest.sort((x, y) => rank(x) - rank(y))].slice(0, 8);
+}
+function closeJump() {
+  jumpList.hidden = true;
+  jump.setAttribute("aria-expanded", "false");
+  jump.removeAttribute("aria-activedescendant");
+  pick = -1;
+}
+function drawJump() {
+  hits = matches(jump.value);
+  pick = Math.min(pick, hits.length - 1);
+  if (!jump.value.trim()) { closeJump(); return; }
+  jumpList.replaceChildren(...hits.map((o, k) => {
+    const li = el("li", { id: `jump-${k}`, role: "option", "aria-selected": String(k === pick) },
+      el("span.id", o.id), el("span.jh", trim(o.headline, 92)), el("span.js", `Stage ${o.stage} · ${A.lenses[o.lens]?.name || o.lens}`));
+    li.addEventListener("mousedown", (e) => { e.preventDefault(); go(o); });
+    return li;
+  }), (() => {
+    const all = el("li.all", { role: "option", id: "jump-all", "aria-selected": String(pick === hits.length) }, hits.length ? `See every match for "${jump.value.trim()}"` : `No headline matches "${jump.value.trim()}". Search the full text`);
+    all.addEventListener("mousedown", (e) => { e.preventDefault(); goList(); });
+    return all;
+  })());
+  jumpList.hidden = false;
+  jump.setAttribute("aria-expanded", "true");
+  if (pick >= 0) jump.setAttribute("aria-activedescendant", pick < hits.length ? `jump-${pick}` : "jump-all");
+  else jump.removeAttribute("aria-activedescendant");
+}
+function go(o) { jump.value = ""; closeJump(); jump.blur(); location.hash = `#/${o.id}`; }
+function goList() { const v = jump.value.trim(); jump.value = ""; closeJump(); jump.blur(); location.hash = `#/observations?s=${encodeURIComponent(v)}`; }
+jump.addEventListener("input", () => { pick = -1; drawJump(); });
+jump.addEventListener("focus", () => { if (jump.value.trim()) drawJump(); });
+jump.addEventListener("blur", () => setTimeout(closeJump, 120));
+jump.addEventListener("keydown", (e) => {
+  if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+    e.preventDefault();
+    if (jumpList.hidden) drawJump();
+    const n = hits.length + 1;
+    const down = e.key === "ArrowDown";
+    pick = pick < 0 ? (down ? 0 : n - 1) : (pick + (down ? 1 : n - 1)) % n;
+    drawJump();
+  } else if (e.key === "Enter") {
+    e.preventDefault();
+    if (!jump.value.trim()) return;
+    if (pick >= 0 && pick < hits.length) go(hits[pick]);
+    else if (pick < 0 && byId[jump.value.trim().toUpperCase()]) go(byId[jump.value.trim().toUpperCase()]);
+    else goList();
+  } else if (e.key === "Escape") {
+    if (!jumpList.hidden) { e.stopPropagation(); closeJump(); } else jump.blur();
+  }
+});
+
+// keys: "/" searches; on an observation, the arrow keys (or j and k) move to the next or previous one
+document.addEventListener("keydown", (e) => {
+  if (!A || e.defaultPrevented || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.target.closest?.("input, textarea, select, [contenteditable], .chart-card, .tablewrap")) return;
+  if (e.key === "/") { e.preventDefault(); jump.focus(); return; }
+  const cur = byId[location.hash.replace(/^#\/?/, "").split(/[/?]/)[0]];
+  if (!cur) return;
+  const i = A.observations.indexOf(cur);
+  const to = e.key === "ArrowRight" || e.key === "j" ? A.observations[i + 1] : e.key === "ArrowLeft" || e.key === "k" ? A.observations[i - 1] : null;
+  if (to) { e.preventDefault(); location.hash = `#/${to.id}`; }
 });
 
 initTheme($("#theme"));

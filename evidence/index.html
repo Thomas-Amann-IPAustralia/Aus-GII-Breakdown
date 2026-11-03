@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Evidence atlas</title>
-<meta name="description" content="What Australia's IP data show after two stages of exploratory analysis (each measure on its own, then pairs of measures), and how each observation was reached: where the data came from, how they are kept and prepared, and the reasoning behind every finding.">
+<meta name="description" content="What Australia's IP data show after three stages of exploratory analysis (each measure on its own, then pairs of measures, then several at once), and how each observation was reached: where the data came from, how they are kept and prepared, and the reasoning behind every finding.">
 <link rel="icon" href="../assets/img/icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="css/atlas.css">
 </head>
@@ -22,6 +22,7 @@
     <nav class="nav" aria-label="Main">
       <p class="nav-label">Start here</p>
       <a href="#/" data-nav="home"><svg class="i"><use href="#i-home"/></svg>Overview</a>
+      <a href="#/stage3" data-nav="stage3"><svg class="i"><use href="#i-route"/></svg>What Stage 3 found</a>
       <a href="#/observations" data-nav="observations"><svg class="i"><use href="#i-grid"/></svg>Observations<span class="count" id="nav-count"></span></a>
       <p class="nav-label">Context</p>
       <a href="#/questions" data-nav="questions"><svg class="i"><use href="#i-compass"/></svg>Research questions</a>
@@ -34,7 +35,7 @@
       <a href="#/glossary" data-nav="glossary"><svg class="i"><use href="#i-book"/></svg>Glossary</a>
     </nav>
     <div class="side-foot">
-      <p class="stage-now"><span class="pulse" aria-hidden="true"></span><strong>Stage 2 of 3 complete</strong>Every variable described, then every pair related. Nothing here answers the research questions yet.</p>
+      <p class="stage-now"><span class="pulse" aria-hidden="true"></span><strong>Stage 3 of 3: first pass done</strong>Every variable described, every pair related, and the signals tested with other factors held. Its tables await the owner's review; nothing here answers the research questions yet.</p>
       <p class="side-links"><a href="../">GII breakdown</a> · <a href="https://github.com/Thomas-Amann-IPAustralia/Aus-GII-Breakdown" rel="noopener noreferrer">GitHub</a></p>
     </div>
   </aside>
@@ -43,7 +44,7 @@
       <button class="menu-btn" id="menu" type="button" aria-controls="side" aria-expanded="false" aria-label="Open the menu"><svg class="i"><use href="#i-menu"/></svg></button>
       <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
       <div class="top-tools">
-        <label class="jump"><span class="sr">Go to an observation</span><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><input id="jump" type="search" placeholder="Search observations" autocomplete="off"></label>
+        <label class="jump"><span class="sr">Go to an observation</span><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><input id="jump" type="search" placeholder="Search, or an id (M3)" autocomplete="off"></label>
         <button class="theme-btn" id="theme" type="button" aria-label="Switch between light and dark"><svg class="i"><use href="#i-moon"/></svg></button>
       </div>
     </header>

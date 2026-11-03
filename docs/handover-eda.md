@@ -2,7 +2,47 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**Status (2026-11-03, latest): a review of all three stages** (A33, ADR 0048). The owner's instruction: "Please
+**Status (2026-11-03, latest): the Stage 3 web pass** (A34, ADR 0049). The owner's instruction: "The website freeze
+is officially lifted! I would like you to now update the website with everything new that's been found in stage 3.
+Make sure to make the headings very clear and the logical processes explicit. Again, graphs/visuals are preferred over
+just plain text. Updating the website to correctly and accurately reflect the 3 EDA notebooks is the top priority. A
+second, more minor task is to improve the UX of the atlas." **The freeze is lifted**; `CLAUDE.md` says so. Done:
+- **Every observation of the three notebooks has a page (229):** M1 to M38 (`analysis/atlas/content/observations/
+  stage3/`, one file per lens), and the review's additions U124 to U127 and B63. No earlier observation's text had
+  changed since the atlas was built (checked against the committed `atlas.json`), so no earlier page needed rewriting.
+- **The logic is on every page.** A Stage 3 entry has `revisits` (the earlier observation, the signal in a few words,
+  the outcome, one sentence on what changed), `held` and `verdicts` (each comparison's raw and held figures and its
+  outcome); the numbers rule covers the last two. A Stage 3 page opens with a chain (what Stage 2 found → what was held
+  together → what is left), then the observation, a chart and a "signal by signal" table. The build copies each
+  revisit onto the earlier page (`later`): 53 earlier pages show Stage 3's outcome under their observation, with a
+  link, among them every reading the "Waiting for the atlas" lists below named (so both lists are done).
+- **Charts:** a new `effect` chart (a forest plot: raw in grey beside held in blue, each with its interval, a dashed
+  line of no difference) for most Stage 3 pages, bars for the rest; all 38 quoted from the observation's own numbers
+  and checked; 221 of 229 pages have a chart.
+- **New and changed pages:** "What Stage 3 found" (`#/stage3`: the test in five steps, the M1 example, the outcomes
+  with counts, every check lens by lens, filterable, and the structure findings); the overview (a bar of outcomes,
+  eleven findings, M1 featured, the stages' status); "What comes next" (section 8's 15 early signals and 13 data gaps,
+  in place of Stage 2's leads); question pages (early signals and Stage 3 first); lens pages (the timeline's seven new
+  columns and sources, the name-match columns); limits (what "not detected" means; Stage 3's rule as an assumption)
+  and corrections (the review of 3 November 2026, the helper fault, the freeze); 23 glossary terms.
+- **Navigation:** a compact, collapsible list grouped by lens and section (or by stage), cards on request
+  (remembered), filters by Stage 3 outcome and "tested again in Stage 3", a sticky jump bar; type-ahead search (ids,
+  then headline words); `/` to search, arrow keys (or j and k) between observations; "In this section" in the rail.
+- **Rule changes in the build:** a stage's name ("Stage 2") and a quoted chart's styling keys are not read as
+  figures; the chart-shape check covers views; tests cover the links back, the two tables and the outcomes' meanings.
+
+**Checks:** the strict build passes for all 229 pages; ruff is clean; the tests pass (the atlas's 8 included). Pages
+checked in Chromium at 1,366 and 390 pixels: no console errors, no horizontal overflow; search, keys and filters
+exercised. The lenses were rebuilt from R2 and every drawn chart redrawn (`atlas.charts`, all assertions pass):
+only U22 and U24 change, gaining the IP judgments series the review added to the timeline; U22's subtitle now counts
+its series (33; it had said 28 when it drew 30). U53 redrew the same points in another order and was left as
+committed. With the lenses built, the full suite passes (137, none skipped).
+
+**Next, in order:** the owner's review of section 8's two tables (on the website now, "What comes next") and OQ26
+(the name match); the owner's pull request and publishing (merging to the branch GitHub Pages serves); then, at the
+owner's word, the plan's "After Stage 3".
+
+**Status (2026-11-03): a review of all three stages** (A33, ADR 0048). The owner's instruction: "Please
 review the all stages of the EDA. Please look for any gaps or omissions and correct them. You must focus only on the
 notebooks, not the GitHub webpage." What the review found and did:
 - **Stage 3 (notebook 3):** every M observation of the first pass was checked against its output (all match but two
@@ -41,7 +81,7 @@ notebooks, not the GitHub webpage." What the review found and did:
   and cross-country attachments are their gradients (M32, M33); FY2025's provisional follow-up fall is new and heavy
   individual filers' (M35); the cycle shows only before 2008 (M36).
 
-**Waiting for the atlas, added by the review:** the readings revised by M26 to M38 (B15, B16, B22, B24, B26, B28,
+**Waiting for the atlas, added by the review (done in the Stage 3 web pass, ADR 0049):** the readings revised by M26 to M38 (B15, B16, B22, B24, B26, B28,
 B31, B35, B38, B43, B44, B46, B47, B49, B52, B56, B58, B59); the additions to notebooks 1 and 2 (U124 to U127, B63,
 and the renumbered summaries 2.8, 5.12 and 5.8); the timeline's seven new columns in the lens pages.
 
@@ -96,7 +136,7 @@ matches for no gain in accuracy). What Stage 3 found (all observational or descr
   Norway, New Zealand and Sweden (M17); trends dominate the monthly series (M20); the name match closes most of the
   recent fall in standard patents linked to an ABN and changes no firm finding (M12).
 
-**Waiting for the atlas** (Stage 3 changes to earlier readings; carry over when the owner lifts the freeze): B13 (M5);
+**Waiting for the atlas** (Stage 3 changes to earlier readings; done in the Stage 3 web pass, ADR 0049): B13 (M5);
 B17 (M7); B25 (the cohort order, M10); B29 (M14); B33 (M18); B37 (M25); B40, and B42 and B60 (M21, M22); B45 (M23);
 B62 (M24);
 and the framing pages' "What comes next" (Stage 3 under way).

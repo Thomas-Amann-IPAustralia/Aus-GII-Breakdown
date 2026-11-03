@@ -32,8 +32,8 @@ rights:
       label: patents, trade marks, designs and plant breeder's rights
     - value: "1904 to 2026"
       label: the years the register covers
-    - value: "89"
-      label: columns, after seven attachments and the register's fills
+    - value: "90"
+      label: columns, after seven attachments, the register's fills and Stage 3's name match
   description: >-
     Every patent, trade mark, design and plant breeder's right in IP Australia's open register, IP RAPID, from the
     first application in February 1904 to October 2026. Each row says what the right is, who filed it and who holds
@@ -48,7 +48,9 @@ rights:
     provisional applications' inventors. The register fills what IP RAPID leaves out (business numbers, design
     owners' countries, the inventors of provisional applications), in columns beside IP RAPID's, never replacing
     them. Origin and applicant type are the filer's, IP Australia's definition of a resident application (ADR 0037).
-  sources: [iprapid, ipa_register, ipa_provisionals, google_patents, google_patents_inventors, wgnd, abs_regions]
+    Stage 3 added one column: an ABN found by matching the filer's name to the business register, for Australian
+    organisations' rights with none, kept apart and never added to the counts ({M12}, {U126}).
+  sources: [iprapid, ipa_register, ipa_provisionals, google_patents, google_patents_inventors, wgnd, abs_regions, abr, asic]
   questions: [1, 2]
   repairs:
     - what: Where a right's applicants have no country recorded, its origin is "unknown", not "overseas".
@@ -110,6 +112,8 @@ timeline:
       label: dated policy changes
     - value: "26"
       label: official fee columns, from every version of the fee regulations
+    - value: "86"
+      label: columns, with the labour market and IP judgments added in the review
   description: >-
     IP Australia's whole register month by month: applications of each type from Australian, overseas and
     unknown applicants; what happened to rights (grants, lapses, cessations, expiries, oppositions, sales,
@@ -119,8 +123,9 @@ timeline:
 
     Added after Stage 2: the official fees in force each month (and each change to them), the Reserve Bank's cash
     rate and exchange rates, GDP and each state's final demand from the national accounts, and the PBS's monthly
-    cost with Section 100.
-  sources: [iprapid, policy_events, abs_prices, frl_fees, ipa_fees, rba, abs_national_accounts, pbs]
+    cost with Section 100. Added in the review of 3 November 2026: the Labour Force Survey (employment, unemployment,
+    participation and owner-managers) and the courts' IP judgments, January 1995 to February 2025 ({U124}).
+  sources: [iprapid, policy_events, abs_prices, frl_fees, ipa_fees, rba, abs_national_accounts, pbs, abs_labour, fedcourt]
   questions: [1, 4, 5]
   repairs:
     - what: Each series starts only where its records become continuous and complete; earlier months are empty, not
@@ -139,7 +144,10 @@ timeline:
   limits:
     - Months before each series' start are empty on purpose; a long series is not complete back to 1904.
     - Comparisons of months around a policy change in Stage 1 do not allow for trends or seasons ({U28}); Stage 2's
-      placebo months do ({B37}).
+      placebo months do ({B37}), and Stage 3 holds each series' trend and season with control series beside it
+      ({M25}, {M34}).
+    - Quarterly changes are alike from one quarter to the next, so they are worth fewer independent observations than
+      they number; Stage 3 resamples them in blocks ({M19}, {M36}).
 
 firms:
   name: Firms
@@ -148,15 +156,17 @@ firms:
   facts:
     - value: "463,279"
       label: ABNs found in one of six sources
-    - value: "54"
-      label: columns
+    - value: "58"
+      label: columns, with Stage 3's four counts found by name
   description: >-
     Every Australian Business Number that appears in IP RAPID, IP Australia's register, IPLORD, the R&D Tax
     Incentive, AusTender (government contracts) or the ATO's tax transparency reports, with what the business is,
     where it is registered, how old it is on the record, the IP it filed and holds, its R&D claims, its large-company
     income and its contracts. It is the businesses found in those sources, not every business in Australia, so a
     share of all businesses, or of all large employers, is taken over a wider count ({B50}). For employers of 100 or
-    more, WGEA's reports add a size band and an industry; smaller firms have neither.
+    more, WGEA's reports add a size band and an industry; smaller firms have neither. Stage 3 added four counts of
+    filings found by matching the filer's name to the business register, read beside the counts by ABN and never added
+    to them ({M12}, {U126}).
   sources: [linkage, abr, asic, iprapid, iplord, rdti, austender, ato_ctt, wgea, abs_regions]
   questions: [2, 3, 4]
   repairs:

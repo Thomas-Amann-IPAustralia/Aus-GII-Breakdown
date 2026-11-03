@@ -71,9 +71,9 @@
     - Which interventions could address market failures or institutional gaps that existing arrangements do not adequately address?
     - Where should IP Australia focus its own efforts, and where would collaboration or advocacy be more appropriate?
   reach:
-    - Stages 1 and 2 can point to where use is uneven and what goes with it; they cannot say that changing it would add
-      value. That needs the later stages and, for any claim of additional benefit, designs such as natural
-      experiments.
+    - Stages 1 to 3 can point to where use is uneven and what goes with it, even with other factors held; they cannot
+      say that changing it would add value. That needs designs such as natural experiments, for any claim of
+      additional benefit.
 
 - id: 5
   title: What outcomes could interventions produce?
@@ -91,4 +91,6 @@
   reach:
     - Additionality (what happens because of an intervention, compared with what would have happened anyway) needs
       causal designs that come after Stage 3. The policy changes in the timeline ({U28}, {B37}) are the raw material
-      for them; most of their breaks were certain by law, and few show applicants' behaviour.
+      for them; most of their breaks were certain by law, and few show applicants' behaviour. With trend and season
+      held, Raising the Bar's rush and lower level hold ({M25}), and owners did not let rights go more often after
+      renewal fee changes ({M28}).

@@ -33,12 +33,15 @@ export function fmt(v, format, digits) {
     case "moneym": return `$${nf(d).format(v)} m`;
     case "year": return String(Math.round(v));
     case "ratio": return nf(digits ?? 3).format(v);
+    case "signed": return `${v > 0 ? "+" : ""}${nf(digits ?? 1).format(v)}`; // a difference, with its sign
+    case "points": return `${v > 0 ? "+" : ""}${nf(digits ?? 1).format(v)} pts`; // percentage points
     default: return nf(d).format(v);
   }
 }
 function axisFmt(format) {
   return (v) => {
     if (format === "pct") return `${nf(1).format(v)}%`;
+    if (format === "signed" || format === "points") return `${v > 0 ? "+" : ""}${nf(2).format(v)}`;
     if (format === "share") return `${nf(0).format(v * 100)}%`;
     if (format === "year") return String(v);
     if (format === "money" || format === "moneym") return `$${compact(v)}${format === "moneym" ? " m" : ""}`;
@@ -57,7 +60,99 @@ function viewSpec(spec, k) {
   return { ...spec, ...v, x: { ...(spec.x || {}), ...(v.x || {}) }, y: { ...(spec.y || {}), ...(v.y || {}) } };
 }
 
+/**
+ * An effect chart (a forest plot): one row per comparison, a dot for each estimate and a line for its 95% interval,
+ * with a dashed line where there is no difference (0 for differences, 1 for ratios). Stage 3 uses it to set a signal's
+ * raw figure (Stage 2's comparison) beside the same comparison with its third factors held together.
+ * Each series' data are [estimate, low, high] per row (low and high may be null; a whole row may be null).
+ */
+function effectOption(s) {
+  const muted = token("--muted"), grid = token("--chart-grid"), axis = token("--chart-axis"), ink2 = token("--ink-2");
+  const surface = token("--surface"), ink = token("--ink"), line = token("--line-strong");
+  const font = getComputedStyle(document.body).fontFamily;
+  const ys = s.y || {}, xs = s.x || {};
+  const cats = xs.values || [];
+  const n = (s.series || []).length;
+  const w = s._w || 700; // the chart's width: on a phone the labels get less room, so the plot keeps some
+  const labelW = Math.round(Math.min(210, Math.max(96, w * 0.38)));
+  const ref = s.ref ?? (ys.type === "log" ? 1 : 0);
+  const num = (v) => (v == null || Number.isNaN(v) ? "-" : v);
+  const series = (s.series || []).map((d, i) => {
+    const c = colourOf(d, i);
+    return {
+      type: "custom", name: d.name, z: 3,
+      data: (d.data || []).map((p, k) => (p ? [k, num(p[0]), num(p[1]), num(p[2])] : [k, "-", "-", "-"])),
+      encode: { x: [1, 2, 3], y: 0, tooltip: [1] },
+      renderItem: (params, api) => {
+        const est = api.value(1), lo = api.value(2), hi = api.value(3), k = api.value(0);
+        if (Number.isNaN(est)) return null;
+        const band = api.size([0, 1])[1];
+        const off = (i - (n - 1) / 2) * Math.min(band / (n + 1), 14);
+        const at = (v) => { const p = api.coord([v, k]); return [p[0], p[1] + off]; };
+        const kids = [];
+        if (!Number.isNaN(lo) && !Number.isNaN(hi)) {
+          const a = at(lo), b = at(hi);
+          kids.push({ type: "line", shape: { x1: a[0], y1: a[1], x2: b[0], y2: b[1] }, style: { stroke: c, lineWidth: 2.2, lineCap: "round" } });
+          for (const e of [a, b]) kids.push({ type: "line", shape: { x1: e[0], y1: e[1] - 4, x2: e[0], y2: e[1] + 4 }, style: { stroke: c, lineWidth: 1.6 } });
+        }
+        const p = at(est);
+        kids.push({ type: "circle", shape: { cx: p[0], cy: p[1], r: d.colour === "muted" ? 4.5 : 5.5 }, style: { fill: d.hollow ? surface : c, stroke: c, lineWidth: 2 } });
+        return { type: "group", children: kids };
+      },
+    };
+  });
+  // the line of no difference, carried by an empty series so that it is drawn whatever the data
+  // (its meaning is written in the legend, not along the line)
+  series.push({ type: "line", name: "_ref", data: [], silent: true, markLine: { silent: true, symbol: "none", animation: false, lineStyle: { color: ink2, type: "dashed", width: 1 }, label: { show: false }, data: [{ xAxis: ref }] } });
+  const valueAxis = {
+    type: ys.type === "log" ? "log" : "value", logBase: 10,
+    name: ys.name || "", nameLocation: "middle", nameGap: 30,
+    nameTextStyle: { color: muted, fontFamily: font, fontSize: 12, width: Math.max(160, w - labelW - 40), overflow: "break", lineHeight: 15 },
+    // Differences: ECharts' round ends, which take in 0. Ratios: fitted to the data and the line at 1, so that
+    // intervals near 1 are not squeezed against an axis that starts at 0.
+    scale: ref !== 0,
+    min: ys.min ?? (ref !== 0 && ys.type !== "log" ? (v) => Math.floor(Math.min(v.min, ref) * 10 - 0.5) / 10 : undefined),
+    max: ys.max ?? (ref !== 0 && ys.type !== "log" ? (v) => Math.ceil(Math.max(v.max, ref) * 10 + 0.5) / 10 : undefined),
+    axisLine: { show: false }, axisTick: { show: false },
+    axisLabel: { color: muted, fontFamily: font, fontSize: 11.5, formatter: axisFmt(ys.format), hideOverlap: true, showMinLabel: ref === 0 ? null : false, showMaxLabel: ref === 0 ? null : false },
+    splitLine: { lineStyle: { color: grid } },
+  };
+  const catAxis = {
+    type: "category", data: cats, inverse: true,
+    axisLine: { lineStyle: { color: axis } }, axisTick: { show: false },
+    axisLabel: { color: muted, fontFamily: font, fontSize: w < 480 ? 10.5 : 11.5, interval: 0, width: labelW, overflow: "break", lineHeight: 13 },
+    splitLine: { show: true, lineStyle: { color: grid, opacity: 0.5 } },
+  };
+  const tipRow = (colour, name, value) => `<div style="display:flex;justify-content:space-between;gap:16px"><span><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${esc(colour)};margin-right:6px"></span>${esc(name)}</span><strong>${esc(value)}</strong></div>`;
+  return {
+    animation: !reduced, animationDuration: 350,
+    textStyle: { fontFamily: font, color: ink2 },
+    grid: { left: 6, right: 18, top: 14, bottom: ys.name ? (ys.name.length * 6.2 > w - labelW - 40 ? 56 : 40) : 14, containLabel: true },
+    legend: { show: false, data: (s.series || []).map((d) => d.name) },
+    tooltip: {
+      trigger: "axis", axisPointer: { type: "shadow", shadowStyle: { color: "rgba(128,128,128,.08)" } },
+      backgroundColor: surface, borderColor: line, borderWidth: 1, padding: [9, 12], confine: true,
+      textStyle: { color: ink, fontFamily: font, fontSize: 13 },
+      extraCssText: "border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.16);max-width:360px;white-space:normal;",
+      formatter: (ps) => {
+        const k = (Array.isArray(ps) ? ps : [ps])[0]?.dataIndex;
+        if (k == null) return "";
+        const rows = (s.series || []).map((d, i) => [d, i, d.data?.[k]]).filter(([, , p]) => p && p[0] != null);
+        return `<div style="font-weight:700;margin-bottom:4px">${esc(cats[k])}</div>` + rows.map(([d, i, p]) => tipRow(colourOf(d, i), d.name, effectText(p, ys))).join("");
+      },
+    },
+    xAxis: valueAxis, yAxis: catAxis, series,
+  };
+}
+/** An estimate with its interval, as text: "-31.2 (-34.0 to -28.4)". */
+export function effectText(p, ys = {}) {
+  if (!p || p[0] == null) return "–";
+  const f = (v) => fmt(v, ys.format, ys.digits);
+  return p[1] != null && p[2] != null ? `${f(p[0])} (${f(p[1])} to ${f(p[2])})` : f(p[0]);
+}
+
 function option(s) {
+  if (s.type === "effect") return effectOption(s);
   const ink2 = token("--ink-2"), muted = token("--muted"), grid = token("--chart-grid"), axis = token("--chart-axis");
   const surface = token("--surface"), ink = token("--ink"), line = token("--line-strong");
   const font = getComputedStyle(document.body).fontFamily;
@@ -188,9 +283,10 @@ function option(s) {
 }
 
 function legendNode(s, chartObj) {
-  if (!s.series || s.series.length < 2) return null;
+  const refKey = s.type === "effect" ? el("span.k.refkey", el("span.line.dashed.ref"), `${s.ref_label || "no difference"} (${fmt(s.ref ?? 0, s.y?.format, s.y?.digits)})`) : null;
+  if (!s.series || s.series.length < 2) return refKey ? el("div.legend", refKey) : null;
   return el("div.legend", { role: "group", "aria-label": "Series (select to hide or show)" }, s.series.map((d, i) => {
-    const k = el(`span.${s.type === "line" ? "line" : "sq"}${d.line ? ".dashed" : ""}`);
+    const k = el(`span.${s.type === "line" ? "line" : s.type === "effect" ? "sq.dot" : "sq"}${d.line ? ".dashed" : ""}`);
     k.style.background = colourOf(d, i);
     const b = el("button.k", { type: "button", "aria-pressed": "true", style: { border: 0, background: "none", padding: "2px 0" } }, k, d.name);
     b.addEventListener("click", () => {
@@ -200,7 +296,7 @@ function legendNode(s, chartObj) {
       chartObj()?.dispatchAction({ type: "legendToggleSelect", name: d.name });
     });
     return b;
-  }));
+  }), refKey);
 }
 
 function tableNode(s) {
@@ -208,7 +304,10 @@ function tableNode(s) {
   const t = el("table.data");
   const series = (s.series || []).filter((d) => d.colour !== "muted" || s.type === "scatter");
   let head, rows;
-  if (s.type === "range") {
+  if (s.type === "effect") {
+    head = [xs.name || "", ...(s.series || []).map((d) => d.name)];
+    rows = (xs.values || []).map((v, i) => [v, ...(s.series || []).map((d) => effectText(d.data?.[i], ys))]);
+  } else if (s.type === "range") {
     head = [xs.name || "", ...series.flatMap((d) => [`${d.name}: from`, "to"])];
     rows = (xs.values || []).map((v, i) => [v, ...series.flatMap((d) => (d.data[i] ? [fmt(d.data[i][0], ys.format), fmt(d.data[i][1], ys.format)] : ["–", "–"]))]);
   } else if (s.type === "scatter") {
@@ -253,12 +352,14 @@ export function chartCard(spec, { origin = "query", compact = false } = {}) {
   tools.append(tog);
   head.append(title, tools);
 
-  function current() { return viewSpec(spec, k); }
+  function current() { return { ...viewSpec(spec, k), _w: box.clientWidth || 700 }; }
   function draw() {
     const s = current();
     title.replaceChildren(...[el("h3", s.title || spec.title || ""), s.subtitle ? el("p", s.subtitle) : null].filter(Boolean));
     box.setAttribute("aria-label", `${s.title || spec.title || "Chart"}. ${s.subtitle || ""} The same numbers are in the table view.`);
-    if (s.horizontal || s.type === "range") {
+    if (s.type === "effect") {
+      box.style.height = `${Math.max(220, Math.round((s.x?.values || []).length * (30 + 8 * Math.max(0, (s.series || []).length - 1)) + 70))}px`;
+    } else if (s.horizontal || s.type === "range") {
       const rows = (s.x?.values || []).length * (s.stack || s.type === "range" ? 1 : Math.max(1, (s.series || []).length * 0.6));
       box.style.height = `${Math.max(240, Math.round(rows * 26 + 80))}px`;
     }

@@ -482,3 +482,50 @@
     Stage 2 relates its measures to patenting ({B62}).
   terms: [nsrc, commercialisation-company]
   related: [B62]
+
+- id: U127
+  lens: institutions
+  about: data
+  headline: Another research institution is a founding applicant on about one in nine of the institutions' patent links
+  statement: >-
+    Of the research institutions' 26,668 patent links (25,054 rights), 10.98% have another research institution as a
+    founding applicant too; of their 4,748 trade mark links, 3.5%; of their 112 design links, 7.14%. A right with two
+    institutions has a link for each, so the links outnumber the rights.
+  figures:
+    - value: "10.98%"
+      label: of patent links shared with another institution
+    - value: "3.5%"
+      label: of trade mark links
+    - value: "26,668"
+      label: patent links, for 25,054 rights
+  points:
+    - "No empty values. `shared_with_institution` was in the lens but not profiled until the review."
+    - "Stage 2's {B44} reads the same column against filing with others."
+  questions:
+    - q: 2
+      how: Shows how often institutions file together, which bears on who shares in research-based IP.
+  sources: [iprapid, ror, abr]
+  chart:
+    type: bar
+    title: Institutions' IP links shared with another research institution
+    subtitle: Share of links with another institution as a founding applicant
+    x: {type: category, values: [Patents, Designs, Trade marks]}
+    y: {name: Shared, format: pct, min: 0}
+    series:
+      - name: Shared
+        data: [10.98, 7.14, 3.5]
+    source: IP Australia, IP RAPID; ROR (lens institutions); notebook 1, section 7.3
+  prep:
+    - what: The institution_rights table's `shared_with_institution`, one row per institution and right.
+      why: A column in the lens that Stage 1 had not profiled.
+  steps:
+    - Count the links and the rights they cover, by kind.
+    - Count the share shared with another institution.
+  assumptions:
+    - The reviewed list links each institution to its rights (unreviewed by the sector, OQ11).
+  limits:
+    - Links, not rights; the institutions link is unreviewed.
+  next: >-
+    Read in {B44}.
+  terms: [ror]
+  related: [B44, U81]
