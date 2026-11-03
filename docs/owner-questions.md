@@ -58,6 +58,7 @@ Australia reported itself (2,322, from non-residents), so the gap is between IP 
 
 | # | Question | Answer | Date | Recorded in |
 |---|---|---|---|---|
+| A30 | Firms' IP counts are lower bounds because many rights carry no filer's ABN (U41, U45). Should Stage 3 check them with a name match to the ABR and ASIC? | Yes, add it to the Stage 3 plan | 2026-11-03 | ADR 0045; `docs/eda-plan.md` (the three stages); `docs/review-stages-1-and-2.md` |
 | A29 | After the final review: should Stage 3 begin by taking up the methods it listed (block resampling for changes over time, 1,000 or more resamples for quoted intervals, B42 and B60 through the crosswalk with services, fixed-age citation windows, research spend as an exposure for B62, the window-free order for B25 and the party-aligned filer for B30, heatmap legends)? | "Yes, I'm happy to start Stage 3 where you suggest", after a break; the owner expects to open a pull request first | 2026-11-02 | `CLAUDE.md`; handover; ADR 0044; the atlas's "What comes next" |
 | A28 | The web pass: correct the website now? | Yes: clear, little or no jargon, graphs where possible (for most readers the website is as deep as they go); "Follow the evidence" to hold up to people in the IP ecosystem; nothing overstated, since the EDA's role is to describe the facts | 2026-11-02 | ADR 0044; handover |
 | A27 | Which audit theme next, after the survival pass? | Later additions not carried back in §5 to §8, with policy and fees | 2026-11-02 | handover; pass 7 in `analysis/GPT-audit/261030/AMENDMENTS.md` |

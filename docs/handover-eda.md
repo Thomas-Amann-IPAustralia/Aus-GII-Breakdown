@@ -16,6 +16,11 @@ possible, with "Follow the evidence" precise enough for people in the IP ecosyst
 the web pass below); and Stage 3 begins, after a break, by taking up the methods the final review listed (A29). The
 owner expects to open a pull request; publishing the pages (OQ19) waits on it.
 
+**The owner's decision (2026-11-03, A30, ADR 0045):** Stage 3 adds a check of firms' IP counts: Australian
+organisations' rights with no filer's ABN are matched by name to the ABR and ASIC, the match tested on rights with a
+known ABN, kept in separate columns and never added to the counts; U44, U45 and the firm-count leads are rerun with it
+(`docs/eda-plan.md`, the three stages). OQ7 (asking IP Australia) is still to send, the owner's call.
+
 **Status (2026-11-03, latest): the web pass** (A28, ADR 0044). The evidence atlas matches the reviewed notebooks again.
 131 of 186 pages had changed since the atlas was built (29 October 2026); each was rewritten from its current notebook
 text (headline, statement, figures, points, chart, questions, preparation, steps, assumptions, limits), and the other 55

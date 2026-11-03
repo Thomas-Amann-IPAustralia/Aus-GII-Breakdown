@@ -69,3 +69,6 @@ Block bootstraps or effective sample sizes for §5's changes; 1,000 or more resa
 B42 and B60 through the crosswalk with services; fixed-age windows for citations (B44 to B46); research expenditure as
 an exposure for B62; the window-free within-firm order for B25 and the party-aligned filer for B30; heatmap legends;
 and partial correlations or models that hold the named third factors together, as the plan already intends.
+
+**Added 3 November 2026 (A30, ADR 0045):** a name match of unlinked Australian organisations' rights to the ABR and
+ASIC, tested on rights with a known ABN, kept in separate columns, with the firm findings rerun on it.
