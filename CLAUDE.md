@@ -6,12 +6,15 @@ data corpus (`src/corpus/`, `data/`) and the analysis of it (`analysis/`).
 
 **Current phase: exploratory data analysis (EDA), Stage 3 of 3 under way** (univariate and bivariate done, reviewed in
 full and on the website; Stage 3, multivariate, begun on 3 November 2026 with the methods the final review listed: A29,
-A32, ADR 0046). The plan is `docs/eda-plan.md`; status and open items are in `docs/handover-eda.md`. Don't start
+A32, ADR 0046; a review of all three stages on the same day filled the gaps it found, A33, ADR 0048). The plan is
+`docs/eda-plan.md`; status and open items are in `docs/handover-eda.md`. Don't start
 answering the five questions until Stage 3 is done and the owner says so.
 
 **The website is frozen during Stage 3 (A32).** Don't change `evidence/` or `analysis/atlas/`, or rerun
-`atlas.charts`; keep notebooks 1 and 2 as reviewed. Where Stage 3 changes an earlier reading, say so in its M
-observation and list it in the handover under "Waiting for the atlas".
+`atlas.charts`; keep notebooks 1 and 2 as reviewed, changing them only by additions and dated corrections where a
+gap is found (as the review of 3 November 2026 did, A33: U124 to U127, B63), run cell by cell, never in full. Where
+Stage 3 changes an earlier reading, say so in its M observation; list it, and any addition to notebooks 1 and 2, in
+the handover under "Waiting for the atlas".
 
 ## Working agreement
 

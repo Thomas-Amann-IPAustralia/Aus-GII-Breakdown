@@ -2381,6 +2381,10 @@ def timeline_sql() -> str:
         f"MONTH THEN coalesce(j.{c}, 0) END AS {c}"
         for c in series
     )
+    judgments = ", ".join(  # a month inside the collection with no judgment is 0; outside it, not recorded
+        f"CASE WHEN j.month BETWEEN DATE '1995-01-01' AND DATE '2025-02-01' THEN coalesce(j.{c}, 0) END AS {c}"
+        for c in ("ip_judgments", "ip_judgments_patents", "ip_judgments_trade_marks")
+    )
     return f"""
     WITH months AS (
         SELECT CAST(m AS DATE) AS month
@@ -2435,6 +2439,32 @@ def timeline_sql() -> str:
             max(value) FILTER (series_id = 'FXRTWI') AS aud_twi
         FROM {{rba/series}} WHERE series_id IN ('FIRMMCRT', 'FIRMMCRI', 'FXRUSD', 'FXRTWI') GROUP BY 1
     ),
+    lfs AS (  -- the Labour Force Survey (abs_labour; added in the review of 3 November 2026): persons, Australia,
+              -- 15 and over, seasonally adjusted, monthly from February 1978
+        SELECT strptime(time_period, '%Y-%m')::DATE AS month,
+            max(value) FILTER (measure = 'M3') AS employed,
+            max(value) FILTER (measure = 'M13') AS unemployment_rate,
+            max(value) FILTER (measure = 'M12') AS participation_rate
+        FROM {{abs_labour/lf}}
+        WHERE region = 'AUS' AND sex = '3' AND age = '1599' AND adjustment_type = '20' AND frequency = 'M'
+          AND measure IN ('M3', 'M13', 'M12')
+        GROUP BY 1
+    ),
+    owners AS (  -- owner-managers of incorporated and unincorporated enterprises, with or without employees, persons,
+                 -- by their main job (original), monthly from January 1991
+        SELECT strptime(time_period, '%Y-%m')::DATE AS month, sum(value) AS owner_managers
+        FROM {{abs_labour/lf_stat_emp}}
+        WHERE sex = '3' AND measure = 'M3' AND status_in_employment_of_main_job IN ('21', '22', '31', '32')
+          AND frequency = 'M'
+        GROUP BY 1
+    ),
+    judgments AS (  -- IP judgments (fedcourt) by the date of decision, from January 1995, when they become continuous,
+                    -- to February 2025, the last full month before the collection closed (10 March 2025)
+        SELECT CAST(date_trunc('month', date) AS DATE) AS month, count(*) AS ip_judgments,
+            count(*) FILTER (rights LIKE '%patents%') AS ip_judgments_patents,
+            count(*) FILTER (rights LIKE '%trade_marks%') AS ip_judgments_trade_marks
+        FROM {{fedcourt/judgments}} WHERE date BETWEEN DATE '1995-01-01' AND DATE '2025-02-28' GROUP BY 1
+    ),
     pbs AS (  -- the PBS's monthly workbook (gap B11), July 2022 on: every section, and Section 100 apart
         SELECT strptime(month, '%Y%m')::DATE AS month, sum(prescriptions) AS pbs_prescriptions,
             sum(government_contribution) AS pbs_government_cost,
@@ -2445,10 +2475,12 @@ def timeline_sql() -> str:
     j AS (
         SELECT months.month, apps.* EXCLUDE (month), events.* EXCLUDE (month), policy.policy_events,
             policy.fee_changes, cpi.cpi, fees.* EXCLUDE (month), q.cpi AS cpi_quarter, rba.* EXCLUDE (month),
-            ana.* EXCLUDE (month), sfd.* EXCLUDE (month), pbs.* EXCLUDE (month)
+            ana.* EXCLUDE (month), sfd.* EXCLUDE (month), pbs.* EXCLUDE (month), lfs.* EXCLUDE (month),
+            owners.owner_managers, judgments.* EXCLUDE (month)
         FROM months LEFT JOIN apps USING (month) LEFT JOIN events USING (month) LEFT JOIN policy USING (month)
         LEFT JOIN cpi USING (month) LEFT JOIN fees USING (month) LEFT JOIN rba USING (month) LEFT JOIN ana USING (month)
-        LEFT JOIN sfd USING (month) LEFT JOIN pbs USING (month)
+        LEFT JOIN sfd USING (month) LEFT JOIN pbs USING (month) LEFT JOIN lfs USING (month)
+        LEFT JOIN owners USING (month) LEFT JOIN judgments USING (month)
         LEFT JOIN cpi q ON q.month = make_date(year(months.month), 3 * quarter(months.month), 1)
     ),
     nz AS (
@@ -2471,7 +2503,9 @@ def timeline_sql() -> str:
         j.fee_changes,
         j.cash_rate_target, j.cash_rate_interbank, j.aud_usd, j.aud_twi,
         j.gdp_cvm, j.gdp_current, {", ".join(f"j.sfd_{code}" for code, _ in STATES)},
-        j.pbs_prescriptions, j.pbs_government_cost, j.pbs_s100_prescriptions, j.pbs_s100_government_cost
+        j.pbs_prescriptions, j.pbs_government_cost, j.pbs_s100_prescriptions, j.pbs_s100_government_cost,
+        j.employed, j.unemployment_rate, j.participation_rate, j.owner_managers,
+        {judgments}
     FROM j CROSS JOIN f CROSS JOIN cpi_base b
     ORDER BY j.month
     """

@@ -2,7 +2,60 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**Status (2026-11-03, latest): Stage 3's first pass** (A32, ADR 0046, 0047). The owner's instruction: "Please
+**Status (2026-11-03, latest): a review of all three stages** (A33, ADR 0048). The owner's instruction: "Please
+review the all stages of the EDA. Please look for any gaps or omissions and correct them. You must focus only on the
+notebooks, not the GitHub webpage." What the review found and did:
+- **Stage 3 (notebook 3):** every M observation of the first pass was checked against its output (all match but two
+  slips, corrected where they are: M1 said "not detected once held" for a result the table calls "not detected either
+  way"; M16 gave the lowest silhouette as 0.231, 0.2316 on the page). Section 0's table said every Stage 2 signal
+  carried to Stage 3 was taken up; eighteen were not, nor B49's own request (renewal at each anniversary). Each now has
+  a section, marked "added": 1.7 divisionals (M26), 1.8 made here and filed from overseas (M27), 1.9 renewal at each
+  anniversary after a fee change (M28), 2.6 suppliers and large taxpayers (M29), 2.7 the firm's age and patents held
+  overseas (M30), 3.5 business mix, incomes and change (M31), 3.6 every regional attachment beyond the components
+  (M32), 4.3 the cross-country attachments with income and size held (M33), 5.4 fee breaks with trend and season (M34),
+  5.5 the FY2025 provisionals (M35), 5.6 the cycle, labour and courts with block resampling (M36), 6.3 the
+  division-level indicators (M37), 7.3 every kind of institution (M38). The lens summaries (now 1.10, 2.8, 3.7, 4.4,
+  5.7, 6.4, 7.4) and section 8's tables carry them (15 signals, 13 gaps).
+- **A helper fault:** `multi.adjusted_effect` returned a meaningless clustered interval, silently, when two held
+  factors picked out the same rows (a patent with no field has no class count either). It now refits on the
+  independent columns (a test covers it). Notebook 3 was re-run in full before and after the new sections: every
+  earlier output is identical.
+- **Two sources in no lens:** the Labour Force Survey (`abs_labour`) and the IP judgments (`fedcourt`), planned for the
+  timeline, were never attached, so they had no profile, pair or model. Now in the timeline (86 columns): `employed`,
+  `unemployment_rate`, `participation_rate`, `owner_managers`, `ip_judgments` (and on patents, on trade marks, January
+  1995 to February 2025); `variables.yaml` and `screens.yaml` describe them (not screened: selected pairs).
+- **Stage 1 (notebook 1), by additions only:** U124 (the new timeline columns, and the shape of the series added after
+  Stage 2, which 5.11's summary said was not profiled; new section 5.11, summary now 5.12), U125 (every fee column, in
+  5.7), U126 (the name-match columns, new 2.7, summary now 2.8), U127 (`shared_with_institution`, in 7.3); section 8's
+  sources table, section 9 and the title's status note them.
+- **Stage 2 (notebook 2), by addition only:** B63 (the labour market and the judgments, new 5.7, summary now 5.8);
+  the title and section 8 note it.
+- Notebooks 1 and 2 were run cell by cell for the new cells only (with their setup cell), so every reviewed output is
+  as it was; the record of method is ADR 0048; `CLAUDE.md` now allows additions and dated corrections to notebooks 1
+  and 2 where a gap is found.
+- What the new sections found, in short: no renewal response to fee changes at each right's anniversary (patents
+  within about 1.4 points, M28); divisionals doubled within the same filers (M26); manufacturing's share of an area's
+  businesses goes with more filing per business beyond the advantage gradient, where B31 saw none (M31); most regional
+  and cross-country attachments are their gradients (M32, M33); FY2025's provisional follow-up fall is new and heavy
+  individual filers' (M35); the cycle shows only before 2008 (M36).
+
+**Waiting for the atlas, added by the review:** the readings revised by M26 to M38 (B15, B16, B22, B24, B26, B28,
+B31, B35, B38, B43, B44, B46, B47, B49, B52, B56, B58, B59); the additions to notebooks 1 and 2 (U124 to U127, B63,
+and the renumbered summaries 2.8, 5.12 and 5.8); the timeline's seven new columns in the lens pages.
+
+**Checks:** ruff is clean; the tests pass (131) except the atlas's five (`tests/test_atlas.py`), which fail by
+design while the website is frozen: they require a page for every observation of notebooks 1 and 2, and U124 to
+U127 and B63 have none yet (writing them is the atlas work the owner deferred, A32, A33). They pass again once the
+freeze lifts and those pages are written.
+
+**Left, and why:** the CER's national installations and AusTender by month, planned for the timeline, are not built
+(both sources are in other lenses, so ADR 0007 is met; listed in section 8's gaps); the TGA and the PBS beyond Stage 1
+wait for OQ8 (the medicine strand); court judgments after March 2025 wait for OQ22.
+
+**Next, in order:** the owner's review of section 8's tables (now 15 signals and 13 gaps) and OQ26; then, at the
+owner's word, the plan's "After Stage 3" and lifting the freeze to carry both lists to the atlas.
+
+**Status (2026-11-03): Stage 3's first pass** (A32, ADR 0046, 0047). The owner's instruction: "Please
 commence the multivariate analysis. For now, we can freeze the Github webpage. I want to make sure all efforts are
 focused towards the processing of data and information." **The website is frozen**: nothing in `evidence/` or
 `analysis/atlas/` changes during Stage 3, and notebooks 1 and 2 stay as reviewed. `03_multivariate.ipynb` is rebuilt

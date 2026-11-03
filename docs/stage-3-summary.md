@@ -1,4 +1,4 @@
-# Stage 3 summary: several variables at once (first pass)
+# Stage 3 summary: several variables at once (first pass, completed in the review)
 
 **Status (2026-11-03):** Stage 3's first pass is done, in `analysis/notebooks/03_multivariate.ipynb` (observations M1
 to M25), begun on the owner's word (A32) with the methods the final review listed (A29) and the name match (A30). The
@@ -6,6 +6,15 @@ method is ADR 0046; the name match as tested is ADR 0047. The website is frozen 
 2 and the evidence atlas are unchanged, and the Stage 2 readings that Stage 3 revises are listed in the handover.
 Section 8 of the notebook drafts the two tables the plan asks for, for the owner's review. Every observation is an
 association (observational) or a description: none is a cause.
+
+**Completed in the review of 3 November 2026** (the owner's request to find and correct gaps in every stage, A33, ADR
+0048). The first pass's section 0 listed every Stage 2 signal carried to Stage 3 as taken up; eighteen were not (B15,
+B16, B22 among suppliers, B24's large taxpayers, B26, B28's attachments, B31, B35, B38, B43, B44, B46, B47, B49, B52,
+B56, B58, B59), nor was B49's own request, a test of renewal at each right's anniversary. Each now has its section
+(M26 to M38). Two sources in no lens (the Labour Force Survey and the IP judgments) are attached to the timeline and
+taken through all three stages (U124, B63, M36). M1 and M16 are corrected, and a fault in the helper for yes or no
+outcomes (a meaningless interval when two held factors repeat each other) is fixed: the notebook was re-run in full and
+no earlier figure changed.
 
 ## 1. In brief
 
@@ -36,6 +45,25 @@ association (observational) or a description: none is a cause.
 - **Over time:** with block resampling, B36's one quarterly lead holds, and the quarters are worth 14 to 53 independent
   observations (M19); Raising the Bar's rush and Australians' lower level after it hold with trend and season held,
   while the Designs Act's overseas step does not stand apart from a control (M25).
+- **Added in the review (M26 to M38):**
+  - **Fees:** owners did not let rights go more often at the anniversary after a change in its renewal fee, after any
+    of nine changes since 2000 (for patents within about 1.4 points, M28); B47's filing breaks mostly do not read as
+    prices with trend and season held, and B49's cessation steps are not seen at each right's anniversary (M34).
+  - **Divisionals** doubled among organisations' standard patents within the same filers (+19.18 points for
+    Australian organisations, +10.97 overseas, M26). **Inventions made here and filed from overseas** are, in about
+    equal numbers, international teams' and all-Australian teams' (M27).
+  - **Firms:** among suppliers, form, age and a city address hold together, the postcode's advantage does not; large
+    taxpayers with a filing linked report no more income once form, age and state are held (M29); patents filed
+    before the firm's first registration are more often now held overseas (M30).
+  - **Places:** beyond the advantage gradient, manufacturing's share of businesses goes with more filing per business
+    (0.449 and 0.396 for patents), which Stage 2 did not see; incomes add nothing (M31); of 13,673 pairs of an attached
+    indicator and a filing rate, 1,281 remain leads beyond the gradient, against 9,539 raw (M32).
+  - **Countries:** 56 of 477 attachments remain leads with income and size held (224 raw), mostly research effort;
+    women's share of researchers is not detected once business's share of researchers is held (M33).
+  - **Over time:** FY2025's lower follow-up of provisionals is new and heavy individual filers' (M35); with block
+    resampling only the cycle's pre-2008 pairs with overseas applicants' trade marks are clear of zero (M36).
+  - **Divisions and institutions:** B43's three survey items hold with size and value added (M37); across every kind
+    of institution, research that patents cite goes with the institution's patenting (M38).
 
 ## 2. How it was done
 
@@ -58,26 +86,31 @@ association (observational) or a description: none is a cause.
 
 | Lens | Observations | What stands out |
 |---|---|---|
-| `rights` | M1 to M7 | Representation's gaps hold; origin within reach; expedite revised; granted patents held overseas; women by field |
-| `firms` | M8 to M12 | Age, spend, form; contracts; first filings by cohort; size within industry; the name match |
-| `regions` | M13 to M16 | One advantage gradient; business density and degrees beyond it; not one filer's; weak segments |
-| `national` | M17, M18 | Several dimensions; Australia's neighbours; patents follow business R&D, not income, at home |
-| `timeline` | M19, M20, M25 | Block resampling; trends and seasons; Raising the Bar holds, the Designs Act's step does not stand apart |
-| `industries` | M21, M22 | Innovation not seen to go with IP; patents follow business R&D within value added |
-| `institutions` | M23, M24 | Research intensity is one measure; commercialisation weak at the same spend |
+| `rights` | M1 to M7, M26 to M28 | Representation's gaps hold; origin within reach; expedite revised; granted patents held overseas; women by field; divisionals within filers; two kinds of team; no renewal response to fees |
+| `firms` | M8 to M12, M29, M30 | Age, spend, form; contracts; first filings by cohort; size within industry; the name match; suppliers' form, age and city; filing before registration |
+| `regions` | M13 to M16, M31, M32 | One advantage gradient; business density and degrees beyond it; not one filer's; weak segments; manufacturing's share beyond it; most attachments are the gradient |
+| `national` | M17, M18, M33 | Several dimensions; Australia's neighbours; patents follow business R&D, not income, at home; research effort beyond income |
+| `timeline` | M19, M20, M25, M34 to M36 | Block resampling; trends and seasons; Raising the Bar holds, the Designs Act's step does not stand apart; fee breaks mostly not prices; FY2025 provisionals; the cycle before 2008 only |
+| `industries` | M21, M22, M37 | Innovation not seen to go with IP; patents follow business R&D within value added; B43's items hold |
+| `institutions` | M23, M24, M38 | Research intensity is one measure; commercialisation weak at the same spend; patent-cited research across kinds |
 
 ## 4. Stage 2 readings that Stage 3 revises (waiting for the atlas)
 
 B13 (M5), B17 (M7), B25 (M10), B29 (M14), B33 (M18), B37 (M25), B40, B42 and B60 (M21, M22), B45 (M23) and B62
-(M24). Notebook 2 and the atlas keep their Stage 2 wording until the owner lifts the freeze.
+(M24); from the review, B15 (M26), B16 (M27), B49 (M28, M34), B22 and B24 (M29), B26 (M30), B31, B58 and B59 (M31), B28
+(M32), B35 (M33), B47 (M34), B38 (M35), B52 and B56 (M36), B43 (M37), and B44 and B46 (M38). Notebook 2 and the atlas
+keep their Stage 2 wording until the owner lifts the freeze; notebooks 1 and 2 gained additions in the review (U124 to
+U127, B63), which the atlas does not yet show.
 
 ## 5. Early signals and data gaps
 
-Drafted in section 8 of the notebook: eleven signals (representation; origin, reach and life; expedite; patents held
-overseas; women inventors; firms; places; countries; divisions; institutions; Raising the Bar) and nine gaps (small
+Drafted in section 8 of the notebook, completed in the review: fifteen signals (the first pass's eleven (representation; origin, reach and life; expedite; patents held
+overseas; women inventors; firms; places; countries; divisions; institutions; Raising the Bar; and, from the review,
+divisionals, two kinds of team, renewal and fees, FY2025's provisionals) and thirteen gaps (the first pass's nine: small
 firms' size and industry, the ABNs IP RAPID leaves out, trading names, kinds of expedited request, dated ownership
 changes, older families, a working-day calendar, a review of the institutions link, business R&D by division in more
-years). For the owner's review.
+years; and renewal payment dates, divisionals' parents, judgments after March 2025, the CER's and AusTender's monthly
+series). For the owner's review.
 
 ## 6. What Stage 3 cannot tell you
 
@@ -118,3 +151,16 @@ years). For the owner's review.
 | M23 | institutions | Universities' patenting, research measures held together (revises B45) |
 | M24 | institutions | Disclosures, patents and licences with research spend as the exposure (revises B62) |
 | M25 | timeline | B37's behavioural breaks with trend and season held (revises B37) |
+| M26 | rights | Divisionals, field and filer held, within the same filers (B15; added in the review) |
+| M27 | rights | Inventions made here, filed from overseas: two kinds of team (B16) |
+| M28 | rights | Renewal at the anniversary after a fee change (B49's own test) |
+| M29 | firms | Suppliers' form, age and place; large taxpayers' income (B22, B24) |
+| M30 | firms | The filing firm's age and patents held overseas (B26) |
+| M31 | regions | Business mix, incomes and change beyond the components (B31, B58, B59) |
+| M32 | regions | Every attached indicator beyond the components (B28) |
+| M33 | national | The cross-country attachments with income and size held (B35) |
+| M34 | timeline | Fee breaks with trend and season held (B47, B49) |
+| M35 | timeline | The FY2025 provisionals with the filer held (B38) |
+| M36 | timeline | The cycle, the labour market and the courts with block resampling (B52, B56, B63) |
+| M37 | industries | The division-level indicators with size and value added held (B43, B57) |
+| M38 | institutions | Every kind of institution: patent-cited research and patenting (B44, B46) |

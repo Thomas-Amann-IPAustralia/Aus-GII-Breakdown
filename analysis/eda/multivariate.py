@@ -230,9 +230,17 @@ def adjusted_effect(
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
             model = smf.glm(f"{outcome} ~ {rhs}", d, family=sm.families.Binomial(), **glm_kw)
+            x, names = model.exog, list(model.exog_names)
+            independent = _independent_columns(x, keep=[0, names.index(signal)])
+            if len(independent) < x.shape[1]:
+                # two controls that pick out the same rows (a patent with no field has no class count either)
+                # make the design rank-deficient, and the clustered interval meaningless: refit on the columns
+                # that are not exact combinations of the others, which leaves the fitted chances unchanged
+                exog = pd.DataFrame(x[:, independent], columns=[names[i] for i in independent], index=d.index)
+                model = sm.GLM(d[outcome], exog, family=sm.families.Binomial(), **glm_kw)
             fit = model.fit(scale="X2" if weights else None, **fit_kw)
         x = fit.model.exog
-        j = fit.model.exog_names.index(signal)
+        j = list(fit.model.exog_names).index(signal)
         x1, x0 = x.copy(), x.copy()
         x1[:, j], x0[:, j] = 1.0, 0.0
         b = fit.params.to_numpy()
@@ -248,6 +256,20 @@ def adjusted_effect(
         out["raw"], out["adjusted"], out["adjusted low"], out["adjusted high"], out["raw low"], out["raw high"]
     )
     return pd.Series(out)
+
+
+def _independent_columns(x: np.ndarray, keep: list[int]) -> list[int]:
+    """The columns of `x` that are not exact linear combinations of the columns before them, in order; the columns
+    in `keep` (the intercept and the signal) are tested first. Read from the small cross-product matrix x'x, whose
+    rank on any set of columns is theirs."""
+    gram = x.T @ x
+    order = list(dict.fromkeys([*keep, *range(x.shape[1])]))
+    chosen: list[int] = []
+    for i in order:
+        trial = [*chosen, i]
+        if np.linalg.matrix_rank(gram[np.ix_(trial, trial)]) > len(chosen):
+            chosen.append(i)
+    return sorted(chosen)
 
 
 def _merge_rare(d: pd.DataFrame, controls: list[str], min_level: int, event: str | None = None) -> int:

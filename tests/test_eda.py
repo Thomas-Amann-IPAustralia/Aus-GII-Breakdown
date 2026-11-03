@@ -247,6 +247,13 @@ def test_adjusted_effect_removes_a_confounded_gap_and_keeps_a_real_one():
     assert weighted["raw"] == pytest.approx(real["raw"]) and weighted["adjusted"] == pytest.approx(real["adjusted"])
     t = pd.DataFrame([none, real], index=["none", "real"])
     assert isinstance(multi.effects_chart(t, title="t", xlabel="x"), plt.Figure)
+    # two controls whose "unknown" levels are the same rows make the design rank-deficient; the clustered interval
+    # must stay finite and match the model with one of them alone
+    df["g2"] = np.where(df.g == "b", "unknown", rng.choice(["x", "y"], n))
+    df["g3"] = np.where(df.g == "b", "unknown", rng.choice(["p", "q"], n))
+    both = multi.adjusted_effect(df, "real", "s", ["g2", "g3"], cluster="firm")
+    assert both["adjusted high"] - both["adjusted low"] < 0.1
+    assert both["adjusted"] == pytest.approx(real["adjusted"], abs=0.01)
 
 
 def test_cox_cluster_cov_matches_statsmodels_and_adjusted_hazard_runs():
