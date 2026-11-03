@@ -106,6 +106,7 @@ rights:
     register_inventors_women_expected: {skip: in register_inventors_women_share}
     register_inventors_men_expected: {skip: in register_inventors_women_share}
     register_inventors_gender_unknown: number
+    name_matched_abn: {skip: "an identifier: Stage 3's name match, kept apart (ADR 0047)"}
   derived:
     registered: {kind: category, sql: "registered_date IS NOT NULL", label: Registered or granted}
     accepted: {kind: category, sql: "accepted_date IS NOT NULL", label: Accepted}
@@ -208,6 +209,10 @@ firms:
     wgea_division: {skip: "as wgea_year"}
     wgea_anzsic_class: {skip: "as wgea_year"}
     wgea_women_share: {skip: "as wgea_year"}
+    n_patents_standard_name_matched: {skip: "Stage 3's name match, kept apart from the counts the screen used (ADR 0047)"}
+    n_patents_provisional_name_matched: {skip: "Stage 3's name match, kept apart from the counts the screen used (ADR 0047)"}
+    n_trade_marks_name_matched: {skip: "Stage 3's name match, kept apart from the counts the screen used (ADR 0047)"}
+    n_designs_name_matched: {skip: "Stage 3's name match, kept apart from the counts the screen used (ADR 0047)"}
   groups:
     # each kind of IP with the totals made from it (but not with the other kinds: patents against trade marks is a
     # real pair)

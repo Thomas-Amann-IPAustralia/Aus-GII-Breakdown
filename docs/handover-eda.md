@@ -2,6 +2,58 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
+**Status (2026-11-03, latest): Stage 3's first pass** (A32, ADR 0046, 0047). The owner's instruction: "Please
+commence the multivariate analysis. For now, we can freeze the Github webpage. I want to make sure all efforts are
+focused towards the processing of data and information." **The website is frozen**: nothing in `evidence/` or
+`analysis/atlas/` changes during Stage 3, and notebooks 1 and 2 stay as reviewed. `03_multivariate.ipynb` is rebuilt
+from its 23 October skeleton, with every lens: section 0 (the method), 1 (`rights`, M1 to M7), 2 (`firms`, M8 to M12,
+with the name match), 3 (`regions`, M13 to M16), 4 (`national`, M17, M18), 5 (`timeline`, M19, M20), 6 (`industries`,
+M21, M22), 7 (`institutions`, M23, M24), each with a summary, B37's breaks with trend and season held (M25, in
+section 5.3), and 8, the two tables the plan asks for (11 early signals, 9 data gaps), drafted for the owner's review.
+`docs/stage-3-summary.md` summarises the first pass. Each Stage 2 signal is modelled with its third factors held
+together and given a verdict (holds, weakened, not detected once held, reversed; appears once held or not detected
+either way where the raw figure was not detected). New helpers in `multivariate.py`, with tests: `adjusted_effect`
+(logistic average marginal effects, clustered by the filer's party, rare or uniform levels merged), `adjusted_hazard`
+(Cox models with delayed entry at grant, as Stage 2's curves; `cox_cluster_cov`, because statsmodels' clustered errors
+fail when censored rows tie with the last event), `nb_rate_ratios`, `partial_corr_interval` (1,000 resamples),
+`effective_n` and `block_bootstrap_corr`, `effects_chart`, `verdict`, `silhouette_word`, and a legend on
+`corr_heatmap`. The filer's party id follows `filer_group`'s rule (type agrees for all 3,769,615 rights with a filer).
+**The name match** (ADR 0045, 0047) is in the build: `name_matched_abn` in `rights`, four `*_name_matched` counts in
+`firms`, kept apart; tested, 1.1% to 4.8% of matches name another ABN; the postcode rule was dropped (it halved the
+matches for no gain in accuracy). What Stage 3 found (all observational or descriptive):
+- **holds:** filing alone and grant for Australian individuals (about 31 points, M1); no agent before the first
+  renewal (M2); Australian organisations' patents less likely to end within the same reach (hazard ratios 0.65 to 0.81,
+  M3) and reaching fewer offices (M4); granted Australian-founded patents more often held only overseas (M6);
+  provisionals' women inventors (M7); age, spend and public form for standard patents among R&D claimants (M8);
+  suppliers' contracts and value (M9); the size gap among large employers, wider within industry (M11); B30 with the
+  filer's party (M15); B36's quarterly lead with block resampling (M19); patents following business R&D across
+  countries (M18) and divisions (M22); Raising the Bar's rush and Australians' lower level after it, with trend and
+  season held (M25);
+- **weakened:** citations at the same reach (M4); wide patents held overseas (M6); the places' advantage gradient once
+  business density, degrees and R&D claimants and remoteness are held (M14);
+- **not detected or reversed:** expedited examination's longer life (M5); organisations' women inventors once the
+  field is held (M7); the claimants' city gap (M8); income for patents across countries (M18); innovation shares
+  against IP, even with the crosswalk with services (M21); trade marks against business R&D across divisions (M22); no
+  single university measure in both periods (M23); licences and licence income per patent at the same research spend
+  (M24); the Designs Act's overseas step, which a control matches (M25);
+- **structure:** one advantage component carries half of places' variation (M13), weak segments among places, one
+  group of 288 city areas holding 56% of placed patents (M16); several dimensions among countries, Australia nearest
+  Norway, New Zealand and Sweden (M17); trends dominate the monthly series (M20); the name match closes most of the
+  recent fall in standard patents linked to an ABN and changes no firm finding (M12).
+
+**Waiting for the atlas** (Stage 3 changes to earlier readings; carry over when the owner lifts the freeze): B13 (M5);
+B17 (M7); B25 (the cohort order, M10); B29 (M14); B33 (M18); B37 (M25); B40, and B42 and B60 (M21, M22); B45 (M23);
+B62 (M24);
+and the framing pages' "What comes next" (Stage 3 under way).
+
+**Next, in order:** the owner's review of section 8's tables and OQ26 (adopt the name-matched links?); then, at the
+owner's word, the plan's "After Stage 3" (review the signals and gaps, source the gaps worth filling) and lifting
+the freeze to carry the revisions above to the atlas. The notebook is the source. Its
+cell ids are three-digit sort keys with a name (`111-rep`, `131-reach`): this session split the cells into files, ran a
+section's cells with the setup cells (`031-setup`, `101-rights`, `201-firms`, `301-places`, `401-countries`) in one
+Python process (about a minute), and reassembled the notebook by sorting on the ids; a full run takes about ten
+minutes. New cells should keep the three-digit ids in order.
+
 **The owner's decisions (2026-11-02, A22 to A24):** the full Stage 2 audit (`analysis/claude-audit/261102/`) is the
 working list for Stage 2, in place of ChatGPT's four Stage 2 audits (A24); the survival pass comes next, with the fix to
 the halves (S2 S8 R07), in a fresh session with a fresh context window (A23); and B8 stays a Stage 3 signal only as a
@@ -1036,7 +1088,7 @@ and every answer with its date. Nothing there blocks Stage 1. Add new questions 
   same age.
 - Corrections to the institutions link go in `analysis/eda/institutions/*.csv`; `uv run python -m eda.build
   institution_rights institutions` rebuilds both in seconds, and the tests check the link.
-- Next free ADR: 0036.
+- Next free ADR: 0048.
 - The atlas's audit page reads the record's tables (sections 5.1 and 5.2 of `docs/audit-ip-australia.md`): keep their
   layout, and after changing the record, the benchmark or `analysis/atlas/content/audit.yaml`, rerun
   `python -m atlas.build` and commit `evidence/data/` (ADR 0025).
