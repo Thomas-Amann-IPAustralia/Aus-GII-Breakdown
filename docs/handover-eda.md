@@ -2,7 +2,14 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**Status (2026-11-03, latest): the Stage 3 web pass** (A34, ADR 0049). The owner's instruction: "The website freeze
+**Since then (2026-11-03): a Markdown copy of every observation page** (ADR 0050). The owner asked for each page to be
+copyable or downloadable as Markdown, a chart page always carrying its table, with the stepwise logic, explainers and
+provenance. Done: "Copy as Markdown" and "Download .md" under each headline, written in the browser by
+`evidence/js/markdown.js` from `atlas.json` and the chart's JSON; the chart's table comes from `evidence/js/tables.js`,
+which the chart's own table view now uses too. A test (`tests/test_atlas.py`, via `analysis/atlas/markdown_check.mjs`
+and Node) writes all 229 copies and checks them. Nothing in the notebooks or `atlas.json` changed.
+
+**Status (2026-11-03): the Stage 3 web pass** (A34, ADR 0049). The owner's instruction: "The website freeze
 is officially lifted! I would like you to now update the website with everything new that's been found in stage 3.
 Make sure to make the headings very clear and the logical processes explicit. Again, graphs/visuals are preferred over
 just plain text. Updating the website to correctly and accurately reflect the 3 EDA notebooks is the top priority. A

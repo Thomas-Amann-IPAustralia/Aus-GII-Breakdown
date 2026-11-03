@@ -256,6 +256,10 @@ a.id:hover { border-color: var(--teal); color: var(--teal); }
 .obs-main { min-width: 0; }
 .obs-head .meta { margin-bottom: 14px; }
 .obs-head h1 { font-size: clamp(1.6rem, 1.1rem + 1.7vw, 2.35rem); max-width: 26ch; }
+.md-tools { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.btn.small { padding: 6px 12px; font-size: .8rem; gap: 7px; border-radius: 8px; }
+.btn.small .i { width: 15px; height: 15px; }
+@media print { .md-tools { display: none; } }
 .obs-box { position: relative; margin: 20px 0 22px; background: var(--obs); border: 1px solid color-mix(in srgb, var(--obs-line) 40%, transparent); border-left: 5px solid var(--obs-line); border-radius: var(--r-s); padding: 18px 20px 16px; }
 .obs-label { display: flex; align-items: center; gap: 8px; font-size: .7rem; letter-spacing: .13em; text-transform: uppercase; font-weight: 760; color: var(--obs-ink); margin-bottom: 8px; }
 .obs-label .i { width: 17px; height: 17px; }
