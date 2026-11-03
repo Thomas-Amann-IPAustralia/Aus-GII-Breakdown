@@ -2,6 +2,46 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
+**Status (2026-11-03, latest): Stage 3 begun** (A32, ADR 0046). The owner's instruction: "Please commence the
+multivariate analysis. For now, we can freeze the Github webpage. I want to make sure all efforts are focused towards
+the processing of data and information." **The website is frozen**: nothing in `evidence/` or `analysis/atlas/`
+changes during Stage 3, and notebooks 1 and 2 stay as reviewed. `03_multivariate.ipynb` is rebuilt from its 23
+October skeleton: section 0 (the method), section 1 (`rights`, M1 to M7, with a summary in 1.7) and section 2.1 to 2.4
+(`firms`, M8 to M11). Each Stage 2 signal is modelled with its third factors held together and given a verdict
+(holds, weakened, not detected once held, reversed; appears once held or not detected either way where the raw figure
+was not detected). New helpers in `multivariate.py`, with tests: `adjusted_effect` (logistic average marginal
+effects, clustered by the filer's party, rare or uniform levels merged), `adjusted_hazard` (Cox models with delayed
+entry at grant, as Stage 2's curves; `cox_cluster_cov`, because statsmodels' clustered errors fail when censored rows
+tie with the last event), `nb_rate_ratios`, `partial_corr_interval` (1,000 resamples), `effective_n` and
+`block_bootstrap_corr` (for §5), `effects_chart`, `verdict`, `silhouette_word`, and a legend on `corr_heatmap`. The
+filer's party id (`FILER_PARTY` in the notebook) follows `filer_group`'s rule (type agrees for all 3,769,615 rights
+with a filer). What it found (all observational):
+- **holds:** filing alone and grant for Australian individuals (about 31 points, 86% to 87% of the raw gap, M1) and
+  trade marks (21 to 23 points); no agent before the first renewal (trade marks 11 to 14 points, designs 14 to 16,
+  M2); Australian organisations' patents less likely to end within the same reach (hazard ratios 0.65 to 0.81, M3);
+  fewer offices (M4); granted Australian-founded patents more often held only overseas (M6); provisionals' women
+  inventors (M7); age among R&D claimants, spend and public form for standard patents (M8); suppliers' contracts and
+  value (2.4 and 2.7 times, M9); the size gap among large employers, wider within industry (M11);
+- **weakened:** citations within five years (about 27% to 30% fewer at the same reach, field, route and year, M4); wide
+  patents held overseas (M6); R&D spend and public form for any filing (M8);
+- **not detected or reversed:** expedited examination's longer life (not detected once held, reversed in FY2003 to
+  FY2009; Australian individuals' expedited patents more likely to end, M5); organisations' standard patents' women
+  inventors once the field is held (M7); the claimants' city gap (M8); R&D within size among large employers (M11);
+- **the order of first filings by cohort** (M10): 64% to 69% trade mark first, less than B25's window gave.
+
+**Waiting for the atlas** (Stage 3 changes to earlier readings; carry over when the owner lifts the freeze): B13 (its
+pooled link does not survive the field, route and cohort, M5); B17 (its filer gap is not detected with the filer
+clustered and turns negative with the field held, M7); B25 (the cohort order is 64% to 69%, M10); and the method
+text of the atlas's "What comes next" (Stage 3 begun).
+
+**Next, in order:** 2.5, the name match (ADR 0045); sections 3 to 7 (places with components and B30 by the filer's
+party; countries; the timeline with block resampling; industries with B42 and B60 through the crosswalk with
+services; institutions with fixed-age citations and research spend for B62); section 8's two tables; then
+`docs/stage-3-summary.md`. The notebook is the source. Its cell ids are three-digit sort keys with a name
+(`111-rep`, `131-reach`): this session split the cells into files, ran a section's cells with the setup cells
+(`031-setup`, `101-rights`, `201-firms`) in one Python process (about a minute), and reassembled the notebook by sorting
+on the ids; a full run takes about six minutes. New cells should keep the three-digit ids in order.
+
 **The owner's decisions (2026-11-02, A22 to A24):** the full Stage 2 audit (`analysis/claude-audit/261102/`) is the
 working list for Stage 2, in place of ChatGPT's four Stage 2 audits (A24); the survival pass comes next, with the fix to
 the halves (S2 S8 R07), in a fresh session with a fresh context window (A23); and B8 stays a Stage 3 signal only as a
@@ -1036,7 +1076,7 @@ and every answer with its date. Nothing there blocks Stage 1. Add new questions 
   same age.
 - Corrections to the institutions link go in `analysis/eda/institutions/*.csv`; `uv run python -m eda.build
   institution_rights institutions` rebuilds both in seconds, and the tests check the link.
-- Next free ADR: 0036.
+- Next free ADR: 0048.
 - The atlas's audit page reads the record's tables (sections 5.1 and 5.2 of `docs/audit-ip-australia.md`): keep their
   layout, and after changing the record, the benchmark or `analysis/atlas/content/audit.yaml`, rerun
   `python -m atlas.build` and commit `evidence/data/` (ADR 0025).

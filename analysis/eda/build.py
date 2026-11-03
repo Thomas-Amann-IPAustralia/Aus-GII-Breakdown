@@ -647,6 +647,66 @@ def rights_sql() -> str:
     """
 
 
+def name_match_sql(base: str) -> str:
+    """CTEs ending in `name_match`: an ABN found by name for each right of `base` whose filer is an Australian
+    organisation and that has no filer's ABN (Stage 3's check of firms' counts, ADR 0045 and 0047). The filer's party
+    (`filer_group`'s rule, ADR 0037: the first founding applicant in Australia) is taken with its name and state as
+    first recorded; its name key (`_name_key`) is matched to the main names of every ABN that is not an individual's
+    in the ABR's extract and to every current and former company name in ASIC's register (through its ABN, or its ACN
+    where the ABR gives that ACN one ABN); a match is kept only if exactly one ABN has the key and is registered in
+    the filer's state. Tested on rights whose ABN is known (hidden, then recovered): 1.1% to 4.8% of matches name
+    another ABN by type and decade, older designs 9.8% (ADR 0047). Kept apart: never in `filer_abn` or the `n_*`
+    counts."""
+    return f"""
+    nm_founders AS (
+        SELECT ip_right_type, application_number, party_id, party_name, country_code, state_code,
+               effective_from_date AS since,
+               row_number() OVER (PARTITION BY ip_right_type, application_number, party_id
+                                  ORDER BY effective_from_date, country_code NULLS LAST, post_code NULLS LAST,
+                                           state_code NULLS LAST) AS k
+        FROM {{iprapid/party}} WHERE party_role_category IN ('applicant', 'owner') AND is_founding
+    ),
+    nm_filer AS (
+        SELECT ip_right_type, application_number,
+               arg_min(party_name, (since, party_id)) FILTER (country_code = 'au') AS name,
+               arg_min(upper(CASE state_code WHEN 'queensland' THEN 'qld' ELSE state_code END), (since, party_id))
+                   FILTER (country_code = 'au') AS state
+        FROM nm_founders WHERE k = 1 GROUP BY ALL
+    ),
+    nm_rights AS (
+        SELECT b.ip_right_type, b.application_number, {_name_key("f.name")} AS key, f.state
+        FROM {base} b JOIN nm_filer f USING (ip_right_type, application_number)
+        WHERE b.filer_group = 'australian_organisation' AND b.filer_abn IS NULL
+    ),
+    nm_abr AS (SELECT abn, upper(state) AS state, entity_type, name FROM {{abr/abns}}),
+    nm_acn AS (
+        SELECT acn, any_value(abn) AS abn FROM {{abr/abns}} WHERE acn IS NOT NULL GROUP BY 1 HAVING count(*) = 1
+    ),
+    nm_candidates AS (
+        SELECT DISTINCT c.key, c.abn, a.state
+        FROM (SELECT {_name_key("name")} AS key, abn FROM nm_abr WHERE entity_type <> 'IND' AND name IS NOT NULL
+              UNION ALL
+              SELECT {_name_key("n.company_name")}, coalesce(nullif(n.abn, ''), a.abn)
+              FROM {{asic/company_names}} n LEFT JOIN nm_acn a USING (acn)) c
+        JOIN nm_abr a USING (abn)
+        WHERE c.key <> ''
+    ),
+    name_match AS (
+        SELECT r.ip_right_type, r.application_number, any_value(c.abn) AS name_matched_abn
+        FROM nm_rights r JOIN nm_candidates c ON c.key = r.key AND c.state = r.state
+        GROUP BY ALL HAVING count(DISTINCT c.abn) = 1
+    )"""
+
+
+def rights_with_name_match_sql() -> str:
+    """The `rights` lens: `rights_sql`, with `name_matched_abn` from `name_match_sql` (ADR 0047)."""
+    return f"""
+    WITH base AS MATERIALIZED ({rights_sql()}),
+    {name_match_sql("base")}
+    SELECT base.*, m.name_matched_abn
+    FROM base LEFT JOIN name_match m USING (ip_right_type, application_number)"""
+
+
 def firms_sql() -> str:
     """One row per ABN in `linkage/abn_spine`.
 
@@ -667,6 +727,14 @@ def firms_sql() -> str:
                count(*) FILTER (ip_right_type = 'trade_mark') AS n_trade_marks,
                count(*) FILTER (ip_right_type = 'design') AS n_designs
         FROM {lens_table("rights")} WHERE filer_abn IS NOT NULL GROUP BY 1
+    ),
+    name_matched AS (  -- applications credited by Stage 3's name match (ADR 0047): apart, never in the n_* counts
+        SELECT name_matched_abn AS abn,
+               count(*) FILTER (patent_type = 'standard') AS n_patents_standard_name_matched,
+               count(*) FILTER (patent_type = 'provisional') AS n_patents_provisional_name_matched,
+               count(*) FILTER (ip_right_type = 'trade_mark') AS n_trade_marks_name_matched,
+               count(*) FILTER (ip_right_type = 'design') AS n_designs_name_matched
+        FROM {lens_table("rights")} WHERE name_matched_abn IS NOT NULL GROUP BY 1
     ),
     first_filed AS (  -- each filer's first and last filing year, by type, from the filled filer ABN (ADR 0029)
         SELECT filer_abn AS abn,
@@ -788,9 +856,14 @@ def firms_sql() -> str:
         wgea.wgea_size_band,
         {_division_of("wgea.wgea_anzsic_class")} AS wgea_division,
         wgea.wgea_anzsic_class,
-        wgea.wgea_women_share
+        wgea.wgea_women_share,
+        coalesce(nm.n_patents_standard_name_matched, 0) AS n_patents_standard_name_matched,
+        coalesce(nm.n_patents_provisional_name_matched, 0) AS n_patents_provisional_name_matched,
+        coalesce(nm.n_trade_marks_name_matched, 0) AS n_trade_marks_name_matched,
+        coalesce(nm.n_designs_name_matched, 0) AS n_designs_name_matched
     FROM {{linkage/abn_spine}} s
     LEFT JOIN ip USING (abn)
+    LEFT JOIN name_matched nm USING (abn)
     LEFT JOIN held USING (abn)
     LEFT JOIN rd USING (abn)
     LEFT JOIN tax USING (abn)
@@ -2399,7 +2472,7 @@ def timeline_sql() -> str:
 
 
 LENSES = {
-    "rights": rights_sql,
+    "rights": rights_with_name_match_sql,
     "firms": firms_sql,
     "regions": regions_sql,
     "region_indicators": region_indicators_sql,

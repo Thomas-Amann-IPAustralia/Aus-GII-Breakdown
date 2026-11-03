@@ -95,6 +95,7 @@ rights:
   register_inventors_women_expected: {label: Expected number of women among the register's inventors, kind: numeric, note: "the sum of each inventor's estimated chance of being a woman, from the given name and the first applicant's country in IP RAPID (the register gives no inventor's country), by the World Gender-Name Dictionary (ADR 0022, 0029); inventors with no estimate add nothing (count them in register_inventors_gender_unknown)"}
   register_inventors_men_expected: {label: Expected number of men among the register's inventors, kind: numeric, note: "as register_inventors_women_expected"}
   register_inventors_gender_unknown: {label: Register's inventors with no gender estimate, kind: count}
+  name_matched_abn: {label: ABN found by name (Stage 3's check), kind: id, note: "for an Australian organisation's right with no filer's ABN only: the one ABN whose ABR main name or ASIC company name (current or former) has the filer's name key and is registered in the filer's state (ADR 0045, 0047). Tested on rights with a known ABN, 1.1% to 4.8% of matches are another ABN (older designs 9.8%). Kept apart: never in filer_abn, has_abn_filled or the firms lens's n_* counts"}
 
 firms:
   abn: {label: ABN, kind: id}
@@ -151,6 +152,10 @@ firms:
   wgea_division: {label: ANZSIC division (WGEA), kind: category, note: "the division (A to S) of the ANZSIC class the employer reported to WGEA"}
   wgea_anzsic_class: {label: ANZSIC class (WGEA), kind: category, note: "the four-digit ANZSIC 2006 class the employer reported to WGEA"}
   wgea_women_share: {label: Women among employees (WGEA), kind: rate, note: "women's share of the latest report's headcount"}
+  n_patents_standard_name_matched: {label: Standard patent applications found by name (Stage 3's check), kind: count, note: "applications credited to the ABN by name_matched_abn in the rights lens (ADR 0047): rights with no filer's ABN, kept apart from n_patents_standard and never added to it; only for ABNs the lens already holds"}
+  n_patents_provisional_name_matched: {label: Provisional applications found by name (Stage 3's check), kind: count, note: "as n_patents_standard_name_matched"}
+  n_trade_marks_name_matched: {label: Trade mark applications found by name (Stage 3's check), kind: count, note: "as n_patents_standard_name_matched"}
+  n_designs_name_matched: {label: Design applications found by name (Stage 3's check), kind: count, note: "as n_patents_standard_name_matched"}
 
 regions:
   poa_code: {label: Postal area, kind: id, note: "the ABS's postal area (2021), built from mesh blocks to approximate a postcode; post office box, university and other large-volume postcodes are not postal areas (S6, ADR 0017)"}

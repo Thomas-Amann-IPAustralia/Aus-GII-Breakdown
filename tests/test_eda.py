@@ -226,6 +226,99 @@ def test_pca_and_clusters_run():
     assert list(scores.index) == [2, 3]
 
 
+def test_adjusted_effect_removes_a_confounded_gap_and_keeps_a_real_one():
+    # the signal is commoner where the outcome is likelier (group b), so its raw gap is partly the group's
+    rng = np.random.default_rng(4)
+    n = 20_000
+    g = rng.choice(["a", "b"], n)
+    signal = rng.random(n) < np.where(g == "b", 0.8, 0.2)
+    base = np.where(g == "b", 0.6, 0.2)
+    df = pd.DataFrame({"g": g, "s": signal.astype(int), "firm": rng.integers(0, 2000, n)})
+    df["none"] = (rng.random(n) < base).astype(int)  # the signal does nothing once the group is known
+    df["real"] = (rng.random(n) < base + 0.1 * signal).astype(int)  # 10 points more with the signal
+    none = multi.adjusted_effect(df, "none", "s", ["g"], cluster="firm")
+    assert none["raw"] > 0.2 and none["verdict"] == "not detected once held"
+    real = multi.adjusted_effect(df, "real", "s", ["g"])
+    assert real["adjusted low"] < 0.1 < real["adjusted high"] and real["verdict"] == "weakened"
+    assert real["raw"] == pytest.approx(real["share with signal"] - real["share without"])
+    # the same data as cells with counts: a weighted share gives the same answer as the rows
+    cells = df.groupby(["g", "s"]).agg(real=("real", "mean"), n=("real", "size")).reset_index()
+    weighted = multi.adjusted_effect(cells, "real", "s", ["g"], weights="n")
+    assert weighted["raw"] == pytest.approx(real["raw"]) and weighted["adjusted"] == pytest.approx(real["adjusted"])
+    t = pd.DataFrame([none, real], index=["none", "real"])
+    assert isinstance(multi.effects_chart(t, title="t", xlabel="x"), plt.Figure)
+
+
+def test_cox_cluster_cov_matches_statsmodels_and_adjusted_hazard_runs():
+    import statsmodels.api as sm
+
+    rng = np.random.default_rng(8)
+    n = 4000
+    x = np.c_[rng.integers(0, 2, n), rng.normal(size=n)].astype(float)
+    t = rng.exponential(1 / np.exp(0.5 * x[:, 0] - 0.3 * x[:, 1]))
+    entry = rng.uniform(0, 0.3, n)
+    keep = entry < t
+    t, x, entry = t[keep], x[keep], entry[keep]
+    event = (rng.random(len(t)) < 0.8).astype(float)
+    groups = rng.integers(0, 300, len(t))
+    fit = sm.PHReg(t, x, status=event, entry=entry).fit(groups=groups)
+    naive = sm.PHReg(t, x, status=event, entry=entry).fit()
+    ours = multi.cox_cluster_cov(t, event, entry, x, naive.params, naive.cov_params(), groups)
+    assert np.allclose(np.sqrt(np.diag(ours)), fit.bse, rtol=1e-3)
+    df = pd.DataFrame({"t": t, "ended": event, "entry": entry, "s": x[:, 0].astype(int), "g": groups % 3, "c": groups})
+    r = multi.adjusted_hazard(df, "t", "ended", "entry", "s", ["g"], cluster="c", horizon=2)
+    assert (
+        1.3 < r["adjusted"] < 2.0 and r["adjusted low"] < r["adjusted"] < r["adjusted high"] and r["verdict"] == "holds"
+    )
+
+
+def test_verdict_words_follow_adr_0046():
+    assert multi.verdict(0.3, 0.2, 0.1, 0.3) == "holds"
+    assert multi.verdict(0.3, 0.1, 0.05, 0.15) == "weakened"
+    assert multi.verdict(0.3, 0.1, -0.05, 0.25) == "not detected once held"
+    assert multi.verdict(0.3, -0.1, -0.15, -0.05) == "reversed"
+    assert multi.verdict(-0.3, -0.2, -0.3, -0.1) == "holds"
+    # a raw association that was not itself detected
+    assert multi.verdict(0.001, 0.07, 0.02, 0.12, -0.04, 0.05) == "appears once held"
+    assert multi.verdict(0.001, 0.01, -0.03, 0.06, -0.04, 0.05) == "not detected either way"
+
+
+def test_nb_rate_ratios_recover_a_known_ratio():
+    rng = np.random.default_rng(5)
+    n = 4000
+    d = pd.DataFrame({"x": rng.integers(0, 2, n), "people": rng.integers(500, 5000, n)})
+    mu = d.people / 1000 * np.where(d.x == 1, 2.0, 1.0) * rng.gamma(2, 0.5, n)  # extra spread: alpha 0.5
+    d["k"] = rng.poisson(mu)
+    r = multi.nb_rate_ratios(d, "k ~ x", "people")
+    assert r.loc["x", "low"] < 2.0 < r.loc["x", "high"] and r.converged.all() and 0.3 < r.alpha.iloc[0] < 0.7
+
+
+def test_partial_corr_interval_brackets_its_estimate():
+    rng = np.random.default_rng(6)
+    z = rng.normal(size=60)
+    df = pd.DataFrame({"z": z, "x": z + rng.normal(size=60), "y": z + rng.normal(size=60)})
+    p = multi.partial_corr_interval(df, "x", "y", ["z"], reps=200)
+    assert p["raw low"] < p["raw"] < p["raw high"] and p["partial low"] < p["partial"] < p["partial high"]
+    assert p["partial low"] < 0 < p["partial high"] and p["raw low"] > 0
+
+
+def test_block_bootstrap_widens_the_interval_of_dependent_series():
+    # two independent random walks' changes are uncorrelated, but smoothed changes are serially dependent
+    rng = np.random.default_rng(7)
+    n = 80
+    x = np.convolve(rng.normal(size=n + 7), np.ones(8) / 8, "valid")
+    y = np.convolve(rng.normal(size=n + 7), np.ones(8) / 8, "valid")
+    assert multi.effective_n(x, y) < n / 2
+    assert multi.effective_n(rng.normal(size=n), rng.normal(size=n)) > n / 2
+    est, lo, hi = multi.block_bootstrap_corr(x, y, block=8, reps=300)
+    _, lo1, hi1 = multi.block_bootstrap_corr(x, y, block=1, reps=300)
+    assert lo < est < hi and (hi - lo) > (hi1 - lo1)
+
+
+def test_silhouette_words():
+    assert multi.silhouette_word(0.2) == "no clear segments" and multi.silhouette_word(0.3) == "some structure"
+
+
 def test_charts_draw():
     style.setup()
     s = pd.Series(np.random.default_rng(3).lognormal(size=1000), name="v")
@@ -614,6 +707,25 @@ def test_firms_have_one_filing_flag_and_regions_count_by_it():
             (SELECT count(*) FROM read_parquet('{regions}') WHERE rdti_firms_no_ip_link > rdti_firms_no_filing
                 OR rdti_firms_no_filing > rdti_firms) AS nesting
         FROM f""").iloc[0]
+    assert bad.to_dict() == dict.fromkeys(bad.index, 0)
+
+
+def test_name_match_is_kept_apart():
+    """Stage 3's name match (ADR 0045, 0047) fills only Australian organisations' rights with no filer's ABN, and the
+    firms lens counts it in its own columns, for ABNs the lens holds, never in the n_* counts."""
+    rights, firms = _built("rights"), _built("firms")
+    bad = data.sql(f"""
+        WITH r AS (SELECT * FROM read_parquet('{rights}')), f AS (SELECT * FROM read_parquet('{firms}'))
+        SELECT
+            count(*) FILTER (name_matched_abn IS NOT NULL AND (filer_abn IS NOT NULL
+                             OR filer_group IS DISTINCT FROM 'australian_organisation')) AS outside,
+            (SELECT count(*) FROM r WHERE name_matched_abn IN (SELECT abn FROM f) AND patent_type = 'standard')
+              - (SELECT sum(n_patents_standard_name_matched) FROM f) AS standard,
+            (SELECT count(*) FROM r WHERE name_matched_abn IN (SELECT abn FROM f) AND ip_right_type = 'trade_mark')
+              - (SELECT sum(n_trade_marks_name_matched) FROM f) AS trade_marks,
+            (SELECT count(*) FROM r WHERE filer_abn IN (SELECT abn FROM f) AND ip_right_type = 'trade_mark')
+              - (SELECT sum(n_trade_marks) FROM f) AS counts_unchanged
+        FROM r""").iloc[0]
     assert bad.to_dict() == dict.fromkeys(bad.index, 0)
 
 
