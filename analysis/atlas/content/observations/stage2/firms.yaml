@@ -42,7 +42,7 @@
   prep:
     - what: The firms are split into two halves by a fixed rule (a hash of the ABN), so the same firms fall in each
         half on every run.
-      why: The firms lens has no second period, so a random half is the [[replication|replication]] sample.
+      why: The firms lens has no second period, so a random [[halves|half]] is the [[replication|replication]] sample.
   steps:
     - Screen every pair in the first half, as for rights ({B1}).
     - Check each lead in the second half.
@@ -78,7 +78,7 @@
       may be cut short (0.452; 0.451; local government 14.8 times chance), which is how ABNs began in 1999 and 2000."
     - "R&D spend rises with contract value (0.176; 0.184), and government suppliers cluster in the ACT (a median of 1
       contract against 0 in NSW)."
-    - "The R&D and income pair is 0.346 in the other half: it holds, smaller, among the few firms that are both large
+    - "The R&D and income pair is 0.346 in the second half: it holds, smaller, among the few firms that are both large
       taxpayers and R&D claimants."
   chart:
     type: bar
@@ -131,11 +131,11 @@
     - "**Age:** claimants under 3 years old 26.9%, 20 years or more 67.4%. Age is partly time: an older firm has had
       longer to file, and age is on the record at 22 October 2026, not when the firm claimed or contracted."
     - "**Advantage:** for suppliers the share rises with the postcode's advantage, with a dip in the third and fourth
-      tenths (a rank correlation of 0.806 over the tenths; 0.782 in the other half). For R&D claimants no gradient was
+      tenths (a rank correlation of 0.806 over the tenths; 0.782 in the second half). For R&D claimants no gradient was
       detected (48.47% to 50.92% across the tenths)."
     - "**City and country, R&D claimants:** major cities 51.9%, inner regional 49.8%, outer regional 39.3%; the gap is
       in outer regional areas only."
-    - "Each figure held in the other half (for example 51.89%, 25.09% and 41.2% overall)."
+    - "Each figure held in the second half (for example 51.89%, 25.09% and 41.2% overall)."
   chart:
     type: bar
     horizontal: true
@@ -164,7 +164,7 @@
   steps:
     - For each way in, find the share of firms that have filed any IP, and each kind.
     - Split by entity group, age, remoteness and the advantage of the postcode.
-    - Check every figure in the other half.
+    - Check every figure in the second half.
   assumptions:
     - A firm's registered postcode stands for where it is ({U47}).
   limits:
@@ -201,7 +201,7 @@
       more, and 4.1% of those under 3, are linked to IP another way (holding a right, another IP record, or an older IP
       Australia dataset)."
     - "**Not proven non-filers.** A firm can file without its business number being recorded, or through a related
-      company. The other half of the claimants agrees: 9.8% and 24.3%; spend with patents 0.128; no filing linked 52.3%
+      company. The second half of the claimants agrees: 9.8% and 24.3%; spend with patents 0.128; no filing linked 52.3%
       and 43%."
   questions:
     - q: 4
@@ -252,7 +252,7 @@
   statement: >-
     Suppliers that have filed IP have a median 3 contracts against 2, and a median total contract value per supplier
     of $273,400 against $113,800 (a difference of $159,700). Large taxpayers with IP do not report clearly more income
-    ($214.6m against $186.8m, and not in the other half).
+    ($214.6m against $186.8m, and not in the second half).
   figures:
     - value: "$273,400 against $113,800"
       label: median contract value, suppliers with IP against without
@@ -261,10 +261,10 @@
     - value: "3 against 2"
       label: median contracts
   points:
-    - "The other half: $277,300 against $110,000."
+    - "In the second half: $277,300 against $110,000."
     - "Within entity groups the gap holds in both halves for private companies, public companies, government bodies and
       other entities; for trusts it is negligible."
-    - "Large taxpayers' other half: $204.0m against $200.2m, an interval that includes no difference: not a lead."
+    - "Large taxpayers in the second half: $204.0m against $200.2m, an interval that includes no difference: not a lead."
     - "Sole traders and partnerships are not shown."
     - "**Not a cause:** IP and contracts may both follow from a firm's size and capability. Size is known only for
       large employers ({B50}), and this comparison was not redone among them."
@@ -333,7 +333,7 @@
     - "**Who is counted in the within-firm order:** only firms whose two first filings both fall in FY2010 to FY2026; a
       firm whose first of either came earlier, or whose second has not come yet, is left out, so pairs filed close
       together weigh more. 5.09% of firms filed their first trade mark and design on the same day."
-    - "The other half of the firms agrees: medians of 2.66 and 5.39 years, and 32% within the first year for trade
+    - "The second half of the firms agrees: medians of 2.66 and 5.39 years, and 32% within the first year for trade
       marks."
   questions:
     - q: 4
