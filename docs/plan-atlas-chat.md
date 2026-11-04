@@ -4,9 +4,9 @@ Written 4 November 2026 for one Claude Code session to carry out from start to f
 both checked out side by side: this one (`Aus-GII-Breakdown`, the atlas) and `Econ` (the IP economics evidence chat,
 whose API, search and answer check the atlas chat reuses).
 
-**Status (4 November 2026, later the same day):** carried out except WP6, the smoke test, which the environment's
-environment's OpenAI key (out of credit, not the chatbot's key) blocked (US$0.00 spent; OQ30). What was built and decided: ADR 0054 here, D-038 in Econ; what remains:
-the handover's "Latest" entry.
+**Status (4 November 2026, later the same day):** carried out in full. WP6 waited for the environment's OpenAI key to be
+replaced (A38), then ran (Econ D-039, US$1.04). What was built and decided: ADR 0054 here, D-038 and D-039 in Econ; what
+remains is the owner's (OQ31: adopt the prompts and publish).
 
 ## 1. The outcome
 

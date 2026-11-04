@@ -49,10 +49,12 @@ the Econ chat in what it searches and how it looks.
 (20 of 20) and every by-id need (5 of 5) in its test set reaches its gold pages among the 20 passages; context notes
 are written but not indexed, and a page may give at most 2 passages, for the breadth of exploratory answers.
 
-**Not yet done.** The smoke test with OpenAI could not run: OpenAI refused the key this cloud environment injects (HTTP 401, `expired_secret_key`; the owner says it has no credit left; US$0.00 spent). The chatbot's own key, on Render, is unaffected.
-The prompts are written and locked but not adopted, and nothing is published (A37, decision 5; OQ30, OQ31). The page's
-browser check runs on a provisional recorded stream (real search, filter order and pins over the real index; scripted
-plan, ratings and answer) until the smoke test records a real one.
+**The smoke test** (Econ D-039, `reports/atlas-chat-smoke-v1.md`; US$1.04 of the owner's US$2.00, after the
+environment's OpenAI key was replaced, A38): 20 needs end to end; in the final state every answer passes the check (18
+first time), every lookup and by-id answer cites its gold observation, and none states an association as a cause.
+Reading the first run's answers found two figures in a list cited nowhere, so the numbers check now also refuses a
+number in uncited prose, and atlas-answer-v2 asks each list item to cite its own sentences. The page's browser check
+runs on one of the recorded answers. Adopting the prompts and publishing are the owner's (OQ31).
 
 **Refreshing the chat.** After `atlas.build`, run `node analysis/atlas/passages.mjs` (a test fails otherwise). To make a
 change reach the chat, in Econ: `econ atlas-ingest --ref <this repository's commit>`, set that sha in
