@@ -132,3 +132,46 @@ def test_each_page_has_a_markdown_copy_with_its_chart_as_a_table(atlas):
             assert "## Chart" in md and all(n > 0 for n in c["rows"]), o["id"]
             # a table's rows: one per category and view, beside the key figures, verdicts and source tables
             assert md.count("\n| ") >= sum(c["rows"]), o["id"]
+
+
+def _passages():
+    import shutil
+    import subprocess
+
+    node = shutil.which("node")
+    if not node:
+        pytest.skip("node is not installed")
+    script = build.ROOT / "analysis" / "atlas" / "passages.mjs"
+    done = subprocess.run([node, str(script), "--check"], capture_output=True, text=True)
+    assert done.returncode == 0, done.stderr  # the committed file is what the script writes now
+    path = build.DATA / "passages.jsonl"
+    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+
+
+def test_chat_passages_are_current_and_cover_every_page(atlas):
+    # The chat's evidence (analysis/atlas/passages.mjs, ADR 0054): every page split into passages of at most 260 words
+    import re
+
+    passages = _passages()
+    meta = json.loads((build.DATA / "passages.meta.json").read_text(encoding="utf-8"))
+    assert meta["passages"] == len(passages) and meta["built"] == atlas["built"]
+    ids = [p["passage_id"] for p in passages]
+    assert len(ids) == len(set(ids))
+    assert all(len(p["text"].split()) <= meta["word_cap"] for p in passages)
+    assert all(p["text"].strip() for p in passages)
+    # the site's markup is rendered, and no link or hash survives into the text
+    assert not any("[[" in p["text"] or re.search(r"\{[UBM]\d", p["text"]) for p in passages)
+    assert not any(re.search(r"\]\(https?:", p["text"]) or re.search(r"\b[0-9a-f]{16,}\b", p["text"]) for p in passages)
+    # every observation has a passage in its own "Observation X" section
+    statement = {p["observation"] for p in passages if p["section"][0].startswith(f"Observation {p['observation']} (")}
+    assert statement == {o["id"] for o in atlas["observations"]}
+    # every passage leads to a page the atlas serves (evidence/js/app.js, route())
+    obs = {o["id"] for o in atlas["observations"]}
+    pages = {"", "stage3", "limits", "next", "audit", "data"}
+    pages |= {f"lens/{k}" for k in atlas["lenses"]} | {f"question/{q['id']}" for q in atlas["questions"]}
+    pages |= {f"glossary/{t}" for t in atlas["glossary"]} | obs
+    for p in passages:
+        assert p["url"].startswith(meta["base"] + "#/"), p["passage_id"]
+        assert p["url"][len(meta["base"]) + 2 :] in pages, p["passage_id"]
+        assert p["kind"] in {"observation", "glossary", "lens", "question", "source", "page"}
+        assert set(p["related"]) <= obs

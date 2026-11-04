@@ -13,7 +13,7 @@ const INTRO = {
   2: "Stage 2 answers none of the five questions either: it finds which measures go together. This is how the association prepares the ground for them.",
   3: "Stage 3 answers none of the five questions either: it tests which of Stage 2's signals survive with their other factors held together. This is how the result prepares the ground for them.",
 };
-const TOKEN = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]|\{([UBM]\d+)\}/g;
+export const TOKEN = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]|\{([UBM]\d+)\}/g;
 
 const plural = (n, word) => `${n} ${word}${n === 1 ? "" : "s"}`;
 const lower = (s) => String(s ?? "").replace(/^[A-Z](?![A-Z])/, (c) => c.toLowerCase());
@@ -32,17 +32,26 @@ function longDate(iso) {
  * - `chart`: the chart's spec when the observation has one (fetched by the page from data/charts/<id>.json);
  * - `base`: the page's address without its #fragment, so that links to other observations and images resolve.
  */
+/**
+ * The site's light markup as Markdown: `[[term|label]]` reads as its words (the term is added to `terms`, so a copy
+ * can explain it), and `{U44}` becomes a link to that observation's page. Shared with the chat's passages
+ * (analysis/atlas/passages.mjs), so they read exactly as the pages do.
+ */
+export function markup(A, { base = "", terms = new Set(), byId = null } = {}) {
+  const ids = byId || Object.fromEntries(A.observations.map((x) => [x.id, x]));
+  return (text) => String(text ?? "").replace(TOKEN, (_, term, label, id) => {
+    if (id) return ids[id] ? `[${id}](${base}#/${id})` : id;
+    terms.add(term);
+    return label || lower(A.glossary[term]?.title) || term;
+  });
+}
+
 export function observationMarkdown(o, { atlas: A, chart = null, base = "" }) {
   const byId = Object.fromEntries(A.observations.map((x) => [x.id, x]));
   const L = A.lenses[o.lens] || { name: o.lens, unit: "" };
   const page = (id) => `${base}#/${id}`;
   const terms = new Set(o.terms || []);
-  /** The site's light markup as Markdown: terms read as their words (explained at the end), ids become links. */
-  const md = (text) => String(text ?? "").replace(TOKEN, (_, term, label, id) => {
-    if (id) return byId[id] ? `[${id}](${page(id)})` : id;
-    terms.add(term);
-    return label || lower(A.glossary[term]?.title) || term;
-  });
+  const md = markup(A, { base, terms, byId });
   const cell = (text) => md(text).replace(/\s*\n\s*/g, " ").replace(/\|/g, "\\|");
   /** A Markdown table; `right` names the columns of numbers (all but the first, unless given). */
   const table = (head, rows, right = head.map((_, i) => i > 0)) => [
