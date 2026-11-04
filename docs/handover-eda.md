@@ -2,13 +2,24 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**Planned, not started (2026-11-04): a chat for the evidence atlas.** The owner asked for a plan to adapt the Econ
-chat to the atlas, for one session to carry out: `docs/plan-atlas-chat.md` (the atlas writes its pages as passages;
-the Econ API serves them at its own routes, `/api/atlas/`; `#/ask` in the atlas, in the atlas's own look). The owner
-answered its five decisions (A37): yes to all, on condition that it feels like a separate service from the Econ chat
-(the atlas's knowledge base reachable only from the atlas chat; a look that matches the atlas). Budget: up to $2.00
-of OpenAI for its smoke test. It changes no observation or notebook, and doesn't change the order of "Next" below
-unless the owner says so.
+**Latest (2026-11-04): the atlas chat is built and measured; its smoke test waits for a valid OpenAI key** (ADR
+0054; the plan `docs/plan-atlas-chat.md`; Econ D-037, D-038). Branch `ccr-eff4672f-j1qrjn` in both repositories, not
+merged; nothing published. Done:
+- **WP1:** `analysis/atlas/passages.mjs` writes `evidence/data/passages.jsonl` (4,611 passages from 454 pages, at most
+  260 words and about 360 tokens; 5.5 MB); a test keeps it current. After `atlas.build`, run it.
+- **WP2 to WP5 (Econ):** ingested at `3e13aef`, indexed (`library/atlas/index/`), served at `/api/atlas/*` apart from
+  the Econ chat (tests both ways), with its own prompts (locked, not adopted), pins and the numbers check. Retrieval,
+  measured free: lookups 20/20 and by-id 5/5 in the 20 passages; adopted notes off, a cap of 2 passages a page.
+- **WP7:** `#/ask` (`evidence/js/chat.js`, styles in `atlas.css`), "Ask the atlas" in the menu, "Ask about this
+  observation" on every observation page; the CSP's `connect-src` names the API (a test). `analysis/atlas/chat_check.mjs`
+  passes every check at 1,366 and 390 pixels (the test runs it when Chromium is here); the page also ran against the
+  real API locally in evidence-only mode. Screenshots beside the Econ chat: Econ's `reports/atlas-chat-smoke-v1.md`.
+- **Blocked, WP6:** the environment's OpenAI key has expired (HTTP 401; US$0.00 spent). OQ30 asks the owner to replace
+  it; then a new session runs `econ atlas-smoke --confirm` in Econ (stops at US$2.00), completes the report (every
+  answer read for causes stated from associations), records D-039, and replaces the browser check's provisional stream
+  (`analysis/atlas/fixtures/chat-stream.json`: real retrieval, scripted answer) with a recorded one. OQ31: adopt the
+  prompts and publish, after reading it.
+It changes no observation or notebook, and doesn't change the order of "Next" below unless the owner says so.
 
 **Latest (2026-11-04): two tests from IP Australia's research added to Stage 3** (OQ27 answered A36, ADR 0053). The
 owner: "Sure, lets add (a) and (b) to stage 3." Done:

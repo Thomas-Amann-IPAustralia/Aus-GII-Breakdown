@@ -2,7 +2,11 @@
 
 Written 4 November 2026 for one Claude Code session to carry out from start to finish. It spans two repositories,
 both checked out side by side: this one (`Aus-GII-Breakdown`, the atlas) and `Econ` (the IP economics evidence chat,
-whose API, search and answer check the atlas chat reuses). Nothing here has been built yet.
+whose API, search and answer check the atlas chat reuses).
+
+**Status (4 November 2026, later the same day):** carried out except WP6, the smoke test, which the environment's
+expired OpenAI key blocked (US$0.00 spent; OQ30). What was built and decided: ADR 0054 here, D-038 in Econ; what remains:
+the handover's "Latest" entry.
 
 ## 1. The outcome
 
