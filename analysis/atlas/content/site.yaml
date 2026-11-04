@@ -51,7 +51,7 @@ stages:
     name: Many variables together
     status: First pass done
     now: true
-    short: Whether the signals survive once other factors are held together, and what structure there is. 38 observations (M1 to M38).
+    short: Whether the signals survive once other factors are held together, and what structure there is. 40 observations (M1 to M40).
     href: "#/stage3"
   - n: "→"
     name: Answering the questions
@@ -90,11 +90,13 @@ stage3:
         are cited about 27% to 30% less at the same reach, field, route and year. None of the three is value; they
         must be read together.
       ids: [M3, M4]
-    - title: Expedited examination is not a sign of a longer life
+    - title: Asking for examination sooner is not a sign of a longer life
       text: >-
-        Its link with staying in force does not survive the filer, field and route held together, and Australian
-        individuals' expedited patents are about a quarter more likely to end in a given year.
-      ids: [M5]
+        Expedited examination's link with staying in force does not survive the filer, field and route held together,
+        and Australian individuals' expedited patents are about a quarter more likely to end in a given year. On the
+        wider measure IP Australia's commissioned study uses, a request made before any direction (41.39% of granted
+        patents), patents are more likely to end, held together (1.276 and 1.383), against the study's finding.
+      ids: [M5, M40]
     - title: Some Australian invention ends up owned overseas, by two routes
       text: >-
         Granted Australian-founded patents are more often now held only overseas, at the same reach and filer type, and
@@ -139,8 +141,10 @@ stage3:
       text: >-
         With trend and season held, Raising the Bar's rush and Australians' lower level of patents after it hold, while
         the Designs Act's step does not stand apart from a control. With block resampling, the cycle shows only in
-        overseas applicants' trade marks before 2008.
-      ids: [M25, M36, M19]
+        overseas applicants' trade marks before 2008. Trade marks share a long-run path with real GDP and run a quarter
+        ahead of it, as IP Australia's note finds, but the lead is small once GDP's own growth is held and is not
+        detected since 2008.
+      ids: [M25, M36, M19, M39]
   page_title: What held once other factors were allowed for
   lead: >-
     Stage 2 found pairs of measures that move together and named, for each, the other factors that might explain it.
@@ -395,7 +399,7 @@ reading:
   parts:
     - kind: obs
       title: The observation
-      text: The finding itself, in a green box with its number (U0 to U127 in Stage 1, B1 to B63 in Stage 2, M1 to M38 in Stage 3). Only this is a finding.
+      text: The finding itself, in a green box with its number (U0 to U127 in Stage 1, B1 to B63 in Stage 2, M1 to M40 in Stage 3). Only this is a finding.
     - kind: step
       title: Reasoning steps
       text: How the data lead to the finding, one step at a time, in dashed grey. Steps are not findings.

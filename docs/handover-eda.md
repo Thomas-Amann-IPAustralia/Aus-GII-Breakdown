@@ -2,6 +2,26 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
+**Latest (2026-11-04): two tests from IP Australia's research added to Stage 3** (OQ27 answered A36, ADR 0053). The
+owner: "Sure, lets add (a) and (b) to stage 3." Done:
+- **M40 (notebook 3, 1.11):** IP RAPID's `exam_direction_to_request_exam` events give the commissioned study's
+  measure, a request before any direction: 41.39% of granted patents 2004 to 2016 (the study, 41.9%; now in the
+  benchmark, 209 figures, 169 agree). With the filer, field, route, cohort, co-filers, classes and expedited
+  examination held, those patents are more likely to end (1.276, FY2010 to FY2016; 1.383, FY2003 to FY2009). A
+  simple check agrees: requested within a year, 62% to 63% in force at 10 years against 70% to 74% (not in the
+  notebook; the hazard model is the finding). Audit: disputed in part. OQ28 proposes asking IP Australia for the
+  study's model.
+- **M39 (notebook 3, 5.8):** the note's long-run path is found (Engle-Granger p 0.018, 1983 to 2023; the timeline's
+  trade marks start in 1983); in levels 3.069% and 3.296% per 10% (the note 1.8% and 2.7%); in changes with GDP's own
+  growth held, 0.038 (0.014 to 0.063), not detected after 2008. Audit: consistent, the size differs.
+- **Only the new cells were run** (with the setup cell and the rights definitions; a temporary cell defined `HAZARD`
+  and `timeline`), and their outputs injected so every reviewed cell is byte-identical (a plain `nbformat.write`
+  reformats the whole file; avoid it).
+- **Atlas:** two pages (231), B13's and B56's pages show them, "What Stage 3 found", the audit page (231 verdicts),
+  glossary terms "cointegration" and "unprompted request for examination" (also in `GLOSSARY.md`).
+- **For the owner:** OQ28 (whether to ask IP Australia about the study's model); whether M40 joins section 8's third
+  early signal, at the review of those tables. Test (c), funding within institutions, is after Stage 3.
+
 **Latest (2026-11-04): the audit against IP Australia extended to U99 to U127 and Stages 2 and 3** (A35, ADR 0052).
 The owner's next task, as recorded: check the 130 observations the audit of 27 October did not cover. Done:
 - **Searched** IP Australia's IP Reports, research papers and analytical notes (the Econ repository's knowledge base)
@@ -46,8 +66,8 @@ be outdated and give them an update." Done:
 U0, corpus lens, data and limits pages checked in Chromium at 1,366 and 390 pixels with no console errors or overflow.
 
 **Next, in order:**
-1. The owner's review of section 8's two tables and OQ26, as before; and OQ27 (three tests IP Australia's research
-   suggests). Then the pull request and publishing; then, at the owner's word, the plan's "After Stage 3".
+1. The owner's review of section 8's two tables (and whether M40 joins the third early signal), OQ26 and OQ28. Then
+   the pull request and publishing; then, at the owner's word, the plan's "After Stage 3" (with OQ27's test (c)).
 
 **Since then (2026-11-03): a Markdown copy of every observation page** (ADR 0050). The owner asked for each page to be
 copyable or downloadable as Markdown, a chart page always carrying its table, with the stepwise logic, explainers and

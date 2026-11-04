@@ -168,6 +168,7 @@ std_res_state_vic,2025,638.0,610.0,0.9561,-28.0,False,U15,ipr-2026,33,,"standard
 std_res_state_wa,2021,334.0,331.0,0.991,-3.0,True,U15,ipr-2022,15,,"standard, first founding applicant in Australia in WA"
 std_res_state_wa,2023,292.0,286.0,0.9795,-6.0,False,U15,ipr-2024,38,,"standard, first founding applicant in Australia in WA"
 std_res_state_wa,2025,305.0,298.0,0.977,-7.0,False,U15,ipr-2026,33,,"standard, first founding applicant in Australia in WA"
+std_unprompted_exam_share,2016,41.9,41.39,,-0.51,True,M40,ipr-2025,10,"granted 2004 to 2016, divisionals left out: voluntary, early and unprompted requests; shown at 2016","per cent of granted standard patents (date of patent 2004 to 2016, no divisionals) asked for examination before any direction (shown at 2016)"
 tm_apps,2015,73188.0,73214.0,1.0004,26.0,True,U5 U25,ipr-2016,14,,trade mark applications
 tm_apps,2016,71344.0,71378.0,1.0005,34.0,True,U5 U25,ipr-2017,11,,trade mark applications
 tm_apps,2017,76594.0,76621.0,1.0004,27.0,True,U5 U25,ipr-2018,15,,trade mark applications

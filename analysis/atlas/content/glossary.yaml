@@ -327,6 +327,13 @@ expedited:
   group: ip
   title: Expedited examination
   short: Examination brought forward at the applicant's request, for example because an invention is being copied.
+unprompted-request:
+  group: ip
+  title: Unprompted request for examination
+  short: >-
+    A request to examine a patent application made before IP Australia directs the applicant to ask. An applicant has
+    five years to ask; IP Australia can direct one sooner, after which it has two months. IP Australia's commissioned
+    study counts an unprompted request as one way of speeding examination up.
 acceptance:
   group: ip
   title: Acceptance
@@ -780,6 +787,12 @@ partial-correlation:
     The correlation of two measures' ranks once what the held factors explain has been taken out of both. It reads an
     association beyond those factors without assuming straight lines, for small sets of units such as countries,
     industries or institutions.
+cointegration:
+  group: stats
+  title: Cointegration
+  short: >-
+    Two series that each wander over time but keep a stable distance from each other in the long run: they share a
+    path. A test of it (Engle-Granger, here) asks whether the gap between them keeps returning to its usual size.
 block-resampling:
   group: stats
   title: Block resampling (moving-block bootstrap)

@@ -249,6 +249,20 @@ MEASURES: dict[str, tuple[str, str, str]] = {
             FROM c""",
         "per cent of the fall in resident standard applications on the year before that is in divisionals",
     ),
+    # the commissioned study's early, unprompted requests (ipr-2025 p10; M40): granted standard patents with a date of
+    # patent in 2004 to 2016, divisionals left out, whose first request for examination came before any direction
+    "std_unprompted_exam_share": (
+        "share",
+        f"""WITH d AS (SELECT application_number, min(event_effective_date) AS direction FROM {{iprapid/events}}
+                       WHERE ip_right_type = 'patent' AND event_type = 'exam_direction_to_request_exam' GROUP BY 1)
+            SELECT 2016 AS year,
+                   100.0 * avg((d.direction IS NULL OR r.exam_requested_date < d.direction)::int) AS value
+            FROM {{lens/rights}} r LEFT JOIN d USING (application_number)
+            WHERE r.{STD} AND NOT r.divisional AND r.registered_date IS NOT NULL
+              AND year(r.date_of_patent) BETWEEN 2004 AND 2016""",
+        "per cent of granted standard patents (date of patent 2004 to 2016, no divisionals) asked for examination "
+        "before any direction (shown at 2016)",
+    ),
 }
 
 

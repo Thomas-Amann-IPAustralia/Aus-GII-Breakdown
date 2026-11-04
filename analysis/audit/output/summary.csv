@@ -46,6 +46,7 @@ std_res_state_sa,3,1,0.9457,1.0,-7.0,0.0
 std_res_state_tas,3,1,0.9259,1.0,-2.0,0.0
 std_res_state_vic,3,1,0.9561,0.9974,-28.0,-2.0
 std_res_state_wa,3,1,0.977,0.991,-7.0,-3.0
+std_unprompted_exam_share,1,1,,,-0.51,-0.51
 tm_apps,11,10,0.9749,1.0005,-1994.0,35.0
 tm_apps_direct,4,4,1.0,1.0001,-2.0,6.0
 tm_apps_madrid,6,6,1.0,1.001,0.0,20.0

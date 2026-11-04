@@ -207,3 +207,4 @@ fee_tm_filing,2015,120,ipr-2015,37,U108 U125,"per class, electronic; $220 on pap
 std_div_direct_change,2019,-2.9,ipr-2020,7,B15 M26,"for direct filings, divisional applications fell 2.9 per cent in 2019"
 std_orig_direct_change,2019,-1.2,ipr-2020,7,B15,"original applications fell 1.2 per cent (direct filings)"
 std_res_fall_divisional_share,2019,87,ipr-2020,8,B15 M26,"resident applications fell from 2,756 to 2,637; 87 per cent of the fall in divisionals"
+std_unprompted_exam_share,2016,41.9,ipr-2025,10,M40,"granted 2004 to 2016, divisionals left out: voluntary, early and unprompted requests; shown at 2016"

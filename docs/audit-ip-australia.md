@@ -458,13 +458,15 @@ design. A "consistent" verdict then says the two point the same way, not that on
 ### 11.2 What agrees
 
 All 13 new figures agree (`analysis/audit/output/benchmark.csv`): the benchmark now holds 208 published figures, of
-which 168 agree; the 195 of sections 1 to 10 are unchanged (155 agree).
+which 168 agree; the 195 of sections 1 to 10 are unchanged (155 agree). With the commissioned study's share added for
+M40 (section 11.8), 209 figures, 169 agreeing.
 
 | Measure | Years published | Agree | Ratio (or difference) | Observations |
 |---|---|---|---|---|
 | Australians' design applications, with the register's country filling IP RAPID's gaps | 2014, 2021, 2023, 2025 | 4 | 0.9943 to 1.0004: 2,615, 2,596, 2,649 and 3,072 against 2,630, 2,595, 2,652 and 3,078 (IP RAPID's own origin: 2,342, 2,331, 2,358 and 2,653) | U99, U102 |
 | The official fees, as the IP Report 2015 lists them | 2015 (6) | 6 | 1.0000: a standard patent application $370, a design $250 and its examination $420, a plant breeder's right $345 and its examination $1,610, a trade mark $120 a class | U108, U125 |
 | Divisional applications in 2019 | 2019 (3) | 3 | direct divisionals -2.92% against -2.9%; direct originals -0.54% against -1.2%; divisionals 86.21% of the fall in residents' applications against 87% | B15, M26 |
+| Granted patents asked for examination early and unprompted (added with M40, section 11.8) | 2004 to 2016 (1) | 1 | 41.39% against 41.9% (a difference of -0.51 points) | M40 |
 
 ### 11.3 Verdicts, observation by observation: those IP Australia's evidence can test
 
@@ -507,6 +509,8 @@ which 168 agree; the 195 of sections 1 to 10 are unchanged (155 agree).
 | M34 | Consistent; an explanation offered | As B47: M34 finds the Trade Marks Act 1995 "a fall, not a rush" (Australians' step -0.495), and IP Australia's note gives the reason it adopts, multi-class applications | Read the 1996 step as a change in what one application covers, not a response to price |
 | M35 | Consistent | IP Australia: new filers were 63% of provisional applicants in 2025 (42% in 2021 to 2024) and self-filers 52% (ipr-2026 p21); M35 finds the fall in follow-up among new and heavy filers, not among those who filed before | C1 (section 10) |
 | M36 | Qualified | As B56: with block resampling no cycle pair is clear of zero in both periods; IP Australia's note finds a lead, which M36 does not test | As B56 |
+| M39 | Consistent; the size differs | Added with A36 (section 11.8). IP Australia's note (note-tm p1, p4): trade marks cointegrated with real GDP, and 10% more trade marks predicting 1.8% and 2.7% more GDP one and two quarters on. M39: cointegrated over 1983Q1 to 2023Q2 (p 0.018); in levels 3.069% and 3.296%, over a window from 1983, not 1970; in changes, with GDP's own growth held, 0.038 (0.014 to 0.063) over 1983 to 2023 and not detected after 2008 (p 0.316) | The note's lead holds in direction and the shared path is found; once GDP's own momentum is known the lead is small, and not detected since 2008 |
+| M40 | Disputed in part | Added with A36 (section 11.8). The commissioned study (ipr-2025 p9, p10, p13): applicants who speed up examination, including by asking for it early and unprompted (41.9% of granted patents), are more likely to renew, commercialise and build on their patents. The lens reproduces the measure (41.39%, section 11.2), but with the filer, field, route, cohort, co-filers, classes and expedited examination held, those patents are more likely to end in a given year after grant (hazard ratios 1.276 and 1.383) | The study's outcome and model are not in IP Australia's report, so this disputes its direction on its own measure, not its model; a question proposed for IP Australia (OQ28) |
 
 ### 11.4 Observations IP Australia's publications cannot test (93)
 
@@ -538,7 +542,9 @@ spending into its exposure. U124: IP Australia publishes no count of IP judgment
 The tally, by each observation's main verdict: 3 corroborated (U99, U102 and U108), 28 consistent (U100, U101, U105,
 U114, U115, B10, B13, B15, B17, B22, B23, B37, B38, B41, B47, B50, B51, B54, B55, M7, M8, M11, M17, M25, M26, M29, M34
 and M35), 6 qualified (B45, B56, B63, M5, M23 and M36), none disputed and none contradicted, and 93 not testable: 130
-in all. With sections 1 to 10, all 229 observations of the three notebooks have a verdict.
+in all. With sections 1 to 10, all 229 observations of the three notebooks have a verdict. With M39 and M40, added the
+same day (section 11.8): 3 corroborated, 29 consistent, 6 qualified, 1 disputed in part (M40), none contradicted and 93
+not testable, 132 in all; with sections 1 to 10, all 231.
 
 ### 11.5 IP Australia's conclusions that bear on Stages 2 and 3
 
@@ -577,3 +583,25 @@ Section 9's limits hold. Two more: IP Australia's firm findings come from the AB
 use (OQ9), so a "consistent" verdict on a firm observation is about direction, on other data; and Stage 3's
 associations held together have no published counterpart, so a verdict on one checks the signal it revisits, not its
 model.
+
+### 11.8 M39 and M40: two tests IP Australia's research suggested (added 4 November 2026)
+
+At the owner's decision (OQ27, answered A36; [ADR 0053](adr/0053-two-tests-from-ip-australias-research.md)), the first
+two of section 11.6's tests were added to Stage 3 (notebook 3, sections 1.11 and 5.8). Their verdicts are in section
+11.3's table, beside the observations they follow.
+
+- **C3, the commissioned study's finding on speeding up (M40).** IP RAPID records each direction to request
+  examination, so the study's own measure, a request made before any direction, can be built: it covers 41.39% of
+  granted patents, against the study's 41.9% (section 11.2). But those patents are more likely to end, not less, with
+  the filer, field, route, cohort, co-filers, classes and expedited examination held (1.276 in FY2010 to FY2016, 1.383
+  in FY2003 to FY2009). So M40 is **disputed in part**: the measure is reproduced, the direction is not. The study's
+  outcome ("the lifetime over which the applicant renews the patent") and its controls are not in the report, so its
+  model is not contradicted. M5's "qualified" is answered: on the study's wider measure, too, asking for examination
+  sooner does not go with a patent kept longer. B13's "consistent" stands for what it compared (raw shares).
+- **C13, trade marks' lead on real GDP (M39).** Found in direction: trade marks and real GDP share a long-run path
+  (p 0.018 over 1983Q1 to 2023Q2), and in levels 10% more trade marks go with 3.069% and 3.296% more GDP one and two
+  quarters on (the note: 1.8% and 2.7%, over a window from 1970). But in changes, with GDP's own growth held, the lead
+  is small (0.038, interval 0.014 to 0.063) and not detected after 2008 (p 0.316). M39 is **consistent; the size
+  differs**. B56, B63 and M36's "qualified" is answered: the lead they did not test exists, and is small.
+- **Proposed for IP Australia (OQ28, the owner's decision whether to ask):** how did the commissioned study measure the
+  renewal lifetime, and what did it hold, so that M40 can be set beside it like for like?

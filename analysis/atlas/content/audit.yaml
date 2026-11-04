@@ -14,18 +14,18 @@ lead: >-
 
 banner: >-
   **Two passes, one record.** The review of 27 October 2026 checked Stage 1's observations U0 to U98; on 4 November
-  2026 the same check was made of the 130 observations since (U99 to U127, and Stages 2 and 3), so all 229 now have a
-  verdict. Neither pass changed an observation. Since then, IP Australia's own register has settled
+  2026 the same check was made of the observations since (U99 to U127, and Stages 2 and 3), and of the two tests it led
+  to ({M39}, {M40}), so all 231 now have a verdict. Neither pass changed an observation. Since then, IP Australia's own register has settled
   one of its four disagreements and narrowed another, and the observations it bore on were restated in the notebook
   beside their first wording, at the research owner's decision. Each verdict below is as the review gave it; "Since
   the review" and the notes on each disagreement say where things now stand.
 
 stats:
-  - value: "208"
+  - value: "209"
     label: figures IP Australia published, recounted from the project's data
-  - value: "168"
+  - value: "169"
     label: agree within the tolerance
-  - value: "229"
+  - value: "231"
     label: observations with a verdict, in two passes
   - value: "0"
     label: observations contradicted
@@ -49,6 +49,11 @@ in_brief:
     recounted, and all 13 agree, among them the 2015 fees and the register's origin for designs. Of the 130
     observations, 3 are corroborated, 28 consistent and 6 qualified; 93 cannot be tested, mostly because IP Australia
     publishes few associations between two or more things. None is disputed or contradicted.
+  - >-
+    **Two tests IP Australia's research suggested** were then added to Stage 3. Its commissioned study's measure of
+    asking for examination early is reproduced (41.39% against 41.9%), but those patents are more likely to end, not
+    less ({M40}, disputed in part). Its note's lead of trade marks on GDP is found in direction, and is small once GDP's
+    own growth is held ({M39}).
   - >-
     **Since the first review,** IP Australia's register has settled the designs of unknown origin (D1) and shown that IP
     RAPID is not the odd one out for 2018's trade marks (D2). The individuals' 55.6% (D3) is still open. Rebuilt on 4
@@ -93,8 +98,8 @@ since:
   - title: The later observations and Stages 2 and 3
     status: Done
     text: >-
-      Checked on 4 November 2026, as the first review was: {U99} to {U127}, {B1} to {B63} and {M1} to {M38}. The
-      verdicts are in their own section below.
+      Checked on 4 November 2026, as the first review was: {U99} to {U127}, {B1} to {B63} and {M1} to {M38}, then
+      {M39} and {M40}, the two tests it led to. The verdicts are in their own section below.
 
 method:
   - title: Find what IP Australia has published
@@ -185,6 +190,8 @@ measures:
                fee_tm_filing]
   - label: "Added on 4 November 2026: divisional applications behind 2019's fall"
     measures: [std_div_direct_change, std_orig_direct_change, std_res_fall_divisional_share]
+  - label: "Added on 4 November 2026: patents asked for examination early and unprompted"
+    measures: [std_unprompted_exam_share]
 
 closeness_intro: >-
   Each dot is one figure IP Australia published, placed by its value (across) and by the same figure recounted from
@@ -482,10 +489,18 @@ notes:
   M36: >-
     As {B56}: IP Australia's note finds trade marks lead the economy by a quarter or two, which changes in the same
     quarter do not test.
+  M39: >-
+    Added to test IP Australia's note. Trade marks and real GDP do share a long-run path, and trade marks run a quarter
+    ahead, as the note finds; but with GDP's own growth held the lead is small (0.038) and not detected after 2008.
+  M40: >-
+    Disputed in part. IP Australia's commissioned study's measure is reproduced (41.39% of granted patents asked for
+    examination before any direction, against its 41.9%), but those patents are more likely to end, not less, with
+    who filed, the field and the route held (1.276 and 1.383). The study's own model is not published, so it is its
+    direction on its measure that is disputed.
 
 later_intro: >-
-  The same check, made on 4 November 2026 of the 130 observations added since the first review: Stage 1's later
-  observations, and Stages 2 and 3. Stages 2 and 3 read associations, two at a time and then with other factors held.
+  The same check, made on 4 November 2026 of the observations added since the first review: Stage 1's later
+  observations, Stages 2 and 3, and the two tests the check led to ({M39}, {M40}). Stages 2 and 3 read associations, two at a time and then with other factors held.
   IP Australia publishes few of those, and where its own research reaches the same question it mostly uses other data
   (the ABS's business data) or another design. So "consistent" here usually means the two point the same way, not that
   one confirms the other's size.
@@ -525,7 +540,9 @@ conclusions:
       "expedited" mixes urgent requests with work-sharing ({B13}). Stage 3 held the filer, field, route, cohort,
       co-filers and classes together: the link is not detected in FY2010 to FY2016 (a [[hazard-ratio|hazard ratio]]
       of 1.021) and reverses in FY2003 to FY2009 (1.124), and Australian individuals' expedited patents are more
-      likely to end in both periods ({M5}). The open data do not repeat the study's finding.
+      likely to end in both periods ({M5}). The open data do not repeat the study's finding. On the study's own wider
+      measure, a request made before any direction (41.39% of granted patents against its 41.9%), patents are more
+      likely to end too, held together (1.276 and 1.383; {M40}).
   - id: C4
     claim: The innovation patent did not meet its goal of serving small businesses.
     strength: IP Australia's and the Productivity Commission's research.
@@ -574,7 +591,8 @@ conclusions:
     adds: >-
       {B56}, {B63} and {M36} compare changes in the same quarter, not a lead. Overseas applicants' trade marks move
       against unemployment (-0.561, then -0.224), as the note would expect; Australians' trade marks move against
-      employment. The lead itself is untested here.
+      employment. Tested since ({M39}): the two share a long-run path, but once GDP's own growth is held the lead is
+      small (0.038) and not detected after 2008.
   - id: C14
     claim: Larger and older firms are more likely to use IP; R&D spending goes with patenting.
     strength: '"Our analysis does not imply causation."'
@@ -636,5 +654,5 @@ limits:
       a Stage 3 verdict checks the signal it revisits, not its model.
   - title: Much cannot be tested this way
     text: >-
-      66 of the first 99 observations, and 93 of the later 130, concern things IP Australia does not publish. They
+      66 of the first 99 observations, and 93 of the later 132, concern things IP Australia does not publish. They
       stand on the project's own checks.

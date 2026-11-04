@@ -7,9 +7,9 @@ import pytest
 from audit import benchmark
 from eda import data
 
-# the last observation of each notebook: U (Stage 1), B (Stage 2), M (Stage 3), as at the review of 4 November 2026
-LAST = {"U": 127, "B": 63, "M": 38}
-LATER = [f"U{i}" for i in range(99, 128)] + [f"B{i}" for i in range(1, 64)] + [f"M{i}" for i in range(1, 39)]
+# the last observation of each notebook: U (Stage 1), B (Stage 2), M (Stage 3), as at 4 November 2026 (M39, M40: A36)
+LAST = {"U": 127, "B": 63, "M": 40}
+LATER = [f"U{i}" for i in range(99, 128)] + [f"B{i}" for i in range(1, 64)] + [f"M{i}" for i in range(1, 41)]
 
 
 @pytest.fixture(scope="module")
