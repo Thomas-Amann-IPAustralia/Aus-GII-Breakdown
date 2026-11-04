@@ -301,10 +301,10 @@ def pivot(df: pd.DataFrame, index: str, columns: str, values: str, order=None, f
 def U0() -> dict:
     t = pd.read_csv(ROOT / "analysis" / "output" / "tables.csv")
     by = t.groupby("source").rows.sum().sort_values(ascending=False)
-    same(len(t), 162, "tables")
-    same(len(by), 41, "sources")
-    same(int(by.sum()), 317792796, "rows")
-    same(100 * by.iloc[:3].sum() / by.sum(), 69.73, "top three sources' share")
+    same(len(t), 194, "tables")
+    same(len(by), 54, "sources")
+    same(int(by.sum()), 335184272, "rows")
+    same(100 * by.iloc[:3].sum() / by.sum(), 66.11, "top three sources' share")
     names = {
         "iprapid": "IP RAPID (IP Australia)",
         "tmlink": "TM-Link (trade marks worldwide)",
@@ -325,6 +325,8 @@ def U0() -> dict:
         "wgnd": "WIPO gender-name dictionary",
         "rdti": "R&D Tax Incentive",
         "ror": "Research Organization Registry",
+        "ipa_register": "IP Australia's register",
+        "ato_postcode": "ATO statistics by postcode",
     }
     top = by.iloc[:12]
     rest = by.iloc[12:]
@@ -334,11 +336,11 @@ def U0() -> dict:
         "type": "bar",
         "horizontal": True,
         "title": "Rows in the corpus, by source",
-        "subtitle": "Share of all 317,792,796 rows (162 tables from 41 sources)",
+        "subtitle": "Share of all 335,184,272 rows (194 tables from 54 sources)",
         "x": {"type": "category", "values": cats},
         "y": {"name": "% of all rows", "min": 0, "format": "pct", "digits": 2},
         "series": [{"name": "Share of rows", "data": vals}],
-        "source": "The corpus profile, analysis/output/tables.csv (25 October 2026)",
+        "source": "The corpus profile, analysis/output/tables.csv (4 November 2026)",
     }
 
 

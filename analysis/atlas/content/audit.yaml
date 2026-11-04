@@ -5,16 +5,18 @@
 
 title: Checked against IP Australia
 eyebrow: Review · Stage 1 against the publisher's own figures
-as_at: "2026-10-27"
+as_at: "2026-11-04"
 lead: >-
   IP Australia publishes its own figures on the IP system every year, in its Australian IP Reports, and its own
   research. This review checks Stage 1's observations against them: where IP Australia has published the same thing,
   do the two agree? Where it has drawn a conclusion, what does Stage 1's evidence add?
 
 banner: >-
-  **This review leaves every observation as it was written.** The observation pages, and the notebook they quote, are
-  unchanged at this stage. Where the review qualifies an observation, it says so here; revising the observation
-  itself is the research owner's decision.
+  **This is the review as it was made on 27 October 2026, of Stage 1's observations U0 to U98, with what has
+  happened since.** The review itself changed no observation. Since then, IP Australia's own register has settled
+  one of its four disagreements and narrowed another, and the observations it bore on were restated in the notebook
+  beside their first wording, at the research owner's decision. Each verdict below is as the review gave it; "Since
+  the review" and the notes on each disagreement say where things now stand.
 
 stats:
   - value: "195"
@@ -40,6 +42,52 @@ in_brief:
     **Two questions close or narrow.** The jump in innovation patents in 2016 ({U67}) was a real rise that IP
     Australia reported itself. The fall in first observed trade mark filers ({U45}) is mostly a fall in linking filers
     to their ABNs, not in filing.
+  - >-
+    **Since the review,** IP Australia's register has settled the designs of unknown origin (D1) and shown that IP
+    RAPID is not the odd one out for 2018's trade marks (D2). The individuals' 55.6% (D3) is still open. Rebuilt on 4
+    November 2026, the lenses give the same 195 figures and the same 155 agreements.
+
+since_intro: >-
+  What has happened to the review's findings since 27 October 2026. IP Australia's register was checked against IP
+  RAPID the same week, and the gaps it found were filled in the lenses at the research owner's decision; Stages 2 and
+  3 have since tested several of the conclusions IP Australia draws.
+
+since:
+  - title: Designs of unknown origin (D1)
+    status: Settled
+    text: >-
+      IP Australia's register gives a country for 25,018 of the 40,748 designs IP RAPID leaves without one, Australia
+      for 20,870. Added to Stage 1's count, they give 2,601, 2,660 and 3,078 Australian designs in 2021, 2023 and
+      2025, against IP Australia's 2,595, 2,652 and 3,078. The lenses now carry the register's country beside IP
+      RAPID's: 32.64% of designs filed FY2017 to FY2026 are Australian, and 0.083% are of unknown origin ({U102}).
+  - title: Trade marks filed in 2018 (D2)
+    status: Narrowed
+    text: >-
+      WIPO's count of Madrid designations agrees with IP RAPID (0.9933), and so does IP Australia's own register:
+      78,643 by the date lodged, 77,726 by the date filed, neither near the report's 79,490. Three sources now stand
+      against the report's 2018 figure, so IP RAPID is unlikely to be the one that is short. 2018 stays flagged, and
+      OQ13 asks what the report counted.
+  - title: Individuals' 55.6% of resident applications (D3)
+    status: Still open
+    text: IP Australia has not yet said what the figure counts (OQ12). {U13} and {U48} stand on Stage 1's evidence.
+  - title: Observations restated beside their first wording
+    status: Done
+    text: >-
+      {U7}, {U13}, {U34} and {U45} were restated in the notebook with the register's evidence ({U99} to {U104}), and
+      later reviews restated others. For trade marks filed since July 2024 with no ABN in IP RAPID, the register
+      holds an ABN, or a company number linked to one, for 83.8% ({U100}, {U101}).
+  - title: IP Australia's conclusions, tested further
+    status: Done
+    text: >-
+      Stage 3 held other factors together for three of them. The link between fast-track examination and patents
+      kept longer, from IP Australia's commissioned study, does not survive the filer, field and route held together
+      (C3, {M5}). FY2025's fall in provisionals followed up is in new and heavy individual filers (C1, {M35}).
+      Raising the Bar's rush holds with trend and season held (C5, {M25}).
+  - title: What the review did not cover
+    status: Not covered
+    text: >-
+      The review checked U0 to U98. Stage 1's later observations ({U99} to {U127}) and Stages 2 and 3 have not been
+      checked against IP Australia's published figures in the same way.
 
 method:
   - title: Find what IP Australia has published
@@ -142,8 +190,13 @@ findings:
     means: >-
       A share of designs among those of known origin understates Australians, by about 2 to 3 points in recent years.
       It is a [[lower-bound]].
+    status: settled
+    now: >-
+      IP Australia's register gives the country for most of these designs, and with it Stage 1's counts match IP
+      Australia's (2,601, 2,660 and 3,078 against 2,595, 2,652 and 3,078). The lenses now carry it beside IP RAPID's:
+      the filled share is no longer a lower bound, while IP RAPID's own share still is ({U102}).
   - id: D2
-    title: Trade marks filed in 2018 are short in IP RAPID
+    title: "Trade marks filed in 2018: IP RAPID holds fewer than IP Australia's report"
     affects: [U5, U25, U90]
     figures: [tm_apps 2018, tm_madrid_share 2018]
     chart: audit-d2
@@ -153,6 +206,12 @@ findings:
       reported them rising by around 13 per cent that year, while IP RAPID's stay level. Why is not known.
     means: >-
       Stage 2 flags 2018 in any trade mark series, and reads Madrid counts across it with care.
+    status: narrowed
+    now: >-
+      WIPO counts 15,943 designations of Australia in 2018 against IP RAPID's 15,836 Madrid marks, and IP Australia's
+      own register 78,643 trade marks by the date lodged. Neither reaches the report's 79,490, and the 2,292 trade mark
+      numbers missing from IP RAPID were not used. So the report's figure is the odd one out, not IP RAPID. 2018 stays
+      flagged until IP Australia says what it counted (OQ13).
   - id: D3
     title: One IP Australia figure cannot be reproduced
     affects: [U13, U48]
@@ -163,6 +222,8 @@ findings:
       individual as the first filer, and 26.76% of their applicants. No other way of counting comes near 55.6%.
     means: >-
       {U13} and {U48} stand on Stage 1's evidence. IP Australia has been asked what the 55.6% counts (OQ12).
+    status: still open
+    now: IP Australia has not yet answered OQ12.
   - id: D4
     title: Trade marks in force in 2005, for context only
     affects: []
@@ -172,6 +233,8 @@ findings:
       645,872: 2017 agrees, and 2005 is 6% lower, which fits the register's incomplete records of older rights.
     means: >-
       No observation quotes a count of marks in force, so nothing changes.
+    status: unchanged
+    now: Still no observation quotes a count of marks in force.
 
 notes:
   U1: >-
@@ -183,14 +246,15 @@ notes:
     followed, and the rush before the innovation patent closed.
   U5: >-
     IP Australia's yearly application counts match, with one exception: trade marks filed in 2018, of which IP RAPID
-    holds 1,994 fewer (D2).
+    holds 1,994 fewer (D2). WIPO and IP Australia's own register have since sided with IP RAPID.
   U6: >-
     The latest complete year agrees. In 2025: standard patents 30,448 against IP Australia's 30,348, trade marks
     97,343 against 97,345, designs 10,303 against 10,296, and provisional applications 6,874 against 6,867.
   U7: >-
     The Australian share of standard patents, provisional applications, trade marks and plant breeder's rights
     matches IP Australia's figures. Designs are the exception: IP Australia counts most designs of unknown origin as
-    Australian, so the share among designs of known origin is a lower bound (D1).
+    Australian, so the share among designs of known origin is a lower bound (D1). Since filled from IP Australia's
+    register ({U102}).
   U8: >-
     IP Australia reports the same jump, from 4,343 provisional applications in 2024 to 6,867 in 2025 (Stage 1's
     data: 6,874), with individuals close to half of them. It reads the rise as consistent with digital tools,
@@ -239,7 +303,7 @@ notes:
     IP Australia reports record trade mark filings by Australians in 2025 (55,913). Counted by applicant rather than
     by ABN, first-time Australian trade mark filers rose from 22,838 in 2024 to 28,626 in 2025. So most of the fall
     this observation found is in linking filers to their ABNs, not in filing; IP Australia's own register restores
-    most of the link ({U100}).
+    most of the link ({U100}), and first observed filers are now counted with it ({U101}).
   U48: >-
     Shares the figure disputed under {U13}: IP Australia's 55.6% of residents' applications filed by individuals in
     2022, which Stage 1's data cannot reproduce (D3).
@@ -295,7 +359,8 @@ conclusions:
     strength: '"Consistent with"; "an important focus for ongoing analysis".'
     adds: >-
       {U8}: the rise is broad (single-filing individuals 1,538 to 2,507) and concentrated (54 individuals filed
-      1,528). Both fit; neither proves it.
+      1,528). Both fit; neither proves it. Since then, FY2025's fall in provisionals followed up within 12 months
+      (6.66%, against 12.24% to 14.15% in FY2022 to FY2024) is in new and heavy individual filers ({B38}, {M35}).
   - id: C2
     claim: A firm's first patent or trade mark coincides with lasting gains in income and productivity.
     strength: '"Dynamic associations, not definitive causal effects."'
@@ -307,7 +372,10 @@ conclusions:
       {U34} (expedited requests, 1.87% to 10.31%) and {U36} (years in force) are the same two measures: a pair for
       Stage 2 that would repeat the finding with open data. Stage 2 found expedited patents slightly more often in
       force after 10 years, pooled, in both periods; the link differs by filer and is not explained by who asks, and
-      "expedited" mixes urgent requests with work-sharing ({B13}).
+      "expedited" mixes urgent requests with work-sharing ({B13}). Stage 3 held the filer, field, route, cohort,
+      co-filers and classes together: the link is not detected in FY2010 to FY2016 (a [[hazard-ratio|hazard ratio]]
+      of 1.021) and reverses in FY2003 to FY2009 (1.124), and Australian individuals' expedited patents are more
+      likely to end in both periods ({M5}). The open data do not repeat the study's finding.
   - id: C4
     claim: The innovation patent did not meet its goal of serving small businesses.
     strength: IP Australia's and the Productivity Commission's research.
@@ -317,7 +385,9 @@ conclusions:
   - id: C5
     claim: Raising the Bar increased competition and follow-on invention, unevenly across fields.
     strength: Research commissioned by IP Australia.
-    adds: "{U28} and {U33} show the rush and the early examination requests that any evaluation must allow for."
+    adds: >-
+      {U28} and {U33} show the rush and the early examination requests that any evaluation must allow for. With
+      trend and season held, the rush (0.605 in logs) and a lower level after it (-0.334) hold ({M25}).
   - id: C6
     claim: Clutter on the trade mark register is not an immediate concern, though falling renewals are a possible source.
     strength: IP Australia's own measures.
@@ -329,7 +399,9 @@ conclusions:
   - id: C8
     claim: The 2021 rise in Australians' patent applications was brought forward by the innovation patent's closure.
     strength: '"Likely".'
-    adds: Corroborated by the counts ({U28}).
+    adds: >-
+      Corroborated by the counts ({U28}). Stage 2 found the closure's rush (1.459) beyond every placebo month
+      ({B37}).
   - id: C9
     claim: Chinese patent filings in Australia stalled in 2021 and fell 8.2% in 2022, after China stopped paying for filings abroad.
     strength: '"Most likely".'
@@ -348,27 +420,29 @@ conclusions:
     adds: "{U84}'s joint filing is the same kind of measure; Stage 2 can bring it up to date."
 
 changes_intro: >-
-  What the review changes for Stages 2 and 3. The observations themselves are not changed (see the note at the top).
+  What the review changed for Stages 2 and 3, and where each change now stands. The review itself changed no
+  observation; the restatements since came from the register check (see the note at the top).
 
 changes:
-  - Design shares among designs of known origin are read as lower bounds (D1).
-  - Trade mark series flag 2018 (D2).
+  - "Design shares among designs of known origin are read as lower bounds (D1). Done, then superseded: the lenses now carry the register's country, and the filled share is not a lower bound ({U102})."
+  - "Trade mark series flag 2018 (D2). Still so: WIPO and IP Australia's register side with IP RAPID, but the report's figure is unexplained."
   - Innovation patent counts include standard patents converted into innovation patents, as IP Australia's later reports do ({U67}).
   - Stage 2's look at the innovation patent's closure includes Australians' standard patents in 2021 and 2022 ({U28}).
-  - From FY2025, first observed filers are counted with the business numbers IP Australia's register holds ({U45}, {U101}).
-  - "A new pair for Stage 2: expedited examination against how long patents are kept (C3). Done: slightly more often in force, pooled, in both periods, and it differs by filer ({B13})."
+  - "From FY2025, first observed filers are counted with the business numbers IP Australia's register holds ({U45}, {U101}). Done."
+  - "A new pair for Stage 2: expedited examination against how long patents are kept (C3). Done: slightly more often in force, pooled, in both periods, and it differs by filer ({B13}); not detected or reversed once other factors are held ({M5})."
   - Any comparison with IP Australia's figures counts calendar years, and Australian applications the way IP Australia does.
 
 questions_intro: >-
-  Three questions the review raised, added to the research owner's request to IP Australia on 27 October 2026.
+  Three questions the review raised, added to the research owner's request to IP Australia on 27 October 2026 and
+  reworded the same day after the register check. All three are still open.
 
 questions:
   - id: OQ12
     text: What does IP Australia's "55.6% of resident applications were filed by individuals" (2022) count? (D3)
   - id: OQ13
-    text: What did IP Australia's report count for 2018's trade marks, about 2,000 more than IP RAPID, WIPO and IP Australia's own register? (D2; reworded after the register check)
+    text: IP Australia's register counts 78,643 trade marks lodged in 2018, IP RAPID 77,496, and WIPO's count of Madrid designations agrees with IP RAPID; the IP Report 2019 counted 79,490. What did the report's 2018 count include, and does IP Australia still stand by it? (D2)
   - id: OQ14
-    text: IP Australia's register holds the owner's country for most designs IP RAPID leaves unknown; could IP RAPID publish it? (D1; reworded after the register check)
+    text: IP Australia's register holds the owner's country for 61.4% of the designs IP RAPID leaves without one. Could IP RAPID publish it? (D1)
 
 limits:
   - title: Not independent
@@ -384,6 +458,10 @@ limits:
     text: >-
       Beyond the 2026 report, the documents were searched topic by topic, so a statement in words the searches did not
       reach may be missed.
+  - title: Stage 1 as it was on 27 October 2026
+    text: >-
+      The review checked U0 to U98. The observations added since, and Stages 2 and 3, have not been checked against
+      IP Australia's published figures in the same way.
   - title: Much cannot be tested this way
     text: >-
       66 observations concern things IP Australia does not publish. They stand on Stage 1's own checks.

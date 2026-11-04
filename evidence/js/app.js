@@ -919,7 +919,11 @@ function auditPage() {
     el("div.meta", el("span.chip", d.id), ...(d.affects.length ? d.affects.map(obsLink) : [el("span.muted.small", "No observation affected")])),
     el("h3", { style: { marginTop: "8px" } }, d.title), ...paras(d.text),
     el("p", el("strong", "What it means: "), ...inline(d.means)),
+    d.now ? el("div.note.next", icon("info"), el("div", el("span.tag", `Since then · ${d.status}`), ...paras(d.now))) : null,
     d.chart ? chartSlot(d.chart, { origin: "audit" }) : null)));
+  const open = (x) => ["Still open", "Not covered"].includes(x.status);
+  const since = R.since ? el("div.notes", R.since.map((x) => el(`div.note.${open(x) ? "limit" : "done"}`,
+    icon(open(x) ? "alert" : "info"), el("div", el("span.tag", x.status), el("h3", { style: { margin: "2px 0 6px" } }, x.title), ...paras(x.text))))) : null;
 
   const conclusions = el("div.tablewrap", el("table.data",
     el("thead", el("tr", el("th", ""), el("th", "IP Australia concludes"), el("th", "How strongly it says so"), el("th", "What Stage 1 adds"))),
@@ -930,6 +934,7 @@ function auditPage() {
     el("div.banner", { style: { margin: "18px 0" } }, icon("info"), el("div", ...paras(R.banner))),
     figures,
     section("In brief", null, brief),
+    since ? section("Since the review", R.since_intro, since) : null,
     section("How the check was done", null, method, el("h3", { style: { margin: "22px 0 10px" } }, "The verdicts"), words),
     section("How close the figures are", R.closeness_intro, chartSlot("audit-closeness", { origin: "audit" }),
       el("h3", { style: { margin: "22px 0 10px" } }, "By kind of figure"), ...paras(R.measures_intro, "muted"), measures),

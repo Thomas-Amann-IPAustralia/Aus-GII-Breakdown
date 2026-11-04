@@ -2,6 +2,43 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
+**Since then (2026-11-04): two stale atlas pages brought up to date** (ADR 0051). The owner: "I believe at least
+these two points on the atlas are outdated [U0 and the audit page]. Please review these pages and any others which may
+be outdated and give them an update." Done:
+- **U0 and the corpus.** The corpus profile was last run on 25 October (162 tables, 41 sources), before 13 sources
+  were added. `analysis/profile_corpus.py` was re-run (all stages): 194 tables from 54 sources, 335,184,272 rows, every
+  table opening and matching the manifest. Notebook 1's U0 cells were re-run alone (setup, `90cb36f7`, `0f445bad`), U0
+  quotes the new output (three sources 66.11%) with a dated correction, and the chart's source line gives the new date
+  (it said 22 October). The atlas's U0 page and chart, the corpus lens (it said 41 and 42 sources), the data page, the
+  glossary, the corrections log and `docs/stage-1-summary.md` follow.
+- **The audit page.** It read as on 27 October: D2 "why is not known", design shares as lower bounds, the questions'
+  first wording, and a banner saying no observation had changed. `docs/audit-ip-australia.md` gains section 10 ("Since
+  the audit", dated), and the page a "Since the review" section and a "Since then" note on each disagreement: D1
+  settled by the register's fills (U102), D2 narrowed (WIPO and the register side with IP RAPID), D3 still open (OQ12),
+  the observations restated since, Stage 3's tests of C1, C3, C5 and C8 (M35, M5, M25; B37), and a limit that the review
+  covers U0 to U98 only. Its verdicts are unchanged, as given. The benchmark, against the lenses rebuilt today, is
+  unchanged (195 figures, 155 agree).
+- **Checked and found current:** the observation pages that carry the audit's findings (U7, U45, U102 and others), the
+  overview, limits, "What comes next" (OQ12 to OQ14 in their current wording) and the lens pages but the corpus.
+
+**Checks:** the strict atlas build passes (229 pages); ruff is clean; 138 tests pass with the lenses built; the audit,
+U0, corpus lens, data and limits pages checked in Chromium at 1,366 and 390 pixels with no console errors or overflow.
+
+**Next, in order:**
+1. **Extend the audit against IP Australia** (the owner's decision, A35: yes, in a later session). The review of 27
+   October (ADR 0024, `docs/audit-ip-australia.md`) checked U0 to U98 only. Check U99 to U127 and Stages 2 and 3 (B1 to
+   B63, M1 to M38) the same way: find what IP Australia has published on each (the IP Reports 2015 to 2026, its
+   research papers and notes, in the Econ repository's knowledge base), recount any comparable figure from the lenses
+   on IP Australia's definitions (calendar years, `founding_australian`), add each to `analysis/audit/published.csv`
+   and `benchmark.py` (whose test now allows only U0 to U98 as observations, so it needs widening), and give each
+   observation a verdict. Record it as a dated addition to the record (a new section, keeping sections 1 to 10 as
+   they are) with its own ADR, and carry it to the audit page (`analysis/atlas/content/audit.yaml`: the verdicts,
+   notes, counts and the "not covered" limit, which this would close). Stage 3's checks are of associations held
+   together; IP Australia publishes few of those, so expect most B and M observations to be "not testable" and say
+   why, as section 5.2 does.
+2. The owner's review of section 8's two tables and OQ26, as before; then the pull request and publishing; then, at the
+   owner's word, the plan's "After Stage 3".
+
 **Since then (2026-11-03): a Markdown copy of every observation page** (ADR 0050). The owner asked for each page to be
 copyable or downloadable as Markdown, a chart page always carrying its table, with the stepwise logic, explainers and
 provenance. Done: "Copy as Markdown" and "Download .md" under each headline, written in the browser by

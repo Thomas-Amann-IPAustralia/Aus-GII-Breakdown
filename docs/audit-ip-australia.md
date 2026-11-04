@@ -348,3 +348,77 @@ Recorded in [ADR 0024](adr/0024-audit-against-ip-australia.md):
   makes in words the searches did not reach may be missed; the topics covered are listed in section 2.
 - **What IP Australia does not publish** (holders, attorneys, lifetimes by cohort, regions below states, firms by ABN)
   leaves 66 observations untested, and they stand on Stage 1's own checks.
+
+---
+
+## 10. Since the audit (added 4 November 2026)
+
+The sections above are the audit as it was made on 27 October 2026, and are left as they were. This section records
+what has happened to each of its findings since, so that the atlas's page can say where each one now stands. It adds
+no new comparison with IP Australia's figures; every figure below is quoted from the record named beside it.
+
+**The benchmark still holds.** `python -m audit.benchmark`, run against the lenses as rebuilt on 4 November 2026,
+gives the same 195 figures and the same 155 agreements (`tests/test_audit.py` checks the committed outputs against
+the lenses). The benchmark reads IP RAPID's own origin (`founding_australian`), not the register's fills, so D1's
+figures are unchanged by them.
+
+**Scope.** The audit covered U0 to U98, the observations Stage 1 had on 27 October 2026. Stage 1 has since gained
+U99 to U127 (the register's fills, the data gaps filled after Stage 2, and the review of 3 November 2026), and Stages
+2 and 3 have added B1 to B63 and M1 to M38. None of these has been checked against IP Australia's published figures
+in the same way.
+
+**D1 (designs of unknown origin): settled in the lenses.** IP Australia's register gives a country for 25,018 of the
+40,748 designs IP RAPID leaves without one (61.4%), Australia for 20,870 (`docs/audit-ipa-api.md`, V13). For 2021, 2023 and
+2025, the lens's Australian designs plus the register's Australian owners are 2,601, 2,660 and 3,078, against IP
+Australia's 2,595, 2,652 and 3,078. At the owner's decision the register's country now sits beside IP RAPID's in the
+lenses (ADR 0029, `founding_australian_filled`). With it, 32.64% of designs filed FY2017 to FY2026 are Australian and
+0.083% are of unknown origin, against 30.44% and 5.058% in IP RAPID alone (U102). So the filled share is no longer a
+lower bound; IP RAPID's own share still is, and is shown beside it. OQ14 now asks whether IP RAPID could publish the
+country the register holds.
+
+**D2 (trade marks filed in 2018): IP RAPID is not the odd one out.** WIPO counts 15,943 designations of Australia in
+2018, against IP RAPID's 15,836 Madrid marks (0.9933); the IP Report 2019's figures imply about 17,830, or 1.118 times
+WIPO's count (`docs/recheck-oq6-oq7-oq13.md`, R9). IP Australia's own register counts 78,643 trade marks lodged in
+2018 (Madrid 16,941) and 77,726 by filing date (Madrid 15,999), so neither of its dates gives the report's 79,490
+(the lodgement date is 847 short; `docs/audit-ipa-api.md`, V11). Trade mark numbers 1,978,060 to 1,980,352, missing
+from IP RAPID, were not used: 1 of 2,292 exists (V10). Three sources now stand against the report's 2018 figure. 2018
+stays flagged in trade mark series, and OQ13 now asks what the report's count included.
+
+**D3 (55.6% of resident applications filed by individuals): still open.** IP Australia has not yet answered OQ12;
+U13 and U48 stand on the lens's evidence.
+
+**D4 (marks in force in 2005): unchanged.** No observation quotes a stock of marks in force.
+
+**Observations restated since, beside their first wording.** The register check (ADR 0028) and its fills (ADR 0029)
+restated U7, U13, U34 and U45 in the notebook, with U99 to U104 beside them, and the later passes restated others
+(ADR 0037, 0038, 0043). The audit's verdicts above are as they were made on 27 October 2026, against the observations
+as they then read.
+
+- **U45 and OQ7.** The register holds an ABN, or an ACN the ABR links to one, for 83.8% of the Australian
+  organisations' trade marks filed since July 2024 with no ABN in IP RAPID (`docs/audit-ipa-api.md`, V12). U100 and
+  U101 restore most of the link, and first observed filers are counted with the filled ABNs.
+- **U34 and OQ6.** The register shows "Examination expedited" on 130 of 130 sampled priority-claiming trade marks
+  filed FY2020 to FY2026, none of which has the event in IP RAPID (V14): IP RAPID stopped publishing it in November
+  2018 (U103).
+
+**IP Australia's conclusions, as Stages 2 and 3 have tested them since.** None is adopted; each is an association.
+
+- **C1 (the provisional surge).** Australian individuals' provisionals filed in FY2025 were followed by a complete
+  application within 12 months 6.66% of the time, against 12.24% to 14.15% in FY2022 to FY2024 (B38). With the filer's
+  state, volume, history and month held, the fall is -6.42 points (-6.25 raw); among individuals who also filed in the
+  earlier years it is not detected, so it is in new and heavy filers (M35). Late recording of claims is not ruled out
+  (B38, OQ18).
+- **C3 (fast-track examination and renewal).** Stage 2 found expedited standard patents slightly more often in force
+  after 10 years, pooled, in both periods (B13). With the filer, field, route, cohort, co-filers and classes held
+  together, the link is not detected in FY2010 to FY2016 (a hazard ratio of 1.021) and reverses in FY2003 to FY2009
+  (1.124: more likely to end); Australian individuals' expedited patents are more likely to end in both periods (1.264
+  and 1.249) (M5). The open data do not repeat the commissioned study's finding once other factors are held.
+- **C5 (Raising the Bar).** With each series' trend and season held, Raising the Bar (April 2013) brought a rush of
+  Australians' standard patents (0.605 in logs) and a lower level after it (a step of -0.334, about 28% fewer a
+  month), which then recovers (M25).
+- **C8 (the 2021 rise brought forward by the innovation patent's closure).** The closure (August 2021) shows a rush of
+  1.459 and a step of -3.17, both beyond every placebo month (B37).
+
+**The questions for IP Australia** (OQ12 to OQ14) were reworded by the owner after the register check (A13, 27
+October 2026): OQ13 and OQ14 now ask what the report counted and whether IP RAPID could publish what the register
+holds. All three are still open (`docs/owner-questions.md`).

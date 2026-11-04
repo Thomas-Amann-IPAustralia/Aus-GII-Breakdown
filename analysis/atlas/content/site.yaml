@@ -3,7 +3,7 @@
 # Numbers here come from docs/stage-1-summary.md, docs/stage-2-summary.md, the research goal and the notebooks; each
 # is traceable to an observation, linked where it is named.
 
-as_at: "2026-11-03"
+as_at: "2026-11-04"
 
 hero:
   eyebrow: Stage 3 of 3 · exploratory data analysis · first pass done
@@ -477,10 +477,10 @@ data_page:
     World Bank, WIPO, the OECD and others. Nothing is typed in by hand. This page follows a number from its publisher
     to an observation, and lists every source with its licence and where it is kept.
   sources_intro: >-
-    The source register (54 sources). Observation {U0} describes the corpus as profiled on 25 October 2026 (41
-    sources, 162 tables); the research institutions' register (ROR) was added the next day, IP Australia's own
-    register after that, and the fee history, the Reserve Bank's rates, the national accounts, the ATO's statistics
-    by postcode, WGEA's employers and others while filling the data gaps Stage 2 found. Open a source to see its
+    The source register (54 sources). Observation {U0} describes the corpus as profiled on 4 November 2026 (54
+    sources, 194 tables). Thirteen were added after the first profiles: the research institutions' register (ROR),
+    IP Australia's own register, and the fee history, the Reserve Bank's rates, the national accounts, the ATO's
+    statistics by postcode, WGEA's employers and others while filling the data gaps Stage 2 found. Open a source to see its
     tables, their size, where each is kept and its fingerprint.
   journey:
     - title: Published
@@ -665,6 +665,9 @@ limits:
     - when: 3 November 2026
       what: These pages were frozen while Stage 3 ran, so 53 earlier observations that Stage 3 tested still read as Stage 2 left them.
       now: Every Stage 3 observation has a page, and each earlier page it tested says what was left once other factors were held, with a link to the test.
+    - when: 4 November 2026
+      what: Observation {U0} still described the corpus as profiled on 25 October (162 tables from 41 sources), though 13 sources had been added since, and the review against IP Australia still read as it did on 27 October.
+      now: "The corpus was profiled again and {U0} follows it (194 tables from 54 sources). The review's page now says where each of its findings stands: IP Australia's register settled the designs of unknown origin and sided with IP RAPID on 2018's trade marks."
 
 next:
   intro: >-

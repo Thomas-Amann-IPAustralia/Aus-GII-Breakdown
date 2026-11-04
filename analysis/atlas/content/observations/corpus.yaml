@@ -3,20 +3,24 @@
 - id: U0
   lens: corpus
   about: data
-  headline: The corpus holds 162 tables from 41 sources, and three sources hold most of its rows
+  headline: The corpus holds 194 tables from 54 sources, and three sources hold two thirds of its rows
   statement: >-
-    When the notebook was last run, the corpus held 162 tables from 41 sources, 317,792,796 rows in all. Three
-    sources hold 69.73% of the rows: IP RAPID (31.57%), TM-Link (24.86%) and the OECD's panels (13.3%).
+    When the corpus was last profiled, on 4 November 2026, it held 194 tables from 54 sources, 335,184,272 rows in
+    all. Three sources hold 66.11% of the rows: IP RAPID (29.93%), TM-Link (23.57%) and the OECD's panels (12.61%).
   figures:
-    - value: "162"
+    - value: "194"
       label: tables
-    - value: "41"
+    - value: "54"
       label: sources
-    - value: "317,792,796"
+    - value: "335,184,272"
       label: rows in all
   points:
     - "Row counts measure how much a source records, not how much it matters to the research questions. So the analysis
       is organised by unit of analysis (rights, firms, places, countries), not by the size of a source."
+    - "**Corrected on 4 November 2026.** The observation still gave the profile of 25 October (162 tables, 41
+      sources, 317,792,796 rows, three sources 69.73%), though 13 sources had been added since, with 29 tables, and
+      eight tables rebuilt (the ABN spine from 398,450 to 463,279 rows, for one). The profile was re-run and the
+      observation now follows it."
     - "**Corrected on 27 October 2026.** The observation's text had kept the first corpus profile (152 tables, 38
       sources, 314,742,745 rows, three sources 70.4%), while the output above it had the later one. The text now
       follows the output, as every observation must."
@@ -30,11 +34,12 @@
       why: A single list makes it possible to check what the analysis can draw on.
   steps:
     - Read the corpus profile, one line per table.
+    - Check that every table opens and that its rows match the manifest.
     - Count the tables and the distinct sources, and add up the rows.
     - Rank the sources by rows and work out each one's share of all rows.
   assumptions:
-    - The profile was made on 25 October 2026. Sources added later (the research institutions' register, ROR, and
-      two WIPO tables) are not in it.
+    - The profile was made on 4 November 2026, and covers every processed table the corpus's manifest lists that day.
+      Every table opened, and its rows matched the manifest.
   limits:
     - Rows are a poor guide to importance. The World Bank's few thousand values for Australia matter as much to some
       questions as millions of trade mark records.
