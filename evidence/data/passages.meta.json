@@ -5,16 +5,17 @@
   "documents": 454,
   "kinds": {
     "glossary": 151,
-    "lens": 48,
-    "observation": 3435,
-    "page": 130,
+    "lens": 50,
+    "observation": 4177,
+    "page": 164,
     "question": 15,
     "source": 54
   },
-  "passages": 3833,
-  "passages_sha256": "0ab8465fb6786f80f7710764a85ed31faf14b066ed2d6d8c93e6c3f152543014",
+  "passages": 4611,
+  "passages_sha256": "32880288621f171d0247664c8420ae1be6306befc19b389050c96716f880dd04",
   "table_rows": 120,
+  "token_cap": 360,
   "version": "atlas-passages-v1",
   "word_cap": 260,
-  "words": 474623
+  "words": 480008
 }

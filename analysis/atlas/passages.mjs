@@ -14,7 +14,11 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 export const VERSION = "atlas-passages-v1";
-export const CAP = 260; // words a passage; about 350 tokens of Econ's reference tokenizer (checked by its ingest)
+export const CAP = 260; // words a passage
+// and at most this many tokens by `toks`, an estimate of Econ's reference tokenizer (BAAI/bge-small-en-v1.5, a
+// BERT word-piece vocabulary) that undercounted by at most 12 on the 4 November passages, so the real count stays
+// under the 384 Econ's chunks keep to (its ingest checks with the tokenizer itself)
+export const TOKEN_CAP = 360;
 export const TABLE_ROWS = 120; // a longer table keeps its first rows and says how many follow
 export const BASE = "https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/";
 
@@ -33,6 +37,18 @@ export function plain(text) {
 }
 
 const words = (s) => (s.match(/\S+/g) || []).length;
+/** Tokens, estimated: a short word is one, a long one two or three, an acronym about one per 1.5 letters, digits
+ * one per two, and each punctuation mark one (numbers, codes and tables cost far more than prose). */
+export function toks(s) {
+  let n = 2;
+  for (const [g] of String(s).matchAll(/[A-Za-z]+|\d+|[^\sA-Za-z\d]/g)) {
+    if (/[A-Za-z]/.test(g[0])) n += g.length >= 2 && g === g.toUpperCase() ? Math.ceil(g.length / 1.5) : 1 + (g.length >= 7) + (g.length >= 10);
+    else if (/\d/.test(g[0])) n += Math.ceil(g.length / 2);
+    else n += 1;
+  }
+  return n;
+}
+const fits = (t) => words(t) <= CAP && toks(t) <= TOKEN_CAP;
 const isTable = (line) => /^\s*\|/.test(line);
 const isItem = (line) => /^\s*(?:[-*] |\d+\. )/.test(line);
 const HASH = /\b[0-9a-f]{16,}\b/;
@@ -79,7 +95,7 @@ function units(text) {
     }
     items.forEach((it, i) => {
       const t = it.join("\n");
-      if (words(t) <= CAP) out.push({ text: t, gap: i === 0 });
+      if (fits(t)) out.push({ text: t, gap: i === 0 });
       else sentences(t).forEach((s, k) => out.push({ text: s, gap: i === 0 && k === 0 }));
     });
   }
@@ -88,25 +104,28 @@ function units(text) {
 
 function sentences(t) {
   const parts = t.split(/(?<=[.!?:;])\s+(?=[A-Z(*"'“‘\-0-9])/);
-  // a sentence longer than the cap (none so far) is split at its commas rather than left whole
-  return parts.flatMap((p) => (words(p) <= CAP ? [p] : p.split(/(?<=,)\s+/)));
+  // a sentence longer than the cap is split at its commas rather than left whole
+  return parts.flatMap((p) => (fits(p) ? [p] : p.split(/(?<=[,;])\s+/)));
 }
 
-/** Pack units into passages of at most CAP words; a table's header row is repeated in each passage it spans. */
+/** Pack units into passages of at most CAP words and TOKEN_CAP tokens; a table's header row is repeated in each
+ * passage it spans. */
 function pack(text) {
   const us = units(text);
   const out = [];
-  let cur = [], n = 0, table = null;
-  const flush = () => { if (cur.length) out.push(cur.join("\n").replace(/\n{3,}/g, "\n\n").trim()); cur = []; n = 0; table = null; };
+  let cur = [], n = 0, t = 0, table = null;
+  const flush = () => { if (cur.length) out.push(cur.join("\n").replace(/\n{3,}/g, "\n\n").trim()); cur = []; n = 0; t = 0; table = null; };
   for (const u of us) {
     const head = u.table && u.table !== table ? u.table : null;
     const need = words(u.text) + (head ? words(head) : 0);
-    if (n && n + need > CAP) flush();
+    const needT = toks(u.text) + (head ? toks(head) : 0);
+    if (n && (n + need > CAP || t + needT > TOKEN_CAP)) flush();
     const headNow = u.table && u.table !== table ? u.table : null;
-    if (headNow) { if (cur.length) cur.push(""); cur.push(headNow); table = u.table; n += words(headNow); }
+    if (headNow) { if (cur.length) cur.push(""); cur.push(headNow); table = u.table; n += words(headNow); t += toks(headNow); }
     else if (!u.table) { if (cur.length && (u.gap || table)) cur.push(""); table = null; }
     cur.push(u.text);
     n += words(u.text);
+    t += toks(u.text);
   }
   flush();
   return out.filter((p) => p && words(p) > 0);
@@ -175,7 +194,7 @@ function observationPassages(o, A, chart) {
     lens: o.lens,
     lens_name: L.name,
     strength: o.strength,
-    chapter: plain(o.chapter || ""),
+    chapter: plain(o.section || o.chapter || ""),
     title: `${o.id}: ${plain(markup(A)(o.headline))}`,
     section: p.section,
     url: `${BASE}#/${o.id}`,
@@ -381,6 +400,7 @@ export function build() {
     kinds: sorted(kinds),
     words: passages.reduce((n, p) => n + words(p.text), 0),
     word_cap: CAP,
+    token_cap: TOKEN_CAP,
     table_rows: TABLE_ROWS,
     base: BASE,
   });
