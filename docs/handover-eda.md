@@ -14,8 +14,9 @@ merged; nothing published. Done:
   observation" on every observation page; the CSP's `connect-src` names the API (a test). `analysis/atlas/chat_check.mjs`
   passes every check at 1,366 and 390 pixels (the test runs it when Chromium is here); the page also ran against the
   real API locally in evidence-only mode. Screenshots beside the Econ chat: Econ's `reports/atlas-chat-smoke-v1.md`.
-- **Blocked, WP6:** the environment's OpenAI key has expired (HTTP 401; US$0.00 spent). OQ30 asks the owner to replace
-  it; then a new session runs `econ atlas-smoke --confirm` in Econ (stops at US$2.00), completes the report (every
+- **Blocked, WP6:** the OpenAI key this cloud environment injects (not the chatbot's key on Render, which is fine) was refused
+  (HTTP 401, code `expired_secret_key`; the owner says it has no credit left; US$0.00 spent). OQ30 asks the owner to
+  fund or replace it; then a new session runs `econ atlas-smoke --confirm` in Econ (stops at US$2.00), completes the report (every
   answer read for causes stated from associations), records D-039, and replaces the browser check's provisional stream
   (`analysis/atlas/fixtures/chat-stream.json`: real retrieval, scripted answer) with a recorded one. OQ31: adopt the
   prompts and publish, after reading it.

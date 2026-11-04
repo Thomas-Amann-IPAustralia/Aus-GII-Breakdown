@@ -5,7 +5,7 @@ both checked out side by side: this one (`Aus-GII-Breakdown`, the atlas) and `Ec
 whose API, search and answer check the atlas chat reuses).
 
 **Status (4 November 2026, later the same day):** carried out except WP6, the smoke test, which the environment's
-expired OpenAI key blocked (US$0.00 spent; OQ30). What was built and decided: ADR 0054 here, D-038 in Econ; what remains:
+environment's OpenAI key (out of credit, not the chatbot's key) blocked (US$0.00 spent; OQ30). What was built and decided: ADR 0054 here, D-038 in Econ; what remains:
 the handover's "Latest" entry.
 
 ## 1. The outcome

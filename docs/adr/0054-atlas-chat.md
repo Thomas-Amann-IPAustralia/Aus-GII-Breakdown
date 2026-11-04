@@ -49,7 +49,7 @@ the Econ chat in what it searches and how it looks.
 (20 of 20) and every by-id need (5 of 5) in its test set reaches its gold pages among the 20 passages; context notes
 are written but not indexed, and a page may give at most 2 passages, for the breadth of exploratory answers.
 
-**Not yet done.** The smoke test with OpenAI could not run: the environment's OpenAI key has expired (US$0.00 spent).
+**Not yet done.** The smoke test with OpenAI could not run: OpenAI refused the key this cloud environment injects (HTTP 401, `expired_secret_key`; the owner says it has no credit left; US$0.00 spent). The chatbot's own key, on Render, is unaffected.
 The prompts are written and locked but not adopted, and nothing is published (A37, decision 5; OQ30, OQ31). The page's
 browser check runs on a provisional recorded stream (real search, filter order and pins over the real index; scripted
 plan, ratings and answer) until the smoke test records a real one.
