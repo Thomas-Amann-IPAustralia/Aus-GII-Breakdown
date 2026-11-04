@@ -16,7 +16,11 @@ repositories, not merged; nothing published. Done:
 - **WP7:** `#/ask` (`evidence/js/chat.js`, styles in `atlas.css`), "Ask the atlas" in the menu, "Ask about this
   observation" on every observation page; the CSP's `connect-src` names the API (a test). `analysis/atlas/chat_check.mjs`
   passes every check at 1,366 and 390 pixels on a recorded answer (`analysis/atlas/fixtures/chat-stream.json`, a27).
-- **The owner's (OQ31):** adopt atlas-plan-v1, atlas-filter-v1 and atlas-answer-v2 (recommended) and publish by merging
+- **Plain English (the owner's direction, Econ D-040):** atlas-answer-v3 rephrases freely for readers who are not
+  technical, keeping the numbers check: 19/20 pass first time, 41% shorter, a fifth of the jargon. The page's copy now
+  says the answer rephrases the pages and its quoted sentences are what it rests on; the browser check runs on v3's
+  recorded answer.
+- **The owner's (OQ31):** adopt atlas-plan-v1, atlas-filter-v1 and atlas-answer-v3 (recommended) and publish by merging
   both branches.
 It changes no observation or notebook, and doesn't change the order of "Next" below unless the owner says so.
 

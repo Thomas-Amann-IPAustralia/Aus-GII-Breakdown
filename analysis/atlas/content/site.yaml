@@ -13,8 +13,8 @@ chat:
   eyebrow: Ask the atlas · exploratory, not official
   title: Ask the atlas
   lead: >-
-    Ask a question in plain English. The answer is written only from these pages, and every sentence that states a
-    finding is checked word for word against the passage it quotes, so you can follow it back to its page.
+    Ask a question in plain English. The answer is written only from these pages, in everyday words. Every finding it
+    states cites the sentences it rests on, shown word for word beside it with the page they come from.
   starters:
     - Do patents filed without an attorney fare worse?
     - What did Stage 3 make of B6?
@@ -34,9 +34,10 @@ chat:
         IP Australia's or WIPO's publications belongs to the Econ chat.
     - title: The check
       text: >-
-        The model cites sentences by number and code copies them, so every quote is exact. Code then checks every
-        quote against its passage, and that every number in a cited sentence appears in the sentences it cites. An
-        answer that fails goes back once; one that still fails is shown flagged, never hidden.
+        The answer rephrases the pages in plain words; the sentences it cites are what it rests on. The model cites
+        them by number and code copies them, so every quote is exact. Code then checks that every number the answer
+        gives appears in the sentences it cites, and that no number goes uncited. An answer that fails goes back
+        once; one that still fails is shown flagged, never hidden.
     - title: Cost and records
       text: >-
         Answers stop for the day when a daily spending cap is reached; the passages found are still shown. Questions

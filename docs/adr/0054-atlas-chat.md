@@ -54,7 +54,10 @@ environment's OpenAI key was replaced, A38): 20 needs end to end; in the final s
 first time), every lookup and by-id answer cites its gold observation, and none states an association as a cause.
 Reading the first run's answers found two figures in a list cited nowhere, so the numbers check now also refuses a
 number in uncited prose, and atlas-answer-v2 asks each list item to cite its own sentences. The page's browser check
-runs on one of the recorded answers. Adopting the prompts and publishing are the owner's (OQ31).
+runs on one of the recorded answers. Then, at the owner's direction (clear language over exact wording for readers who are not technical; the numbers
+check kept), atlas-answer-v3 answers in plain English (Econ D-040, `reports/atlas-chat-plain-v3.md`): 19 of 20 pass
+first time, 41% shorter, a fifth of the analysts' terms; the page now says the answer rephrases the pages and the
+quoted sentences are what it rests on. Adopting the prompts and publishing are the owner's (OQ31).
 
 **Refreshing the chat.** After `atlas.build`, run `node analysis/atlas/passages.mjs` (a test fails otherwise). To make a
 change reach the chat, in Econ: `econ atlas-ingest --ref <this repository's commit>`, set that sha in
