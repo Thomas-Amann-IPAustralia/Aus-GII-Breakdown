@@ -7,6 +7,10 @@ import pytest
 from audit import benchmark
 from eda import data
 
+# the last observation of each notebook: U (Stage 1), B (Stage 2), M (Stage 3), as at 4 November 2026 (M39, M40: A36)
+LAST = {"U": 127, "B": 63, "M": 40}
+LATER = [f"U{i}" for i in range(99, 128)] + [f"B{i}" for i in range(1, 64)] + [f"M{i}" for i in range(1, 41)]
+
 
 @pytest.fixture(scope="module")
 def published():
@@ -18,7 +22,7 @@ def test_every_published_figure_has_a_lens_query_a_source_and_an_observation(pub
     assert published["published"].notna().all() and published["page"].gt(0).all()
     assert published["source"].str.fullmatch(r"(ipr-20\d\d|erp\d\d-[a-z-]+|note-[a-z-]+)").all()
     for obs in published["observations"]:
-        assert all(re.fullmatch(r"U\d{1,2}", o) and int(o[1:]) <= 98 for o in obs.split()), obs
+        assert all(re.fullmatch(r"[UBM]\d{1,3}", o) and int(o[1:]) <= LAST[o[0]] for o in obs.split()), obs
     assert not published.duplicated(["measure", "year"]).any(), "one published figure per measure and year"
 
 
@@ -41,6 +45,12 @@ def test_the_atlas_shows_the_review_on_a_page_of_its_own():
     assert sorted(tested + untested, key=lambda u: int(u[1:])) == [f"U{i}" for i in range(99)], "one verdict each"
     assert sum(page["counts"].values()) == 99
     assert all(v["note"] for v in page["verdicts"]), "every tested observation has a plain-English note"
+    # the second pass (4 November 2026, the record's section 11): every later observation, once
+    later = page["later"]
+    ids = [v["id"] for v in later["verdicts"]] + [i for g in later["untestable"] for i in g["ids"]]
+    assert sorted(ids) == sorted(LATER), "one verdict for each later observation"
+    assert sum(later["counts"].values()) == len(LATER)
+    assert all(v["note"] for v in later["verdicts"]), "every tested observation has a plain-English note"
 
 
 def test_committed_audit_charts_are_in_step():

@@ -1,30 +1,32 @@
-# The review of Stage 1 against IP Australia's published evidence, as the atlas shows it (ADR 0024, 0025).
+# The review against IP Australia's published evidence, as the atlas shows it (ADR 0024, 0025, 0052): Stage 1's
+# U0 to U98 (27 October 2026) and the later observations with Stages 2 and 3 (4 November 2026).
 # Plain English, Australian spelling, sentence case. Markup: **bold**, [[term]], {U44}, OQ numbers.
 # The record is docs/audit-ip-australia.md: each observation's verdict is read from its tables, and every number
 # written here must appear in the record or in the benchmark's outputs (analysis/audit/output), or the build fails.
 
 title: Checked against IP Australia
-eyebrow: Review · Stage 1 against the publisher's own figures
+eyebrow: Review · every stage against the publisher's own figures
 as_at: "2026-11-04"
 lead: >-
   IP Australia publishes its own figures on the IP system every year, in its Australian IP Reports, and its own
-  research. This review checks Stage 1's observations against them: where IP Australia has published the same thing,
-  do the two agree? Where it has drawn a conclusion, what does Stage 1's evidence add?
+  research. This review checks the observations against them: where IP Australia has published the same thing, do
+  the two agree? Where it has drawn a conclusion, what does the evidence here add?
 
 banner: >-
-  **This is the review as it was made on 27 October 2026, of Stage 1's observations U0 to U98, with what has
-  happened since.** The review itself changed no observation. Since then, IP Australia's own register has settled
+  **Two passes, one record.** The review of 27 October 2026 checked Stage 1's observations U0 to U98; on 4 November
+  2026 the same check was made of the observations since (U99 to U127, and Stages 2 and 3), and of the two tests it led
+  to ({M39}, {M40}), so all 231 now have a verdict. Neither pass changed an observation. Since then, IP Australia's own register has settled
   one of its four disagreements and narrowed another, and the observations it bore on were restated in the notebook
   beside their first wording, at the research owner's decision. Each verdict below is as the review gave it; "Since
   the review" and the notes on each disagreement say where things now stand.
 
 stats:
-  - value: "195"
-    label: figures IP Australia published, recounted from Stage 1's data
-  - value: "155"
+  - value: "209"
+    label: figures IP Australia published, recounted from the project's data
+  - value: "169"
     label: agree within the tolerance
-  - value: "23"
-    label: observations corroborated
+  - value: "231"
+    label: observations with a verdict, in two passes
   - value: "0"
     label: observations contradicted
 
@@ -43,7 +45,17 @@ in_brief:
     Australia reported itself. The fall in first observed trade mark filers ({U45}) is mostly a fall in linking filers
     to their ABNs, not in filing.
   - >-
-    **Since the review,** IP Australia's register has settled the designs of unknown origin (D1) and shown that IP
+    **The later observations and Stages 2 and 3** (checked on 4 November 2026): 13 more published figures were
+    recounted, and all 13 agree, among them the 2015 fees and the register's origin for designs. Of the 130
+    observations, 3 are corroborated, 28 consistent and 6 qualified; 93 cannot be tested, mostly because IP Australia
+    publishes few associations between two or more things. None is disputed or contradicted.
+  - >-
+    **Two tests IP Australia's research suggested** were then added to Stage 3. Its commissioned study's measure of
+    asking for examination early is reproduced (41.39% against 41.9%), but those patents are more likely to end, not
+    less ({M40}, disputed in part). Its note's lead of trade marks on GDP is found in direction, and is small once GDP's
+    own growth is held ({M39}).
+  - >-
+    **Since the first review,** IP Australia's register has settled the designs of unknown origin (D1) and shown that IP
     RAPID is not the odd one out for 2018's trade marks (D2). The individuals' 55.6% (D3) is still open. Rebuilt on 4
     November 2026, the lenses give the same 195 figures and the same 155 agreements.
 
@@ -83,11 +95,11 @@ since:
       kept longer, from IP Australia's commissioned study, does not survive the filer, field and route held together
       (C3, {M5}). FY2025's fall in provisionals followed up is in new and heavy individual filers (C1, {M35}).
       Raising the Bar's rush holds with trend and season held (C5, {M25}).
-  - title: What the review did not cover
-    status: Not covered
+  - title: The later observations and Stages 2 and 3
+    status: Done
     text: >-
-      The review checked U0 to U98. Stage 1's later observations ({U99} to {U127}) and Stages 2 and 3 have not been
-      checked against IP Australia's published figures in the same way.
+      Checked on 4 November 2026, as the first review was: {U99} to {U127}, {B1} to {B63} and {M1} to {M38}, then
+      {M39} and {M40}, the two tests it led to. The verdicts are in their own section below.
 
 method:
   - title: Find what IP Australia has published
@@ -171,6 +183,15 @@ measures:
                std_res_individual_share, tm_res_individual_share, second_tier_nonres_share]
   - label: Time from asking for examination to acceptance
     measures: [std_exam_to_accept_median_years]
+  - label: "Added on 4 November 2026: Australians' designs, with the register's country"
+    measures: [des_apps_res_filled]
+  - label: "Added on 4 November 2026: the official fees in 2015"
+    measures: [fee_patent_filing, fee_design_filing, fee_design_examination, fee_pbr_application, fee_pbr_examination,
+               fee_tm_filing]
+  - label: "Added on 4 November 2026: divisional applications behind 2019's fall"
+    measures: [std_div_direct_change, std_orig_direct_change, std_res_fall_divisional_share]
+  - label: "Added on 4 November 2026: patents asked for examination early and unprompted"
+    measures: [std_unprompted_exam_share]
 
 closeness_intro: >-
   Each dot is one figure IP Australia published, placed by its value (across) and by the same figure recounted from
@@ -344,13 +365,157 @@ notes:
   U98: >-
     IP Australia's figures (14.6% on international applications in 2022, about 12% in 2016) are in line with about
     one inventor in seven.
+  U99: >-
+    With IP Australia's register filling in the country IP RAPID leaves blank, Stage 1's count of Australians' design
+    applications matches IP Australia's within 0.57% in every year it published: 3,072 against 3,078 in 2025. IP
+    Australia publishes no counts of business numbers, so the business-number fills are not tested.
+  U100: >-
+    IP Australia reports record trade mark filings by Australians in 2025 (55,913), so filing did not fall as IP RAPID's
+    business numbers did. With the register, 90.9% of FY2026's trade marks have a filer's business number, against IP
+    RAPID's 59.9%.
+  U101: >-
+    Points the same way as IP Australia's record trade mark filings in 2025. Counted by applicant, first-time
+    Australian trade mark filers rose from 22,838 in 2024 to 28,626 in 2025.
+  U102: >-
+    Corroborated: with the register's country, Australians' design counts match IP Australia's in all four years it
+    published (2,596 against 2,595 in 2021, 3,072 against 3,078 in 2025). So the filled share is not a
+    [[lower-bound]]; IP RAPID's own share still is.
+  U105: >-
+    IP Australia's yearly counts of provisional applications agree with IP RAPID's within 0.25% in all 11 years
+    published, as a complete record would.
+  U108: >-
+    IP Australia's report of 2015 lists the fees then charged: $370 to file a standard patent, $250 for a design and
+    $420 to examine it, $345 for a plant breeder's right and $1,610 to examine it, and $120 a class for a trade mark.
+    The fee series gives all six exactly. IP Australia publishes no history of its fees, so the later fee observations
+    are not tested.
+  U114: >-
+    IP Australia's research on firms puts professional, scientific and technical services among the three industries
+    where patenting is concentrated: firms' patenting is not only manufacturing's, as a [[crosswalk]] without services
+    would suggest.
+  U115: >-
+    IP Australia, using WIPO's data, reports that Australians file several times as many patent applications abroad as
+    at home (9,012 against 3,061 in 2013), which fits Australian inventions that never reach IP Australia.
+  B10: >-
+    For designs, IP Australia also finds that overseas filers register, certify and renew more designs than
+    Australians where the two differ most. It publishes no trade mark renewals by origin.
+  B13: >-
+    IP Australia's commissioned study finds that applicants who speed up examination are more likely to renew their
+    patents, as this observation finds expedited patents slightly more often still in force at 10 years. See {M5}.
+  B15: >-
+    The divisional count behind this observation reproduces IP Australia's own figures for 2019: among direct filings,
+    divisionals fell 2.92% (IP Australia: 2.9%), and divisionals were 86.21% of the fall in Australians' applications
+    (87%). IP Australia does not publish the shares by decade.
+  B17: >-
+    IP Australia also finds that women's share among inventors varies by field: women are named on 61% of
+    international applications in biotechnology and 59% in pharmaceuticals.
+  B22: >-
+    IP Australia's research on business data finds that firms owning IP are on average older (13 years against 8) and
+    larger (105 employees against 6), as this observation finds filing going with age.
+  B23: >-
+    IP Australia's research finds R&D spending "positively and significantly associated" with patenting, with age,
+    size and industry held. It gives no size of link to set beside "only weakly".
+  B37: >-
+    IP Australia reports the same rush to file before [[raising-the-bar|Raising the Bar]] and before the innovation
+    patent closed.
+  B38: >-
+    IP Australia warns of "higher volumes of speculative filings" among 2025's provisional applications, which fits
+    fewer being followed up within 12 months (6.66% against 12.24% to 14.15%).
+  B41: >-
+    IP Australia's research on firms finds manufacturing holds eight of the ten most patent-intensive industries. It
+    counts firms' own industries, where this observation counts what the patents protect.
+  B45: >-
+    Agrees in part with IP Australia's research, which finds that more research funding brings more patent
+    applications, collaborative grants most: here ARC grants per 1,000 works go with patents per work (0.637 and
+    0.628). The collaborative link is not seen across universities, but IP Australia followed each organisation over
+    time, a different design that a comparison across about 40 universities cannot rule out.
+  B47: >-
+    IP Australia's note on trade marks explains this observation's clearest break: the Trade Marks Act 1995 let one
+    application cover several classes, so applications fell in 1996 while what they covered did not. The note scales
+    later filings up by a factor of 1.11 for it.
+  B50: >-
+    IP Australia's research on business data also finds that large firms stand out "as the most active filers", with
+    age and industry held.
+  B51: >-
+    IP Australia's research also finds patenting concentrated in manufacturing, wholesale trade and professional
+    services, with size held.
+  B54: >-
+    As {U114}: IP Australia's research on firms finds professional services among the industries where patenting is
+    concentrated, as the crosswalk with services allows.
+  B55: >-
+    IP Australia's counts of Australians' patent applications abroad are steady (9,012 in 2013, 8,737 in 2016), with a
+    split between routes "largely stable over the last 10 years", which fits a gap in older records rather than a
+    change in practice.
+  B56: >-
+    A caveat from IP Australia's note on trade marks: filings rise and fall with the economy and lead real GDP, a 10%
+    rise in a quarter predicting 1.8% more GDP the next quarter and 2.7% the quarter after. This observation compares
+    changes in the same quarter, so it does not test that lead.
+  B63: >-
+    As {B56}. Overseas applicants' trade marks move against unemployment (-0.561, then -0.224), as IP Australia's note
+    would expect; Australians' trade marks moving against employment is not what it would predict for the same
+    quarter.
+  M5: >-
+    Not a dispute with IP Australia's commissioned study: the two measure different things. The study's "speeding up"
+    includes asking for examination early, which 41.9% of granted patents do; this observation's expedited requests
+    are a few per cent. The study also finds that delay goes with better outcomes for small innovators, as this
+    observation finds Australian individuals' expedited patents end sooner.
+  M7: >-
+    As {B17}: IP Australia also finds the field sorts women's share among inventors.
+  M8: >-
+    As {B22} and {B23}. IP Australia's research also finds that among firms already using the patent system, younger
+    ones file more patents a year, which fits this observation's caveat that older firms have simply had longer to
+    file.
+  M11: >-
+    As {B50} and {B51}: IP Australia's research finds large firms and manufacturing standing out, with the other held.
+  M17: >-
+    WIPO's own page for Australia ranks school life expectancy (2nd) and tertiary enrolment (7th) among its strengths
+    and production and export complexity (72nd) among its weaknesses, as this observation places Australia.
+  M23: >-
+    As {B45}: IP Australia's research, following each research organisation over time, finds grants bring patent
+    applications. Held together across about 40 universities, the research measures here are largely one.
+  M25: >-
+    IP Australia reports the same rush before [[raising-the-bar|Raising the Bar]] and a 35% fall in Australians'
+    applications in 2014.
+  M26: >-
+    As {B15}: the divisional count reproduces IP Australia's figures for 2019.
+  M29: >-
+    As {B22} for company form and age. IP Australia's profit figures (IP owners earn $48,368 per employee against
+    $23,404) are not the reported income of large taxpayers, which is not tested.
+  M34: >-
+    As {B47}: IP Australia's note gives the reason the Trade Marks Act 1995 reads as a fall, not a rush: one
+    application could now cover several classes.
+  M35: >-
+    IP Australia reports that new filers were 63% of provisional applicants in 2025 and self-filers 52%, which fits
+    this observation's finding that the fall in follow-up is among new and heavy filers.
+  M36: >-
+    As {B56}: IP Australia's note finds trade marks lead the economy by a quarter or two, which changes in the same
+    quarter do not test.
+  M39: >-
+    Added to test IP Australia's note. Trade marks and real GDP do share a long-run path, and trade marks run a quarter
+    ahead, as the note finds; but with GDP's own growth held the lead is small (0.038) and not detected after 2008.
+  M40: >-
+    Disputed in part. IP Australia's commissioned study's measure is reproduced (41.39% of granted patents asked for
+    examination before any direction, against its 41.9%), but those patents are more likely to end, not less, with
+    who filed, the field and the route held (1.276 and 1.383). The study's own model is not published, so it is its
+    direction on its measure that is disputed.
+
+later_intro: >-
+  The same check, made on 4 November 2026 of the observations added since the first review: Stage 1's later
+  observations, Stages 2 and 3, and the two tests the check led to ({M39}, {M40}). Stages 2 and 3 read associations, two at a time and then with other factors held.
+  IP Australia publishes few of those, and where its own research reaches the same question it mostly uses other data
+  (the ABS's business data) or another design. So "consistent" here usually means the two point the same way, not that
+  one confirms the other's size.
+
+later_untestable_intro: >-
+  IP Australia publishes nothing these can be compared with: the register's detail by filer, firms matched to other
+  registers, places below the states, countries, the economy's other series, industries and research institutions.
 
 untestable_intro: >-
   IP Australia does not publish these things, so they stand on Stage 1's own checks. Most are about the data's
   structure and the repairs made to it, the register's fine detail, or sources other than IP Australia's.
 
 conclusions_intro: >-
-  What IP Australia concludes, how strongly it says it, and what Stage 1's evidence adds. None of IP Australia's
+  What IP Australia concludes, how strongly it says it, and what the evidence here adds (C1 to C12 from the first
+  review; C13 to C16 from the second). None of IP Australia's
   conclusions is adopted here: that is the research owner's decision.
 
 conclusions:
@@ -375,7 +540,9 @@ conclusions:
       "expedited" mixes urgent requests with work-sharing ({B13}). Stage 3 held the filer, field, route, cohort,
       co-filers and classes together: the link is not detected in FY2010 to FY2016 (a [[hazard-ratio|hazard ratio]]
       of 1.021) and reverses in FY2003 to FY2009 (1.124), and Australian individuals' expedited patents are more
-      likely to end in both periods ({M5}). The open data do not repeat the study's finding.
+      likely to end in both periods ({M5}). The open data do not repeat the study's finding. On the study's own wider
+      measure, a request made before any direction (41.39% of granted patents against its 41.9%), patents are more
+      likely to end too, held together (1.276 and 1.383; {M40}).
   - id: C4
     claim: The innovation patent did not meet its goal of serving small businesses.
     strength: IP Australia's and the Productivity Commission's research.
@@ -418,6 +585,28 @@ conclusions:
     claim: Collaboration between universities and industry is "not a crisis"; Australia is 13th of 35 OECD countries.
     strength: IP Australia's analysis of jointly filed IP.
     adds: "{U84}'s joint filing is the same kind of measure; Stage 2 can bring it up to date."
+  - id: C13
+    claim: Trade mark filings rise and fall with the economy, and lead real GDP by one or two quarters.
+    strength: '"Predicts"; an analytical note''s preliminary results.'
+    adds: >-
+      {B56}, {B63} and {M36} compare changes in the same quarter, not a lead. Overseas applicants' trade marks move
+      against unemployment (-0.561, then -0.224), as the note would expect; Australians' trade marks move against
+      employment. Tested since ({M39}): the two share a long-run path, but once GDP's own growth is held the lead is
+      small (0.038) and not detected after 2008.
+  - id: C14
+    claim: Larger and older firms are more likely to use IP; R&D spending goes with patenting.
+    strength: '"Our analysis does not imply causation."'
+    adds: "{B22}, {B23}, {B50}, {B51}, {M8}, {M11} and {M29} point the same way, on other registers."
+  - id: C15
+    claim: More public research funding brings more patent applications from research organisations, and collaborative grants more.
+    strength: '"Likely to boost"; organisations followed over time.'
+    adds: >-
+      Across universities, ARC grants per 1,000 works go with patents per work (0.637 and 0.628, {B45}); the
+      collaborative-grant link is not seen across about 40 universities ({B45}, {M23}), a different design.
+  - id: C16
+    claim: The fall in trade mark filings in 1996 reflects the Trade Marks Act 1995's applications covering several classes.
+    strength: Attributed to earlier research, and adjusted for in IP Australia's own series.
+    adds: "{B47} and {M34} find the Act's fall; this is its likely mechanism."
 
 changes_intro: >-
   What the review changed for Stages 2 and 3, and where each change now stands. The review itself changed no
@@ -458,10 +647,12 @@ limits:
     text: >-
       Beyond the 2026 report, the documents were searched topic by topic, so a statement in words the searches did not
       reach may be missed.
-  - title: Stage 1 as it was on 27 October 2026
+  - title: Associations have little to check against
     text: >-
-      The review checked U0 to U98. The observations added since, and Stages 2 and 3, have not been checked against
-      IP Australia's published figures in the same way.
+      IP Australia publishes few associations, and its research on firms uses the ABS's business data, which this
+      project cannot use. A "consistent" verdict on a Stage 2 or Stage 3 observation is about direction, on other data;
+      a Stage 3 verdict checks the signal it revisits, not its model.
   - title: Much cannot be tested this way
     text: >-
-      66 observations concern things IP Australia does not publish. They stand on Stage 1's own checks.
+      66 of the first 99 observations, and 93 of the later 132, concern things IP Australia does not publish. They
+      stand on the project's own checks.

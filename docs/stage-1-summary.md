@@ -624,6 +624,10 @@ Reports (2015 to 2026), its economic research papers and notes, as the Econ repo
 
 ---
 
+**Extended (4 November 2026, ADR 0052):** U99 to U127 were checked the same way (`audit-ip-australia.md`, section 11):
+3 corroborated (U99 and U102, the register's origin for designs, within 0.57% of IP Australia's counts; U108, the six
+fees the IP Report 2015 lists, exactly), 5 consistent (U100, U101, U105, U114, U115) and 21 not testable.
+
 ## 11. IP Australia's register (added 2026-10-27, ADR 0028 and 0029)
 
 IP RAPID was checked against IP Australia's live register, read through its APIs (`docs/audit-ipa-api.md`): it is

@@ -194,3 +194,17 @@ pbr_registered,2025,169,ipr-2026,68,U27,
 std_exam_to_accept_median_years,2020,1.3,ipr-2025,9,U33,"median years from the request for examination to acceptance, 'as of 2020 (latest complete data)'"
 tm_res_individual_share,2010,27,ipr-2017,36,U13,"per cent of residents' trade mark applications by private applicants (table 3, from the IP Report 2016)"
 tm_res_individual_share,2015,28,ipr-2017,36,U13,"per cent of residents' trade mark applications by private applicants (table 3, from the IP Report 2016)"
+des_apps_res_filled,2014,2630,ipr-2015,11,U102,"total 6,596 less non-residents 3,966; the register's country fills IP RAPID's gaps"
+des_apps_res_filled,2021,2595,ipr-2022,3,U102,
+des_apps_res_filled,2023,2652,ipr-2024,7,U102,
+des_apps_res_filled,2025,3078,ipr-2026,58,U102,
+fee_patent_filing,2015,370,ipr-2015,35,U108 U125,"electronic; $470 on paper"
+fee_design_filing,2015,250,ipr-2015,36,U108 U125,"electronic; $350 on paper"
+fee_design_examination,2015,420,ipr-2015,36,U108 U125,"optional examination"
+fee_pbr_application,2015,345,ipr-2015,37,U108 U125,
+fee_pbr_examination,2015,1610,ipr-2015,37,U108 U125,
+fee_tm_filing,2015,120,ipr-2015,37,U108 U125,"per class, electronic; $220 on paper"
+std_div_direct_change,2019,-2.9,ipr-2020,7,B15 M26,"for direct filings, divisional applications fell 2.9 per cent in 2019"
+std_orig_direct_change,2019,-1.2,ipr-2020,7,B15,"original applications fell 1.2 per cent (direct filings)"
+std_res_fall_divisional_share,2019,87,ipr-2020,8,B15 M26,"resident applications fell from 2,756 to 2,637; 87 per cent of the fall in divisionals"
+std_unprompted_exam_share,2016,41.9,ipr-2025,10,M40,"granted 2004 to 2016, divisionals left out: voluntary, early and unprompted requests; shown at 2016"

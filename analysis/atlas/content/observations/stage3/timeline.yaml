@@ -541,3 +541,83 @@
     Recorded, not carried: the cycle is a third factor to hold in before-and-after comparisons, not a signal.
   terms: [block-resampling, effective-sample, cash-rate, gdp, verdict-words]
   related: [B52, B56, B63, M19]
+
+- id: M39
+  lens: timeline
+  about: system
+  headline: Trade marks and real GDP share a long-run path and trade marks run a quarter ahead, but the lead is small and not detected since 2008
+  statement: >-
+    IP Australia's analytical note finds trade mark filings sharing a long-run path with real GDP and leading it. From
+    1983 to 2023 the two are [[cointegration|cointegrated]] here too (p 0.018), and in levels more trade marks go with
+    more GDP a quarter or two later. But in changes, with GDP's own growth held, 10% faster growth in trade marks goes
+    with only about 0.38 points faster GDP growth the next quarter (0.038, interval 0.014 to 0.063), and the lead is
+    not detected after 2008.
+  figures:
+    - value: "0.018"
+      label: Engle-Granger p for trade marks and real GDP, 1983Q1 to 2023Q2 (a shared path)
+    - value: "3.069% and 3.296%"
+      label: more GDP per 10% more trade marks, one and two quarters on, in levels (the note's 1.8% and 2.7%)
+    - value: "0.038"
+      label: GDP growth per unit of trade marks' growth the quarter before, GDP's own growth held, 1983 to 2023
+  points:
+    - "**By period:** before 2008, 0.019 (0.005 to 0.033), p 0.017; after, 0.048 (-0.016 to 0.113), p 0.316, not
+      detected. The shared path is clear after 2008 (p 0.005) but not before (0.181)."
+    - "**By origin:** the two lags are clear for overseas applicants' trade marks over the whole span (p 0.003) and for
+      Australians' before 2008 (p 0.003)."
+    - "**The other way round:** GDP's growth does not lead trade marks over 1983 to 2023 (p 0.718); after 2008 it goes
+      against them (-1.402), the pandemic's boom in trade marks while GDP fell, which the note calls countercyclical."
+    - "**Windows:** the timeline counts trade mark applications from January 1983 only, so they start there,
+      later than the note's. A regression in levels describes the shared path; it is not a forecast, so no interval is
+      given for it."
+  revisits:
+    - id: B56
+      signal: Real GDP and filing
+      verdict: refined
+      what: >-
+        B56 compared changes in the same quarter. With a lead, trade marks' growth goes with GDP's growth the next
+        quarter (0.038 over 1983 to 2023, GDP's own growth held), clear before 2008 (0.019) and not detected after
+        (0.048, p 0.316).
+  held: ["GDP's own growth the quarter before", "Newey-West intervals for the quarters' dependence"]
+  verdicts:
+    - signal: A shared long-run path (cointegration)
+      detail: p 0.018 over 1983 to 2023; 0.181 before 2008, 0.005 after
+      verdict: mixed
+    - signal: Trade marks' growth leads GDP's, GDP's own growth held
+      detail: 0.019 before 2008 (clear), 0.048 after (not clear)
+      verdict: does not replicate
+  chart:
+    type: effect
+    title: Does trade marks' growth lead real GDP's? With GDP's own growth the quarter before held
+    subtitle: Change in GDP's year-on-year growth per unit of trade marks' year-on-year growth one quarter before, with 95% Newey-West intervals
+    x: {values: ["All trade marks, 1983 to 2023", "All trade marks, 1991 to 2008", "All trade marks, 2008 to 2026", "Australian applicants, 1983 to 2023", "Australian applicants, 1991 to 2008", "Australian applicants, 2008 to 2026", "Overseas applicants, 1983 to 2023", "Overseas applicants, 1991 to 2008", "Overseas applicants, 2008 to 2026"]}
+    y: {name: "GDP growth per unit of trade marks' growth", format: signed, digits: 3}
+    ref: 0
+    ref_label: no lead
+    series:
+      - name: One quarter before
+        colour: 0
+        data: [[0.038, 0.014, 0.063], [0.019, 0.005, 0.033], [0.048, -0.016, 0.113], [0.019, -0.000, 0.039], [0.020, 0.008, 0.031], [0.026, -0.014, 0.067], [0.015, 0.001, 0.029], [-0.001, -0.017, 0.016], [0.021, -0.003, 0.045]]
+    source: ABS, national accounts; IP Australia, IP RAPID (lens timeline); notebook 3, section 5.8
+  questions:
+    - q: 1
+      how: Trade mark filing runs slightly ahead of the economy, as IP Australia's note says, but the lead is small once the economy's own momentum is known.
+    - q: 5
+      how: For any projection, trade marks add little to GDP's own past as a predictor, and nothing detectable since 2008.
+  sources: [abs_national_accounts, iprapid]
+  prep:
+    - what: "Quarterly trade mark applications (Australian, overseas and unknown origin together, and each origin) and real GDP from the timeline. In levels, as the note: log trade marks seasonally adjusted (STL), scaled by 1.11 from 1996, with Engle-Granger tests and GDP on two lags. In changes, as {M36}: year-on-year log changes, GDP's growth on trade marks' growth one and two quarters before with GDP's own growth the quarter before held, and the reverse."
+      why: The audit against IP Australia found that {B56}, {B63} and {M36} compared the same quarter, so the note's lead was untested.
+  steps:
+    - Test for a shared long-run path, as the note did.
+    - Regress GDP on earlier trade marks in levels, as the note did, and compare the sizes.
+    - Test the lead in changes with GDP's own momentum held, by period and origin, and test the reverse direction.
+  assumptions:
+    - Trade marks counted by the date of application, as the note counts them.
+  limits:
+    - The timeline's trade marks start in 1983, so the window is shorter than the note's.
+    - A regression in levels of two trending series has no reliable interval.
+  next: >-
+    Recorded with B56, not carried: trade marks are a weak and unstable lead on the economy, not a signal for the
+    research questions.
+  terms: [cointegration, newey-west, gdp, verdict-words]
+  related: [B56, B63, M36]

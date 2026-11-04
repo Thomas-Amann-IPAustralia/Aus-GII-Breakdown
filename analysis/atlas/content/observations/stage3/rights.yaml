@@ -883,3 +883,93 @@
     patent's cost of keeping, to read fees as a lever.
   terms: [let-go, trend-either-side, held-together, renewal, placebo, verdict-words]
   related: [B49, M34, B47]
+
+- id: M40
+  lens: rights
+  about: system
+  headline: Asking for examination before being directed goes with patents more likely to end, not less, against IP Australia's commissioned study
+  statement: >-
+    IP Australia's commissioned study counts a request for examination made before the Commissioner directs one as a
+    way of speeding examination up, and reports that applicants who speed up are more likely to renew their patents.
+    Built from the open data, the same measure covers 41.39% of granted patents (the study: 41.9%). But with the
+    filer, field, route, cohort and expedited examination held together, those patents are more likely to end in a
+    given year after grant, in both periods ([[hazard-ratio|hazard ratios]] 1.276 and 1.383).
+  figures:
+    - value: "41.39%"
+      label: of granted standard patents, 2004 to 2016, asked for examination before any direction (the study, 41.9%)
+    - value: "1.276"
+      label: "all filers, FY2010 to FY2016, held together (raw 1.214): more likely to end"
+    - value: "1.383"
+      label: "all filers, FY2003 to FY2009, held together (raw 1.366)"
+  points:
+    - "**The measure reproduces the study's share:** 303,486 standard patents with a date of patent in 2004 to 2016,
+      divisionals left out, of which 191,477 granted; 41.28% were never directed. The share rose between the periods:
+      overseas organisations 0.273 to 0.5148, Australian organisations 0.2357 to 0.4602."
+    - "**By filer, held together:** overseas organisations 1.282, then 1.388; overseas individuals 1.298, then 1.340;
+      Australian organisations 1.005 (not detected either way), then 1.587; Australian individuals 1.169 (not detected
+      once held), then 1.486."
+    - "**Why it may differ from the study:** its outcome (\"the lifetime over which the applicant renews the patent\")
+      and its controls are not in IP Australia's report. Here each patent is followed from its grant, so the
+      comparison is among patents alive at the same age."
+    - "**One reading, to test:** applicants who wait use the years to drop weak applications before grant, the study's
+      own point about delay as an option, so the granted patents of those who were directed are already filtered."
+  revisits:
+    - id: B13
+      signal: Speeding up examination and staying in force
+      verdict: refined
+      what: >-
+        On IP Australia's commissioned study's wider measure, a request made before any direction (41.39% of granted
+        patents), the link with a longer life is not found either: those patents are more likely to end, held
+        together (1.276 and 1.383).
+  held: [the filer's origin and type, the technology field, the route of filing, the cohort, several founding applicants, the number of classes, expedited examination]
+  verdicts:
+    - signal: All filers, FY2010 to FY2016
+      detail: 1.214 raw, 1.276 held together (more likely to end)
+      verdict: holds
+    - signal: All filers, FY2003 to FY2009
+      detail: 1.366 raw, 1.383 held together
+      verdict: holds
+    - signal: Australian organisations, FY2010 to FY2016
+      detail: 1.126 raw, 1.005 held together
+      verdict: not detected either way
+    - signal: Australian individuals, FY2010 to FY2016
+      detail: 1.427 raw, 1.169 held together
+      verdict: not detected once held
+  chart:
+    type: effect
+    title: How likely patents examined on an unprompted request are to end, against those examined after a direction
+    subtitle: Hazard ratios to 10 years from the date of patent (above 1 means more likely to end), with 95% intervals; FY2010 to FY2016 and FY2003 to FY2009
+    x: {values: ["All filers, FY2010 to FY2016", "All filers, FY2003 to FY2009", "Overseas organisations, FY2010 to FY2016", "Overseas organisations, FY2003 to FY2009", "Overseas individuals, FY2010 to FY2016", "Overseas individuals, FY2003 to FY2009", "Australian organisations, FY2010 to FY2016", "Australian organisations, FY2003 to FY2009", "Australian individuals, FY2010 to FY2016", "Australian individuals, FY2003 to FY2009"]}
+    y: {name: "Hazard ratio, unprompted against directed", format: ratio, digits: 2}
+    ref: 1
+    ref_label: equally likely to end
+    series:
+      - name: Raw
+        colour: muted
+        data: [[1.214, 1.116, 1.321], [1.366, 1.252, 1.490], [1.212, 1.105, 1.330], [1.343, 1.217, 1.483], [1.273, 1.158, 1.400], [1.431, 1.250, 1.638], [1.126, 0.965, 1.313], [1.477, 1.150, 1.897], [1.427, 1.162, 1.754], [1.661, 1.424, 1.936]]
+      - name: Held together
+        colour: 0
+        data: [[1.276, 1.172, 1.389], [1.383, 1.286, 1.487], [1.282, 1.171, 1.404], [1.388, 1.281, 1.503], [1.298, 1.168, 1.443], [1.340, 1.170, 1.536], [1.005, 0.856, 1.180], [1.587, 1.235, 2.038], [1.169, 0.907, 1.505], [1.486, 1.217, 1.815]]
+    source: IP Australia, IP RAPID (lens rights; its directions to request examination); notebook 3, section 1.11
+  questions:
+    - q: 1
+      how: Asking for examination sooner does not mark a patent that is kept longer, on either the narrow measure (M5) or IP Australia's study's wider one.
+    - q: 4
+      how: Bears on how IP Australia reads its own study; the difference from the study is a question for IP Australia about its model.
+  sources: [iprapid]
+  prep:
+    - what: "A request is unprompted if IP RAPID's first request for examination is dated before any direction to request examination (its exam_direction_to_request_exam events), as the study defines early and unprompted requests. Granted standard patents with a request, divisionals left out as the study left them, cohorts by the date of patent as in {M5}."
+      why: The audit against IP Australia found that {M5} tested only expedited requests, a few per cent of patents, while the study's measure covers 41.9% of granted patents.
+  steps:
+    - Check that the measure gives the study's share of granted patents.
+    - Compare unprompted with directed requests as a hazard ratio, raw, then with the filer, field, route, cohort, co-filers, classes and expedited examination held together.
+    - Fit the same model within each filer group, and give each outcome.
+  assumptions:
+    - A request made before any direction is the applicant's own choice; a direction is IP Australia's, to manage its workload.
+  limits:
+    - The study's model and outcome are not published in the report, so this tests its measure, not its result.
+  next: >-
+    Ask IP Australia how the study measured the renewal lifetime and what it held (with the owner's request), and
+    read M40 beside {M5} in the third early signal.
+  terms: [unprompted-request, hazard-ratio, expedited, held-together, verdict-words]
+  related: [B13, M5]

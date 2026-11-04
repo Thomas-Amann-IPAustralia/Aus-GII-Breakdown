@@ -205,3 +205,10 @@ were not seen to move with oppositions. Australian individuals' provisionals per
 notebook 3 resamples them in blocks (M36). Nothing else in this document changes: the Stage 2 readings that Stage 3
 revises are listed in `docs/stage-3-summary.md` and the handover, and notebook 2 keeps its wording until the owner
 lifts the website's freeze.
+
+## 11. Checked against IP Australia's published evidence (2026-11-04, ADR 0052)
+
+Each of B1 to B63 now has a verdict against IP Australia's publications (`docs/audit-ip-australia.md`, section 11):
+14 consistent (B10, B13, B15, B17, B22, B23, B37, B38, B41, B47, B50, B51, B54 and B55; B15's divisional measure
+reproduces IP Australia's 2019 figures), 3 qualified (B45, B56, B63) and 46 not testable; none disputed or
+contradicted. Nothing else in this document changes.
