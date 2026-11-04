@@ -83,7 +83,11 @@ uv run pytest -q
 - **The evidence atlas** (`evidence/`, built by `analysis/atlas/`) matches all three notebooks (ADR 0044, 0049): a
   change to an observation changes its page in the same commit, `uv run python -m atlas.build` must pass (the numbers
   rule), and drawn charts are redrawn with `python -m atlas.charts` after `eda.build`. Stage 3's plain English is in
-  `analysis/atlas/content/observations/stage3/`.
+  `analysis/atlas/content/observations/stage3/`. After `atlas.build`, run `node analysis/atlas/passages.mjs`: the
+  chat's evidence (`evidence/data/passages.jsonl`, ADR 0054) must match the pages, and a test checks. The chat
+  ("Ask the atlas", `#/ask`, `evidence/js/chat.js`) is served by the Econ repository's API; to make a change reach it,
+  in Econ run `econ atlas-ingest --ref <this commit>`, set the sha in its `config/atlas.yaml`, then
+  `econ index --kb atlas`, and commit (Econ's `docs/deploy.md`). `node analysis/atlas/chat_check.mjs` checks the page.
 - **For Stage 2, use the full audit** in `analysis/claude-audit/261102/INDEX.md` (a Claude Code session, 2 November
   2026; the working list for Stage 2, A24; every finding acted on by pass 8): it rechecks the four Stage 2 audits above against the amended notebook, keeping their finding numbers, audits
   §5 to §8, and gathers the survival theme's findings in one table. Same rules: check, then act at the owner's direction.

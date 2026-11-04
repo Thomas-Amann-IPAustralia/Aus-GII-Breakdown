@@ -5,6 +5,48 @@
 
 as_at: "2026-11-04"
 
+# The chat, "Ask the atlas" (#/ask, ADR 0054): served by the Econ repository's API as a second knowledge base, kept
+# apart from the Econ chat. The page calls nothing outside `api` (the Content Security Policy in evidence/index.html
+# names the same host; a test checks they agree).
+chat:
+  api: https://econ-api-vk5f.onrender.com/api/atlas
+  eyebrow: Ask the atlas · exploratory, not official
+  title: Ask the atlas
+  lead: >-
+    Ask a question in plain English. The answer is written only from these pages, in everyday words. Every finding it
+    states cites the sentences it rests on, shown word for word beside it with the page they come from.
+  starters:
+    - Do patents filed without an attorney fare worse?
+    - What did Stage 3 make of B6?
+    - Explain M40 simply.
+    - What do we know about universities and patents?
+  how_title: How the chat works
+  how:
+    - title: What it reads
+      text: >-
+        Only these pages: the observations, the glossary, the lenses, the sources, and the pages on Stage 3, limits,
+        what comes next and the check against IP Australia. It searches them, a small model picks the passages that
+        bear on the question, and a larger one writes the answer from those alone.
+    - title: What it may not do
+      text: >-
+        Use outside knowledge; state an association as a cause (a **descriptive** or **observational** finding is
+        never a cause); or answer the five research questions, which wait for Stage 3 to be reviewed. A question about
+        IP Australia's or WIPO's publications belongs to the Econ chat.
+    - title: The check
+      text: >-
+        The answer rephrases the pages in plain words; the sentences it cites are what it rests on. The model cites
+        them by number and code copies them, so every quote is exact. Code then checks that every number the answer
+        gives appears in the sentences it cites, and that no number goes uncited. An answer that fails goes back
+        once; one that still fails is shown flagged, never hidden.
+    - title: Cost and records
+      text: >-
+        Answers stop for the day when a daily spending cap is reached; the passages found are still shown. Questions
+        and answers are recorded in the service's log so the chat can be checked and improved.
+    - title: What it is
+      text: >-
+        An exploratory research tool for IPAVentures, not an official IP Australia publication or advice. Read the
+        cited page before relying on an answer.
+
 hero:
   eyebrow: Stage 3 of 3 · exploratory data analysis · first pass done
   title: What Australia's IP data show so far, and how we know

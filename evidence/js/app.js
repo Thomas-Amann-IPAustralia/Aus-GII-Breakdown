@@ -5,6 +5,7 @@
 import { download, el, initTheme } from "../../assets/js/util.js";
 import { chartCard, sweep } from "./charts.js";
 import { observationMarkdown } from "./markdown.js";
+import { chatPage, initChat } from "./chat.js";
 
 const $ = (s, r = document) => r.querySelector(s);
 const main = $("#main");
@@ -287,7 +288,8 @@ function markdownTools(o) {
     download(`${o.id}.md`, await markdownOf(o), "text/markdown;charset=utf-8");
     say(`Observation ${o.id} downloaded as ${o.id}.md.`);
   });
-  return el("div.md-tools", { role: "group", "aria-label": "Take this page as Markdown" }, copy, save);
+  const ask = A.site.chat ? el("a.btn.small", { href: `#/ask?about=${o.id}`, title: `Ask the atlas's chat about ${o.id}: its own passages go first` }, icon("chat"), el("span", "Ask about this observation")) : null;
+  return el("div.md-tools", { role: "group", "aria-label": "Take this page as Markdown, or ask about it" }, copy, save, ask);
 }
 
 // ------------------------------------------------------------------------------------------------ pages
@@ -1005,6 +1007,7 @@ function route() {
   else if (parts[0] === "audit" && A.audit) auditPage();
   else if (parts[0] === "next") nextPage();
   else if (parts[0] === "glossary") glossaryPage(parts[1]);
+  else if (parts[0] === "ask" && A.site.chat) chatPage(params);
   else {
     setCrumbs([{ label: "Not found" }]);
     show(el("h1", "Not found"), el("p", "There is no page here. ", el("a", { href: "#/" }, "Go to the overview.")));
@@ -1110,6 +1113,7 @@ fetch("data/atlas.json").then((r) => r.json()).then((atlas) => {
   for (const o of A.observations) byId[o.id] = o;
   $("#nav-count").textContent = String(A.observations.length);
   $("#foot-asat").textContent = `as at ${longDate(A.built)}`;
+  initChat({ A, byId, inline, paras, icon, lensChip, stageChip, strengthBadge, verdictTag, verdictsOf, obsLink, setCrumbs, setNav, show, section, longDate, route });
   addEventListener("hashchange", route);
   route();
 }).catch((e) => { console.error(e?.stack || e); show(el("p", "The evidence could not be loaded. If you opened this file from disk, serve the folder over http instead.")); });

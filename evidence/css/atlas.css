@@ -676,3 +676,118 @@ table.signals td:nth-child(3) { white-space: nowrap; }
 }
 .card > .meta .chip { white-space: normal; }
 .grid > .card { min-width: 0; }
+
+/* ---------------------------------------------------------------------------------------------- Ask the atlas
+   The chat (#/ask, ADR 0054): the Econ chat's method in the atlas's own look. Cited prose is teal on a teal wash,
+   the assistant's own words keep the ink colour; a claim's several sentences take the categorical palette (magenta,
+   aqua, violet, then muted), with a number as well as a colour; passages are atlas cards in the observation,
+   explainer or limit colours. */
+.chat-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 430px); gap: 28px; align-items: start; margin-top: 22px; }
+.chat-main { min-width: 0; display: grid; gap: 14px; }
+.chat-status { display: flex; align-items: center; gap: 9px; margin: 0; font-size: .86rem; color: var(--ink-2); }
+.chat-status .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--c-muted); flex: none; }
+.chat-status.ready .dot { background: var(--obs-line); }
+.chat-status.evidence .dot { background: var(--assume-line); }
+.chat-status.down .dot { background: var(--limit-line); }
+.chat-status.waking .dot { background: var(--teal); animation: chat-pulse 1.2s ease-in-out infinite; }
+@keyframes chat-pulse { 50% { opacity: .3; } }
+.chat-bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.chat-bar[hidden], .banner[hidden] { display: none; }
+.chat-bar .muted { margin-right: auto; }
+.chat-empty .chipbar button { text-align: left; white-space: normal; }
+.chat-form { display: grid; gap: 10px; padding: 14px; }
+.chat-form textarea { width: 100%; box-sizing: border-box; resize: vertical; font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: var(--r-s); padding: 10px 12px; line-height: 1.5; }
+.chat-form textarea:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+.chat-extra summary { cursor: pointer; font-size: .84rem; color: var(--teal); font-weight: 600; }
+.chat-extra textarea { margin-top: 8px; }
+.chat-form-foot { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.chat-form-foot .muted { margin-right: auto; }
+.chat-form-foot .btn[disabled] { opacity: .55; cursor: progress; }
+.about-chip { background: var(--teal-wash); color: var(--teal); }
+.about-chip button { border: 0; background: none; color: inherit; padding: 0; display: inline-grid; place-items: center; cursor: pointer; }
+.about-chip .i { width: 13px; height: 13px; }
+.chat-thread { display: grid; gap: 12px; }
+.cmsg { border-radius: var(--r); padding: 14px 16px; min-width: 0; overflow-wrap: anywhere; }
+.cmsg.user { justify-self: end; max-width: 85%; background: var(--teal-wash); color: var(--ink); }
+.cmsg.user p { margin: 0 0 4px; font-weight: 560; }
+.cmsg.user .chip { margin: 4px 6px 0 0; }
+.cmsg.bot { background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); cursor: default; }
+.cmsg.bot.selected { border-color: var(--teal); box-shadow: 0 0 0 1px var(--teal), var(--shadow); }
+.chat-badges { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+.chat-badges button.vtag { cursor: pointer; font: inherit; font-size: .74rem; font-weight: 700; }
+.chat-why { flex-basis: 100%; margin: 4px 0 0; padding-left: 1.2em; font-size: .84rem; color: var(--limit-ink); }
+.chat-tabs { margin-bottom: 10px; }
+.chat-prose { line-height: 1.65; }
+.chat-prose p, .chat-prose ul, .chat-prose ol { margin: 0 0 .7em; }
+.chat-prose h4 { margin: 1em 0 .35em; font-size: 1rem; }
+.chat-prose.draft { color: var(--ink-2); }
+.said.cited { color: var(--teal); background: linear-gradient(transparent 62%, var(--teal-wash) 62%); border-radius: 2px; }
+.said.cited.on { background: var(--teal-wash); }
+.cite { display: inline-grid; place-items: center; min-width: 1.45em; height: 1.45em; padding: 0 .3em; margin: 0 1px; border-radius: 6px; border: 1px solid var(--teal); background: var(--surface); color: var(--teal); font: 700 .7rem/1 var(--f-body); vertical-align: .15em; cursor: pointer; }
+.cite.on, .cite:hover { background: var(--teal); color: var(--teal-ink); }
+.cite.failed { border-color: var(--limit-line); color: var(--limit-ink); background: var(--limit); }
+.cite.pending { border-style: dashed; color: var(--muted); border-color: var(--line-strong); cursor: default; }
+.chat-gaps { margin-top: 10px; padding: 10px 14px; border-radius: var(--r-s); background: var(--surface-2); font-size: .9rem; color: var(--ink-2); }
+.chat-gaps ul { margin: 4px 0 0; padding-left: 1.2em; }
+.chat-progress { display: flex; gap: 10px; align-items: center; margin: 8px 0 0; font-size: .88rem; color: var(--muted); }
+.spinner { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--line-strong); border-top-color: var(--teal); animation: chat-spin .8s linear infinite; flex: none; }
+@keyframes chat-spin { to { transform: rotate(360deg); } }
+.chat-error { color: var(--limit-ink); background: var(--limit); border-radius: 8px; padding: 6px 10px; }
+.chat-foot { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); }
+.chat-next { display: grid; gap: 6px; margin-top: 10px; }
+.chat-next .chipbar button { text-align: left; white-space: normal; }
+.claim-cards { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.claim-card { border: 1px solid var(--line); border-radius: var(--r-s); padding: 10px 12px; background: var(--paper); }
+.claim-card.on { border-color: var(--teal); }
+.claim-card.failed { border-color: var(--limit-line); }
+.cc-head { display: flex; gap: 8px; align-items: center; }
+.cc-text { margin: 6px 0; font-weight: 560; }
+.chat-quote { margin: 8px 0 0; padding: 8px 12px; border-left: 4px solid var(--teal); background: var(--surface-2); border-radius: 0 8px 8px 0; position: relative; }
+.chat-quote blockquote { margin: 0; font-size: .92rem; }
+.chat-quote figcaption { display: flex; gap: 10px; flex-wrap: wrap; font-size: .78rem; color: var(--muted); margin-top: 4px; }
+.chat-quote.missing { border-left-color: var(--limit-line); }
+.chat-quote .qk { position: absolute; left: -14px; top: 8px; width: 20px; height: 20px; border-radius: 50%; display: grid; place-items: center; font-size: .7rem; font-weight: 750; color: #fff; background: var(--kc); }
+.k1 { --kc: var(--c5); } .k2 { --kc: var(--c3); } .k3 { --kc: var(--c7); } .k4 { --kc: var(--c-muted); }
+.chat-quote.k { border-left-color: var(--kc); }
+.linkish { border: 0; background: none; padding: 0; color: var(--teal); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+/* the trail */
+.chat-trail { position: sticky; top: 76px; max-height: calc(100vh - 96px); overflow: auto; min-width: 0; padding: 2px 4px 10px 0; }
+.chat-trail h2 { font-size: 1.15rem; }
+.chat-trail h3 { font-size: .95rem; margin-top: 18px; }
+.chat-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.cstep { display: grid; grid-template-columns: 30px 1fr; gap: 10px; align-items: center; padding: 6px 8px; border-radius: 10px; background: var(--step); border: 1px dashed var(--line-strong); }
+.cstep .dn { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; font-size: .78rem; font-weight: 750; background: var(--surface); color: var(--muted); }
+.cstep strong { display: block; font-size: .86rem; }
+.cstep.done .dn, .cstep.warn .dn { background: var(--teal-wash); color: var(--teal); }
+.cstep.active { border-style: solid; border-color: var(--teal); }
+.cstep.active .dn { background: var(--teal); color: var(--teal-ink); }
+.cstep.warn .dn { background: var(--assume); color: var(--assume-ink); }
+.cstep.failed .dn { background: var(--limit); color: var(--limit-ink); }
+.cstep.skipped { opacity: .6; }
+.chat-passages { display: grid; gap: 10px; }
+.pcard { padding: 12px 14px; border-left: 4px solid var(--line-strong); }
+.pcard.t-obs { background: var(--obs); border-color: color-mix(in srgb, var(--obs-line) 40%, transparent); border-left-color: var(--obs-line); }
+.pcard.t-explain { background: var(--explain); border-color: color-mix(in srgb, var(--explain-line) 40%, transparent); border-left-color: var(--explain-line); color: var(--explain-ink); }
+.pcard.t-limit { background: var(--limit); border-color: color-mix(in srgb, var(--limit-line) 40%, transparent); border-left-color: var(--limit-line); }
+.pcard.cited { box-shadow: inset 0 0 0 1px var(--teal); border-left-color: var(--teal); }
+.pcard.focus { box-shadow: 0 0 0 2px var(--teal); }
+.phead { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.pn { min-width: 22px; height: 22px; border-radius: 6px; display: grid; place-items: center; font-size: .72rem; font-weight: 750; background: var(--surface); color: var(--ink-2); }
+.pcited { display: inline-flex; gap: 3px; align-items: center; font-size: .72rem; color: var(--teal); margin-left: auto; }
+.pmeta { margin: 6px 0; }
+.ptext { font-size: .88rem; line-height: 1.55; white-space: pre-wrap; max-height: 9.5em; overflow: hidden; color: var(--ink); mask-image: linear-gradient(#000 70%, transparent); }
+.ptext.open { max-height: none; mask-image: none; }
+.ptext mark.q { background: var(--teal-wash); color: inherit; border-bottom: 2px solid var(--teal); cursor: pointer; }
+.ptext mark.q.on { background: color-mix(in srgb, var(--teal) 22%, transparent); }
+.ptext mark.q.k.on { background: color-mix(in srgb, var(--kc) 24%, transparent); border-bottom-color: var(--kc); }
+.ptext mark.q[data-k]::before { content: attr(data-k); font-size: .66rem; font-weight: 750; color: #fff; background: var(--kc); border-radius: 50%; padding: 0 5px; margin-right: 3px; }
+.pactions { display: flex; gap: 14px; align-items: center; margin-top: 6px; font-size: .82rem; }
+.pactions a { display: inline-flex; gap: 4px; align-items: center; color: var(--teal); }
+.pactions .i { width: 14px; height: 14px; }
+.chat-pool { margin-top: 14px; }
+.chat-pool summary { cursor: pointer; }
+@media (max-width: 860px) {
+  .chat-grid { grid-template-columns: minmax(0, 1fr); }
+  .chat-trail { position: static; max-height: none; overflow: visible; }
+  .cmsg.user { max-width: 100%; }
+}

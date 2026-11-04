@@ -9,7 +9,8 @@ in three stages (`docs/eda-plan.md`). Terms are explained in `GLOSSARY.md`; deci
 - **The evidence atlas** (`evidence/`, on the repository's GitHub Pages site): every Stage 1 and Stage 2 observation
   in plain English for readers who are not data scientists, each traced back to its source, its storage, its
   preparation and the reasoning behind it, with the lens it was made under and the research questions it serves (ADR
-  0023, 0035).
+  0023, 0035). Its pages, split into passages by `analysis/atlas/passages.mjs` (`evidence/data/passages.jsonl`), are
+  the evidence of its chat, "Ask the atlas" (`#/ask`), served by the Econ repository's API (ADR 0054).
 - **`docs/stage-1-summary.md`**: what the first stage of the analysis (each variable on its own) set out to do, how it was
   done, what it found and what it hands to the next stage.
 - **`docs/data-plan.md`**: which data serve which question, what was dropped and why, how non-financial public value is

@@ -5,7 +5,7 @@ needs an account or a request (`CLAUDE.md`). Each says why it matters, what Clau
 changes. **Nothing here blocks Stage 1**; the work carries on around each one.
 
 When a question is answered, move it to **Answered** with the date and the answer, and record it where it applies (an
-ADR, the handover or the plan). Number new questions from the next free one: **OQ30**.
+ADR, the handover or the plan). Number new questions from the next free one: **OQ32**.
 
 ## Open: for you to answer
 
@@ -60,6 +60,8 @@ Australia reported itself (2,322, from non-residents), so the gap is between IP 
 
 | # | Question | Answer | Date | Recorded in |
 |---|---|---|---|---|
+| A39 | OQ31: adopt atlas-plan-v1, atlas-filter-v1 and atlas-answer-v3 and publish the chat by merging both branches? | "Yes, I accept" | 2026-11-04 | Econ D-041; ADR 0054; the Econ branch merged first, then this one |
+| A38 | OQ30: the atlas chat's smoke test was blocked because OpenAI refused the cloud environment's key (first read as expired, then as out of credit: after a top-up OpenAI still said the key itself had expired) | The owner replaced the key | 2026-11-04 | Econ D-038 (its two notes) and D-039: the test ran |
 | A37 | OQ29: a chat for the evidence atlas (`docs/plan-atlas-chat.md`): (1) served by the Econ API as a second knowledge base; (2) up to $2.00 of OpenAI for its smoke test; (3) the $2.00 daily cap shared by both chats; (4) the atlas kept out of the Econ chat; (5) prompts adopted and the chat published only after the smoke test's report? | (1) "Yes, as long as it feels like it's a separate service to the Econ chat that's fine (like, it the atlas kb should only be accessible by the chatbot from the atlas, the UI must also have a slightly different look and feel to better match the atlas)." (2) to (5): "Yes" | 2026-11-04 | `docs/plan-atlas-chat.md` section 2 (and 2.1 for the condition, WP7.7 for the look); Econ D-037 |
 | A36 | OQ27: add the tests IP Australia's research suggests (a: trade marks' lead on real GDP; b: early, unprompted examination requests against years in force) to Stage 3, and (c) after it? | "Sure, lets add (a) and (b) to stage 3." Done the same day: M39 (5.8) and M40 (1.11) in notebook 3, with their atlas pages and audit verdicts; (c) not started. OQ28 proposed from M40 | 2026-11-04 | ADR 0053; notebook 3; `docs/audit-ip-australia.md` section 11.8 |
 | A35 | Check Stage 1's later observations (U99 to U127) and Stages 2 and 3 (B1 to B63, M1 to M38) against IP Australia's published figures, as the audit of 27 October checked U0 to U98 (ADR 0024)? | Yes, but not in the session that raised it (4 November 2026, ADR 0051). Done in the next (4 November 2026): 13 more published figures, all agreeing; of the 130 observations, 3 corroborated, 28 consistent, 6 qualified, 93 not testable, none disputed or contradicted; three tests IP Australia's research suggests put as OQ27 | 2026-11-04 | `docs/audit-ip-australia.md` section 11; ADR 0052; the atlas's audit page |

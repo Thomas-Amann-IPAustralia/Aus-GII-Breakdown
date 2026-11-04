@@ -2,13 +2,26 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**Planned, not started (2026-11-04): a chat for the evidence atlas.** The owner asked for a plan to adapt the Econ
-chat to the atlas, for one session to carry out: `docs/plan-atlas-chat.md` (the atlas writes its pages as passages;
-the Econ API serves them at its own routes, `/api/atlas/`; `#/ask` in the atlas, in the atlas's own look). The owner
-answered its five decisions (A37): yes to all, on condition that it feels like a separate service from the Econ chat
-(the atlas's knowledge base reachable only from the atlas chat; a look that matches the atlas). Budget: up to $2.00
-of OpenAI for its smoke test. It changes no observation or notebook, and doesn't change the order of "Next" below
-unless the owner says so.
+**Latest (2026-11-04): the atlas chat is built, measured, smoke-tested, adopted and published (A39)**
+(ADR 0054; the plan `docs/plan-atlas-chat.md`; Econ D-037 to D-039). Branch `ccr-eff4672f-j1qrjn` in both
+repositories, merged at the owner's word (A39), Econ's first. Done:
+- **WP1:** `analysis/atlas/passages.mjs` writes `evidence/data/passages.jsonl` (4,611 passages from 454 pages, at most
+  260 words and about 360 tokens; 5.5 MB); a test keeps it current. After `atlas.build`, run it.
+- **WP2 to WP5 (Econ):** ingested at `3e13aef`, indexed (`library/atlas/index/`), served at `/api/atlas/*` apart from
+  the Econ chat (tests both ways), with its own prompts, pins and the numbers check. Retrieval, measured free: lookups
+  20/20 and by-id 5/5 in the 20 passages; adopted notes off, a cap of 2 passages a page.
+- **WP6 (Econ D-039, US$1.04 of US$2.00):** 20 needs end to end; every answer passes the check (18 first time), every
+  lookup and by-id answer cites its gold observation, none states an association as a cause. The numbers check now
+  also refuses a number in uncited prose, and atlas-answer-v2 asks each list item to cite its own sentences.
+- **WP7:** `#/ask` (`evidence/js/chat.js`, styles in `atlas.css`), "Ask the atlas" in the menu, "Ask about this
+  observation" on every observation page; the CSP's `connect-src` names the API (a test). `analysis/atlas/chat_check.mjs`
+  passes every check at 1,366 and 390 pixels on a recorded answer (`analysis/atlas/fixtures/chat-stream.json`, a27).
+- **Plain English (the owner's direction, Econ D-040):** atlas-answer-v3 rephrases freely for readers who are not
+  technical, keeping the numbers check: 19/20 pass first time, 41% shorter, a fifth of the jargon. The page's copy now
+  says the answer rephrases the pages and its quoted sentences are what it rests on; the browser check runs on v3's
+  recorded answer.
+- **Adopted and published (A39, Econ D-041):** the owner accepted the three prompts and the publishing of both branches.
+It changes no observation or notebook, and doesn't change the order of "Next" below unless the owner says so.
 
 **Latest (2026-11-04): two tests from IP Australia's research added to Stage 3** (OQ27 answered A36, ADR 0053). The
 owner: "Sure, lets add (a) and (b) to stage 3." Done:
