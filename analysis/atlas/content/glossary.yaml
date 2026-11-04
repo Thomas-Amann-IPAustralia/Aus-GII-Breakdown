@@ -387,7 +387,7 @@ lens:
 corpus:
   group: data
   title: Corpus
-  short: All the public data the project has gathered, from 42 sources, before it is organised into lenses.
+  short: All the public data the project has gathered, from 54 sources, before it is organised into lenses.
 attachment:
   group: data
   title: Attachment

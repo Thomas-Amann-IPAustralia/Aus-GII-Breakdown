@@ -18,7 +18,8 @@ done and the owner says so.
 
 ## 1. In brief
 
-**What Stage 1 did.** It took a corpus of 162 tables from 41 sources (317.8 million rows, U0), organised it into seven
+**What Stage 1 did.** It took a corpus of 162 tables from 41 sources (317.8 million rows; 194 tables from 54 sources
+and 335.2 million rows when profiled again on 4 November 2026, U0), organised it into seven
 analysis-ready tables called *lenses* (one row per IP right, firm, postal area, country-year, industry-year, research
 institution-year and month) with four long companion tables, and described every column on its own: how complete it
 is, its shape, its outliers and its quirks. That produced 99 numbered observations, a series of repairs to the data
@@ -116,10 +117,12 @@ make the later stages safe: to find the errors, gaps and artefacts that would ot
 
 ### 3.1 The corpus
 
-The corpus holds 162 tables from 41 sources, 317,792,796 rows in all; three sources hold 69.73% of the rows (IP RAPID
-31.57%, TM-Link 24.86% and the OECD panels 13.3%, U0; corrected on 27 October 2026 from the first profile's 152
-tables, 38 sources and 70.4%, which U0's text had kept). The profile dates from 25 October, so `ror` and the WIPO tables
-added on 26 October are not in it. Row counts measure how much a source records, not how much it
+The corpus holds 194 tables from 54 sources, 335,184,272 rows in all; three sources hold 66.11% of the rows (IP RAPID
+29.93%, TM-Link 23.57% and the OECD panels 12.61%, U0, profiled again on 4 November 2026). **Corrected (4 November
+2026):** this said 162 tables from 41 sources, 317,792,796 rows and 69.73% (IP RAPID 31.57%, TM-Link 24.86%, the OECD
+13.3%), from the profile of 25 October, which left out the 13 sources added since (`ror`, IP Australia's register and
+the data gaps filled after Stage 2). That figure was itself corrected on 27 October 2026 from the first profile's 152
+tables, 38 sources and 70.4%, which U0's text had kept. Row counts measure how much a source records, not how much it
 matters, so the work is organised by unit of analysis, not by source. The sources run from IP Australia's own
 registers (IP RAPID, IPLORD, TM-Link) through business registers (ABR, ASIC), R&D and procurement (the R&D Tax
 Incentive, AusTender), the ABS (Census, business counts, prices, labour, surveys), international panels (World Bank,
@@ -734,7 +737,7 @@ All descriptive.
 
 | # | Lens | Observation |
 |---|---|---|
-| U0 | Corpus | 162 tables, 41 sources, 317.8 million rows; three sources hold 69.73% |
+| U0 | Corpus | 194 tables, 54 sources, 335.2 million rows; three sources hold 66.11% (profiled again on 4 November 2026) |
 | U1 | rights | One row per right (4,356,908), complete where it should be; origin known for 86.59% |
 | U2 | rights | Five repairs: a 1970 placeholder, a pre-1904 registration, trade marks registered at filing, a class as a technology area, attorney use |
 | U3 | rights | Rushes to file before two rule changes; 50,763 rights have no application date |

@@ -5,16 +5,16 @@
 corpus:
   name: The corpus
   unit: Every table, from every source
-  rows: 162 tables
+  rows: 194 tables
   facts:
-    - value: "162"
+    - value: "194"
       label: tables in the corpus profile
-    - value: "41"
-      label: sources in the profile (54 in the register today)
-    - value: "317.8 million"
+    - value: "54"
+      label: sources, every one in the register
+    - value: "335.2 million"
       label: rows in all
   description: >-
-    Before any lens, the project gathered public data from 42 sources into one place, its **corpus**: IP Australia's
+    Before any lens, the project gathered public data from 54 sources into one place, its **corpus**: IP Australia's
     registers, business registers, R&D and procurement records, the ABS, international panels and research
     databases. Observation {U0} describes the corpus as a whole. Everything else is read through a lens.
   sources: [iprapid, tmlink, oecd, abr, iplord]
