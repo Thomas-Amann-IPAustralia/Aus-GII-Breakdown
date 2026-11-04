@@ -21,20 +21,34 @@ worse?", "What did Stage 3 make of B6?", "Explain M40 simply") and get a convers
 
 It lives at `#/ask` in the atlas, with an "Ask about this observation" button on every observation page.
 
-## 2. Decisions for the owner (ask once, at the start, in one question set)
+## 2. The owner's decisions (answered 4 November 2026: A37 here, D-037 in Econ)
 
-The session asks these with `AskUserQuestion` before WP6 (the only paid step) and carries on with everything else
-while it waits. Recommendations first.
+All five were answered yes, the first with a condition. The session doesn't need to ask them again.
 
-| # | Decision | Recommendation | Why | What changes otherwise |
-|---|---|---|---|---|
-| 1 | Where the chat's back end lives | **The Econ API, as a second knowledge base** (`kb: "atlas"`) | One Render service, one embedder, one answer check, one tracing set-up; the atlas's Pages site shares Econ's origin (`thomas-amann-ipaustralia.github.io`), which the API's CORS list already allows. A second free Render service would double the deployment work and split the 750 free hours a month | A separate service in this repository: the plan's WP2 to WP4 move here and roughly double |
-| 2 | Spend on the smoke test (WP6) | **Up to $2.00 of OpenAI** (about 20 questions at $0.05 to $0.08 each, with retries) | CLAUDE.md (Econ): ask before every paid call unless a budget is given | Without it, the session stops at WP5 and the prompts stay unmeasured end to end |
-| 3 | The daily spend cap | **Keep $2.00 a day, shared by both chats**, and revisit after a fortnight of use | The cap is in memory and per instance; one service means one cap | A per-knowledge-base cap (a small addition to `Meter`) |
-| 4 | Should the Econ chat also search the atlas? | **No, not yet** | Its prompts were measured and adopted for two publishers (D-034, D-035); the atlas is exploratory and changes daily | A third source switch in the Econ chat, and new Econ prompts |
-| 5 | Adopting the atlas prompts and publishing the chat | **The owner decides after reading WP6's report**; the session builds, measures and recommends, and merges nothing | Changing what a chatbot may say, and publishing, are the owner's calls in both repositories | The chat goes live only when both pull requests are merged |
+| # | Decision | The owner's answer | What it means for the work |
+|---|---|---|---|
+| 1 | The back end: the Econ API, as a second knowledge base | "Yes, as long as it feels like it's a separate service to the Econ chat that's fine (like, the atlas kb should only be accessible by the chatbot from the atlas, the UI must also have a slightly different look and feel to better match the atlas)." | One Render service and one embedder, but the atlas chat is kept apart in everything a user or the Econ chat can see: section 2.1. Its page is built from the atlas's own design, not Econ's: WP7 |
+| 2 | Up to $2.00 of OpenAI for the smoke test (WP6) | Yes | WP6 runs; stop at the budget |
+| 3 | Keep the $2.00 daily cap, shared by both chats | Yes | One spend meter; the atlas chat falls back to evidence only when it is reached |
+| 4 | Keep the atlas out of the Econ chat for now | Yes | No source switch, parameter or prompt in the Econ chat changes |
+| 5 | Adopt the prompts and publish only after reading WP6's report | Yes | The session builds, measures and recommends; it merges nothing and opens no pull request unless asked |
 
-Record the answers in `docs/owner-questions.md` (as OQ29, moved to "Answered") and in Econ's `docs/decisions.md`.
+### 2.1 Kept apart from the Econ chat (decision 1's condition)
+
+- **Its own routes, with the knowledge base fixed by the route.** The atlas chat calls `/api/atlas/health`,
+  `/api/atlas/catalogue`, `/api/atlas/ask`, `/api/atlas/search` and `/api/atlas/chunk/{id}`. No request carries a
+  `kb` field, so nothing the Econ front end sends can reach the atlas.
+- **No crossing in either direction.** The Econ routes (`/api/*`) never load, search or return an atlas passage; the
+  atlas routes never search or return an Econ passage. Tests check both ways: an Econ question naming "M1" gets no
+  atlas passage; `/api/chunk/atlas-M1:0000` and `/api/atlas/chunk/<an Econ chunk id>` are both 404; Econ's
+  `/api/catalogue` and `/api/health` look exactly as today.
+- **Its own name in every record**: "Ask the atlas" on the page; log lines of type `atlas-answer`; traces named
+  `atlas.ask` (with `atlas.plan`, `atlas.search` and so on), each tagged `atlas`; its own block in `/api/atlas/health`.
+- **What this separation is not.** Both Pages sites have one web origin (`thomas-amann-ipaustralia.github.io`), and
+  the API is public, as Econ's is today: anyone who knows an address can call it. So the two chats are separate in
+  what they search, say, log and look like, not by access control. If the owner later wants them fully apart (their
+  own address, cap and cold starts), the same code can run as a second Render service with only the atlas index
+  loaded; section 6 notes it. The session says this once in its reply.
 
 ## 3. What to read first (in this order; about 15 minutes)
 
@@ -61,7 +75,7 @@ Aus-GII-Breakdown                                Econ                           
 atlas.json ─► passages.mjs ─► evidence/data/     econ atlas-ingest ─► library/atlas/          (git)
               (reuses markdown.js)  passages.jsonl     (validate, sweep, notes)
                                                   econ index --kb atlas ─► library/atlas/index/
-evidence/#/ask (chat.js) ── POST /api/ask {kb:"atlas"} ──► Render API ──► Cloud Run embedder
+evidence/#/ask (chat.js) ── POST /api/atlas/ask ──────► Render API ──► Cloud Run embedder
                          ◄── SSE events (as Econ) ───┘          └──► OpenAI (plan, filter, answer)
 ```
 
@@ -190,8 +204,9 @@ own `library/index/` is byte-identical to before (check with `git diff --stat`).
    `atlas-filter-v1`, `atlas-answer-v1`), filter (`read: 60`, `group: 20`), `context_chunks: 20`, `per_doc_cap: 4`
    (a document is one observation, so a lower cap keeps answers broad; WP5 measures 4 against 8),
    `numbers_check: true`, `pin_observations: true`. `config.py` gains the strict models.
-2. **The pipeline reads its settings from the request's knowledge base.** `Services` gains `kb` (the settings) beside
-   `index`; replace the five global reads with `svc.kb`. `prompts.schema_kind` and `shows_publisher` parse names with
+2. **The pipeline reads its settings from the route's knowledge base.** `Services` gains `kb` (the settings) beside
+   `index`; replace the five global reads with `svc.kb`. Build one `Services` per knowledge base at start-up, each
+   holding only its own index, so an Econ route has no way to reach the atlas index (section 2.1). `prompts.schema_kind` and `shows_publisher` parse names with
    a prefix (`atlas-answer-v1` is an answer5 prompt; `atlas-filter-v1` a filter prompt, shown each passage's
    observation fields; `atlas-plan-v1` a plan prompt).
 3. **The atlas's evidence block** carries what the answer model needs to name its source:
@@ -206,16 +221,21 @@ own `library/index/` is byte-identical to before (check with `git diff --stat`).
    after normalising (commas, "per cent" to `%`, the Unicode minus, a leading `+`). An error names the claim and the
    number; it goes back to the model once, like every check error, and an answer that still fails is flagged.
    Unit tests: a number present, one absent, `41.39%` against `41.39 per cent`, `-31.2` against `−31.2`, `1,149`.
-6. **The API and the command line.** `econ ask` and `econ serve` gain `--kb`. `AskIn` and `SearchIn` gain `kb: Literal["econ", "atlas"] = "econ"` and `observations: list[str] |
-   None`; unknown ids are a 400. `/api/catalogue?kb=atlas`; `/api/chunk/{id}` finds either index's chunk;
-   `/api/health` lists both indexes (keep the existing `build.index` for the Econ front end). The `meta` event, the
-   log line and the trace carry `kb`. One rate limiter and one spend meter serve both (decision 3).
+6. **The API and the command line** (section 2.1). The atlas routes, under `/api/atlas/`: `health`, `catalogue`,
+   `ask`, `search` and `chunk/{id}`, written once and mounted for each knowledge base (an `APIRouter` built from its
+   `Services`), so the Econ routes keep their paths and responses unchanged. The atlas's request model adds
+   `observations: list[str] | None` (unknown ids are a 400) and has no `kb` field; the Econ request models don't
+   change. `econ ask` gains `--kb atlas` for local runs only. The `meta` event, the log line (type `atlas-answer`)
+   and the trace (`atlas.ask` and its steps, tagged `atlas`) say which chat it was. One rate limiter and one spend
+   meter serve both (decision 3); `/api/atlas/health` reports the shared budget as Econ's does.
 7. **Render.** Add `library/atlas/**` and `config/atlas.yaml` to `render.yaml`'s `buildFilter`. Measure the
    process's memory with both indexes loaded (`econ serve`, then the resident size): it must stay under about 400 MB
    of the free plan's 512 MB; record the figure.
-8. Tests: the Econ request with no `kb` produces the same events as before (the existing pipeline tests pass
-   unchanged); an atlas request uses the atlas index and prompts; pinning; the numbers check; unknown `kb`,
-   `observations` and ids are rejected.
+8. Tests: the existing pipeline and service tests pass unchanged (Econ's routes produce the same events as before);
+   an atlas request uses the atlas index and prompts; pinning; the numbers check; unknown `observations` are
+   rejected; and section 2.1's separation both ways (an Econ question naming "M1" gets no atlas passage, a `kb` field
+   sent to `/api/ask` changes nothing, each route's `chunk` refuses the other's ids, Econ's `catalogue` and `health`
+   are as today).
 
 **Accept when:** Econ's full suite passes, ruff is clean, and `econ ask --kb atlas "What did M1 find?"` (evidence-only,
 no key) prints M1's passages first.
@@ -264,7 +284,7 @@ Write `prompts/atlas-plan-v1.md`, `prompts/atlas-filter-v1.md` and `prompts/atla
 **Accept when:** the report is committed with its numbers and a recommendation; lookups reach their gold
 observation in the context at least 80% of the time, or the report says why not and what would fix it.
 
-### WP6. A capped smoke test, end to end (Econ; 45 minutes; needs decision 2)
+### WP6. A capped smoke test, end to end (Econ; 45 minutes; up to $2.00 of OpenAI, decision 2)
 
 1. Run the 40 needs' first 20 (15 in scope across the kinds, all 5 out of scope) through the full pipeline with the
    service's OpenAI models (`econ ask --kb atlas --confirm`, or a small runner that writes
@@ -284,10 +304,10 @@ observation in the context at least 80% of the time, or the report says why not 
 1. **Where.** A new route `#/ask` (and `#/ask?about=M1`) in `route()`; "Ask the atlas" in the side menu under
    "Start here", with a new sprite icon; an "Ask about this observation" button beside "Copy as Markdown" on every
    observation page.
-2. **New file `evidence/js/chat.js`** (an ES module that `app.js` imports), ported from Econ's `web/app.js`, keeping
-   its behaviour and dropping what the atlas doesn't need (the PDF viewer, the library, the year filter, the source
-   switches):
-   - waking the API and a status line (answers / evidence only / today's budget reached), from `/api/health`;
+2. **New file `evidence/js/chat.js`** (an ES module that `app.js` imports). Its *behaviour* is ported from Econ's
+   `web/app.js`, dropping what the atlas doesn't need (the PDF viewer, the library, the year filter, the source
+   switches); its *look* is the atlas's, not Econ's (item 7):
+   - waking the API and a status line (answers / evidence only / today's budget reached), from `/api/atlas/health`;
    - four starter questions written for the atlas;
    - the question box (2,000 characters; Enter sends, Shift+Enter breaks a line); "Compare with your own material"
      kept (the API supports it; it is never cited);
@@ -304,21 +324,37 @@ observation in the context at least 80% of the time, or the report says why not 
      "About M1" as a removable chip that sends `observations: ["M1"]`.
 3. **Safety.** Every string from the server goes into the page as text (the `el` helper) or through the ported
    Markdown renderer, which escapes first. No `innerHTML` with server text.
-4. **Settings.** The API's address in `content/site.yaml` (`chat: {api: https://econ-api-vk5f.onrender.com, kb:
-   atlas}`), copied into `atlas.json` by `build.py`. Add the address to the Content Security Policy's `connect-src`
+4. **Settings.** The API's address in `content/site.yaml` (`chat: {api: https://econ-api-vk5f.onrender.com/api/atlas}`),
+   copied into `atlas.json` by `build.py`; the page calls nothing outside that path. Add the address to the Content Security Policy's `connect-src`
    in `evidence/index.html` (nothing else in the policy changes: no third-party scripts, fonts or images), and a test
    that the two agree.
-5. **Currency.** The API's `meta` event (or `/api/catalogue?kb=atlas`) gives the index's `atlas_sha256` and
+5. **Currency.** The API's `meta` event (or `/api/atlas/catalogue`) gives the index's `atlas_sha256` and
    `atlas_built`; the page compares them with `data/passages.meta.json`. If they differ, a calm note above the
    thread: "The chat reads the atlas as at 4 November 2026; these pages have changed since. Quotes are checked
    against that version." Each quote's "Open the page" still works.
 6. **"How the chat works"**, a short section on the `#/ask` page in plain English: what it reads, what it may not do
    (no outside knowledge, no causes from associations, no answers to the five questions), the check, the cost cap,
    that questions are logged on the server, and that it is exploratory, not official.
-7. **Styling** in `evidence/css/atlas.css` with the atlas's existing tokens, light and dark.
+7. **The atlas's look and feel** (decision 1's condition). The chat should read as part of the atlas, and plainly not
+   as the Econ chat set into it. Don't copy or import Econ's `web/style.css`; style everything in
+   `evidence/css/atlas.css` from the atlas's own tokens and components, in light and dark:
+   - the page sits in the atlas's shell (side menu, breadcrumbs "Ask the atlas", top bar, footer), with an atlas
+     page head (eyebrow, title, lead) like "What Stage 3 found";
+   - cited prose is marked in the atlas's teal (`--teal`, with a light `--teal-wash` underline), not Econ's navy; the
+     colours of a claim's sentences come from the atlas's validated categorical palette (the one its charts use);
+   - each passage in the trail is an atlas card (`.card`): an observation's in the `--obs` wash with its `.strength`
+     badge, its lens as a `.chip` with the lens's dot colour and, where Stage 3 tested it, its outcome as a
+     `.verdict` chip; a glossary passage in the `--explain` colours; a limit or assumption in `--limit` or
+     `--assume`, as the observation pages show them;
+   - the starters are a `.chipbar`; the check badge is a `.verdict` (`v-ok` passed, `v-warn` flagged, with its
+     reasons on click); the progress lines follow the evidence trail's numbered steps (`--step`); the question box
+     is a card with the atlas's buttons;
+   - a new sprite icon (`i-chat`) drawn in the sprite's stroke style;
+   - check it against the Econ chat side by side in a screenshot at 1,366 pixels and attach both to the report: the
+     two should look like siblings in method, not the same page.
 8. **Checks.** `node --check` on the new module; a Playwright script (`analysis/atlas/chat_check.mjs`, run by hand
    and in `tests/test_atlas.py` if Chromium is present, skipped otherwise) that serves `evidence/` with Python's HTTP
-   server, routes `/api/*` to the WP6 fixture stream, asks a starter question, and checks: the answer renders, every
+   server, routes `/api/atlas/*` to the WP6 fixture stream, asks a starter question, and checks: the answer renders, every
    claim's quote is highlighted in the trail, an id links to its page, a follow-up button asks again, Copy and the
    JSON export work, and the console has no errors. Check `#/ask` at 1,366 and 390 pixels for horizontal overflow
    (the atlas's practice). Then run the Econ API locally in evidence-only mode against the page
@@ -330,9 +366,10 @@ observation in the context at least 80% of the time, or the report says why not 
 
 - This repository: ADR 0054 (the chat, served by the Econ API as a second knowledge base; the passages file as the
   contract; the numbers check); `CLAUDE.md` (the passages step, and how to refresh the chat after an atlas change);
-  `docs/handover-eda.md` (a dated "Latest" entry); `docs/owner-questions.md` (OQ29's answer); `GLOSSARY.md` and
-  `content/glossary.yaml` for any new term the chat page uses; README.
-- Econ: D-037 in `docs/decisions.md` (what was built, measured and spent; the recommendation); `CLAUDE.md` (the
+  `docs/handover-eda.md` (a dated "Latest" entry); `GLOSSARY.md` and `content/glossary.yaml` for any new term the
+  chat page uses; README. (The owner's decisions are already recorded: A37.)
+- Econ: D-038 in `docs/decisions.md` (what was built, measured and spent; the recommendation; D-037 holds the
+  owner's decisions); `CLAUDE.md` (the
   second knowledge base, its prompts, its commands); `docs/deploy.md` (the refresh routine and the CSP note);
   the handover.
 - **The refresh routine**, written in both: after an atlas change that should reach the chat, in Econ run
@@ -353,6 +390,8 @@ recommendation, and the owner's items numbered (decision 5 at least).
 - Refreshing the chat's index automatically when the atlas changes (a workflow in Econ triggered from this
   repository).
 - A check of meaning (does the claim follow from its quote?), as Econ's future state lists.
+- Running the atlas chat as its own Render service (same code, only the atlas index loaded, its own address and
+  cap), if the owner later wants the two chats fully apart rather than apart in function and look (section 2.1).
 - The GII breakdown page (`index.html` at the root) gets no chat: its source, WIPO's GII 2026, is already in the Econ
   chat. A link from it to the Econ chat is a small, separate change.
 
@@ -363,7 +402,9 @@ recommendation, and the owner's items numbered (decision 5 at least).
 | The atlas changes daily and the chat's index lags | The index records the atlas's sha; the page says when they differ; the refresh is two commands |
 | A paraphrase changes a number | The numbers check, with one retry and then a flag |
 | An association read as a cause | The prompt's rule, the strength badge on every cited passage, and WP6 reads every answer for it |
-| Econ's adopted behaviour changes by accident | `kb` defaults to `econ`; Econ's index is byte-identical; its tests pass unchanged; a test pins its settings |
+| Econ's adopted behaviour changes by accident | Econ's routes and request models are untouched; one `Services` per knowledge base; Econ's index is byte-identical; its tests pass unchanged; a test pins its settings |
+| The chats leak into each other | Separate routes and indexes, with tests both ways (section 2.1) |
+| The chat looks like Econ's dropped in | Built from the atlas's own components; a side-by-side screenshot in the report (WP7.7) |
 | Render's 512 MB | Memory measured in WP3 with both indexes; the atlas index is about the size of Econ's (some 4,400 passages against 4,744), with no boxes |
 | One budget for two chats | Shared $2.00 a day (decision 3); `/api/health` says when it is reached, and the page falls back to the passages found |
 | Prompt injection through the atlas's own text | Ingest's text checks fail on high-severity findings; passages are defanged in prompts; the content is the project's own |
@@ -372,10 +413,10 @@ recommendation, and the owner's items numbered (decision 5 at least).
 ## 8. Done means
 
 1. `evidence/data/passages.jsonl` is written by `passages.mjs`, tested, and current.
-2. Econ serves `kb: "atlas"` from `library/atlas/index/`, with its own locked prompts, pinning and the numbers check;
-   the Econ chat behaves exactly as before.
+2. Econ serves the atlas at `/api/atlas/` from `library/atlas/index/`, with its own locked prompts, pinning and the
+   numbers check; neither chat can reach the other's passages; the Econ chat behaves exactly as before.
 3. The retrieval report and (with the budget) the smoke-test report are committed with a recommendation.
-4. `#/ask` works in the atlas at both widths, with the Econ chat's traceability: quotes checked, every claim leading
+4. `#/ask` works in the atlas at both widths, in the atlas's own look, with the Econ chat's traceability: quotes checked, every claim leading
    to its observation page, the working shown, the conversation exportable.
-5. ADR 0054, D-037, both handovers and both `CLAUDE.md` files say what was done; both branches are pushed; nothing is
+5. ADR 0054, D-038, both handovers and both `CLAUDE.md` files say what was done; both branches are pushed; nothing is
    merged or published without the owner's word.

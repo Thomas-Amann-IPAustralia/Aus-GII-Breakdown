@@ -4,9 +4,11 @@ For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md
 
 **Planned, not started (2026-11-04): a chat for the evidence atlas.** The owner asked for a plan to adapt the Econ
 chat to the atlas, for one session to carry out: `docs/plan-atlas-chat.md` (the atlas writes its pages as passages;
-the Econ API serves them as a second knowledge base; `#/ask` in the atlas). Its decisions are OQ29. It changes no
-observation, notebook or atlas page until it is run, and doesn't change the order of "Next" below unless the owner
-says so.
+the Econ API serves them at its own routes, `/api/atlas/`; `#/ask` in the atlas, in the atlas's own look). The owner
+answered its five decisions (A37): yes to all, on condition that it feels like a separate service from the Econ chat
+(the atlas's knowledge base reachable only from the atlas chat; a look that matches the atlas). Budget: up to $2.00
+of OpenAI for its smoke test. It changes no observation or notebook, and doesn't change the order of "Next" below
+unless the owner says so.
 
 **Latest (2026-11-04): two tests from IP Australia's research added to Stage 3** (OQ27 answered A36, ADR 0053). The
 owner: "Sure, lets add (a) and (b) to stage 3." Done:
