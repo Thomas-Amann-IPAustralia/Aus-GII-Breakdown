@@ -57,7 +57,7 @@ number in uncited prose, and atlas-answer-v2 asks each list item to cite its own
 runs on one of the recorded answers. Then, at the owner's direction (clear language over exact wording for readers who are not technical; the numbers
 check kept), atlas-answer-v3 answers in plain English (Econ D-040, `reports/atlas-chat-plain-v3.md`): 19 of 20 pass
 first time, 41% shorter, a fifth of the analysts' terms; the page now says the answer rephrases the pages and the
-quoted sentences are what it rests on. Adopting the prompts and publishing are the owner's (OQ31).
+quoted sentences are what it rests on. The owner adopted the prompts and the publishing (A39).
 
 **Refreshing the chat.** After `atlas.build`, run `node analysis/atlas/passages.mjs` (a test fails otherwise). To make a
 change reach the chat, in Econ: `econ atlas-ingest --ref <this repository's commit>`, set that sha in

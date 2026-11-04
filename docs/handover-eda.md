@@ -2,9 +2,9 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**Latest (2026-11-04): the atlas chat is built, measured and smoke-tested; adopting and publishing are the owner's**
+**Latest (2026-11-04): the atlas chat is built, measured, smoke-tested, adopted and published (A39)**
 (ADR 0054; the plan `docs/plan-atlas-chat.md`; Econ D-037 to D-039). Branch `ccr-eff4672f-j1qrjn` in both
-repositories, not merged; nothing published. Done:
+repositories, merged at the owner's word (A39), Econ's first. Done:
 - **WP1:** `analysis/atlas/passages.mjs` writes `evidence/data/passages.jsonl` (4,611 passages from 454 pages, at most
   260 words and about 360 tokens; 5.5 MB); a test keeps it current. After `atlas.build`, run it.
 - **WP2 to WP5 (Econ):** ingested at `3e13aef`, indexed (`library/atlas/index/`), served at `/api/atlas/*` apart from
@@ -20,8 +20,7 @@ repositories, not merged; nothing published. Done:
   technical, keeping the numbers check: 19/20 pass first time, 41% shorter, a fifth of the jargon. The page's copy now
   says the answer rephrases the pages and its quoted sentences are what it rests on; the browser check runs on v3's
   recorded answer.
-- **The owner's (OQ31):** adopt atlas-plan-v1, atlas-filter-v1 and atlas-answer-v3 (recommended) and publish by merging
-  both branches.
+- **Adopted and published (A39, Econ D-041):** the owner accepted the three prompts and the publishing of both branches.
 It changes no observation or notebook, and doesn't change the order of "Next" below unless the owner says so.
 
 **Latest (2026-11-04): two tests from IP Australia's research added to Stage 3** (OQ27 answered A36, ADR 0053). The
