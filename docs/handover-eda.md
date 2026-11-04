@@ -2,6 +2,12 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
+**Planned, not started (2026-11-04): a chat for the evidence atlas.** The owner asked for a plan to adapt the Econ
+chat to the atlas, for one session to carry out: `docs/plan-atlas-chat.md` (the atlas writes its pages as passages;
+the Econ API serves them as a second knowledge base; `#/ask` in the atlas). Its decisions are OQ29. It changes no
+observation, notebook or atlas page until it is run, and doesn't change the order of "Next" below unless the owner
+says so.
+
 **Latest (2026-11-04): two tests from IP Australia's research added to Stage 3** (OQ27 answered A36, ADR 0053). The
 owner: "Sure, lets add (a) and (b) to stage 3." Done:
 - **M40 (notebook 3, 1.11):** IP RAPID's `exam_direction_to_request_exam` events give the commissioned study's
