@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Everything this page loads comes from this site: no third-party scripts, fonts or trackers. -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self'; base-uri 'none'; form-action 'none'; object-src 'none'">
+<!-- Everything this page loads comes from this site: no third-party scripts, fonts or trackers. It connects to one
+     other address, the chat's API (content/site.yaml, chat.api; ADR 0054), and a test checks the two agree. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://econ-api-vk5f.onrender.com; base-uri 'none'; form-action 'none'; object-src 'none'">
 <meta name="referrer" content="no-referrer">
 <title>Evidence atlas</title>
 <meta name="description" content="What Australia's IP data show after three stages of exploratory analysis (each measure on its own, then pairs of measures, then several at once), and how each observation was reached: where the data came from, how they are kept and prepared, and the reasoning behind every finding.">
@@ -23,6 +24,7 @@
       <p class="nav-label">Start here</p>
       <a href="#/" data-nav="home"><svg class="i"><use href="#i-home"/></svg>Overview</a>
       <a href="#/stage3" data-nav="stage3"><svg class="i"><use href="#i-route"/></svg>What Stage 3 found</a>
+      <a href="#/ask" data-nav="ask"><svg class="i"><use href="#i-chat"/></svg>Ask the atlas</a>
       <a href="#/observations" data-nav="observations"><svg class="i"><use href="#i-grid"/></svg>Observations<span class="count" id="nav-count"></span></a>
       <p class="nav-label">Context</p>
       <a href="#/questions" data-nav="questions"><svg class="i"><use href="#i-compass"/></svg>Research questions</a>
@@ -82,6 +84,7 @@
   <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20V4"/><path d="M4 20h16"/><path d="m7 15 4-5 3 3 5-6"/></symbol>
   <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
   <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M10 4v16"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H10l-5 4v-4H6a2 2 0 0 1-2-2z"/><path d="M8 8.5h8M8 11.5h5"/></symbol>
   <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 17-5-5-9 8"/></symbol>
 </defs></svg>
 <script src="../assets/vendor/echarts.min.js"></script>

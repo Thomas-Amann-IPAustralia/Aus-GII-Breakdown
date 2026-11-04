@@ -175,3 +175,36 @@ def test_chat_passages_are_current_and_cover_every_page(atlas):
         assert p["url"][len(meta["base"]) + 2 :] in pages, p["passage_id"]
         assert p["kind"] in {"observation", "glossary", "lens", "question", "source", "page"}
         assert set(p["related"]) <= obs
+
+
+def test_the_chat_calls_only_the_address_its_policy_allows(atlas):
+    # "Ask the atlas" (ADR 0054): the page connects to the chat's API and nothing else besides this site
+    import re
+    from urllib.parse import urlparse
+
+    html = (build.OUT / "index.html").read_text(encoding="utf-8")
+    csp = re.search(r'http-equiv="Content-Security-Policy" content="([^"]+)"', html).group(1)
+    rules = dict(r.strip().split(" ", 1) for r in csp.split(";") if r.strip())
+    api = urlparse(atlas["site"]["chat"]["api"])
+    assert api.scheme == "https" and api.path.rstrip("/").endswith("/api/atlas")
+    assert rules["connect-src"].split() == ["'self'", f"{api.scheme}://{api.netloc}"]
+    assert rules["script-src"] == "'self'" and rules["default-src"] == "'none'"  # nothing else in the policy loosened
+
+
+def test_the_chat_page_works_in_a_browser():
+    # analysis/atlas/chat_check.mjs: the page against a recorded event stream, at 1,366 and 390 pixels
+    import shutil
+    import subprocess
+
+    node = shutil.which("node")
+    fixture = build.ROOT / "analysis" / "atlas" / "fixtures" / "chat-stream.json"
+    if not node or not fixture.exists():
+        pytest.skip("node or the chat's recorded stream is not here")
+    probe = subprocess.run([node, "-e", "require('playwright')"], capture_output=True, cwd=build.ROOT)
+    if probe.returncode != 0:
+        pytest.skip("Playwright is not installed here")
+    done = subprocess.run(
+        [node, str(build.ROOT / "analysis" / "atlas" / "chat_check.mjs")], capture_output=True, text=True, timeout=180
+    )
+    out = json.loads(done.stdout.strip().splitlines()[-1])
+    assert out["ok"], out["results"]
