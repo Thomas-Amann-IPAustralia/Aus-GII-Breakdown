@@ -14,6 +14,11 @@ IP Australia's definitions, as its reports state them or as the figures show the
   how an applicant first gave its origin, and this definition reproduces its 2022 and 2025 resident standard patents
   exactly;
 - a PCT application is counted when it enters the national phase (`application_date`, as in the lens).
+
+The review of 4 November 2026 (ADR 0052) adds the figures that bear on Stage 1's later observations and on Stages 2
+and 3: Australians' designs with the register's origin (U102), the official fees as the IP Report 2015 lists them
+(U108) and the divisional applications behind 2019's fall (B15, M26). Its observations' verdicts are in the record's
+section 11.
 """
 
 from __future__ import annotations
@@ -30,6 +35,8 @@ OUT = HERE / "output" / "benchmark.csv"
 COUNT_TOLERANCE = 0.02  # a count agrees if the lens is within 2% of the published figure
 SHARE_TOLERANCE = 1.0  # a share agrees if it is within 1 percentage point
 LOOSE = {"prov_individual_share": 5.0}  # IP Australia gives these in words ("around one-third", "close to half")
+RATIOS = ("count", "money")  # kinds compared as a ratio; the others (shares, changes, years) as a difference
+FEE_MONTH = 3  # a fee is read as in force on 1 March of the edition's year, as the report went to press
 
 STD = "patent_type = 'standard'"
 PROV = "patent_type = 'provisional'"
@@ -51,6 +58,19 @@ def _count(where: str) -> str:
 
 def _share(part: str, where: str) -> str:
     return _by_filing.format(value=f"100.0 * avg(({part})::int)", where=where)
+
+
+def _fee(column: str) -> str:
+    """The official fee in force on the first day of FEE_MONTH, from the timeline lens (ADR 0031)."""
+    return f"""SELECT year, any_value({column}) AS value FROM {{lens/timeline}}
+               WHERE month(month) = {FEE_MONTH} GROUP BY 1"""
+
+
+def _change(where: str) -> str:
+    """The percentage change from the year before in standard applications matching `where`."""
+    return f"""WITH c AS (SELECT year(application_date) AS year, count(*) AS n FROM {{lens/rights}}
+                         WHERE {STD} AND {where} GROUP BY 1)
+               SELECT year, 100.0 * (n / lag(n) OVER (ORDER BY year) - 1) AS value FROM c"""
 
 
 def _founder(name: str) -> str:
@@ -186,6 +206,11 @@ MEASURES: dict[str, tuple[str, str, str]] = {
     ),
     "des_apps": ("count", _count(DES), "design applications"),
     "des_apps_res": ("count", _count(f"{DES} AND {RES}"), "designs, a founding applicant in Australia"),
+    "des_apps_res_filled": (
+        "count",
+        _count(f"{DES} AND founding_australian_filled"),
+        "designs, a founding applicant in Australia, the register's country filling IP RAPID's gaps (U102, ADR 0029)",
+    ),
     "des_certified": (
         "count",
         f"SELECT year(certified_date) AS year, count(*) AS value FROM {{lens/rights}} WHERE {DES} GROUP BY 1",
@@ -197,6 +222,32 @@ MEASURES: dict[str, tuple[str, str, str]] = {
         "count",
         f"SELECT year(registered_date) AS year, count(*) AS value FROM {{lens/rights}} WHERE {PBR} GROUP BY 1",
         "plant breeder's rights registered, by year of registration",
+    ),
+    # the official fees, as the IP Report 2015 lists them (ipr-2015 p35 to p37): the cheapest way, one class or design
+    "fee_patent_filing": ("money", _fee("fee_patent_filing"), "fee to file a standard patent application"),
+    "fee_design_filing": ("money", _fee("fee_design_filing"), "fee to file a design application"),
+    "fee_design_examination": ("money", _fee("fee_design_examination"), "fee to examine a registered design"),
+    "fee_pbr_application": ("money", _fee("fee_pbr_application"), "fee to apply for a plant breeder's right"),
+    "fee_pbr_examination": ("money", _fee("fee_pbr_examination"), "fee to examine a plant breeder's right"),
+    "fee_tm_filing": ("money", _fee("fee_tm_filing"), "fee to file a trade mark application, one class"),
+    # the divisional applications behind 2019's fall (ipr-2020 p7, p8)
+    "std_div_direct_change": (
+        "change",
+        _change("filing_route IS DISTINCT FROM 'pct' AND divisional"),
+        "per cent change on the year before in divisional standard applications not through the PCT",
+    ),
+    "std_orig_direct_change": (
+        "change",
+        _change("filing_route IS DISTINCT FROM 'pct' AND NOT divisional"),
+        "per cent change on the year before in original (not divisional) standard applications not through the PCT",
+    ),
+    "std_res_fall_divisional_share": (
+        "share",
+        f"""WITH c AS (SELECT year(application_date) AS year, count(*) AS n, count(*) FILTER (WHERE divisional) AS d
+                     FROM {{lens/rights}} WHERE {STD} AND {RES} GROUP BY 1)
+            SELECT year, 100.0 * (lag(d) OVER (ORDER BY year) - d) / (lag(n) OVER (ORDER BY year) - n) AS value
+            FROM c""",
+        "per cent of the fall in resident standard applications on the year before that is in divisionals",
     ),
 }
 
@@ -337,7 +388,7 @@ def benchmark() -> pd.DataFrame:
         raise ValueError(f"published.csv names measures with no lens query: {sorted(unknown)}")
     out = pub.merge(lens_values(), on=["measure", "year"], how="left")
     out["lens"] = out["value"].astype(float)
-    counts = out["kind"] == "count"
+    counts = out["kind"].isin(RATIOS)
     out["ratio"] = (out["lens"] / out["published"]).where(counts).round(4)
     out["difference"] = (out["lens"] - out["published"]).round(2)
     tolerance = out["measure"].map(LOOSE).fillna(SHARE_TOLERANCE)

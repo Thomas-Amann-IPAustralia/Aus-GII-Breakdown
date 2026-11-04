@@ -164,3 +164,10 @@ series). For the owner's review.
 | M36 | timeline | The cycle, the labour market and the courts with block resampling (B52, B56, B63) |
 | M37 | industries | The division-level indicators with size and value added held (B43, B57) |
 | M38 | institutions | Every kind of institution: patent-cited research and patenting (B44, B46) |
+
+## 8. Checked against IP Australia's published evidence (2026-11-04, ADR 0052)
+
+Each of M1 to M38 now has a verdict against IP Australia's publications (`docs/audit-ip-australia.md`, section 11): 9
+consistent (M7, M8, M11, M17, M25, M26, M29, M34, M35), 3 qualified (M5, M23, M36) and 26 not testable; none disputed or
+contradicted. M5 does not dispute IP Australia's commissioned study on fast-tracked patents: the study's "speeding up"
+is wider (early unprompted requests), and it finds delay helps small innovators, as M5 does. Nothing else changes.

@@ -7,9 +7,19 @@ des_apps_res,2014,2630.0,2342.0,0.8905,-288.0,False,U7 U13,ipr-2015,11,"total 6,
 des_apps_res,2021,2595.0,2331.0,0.8983,-264.0,False,U7 U13,ipr-2022,3,,"designs, a founding applicant in Australia"
 des_apps_res,2023,2652.0,2358.0,0.8891,-294.0,False,U7 U13,ipr-2024,7,,"designs, a founding applicant in Australia"
 des_apps_res,2025,3078.0,2653.0,0.8619,-425.0,False,U7 U13,ipr-2026,58,,"designs, a founding applicant in Australia"
+des_apps_res_filled,2014,2630.0,2615.0,0.9943,-15.0,True,U102,ipr-2015,11,"total 6,596 less non-residents 3,966; the register's country fills IP RAPID's gaps","designs, a founding applicant in Australia, the register's country filling IP RAPID's gaps (U102, ADR 0029)"
+des_apps_res_filled,2021,2595.0,2596.0,1.0004,1.0,True,U102,ipr-2022,3,,"designs, a founding applicant in Australia, the register's country filling IP RAPID's gaps (U102, ADR 0029)"
+des_apps_res_filled,2023,2652.0,2649.0,0.9989,-3.0,True,U102,ipr-2024,7,,"designs, a founding applicant in Australia, the register's country filling IP RAPID's gaps (U102, ADR 0029)"
+des_apps_res_filled,2025,3078.0,3072.0,0.9981,-6.0,True,U102,ipr-2026,58,,"designs, a founding applicant in Australia, the register's country filling IP RAPID's gaps (U102, ADR 0029)"
 des_certified,2021,1377.0,1377.0,1.0,0.0,True,U32,ipr-2022,3,,"designs certified, by year of certification"
 des_certified,2023,1540.0,1540.0,1.0,0.0,True,U32,ipr-2024,7,,"designs certified, by year of certification"
 des_certified,2025,1448.0,1448.0,1.0,0.0,True,U32,ipr-2026,57,,"designs certified, by year of certification"
+fee_design_examination,2015,420.0,420.0,1.0,0.0,True,U108 U125,ipr-2015,36,optional examination,fee to examine a registered design
+fee_design_filing,2015,250.0,250.0,1.0,0.0,True,U108 U125,ipr-2015,36,electronic; $350 on paper,fee to file a design application
+fee_patent_filing,2015,370.0,370.0,1.0,0.0,True,U108 U125,ipr-2015,35,electronic; $470 on paper,fee to file a standard patent application
+fee_pbr_application,2015,345.0,345.0,1.0,0.0,True,U108 U125,ipr-2015,37,,fee to apply for a plant breeder's right
+fee_pbr_examination,2015,1610.0,1610.0,1.0,0.0,True,U108 U125,ipr-2015,37,,fee to examine a plant breeder's right
+fee_tm_filing,2015,120.0,120.0,1.0,0.0,True,U108 U125,ipr-2015,37,"per class, electronic; $220 on paper","fee to file a trade mark application, one class"
 pbr_apps,2018,384.0,384.0,1.0,0.0,True,U5 U25,ipr-2019,13,,plant breeder's rights applications
 pbr_apps,2021,297.0,297.0,1.0,0.0,True,U5 U25,ipr-2022,3,,plant breeder's rights applications
 pbr_apps,2023,296.0,296.0,1.0,0.0,True,U5 U25,ipr-2024,7,,plant breeder's rights applications
@@ -101,6 +111,7 @@ std_apps_us,2019,13125.0,13092.0,0.9975,-33.0,True,U13 U70,ipr-2020,8,,"standard
 std_apps_us,2022,14735.0,14502.0,0.9842,-233.0,True,U13 U70,ipr-2023,11,"US applicants named on the application, including with co-applicants from elsewhere","standard, first founding applicant in the US"
 std_apps_us,2023,13872.0,13619.0,0.9818,-253.0,True,U13 U70,ipr-2024,35,,"standard, first founding applicant in the US"
 std_apps_us,2025,12374.0,12185.0,0.9847,-189.0,True,U13 U70,ipr-2026,23,,"standard, first founding applicant in the US"
+std_div_direct_change,2019,-2.9,-2.92,,-0.02,True,B15 M26,ipr-2020,7,"for direct filings, divisional applications fell 2.9 per cent in 2019",per cent change on the year before in divisional standard applications not through the PCT
 std_exam_to_accept_median_years,2020,1.3,1.23,,-0.07,True,U33,ipr-2025,9,"median years from the request for examination to acceptance, 'as of 2020 (latest complete data)'","median years from the request for examination to acceptance, by year of request"
 std_field_biotech,2021,3120.0,3119.0,0.9997,-1.0,True,U14,ipr-2022,9,,"standard, main WIPO field 15_biotechnology"
 std_field_biotech,2023,3006.0,3010.0,1.0013,4.0,True,U14,ipr-2024,32,,"standard, main WIPO field 15_biotechnology"
@@ -127,9 +138,11 @@ std_grants_res,2021,1092.0,1092.0,1.0,0.0,True,U10 U27,ipr-2022,5,,"standard pat
 std_grants_res,2022,1064.0,1064.0,1.0,0.0,True,U10 U27,ipr-2023,10,,"standard patents granted, a founding applicant in Australia"
 std_grants_res,2023,1000.0,1000.0,1.0,0.0,True,U10 U27,ipr-2024,30,,"standard patents granted, a founding applicant in Australia"
 std_grants_res,2025,1224.0,1224.0,1.0,0.0,True,U10 U27,ipr-2026,5,,"standard patents granted, a founding applicant in Australia"
+std_orig_direct_change,2019,-1.2,-0.54,,0.66,True,B15,ipr-2020,7,original applications fell 1.2 per cent (direct filings),per cent change on the year before in original (not divisional) standard applications not through the PCT
 std_pct_share,2022,73.4,73.44,,0.04,True,U89 U90,ipr-2023,11,per cent,per cent of standard applications through the PCT
 std_pct_share,2024,69.6,69.66,,0.06,True,U89 U90,ipr-2026,26,per cent,per cent of standard applications through the PCT
 std_pct_share,2025,66.7,66.36,,-0.34,True,U89 U90,ipr-2026,26,per cent,per cent of standard applications through the PCT
+std_res_fall_divisional_share,2019,87.0,86.21,,-0.79,True,B15 M26,ipr-2020,8,"resident applications fell from 2,756 to 2,637; 87 per cent of the fall in divisionals",per cent of the fall in resident standard applications on the year before that is in divisionals
 std_res_individual_share,2022,55.6,20.65,,-34.95,False,U13 U48,ipr-2023,12,per cent: '55.6% of resident applications were filed by individuals rather than organisations' (base not stated),per cent of resident standard applications whose first founding applicant is an individual
 std_res_state_act,2021,85.0,80.0,0.9412,-5.0,False,U15,ipr-2022,15,,"standard, first founding applicant in Australia in ACT"
 std_res_state_act,2023,77.0,77.0,1.0,0.0,True,U15,ipr-2024,38,,"standard, first founding applicant in Australia in ACT"

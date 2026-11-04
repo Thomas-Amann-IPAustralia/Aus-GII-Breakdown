@@ -2,6 +2,27 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
+**Latest (2026-11-04): the audit against IP Australia extended to U99 to U127 and Stages 2 and 3** (A35, ADR 0052).
+The owner's next task, as recorded: check the 130 observations the audit of 27 October did not cover. Done:
+- **Searched** IP Australia's IP Reports, research papers and analytical notes (the Econ repository's knowledge base)
+  by the new observations' topics; every passage used is cited by document and page in the record's section 11.
+- **The benchmark** gains 13 figures, all agreeing: Australians' designs with the register's country (2014, 2021,
+  2023, 2025; within 0.57%), the six fees the IP Report 2015 lists (exact), and 2019's divisionals (-2.92% against
+  -2.9%; -0.54% against -1.2%; 86.21% of residents' fall against 87%). 208 figures, 168 agree; the first 195 unchanged.
+  `benchmark.py` reads a fee on 1 March and a change on the year before; the test allows U to 127, B to 63, M to 38.
+- **Verdicts** (`docs/audit-ip-australia.md` section 11, sections 1 to 10 untouched): 3 corroborated (U99, U102,
+  U108), 28 consistent, 6 qualified (B45, B56, B63, M5, M23, M36), none disputed or contradicted, 93 not testable. The
+  qualified six are caveats: same-quarter changes where IP Australia's note finds trade marks lead GDP (C13); M5's
+  expedited requests narrower than the commissioned study's "speeding up" (early unprompted requests, 41.9% of grants);
+  universities compared where IP Australia followed each over time (C15). C13 to C16 added.
+- **The atlas's audit page** shows both passes (a second verdict chart, notes for the 37 tested, C13 to C16; the "not
+  covered" item and limit closed), and the corrections log has a line. Observation pages and notebooks unchanged.
+- **For the owner:** OQ27 (direction): add (a) trade marks' lead on GDP and (b) early unprompted examination requests
+  against years in force to Stage 3 (recommended; free, minutes); (c) funding within institutions after Stage 3.
+
+**Checks:** the strict atlas build passes (229 pages); ruff is clean; 138 tests pass with the lenses built; the audit
+page checked in Chromium at 1,366 and 390 pixels with no console errors or overflow.
+
 **Since then (2026-11-04): two stale atlas pages brought up to date** (ADR 0051). The owner: "I believe at least
 these two points on the atlas are outdated [U0 and the audit page]. Please review these pages and any others which may
 be outdated and give them an update." Done:
@@ -25,19 +46,8 @@ be outdated and give them an update." Done:
 U0, corpus lens, data and limits pages checked in Chromium at 1,366 and 390 pixels with no console errors or overflow.
 
 **Next, in order:**
-1. **Extend the audit against IP Australia** (the owner's decision, A35: yes, in a later session). The review of 27
-   October (ADR 0024, `docs/audit-ip-australia.md`) checked U0 to U98 only. Check U99 to U127 and Stages 2 and 3 (B1 to
-   B63, M1 to M38) the same way: find what IP Australia has published on each (the IP Reports 2015 to 2026, its
-   research papers and notes, in the Econ repository's knowledge base), recount any comparable figure from the lenses
-   on IP Australia's definitions (calendar years, `founding_australian`), add each to `analysis/audit/published.csv`
-   and `benchmark.py` (whose test now allows only U0 to U98 as observations, so it needs widening), and give each
-   observation a verdict. Record it as a dated addition to the record (a new section, keeping sections 1 to 10 as
-   they are) with its own ADR, and carry it to the audit page (`analysis/atlas/content/audit.yaml`: the verdicts,
-   notes, counts and the "not covered" limit, which this would close). Stage 3's checks are of associations held
-   together; IP Australia publishes few of those, so expect most B and M observations to be "not testable" and say
-   why, as section 5.2 does.
-2. The owner's review of section 8's two tables and OQ26, as before; then the pull request and publishing; then, at the
-   owner's word, the plan's "After Stage 3".
+1. The owner's review of section 8's two tables and OQ26, as before; and OQ27 (three tests IP Australia's research
+   suggests). Then the pull request and publishing; then, at the owner's word, the plan's "After Stage 3".
 
 **Since then (2026-11-03): a Markdown copy of every observation page** (ADR 0050). The owner asked for each page to be
 copyable or downloadable as Markdown, a chart page always carrying its table, with the stepwise logic, explainers and

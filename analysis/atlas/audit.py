@@ -1,4 +1,7 @@
-"""The review of Stage 1 against IP Australia's published evidence, for the atlas's own page (ADR 0024, 0025).
+"""The review against IP Australia's published evidence, for the atlas's own page (ADR 0024, 0025, 0052).
+
+Two passes, one record: Stage 1's U0 to U98 (27 October 2026, the record's sections 5.1 and 5.2) and the later
+observations, U99 to U127 with Stages 2 and 3 (4 November 2026, its sections 11.3 and 11.4).
 
 Three inputs meet here, and none of them is the notebook or an observation's content, which this page leaves as they
 are (the owner's instruction, ADR 0025):
@@ -29,19 +32,22 @@ CATEGORIES = ["corroborated", "consistent", "qualified", "disputed", "contradict
 SHOWN = {  # the verdicts as the chart and the page name them, in order
     "corroborated": "Corroborated",
     "consistent": "Consistent",
+    "qualified": "Qualified",
     "disputed": "Disputed in part",
     "contradicted": "Contradicted",
     "not testable": "Not testable",
 }
-CHART_IDS = ["audit-verdicts", "audit-closeness", "audit-d1", "audit-d2"]
+CHART_IDS = ["audit-verdicts", "audit-verdicts-later", "audit-closeness", "audit-d1", "audit-d2"]
+FIRST = ("### 5.1", "### 5.2")  # the record's tables for the first pass
+LATER = ("### 11.3", "### 11.4")  # and for the second
 SOURCE = (
     "IP Australia, Australian IP Reports 2015 to 2026 (published figures); IP RAPID (lens: rights); audit benchmark"
 )
 # fields of the plain-English layer that hold identifiers, not prose (their numbers are not checked)
 _IDS = {"measures", "figures", "affects", "chart", "id", "as_at"}
 
-_ROW = re.compile(r"^\| (U\d+) \| ([^|]+) \| ([^|]+) \| ([^|]+) \|$")
-_GROUP = re.compile(r"^\| ([^|]+) \| ((?:U\d+, )*U\d+) \|$")
+_ROW = re.compile(r"^\| ([UBM]\d+) \| ([^|]+) \| ([^|]+) \| ([^|]+) \|$")
+_GROUP = re.compile(r"^\| ([^|]+) \| ((?:[UBM]\d+, )*[UBM]\d+) \|$")
 
 
 def _csv(name: str) -> list[dict]:
@@ -55,15 +61,16 @@ def category(label: str) -> str | None:
     return next((c for c in CATEGORIES if low.startswith(c)), None)
 
 
-def verdicts(record: str) -> tuple[list[dict], list[dict]]:
-    """The record's verdicts: the observations it could test (section 5.1), and the groups it could not (5.2)."""
+def verdicts(record: str, heads: tuple[str, str] = FIRST) -> tuple[list[dict], list[dict]]:
+    """The record's verdicts: the observations it could test (section 5.1, or 11.3), and the groups it could not
+    (5.2, or 11.4)."""
     tested, untested, part = [], [], None
     for line in record.splitlines():
-        if line.startswith("### 5.1"):
+        if line.startswith(heads[0] + " "):
             part = "tested"
-        elif line.startswith("### 5.2"):
+        elif line.startswith(heads[1] + " "):
             part = "untested"
-        elif line.startswith("## ") and part:
+        elif line.startswith("#") and part:
             break
         elif part == "tested" and (m := _ROW.match(line)):
             oid, label, evidence, follows = (g.strip() for g in m.groups())
@@ -129,15 +136,18 @@ def measures(content: dict, bench: list[dict]) -> tuple[list[dict], list[str]]:
     return rows, problems
 
 
-def charts(content: dict, tested: list[dict], untested: list[dict], bench: list[dict], context: list[dict]) -> dict:
-    """The page's four charts, from the record's verdicts and the benchmark's outputs."""
+def _counts(tested: list[dict], untested: list[dict]) -> dict:
     counts = {c: sum(v["category"] == c for v in tested) for c in SHOWN}
     counts["not testable"] = sum(len(g["ids"]) for g in untested)
-    verdict_chart = {
-        "id": "audit-verdicts",
+    return counts
+
+
+def _verdict_chart(cid: str, title: str, counts: dict) -> dict:
+    return {
+        "id": cid,
         "type": "bar",
         "horizontal": True,
-        "title": "How the 99 observations stand against IP Australia's evidence",
+        "title": title,
         "subtitle": "Observations by verdict",
         "x": {"type": "category", "values": list(SHOWN.values())},
         "y": {"name": "Observations", "min": 0},
@@ -146,11 +156,25 @@ def charts(content: dict, tested: list[dict], untested: list[dict], bench: list[
         "origin": "record",
     }
 
+
+def charts(content: dict, passes: dict, bench: list[dict], context: list[dict]) -> dict:
+    """The page's charts, from the record's verdicts (each pass's tested and untested) and the benchmark's outputs."""
+    first, later = _counts(*passes["first"]), _counts(*passes["later"])
+    against = "stand against IP Australia's evidence"
+    verdict_chart = _verdict_chart(
+        "audit-verdicts", f"How Stage 1's first {sum(first.values())} observations {against}", first
+    )
+    later_chart = _verdict_chart(
+        "audit-verdicts-later",
+        f"How the {sum(later.values())} later observations, Stages 2 and 3 among them, {against}",
+        later,
+    )
+
     discrepancy = {tuple(f.rsplit(" ", 1)) for d in content["findings"] for f in d["figures"]}
     label = {m: g["label"] for g in content["measures"] for m in g["measures"]}
     groups = {"agrees": [], "definition": [], "discrepancy": []}
     for r in bench:
-        if not r["ratio"]:  # shares and times are not counts
+        if not r["ratio"] or r["measure"].startswith("fee_"):  # shares, times and fees are not counts
             continue
         key = (
             "agrees"
@@ -219,7 +243,7 @@ def charts(content: dict, tested: list[dict], untested: list[dict], bench: list[
         "labels": False,
         "source": SOURCE,
     }
-    return {s["id"]: s for s in (verdict_chart, closeness, d1, d2)}
+    return {s["id"]: s for s in (verdict_chart, later_chart, closeness, d1, d2)}
 
 
 def page(write: bool = True) -> tuple[dict, list[str]]:
@@ -227,10 +251,13 @@ def page(write: bool = True) -> tuple[dict, list[str]]:
     record = RECORD.read_text(encoding="utf-8")
     content = yaml.safe_load(CONTENT.read_text(encoding="utf-8"))
     bench, context = _csv("benchmark.csv"), _csv("context.csv")
-    tested, untested = verdicts(record)
+    passes = {"first": verdicts(record, FIRST), "later": verdicts(record, LATER)}
+    tested = passes["first"][0] + passes["later"][0]
     problems = []
 
-    ids = [v["id"] for v in tested] + [i for g in untested for i in g["ids"]]
+    ids = [v["id"] for t, _ in passes.values() for v in t] + [
+        i for _, u in passes.values() for g in u for i in g["ids"]
+    ]
     if len(ids) != len(set(ids)):
         problems.append("audit: an observation has two verdicts in the record")
     for v in tested:
@@ -241,7 +268,7 @@ def page(write: bool = True) -> tuple[dict, list[str]]:
             problems.append(f"audit: {v['id']} has a verdict in the record but no plain-English note")
         v["note"] = note
     for oid in sorted(set(content["notes"]) - {v["id"] for v in tested}):
-        problems.append(f"audit: {oid} has a note but no verdict in the record's section 5.1")
+        problems.append(f"audit: {oid} has a note but no verdict in the record's section 5.1 or 11.3")
 
     allowed = page_numbers(record)
     missing = set()
@@ -252,7 +279,7 @@ def page(write: bool = True) -> tuple[dict, list[str]]:
 
     table, more = measures(content, bench)
     problems += more
-    specs = charts(content, tested, untested, bench, context)
+    specs = charts(content, passes, bench, context)
     if write:
         build.CHARTS.mkdir(parents=True, exist_ok=True)
         for cid, spec in specs.items():
@@ -263,12 +290,18 @@ def page(write: bool = True) -> tuple[dict, list[str]]:
         **{k: v for k, v in content.items() if k not in ("notes", "measures", "findings")},
         "findings": findings,
         "measures": table,
-        "verdicts": tested,
-        "untestable": untested,
+        "verdicts": passes["first"][0],
+        "untestable": passes["first"][1],
         "counts": {SHOWN[c]: n for c, n in zip(SHOWN, specs["audit-verdicts"]["series"][0]["data"], strict=True)},
+        "later": {
+            "verdicts": passes["later"][0],
+            "untestable": passes["later"][1],
+            "counts": dict(zip(SHOWN.values(), specs["audit-verdicts-later"]["series"][0]["data"], strict=True)),
+        },
         "charts": CHART_IDS,
         "record": f"{build.REPO}/blob/main/docs/audit-ip-australia.md",
         "adr": f"{build.REPO}/blob/main/docs/adr/0024-audit-against-ip-australia.md",
+        "adr_later": f"{build.REPO}/blob/main/docs/adr/0052-audit-extended-to-stages-2-and-3.md",
     }
     return out, problems
 
@@ -276,8 +309,9 @@ def page(write: bool = True) -> tuple[dict, list[str]]:
 def stale_charts() -> list[str]:
     """The audit charts whose committed JSON differs from what the build makes (for the tests)."""
     content = yaml.safe_load(CONTENT.read_text(encoding="utf-8"))
-    tested, untested = verdicts(RECORD.read_text(encoding="utf-8"))
-    specs = charts(content, tested, untested, _csv("benchmark.csv"), _csv("context.csv"))
+    record = RECORD.read_text(encoding="utf-8")
+    passes = {"first": verdicts(record, FIRST), "later": verdicts(record, LATER)}
+    specs = charts(content, passes, _csv("benchmark.csv"), _csv("context.csv"))
     stale = []
     for cid, spec in specs.items():
         p = build.CHARTS / f"{cid}.json"

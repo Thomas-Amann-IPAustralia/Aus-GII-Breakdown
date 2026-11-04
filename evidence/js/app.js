@@ -900,8 +900,7 @@ function auditPage() {
     el("tbody", R.measures.map((m) => el("tr", el("td", m.label), el("td", m.years), el("td.n", String(m.figures)), el("td.n", String(m.agree)), el("td.n", gap(m)))))));
 
   const order = ["corroborated", "consistent", "qualified", "disputed", "contradicted"];
-  const byCat = order.map((c) => [c, R.verdicts.filter((v) => v.category === c)]).filter(([, vs]) => vs.length);
-  const tested = byCat.flatMap(([c, vs]) => [
+  const testedList = (verdicts) => order.map((c) => [c, verdicts.filter((v) => v.category === c)]).filter(([, vs]) => vs.length).flatMap(([c, vs]) => [
     el("h3", { style: { margin: "22px 0 10px" } }, verdictPill(c.charAt(0).toUpperCase() + c.slice(1), c), el("span.muted.small", { style: { marginLeft: "8px" } }, `${vs.length} observation${vs.length === 1 ? "" : "s"}`)),
     el("div.qlist", vs.map((v) => el("div.qitem", obsLink(v.id),
       el("div",
@@ -911,9 +910,12 @@ function auditPage() {
         el("details.more", el("summary", icon("book"), "The record's evidence"),
           el("div", el("p.small", inline(v.evidence)), el("p.small", el("strong", "What follows: "), ...inline(v.follows)))))))),
   ]);
-  const untested = el("div.grid.g2", R.untestable.map((g) => el("div.card.flat",
+  const untestedGrid = (groups) => el("div.grid.g2", groups.map((g) => el("div.card.flat",
     el("div.meta", verdictPill("Not testable", "not testable"), el("span.muted.small", `${g.ids.length}`)),
     el("h3", { style: { marginTop: "8px" } }, g.why), el("div.meta", g.ids.map(obsLink)))));
+  const nUntested = (groups) => groups.reduce((n, g) => n + g.ids.length, 0);
+  const tested = testedList(R.verdicts), untested = untestedGrid(R.untestable);
+  const L = R.later;
 
   const findings = el("div.grid", R.findings.map((d) => el("div.card",
     el("div.meta", el("span.chip", d.id), ...(d.affects.length ? d.affects.map(obsLink) : [el("span.muted.small", "No observation affected")])),
@@ -926,7 +928,7 @@ function auditPage() {
     icon(open(x) ? "alert" : "info"), el("div", el("span.tag", x.status), el("h3", { style: { margin: "2px 0 6px" } }, x.title), ...paras(x.text))))) : null;
 
   const conclusions = el("div.tablewrap", el("table.data",
-    el("thead", el("tr", el("th", ""), el("th", "IP Australia concludes"), el("th", "How strongly it says so"), el("th", "What Stage 1 adds"))),
+    el("thead", el("tr", el("th", ""), el("th", "IP Australia concludes"), el("th", "How strongly it says so"), el("th", "What the evidence here adds"))),
     el("tbody", R.conclusions.map((c) => el("tr", el("td", c.id), el("td", inline(c.claim)), el("td", inline(c.strength)), el("td", inline(c.adds)))))));
   const questions = el("div.qlist", R.questions.map((q) => el("div.qitem", el("span.qn", q.id), el("div", el("p", inline(q.text))))));
 
@@ -939,17 +941,22 @@ function auditPage() {
     section("How close the figures are", R.closeness_intro, chartSlot("audit-closeness", { origin: "audit" }),
       el("h3", { style: { margin: "22px 0 10px" } }, "By kind of figure"), ...paras(R.measures_intro, "muted"), measures),
     section("Four things that do not agree", null, findings),
-    section("Every observation, and how it stands", "Each verdict is read from the review's record; open one to see IP Australia's evidence as the record gives it.",
+    section("Stage 1's first 99 observations (27 October 2026)", "Each verdict is read from the review's record; open one to see IP Australia's evidence as the record gives it.",
       chartSlot("audit-verdicts", { origin: "audit" }), ...tested,
-      el("h3", { style: { margin: "26px 0 10px" } }, `Not testable from IP Australia's publications (${R.untestable.reduce((n, g) => n + g.ids.length, 0)})`),
+      el("h3", { style: { margin: "26px 0 10px" } }, `Not testable from IP Australia's publications (${nUntested(R.untestable)})`),
       ...paras(R.untestable_intro, "muted"), untested),
-    section("What IP Australia concludes, and what Stage 1 adds", R.conclusions_intro, conclusions),
+    L ? section("The later observations, and Stages 2 and 3 (4 November 2026)", R.later_intro,
+      chartSlot("audit-verdicts-later", { origin: "audit" }), ...testedList(L.verdicts),
+      el("h3", { style: { margin: "26px 0 10px" } }, `Not testable from IP Australia's publications (${nUntested(L.untestable)})`),
+      ...paras(R.later_untestable_intro, "muted"), untestedGrid(L.untestable)) : null,
+    section("What IP Australia concludes, and what the evidence here adds", R.conclusions_intro, conclusions),
     section("What changes, and what does not", R.changes_intro, el("ul.prose", R.changes.map((x) => el("li", inline(x))))),
     section("Questions put to IP Australia", R.questions_intro, questions),
     section("Limits of this check", null, el("div.notes", R.limits.map((x) => el("div.note.limit", icon("alert"), el("div", el("span.tag", x.title), ...paras(x.text)))))),
     el("p.small.muted", { style: { marginTop: "26px" } }, "The full record: ",
       el("a", { href: R.record, rel: "noopener noreferrer", target: "_blank" }, "the audit"), " and ",
-      el("a", { href: R.adr, rel: "noopener noreferrer", target: "_blank" }, "the decision record (ADR 0024)"), `, as at ${longDate(R.as_at)}.`));
+      el("a", { href: R.adr, rel: "noopener noreferrer", target: "_blank" }, "the decision records (ADR 0024"), ", ",
+      el("a", { href: R.adr_later, rel: "noopener noreferrer", target: "_blank" }, "ADR 0052)"), `, as at ${longDate(R.as_at)}.`));
 }
 function fmtNum(v) {
   return new Intl.NumberFormat("en-AU", { maximumFractionDigits: 2 }).format(v);

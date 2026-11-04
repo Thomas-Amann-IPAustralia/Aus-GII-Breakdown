@@ -668,6 +668,9 @@ limits:
     - when: 4 November 2026
       what: Observation {U0} still described the corpus as profiled on 25 October (162 tables from 41 sources), though 13 sources had been added since, and the review against IP Australia still read as it did on 27 October.
       now: "The corpus was profiled again and {U0} follows it (194 tables from 54 sources). The review's page now says where each of its findings stands: IP Australia's register settled the designs of unknown origin and sided with IP RAPID on 2018's trade marks."
+    - when: 4 November 2026
+      what: The review against IP Australia's published figures covered only Stage 1's first 99 observations, so the later ones and Stages 2 and 3 had not been checked the same way.
+      now: "The same check was made of the 130 since ({U99} to {U127}, {B1} to {B63}, {M1} to {M38}): 13 more published figures agree, and none of the 130 is disputed or contradicted. The review's page shows both passes."
 
 next:
   intro: >-
