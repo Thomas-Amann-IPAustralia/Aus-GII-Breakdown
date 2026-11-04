@@ -24,6 +24,21 @@ be outdated and give them an update." Done:
 **Checks:** the strict atlas build passes (229 pages); ruff is clean; 138 tests pass with the lenses built; the audit,
 U0, corpus lens, data and limits pages checked in Chromium at 1,366 and 390 pixels with no console errors or overflow.
 
+**Next, in order:**
+1. **Extend the audit against IP Australia** (the owner's decision, A35: yes, in a later session). The review of 27
+   October (ADR 0024, `docs/audit-ip-australia.md`) checked U0 to U98 only. Check U99 to U127 and Stages 2 and 3 (B1 to
+   B63, M1 to M38) the same way: find what IP Australia has published on each (the IP Reports 2015 to 2026, its
+   research papers and notes, in the Econ repository's knowledge base), recount any comparable figure from the lenses
+   on IP Australia's definitions (calendar years, `founding_australian`), add each to `analysis/audit/published.csv`
+   and `benchmark.py` (whose test now allows only U0 to U98 as observations, so it needs widening), and give each
+   observation a verdict. Record it as a dated addition to the record (a new section, keeping sections 1 to 10 as
+   they are) with its own ADR, and carry it to the audit page (`analysis/atlas/content/audit.yaml`: the verdicts,
+   notes, counts and the "not covered" limit, which this would close). Stage 3's checks are of associations held
+   together; IP Australia publishes few of those, so expect most B and M observations to be "not testable" and say
+   why, as section 5.2 does.
+2. The owner's review of section 8's two tables and OQ26, as before; then the pull request and publishing; then, at the
+   owner's word, the plan's "After Stage 3".
+
 **Since then (2026-11-03): a Markdown copy of every observation page** (ADR 0050). The owner asked for each page to be
 copyable or downloadable as Markdown, a chart page always carrying its table, with the stepwise logic, explainers and
 provenance. Done: "Copy as Markdown" and "Download .md" under each headline, written in the browser by
