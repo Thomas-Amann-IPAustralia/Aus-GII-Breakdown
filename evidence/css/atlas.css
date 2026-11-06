@@ -322,15 +322,18 @@ table.data tr:last-child td { border-bottom: 0; }
 
 /* reasoning steps: steps are not findings, and look it */
 .steps { list-style: none; padding: 0; margin: 10px 0 0; counter-reset: s; }
-.steps li { position: relative; padding: 8px 0 14px 46px; margin: 0; counter-increment: s; }
-.steps li::before { content: counter(s); position: absolute; left: 0; top: 5px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: .8rem; font-weight: 700; background: var(--step); color: var(--ink-2); border: 1px dashed var(--line-strong); }
-.steps li::after { content: ""; position: absolute; left: 15px; top: 38px; bottom: 0; width: 0; border-left: 1px dashed var(--line-strong); }
-.steps li .slabel { display: block; font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
-.steps li.result { counter-increment: none; padding-bottom: 0; }
-.steps li.result::before { content: ""; background: var(--obs-line); border: 0; width: 30px; height: 30px; }
-.steps li.result::after { display: none; }
-.steps li.result .resultbox { background: var(--obs); border-radius: 10px; padding: 10px 14px; border: 1px solid color-mix(in srgb, var(--obs-line) 40%, transparent); }
-.steps li.result .slabel { color: var(--obs-ink); }
+.steps > li { position: relative; padding: 8px 0 14px 46px; margin: 0; counter-increment: s; }
+.steps > li::before { content: counter(s); position: absolute; left: 0; top: 5px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-size: .8rem; font-weight: 700; background: var(--step); color: var(--ink-2); border: 1px dashed var(--line-strong); }
+.steps > li::after { content: ""; position: absolute; left: 15px; top: 38px; bottom: 0; width: 0; border-left: 1px dashed var(--line-strong); }
+.steps > li .slabel { display: block; font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.steps > li.result { counter-increment: none; padding-bottom: 0; }
+.steps > li.result::before { content: ""; background: var(--obs-line); border: 0; width: 30px; height: 30px; }
+.steps > li.result::after { display: none; }
+.steps > li.result .resultbox { background: var(--obs); border-radius: 10px; padding: 10px 14px; border: 1px solid color-mix(in srgb, var(--obs-line) 40%, transparent); }
+.steps > li.result .slabel { color: var(--obs-ink); }
+.steps li.result .original { margin-top: 6px; }
+.steps li.result .original ul, .steps li.result .original ol { padding-left: 1.2em; margin: 6px 0 10px; }
+.steps li.result .original li { padding: 0; margin: 0 0 6px; }
 
 /* assumptions, limits, explainers */
 .notes { display: grid; gap: 10px; margin-top: 8px; }

@@ -5,7 +5,7 @@
 - id: M21
   lens: industries
   about: system
-  headline: Through the crosswalk with services, innovating industries are not seen to go with patents per business once industry size is held
+  headline: Industries that innovate more do not have more patents per business once size is allowed for
   statement: >-
     With patents allocated through the [[crosswalk|crosswalk that includes services]], a division's share of
     innovation-active businesses goes positively, not negatively, with Australians' patents per business (0.473 in
@@ -13,11 +13,11 @@
     -0.034). Stage 2's negative patent pairs were the main crosswalk's zeros for services.
   figures:
     - value: "-0.406, -0.104, -0.325"
-      label: "the main crosswalk, raw (as Stage 2 measured): 2021, 2023, 2024-25"
+      label: "the main method, as Stage 2 measured it: 2021, 2023, 2024-25"
     - value: "0.034, 0.473, 0.230"
-      label: the crosswalk with services, raw
+      label: "the version with services, on its own"
     - value: "-0.066, 0.059, -0.034"
-      label: the crosswalk with services, with division size held
+      label: "the version with services, allowing for industry size"
   points:
     - "17 divisions, each with a patent allocated through the crosswalk with services in every survey year; intervals
       from 1,000 resamples."
@@ -29,17 +29,16 @@
     - id: B42
       signal: Innovation share against IP
       verdict: not detected once held
-      what: >-
-        The negative patent pairs were the main crosswalk's zeros: with services allocated the sign turns (0.034,
-        0.473, 0.230), and with the division's size held nothing is detected (-0.066, 0.059, -0.034).
+      what: "The negative patent links came from the main method's zeros. With services included the links turn
+            positive (0.034, 0.473, 0.230). Allowing for industry size, no link remains (-0.066, 0.059, -0.034)."
     - id: B60
       signal: The 2024-25 survey
       verdict: not detected once held
-      what: >-
-        In 2024-25, 0.230 raw through the crosswalk with services and -0.034 with size held: no association detected.
-  held: ["the division's size (log of its businesses)", "patents allocated through the crosswalk with services"]
+      what: "In 2024-25, 0.230 on its own with services included, and -0.034 allowing for size: no link found."
+  held: ["the industry's size (its number of businesses)", "patents shared by the version of the method that includes
+                                                        services"]
   verdicts:
-    - signal: Innovation share against patents per business, crosswalk with services
+    - signal: "Innovation share against patents per business, with services included"
       detail: 0.034, 0.473 and 0.230 raw; -0.066, 0.059 and -0.034 with size held
       verdict: not detected once held
     - signal: Innovation share against trade marks per business
@@ -71,13 +70,14 @@
       how: Leaves open whether innovation as the survey measures it and IP measure the same thing; 17 divisions cannot settle it.
   sources: [abs_bcs, abs_bcs_cubes, iprapid, concordances, abs_cabee]
   prep:
-    - what: Each division's share of innovation-active businesses (2021, 2023 and the 2024-25 data cubes) against Australians' standard patents per 1,000 businesses allocated through the crosswalk with services, with trade marks beside them.
-      why: The main crosswalk gives 11 service divisions no patents, so its correlations were partly those zeros.
+    - what: "Each industry's share of businesses that innovate, from three surveys, against Australians' standard
+            patents per 1,000 businesses (with services included). Trade marks are shown beside them."
+      why: "The main method gives the service industries no patents, so its results were partly those zeros."
   steps:
-    - Correlate the ranks of each pair, raw, through both crosswalks.
-    - Hold the division's size (log of its businesses) and correlate again, with intervals from 1,000 resamples of divisions.
+    - "Compare the rankings of each pair, on its own, under both versions of the method."
+    - "Allow for each industry's size and compare again, with likely ranges from 1,000 repeat samples of industries."
   assumptions:
-    - The crosswalk with services allocates patents to service industries sensibly.
+    - "The version with services assigns patents to service industries sensibly."
   limits:
     - Allocated by technology, not filed by the division's businesses; 17 divisions.
   next: >-
@@ -88,7 +88,7 @@
 - id: M22
   lens: industries
   about: system
-  headline: Across industries, patents per business follow business R&D per business at the same value added; trade marks do not
+  headline: Industries spending more on R&D have more patents per business, even at the same output
   statement: >-
     Across the 19 divisions, Australians' patents allocated per business (with services) follow business R&D per
     business with value added per business held, in both years of filing (0.628 and 0.591). Trade marks' link to R&D is
@@ -109,9 +109,8 @@
     - id: B40
       signal: Trade marks follow business R&D
       verdict: not detected once held
-      what: >-
-        Trade marks' link to business R&D does not clear value added per business: 0.609 and 0.582 raw, 0.423 and
-        0.392 held, with intervals just including zero.
+      what: "Trade marks' link to business R&D does not survive allowing for value added per business. It is 0.609 and
+            0.582 on its own, and 0.423 and 0.392 allowing for it, with likely ranges just including zero."
     - id: B53
       signal: Patents (with services) follow business R&D
       verdict: holds
@@ -121,10 +120,9 @@
     - id: B54
       signal: Every industry has patents through services
       verdict: holds
-      what: >-
-        Through the crosswalk with services the R&D link holds with value added held (0.628 and 0.591), in both years
-        of filing.
-  held: [value added per business (log, chain volume), "for value added: business R&D per business"]
+      what: "With services included, the R&D link stays once value added is allowed for (0.628 and 0.591), in both
+            years of filing."
+  held: ["value added per business, after inflation", "for value added: business R&D per business"]
   verdicts:
     - signal: Patents per business against business R&D per business
       detail: 0.761 and 0.742 raw; 0.628 and 0.591 held
@@ -169,16 +167,17 @@
       how: Part of the ninth early signal; R&D-intensive industries are where patented technology is allocated.
   sources: [iprapid, concordances, abs_cabee, abs_rd_vc, abs_national_accounts]
   prep:
-    - what: Australians' trade marks and standard patents (crosswalk with services) allocated per 1,000 businesses, against business R&D per business (FY2024), with value added per business held.
+    - what: "Australians' trade marks and standard patents (with services included) per 1,000 businesses, against
+            business R&D per business (2023–24), allowing for value added per business."
       why: Stage 2 read value added (B57) and R&D separately; holding one shows what the other adds.
   steps:
     - Correlate the ranks of each pair across divisions, raw.
     - Take out what value added (or business R&D) explains from both, and correlate what is left.
-    - Repeat with FY2025 filing against the same FY2024 R&D.
+    - "Repeat with 2024–25 filing against the same 2023–24 R&D."
   assumptions:
     - One year of business R&D describes each division's research intensity.
   limits:
-    - 19 divisions and one year of R&D; leads at most.
+    - "Only 19 industries and one year of R&D, so these are patterns to follow up, not conclusions."
     - Allocated by technology, not filed by the division's businesses (U75).
   next: >-
     The ninth early signal: a second year of business R&D and of the survey items, and firm-level industry for the
@@ -189,7 +188,7 @@
 - id: M37
   lens: industries
   about: system
-  headline: Three survey items still go with IP per business at the same industry size and value added; fewer business exits go with more patents
+  headline: Three survey items still go with IP per business among similar industries
   statement: >-
     Stage 2's three survey items hold across divisions with size and value added per business held, in both years of
     filing: ideas for innovation from within the business against trade marks (0.791), and new methods of organising
@@ -213,16 +212,16 @@
     - id: B43
       signal: Industry-level indicators
       verdict: holds
-      what: >-
-        The three survey items that passed Stage 2's corrections survive size and value added (0.791, 0.662 and 0.725 in
-        FY2024); the exit rate appears once held against patents (-0.487 and -0.478).
+      what: "The three survey items that passed Stage 2's checks survive allowing for size and value added (0.791,
+            0.662 and 0.725 for 2023–24 filing). Business closures go with fewer patents once these are allowed for
+            (-0.487 and -0.478)."
     - id: B57
       signal: Value added per business
       verdict: refined
       what: >-
         Held as a third factor here, value added per business leaves the survey items' links in place (0.791, 0.662 and
         0.725).
-  held: ["the division's size (log of its businesses)", value added per business (log)]
+  held: ["the industry's size (its number of businesses)", "value added per business"]
   verdicts:
     - signal: Trade marks against ideas from within the business
       detail: 0.877 and 0.855 raw; 0.791 and 0.763 held
@@ -234,7 +233,8 @@
       detail: 0.857 and 0.868 raw; 0.725 and 0.755 held
       verdict: holds
     - signal: Business exit rate against patents
-      detail: -0.295 and -0.314 raw (intervals include zero); -0.487 and -0.478 held
+      detail: "-0.295 and -0.314 on their own (likely ranges include zero); -0.487 and -0.478 allowing for size and
+              value added"
       verdict: appears once held
   chart:
     type: effect
@@ -254,17 +254,21 @@
     source: ABS, Business Characteristics Survey, business dynamics and national accounts; IP Australia, IP RAPID (lens industries); notebook 3, section 6.3
   questions:
     - q: 2
-      how: Industries whose businesses draw ideas from within, change how work is organised, or watch costs closely are allocated more IP per business, at the same size and value added.
+      how: "Industries whose businesses draw ideas from within, change how work is organised, or watch costs closely
+           receive more IP per business. That holds at the same size and value added."
     - q: 3
-      how: Part of the ninth early signal; the conditions in an industry that go with IP, as leads.
+      how: "Part of the ninth early signal: conditions in an industry that go with IP, worth following up."
   sources: [abs_bcs, abs_labour, abs_national_accounts, iprapid, concordances, abs_cabee]
   prep:
-    - what: Stage 2's three survey items that passed its corrections, and the lens's measures of business dynamics, against Australians' trade marks and patents (with services) per 1,000 businesses, with size and value added per business held.
+    - what: "Stage 2's three survey items that passed its checks, and measures of businesses starting and closing,
+            against Australians' trade marks and patents (with services) per 1,000 businesses. Size and value added
+            per business are allowed for."
       why: Stage 2 read them raw; size and value added are the obvious third factors across industries.
   steps:
     - Correlate each item with IP per business, raw.
-    - Take out what size and value added explain from both, and correlate what is left, with intervals from 1,000 resamples.
-    - Repeat with FY2025 filing.
+    - "Remove what size and value added account for in both measures, and compare what is left, with likely ranges
+      from 1,000 repeat samples."
+    - "Repeat with 2024–25 filing."
   assumptions:
     - Each survey item in its latest period describes the division.
   limits:

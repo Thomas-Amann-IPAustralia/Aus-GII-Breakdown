@@ -6,6 +6,10 @@ An observation is a block of markdown that starts `**U12 (descriptive).` (Stage 
 2) or `**M3 (observational).` (Stage 3) and runs to the next one or the end of its cell. Its evidence is the code
 cells between the previous markdown cell that holds observations and its own cell: the outputs "directly above" it,
 as the notebook's rules put it.
+
+Each observation also has a plain-English reading (ADR 0055): a heading `##### Observation U12 in plain English` and a
+block quote, just above the observation it restates. The reading is what the evidence pages show; the observation's
+own words stay beside it in the notebook, and on the pages only in the trail from the data to the observation.
 """
 
 from __future__ import annotations
@@ -28,6 +32,7 @@ LETTER = {1: "U", 2: "B", 3: "M"}
 
 _START = re.compile(r"^(?:#### Observation |\*\*)([UBM]\d+) \((descriptive|observational|causal|projected)[;)]", re.M)
 _HEADING = re.compile(r"^(#{2,5}) (.+)$", re.M)
+_PLAIN = re.compile(r"^##### Observation ([UBM]\d+) in plain English\n+((?:>.*(?:\n|$))+)", re.M)
 
 
 @dataclass
@@ -49,6 +54,7 @@ class Observation:
     evidence_text: str = ""  # the text outputs and code comments of the cells above it
     charts: list[Chart] = field(default_factory=list)
     stage: int = 1
+    plain: str = ""  # its plain-English reading, from the block quote above it (one paragraph)
 
 
 def _source(cell: dict) -> str:
@@ -67,6 +73,20 @@ def _text_outputs(cell: dict) -> str:
     return "\n".join(out)
 
 
+def plain_readings(cells: list[dict]) -> dict[str, str]:
+    """Each observation's plain-English reading, by id, as one paragraph."""
+    out: dict[str, str] = {}
+    for cell in cells:
+        if cell["cell_type"] != "markdown":
+            continue
+        for m in _PLAIN.finditer(_source(cell)):
+            if m.group(1) in out:
+                raise ValueError(f"{m.group(1)} has two plain-English readings")
+            text = " ".join(line[1:].strip() for line in m.group(2).splitlines()).strip()
+            out[m.group(1)] = re.sub(r"(?<=[a-z])- (?=[a-z])", "-", text)  # a hyphenated word wrapped across lines
+    return out
+
+
 def read_all() -> list[Observation]:
     """Every observation of every stage: Stage 1's in notebook order, then Stage 2's, then Stage 3's."""
     return [o for stage, path in NOTEBOOKS.items() for o in read(path, stage)]
@@ -75,6 +95,7 @@ def read_all() -> list[Observation]:
 def read(path: Path = NOTEBOOK, stage: int = 1) -> list[Observation]:
     """Every observation in the notebook, in order."""
     cells = json.loads(path.read_text(encoding="utf-8"))["cells"]
+    plain = plain_readings(cells)
     found: list[Observation] = []
     chapter = section = ""
     pending_text: list[str] = []
@@ -119,6 +140,7 @@ def read(path: Path = NOTEBOOK, stage: int = 1) -> list[Observation]:
                     evidence_text="\n".join(pending_text),
                     charts=list(pending_charts),
                     stage=stage,
+                    plain=plain.get(m.group(1), ""),
                 )
             )
         heading_to(len(src))

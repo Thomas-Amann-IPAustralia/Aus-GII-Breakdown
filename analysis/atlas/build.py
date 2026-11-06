@@ -18,6 +18,14 @@ quoted charts must appear in the notebook's own observation or in the outputs ab
 that is not on the notebook's page is not a finding, so it cannot be one here either. The build fails if one is
 missing.
 
+**The plain-English reading** (ADR 0055). Each observation's page leads with the reading written beside it in the
+notebook (`##### Observation U12 in plain English`), not with this layer's own statement and points, which stay here
+as the summary the pages were first built from and are still checked. The reading is checked too, a little more
+loosely, since plain English rounds: a number in it must be on the notebook's page, or round to one there (82% for
+82.17%), or be a share on the page written as a percentage (34.6% for 0.346), or a count written in millions or
+billions, or the end of a year range written short ("1990–93" for 1990 to 1993); and the few it derives by arithmetic
+are listed in `DERIVED`, each with its sum.
+
 **Stage 3's links back.** A Stage 3 observation names the earlier observations it tests (`revisits`), each with the
 verdict Stage 3 gives it (holds, weakened, ...) and one sentence on what changed. The build copies each onto the
 earlier observation's page (`later`), so a Stage 2 page says what became of its signal once other factors were held
@@ -94,6 +102,18 @@ NOTEBOOK_URLS = {
 }
 
 
+# Numbers a plain-English reading works out from the page rather than quoting, each with the sum (ADR 0055)
+DERIVED = {
+    ("U26", "33"): "January's trade mark registrations at 133% of an ordinary month: 33% above it",
+    ("B21", "297000"): "the median claim of $0.297m written as $297,000",
+    ("M3", "35"): "a hazard ratio of 0.648: 1 - 0.648 = 0.352, about 35% less likely to end",
+    ("M14", "93"): "a rate ratio of 1.932: 93% more filings",
+}
+_SHORT_RANGE = re.compile(r"\b((?:19|20)\d)(\d)[–-](\d{2})\b")
+_FULL_RANGE = re.compile(r"\b((?:19|20)\d\d)[–-]((?:19|20)\d\d)\b")
+_SCALED = re.compile(r"(?<![\w.])(\d+(?:\.\d+)?) (million|billion)\b")
+
+
 def numbers(text: str) -> set[str]:
     """The numbers in `text`, without thousands commas and trailing zeros after a decimal point."""
     out = set()
@@ -128,17 +148,52 @@ def _unstyled(x):
 
 
 def check_numbers(obs: dict, nb: notebook.Observation) -> list[str]:
-    """The numbers in an observation's plain English (and its quoted chart) that are not on the notebook's page."""
-    page = numbers(nb.text + "\n" + nb.evidence_text)
-    fields = [obs["headline"], obs["statement"], obs["figures"], obs["points"], obs.get("verdicts", [])]
-    fields += [r.get("what", "") for r in obs.get("revisits", [])]
+    """The numbers in an observation's plain English (and its quoted chart) that are not on the notebook's page. Its
+    words may round as a reading's may (`check_plain`); a quoted chart's values must be on the page as written."""
+    prose = [obs["headline"], obs.get("statement", ""), obs["figures"], obs.get("points", []), obs.get("verdicts", [])]
+    prose += [obs.get("revisits", []), obs.get("held", []), [q.get("how", "") for q in obs.get("questions", [])]]
+    prose += [obs.get("prep", []), obs.get("steps", []), obs.get("assumptions", []), obs.get("limits", [])]
+    prose += [obs.get("next", "")]
+    missing = set()
+    for s in _strings(prose):
+        missing |= set(check_plain(nb.id, s, nb))
     if isinstance(obs.get("chart"), dict):  # a chart of quoted values
         c = _unstyled(obs["chart"])
-        fields += [c.get("series", []), c.get("views", []), c.get("x", {}).get("values", [])]
-    missing = set()
-    for s in _strings(fields):
-        missing |= numbers(s) - page
+        page = numbers(nb.text + "\n" + nb.evidence_text)
+        for s in _strings([c.get("series", []), c.get("views", []), c.get("x", {}).get("values", [])]):
+            missing |= numbers(s) - page
     return sorted(missing, key=lambda n: (len(n), n))
+
+
+def check_plain(oid: str, plain: str, nb: notebook.Observation) -> list[str]:
+    """The numbers in a plain-English reading that are not on the notebook's page, allowing for rounding."""
+    page = numbers(nb.text + "\n" + nb.evidence_text)
+    values = [float(n) for n in page]
+    # "1990–93" ends in 1993, which the page may give in full; a financial year, "2007–08", the page may give as
+    # FY2008 alone, so its first year passes if its last is on the page
+    short, fy = {}, {}
+    for m in _FULL_RANGE.finditer(plain):  # "1999–2000", a financial year written in full
+        if int(m[2]) == int(m[1]) + 1:
+            fy[m[1]] = m[2]
+    for m in _SHORT_RANGE.finditer(plain):
+        start, end = f"{m[1]}{m[2]}", f"{m[1][:2]}{m[3]}"
+        short[m[3]] = end
+        if int(end) == int(start) + 1:
+            fy[start] = end
+    scaled = {m[1]: {"million": 1e6, "billion": 1e9}[m[2]] for m in _SCALED.finditer(plain)}
+    missing = []
+    for n in sorted(numbers(plain), key=lambda n: (len(n), n)):
+        if n in page or (oid, n) in DERIVED or short.get(n) in page or fy.get(n) in page:
+            continue
+        d = len(n.split(".")[1]) if "." in n else 0
+        x = float(n)
+        candidates = [v for v in values] + [v * 100 for v in values if v <= 1]
+        if n in scaled:
+            candidates += [v / scaled[n] for v in values]
+        if any(abs(round(v, d) - x) < 1e-9 for v in candidates):
+            continue
+        missing.append(n)
+    return missing
 
 
 def chart_shape(oid: str, chart: dict) -> list[str]:
@@ -225,6 +280,9 @@ def notebook_charts(nb: notebook.Observation, pick: list[int] | None, write: boo
     return out
 
 
+SECTIONS = yaml.safe_load((CONTENT / "sections.yaml").read_text(encoding="utf-8"))
+
+
 def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tuple[list[dict], list[str]]:
     """Every observation's plain-English layer joined to the notebook, and the problems found on the way."""
     problems, out = [], []
@@ -255,6 +313,11 @@ def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tu
                 missing = check_numbers(o, nb)
                 if missing:
                     problems.append(f"{oid}: numbers not on the notebook's page: {', '.join(missing)}")
+                if not nb.plain:
+                    problems.append(f"{oid}: no plain-English reading in the notebook (ADR 0055)")
+                missing = check_plain(oid, nb.plain, nb)
+                if missing:
+                    problems.append(f"{oid}: plain-English numbers not on the page: {', '.join(missing)}")
             chart = o.pop("chart", None)
             if isinstance(chart, dict):
                 problems += chart_shape(oid, chart)
@@ -268,8 +331,12 @@ def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tu
             o["strength"] = nb.strength
             o["stage"] = nb.stage
             o["section"] = nb.section
+            o["section_plain"] = SECTIONS.get(nb.section, nb.section)  # the pages' plain title (ADR 0056, OQ34)
             o["chapter"] = nb.chapter
             o["original"] = nb.text
+            o["plain"] = nb.plain
+            # the pages show the plain-English reading; this layer's statement and points stay in the YAML (ADR 0055)
+            del o["statement"], o["points"]
             o["notebook_charts"] = notebook_charts(nb, o.get("notebook_charts"), write)
             out.append(o)
     problems += link_back(out, nbs)

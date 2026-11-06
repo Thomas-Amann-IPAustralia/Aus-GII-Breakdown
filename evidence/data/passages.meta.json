@@ -1,21 +1,21 @@
 {
-  "atlas_sha256": "02c77b8ee1e38a0c3e7b7e5d1a0129a3d9ee04df82da71253eb3720417d72f6a",
+  "atlas_sha256": "2d37758e69986ddad68d0658538e17612ab3f4cd706d383a05c634e8df2fb6ad",
   "base": "https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/",
-  "built": "2026-11-04",
+  "built": "2026-11-06",
   "documents": 454,
   "kinds": {
     "glossary": 151,
     "lens": 50,
-    "observation": 4177,
-    "page": 164,
+    "observation": 4085,
+    "page": 165,
     "question": 15,
     "source": 54
   },
-  "passages": 4611,
-  "passages_sha256": "32880288621f171d0247664c8420ae1be6306befc19b389050c96716f880dd04",
+  "passages": 4520,
+  "passages_sha256": "617b215fedc2e1680d48a9486fd9a504695fbfc6cfdd08c105148640eac18d5e",
   "table_rows": 120,
   "token_cap": 360,
   "version": "atlas-passages-v1",
   "word_cap": 260,
-  "words": 480008
+  "words": 452624
 }

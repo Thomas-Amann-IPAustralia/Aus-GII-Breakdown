@@ -2,6 +2,52 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
+**Latest (2026-11-06): plain labels done (OQ34, A41) and a pull request opened (OQ33).** Stage 3's outcome tags show
+plain names and 77 pages show plain section titles (`content/sections.yaml`; ADR 0056 addendum).
+- **Open issue, "Ask the atlas":** the chat is served by the Econ repository, which still holds the passages from
+  before ADR 0055 and 0056 (4,611; now 4,520). Until someone runs, in Econ, `econ atlas-ingest --ref <merged commit>`,
+  sets the sha in `config/atlas.yaml`, runs `econ index --kb atlas` and commits (Econ's `docs/deploy.md`), the chat
+  answers and quotes from the old, more technical wording, and its quotes will not match the pages. The owner asked
+  only for this note (A41); do it in a session with the Econ repository, after the merge.
+
+**Earlier (2026-11-06): the rest of each observation page is in plain English** (ADR 0056; OQ32 answered,
+A40: "Go ahead with #1. You must ensure that they still read well as plain english"). Done:
+- **Measured, not asserted:** each visible field scored for technical terms per 100 words, sentence length and reading
+  ease; every item with a technical term, a sentence over 25 words or a number not on the page rewritten (about 880 of
+  3,379). Technical terms 2.47 to 0.04 per 100 words (Stage 3 tables 6.27 to 0); reading ease 67.1 both (it counts
+  syllables); headlines 18 to 14 words on average, at most 21.
+- **Headlines:** all 231 rewritten, eight corrected on a second pass for a lost qualifier or a causal reading.
+- **Conventions:** "allowing for", "likely range", "typical", "summary measures", "comparison months", "patterns worth
+  following up", "original applicant", financial years as "2025–26"; the page code's Stage 3 labels follow.
+- **"Australian ... applications":** 28 readings now say "applications in Australia" or "Australians'", each with a
+  dated note; "an Australian patent" (a right granted here) stays. Original observations unchanged (re-read).
+- **Numbers rule:** now every visible field, with the readings' rounding allowance and financial years; it found
+  numbers on 31 pages not on their notebook's page, each fixed. Three broken "held" lists repaired (M14, M22, M23).
+- **Checks:** strict build passes; passages 4,519; ruff clean; 99 tests pass, 44 skipped; Chromium at 1,366 and 390
+  pixels, no errors or overflow. Edits were made in place in the YAML, so the diff is sentence by sentence.
+- **For the owner:** OQ33 (merge and refresh Econ), OQ34 (plainer display names for Stage 3's outcomes and for the
+  notebooks' section titles on the pages).
+
+**Earlier (2026-11-06): every observation has a plain-English reading, and the atlas leads with it** (ADR 0055). The
+owner: copy the plain-English versions in `analysis/GPT-Rephrase/` into the notebooks beside the originals (never
+editing or removing an original), reject one only if it harmfully oversimplifies or misinterprets, and have the
+website use them, with the technical version shown only in the step-by-step provenance. Done:
+- **Reviewed all 231** against their observations and their numbers against the page: 224 kept word for word, 7
+  corrected in one phrase each, with a dated note under the reading (U4, U5, U10, U28, U127, B23, M12; the table is in
+  ADR 0055). None rejected whole. The notebooks gain 1,803 lines and nothing else; every observation's own words,
+  section, evidence and charts read exactly as before. They were not re-run.
+- **Build:** `atlas.notebook` reads each reading (`plain`); the numbers rule covers it with rounding, shares as
+  percentages, millions and short year ranges allowed, and four derived numbers listed in `build.DERIVED`. The YAML's
+  `statement` and `points` stay (still checked) but are no longer sent to the pages.
+- **Pages:** the observation box, cards, search and Markdown copy use the reading; the notebook's own words close step
+  4 of "Follow the evidence" and appear nowhere else; "For analysts" keeps the notebook's charts and link. Bullets
+  quoted from the notebook no longer take the steps' numbering, and bold across a line break renders.
+- **Checks:** the strict build passes (231 pages); passages rebuilt (4,521); ruff clean; 99 tests pass, 44 skipped
+  (they need the lens tables, which this does not touch); the chat page's browser check passes; observation pages
+  checked in Chromium at 1,366 and 390 pixels with no console errors or overflow.
+- **For the owner:** OQ32 (rewrite the headlines and the rest of each page in the same style; settle "Australian ...
+  applications"), OQ33 (merge, and refresh the chat's evidence in Econ, which still holds the old passages).
+
 **Latest (2026-11-04): the atlas chat is built, measured, smoke-tested, adopted and published (A39)**
 (ADR 0054; the plan `docs/plan-atlas-chat.md`; Econ D-037 to D-039). Branch `ccr-eff4672f-j1qrjn` in both
 repositories, merged at the owner's word (A39), Econ's first. Done:

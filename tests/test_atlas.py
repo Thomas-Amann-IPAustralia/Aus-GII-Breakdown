@@ -64,7 +64,10 @@ def test_numbers_rule_catches_a_number_the_notebook_does_not_show():
     )
     ok = {"headline": "4,368,006 rights", "statement": "53.5% are trade marks", "figures": [], "points": []}
     assert build.check_numbers(ok, nb) == []
-    assert build.check_numbers({**ok, "points": ["about 4.4 million"]}, nb) == ["4.4"]
+    # the words may round as a plain-English reading may (ADR 0056), but not invent
+    assert build.check_numbers({**ok, "points": ["about 4.4 million"]}, nb) == []
+    assert build.check_numbers({**ok, "points": ["about 4.5 million"]}, nb) == ["4.5"]
+    assert build.check_numbers({**ok, "steps": ["in 2007–08 and 1999–2000"]}, nb) == ["08", "1999", "2000", "2007"]
     # a stage's name is not a figure, nor is a chart's styling; a chart's data and a verdict row's figures are
     assert build.check_numbers({**ok, "points": ["Stage 2 found it; Stages 1 and 3 did not"]}, nb) == []
     chart = {"type": "bar", "x": {"values": ["a"]}, "series": [{"name": "s", "colour": 3, "data": [53.5]}]}
@@ -72,6 +75,33 @@ def test_numbers_rule_catches_a_number_the_notebook_does_not_show():
     assert build.check_numbers({**ok, "chart": {**chart, "series": [{"name": "s", "data": [7.7]}]}}, nb) == ["7.7"]
     row = {"signal": "x", "detail": "-6.1 held", "verdict": "holds"}
     assert build.check_numbers({**ok, "verdicts": [row]}, nb) == ["6.1"]
+
+
+def test_a_plain_english_reading_may_round_but_not_invent():
+    # ADR 0055: the reading's numbers are the page's, rounded, as percentages of shares, scaled, or listed as derived
+    nb = notebook.Observation(
+        id="U1",
+        strength="descriptive",
+        text="There were 4,368,006 rights, 82.17% of them patents, a share of 0.346, in FY1990 to FY1993.",
+        cell_id="c",
+        cell_index=0,
+        section="",
+        chapter="",
+    )
+    fine = "About 4.4 million rights, 82% of them patents, 34.6% in all, from 1990–93."
+    assert build.check_plain("U1", fine, nb) == []
+    wrong = "About 4.5 million rights, 83% of them patents, from 1990–94."
+    assert build.check_plain("U1", wrong, nb) == ["83", "94", "4.5"]
+    # a derived number passes on its own observation's page only
+    assert build.check_plain("M14", "93% more filings", nb) == []
+    assert build.check_plain("U1", "93% more filings", nb) == ["93"]
+
+
+def test_every_observation_leads_with_its_plain_english_reading(atlas):
+    # ADR 0055: the reading comes from the notebook; the technical words travel only as `original`, for step 4
+    for o in atlas["observations"]:
+        assert o["plain"] and "statement" not in o and "points" not in o, o["id"]
+        assert o["plain"] not in o["original"], o["id"]
 
 
 def test_chart_shape_catches_a_label_split_at_its_comma():
@@ -122,9 +152,12 @@ def test_each_page_has_a_markdown_copy_with_its_chart_as_a_table(atlas):
             "### Step 4 of 4",
             "## Assumptions and limits",
             "## What happens next",
-            "## For analysts: the notebook's own words",
         ]:
             assert heading in md, (o["id"], heading)
+        # the observation is the notebook's plain-English reading; its own words close step 4 (ADR 0055)
+        assert f"## Observation {o['id']} ({o['strength']})\n\n{o['plain']}" in md, o["id"]
+        assert f"**Which gives observation {o['id']}, in the notebook's own words**" in md, o["id"]
+        assert ("## For analysts: the notebook's own charts" in md) == bool(o["notebook_charts"]), o["id"]
         assert all(f"[{s['title']}]" in md or s["title"] in md for s in (atlas["sources"][x] for x in o["sources"]))
         assert "[[" not in md and not build._ID.search(md), o["id"]  # the site's markup is turned into Markdown
         assert c["chart"] == bool(o.get("chart")), o["id"]

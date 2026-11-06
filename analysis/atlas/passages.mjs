@@ -180,7 +180,8 @@ function observationPassages(o, A, chart) {
         return `|${cells.slice(0, 3).join("|")}|`;
       }).join("\n");
     }
-    if (s.path[0] === "For analysts: the notebook's own words") body = body.replace(/^> ?/gm, "");
+    // the notebook's own words, quoted at the end of step 4 (ADR 0055)
+    if (s.path[1]?.startsWith("Step 4 of 4")) body = body.replace(/^> ?/gm, "");
     body = plain(body).split("\n").filter((l) => !HASH.test(l)).join("\n");
     for (const text of pack(body)) out.push({ section: s.path.map(plain), text });
   }

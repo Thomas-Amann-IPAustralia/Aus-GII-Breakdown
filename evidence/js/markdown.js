@@ -2,7 +2,8 @@
 // the page says, in the page's order, so the copy stands on its own. The statement, points and key figures; the
 // chart's numbers as a table (every view, always: a copy cannot carry the chart, so it carries the table instead);
 // the four steps of the evidence trail with each source's publisher, licence, date copied, tables and fingerprints;
-// the assumptions, limits and next step; the explainers for every term used; and the notebook's own words.
+// the assumptions, limits and next step; the explainers for every term used; and the notebook's own charts. The
+// observation is its plain-English reading; the notebook's own words are the last item of step 4 (ADR 0055).
 // Nothing here touches the document, so the tests can run it under Node (tests/test_atlas.py).
 
 import { chartTable, viewSpec } from "./tables.js";
@@ -11,7 +12,7 @@ const STAGE_NAME = { 1: "each variable on its own", 2: "pairs of variables", 3: 
 const INTRO = {
   1: "Stage 1 answers none of the five questions. This is how the observation prepares the ground for them.",
   2: "Stage 2 answers none of the five questions either: it finds which measures go together. This is how the association prepares the ground for them.",
-  3: "Stage 3 answers none of the five questions either: it tests which of Stage 2's signals survive with their other factors held together. This is how the result prepares the ground for them.",
+  3: "Stage 3 answers none of the five questions either: it tests which of Stage 2's patterns survive once other factors are allowed for. This is how the result prepares the ground for them.",
 };
 export const TOKEN = /\[\[([^\]|]+)(?:\|([^\]]+))?\]\]|\{([UBM]\d+)\}/g;
 
@@ -61,6 +62,7 @@ export function observationMarkdown(o, { atlas: A, chart = null, base = "" }) {
   ].join("\n");
   const abs = (src) => { try { return new URL(src, base || undefined).href; } catch { return src; } };
   const section = o.section.replace(/`/g, "");
+  const vl = (v) => ({ "not detected once held": "gone once other factors are allowed for", "appears once held": "appears once other factors are allowed for", "not detected either way": "no clear link either way", "does not replicate": "not repeated in the second sample" })[v] || v;
   const out = [];
   const add = (...parts) => out.push(...parts.filter((p) => p != null && p !== ""));
 
@@ -83,20 +85,20 @@ export function observationMarkdown(o, { atlas: A, chart = null, base = "" }) {
       from.length
         ? from.map((r) => `- [${r.id}](${page(r.id)}): ${md(r.signal || byId[r.id].headline)}`).join("\n")
         : "A question of structure: which measures repeat each other, and whether there are distinct groups.",
-      "**2. Stage 3 held together**",
-      o.held?.length ? o.held.map((h) => `- ${md(h)}`).join("\n") : "Nothing held: a description of how the measures relate.",
+      "**2. Stage 3 allowed for**",
+      o.held?.length ? o.held.map((h) => `- ${md(h)}`).join("\n") : "Nothing allowed for: a description of how the measures relate.",
       "**3. What is left**",
       (o.revisits || []).length
-        ? o.revisits.map((r) => `- **${r.verdict}** (${r.id}${r.signal ? `, ${md(r.signal)}` : ""}): ${md(r.what)}`).join("\n")
+        ? o.revisits.map((r) => `- **${vl(r.verdict)}** (${r.id}${r.signal ? `, ${md(r.signal)}` : ""}): ${md(r.what)}`).join("\n")
         : "See the observation below.");
   }
 
   // the observation
-  add(`## Observation ${o.id} (${o.strength})`, md(o.statement), o.points?.length ? o.points.map((p) => `- ${md(p)}`).join("\n") : null);
+  add(`## Observation ${o.id} (${o.strength})`, o.plain);
   if (o.later?.length) {
     add("## What Stage 3 found",
-      o.later.length === 1 ? "Stage 3 tested this with other factors held together." : `Stage 3 tested this ${o.later.length} ways, with other factors held together.`,
-      o.later.map((x) => `- **${x.verdict}**: ${md(x.what)} See [${x.id}](${page(x.id)}): ${md(byId[x.id]?.headline)}`).join("\n"));
+      o.later.length === 1 ? "Stage 3 tested this, allowing for other factors." : `Stage 3 tested this ${o.later.length} ways, allowing for other factors.`,
+      o.later.map((x) => `- **${vl(x.verdict)}**: ${md(x.what)} See [${x.id}](${page(x.id)}): ${md(byId[x.id]?.headline)}`).join("\n"));
   }
   if (o.figures?.length) add("## Key figures", table(["Figure", "What it is"], o.figures.map((f) => [f.value, f.label]), [false, false]));
 
@@ -117,14 +119,14 @@ export function observationMarkdown(o, { atlas: A, chart = null, base = "" }) {
       if (notes.length) add(notes.join(" "));
     });
     add([chart.source ? `Source: ${md(chart.source).replace(/\.$/, "")}.` : null, chart.note ? md(chart.note) : null,
-      o.chart_origin === "quoted" ? "Drawn from the numbers quoted in the observation itself." : "Redrawn from the lens table with the notebook's own query, and checked against every number the observation quotes."]
+      o.chart_origin === "quoted" ? "Drawn from the numbers quoted in the observation itself." : "Redrawn from the data with the notebook's own query, and checked against every number the observation quotes."]
       .filter(Boolean).join(" "));
   } else if (o.chart) {
     add("## Chart", "The chart's numbers could not be loaded for this copy; they are in the table view of the chart on the page.");
   }
   if (o.verdicts?.length) {
-    add("## Signal by signal", "Each comparison as Stage 2 measured it (raw), then with its other factors held together, and the outcome.",
-      table(["What was compared", "Raw, then held together", "Outcome"], o.verdicts.map((v) => [v.signal, v.detail || "", v.verdict]), [false, false, false]));
+    add("## Signal by signal", "Each comparison on its own, as Stage 2 measured it, then allowing for the other factors, and the outcome.",
+      table(["What was compared", "On its own, then allowing for the rest", "Outcome"], o.verdicts.map((v) => [v.signal, v.detail || "", vl(v.verdict)]), [false, false, false]));
   }
 
   // the questions
@@ -169,22 +171,24 @@ export function observationMarkdown(o, { atlas: A, chart = null, base = "" }) {
   add(`### Step 4 of 4: From the data to the observation (${plural(o.steps.length, "reasoning step")})`,
     "The steps are not findings; only the last is.",
     o.steps.map((s, i) => `${i + 1}. ${md(s)}`).join("\n"),
-    `**Which gives observation ${o.id}:** ${md(o.statement)}`);
+    `**Which gives observation ${o.id}, in the notebook's own words** (section ${section} of the Stage ${o.stage} notebook${A.notebooks?.[o.stage] || A.notebook ? `, [open it on GitHub](${A.notebooks?.[o.stage] || A.notebook})` : ""}; the plain-English reading above sits beside it there):`,
+    String(o.original || "").trim().split("\n").map((l) => `> ${l.replace(/^#+\s*/, "")}`.trimEnd()).join("\n"));
 
   // honesty and next
   add("## Assumptions and limits",
     [...o.assumptions.map((a) => `- **Assumption:** ${md(a)}`), ...o.limits.map((a) => `- **Limit:** ${md(a)}`)].join("\n"));
   add("## What happens next", md(o.next),
-    o.later?.length ? md(`Stage 3 has since tested this with other factors held: ${o.later.map((x) => `{${x.id}}, ${x.verdict}`).join("; ")}.`) : null);
+    o.later?.length ? md(`Stage 3 has since tested this, allowing for other factors: ${o.later.map((x) => `{${x.id}}, ${vl(x.verdict)}`).join("; ")}.`) : null);
 
   // related, then the notebook (before the explainers, so every term the copy uses is collected first)
   const related = (o.related || []).filter((r) => byId[r]);
   if (related.length) add("## Related observations", related.map((r) => `- [${r}](${page(r)}): ${md(byId[r].headline)}`).join("\n"));
   const nb = A.notebooks?.[o.stage] || A.notebook;
-  add("## For analysts: the notebook's own words",
-    `Quoted from section ${section} of the Stage ${o.stage} notebook${nb ? ` ([open it on GitHub](${nb}))` : ""}. Everything above says the same in plain English. The code that builds every lens is in \`analysis/eda/build.py\`.`,
-    String(o.original || "").trim().split("\n").map((l) => `> ${l.replace(/^#+\s*/, "")}`.trimEnd()).join("\n"),
-    (o.notebook_charts || []).map((c, i) => `![Chart ${i + 1} from the notebook, above observation ${o.id} (cell ${c.cell})](${abs(c.src)})`).join("\n\n"));
+  if (o.notebook_charts?.length) {
+    add("## For analysts: the notebook's own charts",
+      `As drawn above the observation in section ${section} of the Stage ${o.stage} notebook${nb ? ` ([open it on GitHub](${nb}))` : ""}. The code that builds every lens is in \`analysis/eda/build.py\`.`,
+      o.notebook_charts.map((c, i) => `![Chart ${i + 1} from the notebook, above observation ${o.id} (cell ${c.cell})](${abs(c.src)})`).join("\n\n"));
+  }
 
   // the explainers: every term the page and this copy use
   for (const m of JSON.stringify(o).matchAll(/\[\[([^\]|]+)/g)) terms.add(m[1]);

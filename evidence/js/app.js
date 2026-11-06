@@ -41,20 +41,24 @@ function paras(text, cls) {
 }
 /** The notebook's own markdown, for the "for analysts" view: bullets, numbered lists, bold and code. */
 function notebookMarkdown(md) {
+  // gather each item and paragraph across its wrapped lines first, so bold that spans a line break still renders
+  const blocks = [];
+  for (const raw of md.split("\n")) {
+    const b = raw.match(/^\s*(?:-|\d+\.)\s+(.*)$/);
+    const last = blocks[blocks.length - 1];
+    if (b) blocks.push({ kind: /^\s*\d/.test(raw) ? "ol" : "ul", text: b[1] });
+    else if (/^\s{2,}\S/.test(raw) && last && last.kind !== "p" && !last.end) last.text += ` ${raw.trim()}`;
+    else if (raw.trim() && last?.kind === "p" && !last.end) last.text += ` ${raw.trim()}`;
+    else if (raw.trim()) blocks.push({ kind: "p", text: raw.replace(/^#+\s*/, "") });
+    else if (last) last.end = true;
+  }
   const box = el("div.original");
   let list = null;
-  for (const raw of md.split("\n")) {
-    const line = raw.replace(/^#+\s*/, "");
-    const b = raw.match(/^\s*(?:-|\d+\.)\s+(.*)$/);
-    if (b) {
-      if (!list) { list = el(/^\s*\d/.test(raw) ? "ol" : "ul"); box.append(list); }
-      list.append(el("li", inline(b[1])));
-    } else if (/^\s{2,}\S/.test(raw) && list?.lastChild) {
-      list.lastChild.append(" ", ...inline(raw.trim()));
-    } else if (raw.trim()) {
-      list = null;
-      box.append(el("p", inline(line)));
-    } else list = null;
+  for (const x of blocks) {
+    if (x.kind === "p") { list = null; box.append(el("p", inline(x.text))); continue; }
+    if (!list || list.tagName.toLowerCase() !== x.kind) { list = el(x.kind); box.append(list); }
+    list.append(el("li", inline(x.text)));
+    if (x.end) list = null;
   }
   return box;
 }
@@ -90,21 +94,30 @@ const VERDICT_TONE = {
   holds: "hold", weakened: "weak", "not detected once held": "gone", reversed: "rev", "appears once held": "new",
   "not detected either way": "none", "does not replicate": "none", mixed: "mixed", refined: "ref",
 };
+/** The plain name shown for a Stage 3 outcome; ADR 0046's name stays the definition behind it (OQ34). */
+const VERDICT_LABEL = {
+  "not detected once held": "gone once other factors are allowed for",
+  "appears once held": "appears once other factors are allowed for",
+  "not detected either way": "no clear link either way",
+  "does not replicate": "not repeated in the second sample",
+};
+function plainSection(s) { return A.observations.find((o) => o.section === s)?.section_plain || s; }
+function verdictLabel(v) { return VERDICT_LABEL[v] || v; }
 function verdictTag(v, small = false) {
-  return el(`span.vtag.vt-${VERDICT_TONE[v] || "none"}${small ? ".sm" : ""}`, { title: A.site.verdict_words?.[v] || null }, v);
+  return el(`span.vtag.vt-${VERDICT_TONE[v] || "none"}${small ? ".sm" : ""}`, { title: A.site.verdict_words?.[v] || null }, verdictLabel(v));
 }
 /** The outcomes a page carries: a Stage 3 page's own (what it revisits), or what Stage 3 found for an earlier page. */
 function verdictsOf(o) {
   return [...new Set([...(o.revisits || []), ...(o.later || [])].map((r) => r.verdict))];
 }
 function laterChip(o) {
-  return o.later?.length ? el("span.chip.later", { title: "Stage 3 tested this with other factors held" }, `Tested again in ${o.later.map((x) => x.id).join(", ")}`) : null;
+  return o.later?.length ? el("span.chip.later", { title: "Stage 3 tested this, allowing for other factors" }, `Tested again in ${o.later.map((x) => x.id).join(", ")}`) : null;
 }
 function ocard(o) {
   const a = el("a.ocard", { href: `#/${o.id}` },
     el("div.meta", el("span.id", o.id), lensChip(o.lens, false), stageChip(o), aboutLabel(o)),
     el("h3", o.headline),
-    el("p", trim(plain(o.statement), 190)),
+    el("p", trim(plain(o.plain), 190)),
     el("div.meta", (o.questions || []).map((q) => el("span.chip.qchip", `Q${q.q}`)), o.chart ? el("span.chip", "Chart") : null,
       o.stage === 3 ? verdictsOf(o).map((v) => verdictTag(v, true)) : laterChip(o)));
   a.style.setProperty("--lc", lensColour(o.lens));
@@ -113,7 +126,7 @@ function ocard(o) {
 /** A compact row for long lists: the id, the headline, and what Stage 3 made of it. */
 function orow(o) {
   const tags = o.stage === 3 ? verdictsOf(o).map((v) => verdictTag(v, true)) : o.later?.length
-    ? [el("span.chip.later", { title: `Stage 3 tested this with other factors held: ${o.later.map((x) => `${x.id}, ${x.verdict}`).join("; ")}` }, `→ ${o.later.map((x) => x.id).join(", ")}`)] : [];
+    ? [el("span.chip.later", { title: `Stage 3 tested this, allowing for other factors: ${o.later.map((x) => `${x.id}, ${verdictLabel(x.verdict)}`).join("; ")}` }, `→ ${o.later.map((x) => x.id).join(", ")}`)] : [];
   const a = el("a.orow", { href: `#/${o.id}` },
     el("span.id", o.id),
     el("span.ohead", o.headline),
@@ -475,7 +488,7 @@ function observationsPage(params) {
       .filter((g) => g.items.length)
       .map((g) => ({ ...g, subs: [...new Set(g.items.map((o) => `${o.stage}|${o.section}`))].map((k) => {
         const [s, sec] = [k.slice(0, 1), k.slice(2)];
-        return [`Stage ${s} · ${sec}`, g.items.filter((o) => String(o.stage) === s && o.section === sec)];
+        return [`Stage ${s} · ${plainSection(sec)}`, g.items.filter((o) => String(o.stage) === s && o.section === sec)];
       }) }));
   }
   function update() {
@@ -523,7 +536,7 @@ function observationsPage(params) {
 const hayCache = new Map();
 /** The text an observation is searched by. */
 function haystack(o) {
-  if (!hayCache.has(o.id)) hayCache.set(o.id, `${o.id} ${o.headline} ${plain(o.statement)} ${(o.points || []).map(plain).join(" ")} ${o.section} ${(o.revisits || []).map((r) => `${r.id} ${r.signal || ""}`).join(" ")}`.toLowerCase());
+  if (!hayCache.has(o.id)) hayCache.set(o.id, `${o.id} ${o.headline} ${o.plain} ${plain(o.original)} ${o.section} ${(o.revisits || []).map((r) => `${r.id} ${r.signal || ""}`).join(" ")}`.toLowerCase());
   return hayCache.get(o.id);
 }
 
@@ -572,8 +585,8 @@ function chainBlock(o) {
         : el("p", "A question of structure: which measures repeat each other, and whether there are distinct groups.")),
     el("div.carrow", { "aria-hidden": "true" }, icon("arrow")),
     el("div.clink",
-      el("span.ctag", el("b", "2"), "Stage 3 held together"),
-      o.held?.length ? el("div.held", o.held.map((h) => el("span.chip", inline(h)))) : el("p", "Nothing held: a description of how the measures relate.")),
+      el("span.ctag", el("b", "2"), "Stage 3 allowed for"),
+      o.held?.length ? el("div.held", o.held.map((h) => el("span.chip", inline(h)))) : el("p", "Nothing allowed for: a description of how the measures relate.")),
     el("div.carrow", { "aria-hidden": "true" }, icon("arrow")),
     el("div.clink.cres",
       el("span.ctag", el("b", "3"), "What is left"),
@@ -591,32 +604,31 @@ function observationPage(id) {
   document.title = `${o.id}: ${o.headline} · Evidence atlas`;
 
   const head = el("header.obs-head",
-    el("div.meta", el("span.id", o.id), lensChip(o.lens), stageChip(o), el("span", o.section.replace(/`/g, "")), strengthBadge(o.strength), aboutLabel(o)),
+    el("div.meta", el("span.id", o.id), lensChip(o.lens), stageChip(o), el("span", o.section_plain), strengthBadge(o.strength), aboutLabel(o)),
     el("h1", o.headline),
     markdownTools(o));
   const chain = o.stage === 3 ? chainBlock(o) : null;
   const box = el("section.obs-box", { "aria-label": `Observation ${o.id}` },
     el("div.obs-label", icon("eye"), `Observation ${o.id} · ${o.strength}`),
-    el("p.statement", inline(o.statement)),
-    o.points?.length ? el("ul", o.points.map((p) => el("li", inline(p)))) : null);
+    el("p.statement", o.plain));
   const update = o.later?.length ? el("section.s3update", { "aria-label": "What Stage 3 found" },
-    el("div.s3label", icon("route"), o.later.length === 1 ? "Stage 3 tested this with other factors held together" : `Stage 3 tested this ${o.later.length} ways, with other factors held together`),
+    el("div.s3label", icon("route"), o.later.length === 1 ? "Stage 3 tested this, allowing for other factors" : `Stage 3 tested this ${o.later.length} ways, allowing for other factors`),
     o.later.map((x) => el("div.s3item",
       el("div", verdictTag(x.verdict)),
       el("div", el("p", inline(x.what)), el("a.vread", { href: `#/${x.id}` }, `Read ${x.id}: ${trim(byId[x.id].headline, 110)}`))))) : null;
   const figures = o.figures?.length ? el("div.figures", o.figures.map((f) => el("div.figure", el("strong", f.value), el("span", inline(f.label))))) : null;
   const chart = o.chart ? chartSlot(o.chart) : null;
   const verdicts = o.verdicts?.length ? el("section.block",
-    el("h2", icon("check"), "Signal by signal"),
-    el("p.block-intro", "Each comparison as Stage 2 measured it (raw), then with its other factors held together, and the outcome."),
+    el("h2", icon("check"), "Each comparison"),
+    el("p.block-intro", "Each comparison on its own, as Stage 2 measured it, then allowing for the other factors, and the outcome."),
     el("div.tablewrap", el("table.data.vtable",
-      el("thead", el("tr", el("th", { scope: "col" }, "What was compared"), el("th", { scope: "col" }, "Raw, then held together"), el("th", { scope: "col" }, "Outcome"))),
+      el("thead", el("tr", el("th", { scope: "col" }, "What was compared"), el("th", { scope: "col" }, "On its own, then allowing for the rest"), el("th", { scope: "col" }, "Outcome"))),
       el("tbody", o.verdicts.map((v) => el("tr", el("td", inline(v.signal)), el("td", inline(v.detail || "")), el("td", verdictTag(v.verdict)))))))) : null;
 
   const intro = {
     1: "Stage 1 answers none of the five questions. This is how the observation prepares the ground for them.",
     2: "Stage 2 answers none of the five questions either: it finds which measures go together. This is how the association prepares the ground for them.",
-    3: "Stage 3 answers none of the five questions either: it tests which of Stage 2's signals survive with their other factors held together. This is how the result prepares the ground for them.",
+    3: "Stage 3 answers none of the five questions either: it tests which of Stage 2's patterns survive once other factors are allowed for. This is how the result prepares the ground for them.",
   };
   const why = el("section.block",
     el("h2", icon("compass"), "How this moves the research forward"),
@@ -648,28 +660,32 @@ function observationPage(id) {
     `${(o.prep || []).length} step${(o.prep || []).length === 1 ? "" : "s"} for this observation, on the ${lower(L.name)} lens (${lower(L.unit)})`,
     [el("h4", "For this observation"), el("div.prep", prep),
       lensRepairs.length ? el("details.more", el("summary", icon("tool"), `Repairs made to the ${lower(L.name)} lens before any observation (${lensRepairs.length})`), el("div", el("div.prep", lensRepairs))) : null]);
+  // the observation as the notebook words it: shown here, in the trail, and nowhere else on the page (ADR 0055)
   const step4 = trailStep(4, "route", "From the data to the observation",
-    `${o.steps.length} reasoning steps. The steps are not findings; only the last box is.`,
+    `${o.steps.length} reasoning steps, then the observation in the notebook's own words. The steps are not findings; only the last box is.`,
     [el("ol.steps", o.steps.map((s) => el("li", el("span.slabel", "Step"), el("span", inline(s)))),
-      el("li.result", el("div.resultbox", el("span.slabel", `Which gives observation ${o.id}`), el("span", inline(o.statement)))))], true);
+      el("li.result", el("div.resultbox",
+        el("span.slabel", `Which gives observation ${o.id}, in the notebook's own words`),
+        notebookMarkdown(o.original),
+        el("p.small.muted", inline(`Quoted from section ${o.section.replace(/`/g, "")} of the Stage ${o.stage} notebook, where the plain-English reading at the top of this page sits beside it.`)))))]);
   const trail = el("section.block", el("h2", icon("route"), "Follow the evidence"),
     el("p.block-intro", "From the publisher's file to this observation, in four steps. Open any step for the detail."),
     el("div.trail", step1, step2, step3, step4));
 
   const honesty = el("section.block", el("h2", icon("alert"), "Assumptions and limits"),
     el("div.notes", o.assumptions.map((a) => note("assume", a)), o.limits.map((a) => note("limit", a))));
-  const done = o.later?.length ? note("done", `Stage 3 has since tested this with other factors held: ${o.later.map((x) => `{${x.id}}, ${x.verdict}`).join("; ")}. The box under the observation says what was left.`) : null;
+  const done = o.later?.length ? note("done", `Stage 3 has since tested this, allowing for other factors: ${o.later.map((x) => `{${x.id}}, ${verdictLabel(x.verdict)}`).join("; ")}. The box under the observation says what was left.`) : null;
   const next = el("section.block", el("h2", icon("arrow"), "What happens next"), el("div.notes", note("next", o.next), done));
 
   const nbCharts = o.notebook_charts || [];
+  const nbLink = el("p.small", el("a", { href: A.notebooks?.[o.stage] || A.notebook, rel: "noopener noreferrer", target: "_blank" }, "Open the notebook on GitHub"), " · the code that builds every lens is in analysis/eda/build.py.");
   const analysts = el("section.block",
-    el("details.more",
-      el("summary", icon("book"), "For analysts: the notebook's own words and charts"),
+    nbCharts.length ? el("details.more",
+      el("summary", icon("book"), nbCharts.length === 1 ? "For analysts: the notebook's own chart" : "For analysts: the notebook's own charts"),
       el("div",
-        el("p.small.muted", inline(`Quoted from section ${o.section.replace(/`/g, "")} of the Stage ${o.stage} notebook. Reading it is optional: everything above says the same in plain English.`)),
-        notebookMarkdown(o.original),
+        el("p.small.muted", "As drawn in the notebook, above the observation. The observation in the notebook's own words is the last box of step 4."),
         ...nbCharts.map((c) => el("figure.nbimg", el("img", { src: c.src, alt: `A chart from the notebook, above observation ${o.id}`, loading: "lazy", decoding: "async" }), el("figcaption", "The chart as drawn in the notebook."))),
-        el("p.small", el("a", { href: A.notebooks?.[o.stage] || A.notebook, rel: "noopener noreferrer", target: "_blank" }, "Open the notebook on GitHub"), " · the code that builds every lens is in analysis/eda/build.py."))));
+        nbLink)) : nbLink);
 
   const related = (o.related || []).filter((r) => byId[r]);
   const rel = related.length ? el("section.block", el("h2", "Related observations"), el("div.olist.boxed", related.map((r) => orow(byId[r])))) : null;
@@ -696,7 +712,7 @@ function observationPage(id) {
         el("p.small.muted", { style: { marginTop: "8px" } }, o.strength === "descriptive" ? "Descriptive: what the data show, not why." : "Observational: measures go together; other explanations remain, and it is not a cause.", " Causal claims need designs that come after Stage 3."))),
     sibs.length > 1 ? el("section.sibs",
       el("h2", "In this section"),
-      el("p.small.muted", `Stage ${o.stage} · ${o.section.replace(/`/g, "")}`),
+      el("p.small.muted", `Stage ${o.stage} · ${o.section_plain}`),
       el("ol", sibs.map((x) => el("li", x.id === o.id
         ? el("span.here", { "aria-current": "page" }, el("span.id", x.id), el("span", trim(x.headline, 80)))
         : el("a", { href: `#/${x.id}` }, el("span.id", x.id), el("span", trim(x.headline, 80))))))) : null,
@@ -745,7 +761,7 @@ function lensPage(l) {
         const mine = obs.filter((o) => o.stage === k);
         const secs = [...new Set(mine.map((o) => o.section))];
         return [el("h2.stage-h", { id: `st-${k}` }, `Stage ${k}: ${STAGE_NAME[k]}`, el("span.muted.small", ` · ${mine.length} observation${mine.length === 1 ? "" : "s"}`)),
-          ...secs.map((s) => sectionGroup(s, mine.filter((o) => o.section === s), secs.length <= 8))];
+          ...secs.map((s) => sectionGroup(plainSection(s), mine.filter((o) => o.section === s), secs.length <= 8))];
       })),
     section("Built from", "Each source as its publisher released it. Where the data come from lists every table, where it is kept and its fingerprint.", el("div.srclist", srcs.map((s) => sourceCard(s)))),
     L.repairs?.length ? section("Repairs made before any observation", "Problems found while profiling, fixed in the lens and recorded in a decision record. Each says why.",
@@ -781,10 +797,10 @@ function questionPage(id) {
   show(
     el("div.eyebrow", `Question ${q.id} of 5`), el("h1", q.title), ...paras(q.text, "lead"),
     q.sub?.length ? section("What the research goal asks under it", null, el("ul.prose", q.sub.map((s) => el("li", s)))) : "",
-    signals.length ? section("Early signals that bear on it", "From Stage 3's table of early signals: associations that survived their third factors held together, drafted for the research owner's review. Not answers.",
+    signals.length ? section("Early signals that bear on it", "From Stage 3's table of early signals: links that remained once other factors were allowed for, drafted for the research owner's review. Not answers.",
       el("div.qlist", signals.map((l) => el("div.qitem", el("span.qn", `#${A.site.next.signals.indexOf(l) + 1}`), el("div", el("h3", inline(l.signal)), el("p.small", el("strong", "Strength: "), ...inline(l.strength)), el("p.small", "From ", ...l.ids.flatMap((x, i) => [i ? ", " : "", obsLink(x)])), el("p.small", el("strong", "Suggested next step: "), ...inline(l.next))))))) : "",
-    count(3) ? section(`What Stage 3 found that bears on it (${count(3)})`, "Stage 2's signals tested with their other factors held together, and the structure among places, countries, industries and institutions.", el("div.qlist", items(3)), editorialNote("These links are the analyst's guide to where each observation may help. They are not findings.")) : "",
-    section(`What Stage 2 found that bears on it (${count(2)})`, "Pairs of measures that go together, held in a second period or sample: associations, not answers.", el("div.qlist", items(2))),
+    count(3) ? section(`What Stage 3 found that bears on it (${count(3)})`, "Stage 2's patterns tested allowing for other factors, and the structure among places, countries, industries and institutions.", el("div.qlist", items(3)), editorialNote("These links are the analyst's guide to where each observation may help. They are not findings.")) : "",
+    section(`What Stage 2 found that bears on it (${count(2)})`, "Pairs of measures that go together, found again in a second period or sample: associations, not answers.", el("div.qlist", items(2))),
     section(`What Stage 1 found that bears on it (${count(1)})`, "Descriptive observations: groundwork, not answers.", el("div.qlist", items(1))),
     q.reach?.length ? section("What is out of reach for now", null, el("div.notes", q.reach.map((x) => note("limit", x)))) : "");
 }

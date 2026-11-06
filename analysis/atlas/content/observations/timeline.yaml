@@ -4,7 +4,7 @@
 - id: U22
   lens: timeline
   about: data
-  headline: The timeline has one row per month since 1904, with each series starting only where it can be trusted
+  headline: The monthly timeline runs from 1904, with each series starting where its records can be trusted
   statement: >-
     The timeline holds 1,473 months, January 1904 to September 2026, in 79 columns: 28 monthly series of applications
     and events, the price index and the policy changes, and, added after Stage 2, fees, the Reserve Bank's rates, the
@@ -32,8 +32,8 @@
   prep:
     - what: Each series starts at the first month from which its records are continuous and complete; earlier months
         are empty, not zero.
-      why: Before that, the register holds survivors, partial records or batch dates, so a month's count is not what
-        happened that month (ADR 0010, 0014).
+      why: "Before that, the register holds only survivors, incomplete records or dates entered in batches, so a
+           month's count is not what happened that month (ADR 0010, 0014)."
     - what: Each event is counted once, even where the register records it twice.
       why: Duplicate records would inflate the counts.
   steps:
@@ -52,7 +52,7 @@
 - id: U23
   lens: timeline
   about: data
-  headline: Eighteen series started too early, on records that hold only survivors or batches, and one policy change was missing
+  headline: Eighteen series now start later, past incomplete early records, and a missing policy change was added
   statement: >-
     Before records were computerised, the register holds only rights still alive then. Only 2.0% of trade marks filed
     in early 1981 were never registered, against 52.0% from the first quarter of 1983. So those years count survivors,
@@ -97,15 +97,14 @@
     - A sudden jump in the share never registered marks the start of complete records, not a real change in filing.
   limits:
     - Before each new start, the register cannot say how many applications were really made.
-  next: >-
-    Every count by year in the rights lens carries this note ({U5}, {U10}).
+  next: "Every yearly count of rights carries this note ({U5}, {U10})."
   terms: [survivors, batch-dates]
   related: [U22, U5, U10]
 
 - id: U24
   lens: timeline
   about: data
-  headline: Large monthly series are steady; small ones are noisy and need longer periods
+  headline: Large monthly counts are steady, while small ones swing and need longer periods
   statement: >-
     Over FY2017 to FY2026 the steadiest series is standard patent applications from overseas (a median 2,306 a month,
     varying by only 0.08 of its average). The most variable are second-tier patents (1.82, from the rush before their
@@ -132,8 +131,8 @@
     - what: Each series is described over the ten latest complete financial years.
       why: A recent decade shows how each behaves now.
   steps:
-    - For each series, work out its median, mean and standard deviation over FY2017 to FY2026.
-    - Divide the standard deviation by the mean to compare series of different sizes.
+    - "For each series, work out its typical month, its average and how much it varies, over 2016–17 to 2025–26."
+    - "Divide how much each series varies by its average, so that series of different sizes can be compared."
     - Count outlying months by the box-plot rule.
   assumptions:
     - Ten years is long enough to describe each series' usual behaviour.
@@ -147,7 +146,7 @@
 - id: U25
   lens: timeline
   about: system
-  headline: Growth in standard patents has slowed to 0.4% a year; trade marks and designs are growing faster
+  headline: Growth in standard patent applications slowed to 0.4% a year, while trade marks and designs grew faster
   statement: >-
     Standard patent applications grew 3.9% a year in the 1990s, 1.3% from 2000 to 2010, 2.0% from 2010 to 2019 and
     0.4% from 2019 to 2025, with overseas applicants setting the pace. Trade marks grew 4.3% a year and designs 5.5% a
@@ -193,7 +192,7 @@
 - id: U26
   lens: timeline
   about: system
-  headline: Australians file a quarter less in January; overseas applicants barely pause
+  headline: Australians file about a quarter less in January, while overseas applicants barely pause
   statement: >-
     From 2010 to 2019, Australians' January filings were 75% of an ordinary month for standard patents and trade marks
     and 67% for designs, while overseas applicants' were 90% to 96%. Provisional applications, about 95% Australian,
@@ -216,16 +215,16 @@
   chart: U26
   notebook_charts: [0]
   prep:
-    - what: Each month is compared with the 12 months centred on it, and the median of each calendar month is taken over
-        2010 to 2019.
+    - what: "Each month is compared with the 12 months centred on it, and the typical value for each calendar month is
+            taken over 2010 to 2019."
       why: Comparing with the months around it removes the trend; a decade before COVID-19 and after the financial
         crisis gives a typical pattern.
   steps:
     - For each series and month, divide the count by the centred 12-month average around it.
-    - Take the median for each calendar month over 2010 to 2019 (100 = an ordinary month).
+    - "Take the typical value for each calendar month over 2010 to 2019 (100 is an ordinary month)."
     - Repeat January's figure by decade to see whether the lull has changed.
   assumptions:
-    - A decade's median month is the series' typical seasonal pattern.
+    - "A decade's typical month shows the series' usual seasonal pattern."
   limits:
     - The reasons (holidays, business cycles) are not in the data.
   next: >-
@@ -236,7 +235,7 @@
 - id: U27
   lens: timeline
   about: system
-  headline: Patent grants peaked in 2016; trade mark cessations reached their highest in 2025
+  headline: Patent grants peaked in 2016, and trade marks ending reached a high in 2025
   statement: >-
     Patent grants peaked at 25,687 in 2016, three years after the rush to file before Raising the Bar, and were 19,612
     in 2025. Trade mark registrations reached 70,634 in 2021. Trade mark cessations (registered marks let go) rose from
@@ -277,7 +276,7 @@
   lens: timeline
   about: system
   featured: true
-  headline: Around some policy changes filing shows clear rushes, steps and pauses; around others nothing stands out
+  headline: Some policy changes brought clear rushes, steps or pauses in filing, and others none
   statement: >-
     In April 2013, the month Raising the Bar took effect, Australians filed 1,044 standard patent applications, 4.41
     times their average month in the year before. In August 2021, when the innovation patent closed to new
@@ -317,8 +316,8 @@
   chart: U28
   notebook_charts: [0]
   prep:
-    - what: Each of the 17 policy changes is placed in the month it took effect (or, for two, was enacted), checked
-        against the Federal Register of Legislation.
+    - what: "Each of the 17 policy changes is placed in the month it took effect (or, for two, the month it was
+            passed), checked against the Federal Register of Legislation."
       why: A wrong date would put the change in the wrong place (ADR 0011, 0014).
     - what: Each change is paired with the series it targets.
       why: A change to trade mark law should show in trade mark series, not patents.
@@ -334,15 +333,15 @@
       at the same time.
     - Fee changes, IP Australia's most direct lever, were added after Stage 2 ({U108} to {U111}) and compared in {B47}
       to {B49}.
-  next: >-
-    Stage 2 measures each candidate against trends and seasons, with placebo dates ({B37}).
+  next: "Stage 2 measures each change against trends and seasons, and against comparison dates with no change
+        ({B37})."
   terms: [natural-experiment, placebo, raising-the-bar, second-tier]
   related: [U3, U22, U29, U37]
 
 - id: U29
   lens: timeline
   about: data
-  headline: Forty-two months still stand out after the repairs; each is explained and kept
+  headline: Forty-two unusual months remain after the repairs, and each is explained and kept
   statement: >-
     After the repairs, 42 months in 12 series are at least three times, or under a third of, the months around them.
     They are rushes, the register's start-up in 1904, pauses and backlogs when new Acts began, and one transfer of many
@@ -367,10 +366,11 @@
   sources: [iprapid]
   chart: U29
   prep:
-    - what: Each month is compared with the median of the two years around it, in series running at 50 or more a month.
-      why: A two-year median is not pulled about by one odd month.
+    - what: "Each month is compared with the typical month of the two years around it, in series running at 50 or more
+            a month."
+      why: "The typical month over two years is not thrown off by one odd month."
   steps:
-    - For each series, work out the median of the 25 months centred on each month.
+    - "For each series, find the typical value of the 25 months centred on each month."
     - Flag months at least three times or under a third of it.
     - Look up what happened in each flagged month.
   assumptions:
@@ -385,7 +385,7 @@
 - id: U30
   lens: timeline
   about: data
-  headline: The consumer price index is complete each quarter from 1948, so money can be compared across years
+  headline: The price index runs every quarter from 1948, so money can be compared across years
   statement: >-
     The price index has 312 quarters, from the September quarter 1948 to the June quarter 2026, with none missing.
     Prices rose about 40-fold, from 2.59 to 102.31. Price rises have run at a median 2.3% a year from 1990 to 2019 and
@@ -411,7 +411,7 @@
       why: One series must cover the whole span.
   steps:
     - Check the index for missing quarters.
-    - Work out the change over four quarters, and its median in each era.
+    - "Work out the change over four quarters, and its typical value in each era."
   assumptions:
     - The all-groups index for the eight capital cities stands for prices everywhere in Australia.
   limits:
@@ -424,7 +424,7 @@
 - id: U108
   lens: timeline
   about: data
-  headline: The official fees are read from every version of the fee regulations, and today's agree with IP Australia's website
+  headline: Official fees were rebuilt from every version of the regulations, and today's match IP Australia's
   statement: >-
     Six sets of regulations have 281 versions on the Federal Register of Legislation; 160 are read (8,612 rows of
     fee schedules), and the gaps come from the amending instruments. The fees run from 1982 for designs, 1989 for
@@ -470,7 +470,7 @@
 - id: U109
   lens: timeline
   about: system
-  headline: In real terms a trade mark costs about a quarter of what it did in 1990, and keeping a patent for its full term costs what it did in 1995
+  headline: After inflation, a trade mark costs about a quarter of what it did in 1990
   statement: >-
     In dollars of June 2026, a trade mark (one class, filing and registration) cost 944 in January 1990 and 250 now. A
     standard patent's filing, examination and grant fell from 2,261 (January 1995) to 1,250. Its renewals for the
@@ -510,7 +510,7 @@
     note: Trade marks from January 1990; patents and plant breeder's rights from January 1995.
   prep:
     - what: Each fee deflated by the quarterly Consumer Price Index to June 2026 dollars.
-      why: Prices in dollars of the day are not comparable over 36 years.
+      why: "Prices in dollars of the day cannot be compared across decades."
   steps:
     - Sum the fees that make up each cost (for example filing, examination and grant).
     - Deflate by the CPI.
@@ -526,7 +526,7 @@
 - id: U110
   lens: timeline
   about: system
-  headline: The fees changed on 39 dates, nearly always upwards; trade marks were cut repeatedly
+  headline: Fees changed on 39 dates, nearly always upwards, though trade mark fees were cut repeatedly
   statement: >-
     Counting each right apart, the fees changed on 39 dates: patents on 14, trade marks 10, designs 11 and plant
     breeder's rights 4. Of the amounts that changed, 209 rose and 26 fell.
@@ -571,7 +571,7 @@
 - id: U111
   lens: timeline
   about: system
-  headline: A standard patent's renewal fees have moved towards its last years
+  headline: Patent renewal fees have shifted towards the final years of a patent's life
   statement: >-
     The renewal fee at a patent's 19th anniversary was 4.69 times the 5th's in January 1992 and 8.94 times in June
     2026. The share of the full term's renewals paid from the 15th anniversary rose from 48.7% to 62.1%.
@@ -616,7 +616,7 @@
 - id: U113
   lens: timeline
   about: data
-  headline: The Reserve Bank's cash rate and exchange rates are complete and monthly
+  headline: The Reserve Bank's interest and exchange rates are complete month by month
   statement: >-
     The cash rate target runs from August 1990 (434 months), the interbank cash rate from May 1976, the dollar in US
     dollars from July 1969 and its trade-weighted index from May 1970, with no month missing. The cash rate target
@@ -661,18 +661,18 @@
 - id: U116
   lens: timeline
   about: data
-  headline: The national accounts are complete and quarterly; real growth has slowed decade by decade
+  headline: The national accounts are complete each quarter, and real growth has slowed decade by decade
   statement: >-
     GDP has 268 quarters (September 1959 to June 2026) and each state's final demand 164, from September 1985. Real
     GDP grew a median 3.98% a year from 1960 to 1989, 3.01% from 1990 to 2019 and 2.14% from 2020 to 2026. In FY2025
     mining added the most value (12.59%), then health care (9.5%).
   figures:
     - value: "3.98% → 3.01% → 2.14%"
-      label: median real GDP growth a year, by period
+      label: "typical real GDP growth a year, by period"
     - value: "-5.85%"
       label: the June quarter 2020
     - value: "12.59%"
-      label: mining's share of value added (FY2025)
+      label: "mining's share of value added (2024–25)"
   points:
     - "Professional services 8.49%, finance 8.42%, manufacturing 6.12%, arts and recreation 0.89%."
     - "GDP and the states' demand join the timeline quarterly; value added joins the industries lens by financial
@@ -711,7 +711,7 @@
 - id: U123
   lens: timeline
   about: data
-  headline: Section 100 is about 30% of the PBS's government cost and rising; the corpus's yearly files leave it out
+  headline: One medicines program, Section 100, is about 30% of the PBS's cost but missing from the yearly files
   statement: >-
     From FY2023 to FY2026, the government's PBS cost rose from $17.04 billion to $20.5 billion; Section 100's share was
     29.94% to 30.88%, from 1.06% to 1.41% of prescriptions. The yearly files by pharmacy type hold $11.94 billion to
@@ -761,7 +761,7 @@
 - id: U124
   lens: timeline
   about: data
-  headline: The labour market and the IP judgments join the timeline complete over their coverage; IP judgments doubled from 2008
+  headline: Labour figures and IP court judgments are complete, and IP judgments doubled from 2008
   statement: >-
     Two sources planned for the timeline were attached in the review of 3 November 2026: the Labour Force Survey
     (employed persons, unemployment and participation from February 1978, owner-managers from January 1991) and the IP
@@ -774,7 +774,7 @@
     - value: "584 months"
       label: of employment, unemployment and participation, February 1978 to September 2026
     - value: "1.08%"
-      label: median yearly growth of owner-managers (1,419.25 thousand to 2,236.86 thousand)
+      label: "typical yearly growth in owner-managers (1,419.25 thousand to 2,236.86 thousand)"
   points:
     - "**The labour market:** employed persons 5,997.20 thousand to 14,822.00 thousand, a median 1.88% more a year (1991
       to 2019); unemployment 3.43% to 11.22% (latest 4.72%); participation 60.13% to 67.19%. Employment's largest fall
@@ -821,15 +821,15 @@
   limits:
     - The judgments end with the corpus in February 2025 (OQ22).
     - Owner-managers come from a survey and carry its sampling noise.
-  next: >-
-    Stage 2 pairs them with filing ({B63}); Stage 3 reads those pairs with block resampling ({M36}).
+  next: "Stage 2 pairs them with filing ({B63}); Stage 3 rechecks those pairs allowing for neighbouring quarters
+        ({M36})."
   terms: [gdp]
   related: [B63, M36]
 
 - id: U125
   lens: timeline
   about: data
-  headline: Every one of IP Australia's fee columns is complete from its first month, and each fee has taken 3 to 12 amounts
+  headline: Every fee series is complete from its start, and each fee has had 3 to 12 amounts
   statement: >-
     Beyond the totals charted in Stage 1, every fee column in the timeline is complete from its first month: patents
     from May 1991, trade marks from July 1989, designs from April 1982 and plant breeder's rights from December 1994.
@@ -869,7 +869,8 @@
     source: Federal Register of Legislation, fee regulations (lens timeline); notebook 1, section 5.7
   prep:
     - what: Each fee column of the timeline, profiled for completeness and the number of distinct amounts.
-      why: Stage 1 profiled the totals but not the components, which the fee tests read.
+      why: "The first look at the data described the fee totals but not the single fees within them, which the fee
+           tests use."
   steps:
     - Check each column from its first month for gaps.
     - Count the amounts each fee has taken, and read its range.

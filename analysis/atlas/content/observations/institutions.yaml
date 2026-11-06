@@ -4,7 +4,7 @@
 - id: U80
   lens: institutions
   about: data
-  headline: The institutions table covers 130 research institutions; IP and grants go back further than research output, which starts in 2010
+  headline: The institutions data cover 130 research bodies, but publication records start only in 2010
   statement: >-
     The table holds 130 institutions: 46 medical research institutes, 44 universities, 18 other grant holders, 11 public
     research agencies, 7 health services and 4 other research institutes. Research output and citations start in 2010,
@@ -84,8 +84,8 @@
         data: [96.5, 72.8, 43.9, 19.1, 15.7, 2.1]
     source: IP RAPID; ROR; the reviewed link (lens institutions)
   prep:
-    - what: An institution's rights are those where it is among the filers, matched by a reviewed list of names (including
-        former names and companies) and business numbers.
+    - what: "An institution's rights are those it filed, alone or with others. They are found through a reviewed list
+            of its names (including former names and its companies) and business numbers."
       why: Universities file under many names; a name decides, and a business number matches only where the name does not
         (ADR 0021).
   steps:
@@ -104,7 +104,7 @@
 - id: U82
   lens: institutions
   about: system
-  headline: Universities produce 86.8% of the institutions' research works, and five universities a third
+  headline: Universities produce 86.8% of the institutions' research, and five universities a third
   statement: >-
     From 2015 to 2024, universities produced 86.8% of the institutions' works, medical research institutes 7.1% and
     public research agencies 3.9%. Melbourne produced 7.97%, Sydney 7.44%, Monash 6.90%, UNSW 6.38% and Queensland 6.28%;
@@ -154,7 +154,7 @@
 - id: U83
   lens: institutions
   about: system
-  headline: The Group of Eight hold two-thirds of research grant funding; up to three-tenths of ARC funding is for research with industry
+  headline: The Group of Eight universities hold two thirds of research grant funding
   statement: >-
     From 2015 to 2024 the Group of Eight held 66.3% of ARC funding and 63.5% of NHMRC funding; the top five institutions
     51.5% and 55.9%. The industry-partner schemes took 9.7% (2017) to 29.2% (2024) of ARC funding.
@@ -194,7 +194,7 @@
 - id: U84
   lens: institutions
   about: system
-  headline: Research institutions file a small, slowly rising share of Australian patents; CSIRO files the most
+  headline: Research institutions file a small but rising share of patents from Australia, and CSIRO files most
   statement: >-
     The institutions filed 4.80% of standard patents filed from Australia in 1990 to 1994, 7.33% in 2000 to 2004, 7.98%
     in 2015 to 2019 and 8.96% in 2020 to 2024. In 2017 to 2026 CSIRO filed 481, UNSW 196, Monash 185, Sydney 156 and
@@ -238,7 +238,7 @@
 - id: U85
   lens: institutions
   about: system
-  headline: US patents often cite the institutions' research; few of the citing patents have an Australian applicant or inventor
+  headline: US patents often cite the institutions' research, but few citing patents are Australian
   statement: >-
     Per 1,000 works published 2010 to 2014, US patents cite 107.7 of medical research institutes' works, 64.56 of
     public research agencies' and 43.26 of universities'. 93.6% of these citations come from US patents with no
@@ -301,7 +301,7 @@
 - id: U86
   lens: institutions
   about: system
-  headline: Universities hold 77.9% of the institutions' government contract value, public research agencies 19.0%
+  headline: Universities hold 77.9% of the institutions' government contract value
   statement: >-
     In 2017 to 2026, universities held 13,223 contracts worth $5,834 million, public research agencies 1,723 worth
     $1,426 million and medical research institutes 215 worth $121.9 million. UNSW ($1,433 million) and CSIRO ($1,184
@@ -346,7 +346,7 @@
 - id: U87
   lens: institutions
   about: data
-  headline: Half the universities' standard patents carry a postcode where no one lives, so place-based counts miss them
+  headline: Half the universities' patents carry a postcode with no residents, so maps of places miss them
   statement: >-
     In FY2017 to FY2026, 50.34% of the universities' standard patent applications with a filer's postcode (742 of 1,474)
     carry a real postcode with no residents, against 16.80% of medical research institutes', 0% of public research
@@ -392,7 +392,7 @@
 - id: U121
   lens: institutions
   about: data
-  headline: The harvest's "cited at least once" filter drops few patent-cited Australian works
+  headline: Few Australian works cited by US patents are missing from the publication data
   statement: >-
     A sample of 20,000 of the 5,002,883 patent-cited works outside the harvest found 23 Australian ones. Scaled up,
     about 5,753 patent-cited Australian works are missing (5.6% of those found; interval 3.5% to 8.3%), 2,501 of them
@@ -415,16 +415,17 @@
         short.
   sources: [reliance_on_science, openalex_works]
   prep:
-    - what: A random sample of patent-cited works not in the harvest, looked up in OpenAlex (about 200 calls, free).
+    - what: "A random sample of patent-cited works missing from the collection, looked up one by one in OpenAlex
+            (free)."
       why: Measures what the harvest's filter leaves out without fetching everything.
   steps:
     - Sample works cited by US patents that the harvest does not hold.
     - Look each up, and count the Australian ones and why each was missed.
-    - Scale up with an interval.
+    - "Scale the sample up to all the missing works, with a likely range."
   assumptions:
     - The sample is random, so its share of Australian works represents the rest.
   limits:
-    - A small count (23) gives a wide interval.
+    - "Only 23 Australian works were found in the sample, so the likely range is wide."
   next: >-
     Stage 3 reads institutions' patent-cited works as lower bounds.
   terms: [openalex, lower-bound, interval]
@@ -433,7 +434,7 @@
 - id: U122
   lens: institutions
   about: data
-  headline: The NSRC adds sixteen years of research commercialisation; licence income is lumpy and concentrated, and start-ups fell after 2007
+  headline: A survey of research commercialisation shows uneven licence income and fewer start-ups after 2007
   statement: >-
     The National Survey of Research Commercialisation adds 2000 to 2015 for 82 of the lens's institutions. Invention
     disclosures rose from 548 (2000) to 1,705 (2011); start-ups ran 46 to 64 a year in 2000 to 2002 and 10 to 42 from
@@ -469,15 +470,16 @@
         data: [42.3, 15.8, 6.9]
     source: National Survey of Research Commercialisation (lens institutions)
   prep:
-    - what: The NSRC's unit records joined to the lens by the participant's name (six aliases added).
+    - what: "The survey's answers, matched to the institutions by the participant's name (six other spellings added)."
       why: The survey names institutions, not ROR records.
   steps:
-    - Match each participant to an institution in the lens.
+    - "Match each participant to one of the institutions in the table."
     - Summarise disclosures, licences, start-ups and income by year and by kind of institution.
   assumptions:
-    - Each participant's answers cover the institution as the lens defines it.
+    - "Each participant's answers cover the same institution, with the same boundaries, as the institutions table."
   limits:
-    - Ends in 2015, before Stage 2's discovery period; dollars of the day.
+    - "The survey ends in 2015, before the years the later stages test, and its dollars are not adjusted for
+      inflation."
   next: >-
     Stage 2 relates its measures to patenting ({B62}).
   terms: [nsrc, commercialisation-company]
@@ -486,7 +488,7 @@
 - id: U127
   lens: institutions
   about: data
-  headline: Another research institution is a founding applicant on about one in nine of the institutions' patent links
+  headline: About one in nine of the institutions' patent links also name another research institution
   statement: >-
     Of the research institutions' 26,668 patent links (25,054 rights), 10.98% have another research institution as a
     founding applicant too; of their 4,748 trade mark links, 3.5%; of their 112 design links, 7.14%. A right with two
@@ -516,8 +518,9 @@
         data: [10.98, 7.14, 3.5]
     source: IP Australia, IP RAPID; ROR (lens institutions); notebook 1, section 7.3
   prep:
-    - what: The institution_rights table's `shared_with_institution`, one row per institution and right.
-      why: A column in the lens that Stage 1 had not profiled.
+    - what: "Whether another research institution also filed the right, read from the table that has one row per
+            institution and right."
+      why: "This column was in the institutions table, but the first look at the data had not described it."
   steps:
     - Count the links and the rights they cover, by kind.
     - Count the share shared with another institution.
