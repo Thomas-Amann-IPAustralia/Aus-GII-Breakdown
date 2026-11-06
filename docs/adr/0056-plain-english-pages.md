@@ -55,3 +55,9 @@ and the analysis are untouched. The YAML's `statement` and `points` (not shown s
 **Consequences.** The edits were made in place in the YAML, so the diff shows only changed sentences. The strict build
 passes (231 pages); 99 tests pass (44 need the lens tables); the chat's passages are rebuilt (4,519) and reach the chat
 only when Econ is refreshed (OQ33).
+
+**Addendum (2026-11-06, OQ34 answered, A41: "Yes reword the labels as you've suggested").** The pages now show plain
+names for four Stage 3 outcomes ("gone once other factors are allowed for", "appears once other factors are allowed
+for", "no clear link either way", "not repeated in the second sample"); ADR 0046's names stay the data and the
+definitions behind them (the tooltip). 53 notebook section headings that read technically have plain titles in
+`analysis/atlas/content/sections.yaml` (`section_plain`, 77 pages); the notebook's heading stays in step 4.

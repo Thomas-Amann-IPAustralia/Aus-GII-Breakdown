@@ -62,6 +62,7 @@ export function observationMarkdown(o, { atlas: A, chart = null, base = "" }) {
   ].join("\n");
   const abs = (src) => { try { return new URL(src, base || undefined).href; } catch { return src; } };
   const section = o.section.replace(/`/g, "");
+  const vl = (v) => ({ "not detected once held": "gone once other factors are allowed for", "appears once held": "appears once other factors are allowed for", "not detected either way": "no clear link either way", "does not replicate": "not repeated in the second sample" })[v] || v;
   const out = [];
   const add = (...parts) => out.push(...parts.filter((p) => p != null && p !== ""));
 
@@ -88,7 +89,7 @@ export function observationMarkdown(o, { atlas: A, chart = null, base = "" }) {
       o.held?.length ? o.held.map((h) => `- ${md(h)}`).join("\n") : "Nothing allowed for: a description of how the measures relate.",
       "**3. What is left**",
       (o.revisits || []).length
-        ? o.revisits.map((r) => `- **${r.verdict}** (${r.id}${r.signal ? `, ${md(r.signal)}` : ""}): ${md(r.what)}`).join("\n")
+        ? o.revisits.map((r) => `- **${vl(r.verdict)}** (${r.id}${r.signal ? `, ${md(r.signal)}` : ""}): ${md(r.what)}`).join("\n")
         : "See the observation below.");
   }
 
@@ -97,7 +98,7 @@ export function observationMarkdown(o, { atlas: A, chart = null, base = "" }) {
   if (o.later?.length) {
     add("## What Stage 3 found",
       o.later.length === 1 ? "Stage 3 tested this, allowing for other factors." : `Stage 3 tested this ${o.later.length} ways, allowing for other factors.`,
-      o.later.map((x) => `- **${x.verdict}**: ${md(x.what)} See [${x.id}](${page(x.id)}): ${md(byId[x.id]?.headline)}`).join("\n"));
+      o.later.map((x) => `- **${vl(x.verdict)}**: ${md(x.what)} See [${x.id}](${page(x.id)}): ${md(byId[x.id]?.headline)}`).join("\n"));
   }
   if (o.figures?.length) add("## Key figures", table(["Figure", "What it is"], o.figures.map((f) => [f.value, f.label]), [false, false]));
 
@@ -125,7 +126,7 @@ export function observationMarkdown(o, { atlas: A, chart = null, base = "" }) {
   }
   if (o.verdicts?.length) {
     add("## Signal by signal", "Each comparison on its own, as Stage 2 measured it, then allowing for the other factors, and the outcome.",
-      table(["What was compared", "On its own, then allowing for the rest", "Outcome"], o.verdicts.map((v) => [v.signal, v.detail || "", v.verdict]), [false, false, false]));
+      table(["What was compared", "On its own, then allowing for the rest", "Outcome"], o.verdicts.map((v) => [v.signal, v.detail || "", vl(v.verdict)]), [false, false, false]));
   }
 
   // the questions
@@ -177,7 +178,7 @@ export function observationMarkdown(o, { atlas: A, chart = null, base = "" }) {
   add("## Assumptions and limits",
     [...o.assumptions.map((a) => `- **Assumption:** ${md(a)}`), ...o.limits.map((a) => `- **Limit:** ${md(a)}`)].join("\n"));
   add("## What happens next", md(o.next),
-    o.later?.length ? md(`Stage 3 has since tested this, allowing for other factors: ${o.later.map((x) => `{${x.id}}, ${x.verdict}`).join("; ")}.`) : null);
+    o.later?.length ? md(`Stage 3 has since tested this, allowing for other factors: ${o.later.map((x) => `{${x.id}}, ${vl(x.verdict)}`).join("; ")}.`) : null);
 
   // related, then the notebook (before the explainers, so every term the copy uses is collected first)
   const related = (o.related || []).filter((r) => byId[r]);

@@ -280,6 +280,9 @@ def notebook_charts(nb: notebook.Observation, pick: list[int] | None, write: boo
     return out
 
 
+SECTIONS = yaml.safe_load((CONTENT / "sections.yaml").read_text(encoding="utf-8"))
+
+
 def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tuple[list[dict], list[str]]:
     """Every observation's plain-English layer joined to the notebook, and the problems found on the way."""
     problems, out = [], []
@@ -328,6 +331,7 @@ def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tu
             o["strength"] = nb.strength
             o["stage"] = nb.stage
             o["section"] = nb.section
+            o["section_plain"] = SECTIONS.get(nb.section, nb.section)  # the pages' plain title (ADR 0056, OQ34)
             o["chapter"] = nb.chapter
             o["original"] = nb.text
             o["plain"] = nb.plain

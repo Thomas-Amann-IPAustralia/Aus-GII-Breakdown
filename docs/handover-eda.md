@@ -2,7 +2,15 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**Latest (2026-11-06, later): the rest of each observation page is in plain English** (ADR 0056; OQ32 answered,
+**Latest (2026-11-06): plain labels done (OQ34, A41) and a pull request opened (OQ33).** Stage 3's outcome tags show
+plain names and 77 pages show plain section titles (`content/sections.yaml`; ADR 0056 addendum).
+- **Open issue, "Ask the atlas":** the chat is served by the Econ repository, which still holds the passages from
+  before ADR 0055 and 0056 (4,611; now 4,520). Until someone runs, in Econ, `econ atlas-ingest --ref <merged commit>`,
+  sets the sha in `config/atlas.yaml`, runs `econ index --kb atlas` and commits (Econ's `docs/deploy.md`), the chat
+  answers and quotes from the old, more technical wording, and its quotes will not match the pages. The owner asked
+  only for this note (A41); do it in a session with the Econ repository, after the merge.
+
+**Earlier (2026-11-06): the rest of each observation page is in plain English** (ADR 0056; OQ32 answered,
 A40: "Go ahead with #1. You must ensure that they still read well as plain english"). Done:
 - **Measured, not asserted:** each visible field scored for technical terms per 100 words, sentence length and reading
   ease; every item with a technical term, a sentence over 25 words or a number not on the page rewritten (about 880 of
