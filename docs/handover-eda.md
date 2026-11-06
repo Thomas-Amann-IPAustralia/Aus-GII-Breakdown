@@ -2,6 +2,26 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
+**Latest (2026-11-06): every observation has a plain-English reading, and the atlas leads with it** (ADR 0055). The
+owner: copy the plain-English versions in `analysis/GPT-Rephrase/` into the notebooks beside the originals (never
+editing or removing an original), reject one only if it harmfully oversimplifies or misinterprets, and have the
+website use them, with the technical version shown only in the step-by-step provenance. Done:
+- **Reviewed all 231** against their observations and their numbers against the page: 224 kept word for word, 7
+  corrected in one phrase each, with a dated note under the reading (U4, U5, U10, U28, U127, B23, M12; the table is in
+  ADR 0055). None rejected whole. The notebooks gain 1,803 lines and nothing else; every observation's own words,
+  section, evidence and charts read exactly as before. They were not re-run.
+- **Build:** `atlas.notebook` reads each reading (`plain`); the numbers rule covers it with rounding, shares as
+  percentages, millions and short year ranges allowed, and four derived numbers listed in `build.DERIVED`. The YAML's
+  `statement` and `points` stay (still checked) but are no longer sent to the pages.
+- **Pages:** the observation box, cards, search and Markdown copy use the reading; the notebook's own words close step
+  4 of "Follow the evidence" and appear nowhere else; "For analysts" keeps the notebook's charts and link. Bullets
+  quoted from the notebook no longer take the steps' numbering, and bold across a line break renders.
+- **Checks:** the strict build passes (231 pages); passages rebuilt (4,521); ruff clean; 99 tests pass, 44 skipped
+  (they need the lens tables, which this does not touch); the chat page's browser check passes; observation pages
+  checked in Chromium at 1,366 and 390 pixels with no console errors or overflow.
+- **For the owner:** OQ32 (rewrite the headlines and the rest of each page in the same style; settle "Australian ...
+  applications"), OQ33 (merge, and refresh the chat's evidence in Econ, which still holds the old passages).
+
 **Latest (2026-11-04): the atlas chat is built, measured, smoke-tested, adopted and published (A39)**
 (ADR 0054; the plan `docs/plan-atlas-chat.md`; Econ D-037 to D-039). Branch `ccr-eff4672f-j1qrjn` in both
 repositories, merged at the owner's word (A39), Econ's first. Done:

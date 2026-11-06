@@ -41,20 +41,24 @@ function paras(text, cls) {
 }
 /** The notebook's own markdown, for the "for analysts" view: bullets, numbered lists, bold and code. */
 function notebookMarkdown(md) {
+  // gather each item and paragraph across its wrapped lines first, so bold that spans a line break still renders
+  const blocks = [];
+  for (const raw of md.split("\n")) {
+    const b = raw.match(/^\s*(?:-|\d+\.)\s+(.*)$/);
+    const last = blocks[blocks.length - 1];
+    if (b) blocks.push({ kind: /^\s*\d/.test(raw) ? "ol" : "ul", text: b[1] });
+    else if (/^\s{2,}\S/.test(raw) && last && last.kind !== "p" && !last.end) last.text += ` ${raw.trim()}`;
+    else if (raw.trim() && last?.kind === "p" && !last.end) last.text += ` ${raw.trim()}`;
+    else if (raw.trim()) blocks.push({ kind: "p", text: raw.replace(/^#+\s*/, "") });
+    else if (last) last.end = true;
+  }
   const box = el("div.original");
   let list = null;
-  for (const raw of md.split("\n")) {
-    const line = raw.replace(/^#+\s*/, "");
-    const b = raw.match(/^\s*(?:-|\d+\.)\s+(.*)$/);
-    if (b) {
-      if (!list) { list = el(/^\s*\d/.test(raw) ? "ol" : "ul"); box.append(list); }
-      list.append(el("li", inline(b[1])));
-    } else if (/^\s{2,}\S/.test(raw) && list?.lastChild) {
-      list.lastChild.append(" ", ...inline(raw.trim()));
-    } else if (raw.trim()) {
-      list = null;
-      box.append(el("p", inline(line)));
-    } else list = null;
+  for (const x of blocks) {
+    if (x.kind === "p") { list = null; box.append(el("p", inline(x.text))); continue; }
+    if (!list || list.tagName.toLowerCase() !== x.kind) { list = el(x.kind); box.append(list); }
+    list.append(el("li", inline(x.text)));
+    if (x.end) list = null;
   }
   return box;
 }
@@ -104,7 +108,7 @@ function ocard(o) {
   const a = el("a.ocard", { href: `#/${o.id}` },
     el("div.meta", el("span.id", o.id), lensChip(o.lens, false), stageChip(o), aboutLabel(o)),
     el("h3", o.headline),
-    el("p", trim(plain(o.statement), 190)),
+    el("p", trim(plain(o.plain), 190)),
     el("div.meta", (o.questions || []).map((q) => el("span.chip.qchip", `Q${q.q}`)), o.chart ? el("span.chip", "Chart") : null,
       o.stage === 3 ? verdictsOf(o).map((v) => verdictTag(v, true)) : laterChip(o)));
   a.style.setProperty("--lc", lensColour(o.lens));
@@ -523,7 +527,7 @@ function observationsPage(params) {
 const hayCache = new Map();
 /** The text an observation is searched by. */
 function haystack(o) {
-  if (!hayCache.has(o.id)) hayCache.set(o.id, `${o.id} ${o.headline} ${plain(o.statement)} ${(o.points || []).map(plain).join(" ")} ${o.section} ${(o.revisits || []).map((r) => `${r.id} ${r.signal || ""}`).join(" ")}`.toLowerCase());
+  if (!hayCache.has(o.id)) hayCache.set(o.id, `${o.id} ${o.headline} ${o.plain} ${plain(o.original)} ${o.section} ${(o.revisits || []).map((r) => `${r.id} ${r.signal || ""}`).join(" ")}`.toLowerCase());
   return hayCache.get(o.id);
 }
 
@@ -597,8 +601,7 @@ function observationPage(id) {
   const chain = o.stage === 3 ? chainBlock(o) : null;
   const box = el("section.obs-box", { "aria-label": `Observation ${o.id}` },
     el("div.obs-label", icon("eye"), `Observation ${o.id} · ${o.strength}`),
-    el("p.statement", inline(o.statement)),
-    o.points?.length ? el("ul", o.points.map((p) => el("li", inline(p)))) : null);
+    el("p.statement", o.plain));
   const update = o.later?.length ? el("section.s3update", { "aria-label": "What Stage 3 found" },
     el("div.s3label", icon("route"), o.later.length === 1 ? "Stage 3 tested this with other factors held together" : `Stage 3 tested this ${o.later.length} ways, with other factors held together`),
     o.later.map((x) => el("div.s3item",
@@ -648,10 +651,14 @@ function observationPage(id) {
     `${(o.prep || []).length} step${(o.prep || []).length === 1 ? "" : "s"} for this observation, on the ${lower(L.name)} lens (${lower(L.unit)})`,
     [el("h4", "For this observation"), el("div.prep", prep),
       lensRepairs.length ? el("details.more", el("summary", icon("tool"), `Repairs made to the ${lower(L.name)} lens before any observation (${lensRepairs.length})`), el("div", el("div.prep", lensRepairs))) : null]);
+  // the observation as the notebook words it: shown here, in the trail, and nowhere else on the page (ADR 0055)
   const step4 = trailStep(4, "route", "From the data to the observation",
-    `${o.steps.length} reasoning steps. The steps are not findings; only the last box is.`,
+    `${o.steps.length} reasoning steps, then the observation in the notebook's own words. The steps are not findings; only the last box is.`,
     [el("ol.steps", o.steps.map((s) => el("li", el("span.slabel", "Step"), el("span", inline(s)))),
-      el("li.result", el("div.resultbox", el("span.slabel", `Which gives observation ${o.id}`), el("span", inline(o.statement)))))], true);
+      el("li.result", el("div.resultbox",
+        el("span.slabel", `Which gives observation ${o.id}, in the notebook's own words`),
+        notebookMarkdown(o.original),
+        el("p.small.muted", inline(`Quoted from section ${o.section.replace(/`/g, "")} of the Stage ${o.stage} notebook, where the plain-English reading at the top of this page sits beside it.`)))))]);
   const trail = el("section.block", el("h2", icon("route"), "Follow the evidence"),
     el("p.block-intro", "From the publisher's file to this observation, in four steps. Open any step for the detail."),
     el("div.trail", step1, step2, step3, step4));
@@ -662,14 +669,14 @@ function observationPage(id) {
   const next = el("section.block", el("h2", icon("arrow"), "What happens next"), el("div.notes", note("next", o.next), done));
 
   const nbCharts = o.notebook_charts || [];
+  const nbLink = el("p.small", el("a", { href: A.notebooks?.[o.stage] || A.notebook, rel: "noopener noreferrer", target: "_blank" }, "Open the notebook on GitHub"), " · the code that builds every lens is in analysis/eda/build.py.");
   const analysts = el("section.block",
-    el("details.more",
-      el("summary", icon("book"), "For analysts: the notebook's own words and charts"),
+    nbCharts.length ? el("details.more",
+      el("summary", icon("book"), nbCharts.length === 1 ? "For analysts: the notebook's own chart" : "For analysts: the notebook's own charts"),
       el("div",
-        el("p.small.muted", inline(`Quoted from section ${o.section.replace(/`/g, "")} of the Stage ${o.stage} notebook. Reading it is optional: everything above says the same in plain English.`)),
-        notebookMarkdown(o.original),
+        el("p.small.muted", "As drawn in the notebook, above the observation. The observation in the notebook's own words is the last box of step 4."),
         ...nbCharts.map((c) => el("figure.nbimg", el("img", { src: c.src, alt: `A chart from the notebook, above observation ${o.id}`, loading: "lazy", decoding: "async" }), el("figcaption", "The chart as drawn in the notebook."))),
-        el("p.small", el("a", { href: A.notebooks?.[o.stage] || A.notebook, rel: "noopener noreferrer", target: "_blank" }, "Open the notebook on GitHub"), " · the code that builds every lens is in analysis/eda/build.py."))));
+        nbLink)) : nbLink);
 
   const related = (o.related || []).filter((r) => byId[r]);
   const rel = related.length ? el("section.block", el("h2", "Related observations"), el("div.olist.boxed", related.map((r) => orow(byId[r])))) : null;

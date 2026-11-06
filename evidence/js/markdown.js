@@ -2,7 +2,8 @@
 // the page says, in the page's order, so the copy stands on its own. The statement, points and key figures; the
 // chart's numbers as a table (every view, always: a copy cannot carry the chart, so it carries the table instead);
 // the four steps of the evidence trail with each source's publisher, licence, date copied, tables and fingerprints;
-// the assumptions, limits and next step; the explainers for every term used; and the notebook's own words.
+// the assumptions, limits and next step; the explainers for every term used; and the notebook's own charts. The
+// observation is its plain-English reading; the notebook's own words are the last item of step 4 (ADR 0055).
 // Nothing here touches the document, so the tests can run it under Node (tests/test_atlas.py).
 
 import { chartTable, viewSpec } from "./tables.js";
@@ -92,7 +93,7 @@ export function observationMarkdown(o, { atlas: A, chart = null, base = "" }) {
   }
 
   // the observation
-  add(`## Observation ${o.id} (${o.strength})`, md(o.statement), o.points?.length ? o.points.map((p) => `- ${md(p)}`).join("\n") : null);
+  add(`## Observation ${o.id} (${o.strength})`, o.plain);
   if (o.later?.length) {
     add("## What Stage 3 found",
       o.later.length === 1 ? "Stage 3 tested this with other factors held together." : `Stage 3 tested this ${o.later.length} ways, with other factors held together.`,
@@ -169,7 +170,8 @@ export function observationMarkdown(o, { atlas: A, chart = null, base = "" }) {
   add(`### Step 4 of 4: From the data to the observation (${plural(o.steps.length, "reasoning step")})`,
     "The steps are not findings; only the last is.",
     o.steps.map((s, i) => `${i + 1}. ${md(s)}`).join("\n"),
-    `**Which gives observation ${o.id}:** ${md(o.statement)}`);
+    `**Which gives observation ${o.id}, in the notebook's own words** (section ${section} of the Stage ${o.stage} notebook${A.notebooks?.[o.stage] || A.notebook ? `, [open it on GitHub](${A.notebooks?.[o.stage] || A.notebook})` : ""}; the plain-English reading above sits beside it there):`,
+    String(o.original || "").trim().split("\n").map((l) => `> ${l.replace(/^#+\s*/, "")}`.trimEnd()).join("\n"));
 
   // honesty and next
   add("## Assumptions and limits",
@@ -181,10 +183,11 @@ export function observationMarkdown(o, { atlas: A, chart = null, base = "" }) {
   const related = (o.related || []).filter((r) => byId[r]);
   if (related.length) add("## Related observations", related.map((r) => `- [${r}](${page(r)}): ${md(byId[r].headline)}`).join("\n"));
   const nb = A.notebooks?.[o.stage] || A.notebook;
-  add("## For analysts: the notebook's own words",
-    `Quoted from section ${section} of the Stage ${o.stage} notebook${nb ? ` ([open it on GitHub](${nb}))` : ""}. Everything above says the same in plain English. The code that builds every lens is in \`analysis/eda/build.py\`.`,
-    String(o.original || "").trim().split("\n").map((l) => `> ${l.replace(/^#+\s*/, "")}`.trimEnd()).join("\n"),
-    (o.notebook_charts || []).map((c, i) => `![Chart ${i + 1} from the notebook, above observation ${o.id} (cell ${c.cell})](${abs(c.src)})`).join("\n\n"));
+  if (o.notebook_charts?.length) {
+    add("## For analysts: the notebook's own charts",
+      `As drawn above the observation in section ${section} of the Stage ${o.stage} notebook${nb ? ` ([open it on GitHub](${nb}))` : ""}. The code that builds every lens is in \`analysis/eda/build.py\`.`,
+      o.notebook_charts.map((c, i) => `![Chart ${i + 1} from the notebook, above observation ${o.id} (cell ${c.cell})](${abs(c.src)})`).join("\n\n"));
+  }
 
   // the explainers: every term the page and this copy use
   for (const m of JSON.stringify(o).matchAll(/\[\[([^\]|]+)/g)) terms.add(m[1]);
