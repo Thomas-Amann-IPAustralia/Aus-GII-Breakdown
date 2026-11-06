@@ -2,7 +2,25 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**Latest (2026-11-06): every observation has a plain-English reading, and the atlas leads with it** (ADR 0055). The
+**Latest (2026-11-06, later): the rest of each observation page is in plain English** (ADR 0056; OQ32 answered,
+A40: "Go ahead with #1. You must ensure that they still read well as plain english"). Done:
+- **Measured, not asserted:** each visible field scored for technical terms per 100 words, sentence length and reading
+  ease; every item with a technical term, a sentence over 25 words or a number not on the page rewritten (about 880 of
+  3,379). Technical terms 2.47 to 0.04 per 100 words (Stage 3 tables 6.27 to 0); reading ease 67.1 both (it counts
+  syllables); headlines 18 to 14 words on average, at most 21.
+- **Headlines:** all 231 rewritten, eight corrected on a second pass for a lost qualifier or a causal reading.
+- **Conventions:** "allowing for", "likely range", "typical", "summary measures", "comparison months", "patterns worth
+  following up", "original applicant", financial years as "2025–26"; the page code's Stage 3 labels follow.
+- **"Australian ... applications":** 28 readings now say "applications in Australia" or "Australians'", each with a
+  dated note; "an Australian patent" (a right granted here) stays. Original observations unchanged (re-read).
+- **Numbers rule:** now every visible field, with the readings' rounding allowance and financial years; it found
+  numbers on 31 pages not on their notebook's page, each fixed. Three broken "held" lists repaired (M14, M22, M23).
+- **Checks:** strict build passes; passages 4,519; ruff clean; 99 tests pass, 44 skipped; Chromium at 1,366 and 390
+  pixels, no errors or overflow. Edits were made in place in the YAML, so the diff is sentence by sentence.
+- **For the owner:** OQ33 (merge and refresh Econ), OQ34 (plainer display names for Stage 3's outcomes and for the
+  notebooks' section titles on the pages).
+
+**Earlier (2026-11-06): every observation has a plain-English reading, and the atlas leads with it** (ADR 0055). The
 owner: copy the plain-English versions in `analysis/GPT-Rephrase/` into the notebooks beside the originals (never
 editing or removing an original), reject one only if it harmfully oversimplifies or misinterprets, and have the
 website use them, with the technical version shown only in the step-by-step provenance. Done:

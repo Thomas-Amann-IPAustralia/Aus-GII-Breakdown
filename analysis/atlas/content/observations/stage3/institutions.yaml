@@ -5,7 +5,7 @@
 - id: M23
   lens: institutions
   about: system
-  headline: Among universities, size, citations, patent-cited research and grant success are largely one measure of research intensity
+  headline: Size, citations and grants overlap so much among universities that none stands out for patenting
   statement: >-
     Among about 40 universities, each research measure goes with more patents per work on its own, but held together
     none does so in both periods: size, citations, research that patents cite and ARC grant success are largely one
@@ -13,9 +13,10 @@
     deviation) but not in 2017 to 2023 (1.157); size holds only in the later period.
   figures:
     - value: "1.771 and 1.157"
-      label: patents per work per standard deviation of the patent-cited share, held together (alone 1.701 and 1.422)
+      label: "patents per work for each step up in the share of work cited by patents, allowing for the others (alone:
+             1.701 and 1.422)"
     - value: "0.869 and 1.720"
-      label: size (works), held together, in the two periods
+      label: "size (number of works), allowing for the other measures, in the two periods"
     - value: "0.292 and 0.507"
       label: citations and the patent-cited share against patents per work, compared at a fixed age (2017 to 2023)
   points:
@@ -30,22 +31,22 @@
     - id: B45
       signal: "Universities' patenting"
       verdict: mixed
-      what: >-
-        Each measure goes with patents per work alone, but held together none does in both periods: the patent-cited
-        share holds in 2010 to 2016 only (1.771, then 1.157), size in 2017 to 2023 only (1.720).
-  held: [size (works, log), citations per work (age-compared), the share of works cited by patents (age-compared), ARC grants per 1,000 works]
+      what: "Each measure goes with more patents per work on its own. Allowing for the others, none does in both
+            periods. Work cited by patents stands out in 2010 to 2016 only (1.771, then 1.157), and size in 2017 to
+            2023 only (1.720)."
+  held: ["size (number of works)", "citations per work, compared at the same age", "the share of works cited by patents, compared at the same age", "ARC grants per 1,000 works"]
   verdicts:
     - signal: Share of works cited by patents
-      detail: 1.701 and 1.422 alone; 1.771 and 1.157 held together
+      detail: "1.701 and 1.422 on its own; 1.771 and 1.157 allowing for the others"
       verdict: mixed
     - signal: Size (works)
-      detail: 1.599 and 1.594 alone; 0.869 and 1.720 held together
+      detail: "1.599 and 1.594 on its own; 0.869 and 1.720 allowing for the others"
       verdict: mixed
     - signal: Citations per work
-      detail: 1.419 and 1.151 alone; 1.145 and 0.994 held together
+      detail: "1.419 and 1.151 on its own; 1.145 and 0.994 allowing for the others"
       verdict: not detected once held
     - signal: ARC grants per 1,000 works
-      detail: 1.420 and 1.389 alone; 0.979 and 0.826 held together
+      detail: "1.420 and 1.389 on its own; 0.979 and 0.826 allowing for the others"
       verdict: not detected once held
   chart:
     type: effect
@@ -81,18 +82,20 @@
       how: Grant success and citations add nothing beyond research intensity as conditions for a university's patenting.
   sources: [openalex, openalex_works, reliance_on_science, arc_grants, iprapid, ror]
   prep:
-    - what: Each university's standard patents over a period as a negative binomial model with its works as the [[exposure|exposure]] (so the result is patents per work).
+    - what: "Each university's standard patents in a period, modelled as a count against its number of works, so the
+            result is [[exposure|patents per work]]."
       why: Compares rates without dividing every measure by the same number.
     - what: Citations per work and the share of works cited by patents are each compared with works of the same publication year ([[fixed-age|fixed age]]).
-      why: A 2012 work has had longer to be cited than a 2021 one; the final review asked for fixed-age windows.
+      why: "Older works have had longer to be cited than newer ones. So each work is compared with works of the same
+           age, as the final review asked."
   steps:
     - Model patents per work against each measure alone.
-    - Hold all four together, and read each rate ratio.
+    - "Put all four measures in one model and read how much each goes with patents per work, allowing for the others."
     - Repeat in the other period, a stability check of the same universities.
   assumptions:
     - The reviewed list of universities' names and ABNs links each to its patents (unreviewed by the sector, OQ11).
   limits:
-    - About 40 universities; leads at most.
+    - "About 40 universities, so these are patterns to follow up, not conclusions."
   next: >-
     The tenth early signal: the sector review of the institutions link (OQ11). {M38} reads every kind of institution.
   terms: [negative-binomial, exposure, fixed-age, rate-ratio, standard-deviation, stability-check, verdict-words]
@@ -101,7 +104,7 @@
 - id: M24
   lens: institutions
   about: system
-  headline: At the same research spend, more patents are not seen to go with more licences or licence income
+  headline: At the same research budget, more patents do not go with more licence income
   statement: >-
     With research spend as the [[exposure|exposure]] rather than a shared divisor, most of Stage 2's commercialisation
     links are not detected. Disclosures go with patents (1.242 per doubling), and patents with start-ups (1.321), in
@@ -113,7 +116,7 @@
     - value: "1.187 and 1.170"
       label: licence income per doubling of patents, not detected in either period
     - value: "0.617 and 0.615"
-      label: "Stage 2's correlations of disclosures with patents, on a shared denominator"
+      label: "Stage 2's correlation of disclosures with patents, with both divided by the same research budget"
   points:
     - "64 institutions (2004 to 2009) and 61 to 66 (2010 to 2015) with $10 million or more of research spend."
     - "**Start-ups against standard patents:** 0.937, then 1.321. **Licences executed:** 1.009 and 1.111."
@@ -123,10 +126,9 @@
     - id: B62
       signal: Disclosures, patents and licences
       verdict: mixed
-      what: >-
-        With research spend as the exposure, disclosures go with patents (1.242) and patents with start-ups (1.321) in
-        2010 to 2015 only; licences and licence income are not detected in either period. B62's correlations were
-        largely the shared denominator.
+      what: "Comparing institutions with the same research spend, disclosures go with patents (1.242) and patents with
+            start-ups (1.321) in 2010 to 2015 only. Licences and licence income show no link in either period. Most of
+            B62's correlations came from dividing every measure by the same budget."
   held: [research spend (as the exposure)]
   verdicts:
     - signal: Standard patents against invention disclosures
@@ -136,10 +138,10 @@
       detail: 0.937, then 1.321
       verdict: mixed
     - signal: Licences executed against standard patents
-      detail: 1.009 and 1.111; both intervals include 1
+      detail: "1.009 and 1.111; both likely ranges include no difference"
       verdict: not detected once held
     - signal: Licence income against standard patents
-      detail: 1.187 and 1.170; both intervals include 1
+      detail: "1.187 and 1.170; both likely ranges include no difference"
       verdict: not detected once held
   chart:
     type: effect
@@ -160,10 +162,13 @@
     note: A ratio of 1.5 per doubling would mean twice the disclosures goes with 1.5 times the patents at the same research spend.
   questions:
     - q: 2
-      how: At the same research spend, institutions' patents are not seen to go with licence income, so patent counts are a weak sign of commercialisation here (the tenth early signal).
+      how: "Among institutions with the same research spend, more patents are not seen to go with more licence income.
+           So here a count of patents is a weak sign of commercialisation (the tenth early signal)."
   sources: [nsrc, iprapid, ror]
   prep:
-    - what: Research expenditure as the exposure of a negative binomial model (the rate is per research dollar), with the other measure as a factor on its own scale (log2, so the ratio is per doubling); licence income as a [[tweedie|Tweedie model]].
+    - what: "Each measure is modelled against research spending, so results are per research dollar, and each
+            comparison is read per doubling of the other measure. Licence income, which is often zero, uses a model
+            suited to that ([[tweedie|Tweedie]])."
       why: Stage 2 correlated six measures each divided by the same research spend, so an institution with low reported spend was high on all six.
   steps:
     - Model each count per research dollar against the other measure, per doubling.
@@ -171,7 +176,8 @@
   assumptions:
     - The NSRC's reported research spend is comparable across institutions.
   limits:
-    - About 60 institutions; leads at most; the institutions link is unreviewed (OQ11).
+    - "Only 61 to 66 institutions, so these are patterns to follow up, not conclusions; the list of institutions'
+      names is not yet reviewed (OQ11)."
   next: >-
     The tenth early signal: commercialisation data by field, and the sector review (OQ11).
   terms: [exposure, rate-ratio, nsrc, tweedie, verdict-words]
@@ -180,7 +186,7 @@
 - id: M38
   lens: institutions
   about: system
-  headline: Across every kind of institution, research that patents cite goes with the institution's own patenting, kind and size held
+  headline: Institutions whose research patents cite file more patents themselves, even among similar ones
   statement: >-
     Across universities, medical research institutes and other institutions with 1,000 or more works, research that
     patents cite goes with more of the institution's own patents and provisionals per work, with kind, size, citations
@@ -188,7 +194,8 @@
     patents' citations from patents with an Australian party goes with neither once size and kind are held.
   figures:
     - value: "2.307 and 1.644"
-      label: standard patents per work, per standard deviation of the patent-cited share, everything held
+      label: "standard patents per work for each step up in the share of work cited by patents, allowing for
+             everything else"
     - value: "2.493 and 1.695"
       label: provisionals per work, everything held
     - value: "69 and 84"
@@ -206,15 +213,15 @@
     - id: B44
       signal: Research that patents cite
       verdict: holds
-      what: >-
-        Across every kind of institution, the patent-cited share goes with the institution's own patents per work with
-        kind, size, citations and NHMRC held (2.307 and 1.644 per standard deviation).
+      what: "Across every kind of institution, research cited by patents goes with more of the institution's own
+            patents per work. That holds allowing for type, size, citations and health research grants (2.307 and
+            1.644 for each step up)."
     - id: B46
       signal: Australian-linked citations
       verdict: not detected once held
-      what: >-
-        The Australian-linked share of US patents' citations goes with neither patents per work (0.161 and 0.135 held)
-        nor the patent-cited share once size and kind are held: its later link was size and kind.
+      what: "The share of US citations coming from patents with an Australian party shows no link, once size and type
+            are allowed for. That holds for patents per work (0.161 and 0.135) and for work cited by patents. Its
+            later link came from size and type."
   held: [the kind of institution, size (works), citations per work (age-compared), NHMRC grants per 1,000 works]
   verdicts:
     - signal: Standard patents per work against the patent-cited share
@@ -252,7 +259,8 @@
       how: Part of the tenth early signal; the Australian-linked share of US patents' citations is not a separate signal once size and kind are known.
   sources: [ror, openalex, openalex_works, reliance_on_science, nhmrc_grants, google_patents_inventors, iprapid]
   prep:
-    - what: Every institution with 1,000 or more works in a period (universities, medical research institutes and the rest together); standard patents and provisionals as negative binomial models with works as the exposure.
+    - what: "Every institution with 1,000 or more works in a period, of every type together. Standard patents and
+            provisionals are each modelled as counts against the number of works."
       why: M23 took universities only; Stage 2's B44 was across every kind.
   steps:
     - Model patents per work against the age-compared patent-cited share alone.
@@ -261,7 +269,8 @@
   assumptions:
     - The kind of institution (university, medical research institute, other) is well recorded in the research register.
   limits:
-    - The institutions link is unreviewed (OQ11); 69 to 84 institutions, leads at most.
+    - "The list of institutions' names is not yet reviewed (OQ11), and 69 to 84 institutions give patterns to follow
+      up, not conclusions."
   next: >-
     The tenth early signal: the sector review of the institutions link (OQ11).
   terms: [negative-binomial, exposure, fixed-age, rate-ratio, standard-deviation, verdict-words]

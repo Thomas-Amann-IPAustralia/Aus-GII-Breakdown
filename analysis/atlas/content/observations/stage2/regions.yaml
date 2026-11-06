@@ -4,7 +4,7 @@
 - id: B27
   lens: regions
   about: system
-  headline: Across postal areas the kinds of IP move together, and with education and occupation more than income
+  headline: Places that file one kind of IP file the others too, more in line with education than income
   statement: >-
     Postal areas that file more standard patents per person also file more provisionals (rank [[correlation]] 0.765)
     and trade marks (0.693). Of the four SEIFA indexes, education and occupation goes with filing most (0.675 with
@@ -12,7 +12,7 @@
     with standard patents at 0.287.
   figures:
     - value: "128"
-      label: distinct leads, 79 of them about IP or R&D
+      label: "distinct patterns worth following up, 79 of them about IP or R&D"
     - value: "0.675"
       label: the education and occupation index with firms with a filing linked, per business
     - value: "0.962"
@@ -50,23 +50,23 @@
   sources: [abs_regions, abs_census, abr, iprapid, rdti, linkage]
   prep:
     - what: Postal areas split into two halves by a fixed rule (1,377 and 1,264 areas).
-      why: Places have no second period in the lens, so a random [[halves|half]] is the [[replication|replication]] sample.
+      why: "Places have no second period to check against, so a random [[halves|half]] of the areas is held back as
+           the [[replication|second sample]]."
   steps:
-    - Screen every pair of the lens's own columns in one half, and check it in the other.
+    - "Test every pair of the place measures in one half of the areas, and check each in the other half."
     - Read which kinds of IP go together, and which area characteristics go with each.
   assumptions:
     - A filer's postcode places its filing ({U47}).
   limits:
     - "Between places, not people: an area's residents and its filers need not be the same people."
-  next: >-
-    The attached indicators are screened in {B28}; advantage and remoteness are modelled in {B29}.
+  next: "The wider local measures are tested in {B28}; advantage and remoteness are modelled in {B29}."
   terms: [screen, irsad, ecological, postal-area]
   related: [B28, B29]
 
 - id: B28
   lens: regions
   about: system
-  headline: Most attached indicators go with filing along one broad gradient of advantage, education and business density
+  headline: Most local measures go with filing along one broad line of advantage and education
   statement: >-
     6,406 area indicators from five sources were set against six filing rates: 24,947 pairs are leads in both halves.
     Standard patents per person go most with financial and professional businesses per resident, and are lowest where
@@ -74,9 +74,9 @@
     completion.
   figures:
     - value: "6,406"
-      label: indicators screened against filing
+      label: "local measures tested against filing"
     - value: "24,947"
-      label: leads in both halves
+      label: "patterns found in both halves"
     - value: "0.72"
       label: professional, scientific and technical businesses per resident with trade marks per person
   points:
@@ -108,8 +108,7 @@
       how: Warns against reading any one area indicator as a driver of filing.
   sources: [abs_census, phidu, abs_regions, abs_cabee, cer, iprapid]
   prep:
-    - what: Each indicator of the long companion table (`region_indicators`) set against the lens's IP rates only,
-        not against every other indicator.
+    - what: "Each measure in the wider local data is set against the IP rates only, not against every other measure."
       why: Millions of indicator-to-indicator pairs would serve no question.
   steps:
     - Measure each indicator against each of six IP rates in one half; keep those past the threshold and the correction.
@@ -118,16 +117,16 @@
   assumptions:
     - The indicators are published for the same areas, or apportioned to them, as each source describes.
   limits:
-    - So many indicators move together that none can be singled out; Stage 3 first reduces them to a few components.
-  next: >-
-    Stage 3 reduces the indicators to a few components before any is read as a driver.
+    - "So many measures move together that none can be singled out. Stage 3 first boils them down to a few summary
+      measures."
+  next: "Stage 3 boils the measures down to a few summary measures before reading any one as a driver."
   terms: [census, cabee, multiple-testing, ecological]
   related: [B27, B29]
 
 - id: B29
   lens: regions
   about: system
-  headline: Filing rises steeply with advantage and falls with remoteness; both hold when read together, in both halves of the areas
+  headline: Filing rises steeply with local advantage and falls with remoteness
   statement: >-
     For each [[standard-deviation]] of advantage (the IRSAD score), a postal area files 1.717 times as many standard
     patents per person (1.857 in the second half; 1.884 with areas pooled into larger SA3s). Inner regional areas file
@@ -135,7 +134,7 @@
     0.382 of the cities' rate at the same advantage (that combined reading was not repeated for SA3s).
   figures:
     - value: "1.717"
-      label: standard patents, the rate ratio per standard deviation of advantage
+      label: "standard patents: how many times the rate, for each step up in advantage"
     - value: "0.259"
       label: inner regional areas' rate against major cities'
     - value: "1.442"
@@ -172,13 +171,14 @@
     source: IP RAPID; ABS SEIFA and remoteness (lens regions)
     marks: {y: [{at: 1, label: No difference}]}
   prep:
-    - what: Area counts of applications modelled with the area's people as the exposure, in a negative binomial model
-        that allows for extra spread.
+    - what: "Each area's count of applications is modelled against its number of residents, with a method that allows
+            for extra spread between areas."
       why: Counts in small areas vary far more than chance alone would make them ({U53}).
   steps:
-    - Model each type's count on the area's IRSAD score, then on remoteness, then on both.
-    - Repeat in the second half and pooled into SA3s.
-    - Compare pooled rates by decile of advantage to see the shape.
+    - "Model each kind of filing against the area's [[irsad|advantage score]], then against remoteness, then against
+      both."
+    - "Repeat in the second half of the areas, and with areas pooled into larger districts."
+    - "Compare pooled rates by tenth of advantage to see the shape."
   assumptions:
     - Applications are counted at the filer's postcode, and people from the Census.
   limits:
@@ -193,7 +193,7 @@
 - id: B30
   lens: regions
   about: system
-  headline: The advantage gradient is not one firm's; it is at least as strong with each area's largest filer taken out
+  headline: The link with advantage does not depend on each area's biggest filer
   statement: >-
     Each area's largest filer holds 29.2% of the 24,879 Australian standard patents placed in 2,528 areas. Without
     it, the [[rate-ratio|rate ratio]] per standard deviation of advantage is 1.897 (interval 1.74 to 2.067), against
@@ -245,7 +245,7 @@
 - id: B31
   lens: regions
   about: system
-  headline: Areas with more finance, property and professional businesses file more per business; manufacturing's share makes no difference
+  headline: Areas with more finance and professional businesses file more per business
   statement: >-
     Across postal areas, organisations' standard patents per 1,000 businesses go with the share of businesses in
     finance (0.441), rental and real estate (0.439) and professional services (0.378), and against construction
@@ -301,7 +301,7 @@
 - id: B58
   lens: regions
   about: system
-  headline: Higher-income areas file more, and individuals there file more for each person who runs a business
+  headline: Richer areas file more, even per person running a business
   statement: >-
     Across postal areas (2023-24), taxable income per individual goes with standard patents per 10,000 people at a
     rank [[correlation]] of 0.384 and with trade marks at 0.453. The share of people with business income goes with
@@ -354,7 +354,7 @@
 - id: B59
   lens: regions
   about: system
-  headline: Areas that gained graduates or income over the decade to 2021 were not seen to gain filing
+  headline: Areas that gained graduates or income over a decade were not seen to gain filing
   statement: >-
     The median area's share of people with a bachelor degree or higher rose 5.9 points from 2011 to 2021, and its
     residents' standard patents per person fell. Gaining graduates goes with the change in filing at -0.065 (patents)
@@ -362,7 +362,7 @@
     of the areas) and all negative: [[no-association|no association detected]].
   figures:
     - value: "5.9 points"
-      label: rise in the median area's share of graduates
+      label: "rise in the typical area's share of graduates"
     - value: "-0.065 and -0.104"
       label: gaining graduates with the change in patents and trade marks
   points:
@@ -396,14 +396,13 @@
         design that comes after Stage 3.
   sources: [abs_census_tsp, iprapid, abs_regions]
   prep:
-    - what: The Census time series for 2011, 2016 and 2021 apportioned to postal areas ({U118}), in areas of 1,000 or
-        more people.
+    - what: "Three Censuses, from 2011 to 2021, lined up to postal areas ({U118}), in areas of 1,000 or more people."
       why: Changes need the same measure in the same areas at two dates.
   steps:
     - Measure each area's change in graduates and income from 2011 to 2021, and in filing between the matching five-year windows.
     - Relate the changes, in both halves.
   assumptions:
-    - Apportioning SA2s to postal areas keeps the areas comparable across Censuses.
+    - "Sharing out small statistical areas to postal areas keeps the areas comparable across Censuses."
   limits:
     - A decade may be too short for education to reach invention.
   next: >-

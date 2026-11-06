@@ -64,7 +64,10 @@ def test_numbers_rule_catches_a_number_the_notebook_does_not_show():
     )
     ok = {"headline": "4,368,006 rights", "statement": "53.5% are trade marks", "figures": [], "points": []}
     assert build.check_numbers(ok, nb) == []
-    assert build.check_numbers({**ok, "points": ["about 4.4 million"]}, nb) == ["4.4"]
+    # the words may round as a plain-English reading may (ADR 0056), but not invent
+    assert build.check_numbers({**ok, "points": ["about 4.4 million"]}, nb) == []
+    assert build.check_numbers({**ok, "points": ["about 4.5 million"]}, nb) == ["4.5"]
+    assert build.check_numbers({**ok, "steps": ["in 2007–08 and 1999–2000"]}, nb) == ["08", "1999", "2000", "2007"]
     # a stage's name is not a figure, nor is a chart's styling; a chart's data and a verdict row's figures are
     assert build.check_numbers({**ok, "points": ["Stage 2 found it; Stages 1 and 3 did not"]}, nb) == []
     chart = {"type": "bar", "x": {"values": ["a"]}, "series": [{"name": "s", "colour": 3, "data": [53.5]}]}

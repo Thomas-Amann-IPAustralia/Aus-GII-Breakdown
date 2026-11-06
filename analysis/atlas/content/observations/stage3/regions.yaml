@@ -5,7 +5,7 @@
 - id: M13
   lens: regions
   about: system
-  headline: Places' characteristics repeat each other; one dimension, advantage, carries half of how areas differ
+  headline: Most local measures repeat each other, and one dimension, advantage, captures half the differences
   statement: >-
     Across 2,525 postal areas, the measures of advantage, income and education can largely be predicted from one
     another. Summarised as [[principal-components|components]], the first, an advantage gradient on which every
@@ -13,11 +13,12 @@
     indicators (income, education, advantage) are mostly one measure: none should be read as the one that matters.
   figures:
     - value: "49.5%"
-      label: of the areas' variation carried by the first component, advantage
+      label: "of the differences between areas captured by the first summary measure, advantage"
     - value: "82.3%"
-      label: carried by the first four components together
+      label: "captured by the first four summary measures together"
     - value: "86.0"
-      label: variance inflation of IRSAD (above 10 means largely predictable from the others)
+      label: "how far the advantage score can be predicted from the other measures (above 10 means largely
+             predictable)"
   points:
     - "**[[variance-inflation|Variance inflation]]:** IRSAD 86.0, IRSD 32.1, IEO 25.0, median household income 19.6,
       IER 13.0, the share with a degree 11.4: all above 10. Businesses per person (1.6) and R&D claimants per 1,000
@@ -31,15 +32,13 @@
     - id: B27
       signal: Advantage, education and income go together
       verdict: refined
-      what: >-
-        The advantage measures repeat each other (variance inflation 11.4 to 86.0), and one component carries 49.5% of
-        the areas' variation: B27's single measures are mostly one measure.
+      what: "The measures of advantage repeat each other, and one summary measure captures 49.5% of the differences
+            between areas. B27's single measures are mostly one measure."
     - id: B28
-      signal: Most attachments follow one gradient
+      signal: "Most local measures follow one line of advantage"
       verdict: refined
-      what: >-
-        The gradient B28 saw is the first component, advantage, carrying 49.5% of the variation; {M32} reads every
-        attachment beyond it.
+      what: "The pattern B28 saw is the first summary measure, advantage, which captures 49.5% of the differences.
+            {M32} reads every local measure beyond it."
   held: ["nothing: a summary of how 13 characteristics of places repeat each other"]
   chart:
     type: bar
@@ -59,25 +58,27 @@
       how: Shows that where filing happens cannot be put down to one characteristic of a place (income, or education); they move together as one gradient.
   sources: [abs_regions, abs_census, abs_cabee, rdti, linkage]
   prep:
-    - what: Thirteen characteristics of each area with 100 or more residents and every characteristic, some on a log scale (incomes, rent, businesses per person).
+    - what: "Thirteen characteristics of each area with 100 or more residents and every characteristic recorded.
+            Incomes, rent and businesses per person are put on a proportional scale."
       why: The same characteristics Stage 2 read one at a time.
   steps:
-    - Measure how far each characteristic can be predicted from the others (variance inflation).
-    - Summarise the thirteen as principal components, each a weighted mix of all of them, ordered by how much of the variation it carries.
-    - Name each component by the characteristics that weigh most in it.
+    - "Measure how far each characteristic can be predicted from the others."
+    - "Sum up the thirteen as a few summary measures, each a weighted mix of all of them, in order of how much of the
+      differences each captures."
+    - "Name each summary measure by the characteristics that weigh most in it."
   assumptions:
-    - A component is a summary, not a thing in the world; its name is the analyst's reading of its weights.
+    - "A summary measure is a summary, not a thing in the world; its name is the analyst's reading of what weighs most
+      in it."
   limits:
     - Between areas, not people.
-  next: >-
-    The components are held in {M14} and {M31}, so that each signal is read beyond the advantage gradient.
+  next: "The summary measures are allowed for in {M14} and {M31}, so that each pattern is read beyond advantage."
   terms: [principal-components, variance-inflation, irsad, ecological]
   related: [M14, M16, B27]
 
 - id: M14
   lens: regions
   about: system
-  headline: Beyond advantage and remoteness, business density and places with more degrees than their resources suggest go with filing
+  headline: Beyond advantage, areas with more businesses or more graduates file more patents
   statement: >-
     With the four components and remoteness held together, the advantage gradient is still there but weaker: each
     [[standard-deviation|standard deviation]] of advantage goes with 1.256 times the standard patent rate, against
@@ -86,9 +87,9 @@
     Remoteness stays.
   figures:
     - value: "1.256 and 1.341"
-      label: standard patents per standard deviation of advantage, held together (raw 1.932 and 2.135)
+      label: "standard patents for each step up in advantage, allowing for the rest (on its own: 1.932 and 2.135)"
     - value: "0.518"
-      label: inner regional areas' rate against major cities', components held (first half)
+      label: "inner regional areas' rate against major cities', allowing for the summary measures (first half)"
     - value: "0.713"
       label: extra spread beyond chance with every factor held (1.253 with advantage alone)
   points:
@@ -104,20 +105,19 @@
     - id: B29
       signal: Advantage and remoteness
       verdict: weakened
-      what: >-
-        With the four components and remoteness held, advantage goes with 1.256 and 1.341 times the standard patent
-        rate per standard deviation, against 1.932 and 2.135 alone (35% and 39% left on a log scale); business density
-        and degrees beyond resources also go with filing, and remoteness stays.
-  held: [the four components (advantage, age and business density, degrees beyond resources, rent), remoteness]
+      what: "Allowing for the four summary measures and remoteness, each step up in advantage goes with 1.256 and
+            1.341 times the patent rate, against 1.932 and 2.135 on its own. Business density and more degrees than
+            incomes suggest also go with filing, and remoteness stays."
+  held: ["the four summary measures of a place (advantage; age and business density; degrees beyond what incomes suggest; rent)", remoteness]
   verdicts:
     - signal: Standard patents, advantage
-      detail: 1.932 and 2.135 alone; 1.256 and 1.341 held together (35% and 39% left)
+      detail: "1.932 and 2.135 on its own; 1.256 and 1.341 allowing for the rest (35% and 39% left)"
       verdict: weakened
     - signal: Trade marks, advantage
-      detail: 1.830 and 1.988 alone; 1.362 and 1.386 held together (51% and 48% left)
+      detail: "1.830 and 1.988 on its own; 1.362 and 1.386 allowing for the rest (51% and 48% left)"
       verdict: mixed
     - signal: Designs and provisionals, advantage
-      detail: 1.186 to 1.313 held together (26% to 44% left)
+      detail: "1.186 to 1.313 allowing for the rest (26% to 44% left)"
       verdict: weakened
   chart:
     type: effect
@@ -157,16 +157,18 @@
       how: Part of the seventh early signal; where filers work against where they are registered is the next check.
   sources: [abs_regions, abs_census, abs_cabee, rdti, iprapid]
   prep:
-    - what: Areas' counts over ten years (FY2017 to FY2026) as [[negative-binomial|negative binomial]] models with the area's residents as the [[exposure|exposure]], as in B29.
+    - what: "Each area's count over ten years, modelled per resident with a method that allows for extra spread, as in
+            B29."
       why: The model compares filing rates per resident, allowing areas to differ more than chance would make them.
   steps:
-    - Model each kind of filing against the first component (advantage) alone.
-    - Add the other three components and remoteness, and read each rate ratio with the others held.
-    - Compare the advantage ratio held with alone, on a log scale, and give the outcome.
+    - "Model each kind of filing against the first summary measure, advantage, on its own."
+    - "Add the other three summary measures and remoteness, and read each one allowing for the rest."
+    - "Compare advantage's link on its own and allowing for the rest, and give the outcome."
   assumptions:
-    - The components, being uncorrelated by construction, can be held together without repeating each other.
+    - "The summary measures are built not to overlap, so they can be allowed for together without repeating each
+      other."
   limits:
-    - Between areas, not people or firms (ecological).
+    - "The comparison is between areas, not people or firms within them."
     - A registered address can be a head office or an adviser's, not where the work is done.
   next: >-
     The seventh early signal: where filers work against where they are registered, and universities' postcodes.
@@ -176,7 +178,7 @@
 - id: M15
   lens: regions
   about: system
-  headline: The advantage gradient is not one filer's; without each area's largest filer it is steeper
+  headline: Without each area's biggest filer, the link with advantage is stronger
   statement: >-
     Taking each area's largest filer by the [[filers-party|filer's party]] (the party whose postcode places the
     patent), the gradient of standard patents with advantage is steeper without it: 1.933 and 2.031 times the rate per
@@ -184,7 +186,7 @@
     party-aligned filer.
   figures:
     - value: "1.933 and 2.031"
-      label: IRSAD rate ratio without each area's largest filer
+      label: "patents for each step up in advantage, without each area's biggest filer"
     - value: "1.717 and 1.857"
       label: with every filer, as in B29
     - value: "31.4%"
@@ -198,12 +200,11 @@
     - id: B30
       signal: The gradient is not one firm's
       verdict: holds
-      what: >-
-        With the largest filer taken by the filer's party, the IRSAD ratio rises from 1.717 and 1.857 to 1.933 and
-        2.031 without it: the gradient is not one filer's.
+      what: "Taking out each area's biggest filer, the link with advantage rises from 1.717 and 1.857 to 1.933 and
+            2.031. The pattern is not one filer's."
   held: ["the area's largest filer, by the filer's party, taken out"]
   verdicts:
-    - signal: IRSAD rate ratio without each area's largest filer
+    - signal: "Patents for each step up in advantage, without each area's biggest filer"
       detail: 1.717 and 1.857 with every filer; 1.933 and 2.031 without
       verdict: holds
   chart:
@@ -227,15 +228,16 @@
       how: The concentration of filing in advantaged places is broad, not one large filer in each.
   sources: [iprapid, abs_regions]
   prep:
-    - what: Australian standard patents filed FY2017 to FY2026, placed by the filer's postcode, with the largest filer in each area taken by the filer's party, whether or not it has an ABN.
+    - what: "Australian applicants' standard patents over ten years, placed by the filer's postcode. Each area's
+            biggest filer is identified by the filing party itself, whether or not it has a business number."
       why: The same party that gives the patent its postcode, as the final review asked.
   steps:
-    - Measure the IRSAD rate ratio with every filer, as in B29.
+    - "Measure the link with advantage with every filer included, as in B29."
     - Take out each area's largest filer and measure it again, in each half.
   assumptions:
     - A filer's party is one filer.
   limits:
-    - Between areas (ecological).
+    - "The comparison is between areas, not people or firms within them."
   next: >-
     Part of the seventh early signal.
   terms: [filers-party, rate-ratio, irsad, ecological, verdict-words]
@@ -244,7 +246,7 @@
 - id: M16
   lens: regions
   about: system
-  headline: Postal areas do not fall into distinct kinds; one group of 288 advantaged city areas holds more than half the patents
+  headline: Postal areas do not form distinct types, but 288 advantaged city areas hold more than half the patents
   statement: >-
     Grouping postal areas by their four components gives at most a weak structure: the best grouping, five groups, has
     a [[silhouette|silhouette]] of 0.269, short of clear segments (0.5 or more). Read as a description, one group of
@@ -252,7 +254,7 @@
     24,879 patents placed (56%); the rest is a continuum.
   figures:
     - value: "0.269"
-      label: the best silhouette (five groups); 0.5 or more would be clear segments
+      label: "how distinct the best grouping is (five groups); 0.5 or more would be clearly separate groups"
     - value: "56%"
       label: of placed standard patents in 288 areas
     - value: "3.14"
@@ -270,10 +272,9 @@
     - id: B27
       signal: Where filing concentrates
       verdict: refined
-      what: >-
-        Areas form no distinct kinds (silhouette 0.269 at best); the clearest structure is 288 advantaged, educated city
-        areas holding 56% of placed standard patents.
-  held: ["nothing: a grouping of areas by their four components"]
+      what: "Areas form no distinct types (0.269 at best on a scale where 0.5 is clear). The clearest structure is 288
+            advantaged, educated city areas holding 56% of the placed standard patents."
+  held: ["nothing: a grouping of areas by their four summary measures"]
   chart:
     type: bar
     title: Five groups of postal areas, and how much they file
@@ -299,13 +300,15 @@
       how: Shows that places do not sort into distinct kinds an intervention could target as groups; they lie on a continuum.
   sources: [abs_regions, abs_census, abs_cabee, iprapid]
   prep:
-    - what: "k-means groups the areas by their scores on the four components, for two to eight groups, each scored by its silhouette (from -1 to 1)."
-      why: "Under ADR 0046 a grouping is read as kinds of place only with a silhouette of 0.25 or more, and as clear segments at 0.5 or more."
+    - what: "Areas are grouped by their scores on the four summary measures, into two to eight groups. Each grouping
+            is scored for how distinct its groups are, from -1 to 1."
+      why: "Under ADR 0046, groups are read as types of place only with a score of 0.25 or more, and as clearly
+           separate at 0.5 or more."
   steps:
     - Group the areas for two to eight groups and score each grouping.
     - Take the best (five groups, 0.269) as a description, and profile each group.
   assumptions:
-    - The four components describe the areas well enough to group them.
+    - "The four summary measures describe the areas well enough to group them."
   limits:
     - A weak structure; the groups are a convenience, not a finding about kinds of place.
   next: >-
@@ -316,7 +319,7 @@
 - id: M31
   lens: regions
   about: system
-  headline: Beyond advantage and remoteness, manufacturing's share of businesses goes with more filing per business; incomes add nothing detectable
+  headline: Among similar areas, more manufacturing businesses go with more filing per business
   statement: >-
     With the four components and remoteness held, an area's share of manufacturing businesses goes with more standard
     patents per business (a [[partial-correlation|partial rank correlation]] of 0.449 and 0.396), where Stage 2 found
@@ -343,22 +346,21 @@
     - id: B31
       signal: Business mix and filing
       verdict: appears once held
-      what: >-
-        Among areas of the same advantage, density and remoteness, more manufacturing businesses go with more patents
-        per business (0.449 and 0.396 held, against 0.111 and -0.022 raw), where B31 found no link.
+      what: "Among areas alike in advantage, density and remoteness, more manufacturing businesses go with more
+            patents per business (0.449 and 0.396 allowing for these, against 0.111 and -0.022 on their own). B31 had
+            found no link."
     - id: B58
       signal: Incomes and filing
       verdict: not detected once held
-      what: >-
-        Taxable income per individual against patents per 10,000 people: 0.384 and 0.405 raw, 0.076 and 0.012 with the
-        components and remoteness held. Its link is the advantage gradient.
+      what: "Taxable income per person against patents per 10,000 people: 0.384 and 0.405 on its own, 0.076 and 0.012
+            allowing for the summary measures and remoteness. Its link is really advantage."
     - id: B59
       signal: A decade's change and filing
       verdict: appears once held
       what: >-
         With the 2011 levels held, gaining graduates goes with a slight fall in standard patents (-0.115 and -0.134;
         raw -0.065 and -0.108), not no association.
-  held: [the four components, remoteness, "for change: the area's 2011 levels"]
+  held: ["the four summary measures of a place", remoteness, "for change: the area's 2011 levels"]
   verdicts:
     - signal: Manufacturing's share, standard patents per 1,000 businesses
       detail: 0.111 and -0.022 raw; 0.449 and 0.396 held
@@ -394,24 +396,26 @@
     note: First half only; the second half's figures are in the observation.
   questions:
     - q: 2
-      how: Among places alike in advantage, density and remoteness, those with more manufacturing businesses file more per business, which bears on which places' businesses use the IP system.
+      how: "Among places alike in advantage, density and remoteness, those with more manufacturing businesses file
+           more per business. This bears on which places' businesses use the IP system."
     - q: 4
       how: Part of the seventh early signal; residents' incomes add nothing beyond the gradient, so income is not a separate target.
   sources: [abs_cabee, ato_postcode, abs_census_tsp, iprapid, abs_regions]
   prep:
-    - what: "Partial rank correlations with 95% intervals from 1,000 resamples of areas, in each half; business mix from CABEE (June 2025, areas with 100 or more businesses), incomes from the ATO (2023-24)."
-      why: Ranks read an association without assuming straight lines; resampling areas gives honest intervals.
+    - what: "How closely the measures rank together, allowing for the rest, with likely ranges from resampling areas,
+            in each half. The business mix comes from the ABS's business counts, and incomes from the tax office."
+      why: "Ranks show a link without assuming a straight line, and resampling areas gives honest likely ranges."
     - what: For change, the 2011 levels (graduates' share, income, filing) are held.
       why: An area that starts high has less room to rise.
   steps:
     - Correlate each measure with filing, raw.
-    - Take out what the four components and remoteness explain from both, and correlate what is left.
+    - "Remove what the four summary measures and remoteness account for in both measures, and compare what is left."
     - Give the outcome in each half.
   assumptions:
     - A business's address in CABEE is where it operates.
   limits:
     - A business's address can be a head office, and allocated counts are not who files (U75).
-    - Between areas (ecological).
+    - "The comparison is between areas, not people or firms within them."
   next: >-
     Part of the seventh early signal: where filers work against where they are registered.
   terms: [partial-correlation, held-together, cabee, ecological, verdict-words]
@@ -420,18 +424,19 @@
 - id: M32
   lens: regions
   about: system
-  headline: Most of the attached indicators' links with filing are the advantage gradient; what remains is where businesses are
+  headline: Most local measures relate to filing only through advantage, but where businesses are adds more
   statement: >-
     Of 13,673 pairs of an attached indicator and a filing rate, 9,539 are leads raw but only 1,281 remain leads with
     the four components and remoteness held. Health and social indicators, and most of the Census, go with filing only
     as the gradient does. What remains is mostly where businesses, and manufacturing businesses, are.
   figures:
     - value: "1,281 of 13,673"
-      label: pairs that remain leads beyond the components (9,539 raw)
+      label: "pairs still worth following up beyond the summary measures (9,539 before)"
     - value: "46 and 87"
       label: of 2,368 PHIDU indicators that survive, against patents and trade marks
     - value: "0.414 and 0.471"
-      label: businesses with turnover of $2 million or more per resident, against patents, beyond the components
+      label: "businesses with turnover of $2 million or more per resident, against patents, beyond the summary
+             measures"
   points:
     - "6,882 indicators from seven sources, against standard patents and trade marks per 10,000 people."
     - "**Strongest beyond the components, standard patents:** employing businesses with 20 or more employees 0.407 and
@@ -444,13 +449,12 @@
     - id: B28
       signal: Every attached indicator
       verdict: weakened
-      what: >-
-        Beyond the components and remoteness, 1,281 of 13,673 pairs remain leads, against 9,539 raw; what remains is
-        mostly counts of businesses by size and industry.
-  held: [the four components, remoteness]
+      what: "Allowing for the summary measures and remoteness, 1,281 of 13,673 pairs are still worth following up,
+            against 9,539 before. What remains is mostly counts of businesses by size and industry."
+  held: ["the four summary measures of a place", remoteness]
   verdicts:
-    - signal: Leads among every attached indicator
-      detail: 9,539 raw; 1,281 beyond the components and remoteness
+    - signal: "Patterns among every local measure"
+      detail: "9,539 on their own; 1,281 allowing for the summary measures and remoteness"
       verdict: weakened
   chart:
     type: bar
@@ -483,16 +487,19 @@
       how: Separates what goes with filing beyond the advantage gradient (business counts by size and industry) from what only follows it (health, most of the Census).
   sources: [abs_census, phidu, abs_regions, abs_cabee, ato_postcode, abs_census_tsp, cer, iprapid]
   prep:
-    - what: "B28's screen, each indicator in the period covering the most areas, counts as rates per 1,000 residents, now with all seven sources and with the components and remoteness held."
+    - what: "B28's test of every local measure, now with all seven sources. Each measure is taken in the period
+            covering the most areas, with counts put per resident, and the summary measures and remoteness are allowed
+            for."
       why: Stage 2 asked which go with filing beyond the gradient.
   steps:
-    - Screen every indicator against filing raw, as B28 did.
-    - Screen them again as partial rank correlations with the components and remoteness held, under B28's rule for a lead (both halves).
-    - Count the leads by source, and read the strongest.
+    - "Test every measure against filing on its own, as B28 did."
+    - "Test them again allowing for the summary measures and remoteness, under B28's rule (found in both halves)."
+    - "Count the patterns still standing by source, and read the strongest."
   assumptions:
-    - B28's rule (false discovery rate in the first half, the same sign and 0.1 or more in the second) marks a lead.
+    - "B28's rule marks a pattern worth following up. It must pass the check for many comparisons in the first half,
+      then point the same way, at 0.1 or more, in the second."
   limits:
-    - Many indicators are versions of one another, so the leads are not independent.
+    - "Many measures are versions of one another, so the patterns are not independent."
   next: >-
     Part of the seventh early signal: business counts by size and industry carry information beyond the gradient, as
     {M31} found for the mix.

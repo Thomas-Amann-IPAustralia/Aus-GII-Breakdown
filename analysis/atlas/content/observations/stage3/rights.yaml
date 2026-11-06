@@ -7,7 +7,7 @@
 - id: M1
   lens: rights
   about: system
-  headline: Patents filed without an attorney are still granted far less often once the factors settled at filing are held together
+  headline: Patents filed without an attorney are still granted far less often among similar applications
   statement: >-
     Australian individuals' standard patents filed alone are granted 31.2 [[percentage-point|points]] less often
     than those filed with an attorney once the route, filing year, state and co-filers are [[held-together|held
@@ -16,9 +16,10 @@
     untouched by what is held.
   figures:
     - value: "-31.2 points"
-      label: Australian individuals' patents filed alone, FY2010 to FY2019, held together (raw -35.8)
+      label: "Australian individuals' patents filed alone, 2009–10 to 2018–19, allowing for the rest (on its own
+             -35.8)"
     - value: "87.2%"
-      label: of the raw gap left once held together (86.2% in FY2000 to FY2009)
+      label: "of the gap left once the other factors are allowed for (86.2% for 1999–2000 to 2008–09)"
     - value: "91.9% to 99.9%"
       label: of the trade mark gaps left, individuals and organisations, both decades
   points:
@@ -37,26 +38,26 @@
     - id: B6
       signal: Filing alone and grant
       verdict: holds
-      what: >-
-        Australian individuals' patents filed alone: -31.2 points with the route, year, state and co-filers held
-        together, against -35.8 raw (FY2010 to FY2019); -31.7 against -36.8 in FY2000 to FY2009. Trade marks hold for
-        individuals and organisations. Australian organisations' patents hold in FY2010 to FY2019 only.
-  held: [the route of filing, the filing year, the filer's state, several founding applicants, "trade marks: the class and number of classes", "a second reading: the technology field"]
+      what: "Australian individuals' patents filed alone: -31.2 percentage points allowing for the route, year, state
+            and co-applicants, against -35.8 on their own (2009–10 to 2018–19); -31.7 against -36.8 a decade earlier.
+            Trade marks hold for individuals and organisations. Australian organisations' patents hold in the later
+            decade only."
+  held: [the route of filing, the filing year, the filer's state, "several original applicants", "trade marks: the class and number of classes", "a second reading: the technology field"]
   verdicts:
-    - signal: Australian individuals' standard patents, FY2010 to FY2019
-      detail: -35.8 raw, -31.2 held together (87.2% left)
+    - signal: "Australian individuals' standard patents, filed 2009–10 to 2018–19"
+      detail: "-35.8 on its own, -31.2 allowing for the rest (87.2% left)"
       verdict: holds
-    - signal: Australian individuals' standard patents, FY2000 to FY2009
-      detail: -36.8 raw, -31.7 held together (86.2% left)
+    - signal: "Australian individuals' standard patents, filed 1999–2000 to 2008–09"
+      detail: "-36.8 on its own, -31.7 allowing for the rest (86.2% left)"
       verdict: holds
-    - signal: Australian organisations' standard patents, FY2010 to FY2019
-      detail: -40.0 raw, -35.3 held together
+    - signal: "Australian organisations' standard patents, filed 2009–10 to 2018–19"
+      detail: "-40.0 on its own, -35.3 allowing for the rest"
       verdict: holds
-    - signal: Australian organisations' standard patents, FY2000 to FY2009
-      detail: +6.0 raw, +6.0 held together; both intervals include zero
+    - signal: "Australian organisations' standard patents, filed 1999–2000 to 2008–09"
+      detail: "+6.0 on its own, +6.0 allowing for the rest; both likely ranges include zero"
       verdict: not detected either way
     - signal: Trade marks, Australian individuals and organisations, both decades
-      detail: -21.3 to -23.3 held together; 91.9% to 99.9% of the raw gap left
+      detail: "-21.3 to -23.3 allowing for the rest; 91.9% to 99.9% of the gap left"
       verdict: holds
   chart:
     type: effect
@@ -77,35 +78,44 @@
     note: The trade marks' raw figures are quoted without intervals. A dot left of the dashed line means filing alone goes with fewer grants.
   questions:
     - q: 2
-      how: Shows that the grant gap for individuals who file alone is not explained by the route, year, place or co-filers, so who files alone stays a candidate group for who benefits less.
+      how: "It shows that the grant gap for individuals who file alone is not explained by the route, year, place or
+           co-applicants. So people who file alone remain a group that may benefit less."
     - q: 4
       how: Keeps representation as a signal worth a design that separates the choice of an attorney from the outcome (the first of Stage 3's early signals).
   sources: [iprapid]
   prep:
-    - what: Decided standard patents and trade marks filed FY2000 to FY2019, filed alone or with an attorney (agents who are not attorneys left out, as in B6); trade marks capped at 200,000 a group and decade by a hash of the application number.
+    - what: "Decided standard patents and trade marks filed in 1999–2000 to 2018–19, filed alone or with an attorney
+            (agents who are not attorneys are left out, as in B6). Trade marks are capped at 200,000 a group and
+            decade, chosen by a fixed rule."
       why: Only decided applications have an outcome, and the cap keeps the models quick while the hash makes the sample the same on every run.
-    - what: Each application is grouped by its [[filers-party|filer's party]], so a filer with many applications counts as one source of evidence in the intervals ([[clustered|clustered intervals]]).
+    - what: "Applications are grouped by their [[filers-party|filer]], so a filer with many applications counts as one
+            source of evidence in the likely ranges ([[clustered|grouped by filer]])."
       why: A firm's thousand applications are not a thousand independent cases.
   steps:
     - Take Stage 2's comparison (filed alone against with an attorney) as the raw figure.
-    - Fit one model of the yes or no outcome (granted or not) with the route, filing year, state and co-filers held together, and report the difference as an [[average-marginal-effect|average difference in points]].
-    - Compare the held figure with the raw one, and give the outcome by Stage 3's rule (holds if at least half remains and the interval is clear of zero).
+    - "Fit one model of whether each application was granted, allowing for the route, filing year, state and
+      co-applicants at once. Report the difference as an [[average-marginal-effect|average difference in percentage
+      points]]."
+    - "Compare the figure allowing for the rest with the one on its own, and give the outcome by Stage 3's rule. It
+      holds if at least half remains and the likely range is clear of zero."
     - Repeat in the earlier decade, among applications with a field (holding the field), and among examined applications.
   assumptions:
-    - What is settled at filing (route, year, state, co-filers, trade mark classes) is not itself caused by the choice to file alone, so holding it does not hide part of the gap.
+    - "What is settled at filing (route, year, state, co-applicants, trade mark classes) is not itself caused by the
+      choice to file alone. So allowing for it does not hide part of the gap."
   limits:
-    - The technology field is assigned as an application is classified, and an application abandoned early may never get one, so the field is held only in a second reading among applications that have one.
+    - "The technology field is assigned when an application is classified, and an application abandoned early may
+      never get one. So the field is allowed for only in a second reading, among applications that have one."
     - The filer's resources and experience, and the invention's merit, are not in the data; they could explain the gap.
-  next: >-
-    The first of Stage 3's early signals (with {M2}): a design that separates the choice of an attorney from the
-    outcome, such as the same filers' applications with and without one, or a change in what representation costs.
+  next: "The first of Stage 3's early signals (with {M2}). It needs a study that separates the choice of an attorney
+        from the outcome. That could use the same filers' applications with and without one, or a change in what
+        representation costs."
   terms: [held-together, average-marginal-effect, clustered, filers-party, attorney, verdict-words]
   related: [B6, B5, M2]
 
 - id: M2
   lens: rights
   about: system
-  headline: Trade marks and designs with no agent before the first renewal are less often in force after it, once other factors are held
+  headline: Trade marks and designs with no agent before renewal stay in force less often, among similar ones
   statement: >-
     With no agent recorded before the first renewal, 31.7% of Australians' trade marks filed FY2010 to FY2015 were in
     force after 10 years, against 50.8% with an attorney. With the filer's type, class, state, route and cohort held
@@ -113,9 +123,10 @@
     fully. Designs show the same at their five-year renewal, almost untouched by what is held.
   figures:
     - value: "-14.4 points"
-      label: trade marks in force after 10 years, no agent against an attorney, held together (raw -19.1)
+      label: "trade marks in force after 10 years, no agent against an attorney, allowing for the rest (on its own
+             -19.1)"
     - value: "75.5%"
-      label: of the raw trade mark gap left (72.2% in FY2003 to FY2009)
+      label: "of the trade mark gap left (72.2% for 2002–03 to 2008–09)"
     - value: "97.4% and 97.6%"
       label: of the design gap left, in the two halves
   points:
@@ -131,19 +142,19 @@
     - id: B10
       signal: No agent before the first renewal
       verdict: holds
-      what: >-
-        Trade marks in force after 10 years: -14.4 points held together against -19.1 raw (FY2010 to FY2015), and
-        -11.0 against -15.3 (FY2003 to FY2009); designs after 5 years -16.3 and -14.1, almost all of the raw gap.
-  held: [the filer's type, the class, the number of classes, the filer's state, several founding applicants, the route of filing, the cohort year]
+      what: "Trade marks in force after 10 years: -14.4 percentage points allowing for the rest, against -19.1 on
+            their own (2009–10 to 2014–15); -11.0 against -15.3 for 2002–03 to 2008–09. Designs after 5 years: -16.3
+            and -14.1, almost all of the gap."
+  held: [the filer's type, the class, the number of classes, the filer's state, "several original applicants", the route of filing, "the year the term began"]
   verdicts:
-    - signal: Trade marks after 10 years, FY2010 to FY2015
-      detail: -19.1 raw, -14.4 held together (75.5% left)
+    - signal: "Trade marks after 10 years, 2009–10 to 2014–15"
+      detail: "-19.1 on its own, -14.4 allowing for the rest (75.5% left)"
       verdict: holds
-    - signal: Trade marks after 10 years, FY2003 to FY2009
-      detail: -15.3 raw, -11.0 held together (72.2% left)
+    - signal: "Trade marks after 10 years, 2002–03 to 2008–09"
+      detail: "-15.3 on its own, -11.0 allowing for the rest (72.2% left)"
       verdict: holds
     - signal: Designs after 5 years, first half then second
-      detail: -16.7 and -14.5 raw, -16.3 and -14.1 held together (97.4% and 97.6% left)
+      detail: "-16.7 and -14.5 on its own, -16.3 and -14.1 allowing for the rest (97.4% and 97.6% left)"
       verdict: holds
   chart:
     type: effect
@@ -164,21 +175,26 @@
     note: The rows for individuals and organisations hold the other factors within each type of filer; no raw figure is quoted for them.
   questions:
     - q: 2
-      how: Shows that owners without an agent keep their marks and designs less often even at the same class, route and cohort, which bears on who gets value from a right.
+      how: "It shows that owners without an agent keep their marks and designs less often, even at the same class,
+           route and starting year. This bears on who gets value from a right."
     - q: 4
       how: Joins M1 in the first early signal, where representation is a candidate lever for an intervention.
   sources: [iprapid]
   prep:
-    - what: B10's definitions (ADR 0041) are kept. A right counts if it was registered; its cohort is the financial year its term began; "no agent before the renewal" means filed alone or with an agent first recorded after the renewal fell due; it is compared with an attorney recorded before it.
+    - what: "B10's definitions are kept (ADR 0041). A right counts if it was registered, and is grouped by the
+            financial year its term began. \"No agent before the renewal\" means filed alone, or with an agent first
+            recorded after the renewal fell due; it is compared with an attorney recorded before it."
       why: The same rights as Stage 2, so the raw figure is B10's and the held one differs only by what is held.
-    - what: Designs are read in FY2010 to FY2019 only, in two halves, because design agents were recorded differently before FY2010 (B5).
+    - what: "Designs are read for 2009–10 to 2018–19 only, in two halves, because design agents were recorded
+            differently before then (B5)."
       why: An earlier decade would mix a change in recording with the signal.
   steps:
     - For each right, a yes or no for being in force after the renewal (10 years for trade marks, 5 for designs).
-    - Fit one model with the filer's type, class, number of classes, state, co-filers, route and cohort held together, clustered by the filer.
+    - "Fit one model allowing for the filer's type, class, number of classes, state, co-applicants, route and starting
+      year, treating each filer's rights as a group."
     - Compare the held difference with the raw one, then repeat within individuals and within organisations.
   assumptions:
-    - Every cohort used has had the full time to its renewal, so no right is cut short.
+    - "Every starting year used has had the full time to its renewal, so no right is cut short."
   limits:
     - A share in force is not a renewal decision or a measure of value (U36).
     - Whether an agent was appointed before the renewal may follow from the owner's plans for the mark, not the other way round.
@@ -191,7 +207,7 @@
 - id: M3
   lens: rights
   about: system
-  headline: Within the same reach, Australian organisations' patents are less likely to end than overseas organisations', with field, route and cohort held
+  headline: Australian organisations' patents are less likely to end each year than similar overseas ones
   statement: >-
     Among standard patents reaching the same number of patent offices, Australian organisations' are less likely to
     end in any year to 10 years than overseas organisations': [[hazard-ratio|hazard ratios]] of 0.648 to 0.811 with
@@ -199,9 +215,10 @@
     Australia the halves disagree, so Stage 2's "no difference" there is neither confirmed nor overturned.
   figures:
     - value: "0.648 to 0.710"
-      label: hazard ratio, five or more offices, held together (below 1 means less likely to end)
+      label: "how likely to end in a given year, five or more offices, allowing for the rest (below 1 means less
+             likely)"
     - value: "0.772 to 0.811"
-      label: hazard ratio, two to four offices, held together
+      label: "how likely to end in a given year, two to four offices, allowing for the rest"
     - value: "22.3% against 4.6%"
       label: granted patents that are Australia only, Australian against overseas organisations (first half)
   points:
@@ -217,23 +234,23 @@
     - id: B8
       signal: Staying in force within reach bands
       verdict: holds
-      what: >-
-        Within the same reach, hazard ratios of 0.648 to 0.811 with field, route, cohort, co-filers and classes held
-        together: Australian organisations' patents are less likely to end. Among Australia-only patents the halves
-        disagree (0.959, then 0.730), so B8's "no difference" there is neither confirmed nor overturned.
-  held: [family reach (in bands), the technology field, the route of filing, the cohort, several founding applicants, the number of classes]
+      what: "Among patents with the same reach, Australian organisations' are less likely to end in a given year:
+            0.648 to 0.811 times as likely, allowing for field, route, year, co-applicants and classes. Among
+            Australia-only patents the two halves disagree (0.959, then 0.730), so B8's \"no difference\" there is
+            neither confirmed nor overturned."
+  held: [family reach (in bands), the technology field, the route of filing, "the year of the patent", "several original applicants", the number of classes]
   verdicts:
     - signal: Five or more offices, first half then second
-      detail: 0.728 and 0.666 raw; 0.710 and 0.648 held together
+      detail: "0.728 and 0.666 on its own; 0.710 and 0.648 allowing for the rest"
       verdict: holds
     - signal: Two to four offices, first half then second
-      detail: 0.750 and 0.757 raw; 0.811 and 0.772 held together
+      detail: "0.750 and 0.757 on its own; 0.811 and 0.772 allowing for the rest"
       verdict: holds
     - signal: Australia only, first half
-      detail: 1.100 raw, 0.959 held together; both intervals include 1
+      detail: "1.100 on its own, 0.959 allowing for the rest; both likely ranges include 1"
       verdict: not detected either way
     - signal: Australia only, second half
-      detail: 0.896 raw (interval includes 1), 0.730 held together (0.546 to 0.976)
+      detail: "0.896 on its own (likely range includes 1), 0.730 allowing for the rest (0.546 to 0.976)"
       verdict: appears once held
   chart:
     type: effect
@@ -257,29 +274,34 @@
       how: One of three readings of how Australian organisations' patents are used (with reach and citations, M4), which disagree and must be read together, never alone.
   sources: [iprapid, google_patents]
   prep:
-    - what: Granted standard patents with cohorts by the financial year of the date of patent, FY2010 to FY2016 (the latest that have reached 10 years), in two halves; FY2005 to FY2009 as a provisional third reading, since older families' reach is incomplete (B55).
-      why: Reach is reliable from FY2010; a patent needs 10 years to be followed to 10 years.
-    - what: Each patent joins the count at its grant ([[survival-curve|delayed entry]]) and is followed from its date of patent, as Stage 2's survival curves were (ADR 0041).
+    - what: "Granted standard patents grouped by the financial year of the date of patent, 2009–10 to 2015–16 (the
+            latest that have reached 10 years), in two halves. 2004–05 to 2008–09 is a third, tentative reading, since
+            older families' reach is incomplete (B55)."
+      why: "Overseas reach is reliable from 2009–10, and a patent needs 10 years to be followed to 10 years."
+    - what: "Each patent joins the count at its grant ([[survival-curve|late entry]]) and is followed from its date of
+            patent, as in Stage 2's survival curves (ADR 0041)."
       why: A patent cannot end before it is granted, so counting it from grant keeps the comparison fair.
   steps:
-    - Within each reach band (Australia only, two to four offices, five or more), compare Australian with overseas organisations' patents as a hazard ratio (raw).
-    - Fit a proportional hazards model with the field, route, cohort, co-filers and classes held together, clustered by the filer.
+    - "Within each reach group (Australia only, two to four offices, or five or more), compare Australian and overseas
+      organisations' patents. The measure is how likely each is to end in a given year, on its own."
+    - "Fit a model of how long patents last, allowing for field, route, year, co-applicants and classes, treating each
+      filer's patents as a group."
     - Give each band's outcome, in each half; then all bands together with reach held.
   assumptions:
     - The share in force is read as the share still on the register (ADR 0041), not as value or a decision to renew.
   limits:
     - Reach is held in three bands only, so part of a gap within a band could still be reach.
-    - A hazard ratio is not a difference in shares, so the raw figure here is not B8's percentages, though both read the same way.
-  next: >-
-    The second early signal (with {M4}): validate each of the three readings as a sign of value against licensing,
-    litigation or sale, and read them side by side.
+    - "A ratio of how likely patents are to end is not a difference in shares. So the figure on its own here is not
+      B8's percentages, though both point the same way."
+  next: "The second early signal (with {M4}). Each of the three signs should be checked against licensing, court cases
+        or sales as a sign of value, and read side by side."
   terms: [hazard-ratio, held-together, survival-curve, patent-family, clustered, verdict-words]
   related: [B8, M4, B55]
 
 - id: M4
   lens: rights
   about: system
-  headline: Australian organisations' patents reach fewer offices and are cited less, and neither gap goes once field, route and year are held
+  headline: Australian organisations' patents reach fewer countries and are cited less, even among similar patents
   statement: >-
     Australian organisations' standard patents filed FY2010 to FY2019 are far more often filed only in Australia
     (40.9% against 8.2% of overseas organisations') and far less often in five or more offices (22.2% against 69.7%).
@@ -289,11 +311,12 @@
     reach, field, route and year.
   figures:
     - value: "-31.9 points"
-      label: five or more offices, held together (raw -47.5)
+      label: "five or more offices, allowing for the rest (on its own -47.5)"
     - value: "0.729"
-      label: citations within five years, rate ratio with every factor held (raw 0.312)
+      label: "citations within five years, times as many as overseas organisations', allowing for everything (on its
+             own 0.312)"
     - value: "62% and 61%"
-      label: of the raw citation gap accounted for by reach (on a log scale)
+      label: "of the citation gap accounted for by overseas reach (on a proportional scale)"
   points:
     - "**Filed only in Australia:** +32.7 points raw, +9.3 held together (28.4% left), first half; +32.2 and +10.2 in
       the second. Weakened."
@@ -306,24 +329,24 @@
     - id: B11
       signal: Reach by origin
       verdict: mixed
-      what: >-
-        Five or more offices holds (-31.9 points held together, against -47.5 raw); filed only in Australia weakens
-        (+9.3 against +32.7, 28.4% left). Fewer offices remains at the same field, route and year.
+      what: "Five or more offices holds (-31.9 percentage points allowing for the rest, against -47.5 on its own).
+            Filed only in Australia weakens (+9.3 against +32.7, 28.4% left). Fewer offices remains at the same field,
+            route and year."
     - id: B12
       signal: Citations by origin
       verdict: weakened
-      what: >-
-        Citations within five years of priority: rate ratio 0.312 raw, 0.729 with every factor held (0.700 in the
-        second half). Reach accounts for about three fifths of the gap, but about 27% to 30% fewer citations remain.
-  held: [the technology field, the route of filing, the filing year, several founding applicants, the number of classes, "for citations: reach, in bands"]
+      what: "Citations within five years: 0.312 times overseas organisations' on its own, and 0.729 allowing for
+            everything (0.700 in the second half). Reach accounts for about three fifths of the gap, but about 27% to
+            30% fewer citations remain."
+  held: [the technology field, the route of filing, the filing year, "several original applicants", the number of classes, "for citations: reach, in bands"]
   verdicts:
     - signal: Filed only in Australia
-      detail: +32.7 raw, +9.3 held together (28.4% left); +32.2 and +10.2 in the second half
+      detail: "+32.7 on its own, +9.3 allowing for the rest (28.4% left); +32.2 and +10.2 in the second half"
       verdict: weakened
     - signal: Five or more offices
-      detail: -47.5 raw, -31.9 held together (67.3% left); -46.4 and -31.4 in the second half
+      detail: "-47.5 on its own, -31.9 allowing for the rest (67.3% left); -46.4 and -31.4 in the second half"
       verdict: holds
-    - signal: Citations within five years (rate ratio)
+    - signal: "Citations within five years (times as many)"
       detail: 0.312 raw, 0.645 with reach held, 0.729 with every factor held; about 27% to 30% of the raw gap remains
       verdict: weakened
   chart:
@@ -359,9 +382,11 @@
       how: Two of the three readings of how Australian organisations' patents are used; with M3 they disagree, so none can stand alone as a measure of value.
   sources: [iprapid, google_patents]
   prep:
-    - what: Reach is the share of patents filed only in Australia and in five or more offices, for standard patents filed FY2010 to FY2019 with a known family, in two halves.
-      why: Older Australian families' filings abroad are incomplete (B55), so reach is read from FY2010.
-    - what: "Citations are counted at a [[fixed-age|fixed age]]: patent families citing the family and first filed within five years of its first priority, for families first filed by 22 April 2020."
+    - what: "Reach is the share of patents filed only in Australia, and the share filed in five or more offices. It
+            uses standard patents filed in 2009–10 to 2018–19 with a known family, in two halves."
+      why: "Older Australian families' filings abroad are incomplete (B55), so reach is read from 2009–10."
+    - what: "Citations are counted at a [[fixed-age|fixed age]]: patent families that cite the family within five
+            years of its first filing, for families old enough to have the full five years."
       why: An older patent has had longer to be cited; the final review asked for a fixed-age window.
   steps:
     - Compare Australian with overseas organisations on each measure, with nothing held (raw).
@@ -381,7 +406,7 @@
 - id: M5
   lens: rights
   about: system
-  headline: Expedited examination's link with a longer life does not survive the filer, field and route held together; for individuals it goes with a shorter one
+  headline: Fast-tracked patents are not kept longer than similar ones, and individuals' end sooner
   statement: >-
     Stage 2 found expedited standard patents slightly more often in force at 10 years. Held together with the filer,
     field, route, cohort, co-filers and classes, that link is not detected in FY2010 to FY2016 and reverses in FY2003 to
@@ -389,11 +414,11 @@
     are about a quarter more likely to end in a given year, in both periods.
   figures:
     - value: "1.021"
-      label: "all filers, FY2010 to FY2016, held together (raw 0.958): not detected"
+      label: "all filers, 2009–10 to 2015–16, allowing for the rest (on its own 0.958): no link"
     - value: "1.124"
-      label: "all filers, FY2003 to FY2009, held together (raw 0.782): reversed"
+      label: "all filers, 2002–03 to 2008–09, allowing for the rest (on its own 0.782): reversed"
     - value: "1.264 and 1.249"
-      label: Australian individuals, held together, in the two periods
+      label: "Australian individuals, allowing for the rest, in the two periods"
   points:
     - "**Overseas organisations** (most of the patents): 0.945 raw and 1.004 held in FY2010 to FY2016; 0.598 and 0.957
       in FY2003 to FY2009, not detected once held."
@@ -408,23 +433,23 @@
     - id: B13
       signal: Expedited examination and staying in force
       verdict: mixed
-      what: >-
-        Pooled, not detected once held in FY2010 to FY2016 (1.021) and reversed in FY2003 to FY2009 (1.124): the
-        earlier period's raw advantage goes once the field, route and cohort are held with the filer. Australian
-        individuals' expedited patents are more likely to end, in both periods (1.264 and 1.249).
-  held: [the filer's origin and type, the technology field, the route of filing, the cohort, several founding applicants, the number of classes]
+      what: "Taken together, no link remains for 2009–10 to 2015–16 (1.021) once the rest is allowed for, and the link
+            reverses for 2002–03 to 2008–09 (1.124). The earlier period's advantage goes once field, route and year
+            are allowed for with the filer. Australian individuals' fast-tracked patents are more likely to end, in
+            both periods (1.264 and 1.249)."
+  held: [the filer's origin and type, the technology field, the route of filing, "the year of the patent", "several original applicants", the number of classes]
   verdicts:
-    - signal: All filers, FY2010 to FY2016
-      detail: 0.958 raw, 1.021 held together; both intervals include 1
+    - signal: "All filers, 2009–10 to 2015–16"
+      detail: "0.958 on its own, 1.021 allowing for the rest; both likely ranges include 1"
       verdict: not detected either way
-    - signal: All filers, FY2003 to FY2009
-      detail: 0.782 raw (less likely to end), 1.124 held together (more likely to end)
+    - signal: "All filers, 2002–03 to 2008–09"
+      detail: "0.782 on its own (less likely to end), 1.124 allowing for the rest (more likely to end)"
       verdict: reversed
-    - signal: Overseas organisations, FY2003 to FY2009
-      detail: 0.598 raw, 0.957 held together
+    - signal: "Overseas organisations, 2002–03 to 2008–09"
+      detail: "0.598 on its own, 0.957 allowing for the rest"
       verdict: not detected once held
     - signal: Australian individuals, both periods
-      detail: 1.341 and 1.344 raw; 1.264 and 1.249 held together
+      detail: "1.341 and 1.344 on its own; 1.264 and 1.249 allowing for the rest"
       verdict: holds
   chart:
     type: effect
@@ -449,11 +474,13 @@
       how: Leaves a question about what individuals expedite for, which bears on whether faster examination serves them (the third early signal).
   sources: [iprapid]
   prep:
-    - what: Examined standard patents, cohorts by the date of patent (FY2010 to FY2016, then FY2003 to FY2009, as in B13), each counted from its grant to 10 years.
+    - what: "Examined standard patents, grouped by the date of patent (2009–10 to 2015–16, then 2002–03 to 2008–09, as
+            in B13), each followed from its grant to 10 years."
       why: The same patents and periods as Stage 2, so only what is held differs.
   steps:
-    - Compare expedited with other examined patents as a hazard ratio, with nothing held (raw).
-    - Hold the filer, field, route, cohort, co-filers and classes together in one hazard model.
+    - "Compare how likely fast-tracked and other examined patents are to end in a given year, with nothing allowed
+      for."
+    - "Allow for the filer, field, route, year, co-applicants and classes together in one model."
     - Fit the same model within each filer group, and give each outcome.
   assumptions:
     - A request for expedited examination is the applicant's choice in most cases; since 2014 some are work-sharing requests, which IP RAPID does not tell apart.
@@ -468,7 +495,7 @@
 - id: M6
   lens: rights
   about: system
-  headline: Granted Australian-founded patents are more often now held only overseas, at the same reach and filer type
+  headline: Granted patents from Australia more often end up owned only overseas, among similar patents
   statement: >-
     Of standard patents first filed by an Australian applicant, the granted are more often now held only overseas than
     those never granted, with reach, the filer's type, field, route, year and co-filers held together: +5.6 points
@@ -476,11 +503,11 @@
     type are held, and organisations' gap goes in the later period.
   figures:
     - value: "+5.6 and +2.8 points"
-      label: granted against never granted, held together (raw +8.8 and +3.9)
+      label: "granted against never granted, allowing for the rest (on its own +8.8 and +3.9)"
     - value: "40.1% and 43.7%"
       label: of the wide patents' raw gap left once held
     - value: "+0.05 points"
-      label: organisations against individuals, later period, held together (not detected)
+      label: "organisations against individuals, later period, allowing for the rest (no link)"
   points:
     - "**Granted against never granted:** +8.8 raw and +5.6 held together; +3.9 and +2.8. Holds in both, 63.9% and
       70.4% left."
@@ -494,22 +521,21 @@
     - id: B19
       signal: Australian-founded patents now held only overseas
       verdict: mixed
-      what: >-
-        Granted patents hold (+5.6 and +2.8 points held together); wide patents weaken (40.1% and 43.7% of the raw
-        gap left); organisations weaken, then are not detected in FY2012 to FY2021.
-  held: [grant, family reach, the filer's type, the technology field, the route of filing, the filing year, several founding applicants]
+      what: "Granted patents hold (+5.6 and +2.8 percentage points allowing for the rest). Wide patents weaken (40.1%
+            and 43.7% of the gap left). Organisations weaken, and then show no link for 2011–12 to 2020–21."
+  held: [grant, family reach, the filer's type, the technology field, the route of filing, the filing year, "several original applicants"]
   verdicts:
     - signal: Granted against never granted
-      detail: +8.8 and +3.9 raw; +5.6 and +2.8 held together (63.9% and 70.4% left)
+      detail: "+8.8 and +3.9 on its own; +5.6 and +2.8 allowing for the rest (63.9% and 70.4% left)"
       verdict: holds
     - signal: Five or more offices against Australia only
-      detail: +10.8 and +5.1 raw; +4.3 and +2.2 held together (40.1% and 43.7% left)
+      detail: "+10.8 and +5.1 on its own; +4.3 and +2.2 allowing for the rest (40.1% and 43.7% left)"
       verdict: weakened
-    - signal: Organisations against individuals, FY2003 to FY2011
-      detail: +5.3 raw, +2.6 held together
+    - signal: "Organisations against individuals, filed 2002–03 to 2010–11"
+      detail: "+5.3 on its own, +2.6 allowing for the rest"
       verdict: weakened
-    - signal: Organisations against individuals, FY2012 to FY2021
-      detail: +1.0 raw, +0.05 held together
+    - signal: "Organisations against individuals, filed 2011–12 to 2020–21"
+      detail: "+1.0 on its own, +0.05 allowing for the rest"
       verdict: not detected once held
   chart:
     type: effect
@@ -533,11 +559,13 @@
       how: Points to granted Australian-founded patents as the ones more often held only overseas now, whatever their reach and filer; where value goes is not shown (the fourth early signal).
   sources: [iprapid, google_patents]
   prep:
-    - what: Australian-founded standard patents (the founding applicant in Australia), filed FY2003 to FY2011 and FY2012 to FY2021, as in B19; "now held only overseas" means every current holder is overseas.
+    - what: "Standard patents with an applicant in Australia at filing, filed in 2002–03 to 2010–11 and 2011–12 to
+            2020–21, as in B19. \"Now owned only overseas\" means every current owner is overseas."
       why: Ownership is read at two endpoints, filing and today, not as a history of transfers (ADR 0040).
   steps:
     - Compare the share now held only overseas by grant, by reach and by the filer's type, each with nothing held (raw).
-    - Read each with the other two held, and the field, route, filing year and co-filers with them, clustered by the filer.
+    - "Read each one allowing for the other two, and for field, route, filing year and co-applicants, treating each
+      filer's patents as a group."
     - Give each outcome in each period.
   assumptions:
     - Grant and reach as seen today stand for what they were when the holder changed, which need not be so.
@@ -553,7 +581,7 @@
 - id: M7
   lens: rights
   about: system
-  headline: On provisionals, organisations' inventors include more women than individuals'; on standard patents the field accounts for the gap
+  headline: Organisations name more women inventors on provisional applications; on patents the field explains it
   statement: >-
     On provisional applications, Australian organisations' inventors include more women than Australian individuals'
     (21.19% against 16.12%, FY2013 to FY2022), and the gap holds with the year, state and co-filers held: +5.56 points,
@@ -561,9 +589,9 @@
     field held, their inventors include fewer women in FY2010 to FY2019 (-2.82 points).
   figures:
     - value: "+5.56 and +6.63 points"
-      label: provisionals, organisations minus individuals, held together (raw +5.07 and +6.62)
+      label: "provisionals, organisations minus individuals, allowing for the rest (on its own +5.07 and +6.62)"
     - value: "-2.82 points"
-      label: standard patents, FY2010 to FY2019, with the field held (raw +1.05)
+      label: "standard patents, 2009–10 to 2018–19, allowing for the field (on its own +1.05)"
     - value: "140,492"
       label: inventors with an estimate on 110,717 provisionals
   points:
@@ -579,28 +607,28 @@
     - id: B17
       signal: Women among inventors, standard patents
       verdict: appears once held
-      what: >-
-        The filer gap is not detected with the filer clustered (+1.05 points, FY2010 to FY2019), and with the field
-        held it turns negative (-2.82): B17's reading that the field matters more than the filer is confirmed.
+      what: "The gap between organisations and individuals is not clear once each filer's patents are treated as a
+            group (+1.05 percentage points, 2009–10 to 2018–19). Allowing for the field, it turns negative (-2.82).
+            That confirms B17's reading that the field matters more than the filer."
     - id: B18
       signal: Women among inventors, provisionals
       verdict: holds
       what: >-
         Organisations' provisionals name more women inventors than individuals', +5.56 and +6.63 points with the year,
         state and co-filers held; the field cannot be held for provisionals.
-  held: [the technology field (standard patents), the filing year, the filer's state, several founding applicants (provisionals)]
+  held: [the technology field (standard patents), the filing year, the filer's state, "several original applicants (provisionals)"]
   verdicts:
-    - signal: Provisionals, FY2013 to FY2022
-      detail: +5.07 raw, +5.56 held together
+    - signal: "Provisionals, filed 2012–13 to 2021–22"
+      detail: "+5.07 on its own, +5.56 allowing for the rest"
       verdict: holds
-    - signal: Provisionals, FY2003 to FY2012
-      detail: +6.62 raw, +6.63 held together
+    - signal: "Provisionals, filed 2002–03 to 2011–12"
+      detail: "+6.62 on its own, +6.63 allowing for the rest"
       verdict: holds
-    - signal: Standard patents, FY2010 to FY2019
-      detail: +1.05 raw (interval includes zero), -2.82 held with the field
+    - signal: "Standard patents, filed 2009–10 to 2018–19"
+      detail: "+1.05 on its own (likely range includes zero), -2.82 allowing for the field"
       verdict: appears once held
-    - signal: Standard patents, FY2000 to FY2009
-      detail: +4.68 raw, -2.12 held; both intervals include zero
+    - signal: "Standard patents, filed 1999–2000 to 2008–09"
+      detail: "+4.68 on its own, -2.12 allowing for the field; both likely ranges include zero"
       verdict: not detected either way
   chart:
     type: effect
@@ -620,7 +648,8 @@
     source: IP Australia, IP RAPID; Google Patents; WGND (lens rights); notebook 3, section 1.6
   questions:
     - q: 2
-      how: Shows that among inventors on standard patents the field, not the kind of filer, goes with women's share, while on provisionals organisations' inventors include more women; who benefits depends on which is read.
+      how: "Among inventors on standard patents, the field, not the kind of filer, goes with women's share. On
+           provisionals, organisations' inventors include more women. Who benefits depends on which is read."
   sources: [iprapid, ipa_provisionals, google_patents_inventors, wgnd]
   prep:
     - what: Each patent's estimated share of women among its inventors, weighted by its inventors with an estimate (a quasi-binomial model), Australian organisations against Australian individuals.
@@ -632,7 +661,7 @@
     - Hold the field, year and state together for standard patents; the year, state and co-filers for provisionals.
     - Give each outcome in each decade.
   assumptions:
-    - Gender estimated from first names, summed as expected counts over many people, describes groups, never one person.
+    - "Gender estimated from first names, added up over many people, describes groups, never one person."
   limits:
     - Provisionals have no field, so their gap cannot be checked against the field.
     - Inventors added to provisionals later, or no longer recorded, would change the provisional figures (OQ17).
@@ -644,7 +673,7 @@
 - id: M26
   lens: rights
   about: system
-  headline: Divisionals doubled within the same filers, not through a change in fields or filers
+  headline: The same organisations file twice the share of divisional applications they did a decade earlier
   statement: >-
     Divisional applications rose from 11.59% to 22.62% of Australian organisations' standard patents between FY2000 to
     FY2009 and FY2010 to FY2019, and from 7.08% to 15.63% of overseas organisations'. With the field, co-filers and
@@ -671,16 +700,16 @@
     - id: B15
       signal: Divisionals doubled
       verdict: holds
-      what: >-
-        The rise holds with the field, co-filers and classes held (+10.7 and +8.8 points), without the ten largest
-        filers, and within the same filers (+19.18 and +10.97): the same organisations file more divisionals.
-  held: [the technology field, several founding applicants, the number of classes, "within the same filers (each filer's own average taken out)"]
+      what: "The rise holds allowing for field, co-applicants and classes (+10.7 and +8.8 percentage points), without
+            the ten largest filers, and within the same filers (+19.18 and +10.97). The same organisations file more
+            divisionals."
+  held: [the technology field, "several original applicants", the number of classes, "within the same filers (each filer's own average taken out)"]
   verdicts:
     - signal: Australian organisations
-      detail: +11.0 raw, +10.7 held together (96.9% left); +19.18 within the same filers
+      detail: "+11.0 on its own, +10.7 allowing for the rest (96.9% left); +19.18 within the same filers"
       verdict: holds
     - signal: Overseas organisations
-      detail: +8.5 raw, +8.8 held together; +10.97 within the same filers
+      detail: "+8.5 on its own, +8.8 allowing for the rest; +10.97 within the same filers"
       verdict: holds
   chart:
     type: effect
@@ -700,7 +729,8 @@
     source: IP Australia, IP RAPID (lens rights); notebook 3, section 1.7
   questions:
     - q: 4
-      how: A change in how the same organisations use the system (more divisionals), which bears on examination and on how long claims stay pending (the twelfth early signal).
+      how: "A change in how the same organisations use the system (more divisionals). It bears on examination and on
+           how long claims stay pending (the twelfth early signal)."
   sources: [iprapid]
   prep:
     - what: Applications with a field only, capped at 200,000 a group by the hash; the route cannot be held, because a divisional is a route.
@@ -709,7 +739,8 @@
       why: It says how the same filers changed, not how the mix of filers did.
   steps:
     - Compare the share of divisionals between the decades, with nothing held (raw).
-    - Hold the field, co-filers and classes, clustered by the filer; then leave out the ten filers with the most later divisionals.
+    - "Allow for field, co-applicants and classes, treating each filer's patents as a group; then leave out the ten
+      filers with the most later divisionals."
     - Compare within the same filers.
   assumptions:
     - A filer's party identifies the same organisation across the two decades.
@@ -724,7 +755,7 @@
 - id: M27
   lens: rights
   about: system
-  headline: Inventions made in Australia and filed from overseas are, in about equal numbers, international teams' and all-Australian teams'
+  headline: Inventions made here but filed from overseas come equally from international and all-Australian teams
   statement: >-
     Of standard patents with an inventor in Australia, those whose teams also have inventors abroad are filed from
     overseas more than half the time (62.08%, then 54.20%), against about one in ten whose known inventors are all here
@@ -732,11 +763,11 @@
     (1,207 and 1,142). The fall between the decades holds with the team, field and reach held (-2.7 points).
   figures:
     - value: "62.08% and 54.20%"
-      label: filed from overseas, teams with inventors abroad too (FY2000 to FY2009, then FY2010 to FY2019)
+      label: "filed from overseas, teams with inventors abroad too (1999–2000 to 2008–09, then 2009–10 to 2018–19)"
     - value: "10.85% and 8.57%"
       label: filed from overseas, every known inventor in Australia
     - value: "-2.7 points"
-      label: the fall between decades, held together (raw -4.8)
+      label: "the fall between decades, allowing for the rest (on its own -4.8)"
   points:
     - "22,335 patents filed FY2000 to FY2019 with an inventor in Australia, 13.96% with inventors abroad too."
     - "**Inventors abroad too, against every inventor here:** +51.2 points raw, +52.0 held together; then +45.6 and
@@ -749,17 +780,16 @@
     - id: B16
       signal: Made here, filed from overseas
       verdict: holds
-      what: >-
-        B16's "one in seven" is two things in about equal parts: international teams with an inventor here, filed by
-        their owners abroad, and teams wholly here whose filer is overseas. The fall between decades holds (-2.7 points
-        held together, against -4.8 raw).
-  held: [inventors abroad on the team, the technology field, the reach band, the number of inventors in Australia, several founding applicants]
+      what: "B16's \"one in seven\" is two things in about equal parts: international teams with an inventor here,
+            filed by their owners abroad, and teams wholly here whose filer is overseas. The fall between decades
+            holds (-2.7 percentage points allowing for the rest, against -4.8 on its own)."
+  held: [inventors abroad on the team, the technology field, the reach band, the number of inventors in Australia, "several original applicants"]
   verdicts:
     - signal: Inventors abroad too, against every inventor here
-      detail: +51.2 and +45.6 raw; +52.0 and +47.5 held together
+      detail: "+51.2 and +45.6 on its own; +52.0 and +47.5 allowing for the rest"
       verdict: holds
-    - signal: FY2010 to FY2019 against FY2000 to FY2009
-      detail: -4.8 raw, -2.7 held together (56.3% left)
+    - signal: "Filed 2009–10 to 2018–19 against 1999–2000 to 2008–09"
+      detail: "-4.8 on its own, -2.7 allowing for the rest (56.3% left)"
       verdict: holds
   chart:
     type: bar
@@ -778,19 +808,23 @@
     note: In FY2010 to FY2019 the two kinds of team give about as many patents filed from overseas (1,207 and 1,142).
   questions:
     - q: 1
-      how: Separates two routes by which inventions made here end up owned from overseas, which bears on where value from Australian inventive work is captured (the thirteenth early signal).
+      how: "It separates two ways that inventions made here end up owned from overseas. This bears on where the value
+           of Australian inventive work is captured (the thirteenth early signal)."
   sources: [iprapid, google_patents_inventors, google_patents]
   prep:
-    - what: Standard patents filed FY2000 to FY2019 with at least one inventor in Australia (from Google Patents); "filed from overseas" means no founding applicant in Australia, as in B16.
+    - what: "Standard patents filed in 1999–2000 to 2018–19 with at least one inventor in Australia (from Google
+            Patents). \"Filed from overseas\" means no applicant at filing was in Australia, as in B16."
       why: The same patents as Stage 2, with the team's other inventors added.
   steps:
     - Split the patents by whether the team also has inventors abroad.
-    - Model the share filed from overseas against the decade, with the team, field, reach, inventors in Australia and co-filers held together.
+    - "Model the share filed from overseas against the decade, allowing for the team, field, reach, number of
+      inventors in Australia and co-applicants."
     - Within each decade, compare the two kinds of team and wide against narrow reach.
   assumptions:
     - An inventor's country as Google Patents gives it is where the inventor worked on the invention.
   limits:
-    - Inventors' countries are known only where Google Patents gives them (U95), and inventions made here but filed only abroad are not in IP RAPID at all.
+    - "Inventors' countries are known only where Google Patents gives them (U95). Inventions made here but filed only
+      abroad are not in the Australian data at all."
   next: >-
     The thirteenth early signal: who the overseas filers of all-Australian teams are (subsidiaries, buyers), and
     Australian inventions filed only abroad.
@@ -800,7 +834,7 @@
 - id: M28
   lens: rights
   about: system
-  headline: Owners did not let rights go more often at the anniversary after a renewal fee changed
+  headline: Owners did not drop rights more often after renewal fees changed
   statement: >-
     At each right's own anniversary, owners did not let patents, trade marks or designs go more often after any of
     nine changes in the renewal fee from 2000 (rises of 11% to 33% and a 10% cut), once the trend either side, the
@@ -810,9 +844,9 @@
     - value: "None"
       label: of the nine fee changes from 2000 is followed by a detected change in letting go
     - value: "+0.08 points"
-      label: patents, September 2002 (+15.27%), held together (raw +1.94)
+      label: "patents, September 2002 (+15.27%), allowing for the rest (on its own +1.94)"
     - value: "-0.06 points"
-      label: patents, October 2020 (+29.55%), held together
+      label: "patents, October 2020 (+29.55%), allowing for the rest"
   points:
     - "**Patents**, held together: September 2002 +0.08; March 2007 (-10%) -0.57; August 2010 (+12.92%) -0.12; July 2012
       (+11.11%) +0.05; October 2016 (+10.87%) +0.43; October 2020 (+29.55%) -0.06. Not detected after any."
@@ -826,20 +860,19 @@
     - id: B49
       signal: Renewal fees and letting rights go
       verdict: not detected once held
-      what: >-
-        At each right's own anniversary no response is seen after any of nine fee changes; for patents within about
-        1.4 points either way. B49's cessations beyond every placebo month are not seen at the anniversary ({M34}
-        reads the national series again).
+      what: "At each right's own renewal, no response is seen after any of nine fee changes; for patents, any response
+            is within about 1.4 percentage points either way. B49's national rises in rights ending are not seen at
+            renewal ({M34} reads the national series again)."
   held: [a straight-line trend either side of the change, the anniversary number, the filer's origin and type, the field or main class, several founders or classes]
   verdicts:
     - signal: Patents, six fee changes from September 2002 to October 2020
-      detail: held together from -0.57 to +0.43 points; every interval includes zero
+      detail: "allowing for the rest: from -0.57 to +0.43 percentage points; every likely range includes zero"
       verdict: not detected once held
     - signal: Trade marks, October 2016 (+33.33%)
-      detail: +0.50 raw, -0.99 held together
+      detail: "+0.50 on its own, -0.99 allowing for the rest"
       verdict: not detected either way
     - signal: Designs, July 2012 and October 2020
-      detail: +6.24 and -2.49 held together, with wide intervals
+      detail: "+6.24 and -2.49 allowing for the rest, with wide likely ranges"
       verdict: not detected either way
   chart:
     type: effect
@@ -860,34 +893,39 @@
     note: Every held interval crosses the dashed line. The designs' intervals are wide because few designs reach each change.
   questions:
     - q: 4
-      how: At this design's power, owners' decisions at the anniversary did not respond to these fee changes, so renewal fees look a weak lever on letting rights go (the fourteenth early signal).
+      how: "With the evidence available, owners' decisions at renewal did not respond to these fee changes. So renewal
+           fees look like a weak lever on letting rights go (the fourteenth early signal)."
     - q: 5
       how: A precise null for patents that any projection of a fee change's effect would have to respect.
   sources: [iprapid, frl_fees]
   prep:
-    - what: For each change in renewal fees from 2000, every right whose changed anniversary fell in the 12 months before or after the change, granted before it and not ended before it, is a row; October 2024 is too recent to have its year after.
+    - what: "For each change in renewal fees from 2000, a row for each right whose affected renewal fell in the 12
+            months before or after the change. The right must have been granted, and still alive, before the change.
+            The latest change is too recent to have its year after."
       why: Compares owners deciding just before and just after the change, at the same kind of anniversary.
-    - what: A right is [[let-go|let go]] if it ceased at that anniversary (for patents, a cessation dated 3 to 12 months after it, since cessations are dated at the end of the six-month grace period).
+    - what: "A right is [[let-go|let go]] if it ended at that renewal. For patents that means an end dated 3 to 12
+            months after it, since ends are dated at the close of the six-month grace period."
       why: The register dates a lapse at the end of the grace period, not at the anniversary.
   steps:
     - Compare the share let go at anniversaries after the change with those before (raw).
-    - Hold a straight-line trend with its own slope on each side, the anniversary number, the filer, the field or class and the founders together, clustered by the filer.
+    - "Allow for a straight-line trend on each side of the change, the renewal number, the filer, the field or class
+      and co-applicants, treating each filer's rights as a group."
     - Check the method on anniversaries whose fee did not change (August 2010 and October 2016), which should show nothing once the trend is held.
   assumptions:
     - Owners deciding just before and just after a change are alike in every way but the fee.
   limits:
-    - An owner can pay before the anniversary at the fee then in force, so this tests the decision at the anniversary, not the price each owner paid.
+    - "An owner can pay before the renewal at the fee then in force, so this tests the decision at renewal, not the
+      price each owner paid."
     - A change announced months ahead may move decisions outside the window.
-  next: >-
-    The fourteenth early signal: owners' payment dates (early payment at the old fee), and the fee's share of a
-    patent's cost of keeping, to read fees as a lever.
+  next: "The fourteenth early signal: owners' payment dates (paying early at the old fee), and the fee's share of what
+        a patent costs to keep, to read fees as a lever."
   terms: [let-go, trend-either-side, held-together, renewal, placebo, verdict-words]
   related: [B49, M34, B47]
 
 - id: M40
   lens: rights
   about: system
-  headline: Asking for examination before being directed goes with patents more likely to end, not less, against IP Australia's commissioned study
+  headline: Asking early for examination goes with patents ending sooner, unlike in IP Australia's commissioned study
   statement: >-
     IP Australia's commissioned study counts a request for examination made before the Commissioner directs one as a
     way of speeding examination up, and reports that applicants who speed up are more likely to renew their patents.
@@ -898,9 +936,9 @@
     - value: "41.39%"
       label: of granted standard patents, 2004 to 2016, asked for examination before any direction (the study, 41.9%)
     - value: "1.276"
-      label: "all filers, FY2010 to FY2016, held together (raw 1.214): more likely to end"
+      label: "all filers, 2009–10 to 2015–16, allowing for the rest (on its own 1.214): more likely to end"
     - value: "1.383"
-      label: "all filers, FY2003 to FY2009, held together (raw 1.366)"
+      label: "all filers, 2002–03 to 2008–09, allowing for the rest (on its own 1.366)"
   points:
     - "**The measure reproduces the study's share:** 303,486 standard patents with a date of patent in 2004 to 2016,
       divisionals left out, of which 191,477 granted; 41.28% were never directed. The share rose between the periods:
@@ -917,23 +955,22 @@
     - id: B13
       signal: Speeding up examination and staying in force
       verdict: refined
-      what: >-
-        On IP Australia's commissioned study's wider measure, a request made before any direction (41.39% of granted
-        patents), the link with a longer life is not found either: those patents are more likely to end, held
-        together (1.276 and 1.383).
-  held: [the filer's origin and type, the technology field, the route of filing, the cohort, several founding applicants, the number of classes, expedited examination]
+      what: "On the commissioned study's wider measure, a request made before any direction (41.39% of granted
+            patents), a longer life is not found either. Those patents are more likely to end, allowing for the rest
+            (1.276 and 1.383)."
+  held: [the filer's origin and type, the technology field, the route of filing, "the year of the patent", "several original applicants", the number of classes, expedited examination]
   verdicts:
-    - signal: All filers, FY2010 to FY2016
-      detail: 1.214 raw, 1.276 held together (more likely to end)
+    - signal: "All filers, 2009–10 to 2015–16"
+      detail: "1.214 on its own, 1.276 allowing for the rest (more likely to end)"
       verdict: holds
-    - signal: All filers, FY2003 to FY2009
-      detail: 1.366 raw, 1.383 held together
+    - signal: "All filers, 2002–03 to 2008–09"
+      detail: "1.366 on its own, 1.383 allowing for the rest"
       verdict: holds
-    - signal: Australian organisations, FY2010 to FY2016
-      detail: 1.126 raw, 1.005 held together
+    - signal: "Australian organisations, 2009–10 to 2015–16"
+      detail: "1.126 on its own, 1.005 allowing for the rest"
       verdict: not detected either way
-    - signal: Australian individuals, FY2010 to FY2016
-      detail: 1.427 raw, 1.169 held together
+    - signal: "Australian individuals, 2009–10 to 2015–16"
+      detail: "1.427 on its own, 1.169 allowing for the rest"
       verdict: not detected once held
   chart:
     type: effect
@@ -958,18 +995,21 @@
       how: Bears on how IP Australia reads its own study; the difference from the study is a question for IP Australia about its model.
   sources: [iprapid]
   prep:
-    - what: "A request is unprompted if IP RAPID's first request for examination is dated before any direction to request examination (its exam_direction_to_request_exam events), as the study defines early and unprompted requests. Granted standard patents with a request, divisionals left out as the study left them, cohorts by the date of patent as in {M5}."
-      why: The audit against IP Australia found that {M5} tested only expedited requests, a few per cent of patents, while the study's measure covers 41.9% of granted patents.
+    - what: "A request counts as unprompted if the first request for examination is dated before any direction to
+            request it, as the study defines early, unprompted requests. Granted standard patents with a request are
+            used, leaving out divisionals as the study did, grouped by the date of patent as in {M5}."
+      why: "The check against IP Australia found that {M5} tested only fast-tracked requests, a few per cent of
+           patents, while the study's measure covers 41.9% of granted patents."
   steps:
     - Check that the measure gives the study's share of granted patents.
-    - Compare unprompted with directed requests as a hazard ratio, raw, then with the filer, field, route, cohort, co-filers, classes and expedited examination held together.
+    - "Compare how likely unprompted and directed patents are to end in a given year, on its own, then allowing for
+      the filer, field, route, year, co-applicants, classes and fast-tracking."
     - Fit the same model within each filer group, and give each outcome.
   assumptions:
     - A request made before any direction is the applicant's own choice; a direction is IP Australia's, to manage its workload.
   limits:
     - The study's model and outcome are not published in the report, so this tests its measure, not its result.
-  next: >-
-    Ask IP Australia how the study measured the renewal lifetime and what it held (with the owner's request), and
-    read M40 beside {M5} in the third early signal.
+  next: "Ask IP Australia how the study measured how long patents are renewed, and what it allowed for (with the
+        owner's request). Read M40 beside {M5} in the third early signal."
   terms: [unprompted-request, hazard-ratio, expedited, held-together, verdict-words]
   related: [B13, M5]

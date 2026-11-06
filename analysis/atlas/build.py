@@ -110,6 +110,7 @@ DERIVED = {
     ("M14", "93"): "a rate ratio of 1.932: 93% more filings",
 }
 _SHORT_RANGE = re.compile(r"\b((?:19|20)\d)(\d)[–-](\d{2})\b")
+_FULL_RANGE = re.compile(r"\b((?:19|20)\d\d)[–-]((?:19|20)\d\d)\b")
 _SCALED = re.compile(r"(?<![\w.])(\d+(?:\.\d+)?) (million|billion)\b")
 
 
@@ -147,16 +148,20 @@ def _unstyled(x):
 
 
 def check_numbers(obs: dict, nb: notebook.Observation) -> list[str]:
-    """The numbers in an observation's plain English (and its quoted chart) that are not on the notebook's page."""
-    page = numbers(nb.text + "\n" + nb.evidence_text)
-    fields = [obs["headline"], obs["statement"], obs["figures"], obs["points"], obs.get("verdicts", [])]
-    fields += [r.get("what", "") for r in obs.get("revisits", [])]
+    """The numbers in an observation's plain English (and its quoted chart) that are not on the notebook's page. Its
+    words may round as a reading's may (`check_plain`); a quoted chart's values must be on the page as written."""
+    prose = [obs["headline"], obs.get("statement", ""), obs["figures"], obs.get("points", []), obs.get("verdicts", [])]
+    prose += [obs.get("revisits", []), obs.get("held", []), [q.get("how", "") for q in obs.get("questions", [])]]
+    prose += [obs.get("prep", []), obs.get("steps", []), obs.get("assumptions", []), obs.get("limits", [])]
+    prose += [obs.get("next", "")]
+    missing = set()
+    for s in _strings(prose):
+        missing |= set(check_plain(nb.id, s, nb))
     if isinstance(obs.get("chart"), dict):  # a chart of quoted values
         c = _unstyled(obs["chart"])
-        fields += [c.get("series", []), c.get("views", []), c.get("x", {}).get("values", [])]
-    missing = set()
-    for s in _strings(fields):
-        missing |= numbers(s) - page
+        page = numbers(nb.text + "\n" + nb.evidence_text)
+        for s in _strings([c.get("series", []), c.get("views", []), c.get("x", {}).get("values", [])]):
+            missing |= numbers(s) - page
     return sorted(missing, key=lambda n: (len(n), n))
 
 
@@ -164,12 +169,21 @@ def check_plain(oid: str, plain: str, nb: notebook.Observation) -> list[str]:
     """The numbers in a plain-English reading that are not on the notebook's page, allowing for rounding."""
     page = numbers(nb.text + "\n" + nb.evidence_text)
     values = [float(n) for n in page]
-    # "1990–93" ends in 1993, which the page may give in full; "2023–24", a financial year, the page gives as written
-    short = {m[3]: f"{m[1][:2]}{m[3]}" for m in _SHORT_RANGE.finditer(plain)}
+    # "1990–93" ends in 1993, which the page may give in full; a financial year, "2007–08", the page may give as
+    # FY2008 alone, so its first year passes if its last is on the page
+    short, fy = {}, {}
+    for m in _FULL_RANGE.finditer(plain):  # "1999–2000", a financial year written in full
+        if int(m[2]) == int(m[1]) + 1:
+            fy[m[1]] = m[2]
+    for m in _SHORT_RANGE.finditer(plain):
+        start, end = f"{m[1]}{m[2]}", f"{m[1][:2]}{m[3]}"
+        short[m[3]] = end
+        if int(end) == int(start) + 1:
+            fy[start] = end
     scaled = {m[1]: {"million": 1e6, "billion": 1e9}[m[2]] for m in _SCALED.finditer(plain)}
     missing = []
     for n in sorted(numbers(plain), key=lambda n: (len(n), n)):
-        if n in page or (oid, n) in DERIVED or short.get(n) in page:
+        if n in page or (oid, n) in DERIVED or short.get(n) in page or fy.get(n) in page:
             continue
         d = len(n.split(".")[1]) if "." in n else 0
         x = float(n)

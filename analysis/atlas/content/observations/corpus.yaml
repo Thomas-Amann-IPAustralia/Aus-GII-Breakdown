@@ -3,7 +3,7 @@
 - id: U0
   lens: corpus
   about: data
-  headline: The corpus holds 194 tables from 54 sources, and three sources hold two thirds of its rows
+  headline: The collection holds 194 tables from 54 sources, and three supply two thirds of the records
   statement: >-
     When the corpus was last profiled, on 4 November 2026, it held 194 tables from 54 sources, 335,184,272 rows in
     all. Three sources hold 66.11% of the rows: IP RAPID (29.93%), TM-Link (23.57%) and the OECD's panels (12.61%).

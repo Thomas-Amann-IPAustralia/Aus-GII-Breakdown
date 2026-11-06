@@ -102,7 +102,7 @@ function verdictsOf(o) {
   return [...new Set([...(o.revisits || []), ...(o.later || [])].map((r) => r.verdict))];
 }
 function laterChip(o) {
-  return o.later?.length ? el("span.chip.later", { title: "Stage 3 tested this with other factors held" }, `Tested again in ${o.later.map((x) => x.id).join(", ")}`) : null;
+  return o.later?.length ? el("span.chip.later", { title: "Stage 3 tested this, allowing for other factors" }, `Tested again in ${o.later.map((x) => x.id).join(", ")}`) : null;
 }
 function ocard(o) {
   const a = el("a.ocard", { href: `#/${o.id}` },
@@ -117,7 +117,7 @@ function ocard(o) {
 /** A compact row for long lists: the id, the headline, and what Stage 3 made of it. */
 function orow(o) {
   const tags = o.stage === 3 ? verdictsOf(o).map((v) => verdictTag(v, true)) : o.later?.length
-    ? [el("span.chip.later", { title: `Stage 3 tested this with other factors held: ${o.later.map((x) => `${x.id}, ${x.verdict}`).join("; ")}` }, `→ ${o.later.map((x) => x.id).join(", ")}`)] : [];
+    ? [el("span.chip.later", { title: `Stage 3 tested this, allowing for other factors: ${o.later.map((x) => `${x.id}, ${x.verdict}`).join("; ")}` }, `→ ${o.later.map((x) => x.id).join(", ")}`)] : [];
   const a = el("a.orow", { href: `#/${o.id}` },
     el("span.id", o.id),
     el("span.ohead", o.headline),
@@ -576,8 +576,8 @@ function chainBlock(o) {
         : el("p", "A question of structure: which measures repeat each other, and whether there are distinct groups.")),
     el("div.carrow", { "aria-hidden": "true" }, icon("arrow")),
     el("div.clink",
-      el("span.ctag", el("b", "2"), "Stage 3 held together"),
-      o.held?.length ? el("div.held", o.held.map((h) => el("span.chip", inline(h)))) : el("p", "Nothing held: a description of how the measures relate.")),
+      el("span.ctag", el("b", "2"), "Stage 3 allowed for"),
+      o.held?.length ? el("div.held", o.held.map((h) => el("span.chip", inline(h)))) : el("p", "Nothing allowed for: a description of how the measures relate.")),
     el("div.carrow", { "aria-hidden": "true" }, icon("arrow")),
     el("div.clink.cres",
       el("span.ctag", el("b", "3"), "What is left"),
@@ -603,23 +603,23 @@ function observationPage(id) {
     el("div.obs-label", icon("eye"), `Observation ${o.id} · ${o.strength}`),
     el("p.statement", o.plain));
   const update = o.later?.length ? el("section.s3update", { "aria-label": "What Stage 3 found" },
-    el("div.s3label", icon("route"), o.later.length === 1 ? "Stage 3 tested this with other factors held together" : `Stage 3 tested this ${o.later.length} ways, with other factors held together`),
+    el("div.s3label", icon("route"), o.later.length === 1 ? "Stage 3 tested this, allowing for other factors" : `Stage 3 tested this ${o.later.length} ways, allowing for other factors`),
     o.later.map((x) => el("div.s3item",
       el("div", verdictTag(x.verdict)),
       el("div", el("p", inline(x.what)), el("a.vread", { href: `#/${x.id}` }, `Read ${x.id}: ${trim(byId[x.id].headline, 110)}`))))) : null;
   const figures = o.figures?.length ? el("div.figures", o.figures.map((f) => el("div.figure", el("strong", f.value), el("span", inline(f.label))))) : null;
   const chart = o.chart ? chartSlot(o.chart) : null;
   const verdicts = o.verdicts?.length ? el("section.block",
-    el("h2", icon("check"), "Signal by signal"),
-    el("p.block-intro", "Each comparison as Stage 2 measured it (raw), then with its other factors held together, and the outcome."),
+    el("h2", icon("check"), "Each comparison"),
+    el("p.block-intro", "Each comparison on its own, as Stage 2 measured it, then allowing for the other factors, and the outcome."),
     el("div.tablewrap", el("table.data.vtable",
-      el("thead", el("tr", el("th", { scope: "col" }, "What was compared"), el("th", { scope: "col" }, "Raw, then held together"), el("th", { scope: "col" }, "Outcome"))),
+      el("thead", el("tr", el("th", { scope: "col" }, "What was compared"), el("th", { scope: "col" }, "On its own, then allowing for the rest"), el("th", { scope: "col" }, "Outcome"))),
       el("tbody", o.verdicts.map((v) => el("tr", el("td", inline(v.signal)), el("td", inline(v.detail || "")), el("td", verdictTag(v.verdict)))))))) : null;
 
   const intro = {
     1: "Stage 1 answers none of the five questions. This is how the observation prepares the ground for them.",
     2: "Stage 2 answers none of the five questions either: it finds which measures go together. This is how the association prepares the ground for them.",
-    3: "Stage 3 answers none of the five questions either: it tests which of Stage 2's signals survive with their other factors held together. This is how the result prepares the ground for them.",
+    3: "Stage 3 answers none of the five questions either: it tests which of Stage 2's patterns survive once other factors are allowed for. This is how the result prepares the ground for them.",
   };
   const why = el("section.block",
     el("h2", icon("compass"), "How this moves the research forward"),
@@ -665,7 +665,7 @@ function observationPage(id) {
 
   const honesty = el("section.block", el("h2", icon("alert"), "Assumptions and limits"),
     el("div.notes", o.assumptions.map((a) => note("assume", a)), o.limits.map((a) => note("limit", a))));
-  const done = o.later?.length ? note("done", `Stage 3 has since tested this with other factors held: ${o.later.map((x) => `{${x.id}}, ${x.verdict}`).join("; ")}. The box under the observation says what was left.`) : null;
+  const done = o.later?.length ? note("done", `Stage 3 has since tested this, allowing for other factors: ${o.later.map((x) => `{${x.id}}, ${x.verdict}`).join("; ")}. The box under the observation says what was left.`) : null;
   const next = el("section.block", el("h2", icon("arrow"), "What happens next"), el("div.notes", note("next", o.next), done));
 
   const nbCharts = o.notebook_charts || [];
@@ -788,10 +788,10 @@ function questionPage(id) {
   show(
     el("div.eyebrow", `Question ${q.id} of 5`), el("h1", q.title), ...paras(q.text, "lead"),
     q.sub?.length ? section("What the research goal asks under it", null, el("ul.prose", q.sub.map((s) => el("li", s)))) : "",
-    signals.length ? section("Early signals that bear on it", "From Stage 3's table of early signals: associations that survived their third factors held together, drafted for the research owner's review. Not answers.",
+    signals.length ? section("Early signals that bear on it", "From Stage 3's table of early signals: links that remained once other factors were allowed for, drafted for the research owner's review. Not answers.",
       el("div.qlist", signals.map((l) => el("div.qitem", el("span.qn", `#${A.site.next.signals.indexOf(l) + 1}`), el("div", el("h3", inline(l.signal)), el("p.small", el("strong", "Strength: "), ...inline(l.strength)), el("p.small", "From ", ...l.ids.flatMap((x, i) => [i ? ", " : "", obsLink(x)])), el("p.small", el("strong", "Suggested next step: "), ...inline(l.next))))))) : "",
-    count(3) ? section(`What Stage 3 found that bears on it (${count(3)})`, "Stage 2's signals tested with their other factors held together, and the structure among places, countries, industries and institutions.", el("div.qlist", items(3)), editorialNote("These links are the analyst's guide to where each observation may help. They are not findings.")) : "",
-    section(`What Stage 2 found that bears on it (${count(2)})`, "Pairs of measures that go together, held in a second period or sample: associations, not answers.", el("div.qlist", items(2))),
+    count(3) ? section(`What Stage 3 found that bears on it (${count(3)})`, "Stage 2's patterns tested allowing for other factors, and the structure among places, countries, industries and institutions.", el("div.qlist", items(3)), editorialNote("These links are the analyst's guide to where each observation may help. They are not findings.")) : "",
+    section(`What Stage 2 found that bears on it (${count(2)})`, "Pairs of measures that go together, found again in a second period or sample: associations, not answers.", el("div.qlist", items(2))),
     section(`What Stage 1 found that bears on it (${count(1)})`, "Descriptive observations: groundwork, not answers.", el("div.qlist", items(1))),
     q.reach?.length ? section("What is out of reach for now", null, el("div.notes", q.reach.map((x) => note("limit", x)))) : "");
 }

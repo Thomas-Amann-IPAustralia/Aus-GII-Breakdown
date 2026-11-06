@@ -85,7 +85,8 @@ uv run pytest -q
   rule), and drawn charts are redrawn with `python -m atlas.charts` after `eda.build`. Stage 3's plain English is in
   `analysis/atlas/content/observations/stage3/`. Each observation also has a plain-English reading just above it in its notebook
   (`##### Observation U12 in plain English`, ADR 0055): the pages lead with it, the build checks its numbers, and a new
-  observation needs one. After `atlas.build`, run `node analysis/atlas/passages.mjs`: the
+  observation needs one. The rest of each page is plain English too (ADR 0056: "allowing for", "likely range",
+  "2025–26"), and the numbers rule checks every visible field. After `atlas.build`, run `node analysis/atlas/passages.mjs`: the
   chat's evidence (`evidence/data/passages.jsonl`, ADR 0054) must match the pages, and a test checks. The chat
   ("Ask the atlas", `#/ask`, `evidence/js/chat.js`) is served by the Econ repository's API; to make a change reach it,
   in Econ run `econ atlas-ingest --ref <this commit>`, set the sha in its `config/atlas.yaml`, then

@@ -720,6 +720,9 @@ limits:
     - when: 6 November 2026
       what: Each observation's page led with these pages' own summary of the notebook, which kept much of its technical wording.
       now: "Each page now leads with a plain-English reading written beside the observation in the notebook, and the notebook's own words close step 4 of the trail. Seven readings were corrected before use, where a phrase changed the meaning ({U4}, {U5}, {U10}, {U28}, {U127}, {B23}, {M12})."
+    - when: 6 November 2026
+      what: The rest of each observation page, from its headline to its method notes and Stage 3 tables, was still written for analysts, and "Australian applications" meant every applicant's in some readings and Australians' own in others.
+      now: "Every headline and every technical item on the pages was rewritten in plain English, and each reading now says whose applications it means. Checking every field against the notebook's page found numbers on 31 pages that were not on it; each was removed or reworded."
 
 next:
   intro: >-
