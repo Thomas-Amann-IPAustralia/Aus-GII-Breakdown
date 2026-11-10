@@ -376,12 +376,13 @@
 - id: M35
   lens: timeline
   about: system
-  headline: The 2024–25 fall in follow-up of provisionals is among new and heavy individual filers
+  headline: The 2024–25 fall in follow-up of individuals' provisionals shows at every filing volume, most among heavy filers
   statement: >-
     Australian individuals' provisionals filed in FY2025 were followed by a complete application within 12 months
     6.66% of the time, against 12.91% in FY2022 to FY2024. The filer's state, volume, history and month of filing
     account for none of the fall (-6.42 points held, -6.25 raw). Among individuals who also filed in the earlier
-    years, the fall is not detected; it is in new and heavy filers.
+    years, the fall is not detected either way (the likely range, -7.27 to 1.73 points, still includes the whole
+    fall). It shows at every filing volume and is steepest among heavy filers.
   figures:
     - value: "-6.42 points"
       label: "individuals' follow-up, 2024–25 against 2021–22 to 2023–24, allowing for the filer (on its own -6.25)"
@@ -402,8 +403,8 @@
       signal: "Provisionals from 2024–25 followed up less"
       verdict: holds
       what: "The fall holds allowing for the filer's state, volume, history and month of filing (-6.42 percentage
-            points for individuals, -1.85 for organisations). Among filers seen before, there is no clear fall: it is
-            among new and heavy filers."
+            points for individuals, -1.85 for organisations). Among filers seen before, the fall is not detected either
+            way; it shows at every filing volume and is steepest among heavy filers."
     - id: U8
       signal: The surge in provisionals
       verdict: refined
@@ -439,7 +440,7 @@
     source: IP Australia, IP RAPID (lens timeline); notebook 3, section 5.5
   questions:
     - q: 4
-      how: Locates the fall in follow-up among new and heavy individual filers, which bears on what the surge in provisionals is (the fifteenth early signal).
+      how: Shows the fall in follow-up at every filing volume, steepest among heavy individual filers, which bears on what the surge in provisionals is (the fifteenth early signal).
   sources: [iprapid]
   prep:
     - what: "Stage 2's measure: a provisional followed by a full Australian application within 12 months. It allows

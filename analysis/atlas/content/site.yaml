@@ -3,7 +3,7 @@
 # Numbers here come from docs/stage-1-summary.md, docs/stage-2-summary.md, the research goal and the notebooks; each
 # is traceable to an observation, linked where it is named.
 
-as_at: "2026-11-06"
+as_at: "2026-11-10"
 
 # The chat, "Ask the atlas" (#/ask, ADR 0054): served by the Econ repository's API as a second knowledge base, kept
 # apart from the Econ chat. The page calls nothing outside `api` (the Content Security Policy in evidence/index.html
@@ -851,7 +851,7 @@ next:
       strength: Observational, a precise null for patents
       questions: [4, 5]
       next: "Owners' payment dates (early payment at the old fee), and the fee's share of a patent's cost of keeping, to read fees as a lever"
-    - signal: "FY2025's fall in provisionals followed up within 12 months is in new and heavy individual filers; filers seen before followed up about as often"
+    - signal: "FY2025's fall in individuals' provisionals followed up within 12 months shows at every filing volume, steepest among heavy filers; among filers seen before it is not detected either way"
       ids: [U8, B38, M35]
       strength: Observational, one year
       questions: [4]
@@ -922,7 +922,7 @@ next:
     Australian organisations' patents filed only in Australia ({B11}), by a gap in older records ({B55}); and about half
     of the recent fall in first patent filers, by the name match ({M12}).
   puzzles:
-    - Australians' direct filing of standard patents rose to 28.3% in FY2026 ({U90}), and provisionals filed in FY2025 were followed up less often, mostly by new and heavy individual filers ({B38}, {M35}); both could be priority claims recorded late (OQ18).
+    - Australians' direct filing of standard patents rose to 28.3% in FY2026 ({U90}), and provisionals filed in FY2025 were followed up less often, at every filing volume and most steeply by heavy individual filers ({B38}, {M35}); both could be priority claims recorded late (OQ18).
     - The share of divisional applications about doubled among both Australian and overseas organisations, within the same filers ({B15}, {M26}); why is not in the data.
     - Firms with a first observed patent fell from 1,167 (FY2021) to 810 (FY2024); innovation patents closed in August 2021 ({U45}). About half of the later fall is linking ({M12}).
     - Plant breeder's rights applications were the decade's lowest in FY2025 and FY2026, which may be real or a delay in recording ({U6}).

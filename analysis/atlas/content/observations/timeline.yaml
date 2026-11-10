@@ -6,9 +6,10 @@
   about: data
   headline: The monthly timeline runs from 1904, with each series starting where its records can be trusted
   statement: >-
-    The timeline holds 1,473 months, January 1904 to September 2026, in 79 columns: 28 monthly series of applications
-    and events, the price index and the policy changes, and, added after Stage 2, fees, the Reserve Bank's rates, the
-    national accounts and the PBS. After the repairs, series begin between January 1904 and December 2003, and none has
+    The timeline holds 1,473 months, January 1904 to September 2026, in 86 columns (79 when first profiled): 28 monthly
+    series of applications and events, the price index and the policy changes, and, added after Stage 2, fees, the
+    Reserve Bank's rates, the national accounts and the PBS, then the labour market and IP judgments ({U124}). After
+    the repairs, series begin between January 1904 and December 2003, and none has
     a gap inside its span.
   figures:
     - value: "1,473"
@@ -767,7 +768,7 @@
     (employed persons, unemployment and participation from February 1978, owner-managers from January 1991) and the IP
     judgments (January 1995 to February 2025). None has an empty month inside its coverage. IP judgments rose from an
     average 51.7 a year in 1995 to 2007 to 104.9 in 2008 to 2024, the step coming in 2008. The series added after
-    Stage 2 grow steadily, with their unusual months in 2020.
+    Stage 2 grow steadily, with most of their unusual months in 2020.
   figures:
     - value: "51.7 to 104.9"
       label: IP judgments a year, 1995 to 2007 against 2008 to 2024

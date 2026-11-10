@@ -394,7 +394,8 @@
     - "**Rights with no ABN, FY2000 to FY2026:** 3,217 of 9,104 standard patents matched (35.34%), 20,845 of 117,531
       trade marks (17.74%), 6,183 of 18,317 provisionals, 2,171 of 8,275 designs; none of 3,220 plant breeder's rights."
     - "**Firms with a first observed linked standard patent:** 660 (FY2020) to 542 (FY2026) by the filer's ABN, 675 to
-      616 with the matched links: about half of U45's later fall is linking (an 18% fall becomes 9%)."
+      616 with the matched links: about half of that fall is linking (an 18% fall becomes 9%). The fall in firms
+      filing a first patent of any kind ({U45}) is not re-read here."
     - "**R&D claimants with no filing linked** fall from 48.48% to 47.70%; every signal of {M8} keeps its direction and
       verdict. Adopting the matched links into the counts is the owner's decision (OQ26)."
   revisits:
@@ -403,7 +404,8 @@
       verdict: refined
       what: "With the name matches, standard patents with a business number go from 89.43% (2023–24) to 89.20%
             (2025–26), against 88.68% to 83.85% without. Most of the recent fall is in linking. So is about half of
-            the later fall in first-time patent filers (an 18% fall becomes 9%)."
+            the fall in firms with a first linked standard patent (an 18% fall becomes 9%); the fall in firms
+            filing a first patent of any kind was not re-read."
     - id: U44
       signal: A few firms file most patents
       verdict: refined

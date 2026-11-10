@@ -93,7 +93,8 @@ since:
     text: >-
       Stage 3 held other factors together for three of them. The link between fast-track examination and patents
       kept longer, from IP Australia's commissioned study, does not survive the filer, field and route held together
-      (C3, {M5}). FY2025's fall in provisionals followed up is in new and heavy individual filers (C1, {M35}).
+      (C3, {M5}). FY2025's fall in provisionals followed up shows at every filing volume, steepest among heavy individual
+      filers (C1, {M35}).
       Raising the Bar's rush holds with trend and season held (C5, {M25}).
   - title: The later observations and Stages 2 and 3
     status: Done
@@ -484,8 +485,9 @@ notes:
     As {B47}: IP Australia's note gives the reason the Trade Marks Act 1995 reads as a fall, not a rush: one
     application could now cover several classes.
   M35: >-
-    IP Australia reports that new filers were 63% of provisional applicants in 2025 and self-filers 52%, which fits
-    this observation's finding that the fall in follow-up is among new and heavy filers.
+    IP Australia reports that new filers were 63% of provisional applicants in 2025 and self-filers 52%. This
+    observation finds the fall in follow-up at every filing volume, steepest among heavy filers; it does not separate
+    new filers from returning ones, so the two fit without one testing the other.
   M36: >-
     As {B56}: IP Australia's note finds trade marks lead the economy by a quarter or two, which changes in the same
     quarter do not test.
@@ -525,7 +527,8 @@ conclusions:
     adds: >-
       {U8}: the rise is broad (single-filing individuals 1,538 to 2,507) and concentrated (54 individuals filed
       1,528). Both fit; neither proves it. Since then, FY2025's fall in provisionals followed up within 12 months
-      (6.66%, against 12.24% to 14.15% in FY2022 to FY2024) is in new and heavy individual filers ({B38}, {M35}).
+      (6.66%, against 12.24% to 14.15% in FY2022 to FY2024) shows at every filing volume, steepest among heavy individual filers ({B38},
+      {M35}).
   - id: C2
     claim: A firm's first patent or trade mark coincides with lasting gains in income and productivity.
     strength: '"Dynamic associations, not definitive causal effects."'
