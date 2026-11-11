@@ -49,6 +49,11 @@ audits. Done:
   output above it, re-run in a copy after a refresh, report what moved, then draft the changes. Measured: about 93% of
   the 5,594 numbers the prose quotes can be traced by code. Not built; the owner's call.
 - **OQ39:** whether the two change logs on the Limits and audit pages stay (recommended: yes).
+- **"Ask the atlas" refreshed (A42; Econ D-042).** Econ's branch `claude/tender-fermat-h1el1i` holds the chat's
+  evidence ingested at this repository's commit `94499bd` (4,589 passages, 455 pages) and indexed; Econ's tests pass.
+  It is not live until merged: **merge this repository's branch first, then Econ's** (with merge commits, not
+  squashed, so `94499bd` stays reachable). The commits after `94499bd` here change no page or passage. This closes
+  the open issue noted on 6 November below.
 
 **Earlier (2026-11-10): every observation audited against its output; 22 corrected; the atlas in step** (ADR 0057).
 The owner asked for a review of all observations in the three notebooks for errors of logic or synthesis, their
@@ -78,7 +83,7 @@ correction, and the front end updated. Done:
 
 **Earlier (2026-11-06): plain labels done (OQ34, A41) and a pull request opened (OQ33).** Stage 3's outcome tags show
 plain names and 77 pages show plain section titles (`content/sections.yaml`; ADR 0056 addendum).
-- **Open issue, "Ask the atlas":** the chat is served by the Econ repository, which still holds the passages from
+- **Open issue, "Ask the atlas" (closed 11 November 2026, above):** the chat is served by the Econ repository, which still holds the passages from
   before ADR 0055 and 0056 (4,611; now 4,520). Until someone runs, in Econ, `econ atlas-ingest --ref <merged commit>`,
   sets the sha in `config/atlas.yaml`, runs `econ index --kb atlas` and commits (Econ's `docs/deploy.md`), the chat
   answers and quotes from the old, more technical wording, and its quotes will not match the pages. The owner asked
