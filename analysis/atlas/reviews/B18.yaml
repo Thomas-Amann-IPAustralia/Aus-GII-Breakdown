@@ -6,6 +6,9 @@ fingerprint:
   evidence: bd6c388d30a4
   data: 5e9132a3ebe7
   links: '500377697443'
+sources:
+  ipa_provisionals: e74b92839dac
+  wgnd: 76e66a970813
 candidates:
 - id: U107
   found:

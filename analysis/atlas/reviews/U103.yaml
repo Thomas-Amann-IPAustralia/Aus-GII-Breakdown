@@ -6,6 +6,9 @@ fingerprint:
   evidence: 4dcd9e8a81d7
   data: 870e884320a8
   links: 2fb9ed050b6e
+sources:
+  ipa_register: a1a690a78701
+  iprapid: 5eab8faca422
 candidates:
 - id: U100
   found:
@@ -71,11 +74,10 @@ candidates:
 - id: B13
   found:
   - keywords
-  score: 41.77
-  seen: f6a6a8e766c1
+  score: 41.94
+  seen: cb6cd7036bc1
   judgement: none
-  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
-    notebook''s words where they touch; neither bears on the other''s claim'
+  note: U103 is about trade marks' fast-track records; B13 about patents' lifetimes. Neither bears on the other.
 - id: U101
   found:
   - meaning

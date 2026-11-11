@@ -6,6 +6,8 @@ fingerprint:
   evidence: cbe50e8150ea
   data: 9a4940505a83
   links: ac34f8ca5bce
+sources:
+  abs_prices: 4f0818d916f8
 candidates:
 - id: U125
   found:

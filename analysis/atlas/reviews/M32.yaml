@@ -6,6 +6,15 @@ fingerprint:
   evidence: f6750b194a23
   data: d50604a7b41b
   links: d272864815a2
+sources:
+  abs_cabee: 63fb0c26ff13
+  abs_census: 2346b4f1ece7
+  abs_census_tsp: 915902a34db8
+  abs_regions: 998a55d86060
+  ato_postcode: c0ee35f652af
+  cer: 9be986cc6e1e
+  iprapid: 5eab8faca422
+  phidu: 9aeab3ce2593
 candidates:
 - id: B28
   found:

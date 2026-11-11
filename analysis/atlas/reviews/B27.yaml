@@ -6,6 +6,13 @@ fingerprint:
   evidence: bdb78c1d69d7
   data: 2c9c7930d20a
   links: 8cc0bdb3bd05
+sources:
+  abr: c8bb9b418676
+  abs_census: 2346b4f1ece7
+  abs_regions: 998a55d86060
+  iprapid: 5eab8faca422
+  linkage: a43c158f9444
+  rdti: 426938b90f6b
 candidates:
 - id: B58
   found:

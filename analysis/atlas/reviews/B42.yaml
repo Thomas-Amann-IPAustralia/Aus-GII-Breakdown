@@ -6,6 +6,11 @@ fingerprint:
   evidence: c0781e7b5ec0
   data: 32161e54a2c2
   links: 43206c41e70c
+sources:
+  abs_bcs: 9b51bb565144
+  abs_cabee: 63fb0c26ff13
+  concordances: a4f1c838cb87
+  iprapid: 5eab8faca422
 candidates:
 - id: M21
   found:

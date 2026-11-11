@@ -6,6 +6,10 @@ fingerprint:
   evidence: 33f3bd1b218b
   data: 88feb1b60cef
   links: 4cb978e0378c
+sources:
+  google_patents_inventors: f85ccfc76657
+  iprapid: 5eab8faca422
+  wgnd: 76e66a970813
 candidates:
 - id: U95
   found:

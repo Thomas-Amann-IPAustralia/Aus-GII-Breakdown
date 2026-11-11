@@ -5,6 +5,7 @@
     uv run python -m atlas.currency check --stale       # the same for every observation whose review is stale
     uv run python -m atlas.currency search "free text"  # the hybrid search on its own, to explore
     uv run python -m atlas.currency impact B38          # what leans on B38: observations and atlas content
+    uv run python -m atlas.currency confirm U5 "why"    # new data under U5, its cells re-run, outputs the same
 
 **The policy.** Every observation the atlas shows must be current. When an observation is added or changed, or the
 data or evidence under it change, it is compared at once with the observations nearest to it, and each pair is
@@ -28,14 +29,16 @@ disproved, awaiting approval), `open` (contested), `current`.
 **The gate** (run by `atlas.build`, so the strict build and the tests fail): every observation has a review whose
 fingerprint matches what it now rests on (its own words and reading, the outputs above it, its data files, and the
 words and status of every observation it cites), every candidate in it is judged, each pair judged against a
-candidate as it now reads, and every relation, proposal and retirement is complete. Atlas content may not cite a
-retired observation.
+candidate as it now reads, and every relation, proposal and retirement is complete. New data under an observation
+whose outputs are unchanged need its cells re-run, or a recorded reason it is unaffected (`confirm`); a fresh
+fingerprint alone does not clear it. Atlas content may not lean on a retired observation: only its own entry and the
+observations that replaced it may name it.
 
-**Finding the candidates** fuses three rankings by reciprocal rank (`search`): keywords (BM25 over the headline, the
-reading and the notebook's words), meaning (a small local embedding model, model2vec's potion-retrieval-32M, free; a
-latent semantic index from scikit-learn if it is not installed), and structure (the columns the evidence names, the
-sources, terms and lens). Observations linked explicitly (one cites the other, a Stage 3 revisit, `related`) are
-always candidates.
+**Finding the candidates** fuses rankings by reciprocal rank (`search`): keywords (BM25 over the headline, the
+reading and the notebook's words), meaning read two ways (a latent semantic index from scikit-learn, always; and a
+small local embedding model, model2vec's potion-retrieval-32M, free, when it is installed), and structure (the
+columns the evidence names, the sources, terms and lens). Observations linked explicitly (one cites the other, a
+Stage 3 revisit, `related`) are always candidates.
 """
 
 from __future__ import annotations
@@ -68,7 +71,13 @@ JUDGEMENTS = ["none", *TYPES]
 # Stage 3's verdicts that settle the relation to the page revisited without a judgement; every other verdict
 # (reversed, not detected, does not replicate, appears once held, mixed) needs one in relations.yaml
 DERIVED = {"holds": "supports", "weakened": "refines", "refined": "refines"}
-K = 8  # candidates from the search, besides the explicit links
+# Candidates from the search, besides the explicit links. Measured on the 69 known relations (11 November 2026):
+# searching from the later observation alone, the other is in its top 8 for 91% and its top 12 for 99%. A new or
+# reworded observation is searched from its own side only, so it takes 12 (K_NEW). A re-check for another reason (its
+# data, or an observation it cites) keeps the pairs it has: a newer neighbour was searched from its own side, and the
+# pair is mirrored. K is the baseline's width, and how near the top a ranking must put a hit to be named.
+K = 8
+K_NEW = 12
 KINDS = {"outmodes": "outmoded", "disproves": "disproven"}
 
 _ID = re.compile(r"\b([UBM]\d+)\b")
@@ -202,6 +211,15 @@ def _manifest() -> dict:
     return json.loads(p.read_text())["sources"] if p.exists() else {}
 
 
+def source_hashes(e: dict, manifest: dict) -> dict[str, str]:
+    """Each of an observation's sources with a hash of its processed files, to say which one changed."""
+    out = {}
+    for s in sorted(e.get("sources") or []):
+        files = manifest.get(s, {}).get("files", {})
+        out[s] = _h(*[f"{n}:{f.get('sha256', '')}" for n, f in sorted(files.items()) if n.startswith("processed/")])
+    return out
+
+
 def fingerprint(nb, e, nbs, status, manifest) -> dict:
     """What a review rests on. A change to any part makes the review stale."""
     data = []
@@ -270,34 +288,35 @@ class Index:
         tags |= {f"term:{t}" for t in re.findall(r"\[\[([^\]|]+)", json.dumps(e, ensure_ascii=False))}
         return snake | tags | {f"lens:{e.get('lens')}"}
 
-    @staticmethod
-    def _vectors(docs: list[str]):
+    def _vectors(self, docs: list[str]):
+        """Two readings of meaning: a latent semantic index (always), and a small embedding model if it is installed.
+        On the 72 known relations (11 November 2026) the two together put the other observation in the top 8 for 96%
+        and the top 12 for 99%; keywords alone, 90% and 92%; the embedding model alone, 83% and 92%."""
         import numpy as np
+        from sklearn.decomposition import TruncatedSVD
+        from sklearn.feature_extraction.text import TfidfVectorizer
 
+        def unit(v):
+            return v / np.maximum(np.linalg.norm(v, axis=-1, keepdims=True), 1e-9)
+
+        self._unit = unit
+        self._tfidf = TfidfVectorizer(tokenizer=tokens, lowercase=False, token_pattern=None)
+        x = self._tfidf.fit_transform(docs)
+        self._svd = TruncatedSVD(n_components=max(2, min(100, x.shape[1] - 1, len(docs) - 1)), random_state=0)
+        self.topics = unit(self._svd.fit_transform(x))
         try:
             from model2vec import StaticModel
 
-            m = StaticModel.from_pretrained("minishlab/potion-retrieval-32M")
-            v, method = np.asarray(m.encode(docs)), "model2vec potion-retrieval-32M"
-        except Exception:  # not installed or not reachable: a latent semantic index instead
-            from sklearn.decomposition import TruncatedSVD
-            from sklearn.feature_extraction.text import TfidfVectorizer
-
-            x = TfidfVectorizer(tokenizer=tokens, lowercase=False, token_pattern=None).fit_transform(docs)
-            v = TruncatedSVD(n_components=min(100, x.shape[1] - 1), random_state=0).fit_transform(x)
-            method = "latent semantic index (TF-IDF, 100 dimensions)"
-        v = v / np.maximum(np.linalg.norm(v, axis=1, keepdims=True), 1e-9)
-        return method, v
+            self._model = StaticModel.from_pretrained("minishlab/potion-retrieval-32M")
+            vec, method = unit(np.asarray(self._model.encode(docs))), "model2vec potion-retrieval-32M and a "
+        except Exception:  # not installed or not reachable: the latent semantic index alone
+            self._model, vec, method = None, None, ""
+        return method + "latent semantic index", vec
 
     def _embed(self, text: str):
         import numpy as np
 
-        if self.method.startswith("model2vec"):
-            from model2vec import StaticModel
-
-            v = np.asarray(StaticModel.from_pretrained("minishlab/potion-retrieval-32M").encode([text]))[0]
-            return v / max(np.linalg.norm(v), 1e-9)
-        return None
+        return None if self._model is None else self._unit(np.asarray(self._model.encode([text]))[0])
 
     def bm25(self, q: list[str]) -> list[float]:
         k1, b, out = 1.4, 0.75, []
@@ -310,12 +329,16 @@ class Index:
             out.append(s)
         return out
 
-    def rank(self, query: str, cols: set[str] | None = None, vec=None) -> list[tuple[str, float, list[str]]]:
+    def rank(self, query: str, cols: set[str] | None = None, vec=None, row=None) -> list[tuple[str, float, list[str]]]:
         """Every observation, best first, with its fused score and the rankings that put it near the top."""
         lists = {"keywords": self.bm25(tokens(query))}
         vec = self._embed(query) if vec is None else vec
-        if vec is not None:
+        if vec is not None and self.vec is not None:
             lists["meaning"] = list(self.vec @ vec)
+        topic = (
+            self.topics[row] if row is not None else self._unit(self._svd.transform(self._tfidf.transform([query]))[0])
+        )
+        lists["topics"] = list(self.topics @ topic)
         if cols:
             lists["columns"] = [sum(self.cidf[c] for c in cols & s) for s in self.cols]
         fused = [0.0] * len(self.ids)
@@ -334,9 +357,9 @@ class Index:
     def neighbours(self, oid: str, k: int = K) -> list[tuple[str, float, list[str]]]:
         i = self.ids.index(oid) if oid in self.ids else None
         nb, e = self.nbs[oid], self.ents[oid]
-        vec = self.vec[i] if i is not None else None
+        vec = self.vec[i] if i is not None and self.vec is not None else None
         cols = self._columns(oid)
-        hits = [h for h in self.rank(document(nb, e), cols, vec) if h[0] != oid]
+        hits = [h for h in self.rank(document(nb, e), cols, vec, i) if h[0] != oid]
         return hits[:k]
 
 
@@ -404,9 +427,19 @@ def gate(nbs: dict, ents: dict) -> tuple[list[str], dict]:
         if why:
             problems.append(f"{oid}: its check is stale ({'; '.join(why)}): python -m atlas.currency check {oid}")
             continue
+        d = rv.get("data") or {}
+        if d and not (d.get("confirmed") or {}).get("how"):
+            which = ", ".join(d.get("changed") or ["a source"])
+            problems.append(
+                f"{oid}: the data under it changed ({which}) and the outputs above it are as before: re-run its"
+                f" cells, then `python -m atlas.currency check {oid}`; or, if they were re-run and came out the"
+                f' same, or it cannot be affected, `python -m atlas.currency confirm {oid} "why"`'
+            )
         for c in rv.get("candidates", []):
             if c.get("judgement") not in JUDGEMENTS:
                 problems.append(f"{oid}: its pair with {c.get('id')} is not judged")
+            elif status.get(c["id"]) == "retired":
+                continue  # judged while it stood; the ledger is its record now
             elif c["id"] in nbs and c.get("seen") != text_hash(nbs[c["id"]]):
                 problems.append(
                     f"{oid}: {c['id']} changed since the pair was judged: python -m atlas.currency check {oid}"
@@ -414,18 +447,34 @@ def gate(nbs: dict, ents: dict) -> tuple[list[str], dict]:
             elif c["judgement"] != "none" and c.get("judgement") != _pair_type(graph, oid, c["id"]):
                 problems.append(f"{oid}: judged '{c['judgement']}' with {c['id']}, but relations.yaml does not say so")
 
-    # atlas content may not lean on a retired observation (the ledger and the graph are its history)
-    retired = {i for i, s in status.items() if s == "retired"}
-    for p in sorted(CONTENT.rglob("*.yaml")):
-        if p in {RELATIONS, LEDGER}:
-            continue
-        raw = p.read_text(encoding="utf-8")
-        for ref in sorted(retired & set(_ID.findall(raw))):
-            now = ", ".join(replacement(ref, graph, status)) or "its replacement"
-            problems.append(f"{p.relative_to(CONTENT)}: cites {ref}, which is retired (cite {now})")
+    problems += leaning(ents, graph, status, led)
 
     pages = _pages(nbs, ents, graph, status, led)
     return problems, pages
+
+
+def leaning(ents: dict, graph: list[dict], status: dict, led: dict) -> list[str]:
+    """Atlas content that still leans on a retired observation. Its own entry may name it, and so may the
+    observations that replaced it (they say what they replaced); the ledger and the graph are its history.
+    Everything else (another observation's entry, a summary, an early signal) must cite its replacement."""
+    retired = {i for i, s in status.items() if s == "retired"}
+    if not retired:
+        return []
+    problems = []
+    now = {r: ", ".join(replacement(r, graph, status)) or "its replacement" for r in retired}
+    by = {r: set(led[r].get("by") or []) for r in retired}
+    for oid, e in ents.items():
+        if oid in retired:
+            continue
+        for ref in sorted(retired & set(_ID.findall(json.dumps(e, ensure_ascii=False)))):
+            if oid not in by[ref]:
+                problems.append(f"{oid}: its entry cites {ref}, which is retired (cite {now[ref]})")
+    for p in sorted(CONTENT.glob("*.yaml")):  # the site's own pages: summaries, signals, the audit, lenses
+        if p in {RELATIONS, LEDGER}:
+            continue
+        for ref in sorted(retired & set(_ID.findall(p.read_text(encoding="utf-8")))):
+            problems.append(f"{p.name}: cites {ref}, which is retired (cite {now[ref]})")
+    return problems
 
 
 def _pair_type(graph, a, b) -> str | None:
@@ -521,7 +570,7 @@ def stale(nbs, ents) -> list[str]:
     return out
 
 
-def check(ids: list[str], nbs=None, ents=None, k: int = K) -> Path:
+def check(ids: list[str], nbs=None, ents=None, k: int | None = None) -> Path:
     """Write each observation's review with its candidates (judged pairs that still stand are kept), and a brief."""
     nbs, ents = (nbs, ents) if nbs else _load_all()
     graph = edges(ents)
@@ -538,12 +587,18 @@ def check(ids: list[str], nbs=None, ents=None, k: int = K) -> Path:
             "evidence"
         ) == fp["evidence"]
         kept = {c["id"]: c for c in old.get("candidates", [])}
-        hits = index.neighbours(oid, k)
-        found = {h[0]: (h[1], h[2]) for h in hits}
+        if k or not (old and same_self):  # new, or its own words or outputs changed: search afresh
+            found = {h[0]: (h[1], h[2]) for h in index.neighbours(oid, k or K_NEW)}
+        else:  # stale for another reason (its data, or an observation it cites): the pairs it has are the pairs
+            found = {
+                cid: (c.get("score", 0.0), list(c.get("found") or ["search"]))
+                for cid, c in kept.items()
+                if cid in nbs and cid not in skip
+            }
         for c in sorted(cites(nb, e) | _linked(oid, ents)):
             if c in nbs and c not in skip and c not in found:
                 found[c] = (0.0, ["cited"])
-            elif c in found:
+            elif c in found and "cited" not in found[c][1]:
                 found[c][1].append("cited")
         cands = []
         for cid, (score, why) in found.items():
@@ -565,12 +620,35 @@ def check(ids: list[str], nbs=None, ents=None, k: int = K) -> Path:
             "checked": dt.date.today().isoformat(),
             "search": index.method,
             "fingerprint": fp,
+            "sources": source_hashes(e, manifest),
             "candidates": cands,
         }
+        if old.get("basis"):
+            rv["basis"] = old["basis"]
+        # New data under an observation whose outputs are as before: a fresh fingerprint must not paper over it.
+        # The cells are re-run (the outputs change, and every pair is judged again) or the reason it is
+        # unaffected is recorded (`confirm`).
+        old_fp = old.get("fingerprint") or {}
+        if old_fp and old_fp.get("data") != fp["data"] and old_fp.get("evidence") == fp["evidence"]:
+            was = old.get("sources") or {}
+            changed = [s for s, h in rv["sources"].items() if was.get(s) != h] if was else list(rv["sources"])
+            rv["data"] = {"changed": changed or list(rv["sources"]), "found": rv["checked"], "confirmed": None}
+        elif old.get("data") and old_fp.get("data") == fp["data"] and old_fp.get("evidence") == fp["evidence"]:
+            rv["data"] = old["data"]
         _dump(REVIEWS / f"{oid}.yaml", rv)
         brief.append(_brief(oid, nbs, ents, status, graph, cands))
     BRIEF.write_text("\n".join(brief), encoding="utf-8")
     return BRIEF
+
+
+def confirm(ids: list[str], how: str) -> None:
+    """Record why new data leave an observation as it stands: its cells re-run with the same outputs, or a reason."""
+    for oid in ids:
+        rv = review(oid)
+        if not rv or not rv.get("data"):
+            sys.exit(f"{oid}: no data change is waiting on it (run `check {oid}` first)")
+        rv["data"]["confirmed"] = {"date": dt.date.today().isoformat(), "how": how}
+        _dump(REVIEWS / f"{oid}.yaml", rv)
 
 
 def _linked(oid: str, ents: dict) -> set[str]:
@@ -672,6 +750,11 @@ def main(argv: list[str]) -> None:
             f"Read {path.relative_to(ROOT)}, judge each pair in analysis/atlas/reviews/<id>.yaml, and add a relation to"
         )
         print("content/relations.yaml for each judgement other than 'none' (ADR 0058).")
+    elif cmd == "confirm":
+        if len(rest) < 2 or len(rest[-1].split()) < 3:
+            sys.exit('confirm <ids...> "what was done, in a sentence" (for example: cells re-run, outputs identical)')
+        confirm(rest[:-1], rest[-1])
+        print(f"{len(rest) - 1} confirmed: {rest[-1]}")
     elif cmd == "search":
         nbs, ents = _load_all()
         idx = Index(nbs, ents)

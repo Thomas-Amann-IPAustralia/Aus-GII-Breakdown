@@ -86,3 +86,58 @@ licence-income link as a finding.
   them; a cheap one would re-judge a random 5% of "none" pairs.
 - `model2vec` joins the analysis group (about 30 MB of model, downloaded once from Hugging Face). CI never needs it:
   the gate checks records, not searches.
+
+## Addendum: review of the same day (11 November 2026)
+
+The owner asked for a review of what was done, the process included, before deciding on the two proposed
+retirements. Five tests, what each found, and what changed.
+
+1. **Does the search find what is related?** Measured on the known relations (the Stage 3 revisits and the judged
+   relations), searching from the later observation alone: the other is in its top 8 for 91% and its top 12 for 99%.
+   Keywords alone reach 90% and 92%; the embedding model alone 83% and 92%; a latent semantic index alone 94% and 99%;
+   keywords, both readings of meaning and columns together 96% and 99% (69 and 71 of 72). The differences among the
+   combinations are one to three pairs, so they rank loosely, but a hybrid beats keywords. **Changed:** the search now
+   uses both readings of meaning (the latent semantic index always, the embedding model when installed), and a new or
+   reworded observation takes its top 12, not 8.
+2. **Was the judging sound?** A random 70 of the 1,311 pairs judged "none" (seed 20261111) were read in full. None
+   hides a contest, an outmoding or a disproof (0 of 70; a true rate up to about 4% cannot be ruled out on a sample
+   this size). Two clear weaker links had been missed, B53 refines B40 and B46 supports U85, and three borderline
+   supports were left as "none" (B3 with U99, B51 with M8, M12 with M8). **Changed:** both relations recorded; the
+   procedure now says to read both readings in full, since headlines miss the weaker links.
+3. **Are the relations taken from Stage 3's verdicts right?** The 18 revisits with a verdict of weakened or refined
+   were read against the earlier headline: each leaves it standing, so "refines" holds for all.
+4. **Does a retirement work?** It was rehearsed on B62 and reverted. It did not: the gate counted the retired
+   observation's own entry, and its replacement's `revisits`, as content citing a retired observation, so no
+   retirement could have passed the build; pairs judged against it were asked for again; and the replacement's page
+   lost its "Stage 2 found" step. **Changed:** only other observations' entries and the site's own pages must be
+   re-pointed; the replacement names what it replaced, shown as "since retired"; judged pairs with a retired
+   observation are left. Rehearsed again: 230 pages build, no console errors at 1,366 or 390 pixels.
+5. **Does new data force a second look?** It did not: a refreshed source made the checks stale, but running the check
+   again restored the fingerprint with every judgement kept and nothing re-run. **Changed:** when the data under an
+   observation change and its outputs are as before, the build asks for its cells to be re-run or for a recorded
+   reason it is unaffected (`atlas.currency confirm`); checking again does not clear it. Scale: 173 of the 231
+   observations rest on IP RAPID, 33 on the ABR, 31 on the ABS regional data.
+
+**The bar for retirement, sharpened.** Decision 7 said an outmoding needs the later observation to state everything
+still true in the earlier one. The B13 proposal did not meet it: M5 does not carry who asks for expedited
+examination and for what (the 2011 and 2012 rise and the 2014 Patent Prosecution Highway step, which OQ25 rests on),
+nor that expedited applications are granted more often. Claude withdrew the proposal. B13 is corrected in place: its
+notebook heading no longer says "not a composition effect" (true of the filer mix only; a dated note quotes it), its
+atlas headline reads "On raw figures ... but not among similar patents", and M5 *refines* it. The rule, now in
+`CLAUDE.md` and the skill: **retire only when nothing true is left that the replacement does not say; otherwise
+correct the outmoded wording in place with a dated note, and record *refines*.** B62 still meets the bar: M24 quotes
+its four main correlations and reads them correctly; only "patents per disclosure fell from 0.161 to 0.134" is
+B62's alone, and the notebook and ledger keep it.
+
+**After the review:** 72 relations (1 outmodes, 3 contests, 41 refines, 27 supports); 224 observations current, 6
+open, 1 proposed for retirement (B62, OQ36), none retired. B13's rewording made its own check and six neighbours'
+stale; they were re-checked, 18 pairs read in full, and one relation added (B13 refines U34).
+
+**What the process still cannot do.**
+- It notices that data changed; it does not re-run the notebooks. A tool that re-runs the cells above each affected
+  observation and compares the numbers with those quoted would turn a refresh of IP RAPID from 173 manual
+  confirmations into a list of the observations whose numbers moved. Recommended next.
+- A change to the lens-building code (`analysis/eda/build.py`) changes the tables without changing the corpus, and
+  the fingerprint does not see it.
+- The gate checks that every pair has a judgement, not that the judgement is right. The sample in test 2 is the
+  control; repeat it after any large batch.

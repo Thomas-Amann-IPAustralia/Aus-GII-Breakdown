@@ -6,6 +6,10 @@ fingerprint:
   evidence: 0d90142abeb6
   data: b48a5315a60d
   links: 5e9f5bdf3bb8
+sources:
+  google_patents: 3cb9207f3512
+  iprapid: 5eab8faca422
+  wipo_ipstats: e7a291d838fc
 candidates:
 - id: U115
   found:

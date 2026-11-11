@@ -40,7 +40,13 @@ def test_each_observation_carries_its_stage(atlas):
 def test_stage_3_pages_link_back_to_what_they_revisit(atlas):
     # Every Stage 3 revisit appears on the earlier page as `later`, with the same verdict, and nothing else does
     by = {o["id"]: o for o in atlas["observations"]}
-    sent = {(r["id"], o["id"], r["verdict"]) for o in atlas["observations"] for r in o.get("revisits", [])}
+    retired = {x["id"] for x in atlas["currency"]["retired"]}  # a retired page carries nothing; the ledger does
+    sent = {
+        (r["id"], o["id"], r["verdict"])
+        for o in atlas["observations"]
+        for r in o.get("revisits", [])
+        if r["id"] not in retired
+    }
     got = {(o["id"], x["id"], x["verdict"]) for o in atlas["observations"] for x in o.get("later", [])}
     assert sent == got and sent
     assert all(by[m]["stage"] == 3 for _, m, _ in got)

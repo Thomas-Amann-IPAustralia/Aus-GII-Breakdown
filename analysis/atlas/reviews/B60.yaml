@@ -6,6 +6,11 @@ fingerprint:
   evidence: 69c0814d3da5
   data: 648e0c77a292
   links: a2e05e46ddf6
+sources:
+  abs_bcs_cubes: 6714a6587f64
+  abs_cabee: 63fb0c26ff13
+  concordances: a4f1c838cb87
+  iprapid: 5eab8faca422
 candidates:
 - id: B42
   found:

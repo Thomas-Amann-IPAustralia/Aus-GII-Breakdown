@@ -6,6 +6,11 @@ fingerprint:
   evidence: b158651d30b9
   data: b7de3ae2d1f3
   links: c839e674593e
+sources:
+  gii: 78e93f3c32a4
+  oecd: a9acd8000249
+  wdi: dfd1a28ca08a
+  wipo_ipstats: e7a291d838fc
 candidates:
 - id: M33
   found:

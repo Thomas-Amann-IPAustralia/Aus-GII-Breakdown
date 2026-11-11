@@ -48,7 +48,8 @@ export function markup(A, { base = "", terms = new Set(), byId = null } = {}) {
 }
 
 export function observationMarkdown(o, { atlas: A, chart = null, base = "" }) {
-  const byId = Object.fromEntries(A.observations.map((x) => [x.id, x]));
+  // retired observations keep their headline and stage in the ledger, so a page that replaced one can still name it
+  const byId = Object.fromEntries([...(A.currency?.retired || []), ...A.observations].map((x) => [x.id, x]));
   const L = A.lenses[o.lens] || { name: o.lens, unit: "" };
   const page = (id) => `${base}#/${id}`;
   const terms = new Set(o.terms || []);

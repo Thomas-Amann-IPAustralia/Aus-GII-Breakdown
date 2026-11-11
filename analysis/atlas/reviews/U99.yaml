@@ -6,6 +6,11 @@ fingerprint:
   evidence: 4dcd9e8a81d7
   data: 2f8994cce27d
   links: 82bd5ed1bd47
+sources:
+  abr: c8bb9b418676
+  ipa_api: 264829447f95
+  ipa_register: a1a690a78701
+  iprapid: 5eab8faca422
 candidates:
 - id: U45
   found:

@@ -6,6 +6,9 @@ fingerprint:
   evidence: 1b2fb14621f5
   data: bddf9c153864
   links: 87ef48c7d543
+sources:
+  linkage: a43c158f9444
+  wgea: 988b792d6b54
 candidates:
 - id: B50
   found:

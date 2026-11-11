@@ -6,6 +6,9 @@ fingerprint:
   evidence: df956e0bebc2
   data: c4a4a4a1d5a5
   links: 2ac346a43646
+sources:
+  google_patents: 3cb9207f3512
+  iprapid: 5eab8faca422
 candidates:
 - id: M4
   found:

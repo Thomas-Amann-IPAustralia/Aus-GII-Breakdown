@@ -603,7 +603,11 @@ currency_page:
       reason: none, supports, refines, contests (with what would settle it), outmodes or disproves."
     - "**Keep it on record.** Each observation's check is stored with a fingerprint of what it rests on: its own
       words, the outputs above it, its data files, and the observations it names. If any of these change, the check
-      is out of date and the atlas will not build until it is redone."
+      is out of date and the atlas will not build until it is redone. When the data beneath an observation change,
+      its analysis is run again, or the reason it cannot be affected is written down."
+    - "**Correct what is partly out of date.** When a later observation overturns one claim in an observation that
+      otherwise stands, the wording is corrected in place with a dated note that quotes what it said, and the later
+      result is shown in a box under it."
     - "**Ask before removing anything.** Outmoded and disproven observations are marked at once and listed above.
       Only the research owner's recorded approval retires one; until then it stays, marked as superseded."
 

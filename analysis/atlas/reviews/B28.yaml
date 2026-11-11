@@ -6,6 +6,13 @@ fingerprint:
   evidence: 932001693c08
   data: 048d46375664
   links: 79186fc16c12
+sources:
+  abs_cabee: 63fb0c26ff13
+  abs_census: 2346b4f1ece7
+  abs_regions: 998a55d86060
+  cer: 9be986cc6e1e
+  iprapid: 5eab8faca422
+  phidu: 9aeab3ce2593
 candidates:
 - id: M32
   found:

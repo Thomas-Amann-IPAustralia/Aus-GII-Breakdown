@@ -2,10 +2,12 @@ id: B13
 checked: '2026-11-11'
 search: model2vec potion-retrieval-32M
 fingerprint:
-  text: f6a6a8e766c1
+  text: cb6cd7036bc1
   evidence: bc60cc8858ad
   data: 28b2c206dfc7
-  links: 41ca43824243
+  links: 1bf4efc8b5d0
+sources:
+  iprapid: 5eab8faca422
 candidates:
 - id: B8
   found:
@@ -16,74 +18,99 @@ candidates:
   score: 47.65
   seen: 6435d2b05aab
   judgement: none
-  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
-    notebook''s words where they touch; neither bears on the other''s claim'
-- id: B14
-  found:
-  - keywords
-  - meaning
-  - columns
-  - cited
-  score: 46.88
-  seen: 9efd3ba6d724
-  judgement: none
-  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
-    notebook''s words where they touch; neither bears on the other''s claim'
+  note: Both read patents in force at ten years, but compare different things (fast-tracking; Australian against overseas
+    owners at the same reach).
 - id: M5
   found:
   - keywords
   - meaning
   - columns
   - cited
-  score: 45.6
+  score: 46.3
   seen: 475970c042ef
-  judgement: outmodes
-  note: 'baseline cross-stage review, 11 November 2026: see relations.yaml'
+  judgement: refines
+  note: 'read in full on B13''s restatement, 11 November 2026: see relations.yaml'
+- id: B14
+  found:
+  - keywords
+  - meaning
+  - columns
+  - cited
+  score: 45.74
+  seen: 9efd3ba6d724
+  judgement: none
+  note: B14 is the trade mark counterpart; each stands on its own right's figures.
 - id: M40
   found:
   - keywords
   - meaning
   - columns
   - cited
-  score: 43.55
+  score: 44.92
   seen: 769042d400fd
   judgement: refines
-  note: 'baseline cross-stage review, 11 November 2026: Stage 3''s revisit settles it'
+  note: 'read in full on B13''s restatement, 11 November 2026: see relations.yaml'
 - id: U34
   found:
   - keywords
   - columns
   - cited
-  score: 42.82
+  score: 42.76
   seen: 593f9e717e4d
-  judgement: none
-  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
-    notebook''s words where they touch; neither bears on the other''s claim'
+  judgement: refines
+  note: 'read in full on B13''s restatement, 11 November 2026: see relations.yaml'
 - id: U103
   found:
   - keywords
   - columns
-  score: 42.7
+  score: 41.35
   seen: c414c3c91a48
   judgement: none
-  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
-    notebook''s words where they touch; neither bears on the other''s claim'
+  note: U103 is about trade marks' fast-track records; B13 about patents' lifetimes. Neither bears on the other.
 - id: B6
   found:
   - keywords
   - meaning
-  score: 40.97
+  score: 40.73
   seen: c641059f7a23
   judgement: none
-  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
-    notebook''s words where they touch; neither bears on the other''s claim'
+  note: Attorney use and grant; no bearing on fast-tracking and lifetime.
 - id: B10
   found:
   - keywords
   - columns
-  score: 39.88
+  score: 38.55
   seen: ff988b14f36e
   judgement: none
-  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
-    notebook''s words where they touch; neither bears on the other''s claim'
+  note: Trade marks' and designs' renewal by kind of owner; no bearing on patents' fast-tracking.
+- id: M3
+  found:
+  - keywords
+  - columns
+  score: 36.66
+  seen: 4b30e21fe6f4
+  judgement: none
+  note: Lifetime by origin at the same reach; fast-tracking is not in it.
+- id: M1
+  found:
+  - keywords
+  score: 34.75
+  seen: b9b90c358f4f
+  judgement: none
+  note: Attorney use and grant among similar applications; no bearing.
+- id: B12
+  found:
+  - meaning
+  score: 34.49
+  seen: 0b8a3e8aa938
+  judgement: none
+  note: Citations by origin; no bearing.
+- id: B26
+  found:
+  - keywords
+  - meaning
+  score: 33.94
+  seen: 7d8fc7989d2b
+  judgement: none
+  note: Young firms' patents and later overseas ownership; no bearing.
 basis: baseline cross-stage review (ADR 0058)

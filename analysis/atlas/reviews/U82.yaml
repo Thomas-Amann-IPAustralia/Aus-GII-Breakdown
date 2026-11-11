@@ -6,6 +6,9 @@ fingerprint:
   evidence: 6b4ee1fd96d1
   data: 901ff1f25767
   links: ee9f29a52e38
+sources:
+  openalex: 12b24bb676f2
+  ror: 4a04a5500fda
 candidates:
 - id: U80
   found:

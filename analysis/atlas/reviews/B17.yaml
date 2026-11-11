@@ -6,6 +6,10 @@ fingerprint:
   evidence: bd6c388d30a4
   data: 88feb1b60cef
   links: c827ce4d2e74
+sources:
+  google_patents_inventors: f85ccfc76657
+  iprapid: 5eab8faca422
+  wgnd: 76e66a970813
 candidates:
 - id: M7
   found:

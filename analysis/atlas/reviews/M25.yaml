@@ -6,6 +6,9 @@ fingerprint:
   evidence: 655bd1058d3f
   data: ce547439a2ee
   links: b0febdf57380
+sources:
+  iprapid: 5eab8faca422
+  policy_events: 2f21107ee403
 candidates:
 - id: M34
   found:

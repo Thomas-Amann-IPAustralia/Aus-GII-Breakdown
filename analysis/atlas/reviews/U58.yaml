@@ -6,6 +6,8 @@ fingerprint:
   evidence: f55754e86fb6
   data: 90152d0d1269
   links: a504ea1fd3d3
+sources:
+  abs_regions: 998a55d86060
 candidates:
 - id: U55
   found:

@@ -6,6 +6,9 @@ fingerprint:
   evidence: 2f5058d15617
   data: 47a93c3540ea
   links: 721179d6e614
+sources:
+  concordances: a4f1c838cb87
+  iprapid: 5eab8faca422
 candidates:
 - id: U75
   found:

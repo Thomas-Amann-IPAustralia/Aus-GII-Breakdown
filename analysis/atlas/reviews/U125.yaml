@@ -6,6 +6,9 @@ fingerprint:
   evidence: e13e26e6d578
   data: 7af9017d2a32
   links: ac1015ffdaf1
+sources:
+  abs_prices: 4f0818d916f8
+  frl_fees: 325452c9c8fe
 candidates:
 - id: U108
   found:

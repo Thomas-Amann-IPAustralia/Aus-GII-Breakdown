@@ -6,6 +6,10 @@ fingerprint:
   evidence: 9fc77cc39c0b
   data: 0ae2789ba3e2
   links: 8dc6202c2425
+sources:
+  ipa_provisionals: e74b92839dac
+  iprapid: 5eab8faca422
+  wgnd: 76e66a970813
 candidates:
 - id: B18
   found:

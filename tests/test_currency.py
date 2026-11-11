@@ -93,23 +93,51 @@ def test_retiring_needs_the_owners_words_and_the_notebook_note(records, monkeypa
     assert "ledger: B62's notebook cell needs its dated 'Retired (...)' note" in problems
 
 
-def test_a_retired_observation_leaves_the_atlas_and_nothing_may_cite_it(records, monkeypatch):
+def test_a_retired_observation_leaves_the_atlas_and_only_its_replacement_may_name_it(records, monkeypatch):
     nbs, ents = records
-    entry = {
-        "id": "B62",
-        "kind": "outmoded",
-        "by": ["M24"],
-        "why": "x",
-        "approved": {"date": "2026-11-12", "words": "Yes"},
-    }
+    approved = {"date": "2026-11-12", "words": "Yes"}
+    entry = {"id": "B62", "kind": "outmoded", "by": ["M24"], "why": "x", "approved": approved}
     monkeypatch.setattr(currency, "ledger", lambda: [entry])
     assert currency.statuses(ents)["B62"] == "retired"
     problems, pages = currency.gate(nbs, ents)
-    assert any(p.startswith("site.yaml: cites B62, which is retired (cite M24)") for p in problems)
+    # a summary and another observation's entry must point at the replacement ...
+    assert "site.yaml: cites B62, which is retired (cite M24)" in problems
+    assert "U122: its entry cites B62, which is retired (cite M24)" in problems
+    # ... but its own entry, and the observation that replaced it (which says what it revisits), may name it
+    assert not any(p.startswith(("B62:", "M24: its entry")) for p in problems)
+    # and pairs judged against it while it stood are not asked for again
+    assert not any("B62 changed since the pair was judged" in p or "its pair with B62" in p for p in problems)
     assert [x["id"] for x in pages["retired"]] == ["B62"] and pages["retired"][0]["now"] == ["M24"]
     obs = [{"id": i} for i in ents]
     kept, page, _ = build.keep_current(obs, nbs)
     assert "B62" not in {o["id"] for o in kept} and page["retired"][0]["id"] == "B62"
+
+
+def test_new_data_cannot_be_cleared_by_checking_again(records, monkeypatch, tmp_path):
+    # the outputs are as before, so the cells have not been re-run on the new data: a fresh fingerprint is not enough
+    import shutil
+
+    nbs, ents = records
+    shutil.copytree(currency.REVIEWS, tmp_path / "reviews")
+    monkeypatch.setattr(currency, "REVIEWS", tmp_path / "reviews")
+    monkeypatch.setattr(currency, "BRIEF", tmp_path / "reviews" / "BRIEF.md")
+    manifest = copy.deepcopy(currency._manifest())
+    src = "abs_cabee"
+    for f in manifest[src]["files"].values():
+        f["sha256"] = "0" * 64
+    monkeypatch.setattr(currency, "_manifest", lambda: manifest)
+    ids = currency.stale(nbs, ents)
+    assert ids and all(src in ents[i]["sources"] for i in ids)
+    currency.check(ids, nbs, ents)
+    problems = _problems(nbs, ents)
+    assert len(problems) == len(ids) and all(f"the data under it changed ({src})" in p for p in problems)
+    assert all(c["judgement"] in currency.JUDGEMENTS for i in ids for c in currency.review(i)["candidates"])
+    currency.confirm(ids, "cells re-run on the refreshed table; outputs identical")
+    assert _problems(nbs, ents) == []
+
+
+def test_a_new_or_reworded_observation_is_searched_more_widely(records):
+    assert currency.K_NEW > currency.K
 
 
 def test_the_search_finds_the_observations_about_the_same_thing(records):

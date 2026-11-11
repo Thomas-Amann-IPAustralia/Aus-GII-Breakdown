@@ -5,7 +5,9 @@ fingerprint:
   text: 9efd3ba6d724
   evidence: bc60cc8858ad
   data: 28b2c206dfc7
-  links: c1138998d011
+  links: 03cd477625b3
+sources:
+  iprapid: 5eab8faca422
 candidates:
 - id: B13
   found:
@@ -13,11 +15,10 @@ candidates:
   - meaning
   - columns
   - cited
-  score: 48.14
-  seen: f6a6a8e766c1
+  score: 47.65
+  seen: cb6cd7036bc1
   judgement: none
-  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
-    notebook''s words where they touch; neither bears on the other''s claim'
+  note: B14 is the trade mark counterpart; each stands on its own right's figures.
 - id: U103
   found:
   - keywords
@@ -33,7 +34,7 @@ candidates:
   found:
   - keywords
   - meaning
-  score: 44.57
+  score: 44.82
   seen: 6435d2b05aab
   judgement: none
   note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the

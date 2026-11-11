@@ -6,6 +6,10 @@ fingerprint:
   evidence: 65aa4ee2ae87
   data: b48a5315a60d
   links: 39a793314973
+sources:
+  google_patents: 3cb9207f3512
+  iprapid: 5eab8faca422
+  wipo_ipstats: e7a291d838fc
 candidates:
 - id: B55
   found:

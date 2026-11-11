@@ -6,6 +6,11 @@ fingerprint:
   evidence: f96ea184c9d3
   data: 5927de168685
   links: 7f2b32bf1882
+sources:
+  abs_bcs: 9b51bb565144
+  abs_bcs_cubes: 6714a6587f64
+  abs_cabee: 63fb0c26ff13
+  bcarr_creative: d681f0146962
 candidates:
 - id: U68
   found:

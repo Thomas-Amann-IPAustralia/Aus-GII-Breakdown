@@ -6,6 +6,9 @@ fingerprint:
   evidence: 9339864d389b
   data: fee52e4e7ab7
   links: 11272ba9c1f7
+sources:
+  ctg: e840e56f1b8b
+  mwm: 952ce167fd93
 candidates:
 - id: U68
   found:

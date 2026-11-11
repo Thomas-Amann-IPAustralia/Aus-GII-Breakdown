@@ -6,6 +6,13 @@ fingerprint:
   evidence: 4954aa78eae8
   data: 6a52ddeb3b74
   links: 0633a08ee976
+sources:
+  abs_schools: b8bbcc0a9807
+  ctg: e840e56f1b8b
+  gii: 78e93f3c32a4
+  mwm: 952ce167fd93
+  oecd: a9acd8000249
+  wipo_ipstats: e7a291d838fc
 candidates:
 - id: U79
   found:

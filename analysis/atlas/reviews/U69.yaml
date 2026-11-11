@@ -6,6 +6,8 @@ fingerprint:
   evidence: 8f1b890afbe4
   data: ff11356c9205
   links: 208ea6e485dc
+sources:
+  gii: 78e93f3c32a4
 candidates:
 - id: U120
   found:

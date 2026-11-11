@@ -6,6 +6,11 @@ fingerprint:
   evidence: d2b9d032c412
   data: e7bd1249da99
   links: 87ef48c7d543
+sources:
+  iprapid: 5eab8faca422
+  linkage: a43c158f9444
+  rdti: 426938b90f6b
+  wgea: 988b792d6b54
 candidates:
 - id: U112
   found:

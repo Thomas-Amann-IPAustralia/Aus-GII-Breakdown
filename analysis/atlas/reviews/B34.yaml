@@ -6,6 +6,10 @@ fingerprint:
   evidence: b7275747b989
   data: d255916a928b
   links: b85b2cfa783f
+sources:
+  oecd: a9acd8000249
+  wdi: dfd1a28ca08a
+  wipo_ipstats: e7a291d838fc
 candidates:
 - id: M18
   found:

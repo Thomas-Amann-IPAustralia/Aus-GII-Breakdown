@@ -6,6 +6,10 @@ fingerprint:
   evidence: 0804d37e79cf
   data: 0f2270ce1c0c
   links: 7bfeccd32ff8
+sources:
+  iprapid: 5eab8faca422
+  nsrc: 67553f6f1eb4
+  ror: 4a04a5500fda
 candidates:
 - id: B62
   found:

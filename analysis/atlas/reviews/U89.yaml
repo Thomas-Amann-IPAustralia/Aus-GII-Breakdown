@@ -6,6 +6,9 @@ fingerprint:
   evidence: a0be4f442329
   data: d6add974f19f
   links: b9ca314b51da
+sources:
+  iprapid: 5eab8faca422
+  wipo_ipstats: e7a291d838fc
 candidates:
 - id: U67
   found:

@@ -6,6 +6,12 @@ fingerprint:
   evidence: 04dd8066f2c4
   data: 485518b58f1d
   links: bf9c5cd9a029
+sources:
+  abs_cabee: 63fb0c26ff13
+  abs_national_accounts: 268af323fa8a
+  abs_rd_vc: 93288811ddf9
+  concordances: a4f1c838cb87
+  iprapid: 5eab8faca422
 candidates:
 - id: B40
   found:

@@ -6,6 +6,9 @@ fingerprint:
   evidence: b42bea6e1432
   data: 428daae4f61c
   links: d1a2d89db277
+sources:
+  openalex_works: 9b224fb19089
+  reliance_on_science: 38900ecff3d1
 candidates:
 - id: U85
   found:

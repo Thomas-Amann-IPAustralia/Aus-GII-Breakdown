@@ -6,6 +6,9 @@ fingerprint:
   evidence: 4b02ccc3b43f
   data: fc2bef1f8a1d
   links: cdda481b299d
+sources:
+  abr: c8bb9b418676
+  austender: 16eee37e3549
 candidates:
 - id: B24
   found:

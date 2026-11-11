@@ -6,6 +6,10 @@ fingerprint:
   evidence: e83dd6003a13
   data: c4227016147d
   links: 1aa890fcaf42
+sources:
+  abr: c8bb9b418676
+  abs_regions: 998a55d86060
+  iprapid: 5eab8faca422
 candidates:
 - id: U48
   found:

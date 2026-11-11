@@ -6,6 +6,10 @@ fingerprint:
   evidence: 79cafcb9eef2
   data: 21dc7526b387
   links: fd370d2b2053
+sources:
+  abs_cabee: 63fb0c26ff13
+  abs_regions: 998a55d86060
+  iprapid: 5eab8faca422
 candidates:
 - id: M31
   found:

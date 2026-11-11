@@ -6,6 +6,8 @@ fingerprint:
   evidence: 76a9cc11c48d
   data: 28b2c206dfc7
   links: 099c1b9e83fc
+sources:
+  iprapid: 5eab8faca422
 candidates:
 - id: U103
   found:
@@ -54,6 +56,14 @@ candidates:
   judgement: none
   note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
     notebook''s words where they touch; neither bears on the other''s claim'
+- id: B13
+  found:
+  - keywords
+  - cited
+  score: 39.97
+  seen: cb6cd7036bc1
+  judgement: refines
+  note: 'read in full on B13''s restatement, 11 November 2026: see relations.yaml'
 - id: U33
   found:
   - meaning
@@ -70,15 +80,6 @@ candidates:
   - meaning
   score: 39.29
   seen: be26a900682e
-  judgement: none
-  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
-    notebook''s words where they touch; neither bears on the other''s claim'
-- id: B13
-  found:
-  - keywords
-  - cited
-  score: 39.23
-  seen: f6a6a8e766c1
   judgement: none
   note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
     notebook''s words where they touch; neither bears on the other''s claim'

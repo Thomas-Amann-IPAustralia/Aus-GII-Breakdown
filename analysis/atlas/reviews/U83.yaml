@@ -6,6 +6,10 @@ fingerprint:
   evidence: d34b57e4338c
   data: 17a29b83b0b4
   links: 90daa49e4bc1
+sources:
+  arc_grants: 7a01580c58e0
+  nhmrc_grants: 40f84a42c451
+  ror: 4a04a5500fda
 candidates:
 - id: U80
   found:

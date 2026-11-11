@@ -6,6 +6,9 @@ fingerprint:
   evidence: e351c230cb4b
   data: 1d6ac3509a2e
   links: e73a2741867b
+sources:
+  abs_national_accounts: 268af323fa8a
+  iprapid: 5eab8faca422
 candidates:
 - id: B56
   found:

@@ -6,6 +6,12 @@ fingerprint:
   evidence: ca65659946c4
   data: 7e9a7d60ce9d
   links: a28628963694
+sources:
+  abr: c8bb9b418676
+  asic: 831f12998f6b
+  ipa_register: a1a690a78701
+  iprapid: 5eab8faca422
+  linkage: a43c158f9444
 candidates:
 - id: U126
   found:

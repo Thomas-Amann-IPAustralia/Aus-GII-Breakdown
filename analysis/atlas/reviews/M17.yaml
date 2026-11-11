@@ -6,6 +6,10 @@ fingerprint:
   evidence: 8246527ea26c
   data: 11f4fcaaec80
   links: 223f393cb98e
+sources:
+  gii: 78e93f3c32a4
+  oecd: a9acd8000249
+  wdi: dfd1a28ca08a
 candidates:
 - id: U66
   found:

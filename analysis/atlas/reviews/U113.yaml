@@ -6,6 +6,8 @@ fingerprint:
   evidence: 0161373ed12f
   data: 3de242be6ace
   links: d018bba3fef8
+sources:
+  rba: 677d440d9733
 candidates:
 - id: B52
   found:

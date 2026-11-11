@@ -6,6 +6,12 @@ fingerprint:
   evidence: 507657ebaba3
   data: a2665f197225
   links: f196cf967c3c
+sources:
+  abr: c8bb9b418676
+  iplord: '635602093743'
+  iprapid: 5eab8faca422
+  oecd: a9acd8000249
+  tmlink: f665bd5b97ac
 candidates:
 - id: U68
   found:

@@ -6,6 +6,8 @@ fingerprint:
   evidence: 6d573e63f980
   data: bae0c581462f
   links: 98b7b6e673b5
+sources:
+  abs_bcs_cubes: 6714a6587f64
 candidates:
 - id: U79
   found:

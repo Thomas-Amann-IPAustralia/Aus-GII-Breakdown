@@ -6,6 +6,14 @@ fingerprint:
   evidence: 52d31e71d9b1
   data: 2a4321730c2d
   links: f0a4eb0aa2da
+sources:
+  abr: c8bb9b418676
+  abs_regions: 998a55d86060
+  ato_ctt: d6bd2f418f1a
+  austender: 16eee37e3549
+  iprapid: 5eab8faca422
+  linkage: a43c158f9444
+  rdti: 426938b90f6b
 candidates:
 - id: B23
   found:

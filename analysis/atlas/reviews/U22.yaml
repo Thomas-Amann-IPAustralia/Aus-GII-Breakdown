@@ -6,6 +6,10 @@ fingerprint:
   evidence: e6cb431ca88b
   data: e22ca2f8811c
   links: 33114697cefb
+sources:
+  abs_prices: 4f0818d916f8
+  iprapid: 5eab8faca422
+  policy_events: 2f21107ee403
 candidates:
 - id: U29
   found:

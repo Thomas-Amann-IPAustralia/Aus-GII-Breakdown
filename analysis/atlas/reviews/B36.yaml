@@ -6,6 +6,9 @@ fingerprint:
   evidence: 85ca7b8d35af
   data: 9dfae0612d70
   links: f572268ad815
+sources:
+  abs_prices: 4f0818d916f8
+  iprapid: 5eab8faca422
 candidates:
 - id: B39
   found:

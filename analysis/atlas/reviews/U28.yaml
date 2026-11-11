@@ -6,6 +6,9 @@ fingerprint:
   evidence: 099b56beb097
   data: ce547439a2ee
   links: fd4be9ddd6f0
+sources:
+  iprapid: 5eab8faca422
+  policy_events: 2f21107ee403
 candidates:
 - id: B37
   found:

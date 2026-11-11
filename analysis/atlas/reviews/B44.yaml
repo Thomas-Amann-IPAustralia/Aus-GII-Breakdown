@@ -6,6 +6,14 @@ fingerprint:
   evidence: 2b57a7c88e3d
   data: 63cdf97152bf
   links: 0cb4903dcd51
+sources:
+  arc_grants: 7a01580c58e0
+  iprapid: 5eab8faca422
+  nhmrc_grants: 40f84a42c451
+  openalex: 12b24bb676f2
+  openalex_works: 9b224fb19089
+  reliance_on_science: 38900ecff3d1
+  ror: 4a04a5500fda
 candidates:
 - id: B45
   found:

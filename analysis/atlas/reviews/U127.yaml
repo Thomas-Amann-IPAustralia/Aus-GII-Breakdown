@@ -6,6 +6,10 @@ fingerprint:
   evidence: 6c2b5cec3077
   data: 015d6424128d
   links: 8d89777b057b
+sources:
+  abr: c8bb9b418676
+  iprapid: 5eab8faca422
+  ror: 4a04a5500fda
 candidates:
 - id: U81
   found:

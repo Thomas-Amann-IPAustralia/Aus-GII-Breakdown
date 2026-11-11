@@ -6,6 +6,11 @@ fingerprint:
   evidence: c98c826e817c
   data: 262d330de914
   links: 6f4d64cbd28f
+sources:
+  abs_cabee: 63fb0c26ff13
+  abs_rd_vc: 93288811ddf9
+  concordances: a4f1c838cb87
+  iprapid: 5eab8faca422
 candidates:
 - id: B40
   found:
@@ -15,9 +20,8 @@ candidates:
   - cited
   score: 49.45
   seen: 78b5f0572028
-  judgement: none
-  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
-    notebook''s words where they touch; neither bears on the other''s claim'
+  judgement: refines
+  note: 'review of 11 November 2026 (a sample of pairs judged none, read in full): see relations.yaml'
 - id: B41
   found:
   - keywords

@@ -6,6 +6,14 @@ fingerprint:
   evidence: 3cc6208605ae
   data: 8fc7120ae11c
   links: 28132560a5d9
+sources:
+  abs_cabee: 63fb0c26ff13
+  abs_census: 2346b4f1ece7
+  abs_census_tsp: 915902a34db8
+  abs_regions: 998a55d86060
+  ato_postcode: c0ee35f652af
+  cer: 9be986cc6e1e
+  phidu: 9aeab3ce2593
 candidates:
 - id: M32
   found:

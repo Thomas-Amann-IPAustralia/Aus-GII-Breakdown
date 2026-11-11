@@ -6,6 +6,12 @@ fingerprint:
   evidence: 3a32ccac156d
   data: 03f2e98890d8
   links: e6d1f4c2152e
+sources:
+  abs_bcs: 9b51bb565144
+  abs_bcs_cubes: 6714a6587f64
+  abs_cabee: 63fb0c26ff13
+  concordances: a4f1c838cb87
+  iprapid: 5eab8faca422
 candidates:
 - id: M37
   found:

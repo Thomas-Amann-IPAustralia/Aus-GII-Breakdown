@@ -6,6 +6,10 @@ fingerprint:
   evidence: 339c0fd28aa7
   data: e40ff1acbd9a
   links: fd6193893694
+sources:
+  abs_bcs: 9b51bb565144
+  abs_labour: 3c94bee697fb
+  iprapid: 5eab8faca422
 candidates:
 - id: M37
   found:

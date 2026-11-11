@@ -6,6 +6,10 @@ fingerprint:
   evidence: 75389ca96a9d
   data: d255916a928b
   links: 22bbc6754fa2
+sources:
+  oecd: a9acd8000249
+  wdi: dfd1a28ca08a
+  wipo_ipstats: e7a291d838fc
 candidates:
 - id: B32
   found:

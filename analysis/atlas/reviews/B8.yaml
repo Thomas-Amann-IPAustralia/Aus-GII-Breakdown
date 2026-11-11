@@ -6,6 +6,9 @@ fingerprint:
   evidence: d307088afb8d
   data: c4a4a4a1d5a5
   links: ccfb62a12d26
+sources:
+  google_patents: 3cb9207f3512
+  iprapid: 5eab8faca422
 candidates:
 - id: B12
   found:
@@ -48,24 +51,24 @@ candidates:
   judgement: none
   note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
     notebook''s words where they touch; neither bears on the other''s claim'
+- id: B13
+  found:
+  - keywords
+  - meaning
+  - cited
+  score: 43.45
+  seen: cb6cd7036bc1
+  judgement: none
+  note: Both read patents in force at ten years, but compare different things (fast-tracking; Australian against overseas
+    owners at the same reach).
 - id: B6
   found:
   - keywords
   - meaning
   - columns
   - cited
-  score: 43.08
+  score: 42.88
   seen: c641059f7a23
-  judgement: none
-  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
-    notebook''s words where they touch; neither bears on the other''s claim'
-- id: B13
-  found:
-  - keywords
-  - meaning
-  - cited
-  score: 42.63
-  seen: f6a6a8e766c1
   judgement: none
   note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
     notebook''s words where they touch; neither bears on the other''s claim'

@@ -6,6 +6,9 @@ fingerprint:
   evidence: 95625908d12b
   data: 1609e6306980
   links: 59e89f304d05
+sources:
+  frl_fees: 325452c9c8fe
+  ipa_fees: 065c6370b27e
 candidates:
 - id: U125
   found:

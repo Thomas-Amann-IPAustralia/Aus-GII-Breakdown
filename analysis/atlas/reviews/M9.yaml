@@ -6,6 +6,12 @@ fingerprint:
   evidence: ecb63dc0cbc4
   data: 8a2583d0b9bb
   links: fdaa0bd26469
+sources:
+  abr: c8bb9b418676
+  abs_regions: 998a55d86060
+  austender: 16eee37e3549
+  iprapid: 5eab8faca422
+  linkage: a43c158f9444
 candidates:
 - id: M29
   found:

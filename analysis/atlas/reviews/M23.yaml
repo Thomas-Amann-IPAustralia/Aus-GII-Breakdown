@@ -6,6 +6,13 @@ fingerprint:
   evidence: 57ac4afd43ed
   data: 6e1c0b80f73f
   links: 551294c009be
+sources:
+  arc_grants: 7a01580c58e0
+  iprapid: 5eab8faca422
+  openalex: 12b24bb676f2
+  openalex_works: 9b224fb19089
+  reliance_on_science: 38900ecff3d1
+  ror: 4a04a5500fda
 candidates:
 - id: M38
   found:

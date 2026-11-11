@@ -6,6 +6,10 @@ fingerprint:
   evidence: c7f8b1738532
   data: ae66644b6f31
   links: 8657ccb82e71
+sources:
+  abs_labour: 3c94bee697fb
+  fedcourt: 8b558ca709ff
+  iprapid: 5eab8faca422
 candidates:
 - id: M36
   found:

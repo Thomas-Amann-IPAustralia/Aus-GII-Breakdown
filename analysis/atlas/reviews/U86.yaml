@@ -6,6 +6,9 @@ fingerprint:
   evidence: 61bb02a50953
   data: 7131203bfef4
   links: ac34f8ca5bce
+sources:
+  austender: 16eee37e3549
+  ror: 4a04a5500fda
 candidates:
 - id: U82
   found:

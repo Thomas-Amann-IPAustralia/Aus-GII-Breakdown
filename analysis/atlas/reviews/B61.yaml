@@ -6,6 +6,10 @@ fingerprint:
   evidence: 49982649579a
   data: 1ba2a6f1b053
   links: 7347798e0ded
+sources:
+  abs_rd_vc: 93288811ddf9
+  abs_schools: b8bbcc0a9807
+  gii: 78e93f3c32a4
 candidates:
 - id: B35
   found:

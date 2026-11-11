@@ -6,6 +6,10 @@ fingerprint:
   evidence: fa8b23441151
   data: 0f2270ce1c0c
   links: 1bc8ddc73a95
+sources:
+  iprapid: 5eab8faca422
+  nsrc: 67553f6f1eb4
+  ror: 4a04a5500fda
 candidates:
 - id: M24
   found:

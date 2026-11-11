@@ -6,6 +6,9 @@ fingerprint:
   evidence: d27fa81aae6f
   data: 152096bb1957
   links: cad8fff8ce0a
+sources:
+  abs_regions: 998a55d86060
+  iprapid: 5eab8faca422
 candidates:
 - id: U13
   found:

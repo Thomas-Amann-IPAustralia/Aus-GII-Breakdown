@@ -129,6 +129,8 @@ const REL_WORDS = {
   supports: ["Supports", "Supported by"], refines: ["Refines", "Refined by"], contests: ["Points a different way from", "Points a different way from"],
   outmodes: ["Outmodes", "Outmoded by"], disproves: ["Disproves", "Disproved by"],
 };
+/** An observation still on the atlas, or one retired (the ledger keeps its headline and stage). */
+function anyObs(id) { return byId[id] || retiredById[id]; }
 function relWords(r) { return REL_WORDS[r.type][r.way === "out" ? 0 : 1]; }
 function relTarget(id) {
   const o = byId[id], gone = retiredById[id];
@@ -424,7 +426,7 @@ function stage3Page() {
     board.replaceChildren(...LENS_ORDER.map((l) => [l, rows.filter((r) => r.lens === l)]).filter(([, g]) => g.length).flatMap(([l, g]) => [
       el("div.group-head", lensChip(l), el("h3", A.lenses[l]?.unit || ""), el("span.muted.small", `${g.length} check${g.length === 1 ? "" : "s"}`)),
       el("div.vboard", g.map((r) => el("div.vrow",
-        el("div.vfrom", el("span.vstage", `Stage ${byId[r.id]?.stage ?? 2} found`), el("div", obsLink(r.id), " ", el("strong", r.signal || "")), el("p.small", trim(byId[r.id]?.headline || "", 150))),
+        el("div.vfrom", el("span.vstage", `Stage ${anyObs(r.id)?.stage ?? 2} found`), el("div", obsLink(r.id), " ", el("strong", r.signal || "")), el("p.small", trim(anyObs(r.id)?.headline || "", 150), retiredById[r.id] ? " (since retired)" : "")),
         el("div.varrow", { "aria-hidden": "true" }, icon("arrow")),
         el("div.vto", el("span.vstage", "Held together in Stage 3"), el("div", verdictTag(r.verdict)), el("p", inline(r.what)),
           el("a.small.vread", { href: `#/${r.m}` }, `${r.m}: ${trim(byId[r.m].headline, 96)}`))))),
@@ -602,12 +604,12 @@ function tablesTable(sources) {
 /** For a Stage 3 page: what Stage 2 found, what was held together, and what is left, as three linked steps. */
 function chainBlock(o) {
   const seen = new Set();
-  const from = (o.revisits || []).filter((r) => byId[r.id] && !seen.has(r.id) && seen.add(r.id));
+  const from = (o.revisits || []).filter((r) => anyObs(r.id) && !seen.has(r.id) && seen.add(r.id));
   return el("section.chain", { "aria-label": "How this observation follows from the earlier stages" },
     el("div.clink",
-      el("span.ctag", el("b", "1"), from.some((r) => byId[r.id].stage === 1) && !from.some((r) => byId[r.id].stage === 2) ? "Stage 1 found" : "Stage 2 found"),
+      el("span.ctag", el("b", "1"), from.some((r) => anyObs(r.id).stage === 1) && !from.some((r) => anyObs(r.id).stage === 2) ? "Stage 1 found" : "Stage 2 found"),
       from.length
-        ? el("ul", from.map((r) => el("li", obsLink(r.id), " ", el("span", r.signal ? r.signal : trim(byId[r.id].headline, 110)))))
+        ? el("ul", from.map((r) => el("li", obsLink(r.id), " ", el("span", r.signal ? r.signal : trim(anyObs(r.id).headline, 110)), retiredById[r.id] ? el("span.muted.small", " (since retired)") : null)))
         : el("p", "A question of structure: which measures repeat each other, and whether there are distinct groups.")),
     el("div.carrow", { "aria-hidden": "true" }, icon("arrow")),
     el("div.clink",
@@ -1001,7 +1003,7 @@ function auditPage() {
     el("h3", { style: { margin: "22px 0 10px" } }, verdictPill(c.charAt(0).toUpperCase() + c.slice(1), c), el("span.muted.small", { style: { marginLeft: "8px" } }, `${vs.length} observation${vs.length === 1 ? "" : "s"}`)),
     el("div.qlist", vs.map((v) => el("div.qitem", obsLink(v.id),
       el("div",
-        el("h3", el("a", { href: `#/${v.id}` }, byId[v.id]?.headline || v.id)),
+        el("h3", el("a", { href: `#/${v.id}` }, anyObs(v.id)?.headline || v.id), retiredById[v.id] ? el("span.muted.small", " (since retired)") : null),
         el("p", verdictPill(v.label, v.category)),
         ...paras(v.note),
         el("details.more", el("summary", icon("book"), "The record's evidence"),

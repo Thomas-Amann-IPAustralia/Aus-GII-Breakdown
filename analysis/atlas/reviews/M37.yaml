@@ -6,6 +6,13 @@ fingerprint:
   evidence: c08598877232
   data: 09debe5157cb
   links: c1aed6352d9c
+sources:
+  abs_bcs: 9b51bb565144
+  abs_cabee: 63fb0c26ff13
+  abs_labour: 3c94bee697fb
+  abs_national_accounts: 268af323fa8a
+  concordances: a4f1c838cb87
+  iprapid: 5eab8faca422
 candidates:
 - id: M22
   found:

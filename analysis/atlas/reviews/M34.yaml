@@ -6,6 +6,10 @@ fingerprint:
   evidence: 44fae947d22d
   data: 3f5e61fe4e86
   links: 052da22aa0e6
+sources:
+  frl_fees: 325452c9c8fe
+  iprapid: 5eab8faca422
+  policy_events: 2f21107ee403
 candidates:
 - id: B47
   found:

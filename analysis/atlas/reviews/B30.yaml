@@ -6,6 +6,9 @@ fingerprint:
   evidence: ebbe29c003d0
   data: 152096bb1957
   links: 2f1a41f01d23
+sources:
+  abs_regions: 998a55d86060
+  iprapid: 5eab8faca422
 candidates:
 - id: M15
   found:

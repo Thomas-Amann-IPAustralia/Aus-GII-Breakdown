@@ -6,6 +6,12 @@ fingerprint:
   evidence: c04971a6ad57
   data: 4766b424eeb8
   links: 698f8b4540dd
+sources:
+  abs_cabee: 63fb0c26ff13
+  abs_census: 2346b4f1ece7
+  abs_regions: 998a55d86060
+  linkage: a43c158f9444
+  rdti: 426938b90f6b
 candidates:
 - id: M14
   found:

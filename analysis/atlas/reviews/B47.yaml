@@ -6,6 +6,10 @@ fingerprint:
   evidence: 477645310c3f
   data: 3f5e61fe4e86
   links: d323c2aa3e42
+sources:
+  frl_fees: 325452c9c8fe
+  iprapid: 5eab8faca422
+  policy_events: 2f21107ee403
 candidates:
 - id: M34
   found:

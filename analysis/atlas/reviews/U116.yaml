@@ -6,6 +6,8 @@ fingerprint:
   evidence: 615461a082d1
   data: c18a65dce2f1
   links: 0cab5cbb833d
+sources:
+  abs_national_accounts: 268af323fa8a
 candidates:
 - id: U124
   found:

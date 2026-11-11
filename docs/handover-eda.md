@@ -19,15 +19,30 @@ audits. Done:
   on each related page, status tags and a filter in the lists, the standing in each Markdown copy (and so the chat's
   passages), and a page for a retired address.
 - **The first cross-stage review:** 1,380 pairs judged (510 across stages); 69 relations. Proposed for retirement:
-  **B62** (outmoded by M24, OQ36) and **B13** (outmoded by M5, OQ37). Open for further exploration: M22 and B40, M36
+  **B62** (outmoded by M24, OQ36) and, at first, B13 (withdrawn on review, below). Open for further exploration: M22 and B40, M36
   and B56, M38 and M23. Nothing disproven or retired. U92's reading corrected in notebook 1 with a dated note ("overseas
   family" overclaimed; U93, B55); the overview's "What Stage 2 found" no longer presents B62's licence link as a
   finding.
 - **Checks:** strict build passes (231 pages); passages rebuilt; ruff clean; tests pass (10 new in
   `tests/test_currency.py`); the new and changed pages checked in Chromium at 1,366 and 390 pixels, no console errors
   or overflow.
-- **For the owner:** OQ36 and OQ37 (retire B62 and B13?). The Econ refresh (below) now also carries each page's
-  standing.
+- **Reviewed the same day at the owner's request (ADR 0058 addendum).** Five tests of the process:
+  - *Search:* the related observation is in a new one's top 8 for 91% of known relations and its top 12 for 99%; the
+    search now reads meaning two ways and takes 12 for a new or reworded observation.
+  - *Judging:* 70 random "none" pairs read in full: no contest, outmoding or disproof missed; two weaker links were
+    (B53 refines B40, B46 supports U85), now recorded.
+  - *Retirement:* rehearsed on B62 and reverted. It could not have passed the build (the gate counted the retired
+    entry and its replacement as citing it); repaired, with tests.
+  - *New data:* a refresh was cleared by simply checking again; now the cells are re-run or a reason is recorded
+    (`atlas.currency confirm`). 173 of 231 observations rest on IP RAPID.
+  - *The bar:* **B13's proposal withdrawn.** M5 does not carry B13's "who asks, and for what" (OQ25's evidence), so
+    B13 is corrected in place (heading and headline, dated note) and M5 refines it. Rule: retire only when nothing
+    true is left that the replacement does not say.
+  Now 72 relations; 224 current, 6 open, 1 proposed (B62). 112 tests pass.
+- **For the owner:** OQ36 (retire B62? still recommended) and OQ37 (B13 kept, corrected: agree?). The Econ refresh
+  (below) now also carries each page's standing.
+- **Recommended next:** a tool that re-runs the cells above each observation a data refresh touches and lists those
+  whose numbers moved, so a refresh is a short list, not 173 confirmations. Not built; the owner's call (direction).
 
 **Earlier (2026-11-10): every observation audited against its output; 22 corrected; the atlas in step** (ADR 0057).
 The owner asked for a review of all observations in the three notebooks for errors of logic or synthesis, their

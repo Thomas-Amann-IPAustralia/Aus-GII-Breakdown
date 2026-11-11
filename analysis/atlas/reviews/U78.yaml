@@ -6,6 +6,11 @@ fingerprint:
   evidence: 3250cb4c2087
   data: ed52657ef416
   links: 555d3dde2efd
+sources:
+  abs_cabee: 63fb0c26ff13
+  abs_prices: 4f0818d916f8
+  abs_rd_vc: 93288811ddf9
+  bcarr_creative: d681f0146962
 candidates:
 - id: B41
   found:

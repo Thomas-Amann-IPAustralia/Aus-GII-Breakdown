@@ -6,6 +6,10 @@ fingerprint:
   evidence: b6672ca18ccf
   data: 2466d6030eef
   links: d2201f9eed4c
+sources:
+  abs_regions: 998a55d86060
+  ato_postcode: c0ee35f652af
+  iprapid: 5eab8faca422
 candidates:
 - id: B27
   found:

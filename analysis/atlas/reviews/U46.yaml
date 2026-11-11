@@ -6,6 +6,11 @@ fingerprint:
   evidence: 9bb0c799b552
   data: 5bff87a712bb
   links: f7f31e16b742
+sources:
+  ato_ctt: d6bd2f418f1a
+  austender: 16eee37e3549
+  linkage: a43c158f9444
+  rdti: 426938b90f6b
 candidates:
 - id: B24
   found:

@@ -6,6 +6,9 @@ fingerprint:
   evidence: a9cce9e4472e
   data: 152096bb1957
   links: 57d0db44217d
+sources:
+  abs_regions: 998a55d86060
+  iprapid: 5eab8faca422
 candidates:
 - id: B58
   found:

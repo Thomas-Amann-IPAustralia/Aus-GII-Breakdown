@@ -5,7 +5,9 @@ fingerprint:
   text: 769042d400fd
   evidence: e877bb50de4c
   data: 28b2c206dfc7
-  links: 966f53c45988
+  links: 0cd5d88e4d62
+sources:
+  iprapid: 5eab8faca422
 candidates:
 - id: M5
   found:
@@ -23,16 +25,25 @@ candidates:
   - keywords
   - meaning
   - columns
-  score: 45.01
+  score: 44.83
   seen: b9b90c358f4f
   judgement: none
   note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
     notebook''s words where they touch; neither bears on the other''s claim'
+- id: B13
+  found:
+  - keywords
+  - meaning
+  - cited
+  score: 44.04
+  seen: cb6cd7036bc1
+  judgement: refines
+  note: 'read in full on B13''s restatement, 11 November 2026: see relations.yaml'
 - id: M6
   found:
   - keywords
   - columns
-  score: 43.52
+  score: 43.36
   seen: 5014be117051
   judgement: none
   note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
@@ -46,27 +57,11 @@ candidates:
   judgement: none
   note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
     notebook''s words where they touch; neither bears on the other''s claim'
-- id: B13
-  found:
-  - keywords
-  - cited
-  score: 40.23
-  seen: f6a6a8e766c1
-  judgement: refines
-  note: 'baseline cross-stage review, 11 November 2026: Stage 3''s revisit settles it'
 - id: M7
   found:
   - columns
-  score: 39.11
+  score: 38.95
   seen: 3a0726ffc3af
-  judgement: none
-  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
-    notebook''s words where they touch; neither bears on the other''s claim'
-- id: M4
-  found:
-  - columns
-  score: 37.5
-  seen: fb1bda0755b3
   judgement: none
   note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
     notebook''s words where they touch; neither bears on the other''s claim'
@@ -76,6 +71,14 @@ candidates:
   - columns
   score: 37.31
   seen: 85f8552c4a27
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: M4
+  found:
+  - columns
+  score: 37.26
+  seen: fb1bda0755b3
   judgement: none
   note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
     notebook''s words where they touch; neither bears on the other''s claim'

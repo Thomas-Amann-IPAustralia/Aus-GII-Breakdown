@@ -12,7 +12,7 @@
 # every other verdict needs a judged relation here. An outmoded or disproved observation is proposed for retirement
 # at once; only the owner's approval, recorded in ledger.yaml, retires it.
 
-# ------------------------------------------------------------------ the baseline review of 11 November 2026: proposals
+# ------------------------------------------------------------------- the baseline review of 11 November 2026: proposal
 - from: M24
   to: B62
   type: outmodes
@@ -24,12 +24,11 @@
   found: 2026-11-11
 - from: M5
   to: B13
-  type: outmodes
-  why: "B13 found expedited patents slightly more often in force at ten years and read the link as not a composition
-    effect. M5 holds the field, route and cohort with the filer and finds no link for 2009–10 to 2015–16 and a reversed
-    one for 2002–03 to 2008–09 (1.124, likely range 1.030 to 1.228): the earlier advantage came from what was held.
-    B13's account of who asks for expedited examination, and why, is not in M5."
-  asked: OQ37
+  type: refines
+  why: "B13's raw advantage for fast-tracked patents does not survive comparing like with like: holding the field,
+    route and cohort with the filer, M5 finds no link for 2009–10 to 2015–16 and a reversed one for 2002–03 to 2008–09
+    (1.124, likely range 1.030 to 1.228). The rest of B13 stands: who asks for faster examination and for what,
+    which M5 does not cover, and that Australian individuals' fast-tracked patents last less long, which M5 confirms."
   found: 2026-11-11
 
 # -------------------------------------------------------------------------- open for further exploration (contests)
@@ -242,4 +241,27 @@
   type: supports
   why: "With the register's business numbers, the share of Australian organisations' trade marks linked to a firm
     barely falls, so U45's apparent fall in first-time filers is mostly a gap in recording."
+  found: 2026-11-11
+
+# ---------------------------------------------------- found by the review's sample of pairs judged "none" (ADR 0058)
+- from: B53
+  to: B40
+  type: refines
+  why: "B40 found patents per business did not clearly follow business R&D, held back by a method that gives service
+    industries no patents. With services included, B53 finds they do: the agreement between the two rankings rises
+    from 0.465 to 0.739."
+  found: 2026-11-11
+- from: B46
+  to: U85
+  type: supports
+  why: "Both find that few of the US patents citing Australian research have an Australian applicant or inventor, for
+    research of different years: U85 for work published in 2010 to 2014, B46 for work of 2017 to 2023."
+  found: 2026-11-11
+- from: B13
+  to: U34
+  type: refines
+  why: "U34's rise in requests for faster examination is not one trend. B13 shows who asks: 0.84% of overseas
+    organisations' examined patents were fast-tracked in the earlier period and 8.0% in the later one, against about a
+    fifth of Australian individuals' in both, and from 2014 the requests include work-sharing with other offices as
+    well as urgency."
   found: 2026-11-11

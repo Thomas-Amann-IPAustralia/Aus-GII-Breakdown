@@ -6,6 +6,8 @@ fingerprint:
   evidence: 76a9cc11c48d
   data: 28b2c206dfc7
   links: d88a9cdc66ab
+sources:
+  iprapid: 5eab8faca422
 candidates:
 - id: U12
   found:

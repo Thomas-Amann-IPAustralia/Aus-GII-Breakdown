@@ -6,6 +6,10 @@ fingerprint:
   evidence: 8594ad394a1d
   data: d2f953b25756
   links: 7a4b14c657ae
+sources:
+  iprapid: 5eab8faca422
+  wdi: dfd1a28ca08a
+  wipo_ipstats: e7a291d838fc
 candidates:
 - id: U115
   found:

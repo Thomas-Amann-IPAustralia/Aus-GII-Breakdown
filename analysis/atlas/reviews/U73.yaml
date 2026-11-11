@@ -6,6 +6,13 @@ fingerprint:
   evidence: 0ab944c3ba0b
   data: 968a4807e925
   links: f73913d44473
+sources:
+  abs_cabee: 63fb0c26ff13
+  abs_national_accounts: 268af323fa8a
+  abs_prices: 4f0818d916f8
+  abs_rd_vc: 93288811ddf9
+  bcarr_creative: d681f0146962
+  iprapid: 5eab8faca422
 candidates:
 - id: B57
   found:

@@ -6,6 +6,10 @@ fingerprint:
   evidence: 9f0e44bd57de
   data: db6de28a1d5e
   links: 48b97db6887d
+sources:
+  abr: c8bb9b418676
+  iprapid: 5eab8faca422
+  linkage: a43c158f9444
 candidates:
 - id: B25
   found:

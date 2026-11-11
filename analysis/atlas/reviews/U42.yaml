@@ -6,6 +6,12 @@ fingerprint:
   evidence: 900633044d5c
   data: 2436fcd6f63f
   links: 9e918c57622d
+sources:
+  abr: c8bb9b418676
+  austender: 16eee37e3549
+  iprapid: 5eab8faca422
+  linkage: a43c158f9444
+  rdti: 426938b90f6b
 candidates:
 - id: B22
   found:

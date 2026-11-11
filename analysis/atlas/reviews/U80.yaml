@@ -6,6 +6,14 @@ fingerprint:
   evidence: e3a3dfa4172f
   data: 3032a7b6b835
   links: 834c82e5ad8d
+sources:
+  arc_grants: 7a01580c58e0
+  austender: 16eee37e3549
+  iprapid: 5eab8faca422
+  nhmrc_grants: 40f84a42c451
+  nsrc: 67553f6f1eb4
+  openalex: 12b24bb676f2
+  ror: 4a04a5500fda
 candidates:
 - id: B44
   found:

@@ -6,6 +6,10 @@ fingerprint:
   evidence: 4dcd9e8a81d7
   data: 4fc02d573e01
   links: 56e9fdad44c6
+sources:
+  abr: c8bb9b418676
+  ipa_register: a1a690a78701
+  iprapid: 5eab8faca422
 candidates:
 - id: U101
   found:

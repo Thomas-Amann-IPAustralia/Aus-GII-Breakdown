@@ -5,7 +5,9 @@ fingerprint:
   text: 475970c042ef
   evidence: 79a603e72af6
   data: 28b2c206dfc7
-  links: 041646cd7050
+  links: d3ffd8ccd6fc
+sources:
+  iprapid: 5eab8faca422
 candidates:
 - id: M40
   found:
@@ -34,18 +36,8 @@ candidates:
   - keywords
   - meaning
   - columns
-  score: 46.65
+  score: 46.41
   seen: b9b90c358f4f
-  judgement: none
-  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
-    notebook''s words where they touch; neither bears on the other''s claim'
-- id: M6
-  found:
-  - keywords
-  - meaning
-  - columns
-  score: 45.7
-  seen: 5014be117051
   judgement: none
   note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
     notebook''s words where they touch; neither bears on the other''s claim'
@@ -55,10 +47,20 @@ candidates:
   - meaning
   - columns
   - cited
-  score: 44.19
-  seen: f6a6a8e766c1
-  judgement: outmodes
-  note: 'baseline cross-stage review, 11 November 2026: see relations.yaml'
+  score: 45.78
+  seen: cb6cd7036bc1
+  judgement: refines
+  note: 'read in full on B13''s restatement, 11 November 2026: see relations.yaml'
+- id: M6
+  found:
+  - keywords
+  - meaning
+  - columns
+  score: 45.48
+  seen: 5014be117051
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
 - id: M7
   found:
   - keywords

@@ -6,6 +6,9 @@ fingerprint:
   evidence: 4dcd9e8a81d7
   data: 870e884320a8
   links: d42ca15ec36a
+sources:
+  ipa_register: a1a690a78701
+  iprapid: 5eab8faca422
 candidates:
 - id: U99
   found:

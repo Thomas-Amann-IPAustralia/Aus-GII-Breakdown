@@ -6,6 +6,10 @@ fingerprint:
   evidence: d2f4e568cd08
   data: e83ada5034e6
   links: fefe7eda18d0
+sources:
+  iprapid: 5eab8faca422
+  mwm: 952ce167fd93
+  wdi: dfd1a28ca08a
 candidates:
 - id: B52
   found:
