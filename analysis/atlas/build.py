@@ -336,7 +336,8 @@ def observations(nbs: dict[str, notebook.Observation], write: bool = True) -> tu
             o["strength"] = nb.strength
             o["stage"] = nb.stage
             o["section"] = nb.section
-            o["section_plain"] = SECTIONS.get(nb.section, nb.section)  # the pages' plain title (ADR 0056, OQ34)
+            # the pages' plain title (ADR 0056, OQ34), without the notebook's notes on when a section was added
+            o["section_plain"] = current_title(SECTIONS.get(nb.section, nb.section))
             o["chapter"] = nb.chapter
             o["original"] = nb.text
             o["plain"] = nb.plain
@@ -376,6 +377,42 @@ def link_back(obs: list[dict], nbs: dict) -> list[str]:
     return problems
 
 
+# The atlas shows the current reading only (the owner, 11 November 2026; ADR 0058, second addendum). Dated corrections
+# stay in the notebooks, and a page shows them only in "Follow the evidence": the notebook's own words (`original`),
+# the reasoning steps and the preparation. Everywhere else a page may not say what it used to say.
+TRAIL = {"original", "steps", "prep", "section", "chapter", "notebook_charts", "sources"}
+_HISTORY = re.compile(
+    r"\b(?:Corrected|Restated|Amended|Scoped|Reworded|Withdrawn|Retired|Updated)\s*\(\d"
+    r"|\b(?:was|were|been|since|now) (?:corrected|restated|amended|reworded)\b"
+    r"|\b(?:earlier|first|supplied) (?:text|version|rewrite|wording)\b|\bthis (?:said|called)\b"
+    r"|\badded (?:after|in) (?:Stage \d|the review)|\bgap [AB]\d+\b|\bpass \d\b",
+    re.I,
+)
+_TITLE_NOTE = re.compile(r"\b(?:added|profiled)\b|\bgap [AB]\d+\b|\bADR \d{4}\b")
+
+
+def current_title(title: str) -> str:
+    """A section's title without its notes on when it was added: "(WGEA; added after Stage 2, gap A3)" is "(WGEA)"."""
+
+    def keep(m: re.Match) -> str:
+        parts = [p.strip() for p in m.group(1).split(";") if not _TITLE_NOTE.search(p)]
+        return f"({'; '.join(parts)})" if parts else ""
+
+    return re.sub(r"\s+", " ", re.sub(r"\(([^()]*)\)", keep, title)).strip()
+
+
+def history(o: dict) -> list[str]:
+    """Where a page says what it used to say, outside "Follow the evidence"."""
+    out = []
+    for k, v in o.items():
+        if k not in TRAIL:
+            for text in _strings(v):
+                m = _HISTORY.search(text)
+                if m:
+                    out.append(f"{o['id']}: '{k}' carries amendment history outside the trail: \"...{m.group(0)}...\"")
+    return out
+
+
 def keep_current(obs: list[dict], nbs: dict) -> tuple[list[dict], dict, list[str]]:
     """The currency gate (ADR 0058): each page's status and judged relations; retired observations leave the list."""
     from . import currency
@@ -396,6 +433,7 @@ def keep_current(obs: list[dict], nbs: dict) -> tuple[list[dict], dict, list[str
             o["relations"] = rel
         if o["status"] != "retired":
             kept.append(o)
+            problems += history(o)
     page = {k: pages[k] for k in ("counts", "relation_counts", "proposals", "contests", "retired")}
     page["types"] = currency.TYPES
     return kept, page, problems

@@ -141,3 +141,25 @@ stale; they were re-checked, 18 pairs read in full, and one relation added (B13 
   the fingerprint does not see it.
 - The gate checks that every pair has a judgement, not that the judgement is right. The sample in test 2 is the
   control; repeat it after any large batch.
+
+## Second addendum: the atlas shows only the current reading (11 November 2026, A42)
+
+The owner, on dated corrections made in place: "I'm happy for the dated corrections to be saved but I only want the
+atlas to show the current and accurate information. The 'Follow the evidence' portion may reflect the amendments and
+their dates." So Claude may make a dated correction without asking, and:
+
+- **The trail is where history shows.** `build.TRAIL` names the fields that make up "Follow the evidence": the
+  notebook's own words (`original`), the reasoning steps, the preparation, the sources and the notebook's own section
+  heading. Every other field of a page is checked by `build.history`: a dated note ("Corrected (10 November ..."), "was
+  corrected", "the earlier text", "this said", "added after Stage 2", a gap or pass number. The strict build fails on
+  any.
+- **Found on the first run, all fixed:** the relation between B55 and U92 said "U92's reading was corrected to say
+  so" (Claude's own, from the first review); U28's limits said fees "were added after Stage 2"; and 27 section titles,
+  on 34 pages' headers, carried notes such as "(added after Stage 2, gap B3)". Section titles are now shown without
+  such notes (`build.current_title`: "(WGEA; added after Stage 2, gap A3)" becomes "(WGEA)"); the notebook's heading is
+  unchanged and still quoted in the trail.
+- **Not changed, and asked of the owner:** two pages keep a log of changes by design, the "Corrections" list on
+  "Limits and assumptions" and "What the review changed" on "Checked against IP Australia". Neither is an observation
+  page. The ledger on "Keeping the atlas current" is the record the owner asked for.
+- OQ36 and OQ37 are deferred by the owner; B62 stays marked "proposed for retirement" and B13 stays as corrected.
+

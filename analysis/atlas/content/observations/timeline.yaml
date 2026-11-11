@@ -332,8 +332,8 @@
   limits:
     - A before-and-after comparison of one series cannot separate a change's effect from anything else that happened
       at the same time.
-    - Fee changes, IP Australia's most direct lever, were added after Stage 2 ({U108} to {U111}) and compared in {B47}
-      to {B49}.
+    - Fee changes, IP Australia's most direct lever, are not among these policy changes; they are described in
+      {U108} to {U111} and compared in {B47} to {B49}.
   next: "Stage 2 measures each change against trends and seasons, and against comparison dates with no change
         ({B37})."
   terms: [natural-experiment, placebo, raising-the-bar, second-tier]

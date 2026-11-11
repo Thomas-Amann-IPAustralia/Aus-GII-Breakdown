@@ -52,6 +52,10 @@ cell by cell, never in full.
 - **Retire only when nothing true is left that the replacement does not say.** If one claim in an observation is
   outmoded and the rest stands, correct the wording in place with a dated note that quotes what it said, and record
   *refines* (as B13 was, ADR 0058 addendum).
+- **The atlas shows only the current reading** (A42). Dated corrections are saved in the notebooks and may be made
+  without asking; a page shows them only in "Follow the evidence" (the notebook's own words, the steps and the
+  preparation). A headline, reading, figure, relation, limit or section title never says what it used to say; the
+  build refuses it.
 - **Never remove, hide or renumber an observation without the owner's explicit approval.** An outmoded or disproven
   one is proposed for retirement (an owner question, `asked`), and its page says so at once; only an approved entry
   in `analysis/atlas/content/ledger.yaml`, with the owner's words, retires it.

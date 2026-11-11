@@ -3,7 +3,8 @@
 #
 #   from, to   the observations; the relation reads "from <type> to" (M24 outmodes B62)
 #   type       supports | refines | contests | outmodes | disproves
-#   why        what the one shows about the other
+#   why        what the one shows about the other, as it now stands: never what a page used to say (the build
+#              refuses amendment history outside "Follow the evidence")
 #   settle     contests only: what would settle it (an area for further exploration)
 #   asked      outmodes and disproves only: the open owner question that asks to retire `to` (docs/owner-questions.md)
 #   found      the date the relation was judged
@@ -210,7 +211,7 @@
   to: U92
   type: refines
   why: "U92 finds a family for nearly every patent; B55 shows the family's overseas members are often missing for older
-    patents, so a family found is not a full count of filings abroad. U92's reading was corrected to say so."
+    patents, so a family found is not a full count of filings abroad."
   found: 2026-11-11
 - from: U115
   to: B55

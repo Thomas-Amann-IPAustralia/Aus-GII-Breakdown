@@ -19,6 +19,32 @@ def test_every_notebook_observation_has_a_page(atlas):
     assert [o["id"] for o in atlas["observations"]] == [o.id for o in notebook.read_all() if o.id not in retired]
 
 
+def test_a_page_shows_only_the_current_reading_outside_the_trail(atlas):
+    # dated corrections stay in the notebook and show only in "Follow the evidence" (the owner, 11 November 2026)
+    assert not [p for o in atlas["observations"] for p in build.history(o)]
+    page = {
+        "id": "B13",
+        "plain": "Fast-tracked patents last longer.",
+        "original": "- **Restated (11 November 2026):** x",
+    }
+    assert build.history(page) == []  # the notebook's own words are the trail
+    for field, text in [
+        ("plain", "Its reading was corrected to say so."),
+        ("limits", ["Restated (2 November 2026): the earlier text said otherwise."]),
+        ("relations", [{"why": "This said the link held; it does not."}]),
+        ("section_plain", "5.7 Official fees (added after Stage 2; ADR 0031)"),
+    ]:
+        assert build.history({**page, field: text}), field
+    # an application that "was withdrawn" is not an amendment
+    assert build.history({**page, "plain": "The application lapsed or was withdrawn."}) == []
+    assert (
+        build.current_title("2.6 Size and industry (WGEA; added after Stage 2, gap A3)")
+        == "2.6 Size and industry (WGEA)"
+    )
+    assert build.current_title("5.7 Official fees (added after Stage 2; ADR 0031)") == "5.7 Official fees"
+    assert build.current_title("1.2 Applications over time (`filing_fy`)") == "1.2 Applications over time (`filing_fy`)"
+
+
 def test_each_page_says_where_it_stands(atlas):
     # derived from the judged relations: a proposal or a contest shows on both pages, with its reasons
     by = {o["id"]: o for o in atlas["observations"]}

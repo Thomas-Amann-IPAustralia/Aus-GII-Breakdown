@@ -89,6 +89,14 @@ In the same turn as any of these, before `atlas.build`:
    `node analysis/atlas/passages.mjs`, `uv run pytest -q tests/test_currency.py tests/test_atlas.py`, and say in the
    reply what the check found: relations added, anything proposed for retirement, anything newly open.
 
+## What the atlas shows
+
+Only the current reading (the owner, 11 November 2026). A dated correction lives in the notebook, under the
+observation or its reading, and reaches a page only through "Follow the evidence", where the notebook's own words
+are quoted. Write every other field (headline, relation `why` and `settle`, limits, figures) as things now stand:
+"B13's raw advantage does not survive a like-for-like comparison", never "B13 was corrected to say". The build fails
+on amendment history outside the trail.
+
 ## Never
 
 - Remove, hide or renumber an observation without the owner's recorded approval.
