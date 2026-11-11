@@ -39,10 +39,16 @@ audits. Done:
     B13 is corrected in place (heading and headline, dated note) and M5 refines it. Rule: retire only when nothing
     true is left that the replacement does not say.
   Now 72 relations; 224 current, 6 open, 1 proposed (B62). 112 tests pass.
-- **For the owner:** OQ36 (retire B62? still recommended) and OQ37 (B13 kept, corrected: agree?). The Econ refresh
-  (below) now also carries each page's standing.
-- **Recommended next:** a tool that re-runs the cells above each observation a data refresh touches and lists those
-  whose numbers moved, so a refresh is a short list, not 173 confirmations. Not built; the owner's call (direction).
+- **For the owner:** OQ36 (retire B62? still recommended) and OQ37 (B13 kept, corrected: agree?), both deferred;
+  OQ38 and OQ39.
+- **The owner's answers (A42, 11 November):** OQ36 and OQ37 deferred (B62 stays "proposed for retirement"; B13 stays
+  as corrected). Dated corrections may be saved without asking, but **the atlas shows only the current reading**:
+  amendment history appears on a page only in "Follow the evidence". `build.history` enforces it (ADR 0058, second
+  addendum); it found and fixed one relation, one limit and 27 section titles (34 pages' headers).
+- **Backlog, the refresh check (OQ38):** `docs/plan-refresh-check.md`. Bind each quoted number to its place in the
+  output above it, re-run in a copy after a refresh, report what moved, then draft the changes. Measured: about 93% of
+  the 5,594 numbers the prose quotes can be traced by code. Not built; the owner's call.
+- **OQ39:** whether the two change logs on the Limits and audit pages stay (recommended: yes).
 
 **Earlier (2026-11-10): every observation audited against its output; 22 corrected; the atlas in step** (ADR 0057).
 The owner asked for a review of all observations in the three notebooks for errors of logic or synthesis, their
