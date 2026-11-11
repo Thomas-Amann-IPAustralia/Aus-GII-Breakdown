@@ -1,0 +1,245 @@
+# The judged relations between observations (ADR 0058). Each is one plain sentence a reader can follow, shown on both
+# observations' pages; any number in it must be on one of the two pages (the numbers rule).
+#
+#   from, to   the observations; the relation reads "from <type> to" (M24 outmodes B62)
+#   type       supports | refines | contests | outmodes | disproves
+#   why        what the one shows about the other
+#   settle     contests only: what would settle it (an area for further exploration)
+#   asked      outmodes and disproves only: the open owner question that asks to retire `to` (docs/owner-questions.md)
+#   found      the date the relation was judged
+#
+# Stage 3's revisits whose verdict is holds, weakened or refined become relations on their own (supports, refines);
+# every other verdict needs a judged relation here. An outmoded or disproved observation is proposed for retirement
+# at once; only the owner's approval, recorded in ledger.yaml, retires it.
+
+# ------------------------------------------------------------------ the baseline review of 11 November 2026: proposals
+- from: M24
+  to: B62
+  type: outmodes
+  why: "B62 reads its links between disclosures, patents and licence income as holding in both periods, but they were
+    correlations of measures all divided by the same research budget. M24 compares institutions at the same research
+    spend and finds disclosures go with patents, and patents with start-ups, in 2010 to 2015 only, and patents with
+    licences and licence income in neither period. M24 says everything B62 says that still stands."
+  asked: OQ36
+  found: 2026-11-11
+- from: M5
+  to: B13
+  type: outmodes
+  why: "B13 found expedited patents slightly more often in force at ten years and read the link as not a composition
+    effect. M5 holds the field, route and cohort with the filer and finds no link for 2009–10 to 2015–16 and a reversed
+    one for 2002–03 to 2008–09 (1.124, likely range 1.030 to 1.228): the earlier advantage came from what was held.
+    B13's account of who asks for expedited examination, and why, is not in M5."
+  asked: OQ37
+  found: 2026-11-11
+
+# -------------------------------------------------------------------------- open for further exploration (contests)
+- from: M22
+  to: B40
+  type: contests
+  why: "B40 finds industries with more business R&D per business receive more trade marks per business. M22 finds that
+    link shrinks once value added per business is allowed for (0.423 and 0.392 against 0.609 and 0.582), with likely
+    ranges that just include zero, so it may be output rather than R&D."
+  settle: "Business R&D for more years than 2023–24, or a finer industry level than the 19 divisions, to narrow the
+    likely range; or the same test on another year's value added."
+  found: 2026-11-11
+- from: M36
+  to: B56
+  type: contests
+  why: "B56 finds economic growth goes with overseas applicants' patents, more strongly from 2008. M36 allows for
+    neighbouring quarters behaving alike and finds neither period's link clear (0.158 and 0.380), which points against
+    B56 without ruling the link out."
+  settle: "A test of whether growth leads overseas patent filing, with lags, over the longest series (as M39 does for
+    trade marks)."
+  found: 2026-11-11
+- from: M38
+  to: M23
+  type: contests
+  why: "M38 finds, across every kind of institution, that research patents cite goes with more patents per work in both
+    periods with kind, size, citations and grants held. M23 finds, among universities alone, that the same measure
+    stands out only in 2010 to 2016 once size, citations and grants are held. M38 notes the difference; neither
+    settles whether the link holds within universities in 2017 to 2023."
+  settle: "M38's model fitted to the 40 universities alone for 2017 to 2023, or with the kind of institution allowed to
+    change the patent-cited link; the institutions link itself awaits review (OQ11)."
+  found: 2026-11-11
+
+# ---------------------------------------------------------------------- Stage 3 revisits that need a judgement
+- from: M8
+  to: B22
+  type: refines
+  why: "Among R&D claimants, B22's age and public-company links hold with the other factors held; the city address is
+    not repeated in the second half."
+  found: 2026-11-11
+- from: M29
+  to: B22
+  type: refines
+  why: "Among government suppliers, company form, age and a city address hold with the others held; the advantaged
+    postcode that B22's notebook heading names is not detected once they are."
+  found: 2026-11-11
+- from: M29
+  to: B24
+  type: refines
+  why: "B24's main finding, about government suppliers, is not changed. Its side note on large taxpayers is sharpened:
+    with form, age and state held they do not report more income when they have a filing linked."
+  found: 2026-11-11
+- from: M11
+  to: B51
+  type: refines
+  why: "B51's reading that industry matters more than size still stands, and M11 finds size holds within the same
+    industry. B51's note that R&D spending goes only weakly with patenting among large employers is sharpened: the
+    link shows in one half of the employers and not the other."
+  found: 2026-11-11
+- from: M21
+  to: B42
+  type: supports
+  why: "B42 found no consistent link between industries' innovation and their filing. M21 shows the negative patent
+    link came from a method that gives services no patents, and finds no link once industry size is allowed for."
+  found: 2026-11-11
+- from: M21
+  to: B60
+  type: supports
+  why: "B60 found nothing certain in the 2024–25 survey; M21 finds no link there either once industry size is allowed
+    for."
+  found: 2026-11-11
+- from: M23
+  to: B45
+  type: refines
+  why: "B45's measures largely move together across about 40 universities. Held together, size goes with more patents
+    per work in 2017 to 2023 and research cited by patents in 2010 to 2016, but neither in both periods."
+  found: 2026-11-11
+- from: M38
+  to: B46
+  type: supports
+  why: "B46 found the Australian share of US patents citing an institution's work shows little consistent link with
+    its own filing; M38 finds no link once size and kind of institution are held."
+  found: 2026-11-11
+- from: M18
+  to: B32
+  type: refines
+  why: "For patents filed at home, M18 finds business R&D holds and income is not detected once both are compared;
+    abroad, both hold. B32's reading that filing rises with R&D and income together narrows to R&D for patents at
+    home."
+  found: 2026-11-11
+- from: M18
+  to: B34
+  type: supports
+  why: "B34 found changes in business R&D barely track changes in patenting, and Australia close to the cross-country
+    line; M18 finds the same with income held."
+  found: 2026-11-11
+- from: M31
+  to: B31
+  type: refines
+  why: "B31's simple comparison found no consistent link for the manufacturing share. Among areas alike in advantage,
+    density and remoteness, M31 finds more manufacturing businesses go with more patents per business."
+  found: 2026-11-11
+- from: M31
+  to: B58
+  type: refines
+  why: "B58's gradient is about advantage: M31 finds taxable income per person adds little once the summary measures of
+    advantage and remoteness are held, so read B58's higher-income areas as more advantaged ones."
+  found: 2026-11-11
+- from: M31
+  to: B59
+  type: refines
+  why: "B59 saw no gain in filing where graduates rose over a decade. With the 2011 levels held, M31 finds a slight
+    fall, rather than no association."
+  found: 2026-11-11
+- from: M4
+  to: B11
+  type: refines
+  why: "B11's gap in reaching five or more offices holds with field, route and year held; the gap in filing only in
+    Australia weakens to 28.4% of its raw size."
+  found: 2026-11-11
+- from: M6
+  to: B19
+  type: refines
+  why: "Granted patents' link with ending up held only overseas holds; wide filing weakens to about two fifths of its
+    raw size, and organisations show no link in 2011–12 to 2020–21 once the rest is held."
+  found: 2026-11-11
+- from: M7
+  to: B17
+  type: supports
+  why: "With the technology field held, organisations' share of women inventors on standard patents turns lower than
+    individuals', which confirms B17's reading that the field matters more than the filer."
+  found: 2026-11-11
+- from: M28
+  to: B49
+  type: refines
+  why: "At each right's own renewal anniversary, no response is seen after any of nine fee changes from 2000. B49's
+    national rises in rights ending are therefore not owners letting rights go at renewal; its July 1993 trade mark
+    case falls before M28's period."
+  found: 2026-11-11
+- from: M34
+  to: B49
+  type: refines
+  why: "The national steps in rights ending hold, but at each patent's own renewal nothing changes: more patents
+    reached renewal age, rather than more being let go."
+  found: 2026-11-11
+- from: M34
+  to: B47
+  type: supports
+  why: "B47 found fee changes rarely moved filing beyond normal variation; with trend and season held, M34 finds most
+    are not responses to price."
+  found: 2026-11-11
+- from: M19
+  to: B39
+  type: refines
+  why: "Quarter by quarter, with neighbouring quarters allowed for, Australian and overseas standard patents move
+    together from 2008 only, and trade marks show no clear link; B39's year-to-year trade mark link is on another
+    time scale and is not tested."
+  found: 2026-11-11
+- from: M25
+  to: B37
+  type: refines
+  why: "With trend and season held, the 2013 rush and lower level hold for Australians' standard patents; the 2004
+    designs step is not shown to be the Act's, since a comparison series steps too."
+  found: 2026-11-11
+- from: M36
+  to: B52
+  type: refines
+  why: "Allowing for neighbouring quarters, the cash rate goes with overseas applicants' trade marks before 2008 but not
+    after; B52's own reading already notes the evidence weakened."
+  found: 2026-11-11
+- from: M36
+  to: B63
+  type: refines
+  why: "Unemployment's link with overseas applicants' trade marks is clear before 2008 but not after, as B63's own
+    reading says; Australians' pairs are not clear."
+  found: 2026-11-11
+
+# ---------------------------------------------------------------------- found by the search, between stages
+- from: B55
+  to: U92
+  type: refines
+  why: "U92 finds a family for nearly every patent; B55 shows the family's overseas members are often missing for older
+    patents, so a family found is not a full count of filings abroad. U92's reading was corrected to say so."
+  found: 2026-11-11
+- from: U115
+  to: B55
+  type: supports
+  why: "WIPO counts more Australian patent families than the register's links to Google Patents find, and its own
+    series shows little change in overseas reach, as B55 reads the apparent fall in Australia-only patents."
+  found: 2026-11-11
+- from: B33
+  to: U66
+  type: refines
+  why: "U66 ranks Australia by totals, which favour large countries; B33 ranks it per resident (fourth for new business
+    density rather than second for new businesses), so read the two together."
+  found: 2026-11-11
+- from: M7
+  to: U98
+  type: refines
+  why: "U98's higher share of women among organisations' inventors on standard patents comes with the technology mix:
+    comparing like fields, M7 finds organisations' share lower than individuals'."
+  found: 2026-11-11
+- from: U101
+  to: U45
+  type: supports
+  why: "Both count firms filing their first identifiable trade mark once the register's business numbers are added,
+    and agree: a rise to 19,730 in 2025–26."
+  found: 2026-11-11
+- from: U100
+  to: U45
+  type: supports
+  why: "With the register's business numbers, the share of Australian organisations' trade marks linked to a firm
+    barely falls, so U45's apparent fall in first-time filers is mostly a gap in recording."
+  found: 2026-11-11

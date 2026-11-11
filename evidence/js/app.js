@@ -11,6 +11,7 @@ const $ = (s, r = document) => r.querySelector(s);
 const main = $("#main");
 let A = null; // the atlas
 const byId = {};
+const retiredById = {}; // observations retired with the owner's approval: their address shows the ledger's entry
 const chartCache = {};
 
 const LENS_ORDER = ["rights", "timeline", "firms", "regions", "national", "industries", "institutions", "corpus"];
@@ -66,6 +67,7 @@ function notebookMarkdown(md) {
 // ------------------------------------------------------------------------------------------------ small components
 
 function obsLink(id) {
+  if (!byId[id] && retiredById[id]) return el("a.id.retired", { href: `#/${id}`, title: `Retired: ${retiredById[id].headline}` }, id);
   const o = byId[id];
   return el("a.id", { href: `#/${id}`, title: o ? o.headline : id }, id);
 }
@@ -113,13 +115,32 @@ function verdictsOf(o) {
 function laterChip(o) {
   return o.later?.length ? el("span.chip.later", { title: "Stage 3 tested this, allowing for other factors" }, `Tested again in ${o.later.map((x) => x.id).join(", ")}`) : null;
 }
+// Where each observation stands (ADR 0058): derived from the judged relations between observations and the ledger
+const STATUS_LABEL = { open: "Open for further exploration", proposed: "Proposed for retirement" };
+const STATUS_TITLE = {
+  open: "Another observation points a different way without settling it: an area for further exploration",
+  proposed: "A later observation outmodes or disproves this; it awaits the research owner's approval to retire",
+};
+function statusTag(o, small = false) {
+  return STATUS_LABEL[o.status] ? el(`span.stag.st-${o.status}${small ? ".sm" : ""}`, { title: STATUS_TITLE[o.status] }, STATUS_LABEL[o.status]) : null;
+}
+/** A relation read from this page's side: "Supported by", "Refines", "Outmoded by" ... */
+const REL_WORDS = {
+  supports: ["Supports", "Supported by"], refines: ["Refines", "Refined by"], contests: ["Points a different way from", "Points a different way from"],
+  outmodes: ["Outmodes", "Outmoded by"], disproves: ["Disproves", "Disproved by"],
+};
+function relWords(r) { return REL_WORDS[r.type][r.way === "out" ? 0 : 1]; }
+function relTarget(id) {
+  const o = byId[id], gone = retiredById[id];
+  return el("a.vread", { href: `#/${id}` }, `${id}: ${trim((o || gone)?.headline || id, 110)}${gone ? " (retired)" : ""}`);
+}
 function ocard(o) {
   const a = el("a.ocard", { href: `#/${o.id}` },
     el("div.meta", el("span.id", o.id), lensChip(o.lens, false), stageChip(o), aboutLabel(o)),
     el("h3", o.headline),
     el("p", trim(plain(o.plain), 190)),
     el("div.meta", (o.questions || []).map((q) => el("span.chip.qchip", `Q${q.q}`)), o.chart ? el("span.chip", "Chart") : null,
-      o.stage === 3 ? verdictsOf(o).map((v) => verdictTag(v, true)) : laterChip(o)));
+      o.stage === 3 ? verdictsOf(o).map((v) => verdictTag(v, true)) : laterChip(o), statusTag(o, true)));
   a.style.setProperty("--lc", lensColour(o.lens));
   return a;
 }
@@ -130,7 +151,7 @@ function orow(o) {
   const a = el("a.orow", { href: `#/${o.id}` },
     el("span.id", o.id),
     el("span.ohead", o.headline),
-    el("span.otags", ...tags, o.chart ? el("span.ochart", { title: "Has a chart" }, icon("chart")) : null));
+    el("span.otags", statusTag(o, true), ...tags, o.chart ? el("span.ochart", { title: "Has a chart" }, icon("chart")) : null));
   a.style.setProperty("--lc", lensColour(o.lens));
   return a;
 }
@@ -436,7 +457,7 @@ function observationsPage(params) {
   const keep = (k, v) => { try { localStorage.setItem(`atlas.${k}`, v); } catch { /* storage unavailable: the choice lasts this visit */ } };
   const st = {
     lens: params.get("lens") || "all", q: params.get("q") || "all", about: params.get("about") || "all", stage: params.get("stage") || "all",
-    v: params.get("v") || "all", s: params.get("s") || "", view: params.get("view") || pref("view", "list"), group: params.get("group") || pref("group", "lens"),
+    v: params.get("v") || "all", st: params.get("st") || "all", s: params.get("s") || "", view: params.get("view") || pref("view", "list"), group: params.get("group") || pref("group", "lens"),
   };
   const results = el("div.results");
   const count = el("p.result-count", { "aria-live": "polite" });
@@ -474,6 +495,10 @@ function observationsPage(params) {
     A.verdicts.filter((v) => used.has(v)).map((v) => el("option", { value: v }, `Stage 3: ${v}`)));
   vSel.value = st.v;
   vSel.addEventListener("change", () => { st.v = vSel.value; update(); });
+  const sSel = el("select", { "aria-label": "Where it stands" }, el("option", { value: "all" }, "Any standing"),
+    ["open", "proposed"].map((k) => el("option", { value: k }, STATUS_LABEL[k])));
+  sSel.value = st.st;
+  sSel.addEventListener("change", () => { st.st = sSel.value; update(); });
   const search = el("input", { type: "search", placeholder: "Search the observations", "aria-label": "Search the observations", value: st.s });
   search.addEventListener("input", () => { st.s = search.value; update(); });
   const openAll = (open) => results.querySelectorAll("details").forEach((d) => { d.open = open; });
@@ -499,6 +524,7 @@ function observationsPage(params) {
       (st.about === "all" || o.about === st.about) &&
       (st.stage === "all" || String(o.stage) === st.stage) &&
       (st.v === "all" || (st.v === "later" ? o.later?.length : verdictsOf(o).includes(st.v))) &&
+      (st.st === "all" || o.status === st.st) &&
       words.every((w) => haystack(o).includes(w)));
     count.textContent = `${list.length} of ${A.observations.length} observations`;
     const gs = groups(list);
@@ -513,7 +539,7 @@ function observationsPage(params) {
         : g.subs.map(([t, items]) => sectionGroup(t, items, few || g.subs.length <= 6)))),
     list.length ? "" : el("p.muted", "No observation matches. Try fewer words, or another lens."));
     const p = new URLSearchParams();
-    for (const k of ["lens", "q", "about", "stage", "v"]) if (st[k] !== "all") p.set(k, st[k]);
+    for (const k of ["lens", "q", "about", "stage", "v", "st"]) if (st[k] !== "all") p.set(k, st[k]);
     if (st.s) p.set("s", st.s);
     if (st.view !== "list") p.set("view", st.view);
     if (st.group !== "lens") p.set("group", st.group);
@@ -525,7 +551,7 @@ function observationsPage(params) {
     ...paras(A.site.observations_intro, "lead"),
     el("div.filters",
       lensBar,
-      el("div.filter-row", search, qSel, vSel),
+      el("div.filter-row", search, qSel, vSel, sSel),
       el("div.filter-row", stageSeg, about),
       el("div.filter-row.tools", count, el("span.spacer"), el("span.muted.small", "Group"), groupSeg, el("span.muted.small", "Show"), viewSeg,
         el("button.linkbtn", { type: "button", onclick: () => openAll(true) }, "Open all"), el("button.linkbtn", { type: "button", onclick: () => openAll(false) }, "Close all"))),
@@ -604,7 +630,7 @@ function observationPage(id) {
   document.title = `${o.id}: ${o.headline} · Evidence atlas`;
 
   const head = el("header.obs-head",
-    el("div.meta", el("span.id", o.id), lensChip(o.lens), stageChip(o), el("span", o.section_plain), strengthBadge(o.strength), aboutLabel(o)),
+    el("div.meta", el("span.id", o.id), lensChip(o.lens), stageChip(o), el("span", o.section_plain), strengthBadge(o.strength), aboutLabel(o), statusTag(o)),
     el("h1", o.headline),
     markdownTools(o));
   const chain = o.stage === 3 ? chainBlock(o) : null;
@@ -616,6 +642,23 @@ function observationPage(id) {
     o.later.map((x) => el("div.s3item",
       el("div", verdictTag(x.verdict)),
       el("div", el("p", inline(x.what)), el("a.vread", { href: `#/${x.id}` }, `Read ${x.id}: ${trim(byId[x.id].headline, 110)}`))))) : null;
+  const R = o.relations || [];
+  const down = R.filter((r) => ["outmodes", "disproves"].includes(r.type) && r.way === "in");
+  const contests = R.filter((r) => r.type === "contests");
+  const standing = o.status === "proposed" ? el("section.standing.st-proposed", { "aria-label": "Proposed for retirement" },
+    el("div.s3label", icon("alert"), "Proposed for retirement: no longer the current understanding"),
+    down.map((r) => el("div.s3item", el("div", el("span.stag.st-proposed", relWords(r))),
+      el("div", el("p", inline(r.why)), relTarget(r.id)))),
+    el("p.small", `Read the observation below as superseded. It stays on the atlas only until the research owner approves its retirement${down[0]?.asked ? ` (${down[0].asked})` : ""}; then it moves to the ledger on `, el("a", { href: "#/currency" }, "Keeping the atlas current"), ".")) : null;
+  const explore = contests.length ? el("section.standing.st-open", { "aria-label": "Open for further exploration" },
+    el("div.s3label", icon("compass"), "Open for further exploration"),
+    contests.map((r) => el("div.s3item", el("div", el("span.stag.st-open", "Points another way")),
+      el("div", el("p", inline(r.why)), r.settle ? el("p.small", el("strong", "What would settle it: "), ...inline(r.settle)) : null, relTarget(r.id))))) : null;
+  const others = R.filter((r) => !down.includes(r) && !contests.includes(r));
+  const bearing = others.length ? el("section.block", el("h2", icon("route"), "How other observations bear on this"),
+    el("p.block-intro", "Checked when either observation was added or changed. A refinement sharpens this observation, which still stands."),
+    el("div.rellist", others.map((r) => el("div.relitem", el(`span.rtag.rt-${r.type}`, relWords(r)),
+      el("div", el("p", inline(r.why)), relTarget(r.id)))))) : null;
   const figures = o.figures?.length ? el("div.figures", o.figures.map((f) => el("div.figure", el("strong", f.value), el("span", inline(f.label))))) : null;
   const chart = o.chart ? chartSlot(o.chart) : null;
   const verdicts = o.verdicts?.length ? el("section.block",
@@ -719,7 +762,7 @@ function observationPage(id) {
     terms.length ? el("section", el("h2", "Explainers"), ...terms.map((t) => el("div.explainer", el("h3", icon("info"), A.glossary[t].title), ...paras(A.glossary[t].short)))) : null);
 
   show(el("div.obs-page",
-    el("article.obs-main", head, chain, box, update, figures, chart, verdicts, why, trail, honesty, next, analysts, rel, pager, keys),
+    el("article.obs-main", head, standing, chain, box, explore, update, figures, chart, verdicts, bearing, why, trail, honesty, next, analysts, rel, pager, keys),
     rail));
 }
 
@@ -874,6 +917,42 @@ function limitsPage() {
       el("tbody", Lm.corrections.map((c) => el("tr", el("td", c.when), el("td", inline(c.what)), el("td", inline(c.now)))))))));
 }
 
+// Keeping the atlas current (ADR 0058): what is proposed for retirement, what is open, and the ledger of what retired
+function retiredPage(id) {
+  const x = retiredById[id];
+  setCrumbs([{ label: "Keeping the atlas current", href: "#/currency" }, { label: `${id} (retired)` }]);
+  setNav("currency");
+  document.title = `${id} (retired) · Evidence atlas`;
+  show(el("div.eyebrow", `Observation ${id} · retired`), el("h1", x.headline),
+    el("section.standing.st-proposed", el("div.s3label", icon("alert"), `Retired on ${longDate(x.approved.date)}: ${x.kind}`),
+      el("p", inline(x.why)),
+      el("p", "Read instead: ", ...x.now.flatMap((r, j) => [j ? ", " : "", relTarget(r)])),
+      el("p.small.muted", inline(`The research owner approved its retirement${x.approved.answer ? ` (${x.approved.answer})` : ""}: "${x.approved.words}". It is kept here, and in its notebook with a dated note, as a record; it is no longer part of the evidence.`))),
+    section("What it said", null, el("p.statement", x.plain)),
+    el("p", el("a", { href: "#/currency" }, "The ledger of every retired observation")));
+}
+function currencyPage() {
+  setCrumbs([{ label: "Overview", href: "#/" }, { label: "Keeping the atlas current" }]);
+  setNav("currency");
+  const C = A.currency, T = A.site.currency_page;
+  const stat = (n, label, href) => el("div", el("strong", String(n)), href && n ? el("a", { href }, label) : el("span", label));
+  const prop = C.proposals.length ? el("div.rellist", C.proposals.map((p) => el("div.relitem",
+    el("span.stag.st-proposed", p.type === "disproves" ? "Disproved" : "Outmoded"),
+    el("div", el("p", el("strong", relTarget(p.id))), el("p", inline(p.why)), el("p.small", "By ", relTarget(p.by), p.asked ? ` · asked in ${p.asked}` : ""))))) : el("p.muted", T.empty_proposed);
+  const open = C.contests.length ? el("div.rellist", C.contests.map((p) => el("div.relitem",
+    el("span.stag.st-open", "Open"),
+    el("div", el("p", relTarget(p.a), " and ", relTarget(p.b)), el("p", inline(p.why)), el("p.small", el("strong", "What would settle it: "), ...inline(p.settle)))))) : el("p.muted", T.empty_open);
+  const ledger = C.retired.length ? el("div.tablewrap", el("table.data", el("thead", el("tr", el("th", "Observation"), el("th", "What it said"), el("th", "Why it retired"), el("th", "Read instead"), el("th", "Approved"))),
+    el("tbody", C.retired.map((x) => el("tr", el("td", obsLink(x.id)), el("td", x.headline), el("td", inline(`${x.kind}: ${x.why}`)), el("td", x.now.flatMap((r, j) => [j ? " " : "", obsLink(r)])), el("td", longDate(x.approved.date))))))) : el("p.muted", T.empty_retired);
+  const n = Object.values(C.relation_counts).reduce((a, b) => a + b, 0);
+  show(el("div.eyebrow", "Honesty"), el("h1", T.title), ...paras(T.intro, "lead"),
+    el("div.metrics.cmetrics", stat(C.counts.current, "current"), stat(C.counts.open, "open for further exploration", "#/observations?st=open"),
+      stat(C.counts.proposed, "proposed for retirement", "#/observations?st=proposed"), stat(C.counts.retired, "retired"), stat(n, "relations between observations")),
+    section("Proposed for retirement", T.proposed_intro, prop),
+    section("Open for further exploration", T.open_intro, open),
+    section("The ledger: retired observations", T.ledger_intro, ledger),
+    section("How the atlas stays current", null, el("ol.prose", T.how.map((x) => el("li", inline(x))))));
+}
 function nextPage() {
   setCrumbs([{ label: "Overview", href: "#/" }, { label: "What comes next" }]);
   setNav("next");
@@ -1012,6 +1091,8 @@ function route() {
   document.title = "Evidence atlas";
   if (!parts.length) home();
   else if (/^[UBM]\d+$/.test(parts[0]) && byId[parts[0]]) observationPage(parts[0]);
+  else if (/^[UBM]\d+$/.test(parts[0]) && retiredById[parts[0]]) retiredPage(parts[0]);
+  else if (parts[0] === "currency" && A.currency) currencyPage();
   else if (parts[0] === "observations") observationsPage(params);
   else if (parts[0] === "stage3") stage3Page();
   else if (parts[0] === "lenses") lensesPage();
@@ -1127,6 +1208,7 @@ initTheme($("#theme"));
 fetch("data/atlas.json").then((r) => r.json()).then((atlas) => {
   A = atlas;
   for (const o of A.observations) byId[o.id] = o;
+  for (const o of A.currency?.retired || []) retiredById[o.id] = o;
   $("#nav-count").textContent = String(A.observations.length);
   $("#foot-asat").textContent = `as at ${longDate(A.built)}`;
   initChat({ A, byId, inline, paras, icon, lensChip, stageChip, strengthBadge, verdictTag, verdictsOf, obsLink, setCrumbs, setNav, show, section, longDate, route });

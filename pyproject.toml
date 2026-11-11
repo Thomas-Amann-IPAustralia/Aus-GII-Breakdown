@@ -34,6 +34,8 @@ analysis = [
   "scipy>=1.13",
   "statsmodels>=0.14",
   "scikit-learn>=1.5",
+  # the semantic half of the currency check's search (ADR 0058): a small static embedding model, run locally, free
+  "model2vec>=0.4",
 ]
 
 [project.scripts]

@@ -1,0 +1,89 @@
+id: M5
+checked: '2026-11-11'
+search: model2vec potion-retrieval-32M
+fingerprint:
+  text: 475970c042ef
+  evidence: 79a603e72af6
+  data: 28b2c206dfc7
+  links: 041646cd7050
+candidates:
+- id: M40
+  found:
+  - keywords
+  - meaning
+  - columns
+  - cited
+  score: 48.92
+  seen: 769042d400fd
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: M3
+  found:
+  - keywords
+  - meaning
+  - columns
+  - cited
+  score: 48.13
+  seen: 4b30e21fe6f4
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: M1
+  found:
+  - keywords
+  - meaning
+  - columns
+  score: 46.65
+  seen: b9b90c358f4f
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: M6
+  found:
+  - keywords
+  - meaning
+  - columns
+  score: 45.7
+  seen: 5014be117051
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: B13
+  found:
+  - keywords
+  - meaning
+  - columns
+  - cited
+  score: 44.19
+  seen: f6a6a8e766c1
+  judgement: outmodes
+  note: 'baseline cross-stage review, 11 November 2026: see relations.yaml'
+- id: M7
+  found:
+  - keywords
+  - columns
+  score: 41.8
+  seen: 3a0726ffc3af
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: M27
+  found:
+  - meaning
+  - columns
+  score: 41.74
+  seen: dd512f5224fa
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: M4
+  found:
+  - keywords
+  - columns
+  score: 41.3
+  seen: fb1bda0755b3
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+basis: baseline cross-stage review (ADR 0058)

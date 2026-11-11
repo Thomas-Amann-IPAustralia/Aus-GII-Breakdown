@@ -39,6 +39,19 @@ cell by cell, never in full.
   tables, and have every chart name its source (`style.source`).
 - An association is not a cause. With large samples, lead with effect sizes and intervals, not p-values.
 
+## Keeping every observation current (ADR 0058)
+
+- **Every observation on the atlas must be current.** When you add or change an observation, re-run a cell above one,
+  or change data under one, run the currency check in the same turn (`/currency-check`, or `uv run python -m
+  atlas.currency check --stale` from `analysis/`): judge each candidate pair and record each relation in
+  `analysis/atlas/content/relations.yaml`. The strict atlas build fails until you do.
+- **Disagreement that settles nothing is kept**, as *contests* with what would settle it: an area for further
+  exploration, not a problem to remove.
+- **Never remove, hide or renumber an observation without the owner's explicit approval.** An outmoded or disproven
+  one is proposed for retirement (an owner question, `asked`), and its page says so at once; only an approved entry
+  in `analysis/atlas/content/ledger.yaml`, with the owner's words, retires it.
+- `uv run python -m atlas.currency status` shows what is stale, proposed and open; `impact <id>` what leans on one.
+
 ## Working with the data
 
 - Keep context small. Never print raw rows or whole tables: aggregate in DuckDB with `eda.sql`, which refuses results

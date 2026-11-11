@@ -1,0 +1,113 @@
+id: U99
+checked: '2026-11-11'
+search: model2vec potion-retrieval-32M
+fingerprint:
+  text: ecf8b7106adc
+  evidence: 4dcd9e8a81d7
+  data: 2f8994cce27d
+  links: 82bd5ed1bd47
+candidates:
+- id: U45
+  found:
+  - keywords
+  - meaning
+  - columns
+  - cited
+  score: 46.75
+  seen: be26a900682e
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: U102
+  found:
+  - keywords
+  - meaning
+  - columns
+  - cited
+  score: 46.24
+  seen: 76b2b32b5d00
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: U100
+  found:
+  - keywords
+  - columns
+  - cited
+  score: 45.61
+  seen: db18b864c273
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: U1
+  found:
+  - keywords
+  - meaning
+  - columns
+  score: 45.48
+  seen: 27edc3c88993
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: U105
+  found:
+  - keywords
+  - meaning
+  score: 44.16
+  seen: f916fab63a4b
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: U2
+  found:
+  - meaning
+  - columns
+  score: 43.51
+  seen: e057f3b93d3b
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: U41
+  found:
+  - keywords
+  - meaning
+  - columns
+  score: 43.39
+  seen: a01309df25f5
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: B3
+  found:
+  - keywords
+  - columns
+  score: 42.02
+  seen: 092651c08752
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: U103
+  found:
+  - cited
+  score: 0.0
+  seen: c414c3c91a48
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: U104
+  found:
+  - cited
+  score: 0.0
+  seen: 9f620cad91ae
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: U13
+  found:
+  - cited
+  score: 0.0
+  seen: dec756e5541b
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+basis: baseline cross-stage review (ADR 0058)

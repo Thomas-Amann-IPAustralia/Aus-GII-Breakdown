@@ -3,7 +3,7 @@
 # Numbers here come from docs/stage-1-summary.md, docs/stage-2-summary.md, the research goal and the notebooks; each
 # is traceable to an observation, linked where it is named.
 
-as_at: "2026-11-10"
+as_at: "2026-11-11"
 
 # The chat, "Ask the atlas" (#/ask, ADR 0054): served by the Econ repository's API as a second knowledge base, kept
 # apart from the Econ chat. The page calls nothing outside `api` (the Content Security Policy in evidence/index.html
@@ -366,10 +366,11 @@ stage2:
       ids: [B53, B54, B42, B60]
     - title: Institutions whose research US patents cite more also patent more
       text: >-
-        Larger, more cited universities file more patents per work. Across institutions, disclosures go with patents and
-        patents with licence income, partly because every measure is divided by the same research spend. No association
-        was detected between industry-partnered grants and joint filing, though a moderate one is not ruled out.
-      ids: [B44, B45, B62]
+        Larger, more cited universities file more patents per work. Across institutions, disclosures seemed to go with
+        patents and patents with licence income, but that came from dividing every measure by the same research spend:
+        at the same spend, Stage 3 finds patents do not go with licence income ({M24}). No association was detected
+        between industry-partnered grants and joint filing, though a moderate one is not ruled out.
+      ids: [B44, B45, B62, M24]
 
 ten_title: Ten things Stage 1 found
 ten_intro: >-
@@ -572,6 +573,39 @@ data_page:
       text: >-
         The analyst writes the observation directly under the output, quoting its numbers. If a number is not on the
         page, it is not a finding. These pages are checked against the notebook in the same way.
+
+currency_page:
+  title: Keeping the atlas current
+  intro: >-
+    Every observation on the atlas should be the best current reading of the data. Whenever an observation is added
+    or changed, or the data and outputs beneath it change, it is compared straight away with the observations nearest
+    to it, and each pair is judged: one supports, refines, contests, outmodes or disproves the other, or they do not
+    bear on each other. This page shows what those checks have found. An observation that a later one outmodes or
+    disproves is marked at once and proposed for retirement; it leaves the atlas only when the research owner
+    approves, and the ledger below keeps it, with what replaced it.
+  proposed_intro: >-
+    A later observation gives a clearer or a correct reading. Each is marked on its own page and in every list, and
+    waits for the research owner's decision.
+  open_intro: >-
+    Two observations point different ways without either settling it. These are kept, on purpose: they are where
+    further exploration is most likely to teach something. Each says what would settle it.
+  ledger_intro: >-
+    Observations retired with the research owner's approval: what each said, why it retired, and what to read
+    instead. Each stays in its notebook with a dated note.
+  empty_proposed: None at present.
+  empty_open: None at present.
+  empty_retired: No observation has been retired.
+  how:
+    - "**Find the nearest observations.** A search reads the new or changed observation three ways: its words (a
+      keyword match), its meaning (a small language model run locally, free), and its structure (the columns,
+      sources and terms it uses). The closest ones, and any it names or that name it, are its candidates."
+    - "**Judge each pair.** Claude reads the two observations together and records one of six judgements, with a
+      reason: none, supports, refines, contests (with what would settle it), outmodes or disproves."
+    - "**Keep it on record.** Each observation's check is stored with a fingerprint of what it rests on: its own
+      words, the outputs above it, its data files, and the observations it names. If any of these change, the check
+      is out of date and the atlas will not build until it is redone."
+    - "**Ask before removing anything.** Outmoded and disproven observations are marked at once and listed above.
+      Only the research owner's recorded approval retires one; until then it stays, marked as superseded."
 
 limits:
   intro: >-

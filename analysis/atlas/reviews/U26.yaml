@@ -1,0 +1,102 @@
+id: U26
+checked: '2026-11-11'
+search: model2vec potion-retrieval-32M
+fingerprint:
+  text: 244d426f4253
+  evidence: b82d973714be
+  data: 28b2c206dfc7
+  links: 447824ba8991
+candidates:
+- id: U28
+  found:
+  - keywords
+  - meaning
+  - columns
+  score: 45.54
+  seen: fcfa2235ce13
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: U24
+  found:
+  - keywords
+  - meaning
+  - columns
+  - cited
+  score: 45.43
+  seen: f05dd28f0b88
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: U29
+  found:
+  - keywords
+  - meaning
+  - columns
+  score: 43.81
+  seen: f83cd7abec53
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: M20
+  found:
+  - keywords
+  - meaning
+  score: 43.67
+  seen: 87771c6b18dd
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: B37
+  found:
+  - keywords
+  - columns
+  score: 43.04
+  seen: 88fc415ff24e
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: B39
+  found:
+  - meaning
+  - columns
+  score: 42.04
+  seen: 17fb40137331
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: U23
+  found:
+  - keywords
+  - columns
+  score: 42.03
+  seen: b959cae24a43
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: U22
+  found:
+  - keywords
+  - columns
+  score: 40.88
+  seen: ade1c86121b8
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: U7
+  found:
+  - cited
+  score: 0.0
+  seen: dd4ab3439bf5
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+- id: U8
+  found:
+  - cited
+  score: 0.0
+  seen: 7acfbd3e583e
+  judgement: none
+  note: 'baseline cross-stage review, 11 November 2026: both readings read with their lens''s other observations, and the
+    notebook''s words where they touch; neither bears on the other''s claim'
+basis: baseline cross-stage review (ADR 0058)

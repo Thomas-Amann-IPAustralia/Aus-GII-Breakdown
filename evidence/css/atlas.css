@@ -794,3 +794,27 @@ table.signals td:nth-child(3) { white-space: nowrap; }
   .chat-trail { position: static; max-height: none; overflow: visible; }
   .cmsg.user { max-width: 100%; }
 }
+
+/* Where each observation stands (ADR 0058): proposed for retirement, open for further exploration, and relations */
+.stag { display: inline-flex; align-items: center; font-size: .74rem; font-weight: 700; border-radius: 999px; padding: 2px 10px; line-height: 1.5; white-space: nowrap; border: 1px solid; }
+.stag.sm { font-size: .68rem; padding: 1px 8px; }
+.stag.st-proposed { background: var(--limit); color: var(--limit-ink); border-color: var(--limit-line); }
+.stag.st-open { background: var(--assume); color: var(--assume-ink); border-color: var(--assume-line); }
+.standing { margin: 0 0 22px; border: 1px solid; border-left-width: 5px; border-radius: var(--r-s); padding: 14px 18px; }
+.standing.st-proposed { background: var(--limit); border-color: var(--limit-line); }
+.standing.st-proposed .s3label { color: var(--limit-ink); }
+.standing.st-open { background: var(--assume); border-color: var(--assume-line); }
+.standing.st-open .s3label { color: var(--assume-ink); }
+.standing p { margin: 0 0 6px; }
+.standing .s3item + .s3item { border-top-color: color-mix(in srgb, currentColor 25%, transparent); }
+.rellist { display: grid; gap: 10px; }
+.relitem { display: grid; grid-template-columns: minmax(0, 11rem) 1fr; gap: 12px; align-items: start; padding: 10px 12px; border: 1px solid var(--line); border-radius: var(--r-s); }
+.relitem p { margin: 0 0 4px; }
+.rtag { font-size: .74rem; font-weight: 700; border-radius: 999px; padding: 2px 10px; background: var(--teal-wash); color: var(--teal); justify-self: start; }
+.rtag.rt-refines { background: var(--obs); color: var(--obs-ink); }
+a.id.retired { text-decoration: line-through; }
+@media (max-width: 560px) { .relitem { grid-template-columns: 1fr; } .stag, .rtag { white-space: normal; } }
+.cmetrics { flex-wrap: wrap; padding-left: 0; border-left: 0; margin: 8px 0 26px; }
+.cmetrics a, .cmetrics span { display: block; font-size: .85rem; }
+.relitem > .stag, .relitem > .rtag { justify-self: start; }
+@media (max-width: 560px) { .standing .s3item { grid-template-columns: 1fr; gap: 6px; } }

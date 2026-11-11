@@ -30,6 +30,11 @@ are listed in `DERIVED`, each with its sum.
 verdict Stage 3 gives it (holds, weakened, ...) and one sentence on what changed. The build copies each onto the
 earlier observation's page (`later`), so a Stage 2 page says what became of its signal once other factors were held
 (ADR 0049).
+
+**Keeping every page current** (ADR 0058, `atlas.currency`). Each observation carries its status (current, open for
+further exploration, proposed for retirement) and its judged relations to other observations; a retired one leaves
+the list for `currency.retired`, and its address shows the ledger's entry. The build fails while any observation's
+check against the others is missing or stale, or a relation, proposal or retirement is incomplete.
 """
 
 from __future__ import annotations
@@ -371,10 +376,37 @@ def link_back(obs: list[dict], nbs: dict) -> list[str]:
     return problems
 
 
+def keep_current(obs: list[dict], nbs: dict) -> tuple[list[dict], dict, list[str]]:
+    """The currency gate (ADR 0058): each page's status and judged relations; retired observations leave the list."""
+    from . import currency
+
+    problems, pages = currency.gate(nbs, currency.entries())
+    for r in currency.relations():  # a relation's words are shown on both pages, so the numbers rule covers them
+        text = " ".join(str(r.get(k) or "") for k in ("why", "settle"))
+        both = [nbs[x] for x in (r.get("from"), r.get("to")) if x in nbs]
+        # written as plain English, so read with the plain readings' allowance; a number on either page will do
+        extra = sorted(set.intersection(*(set(check_plain(n.id, text, n)) for n in both))) if both else []
+        if extra:
+            problems.append(f"relation {r.get('from')} {r.get('type')} {r.get('to')}: numbers on neither page: {extra}")
+    kept = []
+    for o in obs:
+        o["status"] = pages["status"].get(o["id"], "current")
+        rel = [x for x in pages["relations"].get(o["id"], []) if x["origin"] == "judged"]
+        if rel:
+            o["relations"] = rel
+        if o["status"] != "retired":
+            kept.append(o)
+    page = {k: pages[k] for k in ("counts", "relation_counts", "proposals", "contests", "retired")}
+    page["types"] = currency.TYPES
+    return kept, page, problems
+
+
 def build(strict: bool = True, write: bool = True) -> dict:
     """Join everything into atlas.json; with write=False, only return it for the tests."""
     nbs = {o.id: o for o in notebook.read_all()}
     obs, problems = observations(nbs, write)
+    obs, currency_page, more = keep_current(obs, nbs)
+    problems += more
     site = load_yaml("site.yaml")
     atlas = {
         "built": site["as_at"],
@@ -388,6 +420,7 @@ def build(strict: bool = True, write: bool = True) -> dict:
         "glossary": load_yaml("glossary.yaml"),
         "sources": sources(),
         "observations": obs,
+        "currency": currency_page,
     }
     from . import audit  # the review against IP Australia's evidence, a page of its own (ADR 0025)
 

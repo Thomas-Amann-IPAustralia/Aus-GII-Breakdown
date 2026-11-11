@@ -66,4 +66,6 @@ the owner's, or Claude's, which the owner can overturn.
 | [0056](0056-plain-english-pages.md) | The rest of each observation page in plain English: 231 headlines and about 880 other items rewritten against a measure of plain English (technical terms 2.47 to 0.04 per 100 words), "Australian ... applications" given one meaning in 28 readings, and the numbers rule extended to every visible field, allowing rounding | 2026-11-06 | Owner (what), Claude (how) |
 | [0057](0057-audit-of-every-observation.md) | Every one of the 231 observations read against its output: 22 corrected in place with dated notes (none reverses a finding), M18's outcome moved from B33's page to B32's, M35 no longer places the FY2025 fall among new filers, and the atlas brought into step | 2026-11-10 | Owner (the ask), Claude (the method and corrections) |
 
-Next free number: 0058.
+| [0058](0058-keeping-every-observation-current.md) | Every observation kept current: judged relations between observations (supports, refines, contests, outmodes, disproves), statuses derived from them, a review per observation fingerprinted on its words, outputs, data and citations so the strict build fails the moment one goes stale, a hybrid search for candidates, and a ledger; nothing removed without the owner's approval. The first cross-stage review: 1,380 pairs, 69 relations, 2 proposed for retirement (B62, B13), 3 open, U92 corrected | 2026-11-11 | Owner (the policy), Claude (how, the judgements) |
+
+Next free number: 0059.

@@ -95,6 +95,17 @@ export function observationMarkdown(o, { atlas: A, chart = null, base = "" }) {
 
   // the observation
   add(`## Observation ${o.id} (${o.strength})`, o.plain);
+  // where it stands (ADR 0058): proposed for retirement, open for further exploration, and the judged relations
+  const WORDS = { supports: ["Supports", "Supported by"], refines: ["Refines", "Refined by"], contests: ["Points a different way from", "Points a different way from"],
+    outmodes: ["Outmodes", "Outmoded by"], disproves: ["Disproves", "Disproved by"] };
+  const rels = o.relations || [];
+  if (rels.length) {
+    const lead = o.status === "proposed"
+      ? "**Proposed for retirement: no longer the current understanding.** A later observation outmodes or disproves this one; it stays only until the research owner approves its retirement."
+      : o.status === "open" ? "**Open for further exploration.** Another observation points a different way without settling it." : null;
+    add("## Where this stands", lead,
+      rels.map((r) => `- **${WORDS[r.type][r.way === "out" ? 0 : 1]}** [${r.id}](${page(r.id)}): ${md(r.why)}${r.settle ? ` What would settle it: ${md(r.settle)}` : ""}`).join("\n"));
+  }
   if (o.later?.length) {
     add("## What Stage 3 found",
       o.later.length === 1 ? "Stage 3 tested this, allowing for other factors." : `Stage 3 tested this ${o.later.length} ways, allowing for other factors.`,

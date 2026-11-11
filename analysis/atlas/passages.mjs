@@ -356,6 +356,15 @@ function otherPassages(A) {
     { route: "next", doc_id: "atlas-page-next", title: "What comes next", content: S.next,
       headings: { stages: "The stages", signals: "Early signals that warrant further investigation", recorded: "Recorded, not carried", data_gaps: "Data gaps", puzzles: "Puzzles", owner: "Open questions for the research owner", ipa: "Open questions for IP Australia", after: "After Stage 3" } },
   ];
+  if (A.currency && S.currency_page) {
+    const C = A.currency;
+    pages.push({ route: "currency", doc_id: "atlas-page-currency", title: S.currency_page.title,
+      content: { intro: S.currency_page.intro, how: S.currency_page.how,
+        proposed: C.proposals.length ? C.proposals.map((p) => `{${p.id}} ${p.type === "disproves" ? "disproved" : "outmoded"} by {${p.by}}: ${p.why}`) : [S.currency_page.empty_proposed],
+        open: C.contests.length ? C.contests.map((p) => `{${p.a}} and {${p.b}}: ${p.why} What would settle it: ${p.settle}`) : [S.currency_page.empty_open],
+        retired: C.retired.length ? C.retired.map((x) => `${x.id}, ${x.headline}: ${x.kind}. ${x.why} Read instead: ${x.now.map((r) => `{${r}}`).join(", ")}.`) : [S.currency_page.empty_retired] },
+      headings: { intro: "Keeping the atlas current", how: "How the atlas stays current", proposed: "Proposed for retirement", open: "Open for further exploration", retired: "The ledger: retired observations" } });
+  }
   if (A.audit) {
     pages.push({ route: "audit", doc_id: "atlas-page-audit", title: "Checked against IP Australia", content: A.audit,
       headings: { in_brief: "In brief", since: "Since the first review", method: "Method", verdict_words: "What each verdict means", measures: "Measures compared year by year", conclusions: "IP Australia's conclusions and what the evidence adds", changes: "What the review changed", questions: "Questions raised", limits: "Limits of the check", findings: "Findings", verdicts: "Verdicts, observation by observation", untestable: "Not testable", counts: "Verdicts counted", later: "The later check (4 November 2026)", stats: "In numbers" } });

@@ -2,7 +2,34 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**Latest (2026-11-10): every observation audited against its output; 22 corrected; the atlas in step** (ADR 0057).
+**Latest (2026-11-11): every observation is now kept current by a check at the moment of change** (ADR 0058). The
+owner: every observation on the atlas current and valid; nothing shown once disproven or outmoded by a clearer one;
+nothing removed without their explicit approval; a ledger of what was removed and what replaced it; disagreements that
+settle nothing kept as areas for further exploration; currency maintained as observations are made, not by post-hoc
+audits. Done:
+- **The mechanism:** `analysis/atlas/currency.py`. Judged relations in `content/relations.yaml` (supports, refines,
+  contests, outmodes, disproves); statuses derived (current, open, proposed, retired); a review per observation in
+  `analysis/atlas/reviews/`, fingerprinted on its words, outputs, data files and the observations it cites, so the
+  strict build fails the moment one goes stale; a hybrid search (BM25, model2vec run locally, shared columns) finds the
+  candidates; `content/ledger.yaml` for retirements, which need the owner's recorded words.
+- **The process:** `/currency-check` (`.claude/skills/currency-check/SKILL.md`) and a section in `CLAUDE.md`.
+  Commands: `uv run python -m atlas.currency status | check <ids> | check --stale | search "..." | impact <id>`.
+- **The atlas:** a page "Keeping the atlas current" (`#/currency`: counts, proposals, open questions, the ledger, how
+  it works); a banner at the top of a proposed page, a box on a contested one, "How other observations bear on this"
+  on each related page, status tags and a filter in the lists, the standing in each Markdown copy (and so the chat's
+  passages), and a page for a retired address.
+- **The first cross-stage review:** 1,380 pairs judged (510 across stages); 69 relations. Proposed for retirement:
+  **B62** (outmoded by M24, OQ36) and **B13** (outmoded by M5, OQ37). Open for further exploration: M22 and B40, M36
+  and B56, M38 and M23. Nothing disproven or retired. U92's reading corrected in notebook 1 with a dated note ("overseas
+  family" overclaimed; U93, B55); the overview's "What Stage 2 found" no longer presents B62's licence link as a
+  finding.
+- **Checks:** strict build passes (231 pages); passages rebuilt; ruff clean; tests pass (10 new in
+  `tests/test_currency.py`); the new and changed pages checked in Chromium at 1,366 and 390 pixels, no console errors
+  or overflow.
+- **For the owner:** OQ36 and OQ37 (retire B62 and B13?). The Econ refresh (below) now also carries each page's
+  standing.
+
+**Earlier (2026-11-10): every observation audited against its output; 22 corrected; the atlas in step** (ADR 0057).
 The owner asked for a review of all observations in the three notebooks for errors of logic or synthesis, their
 correction, and the front end updated. Done:
 - **Audit:** all 231 (128, 63, 40) read against the output above each: numbers matched, derived figures recomputed,

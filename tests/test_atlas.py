@@ -14,7 +14,20 @@ def atlas():
 
 
 def test_every_notebook_observation_has_a_page(atlas):
-    assert [o["id"] for o in atlas["observations"]] == [o.id for o in notebook.read_all()]
+    # every observation but those retired with the owner's approval, which the ledger keeps (ADR 0058)
+    retired = {x["id"] for x in atlas["currency"]["retired"]}
+    assert [o["id"] for o in atlas["observations"]] == [o.id for o in notebook.read_all() if o.id not in retired]
+
+
+def test_each_page_says_where_it_stands(atlas):
+    # derived from the judged relations: a proposal or a contest shows on both pages, with its reasons
+    by = {o["id"]: o for o in atlas["observations"]}
+    assert all(o["status"] in {"current", "open", "proposed"} for o in by.values())
+    for p in atlas["currency"]["proposals"]:
+        assert by[p["id"]]["status"] == "proposed" and p["asked"]
+        assert any(r["id"] == p["by"] and r["type"] == p["type"] for r in by[p["id"]]["relations"])
+    for c in atlas["currency"]["contests"]:
+        assert by[c["a"]]["status"] != "current" and by[c["b"]]["status"] != "current" and c["settle"]
 
 
 def test_each_observation_carries_its_stage(atlas):
@@ -200,7 +213,7 @@ def test_chat_passages_are_current_and_cover_every_page(atlas):
     assert statement == {o["id"] for o in atlas["observations"]}
     # every passage leads to a page the atlas serves (evidence/js/app.js, route())
     obs = {o["id"] for o in atlas["observations"]}
-    pages = {"", "stage3", "limits", "next", "audit", "data"}
+    pages = {"", "stage3", "limits", "next", "audit", "data", "currency"}
     pages |= {f"lens/{k}" for k in atlas["lenses"]} | {f"question/{q['id']}" for q in atlas["questions"]}
     pages |= {f"glossary/{t}" for t in atlas["glossary"]} | obs
     for p in passages:

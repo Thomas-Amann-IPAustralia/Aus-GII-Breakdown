@@ -1,0 +1,14 @@
+# The ledger of retired observations (ADR 0058): every observation the atlas no longer shows because a later one
+# outmoded or disproved it, with what replaced it and the research owner's approval. Nothing is added here without that
+# approval; until then the observation stays on the atlas, marked "proposed for retirement" (relations.yaml).
+#
+#   id         the retired observation
+#   kind       outmoded | disproven
+#   by         the observations that replaced it
+#   why        one plain sentence: why it no longer stands
+#   proposed   the date it was proposed for retirement
+#   approved   {date, words: the owner's words, answer: the A-number in docs/owner-questions.md}
+#
+# Retiring also needs a dated "Retired (...)" note under the observation in its notebook (an addition; the
+# observation's own words stay), and every atlas page that cites it pointed at its replacement. The build checks both.
+[]
