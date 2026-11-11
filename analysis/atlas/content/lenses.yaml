@@ -254,7 +254,7 @@ national:
       why: 85 values sat in a side column, and 45 cells shared a key.
       adr: "0019"
   limits:
-    - Before 1995 WIPO cannot say where most applicants come from ({U64}).
+    - Before 1994 WIPO gives no origin for about a third of patent applications ({U64}).
     - Counts grow with a country's size; fair comparisons need ratios to people or GDP (Stage 2).
 
 industries:

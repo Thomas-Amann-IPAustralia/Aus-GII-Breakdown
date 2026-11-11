@@ -9,7 +9,8 @@
     Industry counts here are applications allocated to each ANZSIC division by what they protect, mostly overseas
     applicants', not what the division's businesses file ({U75}). Across 19 divisions, trade marks allocated per 1,000
     businesses rise with business R&D per business (rank [[correlation]] 0.709 in FY2024; 0.682 in FY2025). Standard
-    patents per business against business R&D reach 0.465, which 19 divisions cannot separate from chance.
+    patents per business against business R&D reach 0.465 (0.467 in FY2025), which 19 divisions cannot separate from
+    chance.
   figures:
     - value: "0.709"
       label: trade marks allocated per business with business R&D per business
@@ -36,7 +37,7 @@
       - name: FY2024
         data: [0.709, -0.635, 0.465]
       - name: FY2025
-        data: [0.682, -0.623, 0.465]
+        data: [0.682, -0.623, 0.467]
         colour: muted
     source: IP RAPID; ALP crosswalk; ABS CABEE and BERD (lens industries)
     note: The patent pair does not pass the correction for many tests with 19 divisions.

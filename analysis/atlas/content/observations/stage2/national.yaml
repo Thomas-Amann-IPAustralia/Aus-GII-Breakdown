@@ -9,8 +9,8 @@
     Across 160 countries of a million people or more (2016 to 2020), residents' patent applications per million
     people go with business R&D as a share of GDP (rank [[correlation]] 0.844), researchers per million (0.837) and
     GDP per person (0.769). Residents' trade marks go with GDP per person (0.797) and tertiary enrolment (0.804), and
-    much less with R&D: trade marks follow commerce, patents follow research. The same countries ten years earlier
-    show much the same, a [[stability-check|stability check]] rather than an independent replication.
+    somewhat less with R&D spending (0.643) and researchers (0.701): trade marks sit closer to income and education,
+    patents to research, a difference of degree. The same countries ten years earlier show much the same, a [[stability-check|stability check]] rather than an independent replication.
   figures:
     - value: "0.844"
       label: residents' patents per million with business R&D share of GDP

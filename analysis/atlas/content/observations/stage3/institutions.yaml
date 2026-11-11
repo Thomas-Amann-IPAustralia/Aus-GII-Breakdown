@@ -7,8 +7,8 @@
   about: system
   headline: Size, citations and grants overlap so much among universities that none stands out for patenting
   statement: >-
-    Among about 40 universities, each research measure goes with more patents per work on its own, but held together
-    none does so in both periods: size, citations, research that patents cite and ARC grant success are largely one
+    Among about 40 universities, each research measure goes with more patents per work on its own (citations per work
+    in 2010 to 2016 only), but held together none does so in both periods: size, citations, research that patents cite and ARC grant success are largely one
     measure of research intensity. The share of works cited by patents holds in 2010 to 2016 (1.771 per standard
     deviation) but not in 2017 to 2023 (1.157); size holds only in the later period.
   figures:
@@ -31,8 +31,8 @@
     - id: B45
       signal: "Universities' patenting"
       verdict: mixed
-      what: "Each measure goes with more patents per work on its own. Allowing for the others, none does in both
-            periods. Work cited by patents stands out in 2010 to 2016 only (1.771, then 1.157), and size in 2017 to
+      what: "Each measure goes with more patents per work on its own, citations per work in 2010 to 2016 only (1.151
+            in 2017 to 2023, likely range 0.849 to 1.562). Allowing for the others, none does in both periods. Work cited by patents stands out in 2010 to 2016 only (1.771, then 1.157), and size in 2017 to
             2023 only (1.720)."
   held: ["size (number of works)", "citations per work, compared at the same age", "the share of works cited by patents, compared at the same age", "ARC grants per 1,000 works"]
   verdicts:

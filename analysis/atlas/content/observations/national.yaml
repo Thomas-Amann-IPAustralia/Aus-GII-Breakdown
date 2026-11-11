@@ -7,8 +7,8 @@
   headline: Thirty measures cover 229 countries and places from 1960, but Australia's research staff figures end early
   statement: >-
     The core table holds 30 indicators for 229 places from 1960 to 2025 (135,597 values). Australia's series are
-    complete except for R&D: researchers end in 2010 and technicians in 2008, and the World Bank's R&D spending ends in
-    2021 (the OECD's runs to 2023).
+    complete except for R&D and tertiary enrolment: researchers end in 2010 and technicians in 2008, the World Bank's
+    R&D spending ends in 2021 (the OECD's runs to 2023), and tertiary enrolment starts in 2015.
   figures:
     - value: "135,597"
       label: values in the core table
@@ -58,7 +58,7 @@
 - id: U64
   lens: national
   about: data
-  headline: Before 1995, WIPO does not know where most patent applicants come from
+  headline: Before 1994, WIPO has no origin for about a third of patent applications
   statement: >-
     Of WIPO's patent applications by origin, 34.35% had an unknown origin in 1980, 29.02% in 1990 and 32.24% in 1993,
     then 9.0% in 1994 and 1.12% in 2024. Australia's own series show the gap: WIPO's patent grants to Australian

@@ -60,7 +60,8 @@ no earlier figure changed.
     indicator and a filing rate, 1,281 remain leads beyond the gradient, against 9,539 raw (M32).
   - **Countries:** 56 of 477 attachments remain leads with income and size held (224 raw), mostly research effort;
     women's share of researchers is not detected once business's share of researchers is held (M33).
-  - **Over time:** FY2025's lower follow-up of provisionals is new and heavy individual filers' (M35); with block
+  - **Over time:** FY2025's lower follow-up of individuals' provisionals shows at every filing volume, steepest
+    among heavy filers, and is not detected either way among filers seen before (M35, corrected 10 November 2026); with block
     resampling only the cycle's pre-2008 pairs with overseas applicants' trade marks are clear of zero (M36).
   - **Divisions and institutions:** B43's three survey items hold with size and value added (M37); across every kind
     of institution, research that patents cite goes with the institution's patenting (M38).
@@ -96,7 +97,7 @@ no earlier figure changed.
 
 ## 4. Stage 2 readings that Stage 3 revises (waiting for the atlas)
 
-B13 (M5), B17 (M7), B25 (M10), B29 (M14), B33 (M18), B37 (M25), B40, B42 and B60 (M21, M22), B45 (M23) and B62
+B13 (M5), B17 (M7), B25 (M10), B29 (M14), B32 (M18; first given as B33), B37 (M25), B40, B42 and B60 (M21, M22), B45 (M23) and B62
 (M24); from the review, B15 (M26), B16 (M27), B49 (M28, M34), B22 and B24 (M29), B26 (M30), B31, B58 and B59 (M31), B28
 (M32), B35 (M33), B47 (M34), B38 (M35), B52 and B56 (M36), B43 (M37), and B44 and B46 (M38). Notebook 2 and the atlas
 keep their Stage 2 wording until the owner lifts the freeze; notebooks 1 and 2 gained additions in the review (U124 to
@@ -143,7 +144,7 @@ series). For the owner's review.
 | M15 | regions | B30 with the filer's party |
 | M16 | regions | Kinds of places |
 | M17 | national | Australia's profile and nearest members |
-| M18 | national | Patents against business R&D, income and size (revises B33) |
+| M18 | national | Patents against business R&D, income and size (revises B32; first given as B33, ADR 0057) |
 | M19 | timeline | Quarterly changes with block resampling |
 | M20 | timeline | Trend, season and remainders |
 | M21 | industries | Innovation against IP with the crosswalk with services (revises B42, B60) |

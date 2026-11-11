@@ -361,8 +361,9 @@ claimants and contracts, and every value of five area sources in `region_indicat
 30 indicators for 229 places, 1960 to 2025, and 41.2 million attached values (the GII 2026, 24 OECD flows, WIPO's
 other tables, Measuring What Matters and Closing the Gap).
 
-- **Coverage.** Australia's researchers series ends in 2010 and technicians in 2008 (U63). Before 1995 WIPO cannot say
-  where most applicants come from (29% to 34% unknown), so WIPO's series by country are compared from 1995 (U64).
+- **Coverage.** Australia's researchers series ends in 2010 and technicians in 2008 (U63). Before 1994 WIPO gives no
+  origin for about a third of patent applications (28% to 34% unknown), so WIPO's series by country are compared from
+  1995 (U64; heading corrected 10 November 2026, ADR 0057).
 - **Australia over time.** Gross R&D 1.26% of GDP (1990), 2.24% (2008), 1.68% (2023); business R&D 0.91% against an
   OECD median of 1.18%; manufacturing 13.7% to 5.32% of GDP (down 61%, the median member 30%); IP payments exceed
   receipts in every year (U65).
@@ -805,7 +806,7 @@ All descriptive.
 | U61 | regions | Solar water heaters to panels to batteries |
 | U62 | regions | Government contracts concentrated where suppliers have offices, above all the ACT |
 | U63 | national | 30 indicators, 229 places; Australia's R&D people series end early |
-| U64 | national | Before 1995 WIPO cannot say where most applicants come from |
+| U64 | national | Before 1994 WIPO gives no origin for about a third of patent applications |
 | U65 | national | R&D intensity peaked in 2008; manufacturing fell twice as fast as the OECD's |
 | U66 | national | Near the top for filings from abroad, near the bottom for exports and manufacturing, below the median for R&D |
 | U67 | national | Three routes agree on patents; the World Bank's trade marks count classes |

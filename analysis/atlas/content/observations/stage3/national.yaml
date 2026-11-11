@@ -37,6 +37,12 @@
       what: >-
         Among OECD members the non-IP indicators spread over several dimensions (the first carries 24.7%, the first
         four 73.4%), not one gradient; Australia sits at the edge of the second (-2.47).
+    - id: B33
+      signal: Australia's standing among OECD members
+      verdict: refined
+      what: >-
+        Australia's ranks read the same way as distances from the members' mean: manufacturing -1.57 and exports -1.06
+        standard deviations, new business density +1.75, journal articles +0.96 and business R&D -0.35.
   held: ["nothing: a summary of eleven non-IP indicators across members"]
   chart:
     type: bar
@@ -111,7 +117,7 @@
     - "**Changes from 2006 to 2010 to 2016 to 2020** (34 members): patents against the change in business R&D 0.165 raw
       and 0.130 with the change in income held: not detected either way, as Stage 2 found."
   revisits:
-    - id: B33
+    - id: B32
       signal: IP follows R&D and income
       verdict: mixed
       what: >-
@@ -190,7 +196,7 @@
   next: >-
     The eighth early signal, with {M33}: research effort goes with patenting across members.
   terms: [partial-correlation, stability-check, prediction-interval, gerd, ecological, verdict-words]
-  related: [B33, B34, M17, M33]
+  related: [B32, B33, B34, M17, M33]
 
 - id: M33
   lens: national

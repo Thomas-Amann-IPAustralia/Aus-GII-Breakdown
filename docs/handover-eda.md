@@ -2,7 +2,33 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**Latest (2026-11-06): plain labels done (OQ34, A41) and a pull request opened (OQ33).** Stage 3's outcome tags show
+**Latest (2026-11-10): every observation audited against its output; 22 corrected; the atlas in step** (ADR 0057).
+The owner asked for a review of all observations in the three notebooks for errors of logic or synthesis, their
+correction, and the front end updated. Done:
+- **Audit:** all 231 (128, 63, 40) read against the output above each: numbers matched, derived figures recomputed,
+  headings and plain-English readings read against the tables; chart-only figures recomputed from the lens.
+- **Found:** 22 to correct (U14, U22, U26, U38, U45, U63, U64, U120, U124; B1, B13, B21, B27, B29, B32, B40, B49; M12,
+  M18, M23, M35, M39); the table is in ADR 0057. None reverses a finding or changes a verdict. The four that matter
+  most: M18's outcome was attributed to B33 (Australia's ranks), not B32 ("IP follows R&D and income"), in notebook 3
+  and on the atlas; M35 placed FY2025's fall "in new and heavy filers" though it shows at every filing volume and new
+  filers are not separated; U45 said "the cause is publication" (not shown, OQ7); B32 read trade marks as going "much
+  less with R&D" on the OECD-only measure alone.
+- **How:** text put right in place with a dated bullet saying what it said ("Corrected (10 November 2026; ADR
+  0057)"), as edits to each cell's source inside the notebook JSON. No cell re-run; outputs byte for byte as before
+  (the three notebooks' diff is 123 lines added, 56 removed, all in 23 markdown cells). M35's reading has a dated "Amended" note.
+- **Atlas:** 12 pages' own wording changed (U22, U63, U64, U124, B29, B32, B40 and its chart, B49, M12, M18, M23,
+  M35), the national lens's limits, the fifteenth early signal and the audit page's passages on M35. M18 now revisits
+  B32 (with B34); M17 also revisits B33 ("refined"), as section 4.1 names it. `as_at` is 2026-11-10.
+- **Checks:** strict build passes (231 pages); passages rebuilt (4,525); ruff clean; 143 tests pass (lens tables
+  built); ten changed pages checked in Chromium at 1,366 and 390 pixels, no console errors or overflow; the chat
+  page's check passes.
+- **For the owner:** OQ35 (split M35's fall by whether the filer had filed before?). The Econ refresh below now also
+  covers these 22 pages.
+- **Not done:** summaries of the audit are in `docs/stage-1-summary.md` (U64) and `docs/stage-3-summary.md` (M18, M35)
+  only where they repeated a corrected claim; older handover entries below are history and keep their wording
+  (line "trade marks with commerce (B32)" among them).
+
+**Earlier (2026-11-06): plain labels done (OQ34, A41) and a pull request opened (OQ33).** Stage 3's outcome tags show
 plain names and 77 pages show plain section titles (`content/sections.yaml`; ADR 0056 addendum).
 - **Open issue, "Ask the atlas":** the chat is served by the Econ repository, which still holds the passages from
   before ADR 0055 and 0056 (4,611; now 4,520). Until someone runs, in Econ, `econ atlas-ingest --ref <merged commit>`,
@@ -220,7 +246,7 @@ notebooks, not the GitHub webpage." What the review found and did:
   within about 1.4 points, M28); divisionals doubled within the same filers (M26); manufacturing's share of an area's
   businesses goes with more filing per business beyond the advantage gradient, where B31 saw none (M31); most regional
   and cross-country attachments are their gradients (M32, M33); FY2025's provisional follow-up fall is new and heavy
-  individual filers' (M35); the cycle shows only before 2008 (M36).
+  individual filers' (M35; restated 10 November 2026, ADR 0057: at every filing volume, steepest among heavy filers); the cycle shows only before 2008 (M36).
 
 **Waiting for the atlas, added by the review (done in the Stage 3 web pass, ADR 0049):** the readings revised by M26 to M38 (B15, B16, B22, B24, B26, B28,
 B31, B35, B38, B43, B44, B46, B47, B49, B52, B56, B58, B59); the additions to notebooks 1 and 2 (U124 to U127, B63,
@@ -278,7 +304,7 @@ matches for no gain in accuracy). What Stage 3 found (all observational or descr
   recent fall in standard patents linked to an ABN and changes no firm finding (M12).
 
 **Waiting for the atlas** (Stage 3 changes to earlier readings; done in the Stage 3 web pass, ADR 0049): B13 (M5);
-B17 (M7); B25 (the cohort order, M10); B29 (M14); B33 (M18); B37 (M25); B40, and B42 and B60 (M21, M22); B45 (M23);
+B17 (M7); B25 (the cohort order, M10); B29 (M14); B32 (M18; first given as B33, ADR 0057); B37 (M25); B40, and B42 and B60 (M21, M22); B45 (M23);
 B62 (M24);
 and the framing pages' "What comes next" (Stage 3 under way).
 
