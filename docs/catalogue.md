@@ -392,7 +392,6 @@ Context for the research (Q4: where Australia stands, and hypotheses about where
 Appendix III (repo, as uploaded). Processed: `structure` (the index tree: number, name, level, type, profile,
 description, source), `economies` (income group, region, population, GDP), and `data` (one row per economy and node:
 the screened value and its data year, the 0-100 score, the rank, and WIPO's strength and weakness flags).
-The page in `index.html` reads a frozen summary in `assets/data/gii-australia.json`.
 
 | Table | Rows | Where | Columns |
 |---|---:|---|---|

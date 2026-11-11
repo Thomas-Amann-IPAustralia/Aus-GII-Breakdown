@@ -84,7 +84,7 @@ raw files pass through a cache outside the repo (`$IPHOLMES_CACHE`, default `~/.
 | `CLAUDE.md`, `GLOSSARY.md`, `docs/adr/` | How Claude sessions work here, the plain-English glossary, and the decision records |
 | `tests/` | The rules, and the committed data against the manifest |
 | `evidence/`, `analysis/atlas/` | The evidence atlas (every Stage 1 and Stage 2 observation, for readers who are not data scientists) and the code that builds it from the notebooks and its plain-English content (`analysis/atlas/content/`) |
-| `index.html`, `assets/` | The GII breakdown page (Australia in the Global Innovation Index 2026), kept from the earlier site; it reads a frozen summary in `assets/data/`, and will be rebuilt on the corpus |
+| `index.html`, `assets/` | The site's root, which redirects to the evidence atlas, and the shared files the atlas loads (`assets/js/util.js`, the ECharts copy in `assets/vendor/`, the icon); the earlier GII breakdown page was removed on 11 November 2026 |
 
 ## Credentials
 
