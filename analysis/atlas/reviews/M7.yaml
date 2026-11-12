@@ -5,12 +5,15 @@ fingerprint:
   text: 3a0726ffc3af
   evidence: feb4b837a577
   data: dede3ac2e060
+  lens: 2ca01d8f4cf8
   links: 7504b5fd99e2
 sources:
   google_patents_inventors: f85ccfc76657
   ipa_provisionals: e74b92839dac
   iprapid: 5eab8faca422
   wgnd: 76e66a970813
+lenses:
+  rights: 91e0c2c4a558
 candidates:
 - id: U107
   found:

@@ -5,12 +5,16 @@ fingerprint:
   text: cb4ce15497c1
   evidence: c0781e7b5ec0
   data: 32161e54a2c2
+  lens: 6125b74b1e88
   links: 43206c41e70c
 sources:
   abs_bcs: 9b51bb565144
   abs_cabee: 63fb0c26ff13
   concordances: a4f1c838cb87
   iprapid: 5eab8faca422
+lenses:
+  industries: 5f8b5566c018
+  industry_indicators: 40523352dcb9
 candidates:
 - id: M21
   found:

@@ -5,10 +5,14 @@ fingerprint:
   text: daa8e5f1f983
   evidence: 4b02ccc3b43f
   data: fc2bef1f8a1d
+  lens: 86484abb4e66
   links: cdda481b299d
 sources:
   abr: c8bb9b418676
   austender: 16eee37e3549
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
 candidates:
 - id: B24
   found:

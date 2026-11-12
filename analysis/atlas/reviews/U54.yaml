@@ -5,6 +5,7 @@ fingerprint:
   text: fa7a65012360
   evidence: 8790ccabd08a
   data: cfd48811f353
+  lens: ebb4dad8b07a
   links: c99a8ee41fc8
 sources:
   abr: c8bb9b418676
@@ -12,6 +13,10 @@ sources:
   iprapid: 5eab8faca422
   linkage: a43c158f9444
   rdti: 426938b90f6b
+lenses:
+  firms: e99fa86aa115
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
 candidates:
 - id: B23
   found:

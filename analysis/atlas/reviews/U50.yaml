@@ -5,10 +5,14 @@ fingerprint:
   text: 49195ef2d85b
   evidence: d97481917950
   data: bc1bc9c668bd
+  lens: 86484abb4e66
   links: 2c4f99e2b8a0
 sources:
   abr: c8bb9b418676
   abs_regions: 998a55d86060
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
 candidates:
 - id: U56
   found:

@@ -5,9 +5,12 @@ fingerprint:
   text: 769042d400fd
   evidence: e877bb50de4c
   data: 28b2c206dfc7
+  lens: 2ca01d8f4cf8
   links: 0cd5d88e4d62
 sources:
   iprapid: 5eab8faca422
+lenses:
+  rights: 91e0c2c4a558
 candidates:
 - id: M5
   found:

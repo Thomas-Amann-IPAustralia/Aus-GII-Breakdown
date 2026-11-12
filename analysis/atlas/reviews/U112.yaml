@@ -5,10 +5,14 @@ fingerprint:
   text: a4215f9ce336
   evidence: 1b2fb14621f5
   data: bddf9c153864
+  lens: 1a1d25f4318e
   links: 87ef48c7d543
 sources:
   linkage: a43c158f9444
   wgea: 988b792d6b54
+lenses:
+  firms: e99fa86aa115
+  industries: 5f8b5566c018
 candidates:
 - id: B50
   found:

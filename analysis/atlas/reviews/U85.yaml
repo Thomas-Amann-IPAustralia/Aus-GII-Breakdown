@@ -5,12 +5,17 @@ fingerprint:
   text: a219ef17f490
   evidence: 2ae2a139d424
   data: d4e39b165441
+  lens: cba2b94410be
   links: ea70fb3545e8
 sources:
   google_patents: 3cb9207f3512
   openalex: 12b24bb676f2
   openalex_works: 9b224fb19089
   reliance_on_science: 38900ecff3d1
+lenses:
+  institution_rights: d593c872e625
+  institutions: 5e5c172ff8e0
+  rights: 91e0c2c4a558
 candidates:
 - id: B46
   found:

@@ -5,9 +5,12 @@ fingerprint:
   text: 219288e078cb
   evidence: cd6ad85f17ac
   data: 28b2c206dfc7
+  lens: 2ca01d8f4cf8
   links: 3d260c0e3bda
 sources:
   iprapid: 5eab8faca422
+lenses:
+  rights: 91e0c2c4a558
 candidates:
 - id: U36
   found:

@@ -5,11 +5,15 @@ fingerprint:
   text: 5c8e3e874bb3
   evidence: 0d90142abeb6
   data: b48a5315a60d
+  lens: 8dafedba0e37
   links: 5e9f5bdf3bb8
 sources:
   google_patents: 3cb9207f3512
   iprapid: 5eab8faca422
   wipo_ipstats: e7a291d838fc
+lenses:
+  national_indicators: 45146ea1a446
+  rights: 91e0c2c4a558
 candidates:
 - id: U115
   found:

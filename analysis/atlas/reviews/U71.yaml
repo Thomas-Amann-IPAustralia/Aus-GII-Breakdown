@@ -5,9 +5,13 @@ fingerprint:
   text: a186a24badf4
   evidence: a8273f6d2d5a
   data: c7593dcca41e
+  lens: 43a735c7977a
   links: 4269cebf327b
 sources:
   oecd: a9acd8000249
+lenses:
+  national: 8cab91a572ff
+  national_indicators: 45146ea1a446
 candidates:
 - id: U115
   found:

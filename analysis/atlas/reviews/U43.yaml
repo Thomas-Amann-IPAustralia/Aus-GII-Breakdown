@@ -5,11 +5,14 @@ fingerprint:
   text: 5e6f28cd638a
   evidence: b4991326bbbb
   data: 494daff78b66
+  lens: 8b0a8b736a31
   links: 3351bd5bcf59
 sources:
   abr: c8bb9b418676
   asic: 831f12998f6b
   linkage: a43c158f9444
+lenses:
+  firms: e99fa86aa115
 candidates:
 - id: B25
   found:

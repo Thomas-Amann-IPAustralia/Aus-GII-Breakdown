@@ -5,10 +5,14 @@ fingerprint:
   text: e16b3de7178f
   evidence: 8f132cee31b9
   data: 991ec6b69cdc
+  lens: e7968f63ccea
   links: d05ca4adb491
 sources:
   nsrc: 67553f6f1eb4
   ror: 4a04a5500fda
+lenses:
+  institution_rights: d593c872e625
+  institutions: 5e5c172ff8e0
 candidates:
 - id: B62
   found:

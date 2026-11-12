@@ -5,9 +5,12 @@ fingerprint:
   text: fbe4b653392d
   evidence: acb3d45f66ad
   data: 28b2c206dfc7
+  lens: 2ca01d8f4cf8
   links: f65e62fe4e37
 sources:
   iprapid: 5eab8faca422
+lenses:
+  rights: 91e0c2c4a558
 candidates:
 - id: U3
   found:

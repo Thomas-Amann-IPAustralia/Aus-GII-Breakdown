@@ -5,11 +5,15 @@ fingerprint:
   text: 511a8cb7779d
   evidence: d34b57e4338c
   data: 17a29b83b0b4
+  lens: e7968f63ccea
   links: 90daa49e4bc1
 sources:
   arc_grants: 7a01580c58e0
   nhmrc_grants: 40f84a42c451
   ror: 4a04a5500fda
+lenses:
+  institution_rights: d593c872e625
+  institutions: 5e5c172ff8e0
 candidates:
 - id: U80
   found:

@@ -5,12 +5,17 @@ fingerprint:
   text: cc11824af1a4
   evidence: 9279e7dbbcec
   data: 4e51fab4594b
+  lens: ff4fe05f2bae
   links: a32539971da6
 sources:
   abr: c8bb9b418676
   abs_census: 2346b4f1ece7
   abs_regions: 998a55d86060
   iprapid: 5eab8faca422
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
+  rights: 91e0c2c4a558
 candidates:
 - id: U49
   found:

@@ -5,12 +5,16 @@ fingerprint:
   text: bbb39d0dfdf5
   evidence: 65af395e0720
   data: 70e844d69787
+  lens: bfe399688b28
   links: 4daeb48930d3
 sources:
   abs_labour: 3c94bee697fb
   abs_national_accounts: 268af323fa8a
   fedcourt: 8b558ca709ff
   pbs: af7db99fe32a
+lenses:
+  national: 8cab91a572ff
+  timeline: f0d58f2e3f20
 candidates:
 - id: B63
   found:

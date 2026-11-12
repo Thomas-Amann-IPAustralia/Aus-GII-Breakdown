@@ -5,10 +5,15 @@ fingerprint:
   text: 1a0a44ac6bd1
   evidence: 6b4cf6ee49b8
   data: bf39e7f5dede
+  lens: cba2b94410be
   links: b1baed1cce37
 sources:
   iprapid: 5eab8faca422
   ror: 4a04a5500fda
+lenses:
+  institution_rights: d593c872e625
+  institutions: 5e5c172ff8e0
+  rights: 91e0c2c4a558
 candidates:
 - id: U85
   found:

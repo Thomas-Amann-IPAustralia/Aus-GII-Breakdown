@@ -5,9 +5,13 @@ fingerprint:
   text: 23e7455ac520
   evidence: 79407a8a7907
   data: 195a4e58aca4
+  lens: 43a735c7977a
   links: f39b39df3e7c
 sources:
   wipo_ipstats: e7a291d838fc
+lenses:
+  national: 8cab91a572ff
+  national_indicators: 45146ea1a446
 candidates:
 - id: U67
   found:

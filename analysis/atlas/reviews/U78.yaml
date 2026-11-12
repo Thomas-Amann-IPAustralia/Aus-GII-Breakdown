@@ -5,12 +5,16 @@ fingerprint:
   text: b9184b9ef7ff
   evidence: 3250cb4c2087
   data: ed52657ef416
+  lens: 6125b74b1e88
   links: 555d3dde2efd
 sources:
   abs_cabee: 63fb0c26ff13
   abs_prices: 4f0818d916f8
   abs_rd_vc: 93288811ddf9
   bcarr_creative: d681f0146962
+lenses:
+  industries: 5f8b5566c018
+  industry_indicators: 40523352dcb9
 candidates:
 - id: B41
   found:

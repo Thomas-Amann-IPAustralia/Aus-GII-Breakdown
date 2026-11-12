@@ -5,10 +5,14 @@ fingerprint:
   text: b38e9520e323
   evidence: 61bb02a50953
   data: 7131203bfef4
+  lens: e7968f63ccea
   links: ac34f8ca5bce
 sources:
   austender: 16eee37e3549
   ror: 4a04a5500fda
+lenses:
+  institution_rights: d593c872e625
+  institutions: 5e5c172ff8e0
 candidates:
 - id: U82
   found:

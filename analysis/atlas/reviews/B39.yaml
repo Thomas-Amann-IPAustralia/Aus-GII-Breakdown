@@ -5,11 +5,16 @@ fingerprint:
   text: 17fb40137331
   evidence: d2f4e568cd08
   data: e83ada5034e6
+  lens: 015c9e46e203
   links: fefe7eda18d0
 sources:
   iprapid: 5eab8faca422
   mwm: 952ce167fd93
   wdi: dfd1a28ca08a
+lenses:
+  national: 8cab91a572ff
+  national_indicators: 45146ea1a446
+  timeline: f0d58f2e3f20
 candidates:
 - id: B52
   found:

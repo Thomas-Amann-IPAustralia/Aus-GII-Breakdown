@@ -5,6 +5,7 @@ fingerprint:
   text: ea3a5cd77c6d
   evidence: 8dd38d803a92
   data: dc53857a2a22
+  lens: ff4fe05f2bae
   links: d57ce0c7af9f
 sources:
   abs_cabee: 63fb0c26ff13
@@ -12,6 +13,10 @@ sources:
   abs_regions: 998a55d86060
   ato_postcode: c0ee35f652af
   iprapid: 5eab8faca422
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
+  rights: 91e0c2c4a558
 candidates:
 - id: B31
   found:

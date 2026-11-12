@@ -5,9 +5,13 @@ fingerprint:
   text: 593f9e717e4d
   evidence: 76a9cc11c48d
   data: 28b2c206dfc7
+  lens: 81ff49cfd35a
   links: 099c1b9e83fc
 sources:
   iprapid: 5eab8faca422
+lenses:
+  national: 8cab91a572ff
+  rights: 91e0c2c4a558
 candidates:
 - id: U103
   found:

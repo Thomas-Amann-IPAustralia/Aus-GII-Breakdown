@@ -32,10 +32,26 @@ In the same turn as any of these, before `atlas.build`:
    it names or that names it) and a reading list, `analysis/atlas/reviews/BRIEF.md`. Judged pairs that still stand
    are kept; the rest are `judgement: null`.
 
-   **If the data under it changed** and its outputs are as before, the build asks for more than a check: re-run its
-   cells on the new data (cell by cell, never the whole notebook), then `check` again. If the outputs came out the
-   same, or the change cannot reach it (a table it does not read), record that:
-   `uv run python -m atlas.currency confirm U55 "cells re-run on the refreshed table; outputs identical"`.
+   **If the data or a lens table under it changed** and its outputs are as before, the build asks for more than a
+   check. Do not re-run the reviewed notebooks to find out; run them in a copy (ADR 0059), from `analysis/`:
+
+   ```bash
+   uv run python -m atlas.refresh run
+   ```
+
+   ```bash
+   uv run python -m atlas.refresh report
+   ```
+
+   ```bash
+   uv run python -m atlas.refresh confirm
+   ```
+
+   `docs/refresh-report.md` lists each observation whose quoted numbers moved, with the old and new values;
+   `confirm` clears those whose numbers all came out as quoted. For the ones that moved: re-run their cells in place
+   (cell by cell), put the words right with a dated correction, and `check` them. If a change cannot reach an
+   observation (a table it does not read), record that:
+   `uv run python -m atlas.currency confirm U55 "does not read the changed table"`.
 
 2. **Judge each pair.** Read both readings in full for every pair, and the notebook's own words (`atlas.notebook`)
    wherever they touch. Do not judge from headlines: the review of 11 November 2026 found the weaker links

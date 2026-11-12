@@ -5,10 +5,14 @@ fingerprint:
   text: 9f2fd7029c40
   evidence: eaf54ed1a3be
   data: e9905d1c26ce
+  lens: 86484abb4e66
   links: 4132d4b3d43c
 sources:
   abs_census: 2346b4f1ece7
   abs_census_tsp: 915902a34db8
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
 candidates:
 - id: U55
   found:

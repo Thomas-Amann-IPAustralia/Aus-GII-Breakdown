@@ -5,12 +5,16 @@ fingerprint:
   text: 5246a3438017
   evidence: 8438b8e6efe8
   data: 2bfc4448835d
+  lens: 86484abb4e66
   links: 8f4302880040
 sources:
   abs_cabee: 63fb0c26ff13
   abs_census: 2346b4f1ece7
   abs_regions: 998a55d86060
   iprapid: 5eab8faca422
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
 candidates:
 - id: M14
   found:

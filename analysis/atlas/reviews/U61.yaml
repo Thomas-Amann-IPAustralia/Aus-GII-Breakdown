@@ -5,9 +5,13 @@ fingerprint:
   text: 5ec11b5758f9
   evidence: 4b02ccc3b43f
   data: e98455b1a02e
+  lens: 86484abb4e66
   links: 9f058267faab
 sources:
   cer: 9be986cc6e1e
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
 candidates:
 - id: U55
   found:

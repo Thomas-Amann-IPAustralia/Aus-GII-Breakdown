@@ -5,10 +5,13 @@ fingerprint:
   text: 666eb0dc6686
   evidence: e13e26e6d578
   data: 7af9017d2a32
+  lens: 63db00401b25
   links: ac1015ffdaf1
 sources:
   abs_prices: 4f0818d916f8
   frl_fees: 325452c9c8fe
+lenses:
+  timeline: f0d58f2e3f20
 candidates:
 - id: U108
   found:

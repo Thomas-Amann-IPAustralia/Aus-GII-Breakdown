@@ -5,10 +5,14 @@ fingerprint:
   text: 0a2d68396700
   evidence: 6b4ee1fd96d1
   data: 901ff1f25767
+  lens: e7968f63ccea
   links: ee9f29a52e38
 sources:
   openalex: 12b24bb676f2
   ror: 4a04a5500fda
+lenses:
+  institution_rights: d593c872e625
+  institutions: 5e5c172ff8e0
 candidates:
 - id: U80
   found:

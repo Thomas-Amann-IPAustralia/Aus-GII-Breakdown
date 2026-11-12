@@ -5,9 +5,12 @@ fingerprint:
   text: fce9169457de
   evidence: df1b1e1bc7cd
   data: 28b2c206dfc7
+  lens: 2ca01d8f4cf8
   links: 4bcec0387f2d
 sources:
   iprapid: 5eab8faca422
+lenses:
+  rights: 91e0c2c4a558
 candidates:
 - id: U90
   found:

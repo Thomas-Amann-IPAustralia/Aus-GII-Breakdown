@@ -5,6 +5,7 @@ fingerprint:
   text: 0002a869d9c7
   evidence: 57521d689890
   data: b3f1d67ba609
+  lens: 86484abb4e66
   links: b2d948291ae6
 sources:
   abs_cabee: 63fb0c26ff13
@@ -12,6 +13,9 @@ sources:
   abs_regions: 998a55d86060
   iprapid: 5eab8faca422
   rdti: 426938b90f6b
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
 candidates:
 - id: B29
   found:

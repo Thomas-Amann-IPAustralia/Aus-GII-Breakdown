@@ -5,11 +5,15 @@ fingerprint:
   text: deda1cd4e7d7
   evidence: 477645310c3f
   data: 3f5e61fe4e86
+  lens: b7acf91d722d
   links: d323c2aa3e42
 sources:
   frl_fees: 325452c9c8fe
   iprapid: 5eab8faca422
   policy_events: 2f21107ee403
+lenses:
+  rights: 91e0c2c4a558
+  timeline: f0d58f2e3f20
 candidates:
 - id: M34
   found:

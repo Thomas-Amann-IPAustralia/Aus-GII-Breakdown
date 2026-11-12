@@ -5,11 +5,15 @@ fingerprint:
   text: 05ef0465aad1
   evidence: b6672ca18ccf
   data: 2466d6030eef
+  lens: 86484abb4e66
   links: d2201f9eed4c
 sources:
   abs_regions: 998a55d86060
   ato_postcode: c0ee35f652af
   iprapid: 5eab8faca422
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
 candidates:
 - id: B27
   found:

@@ -5,11 +5,16 @@ fingerprint:
   text: 053c5d75e876
   evidence: 65aa4ee2ae87
   data: b48a5315a60d
+  lens: 685f464e9c0b
   links: 39a793314973
 sources:
   google_patents: 3cb9207f3512
   iprapid: 5eab8faca422
   wipo_ipstats: e7a291d838fc
+lenses:
+  national: 8cab91a572ff
+  national_indicators: 45146ea1a446
+  rights: 91e0c2c4a558
 candidates:
 - id: B55
   found:

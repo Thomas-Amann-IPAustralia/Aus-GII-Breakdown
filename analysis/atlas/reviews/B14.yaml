@@ -5,9 +5,12 @@ fingerprint:
   text: 9efd3ba6d724
   evidence: bc60cc8858ad
   data: 28b2c206dfc7
+  lens: 2ca01d8f4cf8
   links: 03cd477625b3
 sources:
   iprapid: 5eab8faca422
+lenses:
+  rights: 91e0c2c4a558
 candidates:
 - id: B13
   found:

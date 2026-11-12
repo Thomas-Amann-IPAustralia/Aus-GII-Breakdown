@@ -130,7 +130,7 @@ def test_new_data_cannot_be_cleared_by_checking_again(records, monkeypatch, tmp_
     assert ids and all(src in ents[i]["sources"] for i in ids)
     currency.check(ids, nbs, ents)
     problems = _problems(nbs, ents)
-    assert len(problems) == len(ids) and all(f"the data under it changed ({src})" in p for p in problems)
+    assert len(problems) == len(ids) and all(f"what it rests on changed ({src})" in p for p in problems)
     assert all(c["judgement"] in currency.JUDGEMENTS for i in ids for c in currency.review(i)["candidates"])
     currency.confirm(ids, "cells re-run on the refreshed table; outputs identical")
     assert _problems(nbs, ents) == []

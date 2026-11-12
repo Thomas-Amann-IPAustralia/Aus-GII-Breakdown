@@ -5,9 +5,13 @@ fingerprint:
   text: c9e32ebcc548
   evidence: 1c319fea1c35
   data: 195a4e58aca4
+  lens: 43a735c7977a
   links: 845f78c1b264
 sources:
   wipo_ipstats: e7a291d838fc
+lenses:
+  national: 8cab91a572ff
+  national_indicators: 45146ea1a446
 candidates:
 - id: U115
   found:

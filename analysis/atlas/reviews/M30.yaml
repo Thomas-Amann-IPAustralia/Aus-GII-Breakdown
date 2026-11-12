@@ -5,12 +5,16 @@ fingerprint:
   text: feb52f9c1e46
   evidence: 7d569f9f5d4f
   data: 4fb269f67edd
+  lens: 724f33c4a65f
   links: 66567d6ff233
 sources:
   abr: c8bb9b418676
   google_patents: 3cb9207f3512
   iprapid: 5eab8faca422
   linkage: a43c158f9444
+lenses:
+  firms: e99fa86aa115
+  rights: 91e0c2c4a558
 candidates:
 - id: M6
   found:

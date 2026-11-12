@@ -5,10 +5,15 @@ fingerprint:
   text: f63628cf14c3
   evidence: fec2fcc938a8
   data: 152096bb1957
+  lens: ff4fe05f2bae
   links: 8a204bea948c
 sources:
   abs_regions: 998a55d86060
   iprapid: 5eab8faca422
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
+  rights: 91e0c2c4a558
 candidates:
 - id: B30
   found:

@@ -5,10 +5,14 @@ fingerprint:
   text: 59423e743aaa
   evidence: 9339864d389b
   data: fee52e4e7ab7
+  lens: 43a735c7977a
   links: 11272ba9c1f7
 sources:
   ctg: e840e56f1b8b
   mwm: 952ce167fd93
+lenses:
+  national: 8cab91a572ff
+  national_indicators: 45146ea1a446
 candidates:
 - id: U68
   found:

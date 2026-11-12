@@ -5,12 +5,16 @@ fingerprint:
   text: e456dd9669b3
   evidence: 832e21a031ba
   data: b7de3ae2d1f3
+  lens: 43a735c7977a
   links: 80e8e68c65b2
 sources:
   gii: 78e93f3c32a4
   oecd: a9acd8000249
   wdi: dfd1a28ca08a
   wipo_ipstats: e7a291d838fc
+lenses:
+  national: 8cab91a572ff
+  national_indicators: 45146ea1a446
 candidates:
 - id: B35
   found:

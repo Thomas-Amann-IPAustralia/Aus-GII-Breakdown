@@ -5,6 +5,7 @@ fingerprint:
   text: 359c7b773d72
   evidence: 507657ebaba3
   data: a2665f197225
+  lens: e3b0c44298fc
   links: f196cf967c3c
 sources:
   abr: c8bb9b418676
@@ -12,6 +13,7 @@ sources:
   iprapid: 5eab8faca422
   oecd: a9acd8000249
   tmlink: f665bd5b97ac
+lenses: {}
 candidates:
 - id: U68
   found:

@@ -5,11 +5,15 @@ fingerprint:
   text: 66705a7347e6
   evidence: 2d6bef01caaa
   data: db6de28a1d5e
+  lens: 724f33c4a65f
   links: be1d04485b41
 sources:
   abr: c8bb9b418676
   iprapid: 5eab8faca422
   linkage: a43c158f9444
+lenses:
+  firms: e99fa86aa115
+  rights: 91e0c2c4a558
 candidates:
 - id: U41
   found:

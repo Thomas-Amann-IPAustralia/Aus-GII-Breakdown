@@ -5,6 +5,7 @@ fingerprint:
   text: 822f68283522
   evidence: 932001693c08
   data: 048d46375664
+  lens: 86484abb4e66
   links: 79186fc16c12
 sources:
   abs_cabee: 63fb0c26ff13
@@ -13,6 +14,9 @@ sources:
   cer: 9be986cc6e1e
   iprapid: 5eab8faca422
   phidu: 9aeab3ce2593
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
 candidates:
 - id: M32
   found:

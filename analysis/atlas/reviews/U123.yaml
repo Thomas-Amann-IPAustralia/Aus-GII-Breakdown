@@ -5,9 +5,12 @@ fingerprint:
   text: 10a4ef199b18
   evidence: 1424e97ad480
   data: 510843b544e4
+  lens: 63db00401b25
   links: e3b0c44298fc
 sources:
   pbs: af7db99fe32a
+lenses:
+  timeline: f0d58f2e3f20
 candidates:
 - id: U22
   found:

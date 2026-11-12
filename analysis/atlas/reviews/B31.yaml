@@ -5,11 +5,15 @@ fingerprint:
   text: 968300d211f9
   evidence: 79cafcb9eef2
   data: 21dc7526b387
+  lens: 86484abb4e66
   links: fd370d2b2053
 sources:
   abs_cabee: 63fb0c26ff13
   abs_regions: 998a55d86060
   iprapid: 5eab8faca422
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
 candidates:
 - id: M31
   found:

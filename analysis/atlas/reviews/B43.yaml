@@ -5,11 +5,15 @@ fingerprint:
   text: 1eaa7e91ec5a
   evidence: 339c0fd28aa7
   data: e40ff1acbd9a
+  lens: 6125b74b1e88
   links: fd6193893694
 sources:
   abs_bcs: 9b51bb565144
   abs_labour: 3c94bee697fb
   iprapid: 5eab8faca422
+lenses:
+  industries: 5f8b5566c018
+  industry_indicators: 40523352dcb9
 candidates:
 - id: M37
   found:

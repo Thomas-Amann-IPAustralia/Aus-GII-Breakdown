@@ -5,11 +5,15 @@ fingerprint:
   text: d1c53323a0a3
   evidence: 79407a8a7907
   data: d255916a928b
+  lens: 43a735c7977a
   links: 2f8a7e1bce18
 sources:
   oecd: a9acd8000249
   wdi: dfd1a28ca08a
   wipo_ipstats: e7a291d838fc
+lenses:
+  national: 8cab91a572ff
+  national_indicators: 45146ea1a446
 candidates:
 - id: B32
   found:

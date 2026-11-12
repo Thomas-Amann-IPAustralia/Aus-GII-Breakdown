@@ -5,9 +5,13 @@ fingerprint:
   text: be3bfe64953f
   evidence: a0be4f442329
   data: 28b2c206dfc7
+  lens: 81ff49cfd35a
   links: 4d0747564fdc
 sources:
   iprapid: 5eab8faca422
+lenses:
+  national: 8cab91a572ff
+  rights: 91e0c2c4a558
 candidates:
 - id: U91
   found:

@@ -5,9 +5,12 @@ fingerprint:
   text: bd2945b7079d
   evidence: b3e8eee5a430
   data: 28b2c206dfc7
+  lens: 2ca01d8f4cf8
   links: 76c50e2823be
 sources:
   iprapid: 5eab8faca422
+lenses:
+  rights: 91e0c2c4a558
 candidates:
 - id: U31
   found:

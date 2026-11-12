@@ -5,11 +5,15 @@ fingerprint:
   text: be26a900682e
   evidence: 2d6bef01caaa
   data: bace13bc6cc1
+  lens: 724f33c4a65f
   links: 7d3a80c21f18
 sources:
   ipa_register: a1a690a78701
   iprapid: 5eab8faca422
   linkage: a43c158f9444
+lenses:
+  firms: e99fa86aa115
+  rights: 91e0c2c4a558
 candidates:
 - id: U101
   found:

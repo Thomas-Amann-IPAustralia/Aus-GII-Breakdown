@@ -5,10 +5,13 @@ fingerprint:
   text: 9f98d6bbbd5f
   evidence: d27fa81aae6f
   data: 152096bb1957
+  lens: 2ca01d8f4cf8
   links: b77cfeffda1d
 sources:
   abs_regions: 998a55d86060
   iprapid: 5eab8faca422
+lenses:
+  rights: 91e0c2c4a558
 candidates:
 - id: U1
   found:

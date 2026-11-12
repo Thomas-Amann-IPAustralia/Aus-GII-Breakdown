@@ -5,10 +5,14 @@ fingerprint:
   text: 999c970f2ea2
   evidence: a0be4f442329
   data: d6add974f19f
+  lens: 81ff49cfd35a
   links: 354d86f65bb6
 sources:
   iprapid: 5eab8faca422
   wipo_ipstats: e7a291d838fc
+lenses:
+  national: 8cab91a572ff
+  rights: 91e0c2c4a558
 candidates:
 - id: U115
   found:

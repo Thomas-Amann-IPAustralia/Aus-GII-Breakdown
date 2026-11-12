@@ -5,6 +5,7 @@ fingerprint:
   text: 3ffce7bcf957
   evidence: ea29207dcd37
   data: d0e8316152c2
+  lens: 8b0a8b736a31
   links: dafba8d2c2fc
 sources:
   abr: c8bb9b418676
@@ -12,6 +13,8 @@ sources:
   iprapid: 5eab8faca422
   linkage: a43c158f9444
   rdti: 426938b90f6b
+lenses:
+  firms: e99fa86aa115
 candidates:
 - id: B22
   found:

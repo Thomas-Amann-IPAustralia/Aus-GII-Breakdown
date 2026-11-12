@@ -5,6 +5,7 @@ fingerprint:
   text: 2e66d88e3905
   evidence: 3cc6208605ae
   data: 8fc7120ae11c
+  lens: 86484abb4e66
   links: 28132560a5d9
 sources:
   abs_cabee: 63fb0c26ff13
@@ -14,6 +15,9 @@ sources:
   ato_postcode: c0ee35f652af
   cer: 9be986cc6e1e
   phidu: 9aeab3ce2593
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
 candidates:
 - id: M32
   found:

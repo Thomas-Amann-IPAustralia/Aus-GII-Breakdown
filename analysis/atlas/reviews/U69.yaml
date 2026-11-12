@@ -5,9 +5,13 @@ fingerprint:
   text: 783d5fa7c92d
   evidence: 8f1b890afbe4
   data: ff11356c9205
+  lens: 43a735c7977a
   links: 208ea6e485dc
 sources:
   gii: 78e93f3c32a4
+lenses:
+  national: 8cab91a572ff
+  national_indicators: 45146ea1a446
 candidates:
 - id: U120
   found:

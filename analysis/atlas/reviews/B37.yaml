@@ -5,10 +5,14 @@ fingerprint:
   text: 88fc415ff24e
   evidence: dea74d3b6380
   data: ce547439a2ee
+  lens: b7acf91d722d
   links: 1176bf47e442
 sources:
   iprapid: 5eab8faca422
   policy_events: 2f21107ee403
+lenses:
+  rights: 91e0c2c4a558
+  timeline: f0d58f2e3f20
 candidates:
 - id: U28
   found:

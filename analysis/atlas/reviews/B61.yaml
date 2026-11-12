@@ -5,11 +5,15 @@ fingerprint:
   text: 3913e5547091
   evidence: 49982649579a
   data: 1ba2a6f1b053
+  lens: 43a735c7977a
   links: 7347798e0ded
 sources:
   abs_rd_vc: 93288811ddf9
   abs_schools: b8bbcc0a9807
   gii: 78e93f3c32a4
+lenses:
+  national: 8cab91a572ff
+  national_indicators: 45146ea1a446
 candidates:
 - id: B35
   found:

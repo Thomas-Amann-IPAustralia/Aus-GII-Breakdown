@@ -5,10 +5,14 @@ fingerprint:
   text: 6435d2b05aab
   evidence: d307088afb8d
   data: c4a4a4a1d5a5
+  lens: 81ff49cfd35a
   links: ccfb62a12d26
 sources:
   google_patents: 3cb9207f3512
   iprapid: 5eab8faca422
+lenses:
+  national: 8cab91a572ff
+  rights: 91e0c2c4a558
 candidates:
 - id: B12
   found:

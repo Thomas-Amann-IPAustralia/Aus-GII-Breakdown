@@ -5,11 +5,14 @@ fingerprint:
   text: b83acf09ee52
   evidence: 33f3bd1b218b
   data: 3834d7b5eaa8
+  lens: 2ca01d8f4cf8
   links: 2ab37c26bc82
 sources:
   google_patents_inventors: f85ccfc76657
   wgnd: 76e66a970813
   wipo_ipstats: e7a291d838fc
+lenses:
+  rights: 91e0c2c4a558
 candidates:
 - id: U98
   found:

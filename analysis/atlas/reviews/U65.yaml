@@ -5,10 +5,14 @@ fingerprint:
   text: 66010facd137
   evidence: e4b924ace171
   data: 01e3fea1e070
+  lens: 43a735c7977a
   links: ce31ea872b7f
 sources:
   oecd: a9acd8000249
   wdi: dfd1a28ca08a
+lenses:
+  national: 8cab91a572ff
+  national_indicators: 45146ea1a446
 candidates:
 - id: U66
   found:

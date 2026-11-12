@@ -5,9 +5,14 @@ fingerprint:
   text: e9711d754707
   evidence: af3aabdc2ea4
   data: cd4bcc7e85b0
+  lens: 51bd8d784269
   links: cfc7a6d8a407
 sources:
   ato_postcode: c0ee35f652af
+lenses:
+  national: 8cab91a572ff
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
 candidates:
 - id: U55
   found:

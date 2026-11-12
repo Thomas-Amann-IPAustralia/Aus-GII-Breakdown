@@ -5,9 +5,12 @@ fingerprint:
   text: 27edc3c88993
   evidence: 93ff63af3ad3
   data: 28b2c206dfc7
+  lens: 2ca01d8f4cf8
   links: 39e6cc152537
 sources:
   iprapid: 5eab8faca422
+lenses:
+  rights: 91e0c2c4a558
 candidates:
 - id: U2
   found:

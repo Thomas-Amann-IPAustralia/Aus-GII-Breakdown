@@ -27,11 +27,12 @@ evidence, and its address shows the ledger's entry and what replaced it. Nothing
 disproved, awaiting approval), `open` (contested), `current`.
 
 **The gate** (run by `atlas.build`, so the strict build and the tests fail): every observation has a review whose
-fingerprint matches what it now rests on (its own words and reading, the outputs above it, its data files, and the
-words and status of every observation it cites), every candidate in it is judged, each pair judged against a
-candidate as it now reads, and every relation, proposal and retirement is complete. New data under an observation
-whose outputs are unchanged need its cells re-run, or a recorded reason it is unaffected (`confirm`); a fresh
-fingerprint alone does not clear it. Atlas content may not lean on a retired observation: only its own entry and the
+fingerprint matches what it now rests on (its own words and reading, the outputs above it, its data files, the lens
+tables it reads, and the words and status of every observation it cites), every candidate in it is judged, each pair
+judged against a candidate as it now reads, and every relation, proposal and retirement is complete. New data under
+an observation, or a changed lens table, whose outputs are unchanged need a re-run in a copy that shows its numbers
+as quoted (`atlas.refresh`), or a recorded reason it is unaffected (`confirm`); a fresh fingerprint alone does not
+clear it. Atlas content may not lean on a retired observation: only its own entry and the
 observations that replaced it may name it.
 
 **Finding the candidates** fuses rankings by reciprocal rank (`search`): keywords (BM25 over the headline, the
@@ -220,6 +221,33 @@ def source_hashes(e: dict, manifest: dict) -> dict[str, str]:
     return out
 
 
+# The lens tables behind each lens of the atlas (a lens and its long companion), and every lens table by name
+FAMILY = {
+    "rights": ["rights"],
+    "firms": ["firms"],
+    "regions": ["regions", "region_indicators"],
+    "national": ["national", "national_indicators"],
+    "industries": ["industries", "industry_indicators"],
+    "institutions": ["institutions", "institution_rights"],
+    "timeline": ["timeline"],
+}
+_LENS = re.compile(r"\b(" + "|".join(sorted({t for f in FAMILY.values() for t in f}, key=len, reverse=True)) + r")\b")
+LENS_FILE = ROOT / "analysis" / "eda" / "fingerprints.json"
+
+
+def lens_prints() -> dict[str, str]:
+    """Each lens table's digest, from the committed fingerprints (`eda.fingerprint`): its rows and every column."""
+    if not LENS_FILE.exists():
+        return {}
+    return {k: _h(json.dumps(v, sort_keys=True)) for k, v in json.loads(LENS_FILE.read_text()).items()}
+
+
+def lenses_read(nb, e) -> list[str]:
+    """The lens tables an observation rests on: its lens's own, and any other its cells name. Erring wide is safe:
+    a re-run in a copy then shows whether its numbers moved (`atlas.refresh`)."""
+    return sorted(set(FAMILY.get(e.get("lens"), [])) | set(_LENS.findall(nb.evidence_code)))
+
+
 def fingerprint(nb, e, nbs, status, manifest) -> dict:
     """What a review rests on. A change to any part makes the review stale."""
     data = []
@@ -230,10 +258,12 @@ def fingerprint(nb, e, nbs, status, manifest) -> dict:
     for c in sorted(cites(nb, e)):
         if c in nbs:  # a cited observation's words, and whether it is still standing
             linked.append(f"{c}:{text_hash(nbs[c])}:{'down' if status.get(c) in {'proposed', 'retired'} else 'up'}")
+    prints = lens_prints()
     return {
         "text": text_hash(nb),
         "evidence": _h(nb.evidence_text),
         "data": _h(*data),
+        "lens": _h(*[f"{t}:{prints.get(t, '')}" for t in lenses_read(nb, e)]),
         "links": _h(*linked),
     }
 
@@ -242,6 +272,7 @@ PARTS = {
     "text": "its own words or reading changed",
     "evidence": "the outputs above it changed",
     "data": "the data files under it changed",
+    "lens": "a lens table it reads changed (a new source, or a change to the lens code)",
     "links": "an observation it cites changed, or was proposed for retirement",
 }
 
@@ -431,9 +462,10 @@ def gate(nbs: dict, ents: dict) -> tuple[list[str], dict]:
         if d and not (d.get("confirmed") or {}).get("how"):
             which = ", ".join(d.get("changed") or ["a source"])
             problems.append(
-                f"{oid}: the data under it changed ({which}) and the outputs above it are as before: re-run its"
-                f" cells, then `python -m atlas.currency check {oid}`; or, if they were re-run and came out the"
-                f' same, or it cannot be affected, `python -m atlas.currency confirm {oid} "why"`'
+                f"{oid}: what it rests on changed ({which}) and the outputs above it are as before. Run the"
+                f" notebooks in a copy and see what moved (`python -m atlas.refresh run`, `report`, `confirm`); if"
+                f" its numbers moved, re-run its cells and amend it, then `python -m atlas.currency check {oid}`;"
+                f' if it cannot be affected, `python -m atlas.currency confirm {oid} "why"`'
             )
         for c in rv.get("candidates", []):
             if c.get("judgement") not in JUDGEMENTS:
@@ -621,6 +653,7 @@ def check(ids: list[str], nbs=None, ents=None, k: int | None = None) -> Path:
             "search": index.method,
             "fingerprint": fp,
             "sources": source_hashes(e, manifest),
+            "lenses": {t: lens_prints().get(t, "") for t in lenses_read(nb, e)},
             "candidates": cands,
         }
         if old.get("basis"):
@@ -629,11 +662,13 @@ def check(ids: list[str], nbs=None, ents=None, k: int | None = None) -> Path:
         # The cells are re-run (the outputs change, and every pair is judged again) or the reason it is
         # unaffected is recorded (`confirm`).
         old_fp = old.get("fingerprint") or {}
-        if old_fp and old_fp.get("data") != fp["data"] and old_fp.get("evidence") == fp["evidence"]:
-            was = old.get("sources") or {}
-            changed = [s for s, h in rv["sources"].items() if was.get(s) != h] if was else list(rv["sources"])
-            rv["data"] = {"changed": changed or list(rv["sources"]), "found": rv["checked"], "confirmed": None}
-        elif old.get("data") and old_fp.get("data") == fp["data"] and old_fp.get("evidence") == fp["evidence"]:
+        moved = [k for k in ("data", "lens") if old_fp.get(k) != fp[k]]
+        if old_fp and moved and old_fp.get("evidence") == fp["evidence"]:
+            was, was_lens = old.get("sources") or {}, old.get("lenses") or {}
+            changed = [s for s, h in rv["sources"].items() if was.get(s) != h] if "data" in moved else []
+            changed += [f"lens {t}" for t, h in rv["lenses"].items() if was_lens.get(t) != h] if "lens" in moved else []
+            rv["data"] = {"changed": changed or ["a source or lens"], "found": rv["checked"], "confirmed": None}
+        elif old.get("data") and not moved and old_fp.get("evidence") == fp["evidence"]:
             rv["data"] = old["data"]
         _dump(REVIEWS / f"{oid}.yaml", rv)
         brief.append(_brief(oid, nbs, ents, status, graph, cands))

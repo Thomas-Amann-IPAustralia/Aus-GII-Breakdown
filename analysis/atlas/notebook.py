@@ -55,6 +55,7 @@ class Observation:
     charts: list[Chart] = field(default_factory=list)
     stage: int = 1
     plain: str = ""  # its plain-English reading, from the block quote above it (one paragraph)
+    evidence_code: str = ""  # the code of the cells above it: which lens tables and columns it reads
 
 
 def _source(cell: dict) -> str:
@@ -99,12 +100,14 @@ def read(path: Path = NOTEBOOK, stage: int = 1) -> list[Observation]:
     found: list[Observation] = []
     chapter = section = ""
     pending_text: list[str] = []
+    pending_code: list[str] = []
     pending_charts: list[Chart] = []
     for i, cell in enumerate(cells):
         src = _source(cell)
         if cell["cell_type"] == "code":
             comments = "\n".join(line for line in src.splitlines() if line.strip().startswith("#"))
             pending_text += [comments, _text_outputs(cell)]
+            pending_code.append(src)
             for k, o in enumerate(cell.get("outputs", [])):
                 png = o.get("data", {}).get("image/png")
                 if png:
@@ -141,9 +144,10 @@ def read(path: Path = NOTEBOOK, stage: int = 1) -> list[Observation]:
                     charts=list(pending_charts),
                     stage=stage,
                     plain=plain.get(m.group(1), ""),
+                    evidence_code="\n".join(pending_code),
                 )
             )
         heading_to(len(src))
         if starts:
-            pending_text, pending_charts = [], []
+            pending_text, pending_code, pending_charts = [], [], []
     return found

@@ -5,6 +5,7 @@ fingerprint:
   text: 11da1a9b26f7
   evidence: f6750b194a23
   data: d50604a7b41b
+  lens: 86484abb4e66
   links: d272864815a2
 sources:
   abs_cabee: 63fb0c26ff13
@@ -15,6 +16,9 @@ sources:
   cer: 9be986cc6e1e
   iprapid: 5eab8faca422
   phidu: 9aeab3ce2593
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
 candidates:
 - id: B28
   found:

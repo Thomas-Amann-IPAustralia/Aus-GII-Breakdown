@@ -5,10 +5,13 @@ fingerprint:
   text: e0e5c7b53088
   evidence: 93ff63af3ad3
   data: ce547439a2ee
+  lens: 2ca01d8f4cf8
   links: 16c2ca7cae60
 sources:
   iprapid: 5eab8faca422
   policy_events: 2f21107ee403
+lenses:
+  rights: 91e0c2c4a558
 candidates:
 - id: U31
   found:

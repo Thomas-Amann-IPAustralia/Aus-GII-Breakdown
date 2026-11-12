@@ -5,9 +5,13 @@ fingerprint:
   text: 13bf5d04d8f8
   evidence: 76a9cc11c48d
   data: 28b2c206dfc7
+  lens: 81ff49cfd35a
   links: d88a9cdc66ab
 sources:
   iprapid: 5eab8faca422
+lenses:
+  national: 8cab91a572ff
+  rights: 91e0c2c4a558
 candidates:
 - id: U12
   found:

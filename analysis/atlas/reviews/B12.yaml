@@ -5,10 +5,13 @@ fingerprint:
   text: 0b8a3e8aa938
   evidence: 56012990f1dd
   data: c4a4a4a1d5a5
+  lens: 2ca01d8f4cf8
   links: 426201ba653d
 sources:
   google_patents: 3cb9207f3512
   iprapid: 5eab8faca422
+lenses:
+  rights: 91e0c2c4a558
 candidates:
 - id: M4
   found:

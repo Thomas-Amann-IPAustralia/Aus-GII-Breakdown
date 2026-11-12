@@ -5,11 +5,16 @@ fingerprint:
   text: c8668f0a4eba
   evidence: e83dd6003a13
   data: c4227016147d
+  lens: ff4fe05f2bae
   links: 1aa890fcaf42
 sources:
   abr: c8bb9b418676
   abs_regions: 998a55d86060
   iprapid: 5eab8faca422
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
+  rights: 91e0c2c4a558
 candidates:
 - id: U48
   found:

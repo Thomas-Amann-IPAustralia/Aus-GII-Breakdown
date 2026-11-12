@@ -5,9 +5,13 @@ fingerprint:
   text: fb6932233fcc
   evidence: 4729fcfcfec4
   data: 28b2c206dfc7
+  lens: 724f33c4a65f
   links: e559a0e30715
 sources:
   iprapid: 5eab8faca422
+lenses:
+  firms: e99fa86aa115
+  rights: 91e0c2c4a558
 candidates:
 - id: U19
   found:

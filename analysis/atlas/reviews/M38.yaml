@@ -5,6 +5,7 @@ fingerprint:
   text: 565c563d40fd
   evidence: 16dc3efd00eb
   data: 650f85b50f6e
+  lens: e7968f63ccea
   links: 787cdfc8a39c
 sources:
   google_patents_inventors: f85ccfc76657
@@ -14,6 +15,9 @@ sources:
   openalex_works: 9b224fb19089
   reliance_on_science: 38900ecff3d1
   ror: 4a04a5500fda
+lenses:
+  institution_rights: d593c872e625
+  institutions: 5e5c172ff8e0
 candidates:
 - id: M23
   found:

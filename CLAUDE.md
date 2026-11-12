@@ -45,8 +45,13 @@ cell by cell, never in full.
   or change data under one, run the currency check in the same turn (`/currency-check`, or `uv run python -m
   atlas.currency check --stale` from `analysis/`): judge each candidate pair and record each relation in
   `analysis/atlas/content/relations.yaml`. The strict atlas build fails until you do.
-- **New data under an observation:** re-run its cells, then check. If the outputs come out the same, or it cannot
-  be affected, say so with `atlas.currency confirm <id> "why"`; checking again does not clear it.
+- **New data, a new source or a change to the lens code** (ADR 0059): after `eda.build`, run `python -m
+  eda.fingerprint` (it rewrites `analysis/eda/fingerprints.json`; every observation reading a changed lens table then
+  waits). Then, from `analysis/`, `python -m atlas.refresh run`, `report` and `confirm`: the notebooks are run **in a
+  copy**, `docs/refresh-report.md` says which quoted numbers moved, and observations whose numbers all came out as
+  quoted are cleared with that as the reason. For the rest, re-run their cells in place (cell by cell), amend with a
+  dated correction and check. If one cannot be affected, `atlas.currency confirm <id> "why"`. Checking again does not
+  clear a wait.
 - **Disagreement that settles nothing is kept**, as *contests* with what would settle it: an area for further
   exploration, not a problem to remove.
 - **Retire only when nothing true is left that the replacement does not say.** If one claim in an observation is
@@ -85,7 +90,9 @@ cell by cell, never in full.
 
 ```sh
 uv sync --group dev --group analysis
-uv run python -m eda.build                     # the lens tables (seconds)
+uv run python -m eda.build                     # the lens tables (about two minutes; one lens at a time if memory is short)
+uv run python -m eda.fingerprint               # the lens tables' fingerprints, committed (ADR 0059)
+uv run python -m atlas.refresh run             # from analysis/: the notebooks re-run in a copy; then `report`
 uv run python -m audit.benchmark               # IP Australia's published figures against the lenses (ADR 0024)
 uv run jupyter nbconvert --to notebook --execute --inplace analysis/notebooks/01_univariate.ipynb
 uv run ruff check src tests analysis && uv run ruff format --check src tests analysis

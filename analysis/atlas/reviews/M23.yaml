@@ -5,6 +5,7 @@ fingerprint:
   text: 8939a9bd0e60
   evidence: 57ac4afd43ed
   data: 6e1c0b80f73f
+  lens: e7968f63ccea
   links: 551294c009be
 sources:
   arc_grants: 7a01580c58e0
@@ -13,6 +14,9 @@ sources:
   openalex_works: 9b224fb19089
   reliance_on_science: 38900ecff3d1
   ror: 4a04a5500fda
+lenses:
+  institution_rights: d593c872e625
+  institutions: 5e5c172ff8e0
 candidates:
 - id: M38
   found:

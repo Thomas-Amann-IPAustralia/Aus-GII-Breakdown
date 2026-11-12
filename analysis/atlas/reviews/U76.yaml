@@ -5,10 +5,14 @@ fingerprint:
   text: 92112e4d6e3f
   evidence: d8675b132463
   data: 47a93c3540ea
+  lens: 6125b74b1e88
   links: 9f9d76fec53f
 sources:
   concordances: a4f1c838cb87
   iprapid: 5eab8faca422
+lenses:
+  industries: 5f8b5566c018
+  industry_indicators: 40523352dcb9
 candidates:
 - id: U75
   found:

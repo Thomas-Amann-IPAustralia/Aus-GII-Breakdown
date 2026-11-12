@@ -5,12 +5,16 @@ fingerprint:
   text: 5360c0c955b3
   evidence: 8e48a6c3bc35
   data: 81d53f657a74
+  lens: 724f33c4a65f
   links: e42b307e0a6c
 sources:
   abr: c8bb9b418676
   asic: 831f12998f6b
   iprapid: 5eab8faca422
   linkage: a43c158f9444
+lenses:
+  firms: e99fa86aa115
+  rights: 91e0c2c4a558
 candidates:
 - id: M12
   found:

@@ -5,11 +5,15 @@ fingerprint:
   text: ade1c86121b8
   evidence: e6cb431ca88b
   data: e22ca2f8811c
+  lens: b7acf91d722d
   links: 33114697cefb
 sources:
   abs_prices: 4f0818d916f8
   iprapid: 5eab8faca422
   policy_events: 2f21107ee403
+lenses:
+  rights: 91e0c2c4a558
+  timeline: f0d58f2e3f20
 candidates:
 - id: U29
   found:

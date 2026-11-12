@@ -5,10 +5,13 @@ fingerprint:
   text: 0a4357310444
   evidence: 545544a3c5fb
   data: c4a4a4a1d5a5
+  lens: 2ca01d8f4cf8
   links: e549b28782bd
 sources:
   google_patents: 3cb9207f3512
   iprapid: 5eab8faca422
+lenses:
+  rights: 91e0c2c4a558
 candidates:
 - id: U94
   found:

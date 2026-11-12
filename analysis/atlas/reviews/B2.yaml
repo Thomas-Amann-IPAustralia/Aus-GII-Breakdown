@@ -5,11 +5,14 @@ fingerprint:
   text: 8c5c2a226764
   evidence: 20f89f2e1bc9
   data: d62e185e463b
+  lens: 2ca01d8f4cf8
   links: 464d99cf4891
 sources:
   google_patents: 3cb9207f3512
   google_patents_inventors: f85ccfc76657
   iprapid: 5eab8faca422
+lenses:
+  rights: 91e0c2c4a558
 candidates:
 - id: B4
   found:

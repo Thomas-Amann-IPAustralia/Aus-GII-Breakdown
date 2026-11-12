@@ -5,12 +5,19 @@ fingerprint:
   text: 92a9affff7dd
   evidence: f96ea184c9d3
   data: 5927de168685
+  lens: dfcbed3abfc9
   links: 7f2b32bf1882
 sources:
   abs_bcs: 9b51bb565144
   abs_bcs_cubes: 6714a6587f64
   abs_cabee: 63fb0c26ff13
   bcarr_creative: d681f0146962
+lenses:
+  industries: 5f8b5566c018
+  industry_indicators: 40523352dcb9
+  national: 8cab91a572ff
+  national_indicators: 45146ea1a446
+  regions: 18d071f8bbc7
 candidates:
 - id: U68
   found:

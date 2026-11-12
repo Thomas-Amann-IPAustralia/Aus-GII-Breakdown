@@ -5,6 +5,7 @@ fingerprint:
   text: 6b60f3738388
   evidence: ca65659946c4
   data: 7e9a7d60ce9d
+  lens: 724f33c4a65f
   links: a28628963694
 sources:
   abr: c8bb9b418676
@@ -12,6 +13,9 @@ sources:
   ipa_register: a1a690a78701
   iprapid: 5eab8faca422
   linkage: a43c158f9444
+lenses:
+  firms: e99fa86aa115
+  rights: 91e0c2c4a558
 candidates:
 - id: U126
   found:

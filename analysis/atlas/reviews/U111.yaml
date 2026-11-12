@@ -5,9 +5,12 @@ fingerprint:
   text: 4dc074d50303
   evidence: 95625908d12b
   data: e8f7c0ad5e28
+  lens: 63db00401b25
   links: 33da70e21047
 sources:
   frl_fees: 325452c9c8fe
+lenses:
+  timeline: f0d58f2e3f20
 candidates:
 - id: B49
   found:

@@ -5,11 +5,16 @@ fingerprint:
   text: 3bef42a775a1
   evidence: 6c2b5cec3077
   data: 015d6424128d
+  lens: cba2b94410be
   links: 8d89777b057b
 sources:
   abr: c8bb9b418676
   iprapid: 5eab8faca422
   ror: 4a04a5500fda
+lenses:
+  institution_rights: d593c872e625
+  institutions: 5e5c172ff8e0
+  rights: 91e0c2c4a558
 candidates:
 - id: U81
   found:

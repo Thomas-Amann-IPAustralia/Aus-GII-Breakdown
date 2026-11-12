@@ -5,12 +5,16 @@ fingerprint:
   text: 78b5f0572028
   evidence: 664d6b6f891d
   data: 262d330de914
+  lens: 6125b74b1e88
   links: 199d24be986e
 sources:
   abs_cabee: 63fb0c26ff13
   abs_rd_vc: 93288811ddf9
   concordances: a4f1c838cb87
   iprapid: 5eab8faca422
+lenses:
+  industries: 5f8b5566c018
+  industry_indicators: 40523352dcb9
 candidates:
 - id: B53
   found:

@@ -5,9 +5,14 @@ fingerprint:
   text: da20628a831b
   evidence: 615461a082d1
   data: c18a65dce2f1
+  lens: dd5a0cafa2ca
   links: 0cab5cbb833d
 sources:
   abs_national_accounts: 268af323fa8a
+lenses:
+  industries: 5f8b5566c018
+  national: 8cab91a572ff
+  timeline: f0d58f2e3f20
 candidates:
 - id: U124
   found:

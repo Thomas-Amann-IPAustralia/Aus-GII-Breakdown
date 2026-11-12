@@ -5,11 +5,15 @@ fingerprint:
   text: 560aab9ee01a
   evidence: fa8b23441151
   data: 0f2270ce1c0c
+  lens: e7968f63ccea
   links: 1bc8ddc73a95
 sources:
   iprapid: 5eab8faca422
   nsrc: 67553f6f1eb4
   ror: 4a04a5500fda
+lenses:
+  institution_rights: d593c872e625
+  institutions: 5e5c172ff8e0
 candidates:
 - id: M24
   found:

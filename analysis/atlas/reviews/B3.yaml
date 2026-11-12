@@ -5,10 +5,13 @@ fingerprint:
   text: 092651c08752
   evidence: 20f89f2e1bc9
   data: 870e884320a8
+  lens: 2ca01d8f4cf8
   links: cbaed6ac208f
 sources:
   ipa_register: a1a690a78701
   iprapid: 5eab8faca422
+lenses:
+  rights: 91e0c2c4a558
 candidates:
 - id: U99
   found:

@@ -5,11 +5,17 @@ fingerprint:
   text: 3d9e6462ce74
   evidence: 7618bb54c7d8
   data: bf0dcfadd351
+  lens: c533d099812b
   links: 4c960eb19d64
 sources:
   abs_census_tsp: 915902a34db8
   abs_regions: 998a55d86060
   iprapid: 5eab8faca422
+lenses:
+  firms: e99fa86aa115
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
+  rights: 91e0c2c4a558
 candidates:
 - id: M31
   found:

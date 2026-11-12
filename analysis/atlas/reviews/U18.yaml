@@ -5,9 +5,13 @@ fingerprint:
   text: e8b7d96495af
   evidence: 4729fcfcfec4
   data: 28b2c206dfc7
+  lens: 724f33c4a65f
   links: e38be55afb83
 sources:
   iprapid: 5eab8faca422
+lenses:
+  firms: e99fa86aa115
+  rights: 91e0c2c4a558
 candidates:
 - id: B19
   found:

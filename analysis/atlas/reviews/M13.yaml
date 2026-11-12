@@ -5,6 +5,7 @@ fingerprint:
   text: 77a3b3187da0
   evidence: c04971a6ad57
   data: 4766b424eeb8
+  lens: 86484abb4e66
   links: 698f8b4540dd
 sources:
   abs_cabee: 63fb0c26ff13
@@ -12,6 +13,9 @@ sources:
   abs_regions: 998a55d86060
   linkage: a43c158f9444
   rdti: 426938b90f6b
+lenses:
+  region_indicators: a5ec49f69b95
+  regions: 18d071f8bbc7
 candidates:
 - id: M14
   found:

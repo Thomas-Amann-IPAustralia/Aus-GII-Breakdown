@@ -5,12 +5,15 @@ fingerprint:
   text: 4461a4184436
   evidence: 9bb0c799b552
   data: 5bff87a712bb
+  lens: 8b0a8b736a31
   links: f7f31e16b742
 sources:
   ato_ctt: d6bd2f418f1a
   austender: 16eee37e3549
   linkage: a43c158f9444
   rdti: 426938b90f6b
+lenses:
+  firms: e99fa86aa115
 candidates:
 - id: B24
   found:
