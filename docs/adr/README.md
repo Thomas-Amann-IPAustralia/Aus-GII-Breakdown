@@ -68,4 +68,6 @@ the owner's, or Claude's, which the owner can overturn.
 
 | [0058](0058-keeping-every-observation-current.md) | Every observation kept current: judged relations between observations (supports, refines, contests, outmodes, disproves), statuses derived from them, a review per observation fingerprinted on its words, outputs, data and citations so the strict build fails the moment one goes stale, a hybrid search for candidates, and a ledger; nothing removed without the owner's approval. The first cross-stage review: 1,380 pairs, 3 open, U92 corrected. Reviewed the same day (addendum): the retirement path and the data-refresh check repaired, the search widened, B13's proposal withdrawn and B13 corrected in place; 72 relations, 1 proposed for retirement (B62) | 2026-11-11 | Owner (the policy), Claude (how, the judgements) |
 
-Next free number: 0059.
+| [0059](0059-refresh-report.md) | What a re-run would move, the report-only part: lens tables fingerprinted column by column and added to the currency check; each quoted number bound to its place in the output above it (95.8% traced); the notebooks re-run in a copy; a report of what moved. First run: 229 of 231 observations exactly as quoted (5,460 of 5,462 numbers); U1's "89 columns" is now 90 | 2026-11-12 | Owner (A43), Claude (how) |
+
+Next free number: 0060.

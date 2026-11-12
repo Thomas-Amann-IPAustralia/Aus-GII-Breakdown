@@ -436,6 +436,10 @@ def write_report(res: dict) -> str:
     n_same = sum(r["same"] for r in obs.values())
     n_moved = sum(len(r["moved"]) for r in obs.values())
     n_gone = sum(len(r["gone"]) for r in obs.values())
+
+    def has(n: int) -> str:
+        return f"{n} {'has' if n == 1 else 'have'}"
+
     lines = [
         "# Refresh report: what a re-run of the notebooks would move",
         "",
@@ -445,10 +449,10 @@ def write_report(res: dict) -> str:
         "",
         "## In brief",
         "",
-        f"- **{len(obs)} observations compared.** {by.get('same', 0)} have every traced number where it was;"
-        f" {by.get('moved', 0)} have at least one that moved; {by.get('places gone', 0)} have a place that no longer"
+        f"- **{len(obs)} observations compared.** {has(by.get('same', 0))} every traced number where it was;"
+        f" {has(by.get('moved', 0))} at least one that moved; {has(by.get('places gone', 0))} a place that no longer"
         f" exists; {by.get('a cell failed', 0)} sit under a cell that failed in the copy;"
-        f" {by.get('prose ahead of its output', 0)} have prose already corrected to the new value, with a stored"
+        f" {has(by.get('prose ahead of its output', 0))} prose already corrected to the new value, above a stored"
         " output that was never run again.",
         f"- **{n_bound:,} numbers traced to a place:** {n_same:,} the same, {n_moved:,} moved, {n_gone:,} with their"
         " place gone.",
@@ -481,7 +485,7 @@ def write_report(res: dict) -> str:
         rows = [(i, r) for i, r in obs.items() if r["status"] == status]
         if not rows:
             continue
-        lines += [f"## {title} ({len(rows)} observations)", "", note, ""]
+        lines += [f"## {title} ({len(rows)} observation{'' if len(rows) == 1 else 's'})", "", note, ""]
         for i, r in rows:
             lines.append(f"### {i}: {ents.get(i, {}).get('headline', '')}")
             lines.append("")

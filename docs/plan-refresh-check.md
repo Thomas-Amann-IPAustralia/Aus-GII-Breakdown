@@ -1,9 +1,8 @@
 # Backlog: a check that carries a data refresh through the atlas
 
-**Status:** proposed, not built (11 November 2026). The owner asked for suggestions (A42): "I'm reluctant to conduct any
-re-runs as that may require amendments to the observational prose. Do you have any suggestions for how we can
-automate a check to ensure any updates are captured and effectively diffused through the atlas?" Building it is the
-owner's call (OQ38).
+**Status:** steps 1 to 4 built on 12 November 2026 (ADR 0059; the owner: "Yes to OQ38, build the report-only part
+first", A43). The first report is `docs/refresh-report.md`. Steps 5 and 6 are not built (OQ40). The measurements
+below are the probe of 11 November; ADR 0059 has the figures as built.
 
 ## The problem
 

@@ -2,7 +2,25 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**Latest (2026-11-11): every observation is now kept current by a check at the moment of change** (ADR 0058). The
+**Latest (2026-11-12): the refresh check's report-only part is built, and the first report is in** (ADR 0059; the
+owner: "Yes to OQ38, build the report-only part first", A43).
+- **What it does:** `eda.fingerprint` writes `analysis/eda/fingerprints.json` (each lens table's rows and a digest of
+  every column; the currency check now rests on the lens tables an observation reads). `atlas.refresh` binds each
+  number an observation quotes to its place in the output above it, re-runs the notebooks **in a copy**
+  (`analysis/atlas/refresh_runs/`, gitignored), and writes `docs/refresh-report.md`; `confirm` clears the currency
+  check's wait where nothing moved. Nothing in the notebooks or the atlas changes.
+- **The first run** (no data had changed): 229 of 231 observations exactly as quoted, 5,460 of 5,462 traced numbers;
+  27 minutes for the three notebooks, no failed cell. **U1 is out of step: "89 columns" is now 90** (Stage 3's
+  `name_matched_abn`; its overview cell was not run again). U22's stored output says 79 where its corrected prose
+  says 86; nothing to amend.
+- **Coverage:** 95.8% of 5,778 quoted numbers are traced; 241 are not (arithmetic, charts), and charts are not
+  compared.
+- **Routine after a refresh, a new source or a change to `eda.build`:** `eda.build` (one lens at a time if memory is
+  short: all at once ran out here), `eda.fingerprint`, then from `analysis/` `atlas.refresh run`, `report`, `confirm`.
+- **For the owner:** OQ40 (correct U1 now; build the drafting part later?), with OQ36, OQ37 and OQ39 still open.
+- **Checks:** strict build passes; ruff clean; the full suite passes with the lens tables built.
+
+**Earlier (2026-11-11): every observation is now kept current by a check at the moment of change** (ADR 0058). The
 owner: every observation on the atlas current and valid; nothing shown once disproven or outmoded by a clearer one;
 nothing removed without their explicit approval; a ledger of what was removed and what replaced it; disagreements that
 settle nothing kept as areas for further exploration; currency maintained as observations are made, not by post-hoc
@@ -45,7 +63,7 @@ audits. Done:
   as corrected). Dated corrections may be saved without asking, but **the atlas shows only the current reading**:
   amendment history appears on a page only in "Follow the evidence". `build.history` enforces it (ADR 0058, second
   addendum); it found and fixed one relation, one limit and 27 section titles (34 pages' headers).
-- **Backlog, the refresh check (OQ38):** `docs/plan-refresh-check.md`. Bind each quoted number to its place in the
+- **Backlog, the refresh check (OQ38; since built in part, ADR 0059, above):** `docs/plan-refresh-check.md`. Bind each quoted number to its place in the
   output above it, re-run in a copy after a refresh, report what moved, then draft the changes. Measured: about 93% of
   the 5,594 numbers the prose quotes can be traced by code. Not built; the owner's call.
 - **OQ39:** whether the two change logs on the Limits and audit pages stay (recommended: yes).
