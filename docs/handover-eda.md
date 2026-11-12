@@ -2,7 +2,20 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**Latest (2026-11-10): every observation audited against its output; 22 corrected; the atlas in step** (ADR 0057).
+**Latest (2026-11-12): a red-team report on IP Australia's strategic objectives** (no analysis changed). The owner
+asked which atlas findings could defensibly be read as the opposite of IP Australia's strategic objectives, as a
+self-contained HTML report linking to the observation cards. Done: `docs/reports/strategic-objectives-counter-readings.html`.
+- **Finds:** 13 findings, 5 rated stronger (filing without an attorney, B6 and M1; expedited and early examination
+  not repeating IP Australia's commissioned study, M5, M40 and the audit's C3; filing concentrated by advantage, U52,
+  B29, M15; Australian applicants' narrow reach, M4; granted patents ending up owned only overseas, M6, M30). Each
+  has a benign reading beside it, and a section lists the evidence for the objectives. 68 cards cited; objectives
+  3.1, 3.2 and 4.1 have no evidence in the atlas.
+- **Checks:** every number in a block that links a card was matched to that card's text in `atlas.json` (a scratch
+  script); rendered in Chromium at 1,366 and 390 pixels, light and dark, with no overflow or console errors.
+- **For the owner:** it is a one-sided reading by design, not a conclusion. Links point to the published atlas.
+  Merging it to `main` would publish it on the Pages site with the rest of the repository.
+
+**Earlier (2026-11-10): every observation audited against its output; 22 corrected; the atlas in step** (ADR 0057).
 The owner asked for a review of all observations in the three notebooks for errors of logic or synthesis, their
 correction, and the front end updated. Done:
 - **Audit:** all 231 (128, 63, 40) read against the output above each: numbers matched, derived figures recomputed,

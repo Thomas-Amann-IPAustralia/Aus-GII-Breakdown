@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>Counter-readings report</title>
+<meta name="description" content="Findings in the evidence atlas that could defensibly be read as pointing away from IP Australia's strategic objectives, each linked to its observation card.">
+<style>
+:root {
+  --bg: #f7f6f2;
+  --surface: #ffffff;
+  --surface-2: #f0eee8;
+  --ink: #1d1f23;
+  --ink-2: #4a4f58;
+  --ink-3: #6b717c;
+  --rule: #dcd8ce;
+  --accent: #1f5f8b;
+  --accent-soft: #e3eef6;
+  --strong: #a3361f;
+  --strong-soft: #f8e6e1;
+  --moderate: #8a5a00;
+  --moderate-soft: #f6ecd6;
+  --weaker: #4f5b66;
+  --weaker-soft: #e8ebee;
+  --counter: #2f6b3a;
+  --counter-soft: #e3f0e5;
+  --dot: #a3361f;
+  --dot-2: #d9a89c;
+  --shadow: 0 1px 2px rgba(20, 20, 20, .05), 0 2px 8px rgba(20, 20, 20, .04);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15171a;
+    --surface: #1d2024;
+    --surface-2: #24282d;
+    --ink: #e9e7e2;
+    --ink-2: #b9bcc2;
+    --ink-3: #8d929b;
+    --rule: #343940;
+    --accent: #7db7e0;
+    --accent-soft: #1c2f3d;
+    --strong: #f08f78;
+    --strong-soft: #3a221c;
+    --moderate: #e6b450;
+    --moderate-soft: #352a14;
+    --weaker: #a9b4bf;
+    --weaker-soft: #262c32;
+    --counter: #86c693;
+    --counter-soft: #1c2f20;
+    --dot: #f08f78;
+    --dot-2: #7a4a40;
+    --shadow: none;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15171a;
+  --surface: #1d2024;
+  --surface-2: #24282d;
+  --ink: #e9e7e2;
+  --ink-2: #b9bcc2;
+  --ink-3: #8d929b;
+  --rule: #343940;
+  --accent: #7db7e0;
+  --accent-soft: #1c2f3d;
+  --strong: #f08f78;
+  --strong-soft: #3a221c;
+  --moderate: #e6b450;
+  --moderate-soft: #352a14;
+  --weaker: #a9b4bf;
+  --weaker-soft: #262c32;
+  --counter: #86c693;
+  --counter-soft: #1c2f20;
+  --dot: #f08f78;
+  --dot-2: #7a4a40;
+  --shadow: none;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+a { color: var(--accent); text-underline-offset: 2px; }
+a:hover { text-decoration-thickness: 2px; }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 16px; }
+header.top { padding: 48px 0 24px; border-bottom: 1px solid var(--rule); }
+.eyebrow { font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 8px; }
+h1 { font-size: clamp(26px, 4.4vw, 38px); line-height: 1.2; margin: 0 0 14px; letter-spacing: -.01em; }
+h2 { font-size: 24px; line-height: 1.3; margin: 48px 0 12px; }
+h3 { font-size: 19px; line-height: 1.35; margin: 0; }
+h4 { font-size: 14px; letter-spacing: .03em; text-transform: uppercase; color: var(--ink-3); margin: 20px 0 6px; }
+p { margin: 0 0 12px; }
+.lead { font-size: 18px; color: var(--ink-2); max-width: 70ch; }
+.meta { font-size: 14px; color: var(--ink-3); margin-top: 16px; }
+.note {
+  background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 14px 16px; border-radius: 6px;
+  margin: 20px 0; font-size: 15px;
+}
+.note p:last-child { margin-bottom: 0; }
+nav.toc { margin: 24px 0 0; font-size: 15px; }
+nav.toc ol { margin: 6px 0 0; padding-left: 20px; columns: 2 280px; column-gap: 32px; }
+nav.toc li { margin: 2px 0; break-inside: avoid; }
+
+.summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin: 18px 0; }
+.tile { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 14px 16px; box-shadow: var(--shadow); }
+.tile .n { font-size: 30px; font-weight: 650; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.tile .l { font-size: 14px; color: var(--ink-2); margin-top: 4px; }
+
+ol.outcomes { padding-left: 22px; }
+ol.outcomes li { margin: 0 0 8px; }
+
+.badge {
+  display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .02em; padding: 2px 9px; border-radius: 999px;
+  white-space: nowrap; vertical-align: 2px;
+}
+.b-strong { background: var(--strong-soft); color: var(--strong); }
+.b-moderate { background: var(--moderate-soft); color: var(--moderate); }
+.b-weaker { background: var(--weaker-soft); color: var(--weaker); }
+.b-counter { background: var(--counter-soft); color: var(--counter); }
+.chip {
+  display: inline-block; font-size: 12px; padding: 2px 8px; border-radius: 6px; border: 1px solid var(--rule);
+  background: var(--surface-2); color: var(--ink-2); margin: 0 4px 4px 0; white-space: nowrap;
+}
+.chip b { color: var(--ink); font-weight: 650; }
+
+.scale { display: grid; grid-template-columns: max-content 1fr; gap: 8px 14px; align-items: baseline; margin: 12px 0 4px; font-size: 15px; }
+
+.matrix-wrap { overflow-x: auto; border: 1px solid var(--rule); border-radius: 10px; background: var(--surface); margin: 16px 0 8px; }
+table.matrix { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 13px; }
+table.matrix th, table.matrix td { border-bottom: 1px solid var(--rule); padding: 7px 6px; text-align: center; }
+table.matrix thead th { font-weight: 600; color: var(--ink-2); vertical-align: bottom; }
+table.matrix thead th a { text-decoration: none; }
+table.matrix tbody th { text-align: left; font-weight: 500; color: var(--ink); white-space: nowrap; padding-left: 12px; }
+table.matrix tbody th span { color: var(--ink-3); font-weight: 400; }
+table.matrix tr:last-child th, table.matrix tr:last-child td { border-bottom: 0; }
+.d1, .d2 { display: inline-block; width: 12px; height: 12px; border-radius: 50%; }
+.d1 { background: var(--dot); }
+.d2 { border: 2px solid var(--dot); background: transparent; }
+td.none { color: var(--ink-3); font-style: italic; text-align: left; }
+.legend { font-size: 13px; color: var(--ink-3); display: flex; gap: 18px; flex-wrap: wrap; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+article.finding {
+  background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 20px 20px 16px; margin: 18px 0;
+  box-shadow: var(--shadow); scroll-margin-top: 16px;
+}
+.f-head { display: flex; gap: 14px; align-items: flex-start; }
+.f-num {
+  flex: 0 0 auto; width: 34px; height: 34px; border-radius: 8px; background: var(--surface-2); color: var(--ink-2);
+  display: grid; place-items: center; font-weight: 700; font-size: 15px; font-variant-numeric: tabular-nums;
+}
+.f-tags { margin: 8px 0 0; }
+.inverse { border-left: 3px solid var(--strong); padding: 2px 0 2px 14px; margin: 16px 0 4px; }
+.inverse p { margin-bottom: 8px; }
+.inverse p:last-child { margin-bottom: 0; }
+ul.ev { list-style: none; padding: 0; margin: 0; }
+ul.ev li { padding: 9px 0; border-top: 1px solid var(--rule); display: grid; grid-template-columns: 64px 1fr; gap: 10px; }
+ul.ev li:first-child { border-top: 0; }
+a.obs {
+  font-weight: 700; font-variant-numeric: tabular-nums; text-decoration: none; background: var(--accent-soft);
+  border-radius: 6px; padding: 1px 0; text-align: center; height: fit-content; font-size: 14px;
+}
+a.obs:hover { text-decoration: underline; }
+.ev .lbl { font-size: 12px; color: var(--ink-3); display: block; margin-top: 2px; }
+.against { background: var(--surface-2); border-radius: 8px; padding: 12px 14px; margin-top: 14px; font-size: 15px; }
+.against p:last-child { margin-bottom: 0; }
+.against strong { color: var(--ink); }
+
+.counter-list li { margin-bottom: 8px; }
+table.plain { border-collapse: collapse; width: 100%; font-size: 15px; }
+table.plain th, table.plain td { text-align: left; vertical-align: top; padding: 9px 8px; border-bottom: 1px solid var(--rule); }
+table.plain th { font-size: 13px; color: var(--ink-3); font-weight: 600; }
+.tbl-wrap { overflow-x: auto; }
+footer { border-top: 1px solid var(--rule); margin-top: 56px; padding: 22px 0 48px; font-size: 14px; color: var(--ink-3); }
+.theme-toggle {
+  float: right; font: inherit; font-size: 13px; background: var(--surface); color: var(--ink-2); border: 1px solid var(--rule);
+  border-radius: 999px; padding: 4px 12px; cursor: pointer; margin-top: -4px;
+}
+@media (max-width: 560px) {
+  header.top { padding-top: 28px; }
+  article.finding { padding: 16px 14px 12px; }
+  ul.ev li { grid-template-columns: 52px 1fr; }
+  .f-num { width: 30px; height: 30px; }
+}
+@media print {
+  .theme-toggle { display: none; }
+  article.finding { break-inside: avoid; box-shadow: none; }
+  body { background: #fff; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="top">
+  <button class="theme-toggle" type="button" id="theme">Theme</button>
+  <p class="eyebrow">IPAVentures · exploratory analysis · red-team reading</p>
+  <h1>Where the evidence could cut against IP Australia's strategic objectives</h1>
+  <p class="lead">A deliberately adversarial reading of the evidence atlas. It asks which of the atlas's 231 observations could defensibly be read as showing the opposite of what IP Australia's strategic objectives aim for, makes that case as strongly as the evidence allows, and then sets out why each reading may still be wrong.</p>
+  <p class="meta">Prepared 12 November 2026 from the atlas as built on 10 November 2026 (Stages 1 and 2 reviewed; Stage 3 under way). Every observation code links to its card on the published atlas.</p>
+  <nav class="toc" aria-label="Contents">
+    <strong>Contents</strong>
+    <ol>
+      <li><a href="#summary">Summary</a></li>
+      <li><a href="#method">How the findings were chosen</a></li>
+      <li><a href="#matrix">Findings against each objective</a></li>
+      <li><a href="#access">Access to the system</a> (findings 1 to 6)</li>
+      <li><a href="#benefit">Benefits of ownership</a> (findings 7 to 10)</li>
+      <li><a href="#service">Efficiency and cost</a> (finding 11)</li>
+      <li><a href="#stewardship">Data-driven stewardship</a> (findings 12 and 13)</li>
+      <li><a href="#other-way">Evidence that points the other way</a></li>
+      <li><a href="#excluded">Considered and left out</a></li>
+      <li><a href="#limits">Limits of this report</a></li>
+    </ol>
+  </nav>
+</header>
+
+<main>
+
+<section id="summary">
+  <h2>Summary</h2>
+  <p><strong>Thirteen findings could defensibly be read as pointing away from IP Australia's objectives; five rest on evidence strong enough to stand on its own.</strong> None shows that IP Australia's actions caused the pattern. Every finding is an association or a description (the atlas has no causal findings), and each has a benign reading beside it below.</p>
+
+  <div class="summary-grid">
+    <div class="tile"><div class="n">13</div><div class="l">findings with a defensible inverse reading</div></div>
+    <div class="tile"><div class="n">5</div><div class="l">rated stronger: they survived Stage 3's checks or rest on several independent observations</div></div>
+    <div class="tile"><div class="n">68</div><div class="l">observation cards cited</div></div>
+    <div class="tile"><div class="n">3 of 9</div><div class="l">objectives (3.1, 3.2 and 4.1) the atlas holds no evidence on</div></div>
+  </div>
+
+  <p>The five stronger readings, in order of how directly they bear on an objective:</p>
+  <ol class="outcomes">
+    <li><a href="#f1">The system is hard to use without an attorney</a> (objectives 2.1, 2.2 and 1.2). Australian individuals' patents filed alone reached grant 4.8% of the time, against 40.6% with an attorney; a 31.2-point gap remains among similar applications in Stage 3.</li>
+    <li><a href="#f12">Expedited and early examination do not show the benefits IP Australia's commissioned study reported</a> (objectives 1.3 and 4.2). Patents whose applicants asked early for examination were more likely to end each year (1.276 and 1.383 times), and the atlas's check against IP Australia says the open data do not repeat the study's finding.</li>
+    <li><a href="#f4">The system's use is concentrated in advantaged city areas</a> (objectives 1.2 and 2.1). The tenth of postal areas with the most patents filed 72.5% of them while holding 29.2% of the people, and the link with advantage persists beyond each area's biggest filer.</li>
+    <li><a href="#f7">Australian applicants' patents reach fewer markets and are cited less, even among similar patents</a> (objectives 2.1 and 1.3). Australian organisations were 31.9 percentage points less likely to reach five or more patent offices, allowing for technology, route and year.</li>
+    <li><a href="#f8">Granted inventions filed from Australia more often end up owned only overseas</a> (objectives 2.1 and 1.3). The gap is 5.6 and 2.8 percentage points in two periods among similar patents.</li>
+  </ol>
+
+  <div class="note">
+    <p><strong>What this report is, and is not.</strong> It is a red-team reading commissioned to test the objectives against the evidence, so it argues one side on purpose. It is not a conclusion of the analysis: under the project's working agreement, adopting any finding as a conclusion is the owner's decision, and the five research questions wait for Stage 3 to finish. Each finding gives the strength the atlas assigns, what Stage 3 made of it, and the other readings that could explain it.</p>
+  </div>
+</section>
+
+<section id="method">
+  <h2>How the findings were chosen</h2>
+  <p>All 231 observation cards were read against each of the nine objectives. A finding is included where three things are true:</p>
+  <ol>
+    <li><strong>It touches something an objective commits to.</strong> For example, 2.1 promises to "make it easy to access IP rights" and that the system "supports owners to trade with confidence in domestic and international markets"; 1.2 targets "individuals and small business owners".</li>
+    <li><strong>The direction is contrary.</strong> Read at face value, the evidence shows the opposite of the objective's intended state, or a trend away from it.</li>
+    <li><strong>The reading survives the card's own limits.</strong> A pattern the atlas already explains as a records artefact (for example the 2018 fall in fast-tracked trade marks, <a class="inl" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U34" target="_blank" rel="noopener">U34</a>) is left out.</li>
+  </ol>
+  <p>Each finding is then rated by how defensible the inverse reading is:</p>
+  <div class="scale">
+    <span class="badge b-strong">Stronger</span><span>Observational, and the pattern held in Stage 3 once similar cases were compared (outcome "holds"), or several independent observations agree.</span>
+    <span class="badge b-moderate">Moderate</span><span>A direct pattern, but Stage 3 weakened it, the period is short, or a plausible records explanation remains open.</span>
+    <span class="badge b-weaker">Weaker</span><span>Descriptive only, small samples, or the atlas itself holds evidence that cuts the other way.</span>
+  </div>
+  <p>Numbers are quoted only from the cited cards. "Descriptive" and "observational" are the atlas's own strength labels: a description of what happened, or an association between two things. Neither is a cause.</p>
+</section>
+
+<section id="matrix">
+  <h2>Findings against each objective</h2>
+  <p>Filled dots mark the objective a finding bears on most directly; open dots mark a secondary bearing. Select a finding's number to jump to it.</p>
+  <div class="matrix-wrap">
+  <table class="matrix">
+    <thead>
+      <tr>
+        <th scope="col" style="text-align:left;padding-left:12px">Objective</th>
+        <th scope="col"><a href="#f1">1</a></th><th scope="col"><a href="#f2">2</a></th><th scope="col"><a href="#f3">3</a></th>
+        <th scope="col"><a href="#f4">4</a></th><th scope="col"><a href="#f5">5</a></th><th scope="col"><a href="#f6">6</a></th>
+        <th scope="col"><a href="#f7">7</a></th><th scope="col"><a href="#f8">8</a></th><th scope="col"><a href="#f9">9</a></th>
+        <th scope="col"><a href="#f10">10</a></th><th scope="col"><a href="#f11">11</a></th><th scope="col"><a href="#f12">12</a></th>
+        <th scope="col"><a href="#f13">13</a></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row">1.1 <span>Trust, quality, efficiency</span></th><td></td><td></td><td><i class="d2" title="secondary"></i></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><i class="d1" title="primary"></i></td><td></td><td><i class="d2" title="secondary"></i></td></tr>
+      <tr><th scope="row">1.2 <span>Awareness</span></th><td><i class="d2"></i></td><td></td><td></td><td><i class="d1"></i></td><td><i class="d1"></i></td><td><i class="d2"></i></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+      <tr><th scope="row">1.3 <span>Reputation, contribution</span></th><td></td><td></td><td></td><td></td><td></td><td></td><td><i class="d2"></i></td><td><i class="d2"></i></td><td><i class="d1"></i></td><td></td><td></td><td><i class="d1"></i></td><td><i class="d1"></i></td></tr>
+      <tr><th scope="row">2.1 <span>Access and benefits</span></th><td><i class="d1"></i></td><td><i class="d1"></i></td><td><i class="d1"></i></td><td><i class="d2"></i></td><td><i class="d2"></i></td><td><i class="d1"></i></td><td><i class="d1"></i></td><td><i class="d1"></i></td><td><i class="d2"></i></td><td><i class="d1"></i></td><td></td><td></td><td></td></tr>
+      <tr><th scope="row">2.2 <span>Customer experience</span></th><td><i class="d1"></i></td><td><i class="d2"></i></td><td></td><td></td><td></td><td><i class="d2"></i></td><td></td><td></td><td></td><td></td><td><i class="d2"></i></td><td><i class="d2"></i></td><td></td></tr>
+      <tr><th scope="row">3.1 <span>Capabilities</span></th><td class="none" colspan="13">No evidence in the atlas on IP Australia's own capabilities</td></tr>
+      <tr><th scope="row">3.2 <span>Workplace culture</span></th><td class="none" colspan="13">No evidence in the atlas on IP Australia's workplace</td></tr>
+      <tr><th scope="row">4.1 <span>Innovative stewardship</span></th><td class="none" colspan="13">No evidence in the atlas on IP Australia's practices</td></tr>
+      <tr><th scope="row">4.2 <span>Digital and data services</span></th><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td><i class="d2"></i></td><td><i class="d1"></i></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="legend"><span><i class="d1"></i> bears most directly</span><span><i class="d2"></i> secondary bearing</span></div>
+</section>
+
+<!-- ======================================================================= ACCESS -->
+<section id="access">
+  <h2>Access to the system</h2>
+  <p>Objectives 1.2, 2.1 and 2.2 promise a system that is easy to access and understand, especially for individuals and small business owners. Six findings suggest that, for those groups and places, it is not.</p>
+
+  <article class="finding" id="f1">
+    <div class="f-head"><div class="f-num">1</div><div>
+      <h3>Filing without an attorney rarely ends in a granted patent</h3>
+      <div class="f-tags"><span class="badge b-strong">Stronger</span> <span class="chip"><b>2.1</b> access</span><span class="chip"><b>2.2</b> customer experience</span><span class="chip"><b>1.2</b> awareness</span></div>
+    </div></div>
+    <div class="inverse">
+      <p><strong>The inverse reading.</strong> Objective 2.1 says IP Australia makes it "easy to access IP rights", and 2.2 that it helps customers "understand how to submit compelling applications". The evidence suggests the system is, in practice, close to inaccessible to the people who try to use it directly. Australian individuals are the group most likely to file alone, and almost none of their unrepresented patent applications reach grant. The gap barely narrows when similar applications are compared, and it has persisted for two decades, so it is not a passing problem. On this reading the patent system works for those who can pay an intermediary, which is the reverse of an easy, customer-centric system for individuals and small business.</p>
+    </div>
+    <h4>What the atlas shows</h4>
+    <ul class="ev">
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B6" target="_blank" rel="noopener">B6</a><div>Among Australian individuals' decided standard patent applications (2009–10 to 2018–19), 4.8% of those filed alone reached grant, against 40.6% with an attorney: a 35.8-point gap (36.8 the decade before; 34.4 among applications that were examined).<span class="lbl">Observational</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M1" target="_blank" rel="noopener">M1</a><div>Comparing applications with similar routes, years, states and co-applicants still leaves a 31.2-point gap, 87.2% of the original. Trade mark gaps keep 91.9% to 99.9% of their size.<span class="lbl">Observational · Stage 3: holds (revisits B6)</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B5" target="_blank" rel="noopener">B5</a><div>Australian individuals filed 26.11% of their standard patents and 68.28% of their trade marks without an agent or attorney (2009–10 to 2018–19); overseas organisations filed 0.28% of their standard patents alone.<span class="lbl">Observational</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U20" target="_blank" rel="noopener">U20</a><div>In 2016–17 to 2025–26, individuals filed 37.2% of their standard patents and 62.4% of their trade marks alone, while overseas applicants used an attorney for 99.0% of theirs.<span class="lbl">Descriptive</span></div></li>
+    </ul>
+    <div class="against">
+      <p><strong>Why it may not mean that.</strong> The atlas cannot separate the attorney's help from who chooses one. Filers with more resources, experience or stronger inventions may both hire an attorney and succeed; an application abandoned early may never appoint one, so the arrow can run backwards. The invention's merit is not in the data.</p>
+      <p><strong>What would settle it.</strong> M1's own next step: the same filers' applications with and without an attorney, or a change in what representation costs.</p>
+    </div>
+  </article>
+
+  <article class="finding" id="f2">
+    <div class="f-head"><div class="f-num">2</div><div>
+      <h3>Unrepresented trade marks and designs stay in force less often</h3>
+      <div class="f-tags"><span class="badge b-moderate">Moderate</span> <span class="chip"><b>2.1</b> benefits</span><span class="chip"><b>2.2</b> customer experience</span></div>
+    </div></div>
+    <div class="inverse">
+      <p><strong>The inverse reading.</strong> Trade marks are the right Australians file most, and the one individuals most often file alone. If a self-filed mark is far less likely to survive its first renewal, small owners are getting less durable protection from the same system, which runs against 2.1's promise of benefits from ownership. Australian individuals' marks last least of any group.</p>
+    </div>
+    <h4>What the atlas shows</h4>
+    <ul class="ev">
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B10" target="_blank" rel="noopener">B10</a><div>Of registered trade marks filed in 2009–10 to 2014–15, 56.2% of overseas organisations' marks were in force after ten years, against 26.0% of Australian individuals'. Designs at five years: 69.9% against 28.2%.<span class="lbl">Observational</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M2" target="_blank" rel="noopener">M2</a><div>Australians' marks with no agent before renewal: 31.7% in force after ten years, against 50.8% with an attorney. Allowing for similar applicants and marks narrows the 19.1-point gap to 14.4 points (75.5% left); designs keep 97.4% and 97.6% of their gap.<span class="lbl">Observational · Stage 3: holds (revisits B10)</span></div></li>
+    </ul>
+    <div class="against">
+      <p><strong>Why it may not mean that.</strong> Owners who already plan to keep a mark may be the ones who appoint an agent, so the agent may follow the plan rather than cause the survival. Whether the business behind the mark survived is not in the data, and a mark in force is not a measure of its value.</p>
+    </div>
+  </article>
+
+  <article class="finding" id="f3">
+    <div class="f-head"><div class="f-num">3</div><div>
+      <h3>The route to a patent runs through a concentrated attorney market</h3>
+      <div class="f-tags"><span class="badge b-weaker">Weaker</span> <span class="chip"><b>2.1</b> access</span><span class="chip"><b>1.1</b> cost</span></div>
+    </div></div>
+    <div class="inverse">
+      <p><strong>The inverse reading.</strong> Read together with finding 1, an attorney is close to a precondition for a patent, and objective 2.1 ties easy access to "the registration of qualified and ethical IP attorneys". Yet attorney-filed patent work is concentrated in a handful of practices. A concentrated gateway sits uneasily with 1.1's aim of reducing customers' costs, because the largest cost of a patent may be the intermediary rather than the official fee.</p>
+    </div>
+    <h4>What the atlas shows</h4>
+    <ul class="ev">
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U21" target="_blank" rel="noopener">U21</a><div>Four attorney practices handled half of attorney-filed standard patent applications in 2016–17 to 2025–26, and the five busiest 63.96%. The five busiest trade mark practices handled 17.51%. Corporate groups are not recorded, so concentration by group is higher than shown.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U20" target="_blank" rel="noopener">U20</a><div>Overseas applicants used an attorney for 99.0% of their standard patents.<span class="lbl">Descriptive</span></div></li>
+    </ul>
+    <div class="against">
+      <p><strong>Why it may not mean that.</strong> Concentration of filings is not evidence of market power or of high prices; the atlas has no data on attorney fees. Much of the patent work is overseas applicants' filings routed through large firms, which says little about the choices open to an Australian individual.</p>
+    </div>
+  </article>
+
+  <article class="finding" id="f4">
+    <div class="f-head"><div class="f-num">4</div><div>
+      <h3>Use of the system is concentrated in advantaged city areas, and not only because of a few big filers</h3>
+      <div class="f-tags"><span class="badge b-strong">Stronger</span> <span class="chip"><b>1.2</b> awareness</span><span class="chip"><b>2.1</b> access</span></div>
+    </div></div>
+    <div class="inverse">
+      <p><strong>The inverse reading.</strong> Objective 1.2 aims to make the IP system easy for individuals and small business owners to access and understand, wherever they are. The evidence shows use rising steeply with local advantage and falling with remoteness, and the gap is not explained away by a single large company per postcode: removing each area's biggest filer makes the link with advantage stronger. Even counting only people who run a business, individuals in the most advantaged areas file about three times as often. On this reading, awareness and access are tracking privilege, and the system's benefits accrue disproportionately to advantaged metropolitan Australia.</p>
+    </div>
+    <h4>What the atlas shows</h4>
+    <ul class="ev">
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U52" target="_blank" rel="noopener">U52</a><div>The 264 postal areas with the most standard patent applications (2016–17 to 2025–26) filed 72.5% of mapped filings while housing 29.2% of residents; 1,166 areas filed no standard patent in ten years.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B29" target="_blank" rel="noopener">B29</a><div>Each step up in advantage goes with 1.717 times the patent rate per resident. Comparing areas of similar advantage, inner regional areas filed at about 38% of the major-city rate.<span class="lbl">Observational</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M15" target="_blank" rel="noopener">M15</a><div>Without each area's busiest filer, the same step up in advantage goes with 1.93 times the patent rate, up from 1.72.<span class="lbl">Observational · Stage 3: holds (revisits B30)</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M14" target="_blank" rel="noopener">M14</a><div>Allowing for remoteness, business density, education and other features shrinks the advantage link from 1.932 and 2.135 to 1.256 and 1.341 times per step, but does not remove it; inner regional areas file at 0.518 of the major-city rate.<span class="lbl">Observational · Stage 3: weakened (revisits B29)</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B58" target="_blank" rel="noopener">B58</a><div>Individuals in the most advantaged tenth of areas filed a typical 11.0 applications a year per 1,000 people with business income, against 3.84 in the least advantaged tenth.<span class="lbl">Observational</span></div></li>
+    </ul>
+    <div class="against">
+      <p><strong>Why it may not mean that.</strong> Advantage is partly a proxy for where inventive industries, graduates and head offices are; M14 shows much of the gap goes with business density and education, not advantage itself. A registered address can be an accountant's or a head office. These are comparisons between places, not people, and they say nothing about whether a regional business that needs IP cannot get it.</p>
+    </div>
+  </article>
+
+  <article class="finding" id="f5">
+    <div class="f-head"><div class="f-num">5</div><div>
+      <h3>Many firms doing R&amp;D sit outside the IP system</h3>
+      <div class="f-tags"><span class="badge b-moderate">Moderate</span> <span class="chip"><b>1.2</b> awareness</span><span class="chip"><b>2.1</b> access</span></div>
+    </div></div>
+    <div class="inverse">
+      <p><strong>The inverse reading.</strong> Firms claiming the R&amp;D Tax Incentive are the population most likely to generate protectable IP, and the easiest for government to reach, since they already deal with the tax office and the industry department. If about half have no linked filing of any kind, and even the highest spenders often have none, awareness efforts are missing their most obvious audience. This cuts against 1.2, and against 1.3's commitment to "collaborate across government".</p>
+    </div>
+    <h4>What the atlas shows</h4>
+    <ul class="ev">
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U54" target="_blank" rel="noopener">U54</a><div>Of 17,627 active R&amp;D Tax Incentive claimants matched to a postal area, 48.3% had no IP filing linked to their business number. Claimants were 5.6 per 1,000 businesses in major cities against 0.6 in very remote areas.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B23" target="_blank" rel="noopener">B23</a><div>9.5% of the lowest-spending tenth of claimants had a linked standard patent, against 24.1% of the highest; even among the highest spenders, 43.1% had no linked filing of any IP type. The link between spend and patent applications is small (0.120).<span class="lbl">Observational</span></div></li>
+    </ul>
+    <div class="against">
+      <p><strong>Why it may not mean that.</strong> Firms' IP counts are minimums (<a class="inl" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U41" target="_blank" rel="noopener">U41</a>): a missing business number hides a filing. Much R&amp;D is software, process or service work that firms rightly protect by secrecy rather than registration, and industry, the main missing factor, is not in the business register. Not filing may be a sound choice, not a lack of awareness.</p>
+    </div>
+  </article>
+
+  <article class="finding" id="f6">
+    <div class="f-head"><div class="f-num">6</div><div>
+      <h3>Provisional applications doubled, but far fewer were followed by a complete application</h3>
+      <div class="f-tags"><span class="badge b-moderate">Moderate</span> <span class="chip"><b>2.1</b> benefits</span><span class="chip"><b>2.2</b> customer experience</span><span class="chip"><b>1.2</b> awareness</span></div>
+    </div></div>
+    <div class="inverse">
+      <p><strong>The inverse reading.</strong> A provisional application gives twelve months' priority and nothing more unless it is followed by a complete application. A doubling of provisionals, driven by individuals, alongside a halving of follow-up, suggests more people are entering the system without understanding what the first step does or what comes next. That points away from 2.2 (helping customers understand how to submit compelling applications) and 1.2 (accessible education). The fall shows at every filing volume, so it is not just a few heavy filers.</p>
+    </div>
+    <h4>What the atlas shows</h4>
+    <ul class="ev">
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U8" target="_blank" rel="noopener">U8</a><div>Provisional applications reached 10,069 in 2025–26 after four years between 4,143 and 5,047; 5,510 had an individual as first applicant.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B38" target="_blank" rel="noopener">B38</a><div>6.66% of Australian individuals' 2024–25 provisionals were followed by a complete Australian application within twelve months, against 12.24% to 14.15% in the three years before.<span class="lbl">Observational</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M35" target="_blank" rel="noopener">M35</a><div>Allowing for filing month, state and filing history, the fall is 6.42 points; it shows at every filing volume, and among individuals filing ten or more provisionals that year follow-up ran from 22.38% to 5.46%.<span class="lbl">Observational · Stage 3: holds (revisits B38; refines U8)</span></div></li>
+    </ul>
+    <div class="against">
+      <p><strong>Why it may not mean that.</strong> It is one year, and late recording of the link would produce exactly this fall (open question OQ18 to IP Australia). Follow-up through the international route is not in the data. Among individuals who filed in both periods, the change was not detected. A cheap first filing that is never pursued may also be a rational, low-cost way to test an idea.</p>
+    </div>
+  </article>
+</section>
+
+<!-- ======================================================================= BENEFIT -->
+<section id="benefit">
+  <h2>Benefits of ownership</h2>
+  <p>Objective 2.1 promises "benefits from IP rights ownership" and a system that "supports owners to trade with confidence in domestic and international markets"; 1.3 speaks of IP Australia's contribution to the wider IP ecosystem. Four findings suggest the benefits to Australian owners are thinner, or flow elsewhere.</p>
+
+  <article class="finding" id="f7">
+    <div class="f-head"><div class="f-num">7</div><div>
+      <h3>Australian applicants' patents reach fewer markets and are cited less, even among similar patents</h3>
+      <div class="f-tags"><span class="badge b-strong">Stronger</span> <span class="chip"><b>2.1</b> international markets</span><span class="chip"><b>1.3</b> international influence</span></div>
+    </div></div>
+    <div class="inverse">
+      <p><strong>The inverse reading.</strong> The objectives promise that the system helps Australians "trade with confidence in … international markets" and that IP Australia's international work creates "consistency and confidence for Australians entering international markets". The evidence is that Australian owners' patents mostly stay at home: the typical one reaches two offices against six for overseas applicants, and almost half are filed only in Australia. The gap persists among similar patents, and at similar reach Australian inventions are still cited less. On this reading the system protects Australian inventions in a small market rather than carrying them into large ones.</p>
+    </div>
+    <h4>What the atlas shows</h4>
+    <ul class="ev">
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U93" target="_blank" rel="noopener">U93</a><div>The typical overseas applicant's invention reached six patent offices; the typical Australian applicant's reached two, and 45.12% of Australian applicants' families were filed only here (2009–10 to 2018–19).<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B11" target="_blank" rel="noopener">B11</a><div>40.68% of Australian organisations' inventions were filed only here, against 8.23% of overseas organisations'; 32.82% against 67.13% were granted in the United States.<span class="lbl">Observational</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M4" target="_blank" rel="noopener">M4</a><div>Allowing for technology, route and filing year, Australian organisations were 31.9 percentage points less likely to reach five or more offices (on its own 47.5). At similar reach they received about 27% to 30% fewer citations (0.729 times as many).<span class="lbl">Observational · Stage 3: five or more offices holds; citations weakened (revisits B11, B12)</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U94" target="_blank" rel="noopener">U94</a><div>The typical overseas applicant's family was cited by six later families within five years, an Australian's by one; 43.64% of Australians' standard patents were not cited at all.<span class="lbl">Descriptive</span></div></li>
+    </ul>
+    <div class="against">
+      <p><strong>Why it may not mean that.</strong> Overseas applicants filing here have, by definition, already chosen to go abroad, so they are a selected group. Reach is chosen and paid for by owners, and a small firm may sensibly value a patent it can afford only at home. Citations depend on family size, field and how other offices cite. Older records understate Australians' overseas filing (<a class="inl" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B55" target="_blank" rel="noopener">B55</a>), so the earlier decade is not used.</p>
+    </div>
+  </article>
+
+  <article class="finding" id="f8">
+    <div class="f-head"><div class="f-num">8</div><div>
+      <h3>Granted inventions filed from Australia more often end up owned only overseas</h3>
+      <div class="f-tags"><span class="badge b-strong">Stronger</span> <span class="chip"><b>2.1</b> benefits</span><span class="chip"><b>1.3</b> contribution</span></div>
+    </div></div>
+    <div class="inverse">
+      <p><strong>The inverse reading.</strong> If the patents that succeed (granted, filed widely) are the ones most likely to leave Australian hands, the system may be working as a conveyor that validates Australian inventions and then hands their long-term benefit offshore. Far more Australian-filed rights end up held only overseas than the reverse, and the pattern holds among similar patents and for patents filed before the firm was even registered. That would run against 2.1's benefits of ownership and 1.3's contribution to the Australian ecosystem.</p>
+    </div>
+    <h4>What the atlas shows</h4>
+    <ul class="ev">
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U18" target="_blank" rel="noopener">U18</a><div>2,036 standard patents filed from Australia later had only overseas holders; 804 filed from overseas later had an Australian holder.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B19" target="_blank" rel="noopener">B19</a><div>Of patents filed from Australia in 2002–03 to 2010–11, 9.96% of granted ones later had only overseas holders, against 1.15% of those never granted; 14.52% of those filed in five or more offices, against 3.75% filed in one.<span class="lbl">Observational</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M6" target="_blank" rel="noopener">M6</a><div>Among similar technologies, routes, years, applicants and reach, granted patents are 5.6 and 2.8 percentage points more likely to be held only overseas in the two periods.<span class="lbl">Observational · Stage 3: granted against never granted holds (revisits B19, mixed overall)</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M30" target="_blank" rel="noopener">M30</a><div>Patents filed before the linked business's first registration are 5.40 and 6.21 points more likely to end up held only overseas than those of firms registered ten years or more (on its own 7.77% against 2.33%).<span class="lbl">Observational · Stage 3: holds (revisits B26)</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B16" target="_blank" rel="noopener">B16</a><div>14.51% of standard patents with an inventor in Australia were filed by overseas applicants (2009–10 to 2018–19), down from 19.28% the decade before.<span class="lbl">Descriptive</span></div></li>
+    </ul>
+    <div class="against">
+      <p><strong>Why it may not mean that.</strong> These compare two points in time, not a history of sales, and say nothing about the price paid: a sale to an overseas buyer at full value is a benefit to the Australian owner, and is exactly what a working market for IP should allow. Founders moving abroad would produce the same pattern. B16's share of inventions filed from overseas is falling, which points the other way.</p>
+    </div>
+  </article>
+
+  <article class="finding" id="f9">
+    <div class="f-head"><div class="f-num">9</div><div>
+      <h3>Australia's IP outputs lag its innovation inputs, and domestic patenting has stalled</h3>
+      <div class="f-tags"><span class="badge b-weaker">Weaker</span> <span class="chip"><b>1.3</b> contribution</span><span class="chip"><b>2.1</b> benefits</span></div>
+    </div></div>
+    <div class="inverse">
+      <p><strong>The inverse reading.</strong> IP Australia aims to be a steward of a world-leading system that contributes to the IP ecosystem. Internationally, Australia ranks much higher on innovation inputs than outputs, funds business R&amp;D like a middling OECD member but patents like a low one, and employs a small share of its researchers in business. At home, Australians file fewer than one in ten standard patents, growth has slowed almost to nothing, and Chinese applicants now file as many patents in Australia as Australians do. On this reading the system is not converting national research effort into protected, owned invention.</p>
+    </div>
+    <h4>What the atlas shows</h4>
+    <ul class="ev">
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U69" target="_blank" rel="noopener">U69</a><div>Australia ranked 20th of 139 in the 2026 Global Innovation Index: 13th on inputs, 24th on outputs.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B61" target="_blank" rel="noopener">B61</a><div>Australia ranked 17th of 38 OECD members on business-financed R&amp;D, 31st of 37 on researchers employed in business and 28th on patents per unit of GDP.<span class="lbl">Observational</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U120" target="_blank" rel="noopener">U120</a><div>33.91% of Australian researchers worked in business, against 52.99% in the middle OECD country.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U7" target="_blank" rel="noopener">U7</a><div>Australians filed 9.3% of standard patent applications of known origin in 2025–26.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U25" target="_blank" rel="noopener">U25</a><div>Growth in standard patent applications slowed from 3.9% a year in the 1990s to 0.4% a year in 2019 to 2025.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U70" target="_blank" rel="noopener">U70</a><div>China's share of patent applications lodged in Australia reached 8.3% in 2024, equal to Australia's own.<span class="lbl">Descriptive</span></div></li>
+    </ul>
+    <div class="against">
+      <p><strong>Why it is rated weaker.</strong> The atlas holds direct evidence the other way. Among similar OECD countries, Australia's domestic patenting is near the level its business R&amp;D and income predict: 111.9% of the prediction (<a class="inl" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M18" target="_blank" rel="noopener">M18</a>, likely range 18.24% to 686.4%) and 104.9% in Stage 2 (<a class="inl" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B34" target="_blank" rel="noopener">B34</a>). The shortfall is in business R&amp;D and researchers, which IP Australia does not control, rather than in how the IP system converts them. Composite ranks also move with method changes. Australians filed 76.1% of their patent applications abroad in 2024 (<a class="inl" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U70" target="_blank" rel="noopener">U70</a>), so domestic counts understate Australian invention.</p>
+    </div>
+  </article>
+
+  <article class="finding" id="f10">
+    <div class="f-head"><div class="f-num">10</div><div>
+      <h3>Research institutions' patents do not show up as more licence income</h3>
+      <div class="f-tags"><span class="badge b-weaker">Weaker</span> <span class="chip"><b>2.1</b> benefits</span></div>
+    </div></div>
+    <div class="inverse">
+      <p><strong>The inverse reading.</strong> If ownership brings benefits, institutions that patent more should earn more from licensing at the same research budget. They do not, detectably. Start-ups were lower after 2007 than before, and US patents that build on Australian research rarely have an Australian party. On this reading, public research is patented, but the value of the knowledge is captured by others.</p>
+    </div>
+    <h4>What the atlas shows</h4>
+    <ul class="ev">
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M24" target="_blank" rel="noopener">M24</a><div>Among institutions with comparable research budgets, licence income per doubling of patents (1.187 and 1.170) was not detected in either period.<span class="lbl">Observational · Stage 3: licence income not detected once held (revisits B62)</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U122" target="_blank" rel="noopener">U122</a><div>Invention disclosures rose from 548 in 2000 to 1,705 in 2011, but annual start-up counts were lower after 2007; CSIRO earned 42.3% of recorded licence income.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B46" target="_blank" rel="noopener">B46</a><div>For a typical institution, 3.252% of US patent citations to its 2017 to 2023 works came from a patent with an Australian applicant or inventor.<span class="lbl">Observational</span></div></li>
+    </ul>
+    <div class="against">
+      <p><strong>Why it is rated weaker.</strong> Only 61 to 66 institutions, a survey that ends in 2015, and an institutions list not yet reviewed (OQ11). Licence income is famously lumpy, and CSIRO dominates it. Most US patents have no Australian party at all (<a class="inl" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U85" target="_blank" rel="noopener">U85</a>), so the 3.252% in <a class="inl" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B46" target="_blank" rel="noopener">B46</a> has no baseline. Stage 2 found the opposite pattern when every measure was divided by budget (<a class="inl" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B62" target="_blank" rel="noopener">B62</a>). Research commercialisation is also mostly outside IP Australia's remit.</p>
+    </div>
+  </article>
+</section>
+
+<!-- ======================================================================= SERVICE -->
+<section id="service">
+  <h2>Efficiency and cost</h2>
+  <p>Objective 1.1 commits to an efficient system and to continually reducing "costs and regulatory burden for our customers".</p>
+
+  <article class="finding" id="f11">
+    <div class="f-head"><div class="f-num">11</div><div>
+      <h3>Patents still take years, and the renewal bill has moved towards the end of a patent's life</h3>
+      <div class="f-tags"><span class="badge b-weaker">Weaker</span> <span class="chip"><b>1.1</b> efficiency, cost</span><span class="chip"><b>2.2</b> customer experience</span></div>
+    </div></div>
+    <div class="inverse">
+      <p><strong>The inverse reading.</strong> A typical successful patent takes over two and a half years to grant, longer now than for 2000 filings, and examination itself took up to 755 days. Fees have changed almost always upwards, and the renewal schedule now loads most of the cost into a patent's final years, so the full-term cost of keeping a patent has not fallen in real terms. For a patent owner, the burden has not clearly reduced.</p>
+    </div>
+    <h4>What the atlas shows</h4>
+    <ul class="ev">
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U11" target="_blank" rel="noopener">U11</a><div>Half of successful standard patents filed in 2009–10 to 2018–19 took at least 980 days to grant; the middle half took 681 to 1,318 days.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U12" target="_blank" rel="noopener">U12</a><div>The typical wait to grant was 2.27 years for 1999–2000 filings, peaked at 3.96 years for 2004–05 and was 2.91 years for 2020–21.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U33" target="_blank" rel="noopener">U33</a><div>From request to acceptance took 755 days for 2005–06 filings, and 422 to 516 days for filings from 2013–14.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U110" target="_blank" rel="noopener">U110</a><div>209 individual fee amounts rose and 26 fell.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U111" target="_blank" rel="noopener">U111</a><div>The 19th-anniversary renewal fee went from 4.69 to 8.94 times the 5th's; fees from the 15th anniversary rose from 48.7% to 62.1% of the full-term bill.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U109" target="_blank" rel="noopener">U109</a><div>In June 2026 dollars, full-term patent renewals cost $16,550 against $16,140 in 1995.<span class="lbl">Descriptive</span></div></li>
+    </ul>
+    <div class="against">
+      <p><strong>Why it is rated weaker.</strong> Much of the evidence points the other way. Applicants choose when to request examination, so part of the wait is theirs; examination times have shortened since the peak; trade marks now take seven to eight months. After inflation, a trade mark costs about a quarter of what it did in 1990 ($944 to $250) and a patent's filing, examination and grant fell from $2,261 to $1,250 (<a class="inl" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U109" target="_blank" rel="noopener">U109</a>). Back-loading renewals is a deliberate design that lets owners drop low-value patents cheaply and clears the register; none of nine renewal fee changes since 2000 was followed by a detected rise in rights let go (<a class="inl" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M28" target="_blank" rel="noopener">M28</a>).</p>
+    </div>
+  </article>
+</section>
+
+<!-- ======================================================================= STEWARDSHIP -->
+<section id="stewardship">
+  <h2>Data-driven stewardship</h2>
+  <p>Objectives 1.3 and 4.2 describe an organisation "known for … our focus on data-driven decision making" that uses "data insights to drive continuous improvement". These two findings test that claim on IP Australia's own evidence and data.</p>
+
+  <article class="finding" id="f12">
+    <div class="f-head"><div class="f-num">12</div><div>
+      <h3>Expedited and early examination do not show the benefits IP Australia's commissioned study reported</h3>
+      <div class="f-tags"><span class="badge b-strong">Stronger</span> <span class="chip"><b>1.3</b> data-driven decisions</span><span class="chip"><b>4.2</b> data insights</span><span class="chip"><b>2.2</b> services</span></div>
+    </div></div>
+    <div class="inverse">
+      <p><strong>The inverse reading.</strong> Research commissioned by IP Australia associates sped-up examination with patents that are renewed, used and built on more. Requests for faster examination have risen more than fivefold. Yet in IP Australia's own open data, once similar patents are compared, fast-tracked patents are not kept longer, the link reverses in one period, Australian individuals' fast-tracked patents end sooner in both, and on the study's own measure (asking before any direction) patents are more likely to end. If a promoted service and its evidence base do not replicate in open data, that sits against the claim of data-driven decision making.</p>
+    </div>
+    <h4>What the atlas shows</h4>
+    <ul class="ev">
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U34" target="_blank" rel="noopener">U34</a><div>Requests for faster examination rose from 1.87% of examined standard patents filed in 2004–05 to 10.31% for 2025–26.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B13" target="_blank" rel="noopener">B13</a><div>Pooled, 72.6% of fast-tracked patents were in force at ten years against 68.9% (2002–03 to 2008–09); 67.6% against 66.6% later, with overlapping ranges.<span class="lbl">Observational</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M5" target="_blank" rel="noopener">M5</a><div>Allowing for filer, technology, route and age, the apparent advantage disappears (1.021, no link) in 2009–10 to 2015–16 and reverses (1.124) in 2002–03 to 2008–09; Australian individuals' fast-tracked patents are 1.264 and 1.249 times as likely to end each year.<span class="lbl">Observational · Stage 3: reversed in one period; holds for individuals (revisits B13)</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M40" target="_blank" rel="noopener">M40</a><div>The study's measure is reproduced (41.39% of granted patents asked before any direction, against the study's 41.9%), but those patents are 1.276 and 1.383 times as likely to end each year among comparable patents.<span class="lbl">Observational · Stage 3: holds in both periods (refines B13)</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/audit" target="_blank" rel="noopener">Audit</a><div>The atlas's check against IP Australia's publications (claim C3): "The open data do not repeat the study's finding."<span class="lbl">Check against IP Australia</span></div></li>
+    </ul>
+    <div class="against">
+      <p><strong>Why it may not mean that.</strong> The study's full model and outcome definition were not published, so the atlas tests its measure, not its result, and the study also measured use and follow-on invention, which the atlas cannot. "Expedited" in the register mixes applicants' urgent requests with work-sharing cases (OQ25). Ending sooner is not necessarily worse: an owner who gets a quick answer may drop a patent sooner because it has served its purpose.</p>
+    </div>
+  </article>
+
+  <article class="finding" id="f13">
+    <div class="f-head"><div class="f-num">13</div><div>
+      <h3>IP Australia's published data have recent gaps, and one of its published figures cannot be reproduced</h3>
+      <div class="f-tags"><span class="badge b-moderate">Moderate</span> <span class="chip"><b>4.2</b> data services</span><span class="chip"><b>1.3</b> data-driven stewardship</span><span class="chip"><b>1.1</b> trust</span></div>
+    </div></div>
+    <div class="inverse">
+      <p><strong>The inverse reading.</strong> Objective 4.2 promises contemporary data-driven services, and 1.3 a reputation built on data. Several fields in IP Australia's research dataset, IP RAPID, have got worse, not better, in the most recent years: applicants' states, inventors on provisionals, and business numbers. Long-standing errors remain, and one headline figure in an IP Australia report cannot be reproduced from any way of counting. Anyone outside IP Australia relying on its open data for evidence would be misled without repairs, which runs against trust (1.1) as well as data stewardship.</p>
+    </div>
+    <h4>What the atlas shows</h4>
+    <ul class="ev">
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U16" target="_blank" rel="noopener">U16</a><div>The state is missing for 34.96% of Australian applicants' standard patents from 2023–24, against about 9% before 2023.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U106" target="_blank" rel="noopener">U106</a><div>At least one inventor was named on 98.53% to 100% of provisionals in 2002–03 to 2022–23, but 76.38% in 2024–25 and 84.69% in 2025–26, for reasons not yet known.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U100" target="_blank" rel="noopener">U100</a><div>In IP RAPID, Australian organisations' trade marks linked to a business number fell from 84.1% to 59.9% (2023–24 to 2025–26); IP Australia's own register restores it to 92.3% and 90.9%.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U88" target="_blank" rel="noopener">U88</a><div>93.88% of international patent application numbers are labelled Australian, although the numbers often identify another office.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U9" target="_blank" rel="noopener">U9</a><div>408,957 older patent records have an unknown status and no registration or end date.<span class="lbl">Descriptive</span></div></li>
+      <li><a class="obs" href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/audit" target="_blank" rel="noopener">Audit</a><div>IP Australia's IP Report 2023 says 55.6% of resident applications in 2022 were filed by individuals; the atlas's data give 20.65% of Australians' standard patent applications with an individual as first filer, and no other way of counting comes near (D3, still open with IP Australia as OQ12).<span class="lbl">Check against IP Australia</span></div></li>
+    </ul>
+    <div class="against">
+      <p><strong>Why it may not mean that.</strong> IP Australia's own register fills most of the gaps (U100), so the problem is largely in how the research extract is produced, not in the register. Stage 1's counts reproduce IP Australia's yearly figures closely (standard patent applications within 0.34% in all 12 years from 2014 to 2025), and the atlas's check found no observation contradicted by IP Australia. The recent gaps may be lags that fill in as records mature.</p>
+    </div>
+  </article>
+</section>
+
+<!-- ======================================================================= OTHER WAY -->
+<section id="other-way">
+  <h2>Evidence that points the other way</h2>
+  <p>A defensible inverse reading has to face the evidence for the objectives. The atlas holds a good deal of it, and a fair reader would weigh these beside the thirteen findings.</p>
+  <ul class="counter-list">
+    <li><span class="badge b-counter">1.1</span> <strong>Trade marks are faster and cheaper.</strong> The typical successful trade mark has taken 0.60 to 0.69 years since 2004–05, against 2.35 for 1989–90 filings (<a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U12" target="_blank" rel="noopener">U12</a>), and in real terms costs $250 against $944 in 1990 (<a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U109" target="_blank" rel="noopener">U109</a>).</li>
+    <li><span class="badge b-counter">1.1</span> <strong>More trade mark applications succeed.</strong> Registration rose from 52.1% of 1989–90 filings to 80.7% for 2018–19; the patent grant share recovered from 54.4% to 69.0% (<a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U10" target="_blank" rel="noopener">U10</a>).</li>
+    <li><span class="badge b-counter">1.1</span> <strong>Fees do not appear to drive people out.</strong> None of nine renewal fee changes since 2000 was followed by a detected change in rights let go (<a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M28" target="_blank" rel="noopener">M28</a>).</li>
+    <li><span class="badge b-counter">2.1</span> <strong>IP goes with commercial success in government contracts.</strong> Suppliers with a linked IP filing held about 2.4 times as many contracts as similar suppliers without (2.382 and 2.603; <a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M9" target="_blank" rel="noopener">M9</a>), though which came first is not known.</li>
+    <li><span class="badge b-counter">1.3</span> <strong>Australia's patenting is about where its R&amp;D predicts.</strong> 111.9% of the level expected among similar OECD countries (<a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M18" target="_blank" rel="noopener">M18</a>).</li>
+    <li><span class="badge b-counter">1.3</span> <strong>IP Australia's published counts hold up.</strong> The atlas's check against IP Australia reproduces its standard patent application counts within 0.34% in every year from 2014 to 2025, and finds no observation contradicted (<a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/audit" target="_blank" rel="noopener">check against IP Australia</a>).</li>
+    <li><span class="badge b-counter">2.1</span> <strong>More firms are entering the trade mark system.</strong> With the register's business numbers, firms with a first known trade mark rose from 14,728 to 19,730 across 2023–24 to 2025–26 (<a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U45" target="_blank" rel="noopener">U45</a>).</li>
+  </ul>
+</section>
+
+<!-- ======================================================================= EXCLUDED -->
+<section id="excluded">
+  <h2>Considered and left out</h2>
+  <p>These were weighed and not included, because the inverse reading does not survive the card's own limits or does not touch an objective.</p>
+  <div class="tbl-wrap">
+  <table class="plain">
+    <thead><tr><th>Observation</th><th>Possible inverse reading</th><th>Why it was left out</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U98" target="_blank" rel="noopener">U98</a>, <a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B17" target="_blank" rel="noopener">B17</a></td><td>About one inventor in seven is estimated to be a woman, so the system is not reaching women.</td><td>The objectives' commitment to inclusion (3.2) is about IP Australia's workplace, not its customers; B17 shows the technology field matters more than the applicant; IP Australia already reports the gap itself (claim C11).</td></tr>
+      <tr><td><a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M26" target="_blank" rel="noopener">M26</a></td><td>Divisional applications doubled within the same organisations, which could signal strategic use that erodes certainty (1.1).</td><td>The reasons are not in the data, and nothing in the atlas links divisionals to quality or to third parties' costs.</td></tr>
+      <tr><td><a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U36" target="_blank" rel="noopener">U36</a></td><td>Fewer trade marks stay in force for ten years than in the 1980s, so marks deliver less lasting value.</td><td>A mark in force measures what owners pay to keep, not use or value; IP Australia's research finds register clutter not an immediate concern (claim C6).</td></tr>
+      <tr><td><a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/B47" target="_blank" rel="noopener">B47</a>, <a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M34" target="_blank" rel="noopener">M34</a></td><td>Fee changes rarely move filing, so fee policy cannot be used as a lever.</td><td>That is not contrary to any objective; it is consistent with fees not being a barrier.</td></tr>
+      <tr><td><a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U119" target="_blank" rel="noopener">U119</a></td><td>The share of businesses that innovate fell from 51.9% to 45.6% and has not recovered.</td><td>A national survey measure with no link to the IP system; Stage 3 found no link between innovation and patents per business across industries (<a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/M21" target="_blank" rel="noopener">M21</a>).</td></tr>
+      <tr><td><a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/#/U7" target="_blank" rel="noopener">U7</a></td><td>The innovation patent, meant for small Australian business, ended up mostly used by overseas applicants.</td><td>IP Australia and the Productivity Commission reached that conclusion themselves and the right was closed (claim C4), so it shows the objectives working, not failing.</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="limits">
+  <h2>Limits of this report</h2>
+  <ul>
+    <li><strong>One side, on purpose.</strong> The report was asked to make the case against the objectives. Its ratings say how defensible that case is, not how likely it is to be right.</li>
+    <li><strong>No causes.</strong> The atlas labels every finding descriptive or observational. None shows that IP Australia's actions produced a pattern, and several patterns (R&amp;D, research commercialisation, international ranks) depend on factors outside its control.</li>
+    <li><strong>Three objectives are untested.</strong> The atlas holds no evidence on IP Australia's capabilities (3.1), workplace culture (3.2) or innovation practice (4.1). Silence there is not evidence either way.</li>
+    <li><strong>The analysis is still exploratory.</strong> Stage 3 is under way; the owner has not adopted any finding as a conclusion, and the five research questions are not yet being answered. Numbers and verdicts are as at the atlas build of 10 November 2026; a later correction would change a card before it changes this report.</li>
+    <li><strong>Several open questions with IP Australia bear on these findings:</strong> OQ7 (missing business numbers), OQ12 (the 55.6% figure), OQ18 (late recording of provisional follow-up) and OQ25 (kinds of expedited request).</li>
+  </ul>
+</section>
+
+</main>
+
+<footer>
+  <p>Source: the Aus-GII-Breakdown evidence atlas (<a href="https://thomas-amann-ipaustralia.github.io/Aus-GII-Breakdown/evidence/" target="_blank" rel="noopener">published atlas</a>), built 10 November 2026 from IP RAPID, IP Australia's register, the OECD, WIPO, the Global Innovation Index, the ATO, the ABS and other sources named on each card. IP Australia's strategic objectives as supplied by the owner. Prepared by a Claude Code session for IPAVentures; exploratory and not an official IP Australia view.</p>
+</footer>
+
+</div>
+<script>
+(function () {
+  var btn = document.getElementById("theme");
+  var root = document.documentElement;
+  function current() {
+    var t = root.getAttribute("data-theme");
+    if (t) return t;
+    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  }
+  function label() { btn.textContent = current() === "dark" ? "Light theme" : "Dark theme"; }
+  try { var saved = localStorage.getItem("cr-theme"); if (saved) root.setAttribute("data-theme", saved); } catch (e) {}
+  label();
+  btn.addEventListener("click", function () {
+    var next = current() === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("cr-theme", next); } catch (e) {}
+    label();
+  });
+})();
+</script>
+</body>
+</html>
