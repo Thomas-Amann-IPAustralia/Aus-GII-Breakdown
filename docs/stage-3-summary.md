@@ -37,7 +37,8 @@ no earlier figure changed.
   filing; the gradient is not one filer's; one group of 288 advantaged city areas holds 56% of placed patents (M13 to
   M16).
 - **Countries and divisions:** residents' patents follow business R&D at the same income and size across OECD members,
-  and patents allocated per business follow business R&D at the same value added across divisions; income adds nothing
+  and patents and trade marks allocated per business follow business R&D at the same value added across divisions
+  (Australians' trade marks alone are not detected; corrected 14 November 2026, ADR 0058); income adds nothing
   detectable for patents at home (M18, M22). Australia's nearest members on non-IP indicators are Norway, New Zealand
   and Sweden (M17).
 - **Institutions:** universities' research measures are largely one measure of research intensity (M23); at the same
@@ -148,7 +149,7 @@ series). For the owner's review.
 | M19 | timeline | Quarterly changes with block resampling |
 | M20 | timeline | Trend, season and remainders |
 | M21 | industries | Innovation against IP with the crosswalk with services (revises B42, B60) |
-| M22 | industries | IP per business against business R&D, value added held (revises B40) |
+| M22 | industries | IP per business against business R&D, value added held (B40 holds; B41's pair is not detected) |
 | M23 | institutions | Universities' patenting, research measures held together (revises B45) |
 | M24 | institutions | Disclosures, patents and licences with research spend as the exposure (revises B62) |
 | M25 | timeline | B37's behavioural breaks with trend and season held (revises B37) |
