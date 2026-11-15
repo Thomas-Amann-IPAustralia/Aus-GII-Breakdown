@@ -409,7 +409,8 @@
       signal: The surge in provisionals
       verdict: refined
       what: "Individuals with 10 or more provisionals that year followed up 5.46% of them in 2024–25, against 22.38%
-            before. The heavy filers behind the surge follow up much less."
+            before. These are 2024–25's heavy filers (183 provisionals); the surge's heavy filers are mostly 2025–26's, whose
+            12 months have not run."
   held: [the filer's state, several founders, the month of filing, the filer's volume that year, "whether the filer had filed a patent before"]
   verdicts:
     - signal: "Individuals, 2024–25 against 2021–22 to 2023–24"

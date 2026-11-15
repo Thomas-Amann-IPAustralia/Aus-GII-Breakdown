@@ -2,7 +2,35 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**Latest (2026-11-10): every observation audited against its output; 22 corrected; the atlas in step** (ADR 0057).
+**Latest (2026-11-14): the observations read against each other; nine incongruities corrected; B40's Stage 3
+outcome is now "holds"** (ADR 0058). The owner asked for an analysis of the observations for any incongruity, then for
+every correction and for the agents question to go to IP Australia (A42). Done:
+- **Method:** each of the 231 observations' notebook text with its atlas headline and revisit lines, compared across
+  pages (ADR 0057 had read each against its own output only); candidates checked on the rebuilt lenses or traced to
+  their output cells. The table is in ADR 0058.
+- **The one that matters most:** filing alone is rising. U20's 37.2% (FY2017 to FY2026) and B5's 26.11% (FY2010 to
+  FY2019) for Australian individuals' standard patents differ because the share runs 22.4% to 30.3% in FY2015 to
+  FY2022, then 35.7%, 43.7%, 50.4% and 66.5%. FY2026 jumps for overseas organisations too (4.91%), so part may be
+  agents recorded late: a lead, noted on U20 and B5, and **OQ36** in the request to IP Australia. It joins OQ7 (ABNs),
+  OQ17 (inventors) and OQ18 (priority claims): four fields thinner in the latest filings.
+- **A Stage 3 outcome changed:** M22 tested Australians' trade marks against business R&D (B41's pair) and gave its
+  verdict to B40, whose lead is every applicant's trade marks. Tested itself, B40's pair holds with value added held
+  (0.514 and 0.487, likely ranges only just clear of zero). B40 is now "holds"; "not detected once held" is B41's.
+  The ninth early signal and the Stage 3 summary follow.
+- **The others:** M33's headline (56 of 477, not "a quarter of the measures"); M35's outcome on U8's page (FY2025's
+  heavy filers, not the surge's); the earlier decade's "filer" for patents filed before FY2003 (a note under B5,
+  pointers on B6, B7, B11, B12, B15 to B17, M1, M26, M27); U9's "all" (49,737 have no application date); U78's and
+  B41's denominators; U75's and U114's "no services"; three small figures that differ between pages (B47, M33, M22).
+- **How:** dated notes ("14 November 2026; ADR 0058") as edits to cell sources. Two cells added and run alone
+  (setup, then the cell): `e891a43a` in notebook 1 (above 1.8.1's observations) and `622-berd-all` in notebook 3
+  (6.2). No other cell was run.
+- **Atlas:** U9, U20, M22 (statement, figures, chart, B40 "holds", B41 added), M33's headline, M35's outcome on U8,
+  the Stage 3 finding and the ninth early signal. `as_at` is 2026-11-14.
+- **Left as they are** (each matches its own table; listed in ADR 0058): B6 and M1, B10 and M2, B46 and M38.
+- **For the owner:** B40's new outcome can be overturned (ADR 0058, choice 1). The Econ refresh below now also covers
+  these pages.
+
+**Earlier (2026-11-10): every observation audited against its output; 22 corrected; the atlas in step** (ADR 0057).
 The owner asked for a review of all observations in the three notebooks for errors of logic or synthesis, their
 correction, and the front end updated. Done:
 - **Audit:** all 231 (128, 63, 40) read against the output above each: numbers matched, derived figures recomputed,
@@ -295,7 +323,8 @@ matches for no gain in accuracy). What Stage 3 found (all observational or descr
   business density, degrees and R&D claimants and remoteness are held (M14);
 - **not detected or reversed:** expedited examination's longer life (M5); organisations' women inventors once the
   field is held (M7); the claimants' city gap (M8); income for patents across countries (M18); innovation shares
-  against IP, even with the crosswalk with services (M21); trade marks against business R&D across divisions (M22); no
+  against IP, even with the crosswalk with services (M21); Australians' trade marks against business R&D across
+  divisions (M22; every applicant's hold, corrected 14 November 2026, ADR 0058); no
   single university measure in both periods (M23); licences and licence income per patent at the same research spend
   (M24); the Designs Act's overseas step, which a control matches (M25);
 - **structure:** one advantage component carries half of places' variation (M13), weak segments among places, one

@@ -431,8 +431,8 @@
   statement: >-
     Under 0.01% of lapsed patents, trade marks and designs were ever registered, against 99.93% of ceased patents,
     100% of ceased trade marks and 98.27% of ceased designs: a lapse is an application abandoned, a cessation a
-    registered right let go. 408,957 patents filed before FY2000 have the status "unknown", with no registration or
-    end date.
+    registered right let go. 408,957 old patents have the status "unknown", with no registration or end date: 359,220
+    filed before FY2000, and 49,737 with no application date.
   figures:
     - value: "408,957"
       label: old patents with an unknown status
@@ -985,6 +985,10 @@
       49.67% and 42.59%."
     - "**Plant breeder's rights** show many \"other agents\" (16.8% of Australian filers' and 37.7% of overseas
       filers'); a specialist may act for fewer than five applicants."
+    - "**By year, the share filed alone is rising.** Australian individuals filed 22.4% to 30.3% of their standard
+      patents alone in FY2015 to FY2022, then 35.7%, 43.7%, 50.4% and 66.5% in FY2023 to FY2026. Overseas
+      organisations' share jumps in FY2026 too (4.91%), so part may be agents recorded after filing: a lead, and a
+      question for IP Australia (OQ36). Their trade marks show no such rise."
   questions:
     - q: 2
       how: Filing without professional help is a possible sign of a barrier, or of a choice; individuals stand out.

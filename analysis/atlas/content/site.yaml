@@ -3,7 +3,7 @@
 # Numbers here come from docs/stage-1-summary.md, docs/stage-2-summary.md, the research goal and the notebooks; each
 # is traceable to an observation, linked where it is named.
 
-as_at: "2026-11-10"
+as_at: "2026-11-14"
 
 # The chat, "Ask the atlas" (#/ask, ADR 0054): served by the Econ repository's API as a second knowledge base, kept
 # apart from the Econ chat. The page calls nothing outside `api` (the Content Security Policy in evidence/index.html
@@ -171,7 +171,7 @@ stage3:
     - title: Across countries and industries, patents follow business R&D
       text: >-
         Across OECD members, patenting at home follows business R&D at the same income and size; across industries,
-        patents allocated per business follow business R&D at the same value added. Australia is nearest Norway, New
+        patents and trade marks allocated per business follow business R&D at the same value added. Australia is nearest Norway, New
         Zealand and Sweden on non-IP indicators.
       ids: [M17, M18, M22]
     - title: "Institutions: research that patents cite goes with their own patenting; licence income does not follow patents"
@@ -821,8 +821,8 @@ next:
       strength: Observational, 36 countries (a lead)
       questions: [1, 4]
       next: Use the nearest members as the comparison set for Australia's IP system
-    - signal: Patents allocated per business follow business R&D across divisions at the same value added; three survey items (ideas from within the business, work methods, small firms' focus on costs) and fewer business exits go with IP per business at the same size and value added
-      ids: [B43, B53, B54, M22, M37]
+    - signal: Patents and trade marks allocated per business follow business R&D across divisions at the same value added; three survey items (ideas from within the business, work methods, small firms' focus on costs) and fewer business exits go with IP per business at the same size and value added
+      ids: [B40, B43, B53, B54, M22, M37]
       strength: Observational, 15 to 19 divisions (a lead)
       questions: [2, 3]
       next: A second year of business R&D and of the survey items; firm-level industry for the filers themselves
