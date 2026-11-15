@@ -62,6 +62,7 @@ Australia reported itself (2,322, from non-residents), so the gap is between IP 
 
 | # | Question | Answer | Date | Recorded in |
 |---|---|---|---|---|
+| A43 | B40's Stage 3 outcome after ADR 0058: keep "holds", or leave "not detected" until a second year of business R&D? And open pull requests? | "Do as you suggested" (keep "holds", with the caution on the page). "Please open and merge a PR for Econ and this repo." | 2026-11-15 | ADR 0058, choice 1; the handover |
 | A42 | The incongruities found between observations (ADR 0058): make the corrections? And add the question of when agents are recorded to the request to IP Australia? | "Yes, please make all corrections." "Yes, let's add the question to the bundle for IP Australia." | 2026-11-14 | ADR 0058; OQ36 |
 | A41 | OQ34: plain display names for Stage 3's outcomes and plain section titles on the pages? And OQ33: open a PR once done | "Yes reword the labels as you've suggested." "Yes open a PR once the above is complete. Just note the Ask Atlas issue in the handover." | 2026-11-06 | ADR 0056 addendum; the handover |
 | A40 | OQ32: rewrite the headlines and the rest of each observation page in the same plain style, and settle "Australian ... applications"? | "Go ahead with #1. You must ensure that they still read well as plain english" | 2026-11-06 | ADR 0056 |

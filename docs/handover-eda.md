@@ -27,8 +27,8 @@ every correction and for the agents question to go to IP Australia (A42). Done:
 - **Atlas:** U9, U20, M22 (statement, figures, chart, B40 "holds", B41 added), M33's headline, M35's outcome on U8,
   the Stage 3 finding and the ninth early signal. `as_at` is 2026-11-14.
 - **Left as they are** (each matches its own table; listed in ADR 0058): B6 and M1, B10 and M2, B46 and M38.
-- **For the owner:** B40's new outcome can be overturned (ADR 0058, choice 1). The Econ refresh below now also covers
-  these pages.
+- **Settled (A43, 2026-11-15):** B40's outcome stays "holds", with the caution on the page. The owner asked for a
+  pull request here and the Econ refresh (ingest at the merged commit), both to be merged.
 
 **Earlier (2026-11-10): every observation audited against its output; 22 corrected; the atlas in step** (ADR 0057).
 The owner asked for a review of all observations in the three notebooks for errors of logic or synthesis, their
