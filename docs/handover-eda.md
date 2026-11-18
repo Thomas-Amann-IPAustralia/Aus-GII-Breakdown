@@ -2,7 +2,9 @@
 
 For the next Claude Code session. Read `CLAUDE.md` first, then `docs/eda-plan.md`.
 
-**Latest (2026-11-14): the observations read against each other; nine incongruities corrected; B40's Stage 3
+**Latest (2026-11-18): the Sustainable Development Goals assessed for the analysis; nothing built** (OQ37). The owner asked how feasible it would be to add the 17 goals and their indicators. Found: 4 of 17 goals are already in the corpus (OECD distance-to-target flows, in `national_indicators`, screened in B35); the UN SDG database is reachable and holds 184 indicators with an Australian value (113 with 10 years or more), all national and annual; Australia's SDG reporting platform (sdgdata.gov.au) now redirects to DCCEEW's 2030 Agenda page; Esri's `sdg-api` serves the indicator metadata only, not values. On the IP side, WIPO's IPC Green Inventory is in `concordances` but no lens uses it, and `au_works` has no SDG field (OpenAlex tags works with SDGs, free to re-fetch). The routes and recommendation are OQ37; the owner's direction is needed before any of it is built.
+
+**Earlier (2026-11-14): the observations read against each other; nine incongruities corrected; B40's Stage 3
 outcome is now "holds"** (ADR 0058). The owner asked for an analysis of the observations for any incongruity, then for
 every correction and for the agents question to go to IP Australia (A42). Done:
 - **Method:** each of the 231 observations' notebook text with its atlas headline and revisit lines, compared across
